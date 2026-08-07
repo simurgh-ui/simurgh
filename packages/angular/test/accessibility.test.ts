@@ -7,12 +7,18 @@ import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import axe from 'axe-core';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { CheckboxComponent, SelectComponent, type SelectOption } from '../src/index.js';
+import { CheckboxComponent, DialogComponent, SelectComponent, TabDirective, TabPanelDirective, TabsComponent, type SelectOption } from '../src/index.js';
 
 beforeAll(() => TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting()));
 
 @Component({ standalone: true, imports: [CheckboxComponent], template: `<simurgh-checkbox name="updates" value="yes" (checkedChange)="changed($event)">Updates</simurgh-checkbox>` })
 class CheckboxHost { changed = vi.fn(); }
+
+@Component({ standalone: true, imports: [DialogComponent], template: `<simurgh-dialog #dialog labelledBy="dialog-title"><button trigger (click)="dialog.show()">Open</button><h2 id="dialog-title">Settings</h2><button>Save</button></simurgh-dialog>` })
+class DialogHost {}
+
+@Component({ standalone: true, imports: [TabsComponent, TabDirective, TabPanelDirective], template: `<simurgh-tabs value="one"><button tab simurghTab="one">One</button><button tab simurghTab="two">Two</button><section simurghTabPanel="one">First</section><section simurghTabPanel="two">Second</section></simurgh-tabs>` })
+class TabsHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -35,5 +41,24 @@ describe('Angular accessibility contract', () => {
     optionsDom[1]!.click(); fixture.detectChanges();
     expect(fixture.componentInstance.value).toBe('isfahan');
     fixture.destroy();
+  });
+
+  it('contains dialog focus and restores it to the trigger', async () => {
+    const fixture = TestBed.createComponent(DialogHost); fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector('[trigger]') as HTMLButtonElement; trigger.focus(); trigger.click(); fixture.detectChanges(); await new Promise((resolve) => setTimeout(resolve));
+    const dialog = fixture.nativeElement.querySelector('[role=dialog]') as HTMLElement;
+    expect(document.activeElement).toBe(dialog);
+    dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); fixture.detectChanges(); await new Promise((resolve) => setTimeout(resolve));
+    expect(document.activeElement).toBe(trigger); fixture.destroy();
+  });
+
+  it('binds active tab and panel state', () => {
+    const fixture = TestBed.createComponent(TabsHost); fixture.detectChanges();
+    const tabs = fixture.nativeElement.querySelectorAll('[role=tab]') as NodeListOf<HTMLButtonElement>;
+    expect(tabs[0]!.getAttribute('aria-selected')).toBe('true'); expect(tabs[1]!.tabIndex).toBe(-1);
+    tabs[1]!.click(); fixture.detectChanges();
+    expect(tabs[1]!.getAttribute('aria-selected')).toBe('true');
+    const panels = fixture.nativeElement.querySelectorAll('[role=tabpanel]') as NodeListOf<HTMLElement>;
+    expect(panels[0]!.hidden).toBe(true); expect(panels[1]!.hidden).toBe(false); fixture.destroy();
   });
 });
