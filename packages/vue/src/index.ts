@@ -750,6 +750,26 @@ export const Alert = defineComponent({
   },
 });
 
+export const AspectRatio = defineComponent({
+  name: 'SimurghAspectRatio',
+  props: { ratio: { type: Number, default: 1 } },
+  setup(props, { attrs, slots }) {
+    const safeRatio = computed(() =>
+      Number.isFinite(props.ratio) && props.ratio > 0 ? props.ratio : 1,
+    );
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          'data-ratio': safeRatio.value,
+          style: [{ aspectRatio: String(safeRatio.value) }, attrs['style']],
+        },
+        slots.default?.(),
+      );
+  },
+});
+
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');
 

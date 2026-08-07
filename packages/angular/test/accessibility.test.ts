@@ -14,6 +14,7 @@ import {
   CheckboxComponent,
   AvatarComponent,
   AlertComponent,
+  AspectRatioComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -185,6 +186,13 @@ class AvatarHost {}
 class AlertHost {
   urgent = false;
 }
+
+@Component({
+  standalone: true,
+  imports: [AspectRatioComponent],
+  template: `<simurgh-aspect-ratio [ratio]="0">Media</simurgh-aspect-ratio>`,
+})
+class AspectRatioHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -461,6 +469,16 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     expect(alert.getAttribute('role')).toBe('alert');
     expect(alert.getAttribute('aria-live')).toBe('assertive');
+    fixture.destroy();
+  });
+  it('falls back to a safe aspect ratio', () => {
+    const fixture = TestBed.createComponent(AspectRatioHost);
+    fixture.detectChanges();
+    const ratio = fixture.nativeElement.querySelector(
+      'simurgh-aspect-ratio',
+    ) as HTMLElement;
+    expect(ratio.dataset['ratio']).toBe('1');
+    expect(ratio.style.aspectRatio).toBe('1');
     fixture.destroy();
   });
 });

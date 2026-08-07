@@ -537,6 +537,22 @@ export class AvatarComponent {
 export class AlertComponent {
   @Input() urgent = false;
 }
+
+@Component({
+  selector: 'simurgh-aspect-ratio',
+  standalone: true,
+  template: `<ng-content />`,
+  host: {
+    '[style.aspect-ratio]': "'' + safeRatio",
+    '[attr.data-ratio]': 'safeRatio',
+  },
+})
+export class AspectRatioComponent {
+  @Input() ratio = 1;
+  get safeRatio() {
+    return Number.isFinite(this.ratio) && this.ratio > 0 ? this.ratio : 1;
+  }
+}
 @Component({
   selector: 'simurgh-switch',
   standalone: true,
@@ -919,6 +935,7 @@ export const SIMURGH_COMPONENTS = [
   VisuallyHiddenComponent,
   AvatarComponent,
   AlertComponent,
+  AspectRatioComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,

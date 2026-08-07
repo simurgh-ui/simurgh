@@ -6,6 +6,7 @@ import {
   Checkbox,
   Avatar,
   Alert,
+  AspectRatio,
   Combobox,
   Dialog,
   DialogContent,
@@ -244,5 +245,15 @@ describe('Vue accessibility contract', () => {
     expect(screen.getByRole('alert').getAttribute('aria-live')).toBe(
       'assertive',
     );
+  });
+  it('applies a safe aspect ratio while preserving consumer styles', () => {
+    const view = render(AspectRatio, {
+      props: { ratio: 0 },
+      attrs: { style: 'overflow: hidden' },
+    });
+    const ratio = view.container.firstElementChild as HTMLElement;
+    expect(ratio.dataset['ratio']).toBe('1');
+    expect(ratio.style.aspectRatio).toBe('1');
+    expect(ratio.style.overflow).toBe('hidden');
   });
 });

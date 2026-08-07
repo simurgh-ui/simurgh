@@ -19,6 +19,7 @@
     "visually-hidden",
     "avatar",
     "alert",
+    "aspect-ratio",
     "switch",
     "radio-group",
     "toast"
@@ -77,6 +78,7 @@
       "visually-hidden": ["VisuallyHidden"],
       "avatar": ["Avatar"],
       "alert": ["Alert"],
+      "aspect-ratio": ["AspectRatio"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -115,6 +117,7 @@
       "visually-hidden": ["VisuallyHidden"],
       "avatar": ["Avatar"],
       "alert": ["Alert"],
+      "aspect-ratio": ["AspectRatio"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -136,6 +139,7 @@
       "visually-hidden": ["VisuallyHiddenComponent"],
       "avatar": ["AvatarComponent"],
       "alert": ["AlertComponent"],
+      "aspect-ratio": ["AspectRatioComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]
