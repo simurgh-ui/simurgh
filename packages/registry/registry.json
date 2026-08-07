@@ -26,6 +26,7 @@
     "input",
     "textarea",
     "badge",
+    "breadcrumb",
     "switch",
     "radio-group",
     "toast"
@@ -91,6 +92,7 @@
       "input": ["Input"],
       "textarea": ["Textarea"],
       "badge": ["Badge", "BadgeTone"],
+      "breadcrumb": ["Breadcrumb"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -136,6 +138,7 @@
       "input": ["Input"],
       "textarea": ["Textarea"],
       "badge": ["Badge", "BadgeTone"],
+      "breadcrumb": ["Breadcrumb"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -164,6 +167,7 @@
       "input": ["InputComponent"],
       "textarea": ["TextareaComponent"],
       "badge": ["BadgeComponent", "BadgeTone"],
+      "breadcrumb": ["BreadcrumbComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

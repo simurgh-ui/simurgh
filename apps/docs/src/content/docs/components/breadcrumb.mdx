@@ -1,0 +1,41 @@
+---
+title: Breadcrumb
+description: A named navigation landmark for hierarchical location.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Breadcrumb supplies the named navigation landmark while consumers retain native links, ordered-list structure, separators, and current-page markup.
+
+<ComponentPreview title="Breadcrumb">
+  <nav aria-label="Breadcrumb">
+    <ol class="preview-row" style="list-style: none; padding: 0; margin: 0">
+      <li>
+        <a href="#">Docs</a>
+      </li>
+      <li aria-hidden="true">/</li>
+      <li>
+        <a href="#">Components</a>
+      </li>
+      <li aria-hidden="true">/</li>
+      <li>
+        <span aria-current="page">Breadcrumb</span>
+      </li>
+    </ol>
+  </nav>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">```tsx
+<Breadcrumb><ol>{items}</ol></Breadcrumb>
+```</TabItem>
+<TabItem label="Vue">```vue
+<Breadcrumb><ol><li v-for="item in items">{{ item.label }}</li></ol></Breadcrumb>
+```</TabItem>
+<TabItem label="Angular">```html
+<simurgh-breadcrumb><ol><li *ngFor="let item of items">{{ item.label }}</li></ol></simurgh-breadcrumb>
+```</TabItem>
+</Tabs>
+
+Mark the final item with `aria-current="page"`. Separators should be decorative and hidden from assistive technology.

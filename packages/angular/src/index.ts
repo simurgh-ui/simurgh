@@ -673,6 +673,15 @@ export class BadgeComponent {
   @Input() tone: BadgeTone = 'neutral';
   @Input() status = false;
 }
+
+@Component({
+  selector: 'simurgh-breadcrumb',
+  standalone: true,
+  template: `<nav [attr.aria-label]="label"><ng-content /></nav>`,
+})
+export class BreadcrumbComponent {
+  @Input() label = 'Breadcrumb';
+}
 @Component({
   selector: 'simurgh-switch',
   standalone: true,
@@ -1062,6 +1071,7 @@ export const SIMURGH_COMPONENTS = [
   InputComponent,
   TextareaComponent,
   BadgeComponent,
+  BreadcrumbComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,

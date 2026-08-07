@@ -912,6 +912,15 @@ export const Badge = defineComponent({
   },
 });
 
+export const Breadcrumb = defineComponent({
+  name: 'SimurghBreadcrumb',
+  props: { label: { type: String, default: 'Breadcrumb' } },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h('nav', { ...attrs, 'aria-label': props.label }, slots.default?.());
+  },
+});
+
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');
 

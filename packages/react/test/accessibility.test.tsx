@@ -20,6 +20,7 @@ import {
   Input,
   Textarea,
   Badge,
+  Breadcrumb,
   Combobox,
   Dialog,
   DialogContent,
@@ -328,5 +329,23 @@ describe('React accessibility contract', () => {
     expect(screen.queryByRole('status')).toBeNull();
     rerender(<Badge status>Published</Badge>);
     expect(screen.getByRole('status').getAttribute('aria-live')).toBe('polite');
+  });
+  it('provides a named breadcrumb landmark with a current page', () => {
+    render(
+      <Breadcrumb>
+        <ol>
+          <li>
+            <a href="/docs">Docs</a>
+          </li>
+          <li>
+            <span aria-current="page">Button</span>
+          </li>
+        </ol>
+      </Breadcrumb>,
+    );
+    expect(screen.getByRole('navigation', { name: 'Breadcrumb' })).toBeTruthy();
+    expect(screen.getByText('Button').getAttribute('aria-current')).toBe(
+      'page',
+    );
   });
 });

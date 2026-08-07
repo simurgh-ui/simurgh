@@ -914,6 +914,13 @@ export const Badge = forwardRef<
   );
 });
 
+export const Breadcrumb = forwardRef<
+  HTMLElement,
+  React.HTMLAttributes<HTMLElement> & { label?: string }
+>(function Breadcrumb({ label = 'Breadcrumb', ...props }, ref) {
+  return <nav ref={ref} aria-label={label} {...props} />;
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

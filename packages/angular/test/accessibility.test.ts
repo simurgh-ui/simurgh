@@ -21,6 +21,7 @@ import {
   InputComponent,
   TextareaComponent,
   BadgeComponent,
+  BreadcrumbComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -252,6 +253,18 @@ class TextareaHost {}
   >`,
 })
 class BadgeHost {}
+
+@Component({
+  standalone: true,
+  imports: [BreadcrumbComponent],
+  template: `<simurgh-breadcrumb
+    ><ol>
+      <li><a href="/docs">Docs</a></li>
+      <li><span aria-current="page">Button</span></li>
+    </ol></simurgh-breadcrumb
+  >`,
+})
+class BreadcrumbHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -600,6 +613,16 @@ describe('Angular accessibility contract', () => {
     expect(badge.dataset['tone']).toBe('success');
     expect(badge.getAttribute('role')).toBe('status');
     expect(badge.getAttribute('aria-live')).toBe('polite');
+    fixture.destroy();
+  });
+  it('provides a named breadcrumb landmark with a current page', () => {
+    const fixture = TestBed.createComponent(BreadcrumbHost);
+    fixture.detectChanges();
+    const nav = fixture.nativeElement.querySelector('nav') as HTMLElement;
+    expect(nav.getAttribute('aria-label')).toBe('Breadcrumb');
+    expect(nav.querySelector('[aria-current=page]')?.textContent).toBe(
+      'Button',
+    );
     fixture.destroy();
   });
 });
