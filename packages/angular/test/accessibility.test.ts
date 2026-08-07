@@ -20,6 +20,7 @@ import {
   ButtonComponent,
   InputComponent,
   SliderComponent,
+  MeterComponent,
   TextareaComponent,
   BadgeComponent,
   BreadcrumbComponent,
@@ -361,6 +362,19 @@ class InputHost {}
   </form>`,
 })
 class SliderHost {}
+@Component({
+  standalone: true,
+  imports: [MeterComponent],
+  template: `<simurgh-meter
+    label="Storage used"
+    [value]="120"
+    [max]="100"
+    [low]="40"
+    [high]="80"
+    [optimum]="20"
+  />`,
+})
+class MeterHost {}
 
 @Component({
   standalone: true,
@@ -730,6 +744,17 @@ describe('Angular accessibility contract', () => {
     expect(slider.value).toBe('40');
     expect(slider.max).toBe('80');
     expect(new FormData(slider.form!).get('volume')).toBe('40');
+    fixture.destroy();
+  });
+  it('clamps a named native meter and preserves thresholds', () => {
+    const fixture = TestBed.createComponent(MeterHost);
+    fixture.detectChanges();
+    const meter = fixture.nativeElement.querySelector(
+      'meter',
+    ) as HTMLMeterElement;
+    expect(meter.value).toBe(100);
+    expect(meter.high).toBe(80);
+    expect(meter.optimum).toBe(20);
     fixture.destroy();
   });
   it('serializes native textarea values', () => {

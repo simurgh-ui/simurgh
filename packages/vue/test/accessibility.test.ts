@@ -12,6 +12,7 @@ import {
   Button,
   Input,
   Slider,
+  Meter,
   Textarea,
   Badge,
   Breadcrumb,
@@ -411,6 +412,24 @@ describe('Vue accessibility contract', () => {
     await fireEvent.update(slider, '50');
     expect(slider.value).toBe('50');
     expect(new FormData(slider.form!).get('volume')).toBe('50');
+  });
+  it('clamps a named native meter and preserves thresholds', () => {
+    render(Meter, {
+      props: {
+        label: 'Storage used',
+        value: 120,
+        max: 100,
+        low: 40,
+        high: 80,
+        optimum: 20,
+      },
+    });
+    const meter = screen.getByRole('meter', {
+      name: 'Storage used',
+    }) as HTMLMeterElement;
+    expect(meter.value).toBe(100);
+    expect(meter.high).toBe(80);
+    expect(meter.optimum).toBe(20);
   });
   it('serializes native textarea values', () => {
     const view = render({

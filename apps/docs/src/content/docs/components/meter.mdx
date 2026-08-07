@@ -1,0 +1,47 @@
+---
+title: Meter
+description: A native scalar measurement with low, high, and optimum thresholds.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Meter communicates a measurement within a known range, such as storage usage or signal quality. Use Progress for task completion.
+
+<ComponentPreview title="Meter">
+  <div class="preview-stack" style="max-width: 28rem">
+    <label for="preview-storage">Storage used: 72%</label>
+    <meter
+      id="preview-storage"
+      data-slot="meter"
+      min="0"
+      max="100"
+      low="40"
+      high="80"
+      optimum="20"
+      value="72"
+    >
+      72%
+    </meter>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Meter label="Storage used" value={72} max={100} low={40} high={80} optimum={20} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Meter label="Storage used" :value="72" :max="100" :low="40" :high="80" :optimum="20" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-meter label="Storage used" [value]="72" [max]="100" [low]="40" [high]="80" [optimum]="20" />
+```
+</TabItem>
+</Tabs>
+
+Provide an accessible name and visible text describing the measurement. Threshold meaning depends on whether higher or lower values are desirable, expressed through `optimum`.
