@@ -2,34 +2,97 @@
   "$schema": "https://simurgh-ui.dev/schema/registry.json",
   "name": "simurgh",
   "version": "0.1.0",
-  "components": ["dialog", "popover", "tooltip", "dropdown-menu", "select", "tabs", "accordion", "checkbox", "switch", "radio-group", "toast"],
+  "components": [
+    "dialog",
+    "popover",
+    "tooltip",
+    "dropdown-menu",
+    "select",
+    "combobox",
+    "tabs",
+    "accordion",
+    "checkbox",
+    "switch",
+    "radio-group",
+    "toast"
+  ],
   "frameworks": {
-    "react": { "extension": "tsx", "source": "packages/react/src/index.tsx", "dependencies": ["@floating-ui/react", "@simurgh-ui/core"] },
-    "vue": { "extension": "ts", "source": "packages/vue/src/index.ts", "dependencies": ["@floating-ui/dom", "@simurgh-ui/core"] },
-    "angular": { "extension": "ts", "source": "packages/angular/src/index.ts", "dependencies": ["@floating-ui/dom", "@simurgh-ui/core"] }
+    "react": {
+      "extension": "tsx",
+      "source": "packages/react/src/index.tsx",
+      "dependencies": ["@floating-ui/react", "@simurgh-ui/core"]
+    },
+    "vue": {
+      "extension": "ts",
+      "source": "packages/vue/src/index.ts",
+      "dependencies": ["@floating-ui/dom", "@simurgh-ui/core"]
+    },
+    "angular": {
+      "extension": "ts",
+      "source": "packages/angular/src/index.ts",
+      "dependencies": ["@floating-ui/dom", "@simurgh-ui/core"]
+    }
   },
   "symbols": {
     "react": {
-      "dialog": ["Dialog", "DialogTrigger", "DialogPortal", "DialogOverlay", "DialogContent", "DialogTitle", "DialogDescription", "DialogClose"],
+      "dialog": [
+        "Dialog",
+        "DialogTrigger",
+        "DialogPortal",
+        "DialogOverlay",
+        "DialogContent",
+        "DialogTitle",
+        "DialogDescription",
+        "DialogClose"
+      ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
-      "dropdown-menu": ["DropdownMenu", "DropdownMenuTrigger", "DropdownMenuContent", "DropdownMenuItem"],
+      "dropdown-menu": [
+        "DropdownMenu",
+        "DropdownMenuTrigger",
+        "DropdownMenuContent",
+        "DropdownMenuItem"
+      ],
       "select": ["Select"],
+      "combobox": ["Combobox", "SelectOption"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
-      "accordion": ["Accordion", "AccordionItem", "AccordionTrigger", "AccordionContent"],
+      "accordion": [
+        "Accordion",
+        "AccordionItem",
+        "AccordionTrigger",
+        "AccordionContent"
+      ],
       "checkbox": ["Checkbox"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
     },
     "vue": {
-      "dialog": ["Dialog", "DialogTrigger", "DialogContent", "DialogTitle", "DialogDescription", "DialogClose"],
+      "dialog": [
+        "Dialog",
+        "DialogTrigger",
+        "DialogContent",
+        "DialogTitle",
+        "DialogDescription",
+        "DialogClose"
+      ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
-      "dropdown-menu": ["DropdownMenu", "DropdownMenuTrigger", "DropdownMenuContent", "DropdownMenuItem"],
+      "dropdown-menu": [
+        "DropdownMenu",
+        "DropdownMenuTrigger",
+        "DropdownMenuContent",
+        "DropdownMenuItem"
+      ],
       "select": ["Select"],
+      "combobox": ["Combobox", "ComboboxOption"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
-      "accordion": ["Accordion", "AccordionItem", "AccordionTrigger", "AccordionContent"],
+      "accordion": [
+        "Accordion",
+        "AccordionItem",
+        "AccordionTrigger",
+        "AccordionContent"
+      ],
       "checkbox": ["Checkbox"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
@@ -41,6 +104,7 @@
       "tooltip": ["TooltipComponent"],
       "dropdown-menu": ["DropdownMenuComponent", "DropdownMenuItemDirective"],
       "select": ["SelectComponent", "SelectOption"],
+      "combobox": ["ComboboxComponent", "SelectOption"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],
@@ -49,5 +113,17 @@
       "toast": ["ToastViewportComponent", "ToastMessage"]
     }
   },
-  "shared": { "styles": ["packages/styles/tokens.css", "packages/styles/recipes.css"], "tokens": ["background", "foreground", "surface", "primary", "accent", "danger", "border", "ring"] }
+  "shared": {
+    "styles": ["packages/styles/tokens.css", "packages/styles/recipes.css"],
+    "tokens": [
+      "background",
+      "foreground",
+      "surface",
+      "primary",
+      "accent",
+      "danger",
+      "border",
+      "ring"
+    ]
+  }
 }

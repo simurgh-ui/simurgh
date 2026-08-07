@@ -35,8 +35,8 @@ Items are checked only after their implementation exists and the relevant verifi
 ## Catalog expansion
 
 - [x] Add Radio Group across Angular, React, Vue, the registry, documentation, and contract tests.
-- [ ] Add Combobox across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add Combobox across Angular, React, Vue, the registry, documentation, and contract tests.
   - [x] Implement and verify React Combobox.
   - [x] Implement and verify Vue Combobox.
   - [x] Implement and verify Angular Combobox.
-  - [ ] Register and document Combobox after framework parity passes.
+  - [x] Register and document Combobox after framework parity passes.
