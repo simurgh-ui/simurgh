@@ -9,6 +9,6 @@ pnpm dlx simurgh init
 pnpm dlx simurgh add dialog tabs checkbox
 ```
 
-`init` detects the framework, writes `simurgh.json`, copies tokens and recipes, and installs the core and positioning dependencies. `add` preserves an existing generated catalog unless `--overwrite` is supplied. Use `simurgh diff dialog` before adopting registry updates.
+`init` detects the framework, writes `simurgh.json`, copies tokens and recipes, and installs the core and positioning dependencies. `add` writes one framework-native source file per component and preserves existing files unless `--overwrite` is supplied. Use `simurgh diff dialog` before adopting registry updates.
 
 Import `tokens.css` for semantic variables and `recipes.css` for the optional visual layer. Headless behavior does not depend on either stylesheet.

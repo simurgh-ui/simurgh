@@ -5,5 +5,6 @@ export type RegistryManifest = typeof manifest;
 export { manifest };
 export function registryEntry(component: string, framework: Framework) {
   if (!manifest.components.includes(component)) throw new Error(`Unknown component: ${component}`);
-  return { name: component, version: manifest.version, framework, ...manifest.frameworks[framework], shared: manifest.shared };
+  const componentName = component as keyof (typeof manifest.symbols)[Framework];
+  return { name: component, version: manifest.version, framework, ...manifest.frameworks[framework], symbols: manifest.symbols[framework][componentName], shared: manifest.shared };
 }

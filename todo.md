@@ -23,5 +23,5 @@ Items are checked only after their implementation exists and the relevant verifi
 ## V1 completeness follow-up
 
 - [x] Add complete per-component documentation with Angular, React, and Vue examples.
-- [ ] Make registry additions component-granular instead of copying the complete catalog.
+- [x] Make registry additions component-granular instead of copying the complete catalog.
 - [ ] Harden overlay and composite-widget parity across all three frameworks.

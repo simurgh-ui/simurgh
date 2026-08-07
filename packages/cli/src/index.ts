@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { manifest, registryEntry, type Framework } from '@simurgh-ui/registry';
 import { cac } from 'cac';
 import pc from 'picocolors';
+import ts from 'typescript';
 
 type Config = { framework: Framework; components: string; styles: string; registryVersion: string };
 const cwd = () => process.cwd();
@@ -25,7 +26,34 @@ function workspaceRoot(): string {
 }
 function ensureParent(path: string) { mkdirSync(dirname(path), { recursive: true }); }
 function copy(path: string, target: string) { ensureParent(target); writeFileSync(target, readFileSync(path)); }
-function componentTarget(config: Config) { return join(cwd(), config.components, `simurgh.${manifest.frameworks[config.framework].extension}`); }
+function componentTarget(config: Config, component: string) { return join(cwd(), config.components, `${component}.${manifest.frameworks[config.framework].extension}`); }
+
+function declarationNames(statement: ts.Statement): string[] {
+  if ((ts.isFunctionDeclaration(statement) || ts.isClassDeclaration(statement) || ts.isInterfaceDeclaration(statement) || ts.isTypeAliasDeclaration(statement) || ts.isEnumDeclaration(statement)) && statement.name) return [statement.name.text];
+  if (ts.isVariableStatement(statement)) return statement.declarationList.declarations.flatMap((declaration) => ts.isIdentifier(declaration.name) ? [declaration.name.text] : []);
+  return [];
+}
+
+export function extractComponentSource(source: string, symbols: readonly string[], filename = 'registry-source.ts'): string {
+  const sourceFile = ts.createSourceFile(filename, source, ts.ScriptTarget.Latest, true, filename.endsWith('x') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
+  const declarations = new Map<string, ts.Statement>();
+  for (const statement of sourceFile.statements) for (const name of declarationNames(statement)) declarations.set(name, statement);
+  const selected = new Set<ts.Statement>(); const queue = [...symbols]; const seen = new Set<string>();
+  while (queue.length) {
+    const name = queue.shift()!; if (seen.has(name)) continue; seen.add(name);
+    const statement = declarations.get(name); if (!statement) continue; selected.add(statement);
+    const visit = (node: ts.Node) => { if (ts.isIdentifier(node) && declarations.has(node.text) && !seen.has(node.text)) queue.push(node.text); ts.forEachChild(node, visit); };
+    visit(statement);
+  }
+  const statements = sourceFile.statements.filter((statement) => ts.isImportDeclaration(statement) || selected.has(statement));
+  const body = statements.map((statement) => source.slice(statement.getFullStart(), statement.getEnd()).trim()).join('\n\n');
+  return `// Generated from Simurgh registry ${manifest.version}. This source is yours to edit.\n${body}\n`;
+}
+
+function expectedSource(config: Config, component: string): string {
+  const entry = registryEntry(component, config.framework); const sourcePath = join(workspaceRoot(), entry.source);
+  return extractComponentSource(readFileSync(sourcePath, 'utf8'), entry.symbols, sourcePath);
+}
 
 const cli = cac('simurgh');
 cli.command('init', 'Initialize Simurgh in the current application').option('--framework <framework>', 'react, vue, or angular').option('--skip-install', 'Do not install runtime dependencies').action((options: { framework?: Framework; skipInstall?: boolean }) => {
@@ -41,17 +69,24 @@ cli.command('init', 'Initialize Simurgh in the current application').option('--f
 cli.command('list', 'List registry components').action(() => { for (const name of manifest.components) console.log(`${name.padEnd(16)} ${manifest.version}`); });
 cli.command('add [...components]', 'Copy component source into the application').option('--overwrite', 'Replace an existing generated catalog').action((components: string[], options: { overwrite?: boolean }) => {
   const config = loadConfig(); const selected = components.length ? components : manifest.components;
-  selected.forEach(name => registryEntry(name, config.framework));
-  const target = componentTarget(config); if (existsSync(target) && !options.overwrite) { console.log(pc.yellow(`${relative(cwd(), target)} already exists; no files changed. Use --overwrite.`)); return; }
-  const source = join(workspaceRoot(), manifest.frameworks[config.framework].source); copy(source, target);
-  console.log(pc.green(`Added ${selected.join(', ')} to ${relative(cwd(), target)}.`));
+  for (const name of selected) {
+    registryEntry(name, config.framework); const target = componentTarget(config, name);
+    if (existsSync(target) && !options.overwrite) { console.log(pc.yellow(`${relative(cwd(), target)} already exists; preserved local source.`)); continue; }
+    ensureParent(target); writeFileSync(target, expectedSource(config, name));
+    console.log(pc.green(`Added ${name} to ${relative(cwd(), target)}.`));
+  }
 });
 cli.command('diff [component]', 'Compare local source with the registry').action((component?: string) => {
-  const config = loadConfig(); if (component) registryEntry(component, config.framework); const target = componentTarget(config);
-  if (!existsSync(target)) throw new Error('No generated Simurgh source found. Run `simurgh add` first.');
-  const source = join(workspaceRoot(), manifest.frameworks[config.framework].source); const same = readFileSync(source, 'utf8') === readFileSync(target, 'utf8');
-  console.log(same ? pc.green('Local source matches the registry.') : pc.yellow('Local source differs from the registry. Your customizations are preserved.'));
-  process.exitCode = same ? 0 : 1;
+  const config = loadConfig(); const selected = component ? [component] : manifest.components.filter((name) => existsSync(componentTarget(config, name)));
+  if (!selected.length) throw new Error('No generated Simurgh source found. Run `simurgh add` first.');
+  let differs = false;
+  for (const name of selected) {
+    registryEntry(name, config.framework); const target = componentTarget(config, name);
+    if (!existsSync(target)) { console.log(pc.yellow(`${name}: not installed`)); differs = true; continue; }
+    const same = readFileSync(target, 'utf8') === expectedSource(config, name); differs ||= !same;
+    console.log(same ? pc.green(`${name}: matches the registry`) : pc.yellow(`${name}: differs; local customizations are preserved`));
+  }
+  process.exitCode = differs ? 1 : 0;
 });
 cli.help(); cli.version('0.1.0');
 try { cli.parse(); } catch (error) { console.error(pc.red(error instanceof Error ? error.message : String(error))); process.exitCode = 1; }
