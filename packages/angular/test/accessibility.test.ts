@@ -18,6 +18,7 @@ import {
   SkeletonComponent,
   SpinnerComponent,
   ButtonComponent,
+  LinkComponent,
   InputComponent,
   SliderComponent,
   MeterComponent,
@@ -338,6 +339,21 @@ class SpinnerHost {}
   template: `<simurgh-button [loading]="true">Save</simurgh-button>`,
 })
 class ButtonHost {}
+
+@Component({
+  standalone: true,
+  imports: [LinkComponent],
+  template: `<simurgh-link
+    href="/docs"
+    [external]="external"
+    [disabled]="disabled"
+    >Documentation</simurgh-link
+  >`,
+})
+class LinkHost {
+  external = true;
+  disabled = false;
+}
 
 @Component({
   standalone: true,
@@ -756,6 +772,20 @@ describe('Angular accessibility contract', () => {
     expect(button.type).toBe('button');
     expect(button.disabled).toBe(true);
     expect(button.getAttribute('aria-busy')).toBe('true');
+    fixture.destroy();
+  });
+  it('preserves native link semantics and safely disables navigation', () => {
+    const fixture = TestBed.createComponent(LinkHost);
+    fixture.detectChanges();
+    const link = fixture.nativeElement.querySelector('a') as HTMLAnchorElement;
+    expect(link.getAttribute('href')).toBe('/docs');
+    expect(link.target).toBe('_blank');
+    expect(link.rel).toBe('noopener noreferrer');
+    fixture.componentInstance.disabled = true;
+    fixture.detectChanges();
+    expect(link.getAttribute('href')).toBeNull();
+    expect(link.getAttribute('aria-disabled')).toBe('true');
+    expect(link.tabIndex).toBe(-1);
     fixture.destroy();
   });
   it('preserves native input form and invalid semantics', () => {

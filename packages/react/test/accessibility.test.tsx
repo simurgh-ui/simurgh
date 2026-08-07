@@ -17,6 +17,7 @@ import {
   Skeleton,
   Spinner,
   Button,
+  Link,
   Input,
   Slider,
   Meter,
@@ -328,6 +329,29 @@ describe('React accessibility contract', () => {
     expect(button.type).toBe('button');
     expect(button.disabled).toBe(true);
     fireEvent.click(button);
+    expect(clicked).not.toHaveBeenCalled();
+  });
+  it('preserves native link semantics and safely disables navigation', () => {
+    const clicked = vi.fn();
+    const { rerender } = render(
+      <Link href="/docs" external onClick={clicked}>
+        Documentation
+      </Link>,
+    );
+    const link = screen.getByRole('link', { name: 'Documentation' });
+    expect(link.getAttribute('href')).toBe('/docs');
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+    rerender(
+      <Link href="/docs" disabled onClick={clicked}>
+        Documentation
+      </Link>,
+    );
+    const disabled = screen.getByText('Documentation');
+    expect(disabled.getAttribute('href')).toBeNull();
+    expect(disabled.getAttribute('aria-disabled')).toBe('true');
+    expect(disabled.getAttribute('tabindex')).toBe('-1');
+    fireEvent.click(disabled);
     expect(clicked).not.toHaveBeenCalled();
   });
   it('preserves native input form and invalid semantics', () => {

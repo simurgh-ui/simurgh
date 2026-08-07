@@ -10,6 +10,7 @@ import {
   Skeleton,
   Spinner,
   Button,
+  Link,
   Input,
   Slider,
   Meter,
@@ -391,6 +392,23 @@ describe('Vue accessibility contract', () => {
     expect(button.type).toBe('button');
     expect(button.disabled).toBe(true);
     await fireEvent.click(button);
+    expect(clicked).not.toHaveBeenCalled();
+  });
+  it('preserves native link semantics and safely disables navigation', async () => {
+    const clicked = vi.fn();
+    const view = render(Link, {
+      props: { href: '/docs', external: true, onClick: clicked },
+      slots: { default: 'Documentation' },
+    });
+    const link = screen.getByRole('link', { name: 'Documentation' });
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+    await view.rerender({ href: '/docs', disabled: true, onClick: clicked });
+    const disabled = screen.getByText('Documentation');
+    expect(disabled.getAttribute('href')).toBeNull();
+    expect(disabled.getAttribute('aria-disabled')).toBe('true');
+    expect(disabled.getAttribute('tabindex')).toBe('-1');
+    await fireEvent.click(disabled);
     expect(clicked).not.toHaveBeenCalled();
   });
   it('preserves native input form and invalid semantics', () => {
