@@ -19,6 +19,7 @@ import {
   SpinnerComponent,
   ButtonComponent,
   InputComponent,
+  SliderComponent,
   TextareaComponent,
   BadgeComponent,
   BreadcrumbComponent,
@@ -345,6 +346,21 @@ class ButtonHost {}
   </form>`,
 })
 class InputHost {}
+
+@Component({
+  standalone: true,
+  imports: [SliderComponent],
+  template: `<form>
+    <simurgh-slider
+      name="volume"
+      label="Volume"
+      [value]="40"
+      [max]="80"
+      [step]="10"
+    />
+  </form>`,
+})
+class SliderHost {}
 
 @Component({
   standalone: true,
@@ -703,6 +719,17 @@ describe('Angular accessibility contract', () => {
     expect(input.required).toBe(true);
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
+    fixture.destroy();
+  });
+  it('uses native slider constraints and form serialization', () => {
+    const fixture = TestBed.createComponent(SliderHost);
+    fixture.detectChanges();
+    const slider = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    expect(slider.value).toBe('40');
+    expect(slider.max).toBe('80');
+    expect(new FormData(slider.form!).get('volume')).toBe('40');
     fixture.destroy();
   });
   it('serializes native textarea values', () => {

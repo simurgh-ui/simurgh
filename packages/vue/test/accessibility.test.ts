@@ -11,6 +11,7 @@ import {
   Spinner,
   Button,
   Input,
+  Slider,
   Textarea,
   Badge,
   Breadcrumb,
@@ -397,6 +398,19 @@ describe('Vue accessibility contract', () => {
     expect(
       new FormData(view.container.querySelector('form')!).get('email'),
     ).toBe('ada@example.com');
+  });
+  it('updates and serializes a native slider', async () => {
+    render({
+      components: { Slider },
+      data: () => ({ volume: 20 }),
+      template: `<form><Slider v-model="volume" aria-label="Volume" name="volume" :step="10" /></form>`,
+    });
+    const slider = screen.getByRole('slider', {
+      name: 'Volume',
+    }) as HTMLInputElement;
+    await fireEvent.update(slider, '50');
+    expect(slider.value).toBe('50');
+    expect(new FormData(slider.form!).get('volume')).toBe('50');
   });
   it('serializes native textarea values', () => {
     const view = render({

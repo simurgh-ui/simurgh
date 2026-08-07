@@ -1,0 +1,44 @@
+---
+title: Slider
+description: Native range input with framework-native value binding and form behavior.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Slider preserves native keyboard, pointer, constraint, and form semantics while exposing framework-native value updates.
+
+<ComponentPreview title="Slider">
+  <div class="preview-stack" style="max-width: 28rem">
+    <label for="preview-volume">Volume</label>
+    <input
+      id="preview-volume"
+      type="range"
+      data-slot="slider"
+      min="0"
+      max="100"
+      step="10"
+      value="40"
+    />
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Slider aria-label="Volume" name="volume" defaultValue={40} min={0} max={100} step={10} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Slider v-model="volume" aria-label="Volume" name="volume" :step="10" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-slider [(value)]="volume" label="Volume" name="volume" [step]="10" />
+```
+</TabItem>
+</Tabs>
+
+Always provide an accessible name through a visible label or `aria-label`. Native range inputs automatically support arrow, Home, End, pointer, and touch interaction.

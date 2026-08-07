@@ -946,6 +946,29 @@ export const Input = forwardRef<
   return <input ref={ref} aria-invalid={invalid || undefined} {...props} />;
 });
 
+export const Slider = forwardRef<
+  HTMLInputElement,
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
+    invalid?: boolean;
+  }
+>(function Slider(
+  { invalid = false, min = 0, max = 100, step = 1, ...props },
+  ref,
+) {
+  return (
+    <input
+      ref={ref}
+      type="range"
+      min={min}
+      max={max}
+      step={step}
+      aria-invalid={invalid || undefined}
+      data-slot="slider"
+      {...props}
+    />
+  );
+});
+
 export const Textarea = forwardRef<
   HTMLTextAreaElement,
   TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }

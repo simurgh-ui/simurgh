@@ -63,3 +63,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add semantic Table anatomy across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Pagination across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Collapsible across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add native Slider across Angular, React, Vue, the registry, documentation, and contract tests.

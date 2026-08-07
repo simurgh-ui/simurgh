@@ -18,6 +18,7 @@ import {
   Spinner,
   Button,
   Input,
+  Slider,
   Textarea,
   Badge,
   Breadcrumb,
@@ -333,6 +334,26 @@ describe('React accessibility contract', () => {
     expect(input.required).toBe(true);
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
+  });
+  it('uses native slider constraints and form serialization', () => {
+    render(
+      <form>
+        <Slider
+          aria-label="Volume"
+          name="volume"
+          defaultValue={40}
+          min={0}
+          max={80}
+          step={10}
+        />
+      </form>,
+    );
+    const slider = screen.getByRole('slider', {
+      name: 'Volume',
+    }) as HTMLInputElement;
+    expect(slider.value).toBe('40');
+    expect(slider.max).toBe('80');
+    expect(new FormData(slider.form!).get('volume')).toBe('40');
   });
   it('serializes native textarea values', () => {
     render(
