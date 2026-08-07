@@ -1,0 +1,52 @@
+---
+title: Alert
+description: Polite or urgent live-region feedback for meaningful changes.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Alert announces feedback using a polite status region by default. Urgent mode switches to assertive alert semantics for important failures that require immediate attention.
+
+<ComponentPreview title="Alert">
+  <aside
+    class="preview-panel preview-stack"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    <strong>Profile updated</strong>
+    <span class="preview-muted">
+      Your public information was saved successfully.
+    </span>
+  </aside>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Alert>
+      <strong>Profile updated</strong>
+      <p>Your changes were saved.</p>
+    </Alert>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Alert>
+      <strong>Profile updated</strong>
+      <p>Your changes were saved.</p>
+    </Alert>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-alert>
+      <strong>Profile updated</strong>
+      <p>Your changes were saved.</p>
+    </simurgh-alert>
+    ```
+  </TabItem>
+</Tabs>
+
+Reserve `urgent` for errors that must interrupt the current announcement. Render static page notices without live-region semantics until their content actually changes.

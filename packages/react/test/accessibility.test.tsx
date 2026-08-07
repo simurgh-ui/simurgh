@@ -12,6 +12,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   Checkbox,
   Avatar,
+  Alert,
   Combobox,
   Dialog,
   DialogContent,
@@ -245,5 +246,13 @@ describe('React accessibility contract', () => {
     fireEvent.load(image);
     expect(image.hasAttribute('hidden')).toBe(false);
     expect(screen.queryByText('AL')).toBeNull();
+  });
+  it('uses polite status by default and assertive semantics when urgent', () => {
+    const { rerender } = render(<Alert>Profile saved</Alert>);
+    expect(screen.getByRole('status').getAttribute('aria-live')).toBe('polite');
+    rerender(<Alert urgent>Connection lost</Alert>);
+    expect(screen.getByRole('alert').getAttribute('aria-live')).toBe(
+      'assertive',
+    );
   });
 });

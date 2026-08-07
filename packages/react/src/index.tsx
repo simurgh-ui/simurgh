@@ -792,6 +792,22 @@ export const Avatar = forwardRef<
   );
 });
 
+export const Alert = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { urgent?: boolean }
+>(function Alert({ urgent = false, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      role={urgent ? 'alert' : 'status'}
+      aria-live={urgent ? 'assertive' : 'polite'}
+      aria-atomic="true"
+      data-urgent={urgent || undefined}
+      {...props}
+    />
+  );
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

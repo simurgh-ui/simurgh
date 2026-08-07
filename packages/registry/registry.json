@@ -18,6 +18,7 @@
     "toggle",
     "visually-hidden",
     "avatar",
+    "alert",
     "switch",
     "radio-group",
     "toast"
@@ -75,6 +76,7 @@
       "toggle": ["Toggle"],
       "visually-hidden": ["VisuallyHidden"],
       "avatar": ["Avatar"],
+      "alert": ["Alert"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -112,6 +114,7 @@
       "toggle": ["Toggle"],
       "visually-hidden": ["VisuallyHidden"],
       "avatar": ["Avatar"],
+      "alert": ["Alert"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -132,6 +135,7 @@
       "toggle": ["ToggleComponent"],
       "visually-hidden": ["VisuallyHiddenComponent"],
       "avatar": ["AvatarComponent"],
+      "alert": ["AlertComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

@@ -522,6 +522,21 @@ export class AvatarComponent {
   @Input({ required: true }) fallback = '';
   loaded = false;
 }
+
+@Component({
+  selector: 'simurgh-alert',
+  standalone: true,
+  template: `<ng-content />`,
+  host: {
+    '[attr.role]': "urgent ? 'alert' : 'status'",
+    '[attr.aria-live]': "urgent ? 'assertive' : 'polite'",
+    '[attr.aria-atomic]': "'true'",
+    '[attr.data-urgent]': 'urgent || null',
+  },
+})
+export class AlertComponent {
+  @Input() urgent = false;
+}
 @Component({
   selector: 'simurgh-switch',
   standalone: true,
@@ -903,6 +918,7 @@ export const SIMURGH_COMPONENTS = [
   ToggleComponent,
   VisuallyHiddenComponent,
   AvatarComponent,
+  AlertComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,

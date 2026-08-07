@@ -13,6 +13,7 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 import {
   CheckboxComponent,
   AvatarComponent,
+  AlertComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -173,6 +174,17 @@ class VisuallyHiddenHost {}
   />`,
 })
 class AvatarHost {}
+
+@Component({
+  standalone: true,
+  imports: [AlertComponent],
+  template: `<simurgh-alert [urgent]="urgent"
+    >Connection state changed</simurgh-alert
+  >`,
+})
+class AlertHost {
+  urgent = false;
+}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -436,6 +448,19 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     expect(image.hidden).toBe(false);
     expect(fixture.nativeElement.textContent.trim()).toBe('');
+    fixture.destroy();
+  });
+  it('switches between polite and urgent alert semantics', () => {
+    const fixture = TestBed.createComponent(AlertHost);
+    fixture.detectChanges();
+    const alert = fixture.nativeElement.querySelector(
+      'simurgh-alert',
+    ) as HTMLElement;
+    expect(alert.getAttribute('role')).toBe('status');
+    fixture.componentInstance.urgent = true;
+    fixture.detectChanges();
+    expect(alert.getAttribute('role')).toBe('alert');
+    expect(alert.getAttribute('aria-live')).toBe('assertive');
     fixture.destroy();
   });
 });

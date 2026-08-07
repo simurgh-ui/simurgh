@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   Checkbox,
   Avatar,
+  Alert,
   Combobox,
   Dialog,
   DialogContent,
@@ -235,5 +236,13 @@ describe('Vue accessibility contract', () => {
     await fireEvent.load(image);
     expect(image.hasAttribute('hidden')).toBe(false);
     expect(screen.queryByText('AL')).toBeNull();
+  });
+  it('uses polite status by default and assertive semantics when urgent', async () => {
+    const view = render(Alert, { slots: { default: 'Profile saved' } });
+    expect(screen.getByRole('status').getAttribute('aria-live')).toBe('polite');
+    await view.rerender({ urgent: true });
+    expect(screen.getByRole('alert').getAttribute('aria-live')).toBe(
+      'assertive',
+    );
   });
 });
