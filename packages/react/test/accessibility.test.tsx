@@ -36,6 +36,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
   Combobox,
   Dialog,
   DialogContent,
@@ -419,5 +423,25 @@ describe('React accessibility contract', () => {
         .getByRole('columnheader', { name: 'Version' })
         .getAttribute('scope'),
     ).toBe('col');
+  });
+  it('names pagination and identifies the current page', () => {
+    render(
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationLink href="?page=1">1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="?page=2" current>
+              2
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>,
+    );
+    expect(screen.getByRole('navigation', { name: 'Pagination' })).toBeTruthy();
+    expect(
+      screen.getByRole('link', { name: '2' }).getAttribute('aria-current'),
+    ).toBe('page');
   });
 });

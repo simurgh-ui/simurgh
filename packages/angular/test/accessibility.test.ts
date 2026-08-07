@@ -36,6 +36,10 @@ import {
   TableHeadDirective,
   TableHeaderDirective,
   TableRowDirective,
+  PaginationComponent,
+  PaginationContentDirective,
+  PaginationItemDirective,
+  PaginationLinkDirective,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -146,6 +150,27 @@ class FieldHost {}
   </table>`,
 })
 class TableHost {}
+
+@Component({
+  standalone: true,
+  imports: [
+    PaginationComponent,
+    PaginationContentDirective,
+    PaginationItemDirective,
+    PaginationLinkDirective,
+  ],
+  template: `<simurgh-pagination
+    ><ul simurghPaginationContent>
+      <li simurghPaginationItem>
+        <a simurghPaginationLink href="?page=1">1</a>
+      </li>
+      <li simurghPaginationItem>
+        <a simurghPaginationLink href="?page=2" [current]="true">2</a>
+      </li>
+    </ul></simurgh-pagination
+  >`,
+})
+class PaginationHost {}
 
 @Component({
   standalone: true,
@@ -738,6 +763,16 @@ describe('Angular accessibility contract', () => {
     ) as HTMLTableElement;
     expect(table.caption?.textContent?.trim()).toBe('Recent releases');
     expect(table.querySelector('th')?.getAttribute('scope')).toBe('col');
+    fixture.destroy();
+  });
+  it('names pagination and identifies the current page', () => {
+    const fixture = TestBed.createComponent(PaginationHost);
+    fixture.detectChanges();
+    const nav = fixture.nativeElement.querySelector('nav') as HTMLElement;
+    expect(nav.getAttribute('aria-label')).toBe('Pagination');
+    expect(nav.querySelector('[aria-current=page]')?.textContent?.trim()).toBe(
+      '2',
+    );
     fixture.destroy();
   });
 });

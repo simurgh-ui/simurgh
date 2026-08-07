@@ -31,6 +31,7 @@
     "kbd",
     "field",
     "table",
+    "pagination",
     "switch",
     "radio-group",
     "toast"
@@ -117,6 +118,12 @@
         "TableCell",
         "TableCaption"
       ],
+      "pagination": [
+        "Pagination",
+        "PaginationContent",
+        "PaginationItem",
+        "PaginationLink"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -183,6 +190,12 @@
         "TableCell",
         "TableCaption"
       ],
+      "pagination": [
+        "Pagination",
+        "PaginationContent",
+        "PaginationItem",
+        "PaginationLink"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -236,6 +249,12 @@
         "TableHeadDirective",
         "TableCellDirective",
         "TableCaptionDirective"
+      ],
+      "pagination": [
+        "PaginationComponent",
+        "PaginationContentDirective",
+        "PaginationItemDirective",
+        "PaginationLinkDirective"
       ],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],

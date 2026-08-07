@@ -1,0 +1,61 @@
+---
+title: Pagination
+description: Named page navigation with list structure and current-page semantics.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Pagination provides a named navigation landmark and composable list/link anatomy. Routing remains owned by the application.
+
+<ComponentPreview title="Pagination">
+  <nav aria-label="Pagination" data-slot="pagination">
+    <ul data-slot="pagination-content">
+      <li data-slot="pagination-item">
+        <a href="#" data-slot="pagination-link" aria-label="Previous page">
+          Previous
+        </a>
+      </li>
+      <li data-slot="pagination-item">
+        <a href="#" data-slot="pagination-link">
+          1
+        </a>
+      </li>
+      <li data-slot="pagination-item">
+        <a href="#" data-slot="pagination-link" aria-current="page">
+          2
+        </a>
+      </li>
+      <li data-slot="pagination-item">
+        <a href="#" data-slot="pagination-link">
+          3
+        </a>
+      </li>
+      <li data-slot="pagination-item">
+        <a href="#" data-slot="pagination-link" aria-label="Next page">
+          Next
+        </a>
+      </li>
+    </ul>
+  </nav>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Pagination><PaginationContent><PaginationItem><PaginationLink href="?page=1">1</PaginationLink></PaginationItem><PaginationItem><PaginationLink href="?page=2" current>2</PaginationLink></PaginationItem></PaginationContent></Pagination>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Pagination><PaginationContent><PaginationItem><PaginationLink href="?page=1">1</PaginationLink></PaginationItem><PaginationItem><PaginationLink href="?page=2" current>2</PaginationLink></PaginationItem></PaginationContent></Pagination>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-pagination><ul simurghPaginationContent><li simurghPaginationItem><a simurghPaginationLink href="?page=1">1</a></li><li simurghPaginationItem><a simurghPaginationLink href="?page=2" [current]="true">2</a></li></ul></simurgh-pagination>
+```
+</TabItem>
+</Tabs>
+
+Use real links so open-in-new-tab, copy-link, and browser history continue to work. Mark unavailable links with `aria-disabled="true"` and prevent navigation in application routing logic.

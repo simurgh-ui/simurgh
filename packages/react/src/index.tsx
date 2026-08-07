@@ -1037,6 +1037,38 @@ export const TableCaption = forwardRef<
   return <caption ref={ref} data-slot="table-caption" {...props} />;
 });
 
+export const Pagination = forwardRef<
+  HTMLElement,
+  React.HTMLAttributes<HTMLElement> & { label?: string }
+>(function Pagination({ label = 'Pagination', ...props }, ref) {
+  return <nav ref={ref} aria-label={label} data-slot="pagination" {...props} />;
+});
+export const PaginationContent = forwardRef<
+  HTMLUListElement,
+  React.HTMLAttributes<HTMLUListElement>
+>(function PaginationContent(props, ref) {
+  return <ul ref={ref} data-slot="pagination-content" {...props} />;
+});
+export const PaginationItem = forwardRef<
+  HTMLLIElement,
+  React.LiHTMLAttributes<HTMLLIElement>
+>(function PaginationItem(props, ref) {
+  return <li ref={ref} data-slot="pagination-item" {...props} />;
+});
+export const PaginationLink = forwardRef<
+  HTMLAnchorElement,
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
+>(function PaginationLink({ current = false, ...props }, ref) {
+  return (
+    <a
+      ref={ref}
+      aria-current={current ? 'page' : undefined}
+      data-slot="pagination-link"
+      {...props}
+    />
+  );
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }
