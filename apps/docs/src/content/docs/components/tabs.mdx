@@ -1,0 +1,25 @@
+---
+title: Tabs
+description: Direction-aware tab navigation with roving focus.
+---
+import { Tabs as CodeTabs, TabItem } from '@astrojs/starlight/components';
+
+The root coordinates a tab list, triggers, and panels. Home/End and arrow keys move focus and selection. Horizontal arrows reverse in RTL; vertical arrows do not.
+
+<CodeTabs>
+<TabItem label="React">
+```tsx
+<Tabs defaultValue="account" direction="rtl"><TabsList><TabsTrigger value="account">Account</TabsTrigger><TabsTrigger value="security">Security</TabsTrigger></TabsList><TabsContent value="account">Account settings</TabsContent><TabsContent value="security">Security settings</TabsContent></Tabs>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Tabs default-value="account" direction="rtl"><TabsList><TabsTrigger value="account">Account</TabsTrigger><TabsTrigger value="security">Security</TabsTrigger></TabsList><TabsContent value="account">Account settings</TabsContent><TabsContent value="security">Security settings</TabsContent></Tabs>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-tabs [(value)]="tab" direction="rtl"><button tab simurghTab="account">Account</button><button tab simurghTab="security">Security</button><section simurghTabPanel="account">Account settings</section></simurgh-tabs>
+```
+</TabItem>
+</CodeTabs>

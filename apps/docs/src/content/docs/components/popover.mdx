@@ -1,0 +1,27 @@
+---
+title: Popover
+description: Collision-aware non-modal content anchored to a trigger.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Popover uses Floating UI for offset, flip, shift, and automatic repositioning. Outside interaction and Escape dismiss it without trapping focus.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Popover><PopoverTrigger>Details</PopoverTrigger><PopoverContent>Additional information</PopoverContent></Popover>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Popover><PopoverTrigger>Details</PopoverTrigger><PopoverContent>Additional information</PopoverContent></Popover>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-popover><span trigger>Details</span><p>Additional information</p></simurgh-popover>
+```
+</TabItem>
+</Tabs>
+
+The headless contract owns open state and positioning. `.simurgh-content` supplies the optional surface recipe.

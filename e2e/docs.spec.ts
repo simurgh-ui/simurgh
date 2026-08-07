@@ -7,6 +7,11 @@ test('documentation navigation and component contract are available', async ({ p
   await expect(page.getByRole('heading', { name: 'Component overview' })).toBeVisible();
   await expect(page.getByRole('cell', { name: 'Dialog', exact: true })).toBeVisible();
   await expect(page.getByRole('cell', { name: 'Toast', exact: true })).toBeVisible();
+  await page.goto('/components/dialog/');
+  await expect(page.getByRole('heading', { name: 'Dialog' })).toBeVisible();
+  await expect(page.getByRole('tab', { name: 'React' })).toBeVisible();
+  await expect(page.getByRole('tab', { name: 'Vue' })).toBeVisible();
+  await expect(page.getByRole('tab', { name: 'Angular' })).toBeVisible();
 });
 
 test('RTL guidance and dark theme remain usable', async ({ page }) => {

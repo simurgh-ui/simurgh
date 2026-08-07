@@ -1,0 +1,25 @@
+---
+title: Accordion
+description: Single or multiple collapsible, labelled regions.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Each item combines a heading trigger and a labelled region. Single mode closes the previous item; multiple mode permits independent expansion.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Accordion type="single"><AccordionItem value="shipping"><AccordionTrigger>Shipping</AccordionTrigger><AccordionContent>Ships in two days.</AccordionContent></AccordionItem></Accordion>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Accordion><AccordionItem value="shipping"><AccordionTrigger>Shipping</AccordionTrigger><AccordionContent>Ships in two days.</AccordionContent></AccordionItem></Accordion>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-accordion><simurgh-accordion-item value="shipping"><span trigger>Shipping</span><p>Ships in two days.</p></simurgh-accordion-item></simurgh-accordion>
+```
+</TabItem>
+</Tabs>

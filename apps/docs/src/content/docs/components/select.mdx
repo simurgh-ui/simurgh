@@ -1,0 +1,27 @@
+---
+title: Select
+description: A custom listbox that participates in native form submission.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Select owns combobox/listbox state, disabled options, selection events, and a hidden native form value. Supply a visible placeholder that also names the trigger.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Select name="city" options={[{ value: 'tehran', label: 'Tehran' }]} onValueChange={setCity} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Select v-model="city" name="city" :options="[{ value: 'tehran', label: 'Tehran' }]" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-select name="city" [options]="cities" [(value)]="city" placeholder="Choose city" />
+```
+</TabItem>
+</Tabs>
+
+`name`, `value`, `required`, and `disabled` mirror native form concepts. Third-party form adapters are intentionally outside v1.

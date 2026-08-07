@@ -1,0 +1,25 @@
+---
+title: Tooltip
+description: A short description revealed by pointer hover or keyboard focus.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Tooltips are supplementary descriptions, not containers for interactive controls. They appear for both hover and focus and use `role="tooltip"`.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Tooltip><TooltipTrigger aria-label="Copy address">Copy</TooltipTrigger><TooltipContent>Copy address</TooltipContent></Tooltip>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Tooltip><TooltipTrigger aria-label="Copy address">Copy</TooltipTrigger><TooltipContent>Copy address</TooltipContent></Tooltip>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-tooltip><button trigger aria-label="Copy address">Copy</button><span>Copy address</span></simurgh-tooltip>
+```
+</TabItem>
+</Tabs>

@@ -1,0 +1,29 @@
+---
+title: Dialog
+description: An accessible modal surface with focus containment and restoration.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Anatomy
+
+`Dialog`, trigger, portal/overlay, content, title, description, and close. The title and description provide the accessible name and description. Escape closes the modal; Tab remains contained; focus returns to the opener.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Dialog><DialogTrigger>Edit profile</DialogTrigger><DialogPortal><DialogOverlay /><DialogContent><DialogTitle>Profile</DialogTitle><DialogDescription>Change public details.</DialogDescription><DialogClose>Done</DialogClose></DialogContent></DialogPortal></Dialog>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Dialog><DialogTrigger>Edit profile</DialogTrigger><DialogContent aria-label="Profile"><p>Change public details.</p><DialogClose>Done</DialogClose></DialogContent></Dialog>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-dialog #dialog><button trigger (click)="dialog.show()">Edit profile</button><h2>Profile</h2><p>Change public details.</p><button (click)="dialog.close()">Done</button></simurgh-dialog>
+```
+</TabItem>
+</Tabs>
+
+Use the recipe classes for the default modal treatment, or remove them and style the semantic parts directly.

@@ -1,0 +1,25 @@
+---
+title: Checkbox
+description: A binary choice with native form serialization.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Checkbox exposes `aria-checked`, keyboard activation, controlled and uncontrolled state, and an optional native form value. Always provide a visible or programmatic label.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Checkbox name="newsletter" value="yes" onCheckedChange={setSubscribed}>Newsletter</Checkbox>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Checkbox v-model="subscribed" name="newsletter" value="yes">Newsletter</Checkbox>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-checkbox name="newsletter" value="yes" [(checked)]="subscribed">Newsletter</simurgh-checkbox>
+```
+</TabItem>
+</Tabs>

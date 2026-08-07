@@ -1,0 +1,25 @@
+---
+title: Switch
+description: An immediate on/off setting with native form semantics.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Switch shares Checkbox's state and form contract but uses `role="switch"`. Use it for settings that take effect immediately, not for selecting items in a submission workflow.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Switch name="darkMode" value="enabled" onCheckedChange={setDark}>Dark mode</Switch>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Switch v-model="dark" name="darkMode" value="enabled">Dark mode</Switch>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-switch name="darkMode" value="enabled" [(checked)]="dark">Dark mode</simurgh-switch>
+```
+</TabItem>
+</Tabs>

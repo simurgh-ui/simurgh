@@ -1,0 +1,25 @@
+---
+title: Dropdown Menu
+description: A dismissible action menu with disabled-item semantics.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+The menu exposes a trigger, menu content, and selectable items. Selection closes the menu; disabled items remain discoverable but cannot fire actions.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<DropdownMenu><DropdownMenuTrigger>Actions</DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem onSelect={archive}>Archive</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<DropdownMenu><DropdownMenuTrigger>Actions</DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem @select="archive">Archive</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-dropdown-menu><span trigger>Actions</span><button simurghMenuItem (select)="archive()">Archive</button></simurgh-dropdown-menu>
+```
+</TabItem>
+</Tabs>

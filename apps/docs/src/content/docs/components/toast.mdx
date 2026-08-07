@@ -1,0 +1,32 @@
+---
+title: Toast
+description: Timed status announcements with explicit dismissal.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+ToastProvider owns the queue; the viewport renders polite status announcements. Durations may be disabled for persistent messages, and every toast has a labelled dismiss action.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+const { toast } = useToast();
+toast({ title: 'Saved', description: 'Your changes are live.' });
+// Render <ToastViewport /> inside <ToastProvider>.
+```
+</TabItem>
+<TabItem label="Vue">
+```ts
+const { toast } = useToast();
+toast({ title: 'Saved', description: 'Your changes are live.' });
+// Render ToastViewport inside ToastProvider.
+```
+</TabItem>
+<TabItem label="Angular">
+```ts
+@ViewChild(ToastViewportComponent) toasts!: ToastViewportComponent;
+this.toasts.toast({ title: 'Saved', description: 'Your changes are live.' });
+```
+</TabItem>
+</Tabs>
+
+Keep messages concise. Use a dialog or inline error when the user must respond before continuing.
