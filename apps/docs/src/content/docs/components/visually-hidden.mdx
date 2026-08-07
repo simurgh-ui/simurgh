@@ -1,0 +1,57 @@
+---
+title: Visually Hidden
+description: Screen-reader-accessible content removed from visual layout.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Visually Hidden keeps meaningful text available to assistive technology without taking up visual space. It is useful for icon-only controls and supplemental instructions that would otherwise repeat visible context.
+
+<ComponentPreview title="Visually Hidden">
+  <div class="preview-stack">
+    <div class="preview-row">
+      <button class="preview-button" type="button" aria-label="Close dialog">
+        ×
+      </button>
+      <button class="preview-button" type="button" aria-label="Previous page">
+        ←
+      </button>
+      <button class="preview-button" type="button" aria-label="Next page">
+        →
+      </button>
+    </div>
+    <span class="preview-muted">
+      Each icon has a hidden text label available to screen readers.
+    </span>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <button>
+      <CloseIcon aria-hidden />
+      <VisuallyHidden>Close dialog</VisuallyHidden>
+    </button>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <button>
+      <CloseIcon aria-hidden="true" />
+      <VisuallyHidden>Close dialog</VisuallyHidden>
+    </button>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <button>
+      <simurgh-close-icon aria-hidden="true" />
+      <simurgh-visually-hidden>Close dialog</simurgh-visually-hidden>
+    </button>
+    ```
+  </TabItem>
+</Tabs>
+
+Do not use this primitive to hide interactive controls. Hidden text should be concise and should add an accessible name or necessary context.

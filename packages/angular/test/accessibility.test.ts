@@ -26,6 +26,7 @@ import {
   TabPanelDirective,
   TabsComponent,
   ToggleComponent,
+  VisuallyHiddenComponent,
   type SelectOption,
 } from '../src/index.js';
 
@@ -150,6 +151,16 @@ class ProgressHost {}
 class ToggleHost {
   changed = vi.fn();
 }
+
+@Component({
+  standalone: true,
+  imports: [VisuallyHiddenComponent],
+  template: `<button type="button">
+    <span aria-hidden="true">×</span
+    ><simurgh-visually-hidden>Close dialog</simurgh-visually-hidden>
+  </button>`,
+})
+class VisuallyHiddenHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -388,6 +399,18 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     expect(toggle.getAttribute('aria-pressed')).toBe('true');
     expect(fixture.componentInstance.changed).toHaveBeenCalledWith(true);
+    fixture.destroy();
+  });
+  it('keeps visually hidden text in an accessible name', () => {
+    const fixture = TestBed.createComponent(VisuallyHiddenHost);
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector(
+      'button',
+    ) as HTMLButtonElement;
+    expect(button.textContent?.trim()).toContain('Close dialog');
+    expect((button.lastElementChild as HTMLElement).style.position).toBe(
+      'absolute',
+    );
     fixture.destroy();
   });
 });

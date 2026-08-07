@@ -32,6 +32,7 @@ import {
   TabsList,
   TabsTrigger,
   Toggle,
+  VisuallyHidden,
 } from '../src/index.js';
 
 afterEach(cleanup);
@@ -223,5 +224,17 @@ describe('React accessibility contract', () => {
     fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-pressed')).toBe('true');
     expect(changed).toHaveBeenCalledWith(true);
+  });
+  it('keeps visually hidden text in an accessible name', () => {
+    render(
+      <button type="button">
+        <span aria-hidden="true">×</span>
+        <VisuallyHidden>Close dialog</VisuallyHidden>
+      </button>,
+    );
+    const button = screen.getByRole('button', { name: 'Close dialog' });
+    expect((button.lastElementChild as HTMLElement).style.position).toBe(
+      'absolute',
+    );
   });
 });

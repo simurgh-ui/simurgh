@@ -737,6 +737,27 @@ export const Toggle = forwardRef<
   );
 });
 
+const visuallyHiddenStyle: React.CSSProperties = {
+  position: 'absolute',
+  inlineSize: 1,
+  blockSize: 1,
+  padding: 0,
+  margin: -1,
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+};
+
+export const VisuallyHidden = forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement>
+>(function VisuallyHidden({ style, ...props }, ref) {
+  return (
+    <span ref={ref} style={{ ...visuallyHiddenStyle, ...style }} {...props} />
+  );
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

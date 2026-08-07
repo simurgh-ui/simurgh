@@ -26,6 +26,7 @@ import {
   TooltipContent,
   TooltipTrigger,
   Toggle,
+  VisuallyHidden,
 } from '../src/index.js';
 
 afterEach(cleanup);
@@ -213,5 +214,15 @@ describe('Vue accessibility contract', () => {
     const toggle = screen.getByRole('button', { name: 'Bold' });
     await fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-pressed')).toBe('true');
+  });
+  it('keeps visually hidden text in an accessible name', () => {
+    render({
+      components: { VisuallyHidden },
+      template: `<button type="button"><span aria-hidden="true">×</span><VisuallyHidden>Close dialog</VisuallyHidden></button>`,
+    });
+    const button = screen.getByRole('button', { name: 'Close dialog' });
+    expect((button.lastElementChild as HTMLElement).style.position).toBe(
+      'absolute',
+    );
   });
 });
