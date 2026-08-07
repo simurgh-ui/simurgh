@@ -17,6 +17,7 @@ import {
   Card,
   CardDescription,
   CardTitle,
+  Kbd,
   Combobox,
   Dialog,
   DialogContent,
@@ -56,6 +57,10 @@ describe('Vue accessibility contract', () => {
     expect(screen.getByText('Ready to publish').getAttribute('data-slot')).toBe(
       'card-description',
     );
+  });
+  it('renders keyboard input with native semantics', () => {
+    render({ components: { Kbd }, template: `<Kbd>Ctrl K</Kbd>` });
+    expect(screen.getByText('Ctrl K').tagName).toBe('KBD');
   });
   it('opens a modal and passes an axe audit', async () => {
     render({

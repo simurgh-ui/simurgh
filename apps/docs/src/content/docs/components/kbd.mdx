@@ -1,0 +1,43 @@
+---
+title: Kbd
+description: Native keyboard-input semantics for shortcuts and key combinations.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Kbd presents a key or shortcut with the native `kbd` element and a framework-neutral styling hook.
+
+<ComponentPreview title="Kbd">
+  <div class="preview-row">
+    Press <kbd data-slot="kbd">Ctrl</kbd> + <kbd data-slot="kbd">K</kbd> to
+    search.
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <p>
+      Press <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd> to search.
+    </p>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <p>
+      Press <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd> to search.
+    </p>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <p>
+      Press <simurgh-kbd>Ctrl</simurgh-kbd> + <simurgh-kbd>K</simurgh-kbd> to
+      search.
+    </p>
+    ```
+  </TabItem>
+</Tabs>
+
+Use Kbd only for user input. Use `code` for code fragments and ordinary text for labels.

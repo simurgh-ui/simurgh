@@ -957,6 +957,12 @@ export const CardFooter = forwardRef<
   return <div ref={ref} data-slot="card-footer" {...props} />;
 });
 
+export const Kbd = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
+  function Kbd(props, ref) {
+    return <kbd ref={ref} data-slot="kbd" {...props} />;
+  },
+);
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

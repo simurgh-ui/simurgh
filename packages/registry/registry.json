@@ -28,6 +28,7 @@
     "badge",
     "breadcrumb",
     "card",
+    "kbd",
     "switch",
     "radio-group",
     "toast"
@@ -102,6 +103,7 @@
         "CardContent",
         "CardFooter"
       ],
+      "kbd": ["Kbd"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -156,6 +158,7 @@
         "CardContent",
         "CardFooter"
       ],
+      "kbd": ["Kbd"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -193,6 +196,7 @@
         "CardContentComponent",
         "CardFooterComponent"
       ],
+      "kbd": ["KbdComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

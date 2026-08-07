@@ -723,6 +723,12 @@ export class CardContentComponent {}
 })
 export class CardFooterComponent {}
 @Component({
+  selector: 'simurgh-kbd',
+  standalone: true,
+  template: `<kbd data-slot="kbd"><ng-content /></kbd>`,
+})
+export class KbdComponent {}
+@Component({
   selector: 'simurgh-switch',
   standalone: true,
   imports: [CommonModule],
@@ -1118,6 +1124,7 @@ export const SIMURGH_COMPONENTS = [
   CardDescriptionComponent,
   CardContentComponent,
   CardFooterComponent,
+  KbdComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,

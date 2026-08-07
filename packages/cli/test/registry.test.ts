@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(28);
+    expect(manifest.components).toHaveLength(29);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -128,6 +128,12 @@ describe('CLI application fixture', () => {
       expect(readFileSync(breadcrumb, 'utf8')).toContain(
         'export const Breadcrumb',
       );
+      execFileSync(process.execPath, [cli, 'add', 'card'], { cwd: fixture });
+      const card = join(fixture, 'src/components/ui/card.tsx');
+      expect(readFileSync(card, 'utf8')).toContain('export const Card');
+      execFileSync(process.execPath, [cli, 'add', 'kbd'], { cwd: fixture });
+      const kbd = join(fixture, 'src/components/ui/kbd.tsx');
+      expect(readFileSync(kbd, 'utf8')).toContain('export const Kbd');
       expect(
         spawnSync(process.execPath, [cli, 'diff', 'dialog'], { cwd: fixture })
           .status,
@@ -140,5 +146,5 @@ describe('CLI application fixture', () => {
     } finally {
       rmSync(fixture, { recursive: true, force: true });
     }
-  }, 15_000);
+  }, 30_000);
 });

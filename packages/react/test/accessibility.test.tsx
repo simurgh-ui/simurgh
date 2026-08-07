@@ -24,6 +24,7 @@ import {
   Card,
   CardDescription,
   CardTitle,
+  Kbd,
   Combobox,
   Dialog,
   DialogContent,
@@ -364,5 +365,9 @@ describe('React accessibility contract', () => {
     expect(screen.getByText('Ready to publish').getAttribute('data-slot')).toBe(
       'card-description',
     );
+  });
+  it('renders keyboard input with native semantics', () => {
+    render(<Kbd>Ctrl K</Kbd>);
+    expect(screen.getByText('Ctrl K').tagName).toBe('KBD');
   });
 });

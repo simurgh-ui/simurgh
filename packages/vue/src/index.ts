@@ -946,6 +946,7 @@ export const CardContent = cardPart(
   'card-content',
 );
 export const CardFooter = cardPart('SimurghCardFooter', 'div', 'card-footer');
+export const Kbd = cardPart('SimurghKbd', 'kbd', 'kbd');
 
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');

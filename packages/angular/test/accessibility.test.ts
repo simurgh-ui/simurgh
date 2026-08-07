@@ -25,6 +25,7 @@ import {
   CardComponent,
   CardDescriptionComponent,
   CardTitleComponent,
+  KbdComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -86,6 +87,13 @@ class DialogHost {}
   >`,
 })
 class CardHost {}
+
+@Component({
+  standalone: true,
+  imports: [KbdComponent],
+  template: `<simurgh-kbd>Ctrl K</simurgh-kbd>`,
+})
+class KbdHost {}
 
 @Component({
   standalone: true,
@@ -649,6 +657,13 @@ describe('Angular accessibility contract', () => {
     ) as HTMLElement;
     expect(title.textContent).toBe('Release');
     expect(description.textContent).toBe('Ready to publish');
+    fixture.destroy();
+  });
+  it('renders keyboard input with native semantics', () => {
+    const fixture = TestBed.createComponent(KbdHost);
+    fixture.detectChanges();
+    const kbd = fixture.nativeElement.querySelector('kbd') as HTMLElement;
+    expect(kbd.textContent).toBe('Ctrl K');
     fixture.destroy();
   });
 });
