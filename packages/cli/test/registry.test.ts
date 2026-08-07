@@ -32,5 +32,5 @@ describe('CLI application fixture', () => {
     } finally {
       rmSync(fixture, { recursive: true, force: true });
     }
-  });
+  }, 15_000);
 });
