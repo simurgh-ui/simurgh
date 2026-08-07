@@ -44,3 +44,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add rendered component previews to every component guide.
 - [x] Add semantic Separator across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Progress across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Toggle across Angular, React, Vue, the registry, documentation, and contract tests.

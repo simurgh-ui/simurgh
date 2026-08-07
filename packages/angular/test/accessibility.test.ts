@@ -25,6 +25,7 @@ import {
   TabDirective,
   TabPanelDirective,
   TabsComponent,
+  ToggleComponent,
   type SelectOption,
 } from '../src/index.js';
 
@@ -138,6 +139,17 @@ class SeparatorHost {}
   template: `<simurgh-progress aria-label="Upload" [value]="120" [max]="80" />`,
 })
 class ProgressHost {}
+
+@Component({
+  standalone: true,
+  imports: [ToggleComponent],
+  template: `<simurgh-toggle (pressedChange)="changed($event)"
+    >Bold</simurgh-toggle
+  >`,
+})
+class ToggleHost {
+  changed = vi.fn();
+}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -364,6 +376,18 @@ describe('Angular accessibility contract', () => {
       (progress.querySelector('[data-part=indicator]') as HTMLElement).style
         .inlineSize,
     ).toBe('100%');
+    fixture.destroy();
+  });
+  it('toggles native pressed state and emits changes', () => {
+    const fixture = TestBed.createComponent(ToggleHost);
+    fixture.detectChanges();
+    const toggle = fixture.nativeElement.querySelector(
+      'button',
+    ) as HTMLButtonElement;
+    toggle.click();
+    fixture.detectChanges();
+    expect(toggle.getAttribute('aria-pressed')).toBe('true');
+    expect(fixture.componentInstance.changed).toHaveBeenCalledWith(true);
     fixture.destroy();
   });
 });

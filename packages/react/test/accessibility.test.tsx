@@ -31,6 +31,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  Toggle,
 } from '../src/index.js';
 
 afterEach(cleanup);
@@ -214,5 +215,13 @@ describe('React accessibility contract', () => {
     expect(screen.getByRole('progressbar').hasAttribute('aria-valuenow')).toBe(
       false,
     );
+  });
+  it('toggles native pressed state and emits changes', () => {
+    const changed = vi.fn();
+    render(<Toggle onPressedChange={changed}>Bold</Toggle>);
+    const toggle = screen.getByRole('button', { name: 'Bold' });
+    fireEvent.click(toggle);
+    expect(toggle.getAttribute('aria-pressed')).toBe('true');
+    expect(changed).toHaveBeenCalledWith(true);
   });
 });

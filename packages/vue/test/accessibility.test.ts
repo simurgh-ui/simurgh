@@ -25,6 +25,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  Toggle,
 } from '../src/index.js';
 
 afterEach(cleanup);
@@ -202,5 +203,15 @@ describe('Vue accessibility contract', () => {
     expect(screen.getByRole('progressbar').hasAttribute('aria-valuenow')).toBe(
       false,
     );
+  });
+  it('toggles native pressed state through v-model', async () => {
+    render({
+      components: { Toggle },
+      data: () => ({ bold: false }),
+      template: `<Toggle v-model="bold">Bold</Toggle>`,
+    });
+    const toggle = screen.getByRole('button', { name: 'Bold' });
+    await fireEvent.click(toggle);
+    expect(toggle.getAttribute('aria-pressed')).toBe('true');
   });
 });

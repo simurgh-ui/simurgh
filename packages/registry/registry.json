@@ -15,6 +15,7 @@
     "label",
     "separator",
     "progress",
+    "toggle",
     "switch",
     "radio-group",
     "toast"
@@ -69,6 +70,7 @@
       "label": ["Label"],
       "separator": ["Separator"],
       "progress": ["Progress"],
+      "toggle": ["Toggle"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -103,6 +105,7 @@
       "label": ["Label"],
       "separator": ["Separator"],
       "progress": ["Progress"],
+      "toggle": ["Toggle"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -120,6 +123,7 @@
       "label": ["LabelComponent"],
       "separator": ["SeparatorComponent"],
       "progress": ["ProgressComponent"],
+      "toggle": ["ToggleComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

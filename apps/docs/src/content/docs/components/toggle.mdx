@@ -1,0 +1,51 @@
+---
+title: Toggle
+description: A two-state button with native pressed semantics.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Toggle represents an option that can be switched on or off. It uses native button keyboard behavior and exposes state through `aria-pressed` and `data-state`.
+
+<ComponentPreview title="Toggle">
+  <div class="preview-row" role="toolbar" aria-label="Text formatting">
+    <button
+      class="preview-button"
+      data-active="true"
+      type="button"
+      aria-pressed="true"
+    >
+      <strong>B</strong>
+      <span class="sr-only">Bold</span>
+    </button>
+    <button class="preview-button" type="button" aria-pressed="false">
+      <em>I</em>
+      <span class="sr-only">Italic</span>
+    </button>
+    <button class="preview-button" type="button" aria-pressed="false">
+      <u>U</u>
+      <span class="sr-only">Underline</span>
+    </button>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Toggle defaultPressed onPressedChange={setBold}>Bold</Toggle>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Toggle v-model="bold">Bold</Toggle>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-toggle [(pressed)]="bold">Bold</simurgh-toggle>
+```
+</TabItem>
+</Tabs>
+
+Use Toggle for independent choices. When several choices are mutually exclusive or share roving focus, use a dedicated Toggle Group rather than manually coordinating individual toggles.
