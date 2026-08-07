@@ -48,3 +48,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add Visually Hidden across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Avatar across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add semantic Alert across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Normalize legacy mojibake in component documentation.
