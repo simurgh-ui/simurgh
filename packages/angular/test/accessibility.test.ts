@@ -4,31 +4,124 @@ import 'zone.js';
 import 'zone.js/testing';
 import { TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import {
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
+} from '@angular/platform-browser-dynamic/testing';
 import axe from 'axe-core';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { CheckboxComponent, DialogComponent, DropdownMenuComponent, DropdownMenuItemDirective, RadioGroupComponent, RadioGroupItemDirective, SelectComponent, TabDirective, TabPanelDirective, TabsComponent, type SelectOption } from '../src/index.js';
+import {
+  CheckboxComponent,
+  ComboboxComponent,
+  DialogComponent,
+  DropdownMenuComponent,
+  DropdownMenuItemDirective,
+  RadioGroupComponent,
+  RadioGroupItemDirective,
+  SelectComponent,
+  TabDirective,
+  TabPanelDirective,
+  TabsComponent,
+  type SelectOption,
+} from '../src/index.js';
 
-beforeAll(() => TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting()));
+beforeAll(() =>
+  TestBed.initTestEnvironment(
+    BrowserDynamicTestingModule,
+    platformBrowserDynamicTesting(),
+  ),
+);
 
-@Component({ standalone: true, imports: [CheckboxComponent], template: `<simurgh-checkbox name="updates" value="yes" (checkedChange)="changed($event)">Updates</simurgh-checkbox>` })
-class CheckboxHost { changed = vi.fn(); }
+@Component({
+  standalone: true,
+  imports: [CheckboxComponent],
+  template: `<simurgh-checkbox
+    name="updates"
+    value="yes"
+    (checkedChange)="changed($event)"
+    >Updates</simurgh-checkbox
+  >`,
+})
+class CheckboxHost {
+  changed = vi.fn();
+}
 
-@Component({ standalone: true, imports: [DialogComponent], template: `<simurgh-dialog #dialog labelledBy="dialog-title"><button trigger (click)="dialog.show()">Open</button><h2 id="dialog-title">Settings</h2><button>Save</button></simurgh-dialog>` })
+@Component({
+  standalone: true,
+  imports: [DialogComponent],
+  template: `<simurgh-dialog #dialog labelledBy="dialog-title"
+    ><button trigger (click)="dialog.show()">Open</button>
+    <h2 id="dialog-title">Settings</h2>
+    <button>Save</button></simurgh-dialog
+  >`,
+})
 class DialogHost {}
 
-@Component({ standalone: true, imports: [TabsComponent, TabDirective, TabPanelDirective], template: `<simurgh-tabs value="one"><button tab simurghTab="one">One</button><button tab simurghTab="two">Two</button><section simurghTabPanel="one">First</section><section simurghTabPanel="two">Second</section></simurgh-tabs>` })
+@Component({
+  standalone: true,
+  imports: [TabsComponent, TabDirective, TabPanelDirective],
+  template: `<simurgh-tabs value="one"
+    ><button tab simurghTab="one">One</button
+    ><button tab simurghTab="two">Two</button>
+    <section simurghTabPanel="one">First</section>
+    <section simurghTabPanel="two">Second</section></simurgh-tabs
+  >`,
+})
 class TabsHost {}
 
-@Component({ standalone: true, imports: [DropdownMenuComponent, DropdownMenuItemDirective], template: `<simurgh-dropdown-menu><span trigger>Actions</span><button simurghMenuItem>First</button><button simurghMenuItem (select)="selected()">Second</button></simurgh-dropdown-menu>` })
-class MenuHost { selected = vi.fn(); }
-@Component({ standalone: true, imports: [RadioGroupComponent, RadioGroupItemDirective], template: `<simurgh-radio-group name="plan" value="basic"><button simurghRadio="basic">Basic</button><button simurghRadio="pro">Pro</button></simurgh-radio-group>` }) class RadioHost {}
+@Component({
+  standalone: true,
+  imports: [DropdownMenuComponent, DropdownMenuItemDirective],
+  template: `<simurgh-dropdown-menu
+    ><span trigger>Actions</span><button simurghMenuItem>First</button
+    ><button simurghMenuItem (select)="selected()">
+      Second
+    </button></simurgh-dropdown-menu
+  >`,
+})
+class MenuHost {
+  selected = vi.fn();
+}
+@Component({
+  standalone: true,
+  imports: [RadioGroupComponent, RadioGroupItemDirective],
+  template: `<simurgh-radio-group name="plan" value="basic"
+    ><button simurghRadio="basic">Basic</button
+    ><button simurghRadio="pro">Pro</button></simurgh-radio-group
+  >`,
+})
+class RadioHost {}
+
+@Component({
+  standalone: true,
+  imports: [ComboboxComponent],
+  template: `<main>
+    <form>
+      <simurgh-combobox
+        name="city"
+        placeholder="Search cities"
+        [options]="options"
+      />
+    </form>
+  </main>`,
+})
+class ComboboxHost {
+  options: SelectOption[] = [
+    { value: 'tehran', label: 'Tehran' },
+    { value: 'isfahan', label: 'Isfahan' },
+    { value: 'shiraz', label: 'Shiraz', disabled: true },
+  ];
+}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
-    const fixture = TestBed.createComponent(CheckboxHost); fixture.detectChanges();
-    const checkbox = fixture.nativeElement.querySelector('[role=checkbox]') as HTMLButtonElement;
-    checkbox.click(); fixture.detectChanges();
+    const fixture = TestBed.createComponent(CheckboxHost);
+    fixture.detectChanges();
+    const checkbox = fixture.nativeElement.querySelector(
+      '[role=checkbox]',
+    ) as HTMLButtonElement;
+    checkbox.click();
+    fixture.detectChanges();
     expect(checkbox.getAttribute('aria-checked')).toBe('true');
     expect(fixture.componentInstance.changed).toHaveBeenCalledWith(true);
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
@@ -36,50 +129,181 @@ describe('Angular accessibility contract', () => {
   });
 
   it('selects enabled listbox options', async () => {
-    const options: SelectOption[] = [{ value: 'tehran', label: 'Tehran' }, { value: 'isfahan', label: 'Isfahan' }];
+    const options: SelectOption[] = [
+      { value: 'tehran', label: 'Tehran' },
+      { value: 'isfahan', label: 'Isfahan' },
+    ];
     const fixture = TestBed.createComponent(SelectComponent);
-    fixture.componentInstance.options = options; fixture.componentInstance.placeholder = 'Choose city'; fixture.detectChanges();
-    const combobox = fixture.nativeElement.querySelector('[role=combobox]') as HTMLButtonElement;
-    combobox.click(); fixture.detectChanges();
-    const optionsDom = fixture.nativeElement.querySelectorAll('[role=option]') as NodeListOf<HTMLButtonElement>;
-    optionsDom[1]!.click(); fixture.detectChanges();
+    fixture.componentInstance.options = options;
+    fixture.componentInstance.placeholder = 'Choose city';
+    fixture.detectChanges();
+    const combobox = fixture.nativeElement.querySelector(
+      '[role=combobox]',
+    ) as HTMLButtonElement;
+    combobox.click();
+    fixture.detectChanges();
+    const optionsDom = fixture.nativeElement.querySelectorAll(
+      '[role=option]',
+    ) as NodeListOf<HTMLButtonElement>;
+    optionsDom[1]!.click();
+    fixture.detectChanges();
     expect(fixture.componentInstance.value).toBe('isfahan');
     fixture.destroy();
   });
 
   it('navigates menu items and selects with the keyboard', async () => {
-    const fixture = TestBed.createComponent(MenuHost); fixture.detectChanges();
-    (fixture.nativeElement.querySelector('[aria-haspopup=menu]') as HTMLButtonElement).click(); fixture.detectChanges(); await new Promise(resolve => setTimeout(resolve));
-    const menu = fixture.nativeElement.querySelector('[role=menu]') as HTMLElement; const items = menu.querySelectorAll('[role=menuitem]') as NodeListOf<HTMLButtonElement>;
-    expect(document.activeElement).toBe(items[0]); menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-    expect(document.activeElement).toBe(items[1]); menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-    expect(fixture.componentInstance.selected).toHaveBeenCalledOnce(); fixture.destroy();
+    const fixture = TestBed.createComponent(MenuHost);
+    fixture.detectChanges();
+    (
+      fixture.nativeElement.querySelector(
+        '[aria-haspopup=menu]',
+      ) as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    const menu = fixture.nativeElement.querySelector(
+      '[role=menu]',
+    ) as HTMLElement;
+    const items = menu.querySelectorAll(
+      '[role=menuitem]',
+    ) as NodeListOf<HTMLButtonElement>;
+    expect(document.activeElement).toBe(items[0]);
+    menu.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(items[1]);
+    menu.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    expect(fixture.componentInstance.selected).toHaveBeenCalledOnce();
+    fixture.destroy();
   });
 
   it('selects and serializes listbox options from the keyboard', async () => {
-    const fixture = TestBed.createComponent(SelectComponent); fixture.componentInstance.name = 'city'; fixture.componentInstance.options = [{ value: 'tehran', label: 'Tehran' }, { value: 'isfahan', label: 'Isfahan' }]; fixture.detectChanges();
-    const trigger = fixture.nativeElement.querySelector('[role=combobox]') as HTMLButtonElement; trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })); fixture.detectChanges(); await new Promise(resolve => setTimeout(resolve));
-    const list = fixture.nativeElement.querySelector('[role=listbox]') as HTMLElement; list.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })); list.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); fixture.detectChanges();
-    expect(fixture.componentInstance.value).toBe('isfahan'); const hidden = fixture.nativeElement.querySelector('input[type=hidden]') as HTMLInputElement; expect(hidden.value).toBe('isfahan'); fixture.destroy();
+    const fixture = TestBed.createComponent(SelectComponent);
+    fixture.componentInstance.name = 'city';
+    fixture.componentInstance.options = [
+      { value: 'tehran', label: 'Tehran' },
+      { value: 'isfahan', label: 'Isfahan' },
+    ];
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '[role=combobox]',
+    ) as HTMLButtonElement;
+    trigger.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    const list = fixture.nativeElement.querySelector(
+      '[role=listbox]',
+    ) as HTMLElement;
+    list.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    list.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(fixture.componentInstance.value).toBe('isfahan');
+    const hidden = fixture.nativeElement.querySelector(
+      'input[type=hidden]',
+    ) as HTMLInputElement;
+    expect(hidden.value).toBe('isfahan');
+    fixture.destroy();
   });
 
   it('contains dialog focus and restores it to the trigger', async () => {
-    const fixture = TestBed.createComponent(DialogHost); fixture.detectChanges();
-    const trigger = fixture.nativeElement.querySelector('[trigger]') as HTMLButtonElement; trigger.focus(); trigger.click(); fixture.detectChanges(); await new Promise((resolve) => setTimeout(resolve));
-    const dialog = fixture.nativeElement.querySelector('[role=dialog]') as HTMLElement;
+    const fixture = TestBed.createComponent(DialogHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '[trigger]',
+    ) as HTMLButtonElement;
+    trigger.focus();
+    trigger.click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    const dialog = fixture.nativeElement.querySelector(
+      '[role=dialog]',
+    ) as HTMLElement;
     expect(document.activeElement).toBe(dialog);
-    dialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); fixture.detectChanges(); await new Promise((resolve) => setTimeout(resolve));
-    expect(document.activeElement).toBe(trigger); fixture.destroy();
+    dialog.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    );
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(document.activeElement).toBe(trigger);
+    fixture.destroy();
   });
 
   it('binds active tab and panel state', () => {
-    const fixture = TestBed.createComponent(TabsHost); fixture.detectChanges();
-    const tabs = fixture.nativeElement.querySelectorAll('[role=tab]') as NodeListOf<HTMLButtonElement>;
-    expect(tabs[0]!.getAttribute('aria-selected')).toBe('true'); expect(tabs[1]!.tabIndex).toBe(-1);
-    tabs[1]!.click(); fixture.detectChanges();
+    const fixture = TestBed.createComponent(TabsHost);
+    fixture.detectChanges();
+    const tabs = fixture.nativeElement.querySelectorAll(
+      '[role=tab]',
+    ) as NodeListOf<HTMLButtonElement>;
+    expect(tabs[0]!.getAttribute('aria-selected')).toBe('true');
+    expect(tabs[1]!.tabIndex).toBe(-1);
+    tabs[1]!.click();
+    fixture.detectChanges();
     expect(tabs[1]!.getAttribute('aria-selected')).toBe('true');
-    const panels = fixture.nativeElement.querySelectorAll('[role=tabpanel]') as NodeListOf<HTMLElement>;
-    expect(panels[0]!.hidden).toBe(true); expect(panels[1]!.hidden).toBe(false); fixture.destroy();
+    const panels = fixture.nativeElement.querySelectorAll(
+      '[role=tabpanel]',
+    ) as NodeListOf<HTMLElement>;
+    expect(panels[0]!.hidden).toBe(true);
+    expect(panels[1]!.hidden).toBe(false);
+    fixture.destroy();
   });
-  it('navigates and serializes a radio group', () => { const fixture = TestBed.createComponent(RadioHost); fixture.detectChanges(); const radios = fixture.nativeElement.querySelectorAll('[role=radio]') as NodeListOf<HTMLButtonElement>; radios[0]!.focus(); radios[0]!.parentElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); fixture.detectChanges(); expect(radios[1]!.getAttribute('aria-checked')).toBe('true'); expect((fixture.nativeElement.querySelector('input[type=hidden]') as HTMLInputElement).value).toBe('pro'); fixture.destroy(); });
+  it('navigates and serializes a radio group', () => {
+    const fixture = TestBed.createComponent(RadioHost);
+    fixture.detectChanges();
+    const radios = fixture.nativeElement.querySelectorAll(
+      '[role=radio]',
+    ) as NodeListOf<HTMLButtonElement>;
+    radios[0]!.focus();
+    radios[0]!.parentElement!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(radios[1]!.getAttribute('aria-checked')).toBe('true');
+    expect(
+      (
+        fixture.nativeElement.querySelector(
+          'input[type=hidden]',
+        ) as HTMLInputElement
+      ).value,
+    ).toBe('pro');
+    fixture.destroy();
+  });
+  it('filters and commits a combobox option without moving input focus', async () => {
+    const fixture = TestBed.createComponent(ComboboxHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      '[role=combobox]',
+    ) as HTMLInputElement;
+    input.focus();
+    input.value = 'isf';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+    const option = fixture.nativeElement.querySelector(
+      '[role=option]',
+    ) as HTMLElement;
+    expect(option.textContent?.trim()).toBe('Isfahan');
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(input.getAttribute('aria-activedescendant')).toBe(option.id);
+    expect(document.activeElement).toBe(input);
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(input.value).toBe('Isfahan');
+    expect(
+      new FormData(fixture.nativeElement.querySelector('form')).get('city'),
+    ).toBe('isfahan');
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
 });

@@ -38,5 +38,5 @@ Items are checked only after their implementation exists and the relevant verifi
 - [ ] Add Combobox across Angular, React, Vue, the registry, documentation, and contract tests.
   - [x] Implement and verify React Combobox.
   - [x] Implement and verify Vue Combobox.
-  - [ ] Implement and verify Angular Combobox.
+  - [x] Implement and verify Angular Combobox.
   - [ ] Register and document Combobox after framework parity passes.
