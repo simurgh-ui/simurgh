@@ -20,6 +20,8 @@ import {
   Input,
   Slider,
   Meter,
+  Toolbar,
+  ToolbarButton,
   Textarea,
   Badge,
   Breadcrumb,
@@ -373,6 +375,22 @@ describe('React accessibility contract', () => {
     expect(meter.value).toBe(100);
     expect(meter.high).toBe(80);
     expect(meter.optimum).toBe(20);
+  });
+  it('moves toolbar focus logically and skips disabled items', () => {
+    render(
+      <Toolbar label="Editor">
+        <ToolbarButton>Bold</ToolbarButton>
+        <ToolbarButton disabled>Italic</ToolbarButton>
+        <ToolbarButton>Link</ToolbarButton>
+      </Toolbar>,
+    );
+    const bold = screen.getByRole('button', { name: 'Bold' });
+    bold.focus();
+    fireEvent.keyDown(bold, { key: 'ArrowRight' });
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: 'Link' }),
+    );
+    expect(screen.getByRole('toolbar', { name: 'Editor' })).toBeTruthy();
   });
   it('serializes native textarea values', () => {
     render(

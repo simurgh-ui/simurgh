@@ -727,6 +727,50 @@ export class MeterComponent {
     return Math.min(this.max, Math.max(this.min, this.value));
   }
 }
+@Component({
+  selector: 'simurgh-toolbar',
+  standalone: true,
+  template: `<ng-content />`,
+  host: {
+    role: 'toolbar',
+    'data-slot': 'toolbar',
+    '[attr.aria-label]': 'label',
+    '[attr.aria-orientation]': 'orientation',
+    '[attr.dir]': 'direction',
+  },
+})
+export class ToolbarComponent {
+  @Input() label = 'Toolbar';
+  @Input() orientation: Orientation = 'horizontal';
+  @Input() direction: Direction = 'ltr';
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+  @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
+    const items = Array.from(
+      this.element.nativeElement.querySelectorAll<HTMLElement>(
+        '[data-toolbar-item]:not(:disabled)',
+      ),
+    );
+    const index = items.indexOf(document.activeElement as HTMLElement);
+    const target = nextIndex(index, items.length, event.key, {
+      orientation: this.orientation,
+      direction: this.direction,
+    });
+    if (target !== index) {
+      event.preventDefault();
+      items[target]?.focus();
+    }
+  }
+}
+@Directive({
+  selector: 'button[simurghToolbarButton]',
+  standalone: true,
+  host: {
+    type: 'button',
+    'data-toolbar-item': '',
+    'data-slot': 'toolbar-button',
+  },
+})
+export class ToolbarButtonDirective {}
 
 @Component({
   selector: 'simurgh-textarea',
@@ -1322,6 +1366,8 @@ export const SIMURGH_COMPONENTS = [
   InputComponent,
   SliderComponent,
   MeterComponent,
+  ToolbarComponent,
+  ToolbarButtonDirective,
   TextareaComponent,
   BadgeComponent,
   BreadcrumbComponent,

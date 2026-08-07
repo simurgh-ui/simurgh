@@ -257,6 +257,36 @@
   background: hsl(var(--simurgh-danger));
   border-radius: 999px;
 }
+[data-slot='toolbar'] {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+}
+[data-slot='toolbar'][aria-orientation='vertical'] {
+  align-items: stretch;
+  flex-direction: column;
+  inline-size: max-content;
+}
+[data-slot='toolbar-button'] {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--simurgh-radius);
+  color: hsl(var(--simurgh-foreground));
+  min-block-size: 2.25rem;
+  padding-inline: 0.625rem;
+}
+[data-slot='toolbar-button']:hover {
+  background: hsl(var(--simurgh-muted));
+}
+[data-slot='toolbar-button']:focus-visible {
+  border-color: hsl(var(--simurgh-ring));
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 1px;
+}
+[data-slot='toolbar-button']:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 @media (prefers-reduced-motion: reduce) {
   [data-state='open'] {
     animation: none;

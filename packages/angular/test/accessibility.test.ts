@@ -21,6 +21,8 @@ import {
   InputComponent,
   SliderComponent,
   MeterComponent,
+  ToolbarButtonDirective,
+  ToolbarComponent,
   TextareaComponent,
   BadgeComponent,
   BreadcrumbComponent,
@@ -375,6 +377,16 @@ class SliderHost {}
   />`,
 })
 class MeterHost {}
+@Component({
+  standalone: true,
+  imports: [ToolbarComponent, ToolbarButtonDirective],
+  template: `<simurgh-toolbar label="Editor"
+    ><button simurghToolbarButton>Bold</button
+    ><button simurghToolbarButton disabled>Italic</button
+    ><button simurghToolbarButton>Link</button></simurgh-toolbar
+  >`,
+})
+class ToolbarHost {}
 
 @Component({
   standalone: true,
@@ -755,6 +767,24 @@ describe('Angular accessibility contract', () => {
     expect(meter.value).toBe(100);
     expect(meter.high).toBe(80);
     expect(meter.optimum).toBe(20);
+    fixture.destroy();
+  });
+  it('moves toolbar focus logically and skips disabled items', () => {
+    const fixture = TestBed.createComponent(ToolbarHost);
+    fixture.detectChanges();
+    const buttons = fixture.nativeElement.querySelectorAll(
+      'button',
+    ) as NodeListOf<HTMLButtonElement>;
+    buttons[0]!.focus();
+    buttons[0]!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(buttons[2]);
+    expect(
+      fixture.nativeElement
+        .querySelector('[role=toolbar]')
+        .getAttribute('aria-label'),
+    ).toBe('Editor');
     fixture.destroy();
   });
   it('serializes native textarea values', () => {

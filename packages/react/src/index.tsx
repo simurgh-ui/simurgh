@@ -993,6 +993,68 @@ export const Meter = forwardRef<
   );
 });
 
+export const Toolbar = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    orientation?: Orientation;
+    direction?: Direction;
+    label?: string;
+  }
+>(function Toolbar(
+  {
+    orientation = 'horizontal',
+    direction = 'ltr',
+    label = 'Toolbar',
+    onKeyDown,
+    ...props
+  },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role="toolbar"
+      aria-label={label}
+      aria-orientation={orientation}
+      dir={direction}
+      data-slot="toolbar"
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented) return;
+        const items = Array.from(
+          event.currentTarget.querySelectorAll<HTMLElement>(
+            '[data-toolbar-item]:not(:disabled)',
+          ),
+        );
+        const index = items.indexOf(document.activeElement as HTMLElement);
+        const target = nextIndex(index, items.length, event.key, {
+          orientation,
+          direction,
+        });
+        if (target !== index) {
+          event.preventDefault();
+          items[target]?.focus();
+        }
+      }}
+      {...props}
+    />
+  );
+});
+export const ToolbarButton = forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement>
+>(function ToolbarButton(props, ref) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      data-toolbar-item
+      data-slot="toolbar-button"
+      {...props}
+    />
+  );
+});
+
 export const Textarea = forwardRef<
   HTMLTextAreaElement,
   TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }

@@ -1,0 +1,57 @@
+---
+title: Toolbar
+description: A named command group with orientation- and direction-aware keyboard navigation.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Toolbar groups related controls and moves focus with logical arrow keys while skipping disabled items.
+
+<ComponentPreview title="Toolbar">
+  <div
+    role="toolbar"
+    aria-label="Text formatting"
+    aria-orientation="horizontal"
+    data-slot="toolbar"
+  >
+    <button data-toolbar-item data-slot="toolbar-button">
+      Bold
+    </button>
+    <button data-toolbar-item data-slot="toolbar-button">
+      Italic
+    </button>
+    <button data-toolbar-item data-slot="toolbar-button">
+      Link
+    </button>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Toolbar label="Text formatting">
+      <ToolbarButton>Bold</ToolbarButton>
+      <ToolbarButton>Italic</ToolbarButton>
+    </Toolbar>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Toolbar label="Text formatting">
+      <ToolbarButton>Bold</ToolbarButton>
+      <ToolbarButton>Italic</ToolbarButton>
+    </Toolbar>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-toolbar label="Text formatting">
+      <button simurghToolbarButton>Bold</button>
+      <button simurghToolbarButton>Italic</button>
+    </simurgh-toolbar>
+    ```
+  </TabItem>
+</Tabs>
+
+Set `orientation="vertical"` for vertical command groups. Direction-aware horizontal navigation reverses appropriately in RTL layouts.
