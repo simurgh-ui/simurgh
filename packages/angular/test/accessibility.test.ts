@@ -19,6 +19,7 @@ import {
   SpinnerComponent,
   ButtonComponent,
   InputComponent,
+  TextareaComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -232,6 +233,15 @@ class ButtonHost {}
   </form>`,
 })
 class InputHost {}
+
+@Component({
+  standalone: true,
+  imports: [TextareaComponent],
+  template: `<form>
+    <simurgh-textarea name="bio" value="Poet" [required]="true" />
+  </form>`,
+})
+class TextareaHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -560,6 +570,15 @@ describe('Angular accessibility contract', () => {
     expect(input.required).toBe(true);
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
+    fixture.destroy();
+  });
+  it('serializes native textarea values', () => {
+    const fixture = TestBed.createComponent(TextareaHost);
+    fixture.detectChanges();
+    const textarea = fixture.nativeElement.querySelector(
+      'textarea',
+    ) as HTMLTextAreaElement;
+    expect(new FormData(textarea.form!).get('bio')).toBe('Poet');
     fixture.destroy();
   });
 });

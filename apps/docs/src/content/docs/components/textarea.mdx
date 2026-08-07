@@ -1,0 +1,32 @@
+---
+title: Textarea
+description: A native multiline form control with framework-native bindings.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Textarea preserves native multiline editing, form submission, validation, required and disabled states, while exposing explicit invalid semantics.
+
+<ComponentPreview title="Textarea">
+  <div class="preview-stack">
+    <label for="preview-bio">Biography</label>
+    <textarea id="preview-bio" class="preview-input" rows="4">
+      Poet, mathematician, and pioneer.
+    </textarea>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">```tsx
+<Textarea name="bio" required invalid={hasError} />
+```</TabItem>
+<TabItem label="Vue">```vue
+<Textarea v-model="bio" name="bio" required :invalid="hasError" />
+```</TabItem>
+<TabItem label="Angular">```html
+<simurgh-textarea [(value)]="bio" name="bio" [required]="true" [invalid]="hasError" />
+```</TabItem>
+</Tabs>
+
+Pair Textarea with Label and connect help or validation text through `aria-describedby`.

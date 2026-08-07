@@ -18,6 +18,7 @@ import {
   Spinner,
   Button,
   Input,
+  Textarea,
   Combobox,
   Dialog,
   DialogContent,
@@ -308,5 +309,14 @@ describe('React accessibility contract', () => {
     expect(input.required).toBe(true);
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
+  });
+  it('serializes native textarea values', () => {
+    render(
+      <form>
+        <Textarea name="bio" defaultValue="Poet" required />
+      </form>,
+    );
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
+    expect(new FormData(textarea.form!).get('bio')).toBe('Poet');
   });
 });

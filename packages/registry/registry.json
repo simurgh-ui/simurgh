@@ -24,6 +24,7 @@
     "spinner",
     "button",
     "input",
+    "textarea",
     "switch",
     "radio-group",
     "toast"
@@ -87,6 +88,7 @@
       "spinner": ["Spinner"],
       "button": ["Button"],
       "input": ["Input"],
+      "textarea": ["Textarea"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -130,6 +132,7 @@
       "spinner": ["Spinner"],
       "button": ["Button"],
       "input": ["Input"],
+      "textarea": ["Textarea"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -156,6 +159,7 @@
       "spinner": ["SpinnerComponent"],
       "button": ["ButtonComponent"],
       "input": ["InputComponent"],
+      "textarea": ["TextareaComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

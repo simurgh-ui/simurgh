@@ -54,3 +54,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add accessible Spinner across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add native Button across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add native Input across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add native Textarea across Angular, React, Vue, the registry, documentation, and contract tests.

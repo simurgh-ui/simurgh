@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(24);
+    expect(manifest.components).toHaveLength(25);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -113,6 +113,11 @@ describe('CLI application fixture', () => {
       execFileSync(process.execPath, [cli, 'add', 'input'], { cwd: fixture });
       const input = join(fixture, 'src/components/ui/input.tsx');
       expect(readFileSync(input, 'utf8')).toContain('export const Input');
+      execFileSync(process.execPath, [cli, 'add', 'textarea'], {
+        cwd: fixture,
+      });
+      const textarea = join(fixture, 'src/components/ui/textarea.tsx');
+      expect(readFileSync(textarea, 'utf8')).toContain('export const Textarea');
       expect(
         spawnSync(process.execPath, [cli, 'diff', 'dialog'], { cwd: fixture })
           .status,

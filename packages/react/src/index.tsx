@@ -30,6 +30,7 @@ import React, {
   type HTMLAttributes,
   type LabelHTMLAttributes,
   type InputHTMLAttributes,
+  type TextareaHTMLAttributes,
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
@@ -888,6 +889,13 @@ export const Input = forwardRef<
   InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
 >(function Input({ invalid = false, ...props }, ref) {
   return <input ref={ref} aria-invalid={invalid || undefined} {...props} />;
+});
+
+export const Textarea = forwardRef<
+  HTMLTextAreaElement,
+  TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }
+>(function Textarea({ invalid = false, ...props }, ref) {
+  return <textarea ref={ref} aria-invalid={invalid || undefined} {...props} />;
 });
 
 export function Checkbox(props: CheckProps) {

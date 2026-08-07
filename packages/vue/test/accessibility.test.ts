@@ -11,6 +11,7 @@ import {
   Spinner,
   Button,
   Input,
+  Textarea,
   Combobox,
   Dialog,
   DialogContent,
@@ -301,5 +302,14 @@ describe('Vue accessibility contract', () => {
     expect(
       new FormData(view.container.querySelector('form')!).get('email'),
     ).toBe('ada@example.com');
+  });
+  it('serializes native textarea values', () => {
+    const view = render({
+      components: { Textarea },
+      template: `<form><Textarea name="bio" model-value="Poet" required /></form>`,
+    });
+    expect(new FormData(view.container.querySelector('form')!).get('bio')).toBe(
+      'Poet',
+    );
   });
 });

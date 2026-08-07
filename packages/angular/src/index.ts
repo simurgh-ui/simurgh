@@ -632,6 +632,31 @@ export class InputComponent {
     this.valueChange.emit(this.value);
   }
 }
+
+@Component({
+  selector: 'simurgh-textarea',
+  standalone: true,
+  template: `<textarea
+    [name]="name || ''"
+    [value]="value"
+    [required]="required"
+    [disabled]="disabled"
+    [attr.aria-invalid]="invalid || null"
+    (input)="onInput($event)"
+  ></textarea>`,
+})
+export class TextareaComponent {
+  @Input() name?: string;
+  @Input() value = '';
+  @Input() required = false;
+  @Input() disabled = false;
+  @Input() invalid = false;
+  @Output() valueChange = new EventEmitter<string>();
+  onInput(event: Event) {
+    this.value = (event.target as HTMLTextAreaElement).value;
+    this.valueChange.emit(this.value);
+  }
+}
 @Component({
   selector: 'simurgh-switch',
   standalone: true,
@@ -1019,6 +1044,7 @@ export const SIMURGH_COMPONENTS = [
   SpinnerComponent,
   ButtonComponent,
   InputComponent,
+  TextareaComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,
