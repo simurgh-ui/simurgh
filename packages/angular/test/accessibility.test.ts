@@ -40,6 +40,7 @@ import {
   PaginationContentDirective,
   PaginationItemDirective,
   PaginationLinkDirective,
+  CollapsibleComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -171,6 +172,15 @@ class TableHost {}
   >`,
 })
 class PaginationHost {}
+@Component({
+  standalone: true,
+  imports: [CollapsibleComponent],
+  template: `<simurgh-collapsible
+    ><span trigger>Details</span>
+    <p>Hidden details</p></simurgh-collapsible
+  >`,
+})
+class CollapsibleHost {}
 
 @Component({
   standalone: true,
@@ -773,6 +783,21 @@ describe('Angular accessibility contract', () => {
     expect(nav.querySelector('[aria-current=page]')?.textContent?.trim()).toBe(
       '2',
     );
+    fixture.destroy();
+  });
+  it('toggles collapsible content with linked semantics', () => {
+    const fixture = TestBed.createComponent(CollapsibleHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      'button',
+    ) as HTMLButtonElement;
+    trigger.click();
+    fixture.detectChanges();
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(
+      (fixture.nativeElement.querySelector('[data-state]') as HTMLElement)
+        .hidden,
+    ).toBe(false);
     fixture.destroy();
   });
 });

@@ -218,3 +218,11 @@
   opacity: 0.5;
   pointer-events: none;
 }
+[data-state='open'] {
+  animation: simurgh-in var(--simurgh-duration) ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-state='open'] {
+    animation: none;
+  }
+}

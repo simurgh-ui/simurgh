@@ -32,6 +32,7 @@
     "field",
     "table",
     "pagination",
+    "collapsible",
     "switch",
     "radio-group",
     "toast"
@@ -124,6 +125,11 @@
         "PaginationItem",
         "PaginationLink"
       ],
+      "collapsible": [
+        "Collapsible",
+        "CollapsibleTrigger",
+        "CollapsibleContent"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -196,6 +202,11 @@
         "PaginationItem",
         "PaginationLink"
       ],
+      "collapsible": [
+        "Collapsible",
+        "CollapsibleTrigger",
+        "CollapsibleContent"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -256,6 +267,7 @@
         "PaginationItemDirective",
         "PaginationLinkDirective"
       ],
+      "collapsible": ["CollapsibleComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

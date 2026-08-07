@@ -32,6 +32,9 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Combobox,
   Dialog,
   DialogContent,
@@ -118,6 +121,19 @@ describe('Vue accessibility contract', () => {
     expect(
       screen.getByRole('link', { name: '2' }).getAttribute('aria-current'),
     ).toBe('page');
+  });
+  it('toggles collapsible content with linked semantics', async () => {
+    render({
+      components: { Collapsible, CollapsibleTrigger, CollapsibleContent },
+      template: `<Collapsible><CollapsibleTrigger>Details</CollapsibleTrigger><CollapsibleContent>Hidden details</CollapsibleContent></Collapsible>`,
+    });
+    const trigger = screen.getByRole('button', { name: 'Details' });
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    await fireEvent.click(trigger);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(screen.getByText('Hidden details').hasAttribute('hidden')).toBe(
+      false,
+    );
   });
   it('opens a modal and passes an axe audit', async () => {
     render({

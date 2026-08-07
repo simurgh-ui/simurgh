@@ -506,6 +506,68 @@ export const AccordionContent = defineComponent({
         : null;
   },
 });
+const collapsibleKey: InjectionKey<{
+  open: Ref<boolean>;
+  toggle(): void;
+  id: string;
+}> = Symbol('collapsible');
+export const Collapsible = defineComponent({
+  props: {
+    modelValue: { type: Boolean, default: undefined },
+    defaultOpen: Boolean,
+  },
+  emits: ['update:modelValue'],
+  setup(props, { slots, emit }) {
+    const local = ref(props.defaultOpen);
+    const open = computed(() => props.modelValue ?? local.value);
+    const id = createId('collapsible');
+    provide(collapsibleKey, {
+      open,
+      id,
+      toggle: () => {
+        const next = !open.value;
+        if (props.modelValue === undefined) local.value = next;
+        emit('update:modelValue', next);
+      },
+    });
+    return () => slots.default?.();
+  },
+});
+export const CollapsibleTrigger = defineComponent({
+  props: { disabled: Boolean },
+  setup(props, { attrs, slots }) {
+    const c = inject(collapsibleKey)!;
+    return () =>
+      h(
+        'button',
+        {
+          ...attrs,
+          type: 'button',
+          disabled: props.disabled,
+          'aria-expanded': c.open.value,
+          'aria-controls': `${c.id}-content`,
+          onClick: props.disabled ? undefined : c.toggle,
+        },
+        slots.default?.(),
+      );
+  },
+});
+export const CollapsibleContent = defineComponent({
+  setup(_, { attrs, slots }) {
+    const c = inject(collapsibleKey)!;
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          id: `${c.id}-content`,
+          hidden: !c.open.value,
+          'data-state': c.open.value ? 'open' : 'closed',
+        },
+        slots.default?.(),
+      );
+  },
+});
 
 function checkControl(role: 'checkbox' | 'switch', name: string) {
   return defineComponent({

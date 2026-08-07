@@ -1,0 +1,45 @@
+---
+title: Collapsible
+description: Expand and collapse a single section with linked trigger semantics.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Collapsible connects a native button to content through `aria-expanded` and `aria-controls`.
+
+<ComponentPreview title="Collapsible">
+  <details>
+    <summary class="simurgh-trigger">Project details</summary>
+    <div class="simurgh-content">Three framework-native implementations.</div>
+  </details>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Collapsible>
+      <CollapsibleTrigger>Details</CollapsibleTrigger>
+      <CollapsibleContent>Content</CollapsibleContent>
+    </Collapsible>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Collapsible>
+      <CollapsibleTrigger>Details</CollapsibleTrigger>
+      <CollapsibleContent>Content</CollapsibleContent>
+    </Collapsible>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-collapsible>
+      <span trigger>Details</span>
+      <div>Content</div>
+    </simurgh-collapsible>
+    ```
+  </TabItem>
+</Tabs>
+
+Use Accordion when multiple related sections form a coordinated set. Use Collapsible for one independent disclosure.

@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(32);
+    expect(manifest.components).toHaveLength(33);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -146,6 +146,13 @@ describe('CLI application fixture', () => {
       const pagination = join(fixture, 'src/components/ui/pagination.tsx');
       expect(readFileSync(pagination, 'utf8')).toContain(
         'export const Pagination',
+      );
+      execFileSync(process.execPath, [cli, 'add', 'collapsible'], {
+        cwd: fixture,
+      });
+      const collapsible = join(fixture, 'src/components/ui/collapsible.tsx');
+      expect(readFileSync(collapsible, 'utf8')).toContain(
+        'export function Collapsible',
       );
       expect(
         spawnSync(process.execPath, [cli, 'diff', 'dialog'], { cwd: fixture })

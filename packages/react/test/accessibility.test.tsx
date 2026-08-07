@@ -40,6 +40,9 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Combobox,
   Dialog,
   DialogContent,
@@ -443,5 +446,20 @@ describe('React accessibility contract', () => {
     expect(
       screen.getByRole('link', { name: '2' }).getAttribute('aria-current'),
     ).toBe('page');
+  });
+  it('toggles collapsible content with linked semantics', () => {
+    render(
+      <Collapsible>
+        <CollapsibleTrigger>Details</CollapsibleTrigger>
+        <CollapsibleContent>Hidden details</CollapsibleContent>
+      </Collapsible>,
+    );
+    const trigger = screen.getByRole('button', { name: 'Details' });
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    fireEvent.click(trigger);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(screen.getByText('Hidden details').hasAttribute('hidden')).toBe(
+      false,
+    );
   });
 });
