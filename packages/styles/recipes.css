@@ -287,6 +287,34 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
+[data-slot='toggle-group'] {
+  display: inline-flex;
+  gap: 1px;
+}
+[data-slot='toggle-group'][aria-orientation='vertical'] {
+  flex-direction: column;
+}
+[data-slot='toggle-group-item'] {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  color: hsl(var(--simurgh-foreground));
+  min-block-size: 2.25rem;
+  padding-inline: 0.75rem;
+}
+[data-slot='toggle-group-item'][data-state='on'] {
+  background: hsl(var(--simurgh-primary));
+  color: hsl(var(--simurgh-primary-foreground));
+}
+[data-slot='toggle-group-item']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 1px;
+  position: relative;
+  z-index: 1;
+}
+[data-slot='toggle-group-item']:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 @media (prefers-reduced-motion: reduce) {
   [data-state='open'] {
     animation: none;

@@ -23,6 +23,8 @@ import {
   MeterComponent,
   ToolbarButtonDirective,
   ToolbarComponent,
+  ToggleGroupComponent,
+  ToggleGroupItemDirective,
   TextareaComponent,
   BadgeComponent,
   BreadcrumbComponent,
@@ -387,6 +389,17 @@ class MeterHost {}
   >`,
 })
 class ToolbarHost {}
+@Component({
+  standalone: true,
+  imports: [ToggleGroupComponent, ToggleGroupItemDirective],
+  template: `<simurgh-toggle-group aria-label="Alignment"
+    ><button simurghToggleGroupItem="start">Start</button
+    ><button simurghToggleGroupItem="center">
+      Center
+    </button></simurgh-toggle-group
+  >`,
+})
+class ToggleGroupHost {}
 
 @Component({
   standalone: true,
@@ -785,6 +798,22 @@ describe('Angular accessibility contract', () => {
         .querySelector('[role=toolbar]')
         .getAttribute('aria-label'),
     ).toBe('Editor');
+    fixture.destroy();
+  });
+  it('selects one toggle-group item and moves focus', () => {
+    const fixture = TestBed.createComponent(ToggleGroupHost);
+    fixture.detectChanges();
+    const buttons = fixture.nativeElement.querySelectorAll(
+      'button',
+    ) as NodeListOf<HTMLButtonElement>;
+    buttons[0]!.click();
+    fixture.detectChanges();
+    expect(buttons[0]!.getAttribute('aria-pressed')).toBe('true');
+    buttons[0]!.focus();
+    buttons[0]!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(buttons[1]);
     fixture.destroy();
   });
   it('serializes native textarea values', () => {

@@ -22,6 +22,8 @@ import {
   Meter,
   Toolbar,
   ToolbarButton,
+  ToggleGroup,
+  ToggleGroupItem,
   Textarea,
   Badge,
   Breadcrumb,
@@ -391,6 +393,22 @@ describe('React accessibility contract', () => {
       screen.getByRole('button', { name: 'Link' }),
     );
     expect(screen.getByRole('toolbar', { name: 'Editor' })).toBeTruthy();
+  });
+  it('selects one toggle-group item and moves focus', () => {
+    render(
+      <ToggleGroup aria-label="Alignment">
+        <ToggleGroupItem value="start">Start</ToggleGroupItem>
+        <ToggleGroupItem value="center">Center</ToggleGroupItem>
+      </ToggleGroup>,
+    );
+    const start = screen.getByRole('button', { name: 'Start' });
+    fireEvent.click(start);
+    expect(start.getAttribute('aria-pressed')).toBe('true');
+    start.focus();
+    fireEvent.keyDown(start, { key: 'ArrowRight' });
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: 'Center' }),
+    );
   });
   it('serializes native textarea values', () => {
     render(
