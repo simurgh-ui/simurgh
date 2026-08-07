@@ -947,6 +947,28 @@ export const CardContent = cardPart(
 );
 export const CardFooter = cardPart('SimurghCardFooter', 'div', 'card-footer');
 export const Kbd = cardPart('SimurghKbd', 'kbd', 'kbd');
+export const Field = cardPart('SimurghField', 'fieldset', 'field');
+export const FieldLegend = cardPart(
+  'SimurghFieldLegend',
+  'legend',
+  'field-legend',
+);
+export const FieldDescription = cardPart(
+  'SimurghFieldDescription',
+  'p',
+  'field-description',
+);
+export const FieldError = defineComponent({
+  name: 'SimurghFieldError',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(
+        'p',
+        { ...attrs, 'data-slot': 'field-error', role: 'alert' },
+        slots.default?.(),
+      );
+  },
+});
 
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');

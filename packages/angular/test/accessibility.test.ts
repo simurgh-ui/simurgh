@@ -26,6 +26,9 @@ import {
   CardDescriptionComponent,
   CardTitleComponent,
   KbdComponent,
+  FieldComponent,
+  FieldErrorComponent,
+  FieldLegendComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -94,6 +97,19 @@ class CardHost {}
   template: `<simurgh-kbd>Ctrl K</simurgh-kbd>`,
 })
 class KbdHost {}
+
+@Component({
+  standalone: true,
+  imports: [FieldComponent, FieldLegendComponent, FieldErrorComponent],
+  template: `<simurgh-field
+    ><simurgh-field-legend>Notifications</simurgh-field-legend
+    ><label><input type="checkbox" /> Email</label
+    ><simurgh-field-error
+      >Choose at least one.</simurgh-field-error
+    ></simurgh-field
+  >`,
+})
+class FieldHost {}
 
 @Component({
   standalone: true,
@@ -664,6 +680,18 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     const kbd = fixture.nativeElement.querySelector('kbd') as HTMLElement;
     expect(kbd.textContent).toBe('Ctrl K');
+    fixture.destroy();
+  });
+  it('groups controls with native field semantics', () => {
+    const fixture = TestBed.createComponent(FieldHost);
+    fixture.detectChanges();
+    const fieldset = fixture.nativeElement.querySelector(
+      'fieldset',
+    ) as HTMLFieldSetElement;
+    expect(fieldset.querySelector('legend')?.textContent).toBe('Notifications');
+    expect(fieldset.querySelector('[role=alert]')?.textContent).toBe(
+      'Choose at least one.',
+    );
     fixture.destroy();
   });
 });

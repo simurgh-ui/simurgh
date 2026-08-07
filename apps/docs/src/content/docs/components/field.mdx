@@ -1,0 +1,59 @@
+---
+title: Field
+description: Native grouping, legend, help text, and validation anatomy for related controls.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Field preserves native `fieldset` and `legend` behavior while providing consistent anatomy for help and error messages.
+
+<ComponentPreview title="Field">
+  <fieldset data-slot="field" style="max-width: 24rem">
+    <legend data-slot="field-legend">Notifications</legend>
+    <p id="preview-field-help" data-slot="field-description">
+      Choose how we should contact you.
+    </p>
+    <label>
+      <input type="checkbox" aria-describedby="preview-field-help" /> Email
+    </label>
+    <label>
+      <input type="checkbox" aria-describedby="preview-field-help" /> Push
+      notification
+    </label>
+  </fieldset>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Field>
+      <FieldLegend>Notifications</FieldLegend>
+      <FieldDescription id="help">Choose a channel.</FieldDescription>
+      <Checkbox aria-describedby="help">Email</Checkbox>
+    </Field>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Field>
+      <FieldLegend>Notifications</FieldLegend>
+      <FieldDescription id="help">Choose a channel.</FieldDescription>
+      <Checkbox aria-describedby="help">Email</Checkbox>
+    </Field>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-field>
+      <simurgh-field-legend>Notifications</simurgh-field-legend>
+      <simurgh-field-description id="help">
+        Choose a channel.
+      </simurgh-field-description>
+      <simurgh-checkbox aria-describedby="help">Email</simurgh-checkbox>
+    </simurgh-field>
+    ```
+  </TabItem>
+</Tabs>
+
+Connect descriptions and errors to controls with `aria-describedby`. Render FieldError only when a useful validation message exists.

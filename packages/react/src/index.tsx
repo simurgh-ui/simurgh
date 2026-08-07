@@ -963,6 +963,31 @@ export const Kbd = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
   },
 );
 
+export const Field = forwardRef<
+  HTMLFieldSetElement,
+  React.FieldsetHTMLAttributes<HTMLFieldSetElement>
+>(function Field(props, ref) {
+  return <fieldset ref={ref} data-slot="field" {...props} />;
+});
+export const FieldLegend = forwardRef<
+  HTMLLegendElement,
+  HTMLAttributes<HTMLLegendElement>
+>(function FieldLegend(props, ref) {
+  return <legend ref={ref} data-slot="field-legend" {...props} />;
+});
+export const FieldDescription = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function FieldDescription(props, ref) {
+  return <p ref={ref} data-slot="field-description" {...props} />;
+});
+export const FieldError = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function FieldError(props, ref) {
+  return <p ref={ref} data-slot="field-error" role="alert" {...props} />;
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

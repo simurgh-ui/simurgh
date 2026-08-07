@@ -18,6 +18,9 @@ import {
   CardDescription,
   CardTitle,
   Kbd,
+  Field,
+  FieldError,
+  FieldLegend,
   Combobox,
   Dialog,
   DialogContent,
@@ -61,6 +64,14 @@ describe('Vue accessibility contract', () => {
   it('renders keyboard input with native semantics', () => {
     render({ components: { Kbd }, template: `<Kbd>Ctrl K</Kbd>` });
     expect(screen.getByText('Ctrl K').tagName).toBe('KBD');
+  });
+  it('groups controls with native field semantics', () => {
+    render({
+      components: { Field, FieldLegend, FieldError },
+      template: `<Field><FieldLegend>Notifications</FieldLegend><label><input type="checkbox" /> Email</label><FieldError>Choose at least one.</FieldError></Field>`,
+    });
+    expect(screen.getByRole('group', { name: 'Notifications' })).toBeTruthy();
+    expect(screen.getByRole('alert').textContent).toBe('Choose at least one.');
   });
   it('opens a modal and passes an axe audit', async () => {
     render({

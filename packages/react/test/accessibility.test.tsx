@@ -25,6 +25,10 @@ import {
   CardDescription,
   CardTitle,
   Kbd,
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLegend,
   Combobox,
   Dialog,
   DialogContent,
@@ -369,5 +373,21 @@ describe('React accessibility contract', () => {
   it('renders keyboard input with native semantics', () => {
     render(<Kbd>Ctrl K</Kbd>);
     expect(screen.getByText('Ctrl K').tagName).toBe('KBD');
+  });
+  it('groups controls with native field semantics', () => {
+    render(
+      <Field>
+        <FieldLegend>Notifications</FieldLegend>
+        <FieldDescription id="notice-help">
+          Choose delivery channels.
+        </FieldDescription>
+        <label>
+          <input type="checkbox" aria-describedby="notice-help" /> Email
+        </label>
+        <FieldError>Choose at least one.</FieldError>
+      </Field>,
+    );
+    expect(screen.getByRole('group', { name: 'Notifications' })).toBeTruthy();
+    expect(screen.getByRole('alert').textContent).toBe('Choose at least one.');
   });
 });

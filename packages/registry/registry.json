@@ -29,6 +29,7 @@
     "breadcrumb",
     "card",
     "kbd",
+    "field",
     "switch",
     "radio-group",
     "toast"
@@ -104,6 +105,7 @@
         "CardFooter"
       ],
       "kbd": ["Kbd"],
+      "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -159,6 +161,7 @@
         "CardFooter"
       ],
       "kbd": ["Kbd"],
+      "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -197,6 +200,12 @@
         "CardFooterComponent"
       ],
       "kbd": ["KbdComponent"],
+      "field": [
+        "FieldComponent",
+        "FieldLegendComponent",
+        "FieldDescriptionComponent",
+        "FieldErrorComponent"
+      ],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]
