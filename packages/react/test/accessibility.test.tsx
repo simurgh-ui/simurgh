@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import axe from 'axe-core';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { Checkbox, Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, Tabs, TabsContent, TabsList, TabsTrigger } from '../src/index.js';
+import { Checkbox, Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Select, Tabs, TabsContent, TabsList, TabsTrigger } from '../src/index.js';
 
 afterEach(cleanup);
 
@@ -29,5 +29,22 @@ describe('React accessibility contract', () => {
     const one = screen.getByRole('tab', { name: 'One' }); one.focus();
     fireEvent.keyDown(one.parentElement!, { key: 'ArrowLeft' });
     expect(screen.getByRole('tab', { name: 'Two' }).getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('moves menu focus and selects with the keyboard', async () => {
+    const second = vi.fn();
+    render(<DropdownMenu><DropdownMenuTrigger>Actions</DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem>First</DropdownMenuItem><DropdownMenuItem onSelect={second}>Second</DropdownMenuItem></DropdownMenuContent></DropdownMenu>);
+    fireEvent.click(screen.getByRole('button', { name: 'Actions' })); await act(() => new Promise(requestAnimationFrame));
+    expect(document.activeElement?.textContent).toBe('First');
+    fireEvent.keyDown(screen.getByRole('menu'), { key: 'ArrowDown' }); expect(document.activeElement?.textContent).toBe('Second');
+    fireEvent.keyDown(screen.getByRole('menu'), { key: 'Enter' }); expect(second).toHaveBeenCalledOnce();
+  });
+
+  it('selects and serializes listbox options from the keyboard', async () => {
+    render(<form><Select name="city" placeholder="Choose city" options={[{ value: 'tehran', label: 'Tehran' }, { value: 'isfahan', label: 'Isfahan' }]} /></form>);
+    const trigger = screen.getByRole('combobox', { name: 'Choose city' }); fireEvent.keyDown(trigger, { key: 'ArrowDown' }); await act(() => new Promise(requestAnimationFrame));
+    const listbox = screen.getByRole('listbox'); expect(document.activeElement?.textContent).toBe('Tehran');
+    fireEvent.keyDown(listbox, { key: 'ArrowDown' }); fireEvent.keyDown(listbox, { key: 'Enter' });
+    expect(trigger.textContent).toBe('Isfahan'); expect(new FormData(document.querySelector('form')!).get('city')).toBe('isfahan');
   });
 });
