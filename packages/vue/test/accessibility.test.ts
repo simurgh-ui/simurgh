@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
 import { afterEach, describe, expect, it } from 'vitest';
-import { Checkbox, Dialog, DialogContent, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Select, Tabs, TabsContent, TabsList, TabsTrigger, Tooltip, TooltipContent, TooltipTrigger } from '../src/index.js';
+import { Checkbox, Dialog, DialogContent, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, RadioGroup, RadioGroupItem, Select, Tabs, TabsContent, TabsList, TabsTrigger, Tooltip, TooltipContent, TooltipTrigger } from '../src/index.js';
 
 afterEach(cleanup);
 
@@ -58,4 +58,5 @@ describe('Vue accessibility contract', () => {
     await fireEvent.keyDown(list, { key: 'ArrowDown' }); await fireEvent.keyDown(list, { key: 'Enter' });
     expect(screen.getByRole('combobox').textContent).toBe('Isfahan'); expect(new FormData(view.container.querySelector('form')!).get('city')).toBe('isfahan');
   });
+  it('navigates and serializes a radio group', async () => { const view = render({ components: { RadioGroup, RadioGroupItem }, data: () => ({ plan: 'basic' }), template: `<form><RadioGroup v-model="plan" name="plan"><RadioGroupItem value="basic">Basic</RadioGroupItem><RadioGroupItem value="pro">Pro</RadioGroupItem></RadioGroup></form>` }); const basic = screen.getByRole('radio', { name: 'Basic' }); basic.focus(); await fireEvent.keyDown(basic.parentElement!, { key: 'ArrowRight' }); expect(screen.getByRole('radio', { name: 'Pro' }).getAttribute('aria-checked')).toBe('true'); expect(new FormData(view.container.querySelector('form')!).get('plan')).toBe('pro'); });
 });

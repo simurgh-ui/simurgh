@@ -31,3 +31,8 @@ Items are checked only after their implementation exists and the relevant verifi
     - [x] Add React menu/listbox focus entry, navigation, keyboard selection, and form coverage.
     - [x] Add Vue menu/listbox focus entry, navigation, keyboard selection, and form coverage.
     - [x] Add Angular menu/listbox focus entry, navigation, keyboard selection, and form coverage.
+
+## Catalog expansion
+
+- [x] Add Radio Group across Angular, React, Vue, the registry, documentation, and contract tests.
+- [ ] Add Combobox across Angular, React, Vue, the registry, documentation, and contract tests.

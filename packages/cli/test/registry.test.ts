@@ -5,7 +5,7 @@ import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { rmSync } from 'node:fs';
-describe('registry', () => { it('contains ten components for every framework', () => { expect(manifest.components).toHaveLength(10); for (const framework of ['react', 'vue', 'angular'] as const) expect(registryEntry('dialog', framework).framework).toBe(framework); }); });
+describe('registry', () => { it('contains the component catalog for every framework', () => { expect(manifest.components).toHaveLength(11); for (const framework of ['react', 'vue', 'angular'] as const) { expect(registryEntry('dialog', framework).framework).toBe(framework); expect(registryEntry('radio-group', framework).symbols.length).toBeGreaterThan(1); } }); });
 
 describe('CLI application fixture', () => {
   it('initializes, adds idempotently, and detects local changes', () => {

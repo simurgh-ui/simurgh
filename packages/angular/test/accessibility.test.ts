@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import axe from 'axe-core';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { CheckboxComponent, DialogComponent, DropdownMenuComponent, DropdownMenuItemDirective, SelectComponent, TabDirective, TabPanelDirective, TabsComponent, type SelectOption } from '../src/index.js';
+import { CheckboxComponent, DialogComponent, DropdownMenuComponent, DropdownMenuItemDirective, RadioGroupComponent, RadioGroupItemDirective, SelectComponent, TabDirective, TabPanelDirective, TabsComponent, type SelectOption } from '../src/index.js';
 
 beforeAll(() => TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting()));
 
@@ -22,6 +22,7 @@ class TabsHost {}
 
 @Component({ standalone: true, imports: [DropdownMenuComponent, DropdownMenuItemDirective], template: `<simurgh-dropdown-menu><span trigger>Actions</span><button simurghMenuItem>First</button><button simurghMenuItem (select)="selected()">Second</button></simurgh-dropdown-menu>` })
 class MenuHost { selected = vi.fn(); }
+@Component({ standalone: true, imports: [RadioGroupComponent, RadioGroupItemDirective], template: `<simurgh-radio-group name="plan" value="basic"><button simurghRadio="basic">Basic</button><button simurghRadio="pro">Pro</button></simurgh-radio-group>` }) class RadioHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -80,4 +81,5 @@ describe('Angular accessibility contract', () => {
     const panels = fixture.nativeElement.querySelectorAll('[role=tabpanel]') as NodeListOf<HTMLElement>;
     expect(panels[0]!.hidden).toBe(true); expect(panels[1]!.hidden).toBe(false); fixture.destroy();
   });
+  it('navigates and serializes a radio group', () => { const fixture = TestBed.createComponent(RadioHost); fixture.detectChanges(); const radios = fixture.nativeElement.querySelectorAll('[role=radio]') as NodeListOf<HTMLButtonElement>; radios[0]!.focus(); radios[0]!.parentElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); fixture.detectChanges(); expect(radios[1]!.getAttribute('aria-checked')).toBe('true'); expect((fixture.nativeElement.querySelector('input[type=hidden]') as HTMLInputElement).value).toBe('pro'); fixture.destroy(); });
 });

@@ -1,0 +1,25 @@
+---
+title: Radio Group
+description: A single-choice form control with roving keyboard focus.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Radio Group allows one value from a visible set. Arrow keys move and select, Home/End jump to the boundaries, horizontal movement follows RTL direction, and the selected value participates in native form submission.
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<RadioGroup name="plan" defaultValue="basic"><RadioGroupItem value="basic">Basic</RadioGroupItem><RadioGroupItem value="pro">Pro</RadioGroupItem></RadioGroup>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<RadioGroup v-model="plan" name="plan"><RadioGroupItem value="basic">Basic</RadioGroupItem><RadioGroupItem value="pro">Pro</RadioGroupItem></RadioGroup>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-radio-group name="plan" [(value)]="plan"><button simurghRadio="basic">Basic</button><button simurghRadio="pro">Pro</button></simurgh-radio-group>
+```
+</TabItem>
+</Tabs>

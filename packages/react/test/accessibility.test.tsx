@@ -3,7 +3,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import axe from 'axe-core';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { Checkbox, Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Select, Tabs, TabsContent, TabsList, TabsTrigger } from '../src/index.js';
+import { Checkbox, Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, RadioGroup, RadioGroupItem, Select, Tabs, TabsContent, TabsList, TabsTrigger } from '../src/index.js';
 
 afterEach(cleanup);
 
@@ -47,4 +47,5 @@ describe('React accessibility contract', () => {
     fireEvent.keyDown(listbox, { key: 'ArrowDown' }); fireEvent.keyDown(listbox, { key: 'Enter' });
     expect(trigger.textContent).toBe('Isfahan'); expect(new FormData(document.querySelector('form')!).get('city')).toBe('isfahan');
   });
+  it('navigates and serializes a radio group', () => { render(<form><RadioGroup name="plan" defaultValue="basic"><RadioGroupItem value="basic">Basic</RadioGroupItem><RadioGroupItem value="pro">Pro</RadioGroupItem></RadioGroup></form>); const basic = screen.getByRole('radio', { name: 'Basic' }); basic.focus(); fireEvent.keyDown(basic.parentElement!, { key: 'ArrowRight' }); expect(screen.getByRole('radio', { name: 'Pro' }).getAttribute('aria-checked')).toBe('true'); expect(new FormData(document.querySelector('form')!).get('plan')).toBe('pro'); });
 });

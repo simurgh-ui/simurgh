@@ -2,7 +2,7 @@
   "$schema": "https://simurgh-ui.dev/schema/registry.json",
   "name": "simurgh",
   "version": "0.1.0",
-  "components": ["dialog", "popover", "tooltip", "dropdown-menu", "select", "tabs", "accordion", "checkbox", "switch", "toast"],
+  "components": ["dialog", "popover", "tooltip", "dropdown-menu", "select", "tabs", "accordion", "checkbox", "switch", "radio-group", "toast"],
   "frameworks": {
     "react": { "extension": "tsx", "source": "packages/react/src/index.tsx", "dependencies": ["@floating-ui/react", "@simurgh-ui/core"] },
     "vue": { "extension": "ts", "source": "packages/vue/src/index.ts", "dependencies": ["@floating-ui/dom", "@simurgh-ui/core"] },
@@ -19,6 +19,7 @@
       "accordion": ["Accordion", "AccordionItem", "AccordionTrigger", "AccordionContent"],
       "checkbox": ["Checkbox"],
       "switch": ["Switch"],
+      "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
     },
     "vue": {
@@ -31,6 +32,7 @@
       "accordion": ["Accordion", "AccordionItem", "AccordionTrigger", "AccordionContent"],
       "checkbox": ["Checkbox"],
       "switch": ["Switch"],
+      "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
     },
     "angular": {
@@ -43,6 +45,7 @@
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],
       "switch": ["SwitchComponent"],
+      "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]
     }
   },
