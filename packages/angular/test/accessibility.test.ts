@@ -12,6 +12,7 @@ import axe from 'axe-core';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 import {
   CheckboxComponent,
+  AvatarComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -161,6 +162,17 @@ class ToggleHost {
   </button>`,
 })
 class VisuallyHiddenHost {}
+
+@Component({
+  standalone: true,
+  imports: [AvatarComponent],
+  template: `<simurgh-avatar
+    src="avatar.jpg"
+    alt="Ada Lovelace"
+    fallback="AL"
+  />`,
+})
+class AvatarHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -411,6 +423,19 @@ describe('Angular accessibility contract', () => {
     expect((button.lastElementChild as HTMLElement).style.position).toBe(
       'absolute',
     );
+    fixture.destroy();
+  });
+  it('shows avatar fallback until its image loads', () => {
+    const fixture = TestBed.createComponent(AvatarHost);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent.trim()).toBe('AL');
+    const image = fixture.nativeElement.querySelector(
+      'img',
+    ) as HTMLImageElement;
+    image.dispatchEvent(new Event('load'));
+    fixture.detectChanges();
+    expect(image.hidden).toBe(false);
+    expect(fixture.nativeElement.textContent.trim()).toBe('');
     fixture.destroy();
   });
 });

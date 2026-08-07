@@ -758,6 +758,40 @@ export const VisuallyHidden = forwardRef<
   );
 });
 
+export const Avatar = forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement> & {
+    src?: string;
+    alt: string;
+    fallback: ReactNode;
+    imageProps?: React.ImgHTMLAttributes<HTMLImageElement>;
+  }
+>(function Avatar({ src, alt, fallback, imageProps, ...props }, ref) {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => setLoaded(false), [src]);
+  return (
+    <span ref={ref} data-state={loaded ? 'loaded' : 'fallback'} {...props}>
+      {src ? (
+        <img
+          {...imageProps}
+          src={src}
+          alt={alt}
+          hidden={!loaded}
+          onLoad={(event) => {
+            setLoaded(true);
+            imageProps?.onLoad?.(event);
+          }}
+          onError={(event) => {
+            setLoaded(false);
+            imageProps?.onError?.(event);
+          }}
+        />
+      ) : null}
+      {!loaded ? <span data-part="fallback">{fallback}</span> : null}
+    </span>
+  );
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

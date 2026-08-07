@@ -11,6 +11,7 @@ import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   Checkbox,
+  Avatar,
   Combobox,
   Dialog,
   DialogContent,
@@ -236,5 +237,13 @@ describe('React accessibility contract', () => {
     expect((button.lastElementChild as HTMLElement).style.position).toBe(
       'absolute',
     );
+  });
+  it('shows avatar fallback until its image loads', () => {
+    render(<Avatar src="avatar.jpg" alt="Ada Lovelace" fallback="AL" />);
+    expect(screen.getByText('AL')).toBeTruthy();
+    const image = screen.getByAltText('Ada Lovelace');
+    fireEvent.load(image);
+    expect(image.hasAttribute('hidden')).toBe(false);
+    expect(screen.queryByText('AL')).toBeNull();
   });
 });

@@ -17,6 +17,7 @@
     "progress",
     "toggle",
     "visually-hidden",
+    "avatar",
     "switch",
     "radio-group",
     "toast"
@@ -73,6 +74,7 @@
       "progress": ["Progress"],
       "toggle": ["Toggle"],
       "visually-hidden": ["VisuallyHidden"],
+      "avatar": ["Avatar"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -109,6 +111,7 @@
       "progress": ["Progress"],
       "toggle": ["Toggle"],
       "visually-hidden": ["VisuallyHidden"],
+      "avatar": ["Avatar"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -128,6 +131,7 @@
       "progress": ["ProgressComponent"],
       "toggle": ["ToggleComponent"],
       "visually-hidden": ["VisuallyHiddenComponent"],
+      "avatar": ["AvatarComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

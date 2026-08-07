@@ -1,0 +1,41 @@
+---
+title: Avatar
+description: An identity image with deterministic accessible fallback content.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Avatar displays an image after it loads successfully and otherwise renders fallback content. Initialization is SSR-safe because fallback content is the deterministic first render.
+
+<ComponentPreview title="Avatar">
+  <div class="preview-row">
+    <span class="preview-avatar" aria-label="Ada Lovelace">
+      AL
+    </span>
+    <div class="preview-stack">
+      <strong>Ada Lovelace</strong>
+      <span class="preview-muted">Maintainer</span>
+    </div>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Avatar src={user.avatar} alt="Ada Lovelace" fallback="AL" />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Avatar :src="user.avatar" alt="Ada Lovelace" fallback="AL" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-avatar [src]="user.avatar" alt="Ada Lovelace" fallback="AL" />
+```
+</TabItem>
+</Tabs>
+
+Use meaningful alternative text when the image conveys identity. If adjacent visible text already names the person, pass an empty `alt` value to avoid repetition. Fallback initials should remain concise.

@@ -147,4 +147,16 @@ const { title = 'Preview', align = 'center' } = Astro.props;
       hsl(var(--simurgh-firuzeh))
     );
   }
+
+  :global(.preview-avatar) {
+    display: inline-grid;
+    inline-size: 3rem;
+    block-size: 3rem;
+    place-items: center;
+    border: 1px solid hsl(var(--simurgh-border));
+    border-radius: 50%;
+    background: hsl(var(--simurgh-persian-blue));
+    color: white;
+    font-weight: 700;
+  }
 </style>
