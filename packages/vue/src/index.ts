@@ -770,6 +770,22 @@ export const AspectRatio = defineComponent({
   },
 });
 
+export const Skeleton = defineComponent({
+  name: 'SimurghSkeleton',
+  props: { label: String },
+  setup(props, { attrs }) {
+    return () =>
+      h('div', {
+        ...attrs,
+        role: props.label ? 'status' : undefined,
+        'aria-label': props.label,
+        'aria-busy': props.label ? 'true' : undefined,
+        'aria-hidden': props.label ? undefined : 'true',
+        'data-state': 'loading',
+      });
+  },
+});
+
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');
 

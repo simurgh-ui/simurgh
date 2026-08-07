@@ -14,6 +14,7 @@ import {
   Avatar,
   Alert,
   AspectRatio,
+  Skeleton,
   Combobox,
   Dialog,
   DialogContent,
@@ -262,5 +263,15 @@ describe('React accessibility contract', () => {
     expect(ratio.dataset['ratio']).toBe('1');
     expect(ratio.style.aspectRatio).toBe('1');
     expect(ratio.style.overflow).toBe('hidden');
+  });
+  it('keeps skeletons decorative unless a loading label is supplied', () => {
+    const { rerender } = render(<Skeleton data-testid="skeleton" />);
+    expect(screen.getByTestId('skeleton').getAttribute('aria-hidden')).toBe(
+      'true',
+    );
+    rerender(<Skeleton label="Loading profile" />);
+    expect(
+      screen.getByRole('status', { name: 'Loading profile' }),
+    ).toBeTruthy();
   });
 });

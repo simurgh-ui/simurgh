@@ -823,6 +823,23 @@ export const AspectRatio = forwardRef<
   );
 });
 
+export const Skeleton = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { label?: string }
+>(function Skeleton({ label, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      role={label ? 'status' : undefined}
+      aria-label={label}
+      aria-busy={label ? 'true' : undefined}
+      aria-hidden={label ? undefined : 'true'}
+      data-state="loading"
+      {...props}
+    />
+  );
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

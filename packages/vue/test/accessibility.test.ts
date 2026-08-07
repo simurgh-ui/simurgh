@@ -7,6 +7,7 @@ import {
   Avatar,
   Alert,
   AspectRatio,
+  Skeleton,
   Combobox,
   Dialog,
   DialogContent,
@@ -255,5 +256,15 @@ describe('Vue accessibility contract', () => {
     expect(ratio.dataset['ratio']).toBe('1');
     expect(ratio.style.aspectRatio).toBe('1');
     expect(ratio.style.overflow).toBe('hidden');
+  });
+  it('keeps skeletons decorative unless a loading label is supplied', async () => {
+    const view = render(Skeleton);
+    expect(view.container.firstElementChild?.getAttribute('aria-hidden')).toBe(
+      'true',
+    );
+    await view.rerender({ label: 'Loading profile' });
+    expect(
+      screen.getByRole('status', { name: 'Loading profile' }),
+    ).toBeTruthy();
   });
 });

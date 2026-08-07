@@ -50,3 +50,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add semantic Alert across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Normalize legacy mojibake in component documentation.
 - [x] Add Aspect Ratio across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Skeleton across Angular, React, Vue, the registry, documentation, and contract tests.

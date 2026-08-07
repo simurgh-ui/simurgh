@@ -553,6 +553,22 @@ export class AspectRatioComponent {
     return Number.isFinite(this.ratio) && this.ratio > 0 ? this.ratio : 1;
   }
 }
+
+@Component({
+  selector: 'simurgh-skeleton',
+  standalone: true,
+  template: '',
+  host: {
+    '[attr.role]': "label ? 'status' : null",
+    '[attr.aria-label]': 'label || null',
+    '[attr.aria-busy]': "label ? 'true' : null",
+    '[attr.aria-hidden]': "label ? null : 'true'",
+    '[attr.data-state]': "'loading'",
+  },
+})
+export class SkeletonComponent {
+  @Input() label?: string;
+}
 @Component({
   selector: 'simurgh-switch',
   standalone: true,
@@ -936,6 +952,7 @@ export const SIMURGH_COMPONENTS = [
   AvatarComponent,
   AlertComponent,
   AspectRatioComponent,
+  SkeletonComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,

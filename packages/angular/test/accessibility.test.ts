@@ -15,6 +15,7 @@ import {
   AvatarComponent,
   AlertComponent,
   AspectRatioComponent,
+  SkeletonComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -193,6 +194,13 @@ class AlertHost {
   template: `<simurgh-aspect-ratio [ratio]="0">Media</simurgh-aspect-ratio>`,
 })
 class AspectRatioHost {}
+
+@Component({
+  standalone: true,
+  imports: [SkeletonComponent],
+  template: `<simurgh-skeleton label="Loading profile" />`,
+})
+class SkeletonHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -479,6 +487,16 @@ describe('Angular accessibility contract', () => {
     ) as HTMLElement;
     expect(ratio.dataset['ratio']).toBe('1');
     expect(ratio.style.aspectRatio).toBe('1');
+    fixture.destroy();
+  });
+  it('exposes a named busy status for meaningful skeletons', () => {
+    const fixture = TestBed.createComponent(SkeletonHost);
+    fixture.detectChanges();
+    const skeleton = fixture.nativeElement.querySelector(
+      '[role=status]',
+    ) as HTMLElement;
+    expect(skeleton.getAttribute('aria-label')).toBe('Loading profile');
+    expect(skeleton.getAttribute('aria-busy')).toBe('true');
     fixture.destroy();
   });
 });
