@@ -27,15 +27,21 @@ Breadcrumb supplies the named navigation landmark while consumers retain native 
 </ComponentPreview>
 
 <Tabs>
-<TabItem label="React">```tsx
+<TabItem label="React">
+```tsx
 <Breadcrumb><ol>{items}</ol></Breadcrumb>
-```</TabItem>
-<TabItem label="Vue">```vue
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
 <Breadcrumb><ol><li v-for="item in items">{{ item.label }}</li></ol></Breadcrumb>
-```</TabItem>
-<TabItem label="Angular">```html
+```
+</TabItem>
+<TabItem label="Angular">
+```html
 <simurgh-breadcrumb><ol><li *ngFor="let item of items">{{ item.label }}</li></ol></simurgh-breadcrumb>
-```</TabItem>
+```
+</TabItem>
 </Tabs>
 
 Mark the final item with `aria-current="page"`. Separators should be decorative and hidden from assistive technology.

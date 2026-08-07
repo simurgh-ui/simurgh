@@ -18,15 +18,21 @@ Textarea preserves native multiline editing, form submission, validation, requir
 </ComponentPreview>
 
 <Tabs>
-<TabItem label="React">```tsx
+<TabItem label="React">
+```tsx
 <Textarea name="bio" required invalid={hasError} />
-```</TabItem>
-<TabItem label="Vue">```vue
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
 <Textarea v-model="bio" name="bio" required :invalid="hasError" />
-```</TabItem>
-<TabItem label="Angular">```html
+```
+</TabItem>
+<TabItem label="Angular">
+```html
 <simurgh-textarea [(value)]="bio" name="bio" [required]="true" [invalid]="hasError" />
-```</TabItem>
+```
+</TabItem>
 </Tabs>
 
 Pair Textarea with Label and connect help or validation text through `aria-describedby`.
