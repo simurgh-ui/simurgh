@@ -24,9 +24,10 @@ Items are checked only after their implementation exists and the relevant verifi
 
 - [x] Add complete per-component documentation with Angular, React, and Vue examples.
 - [x] Make registry additions component-granular instead of copying the complete catalog.
-- [ ] Harden overlay and composite-widget parity across all three frameworks.
+- [x] Harden overlay and composite-widget parity across all three frameworks.
   - [x] Add Angular Floating UI positioning, dialog focus management, and reactive tab/panel bindings.
   - [x] Add Vue tooltip hover/focus behavior, dialog focus containment, and overlay semantics.
-  - [ ] Complete cross-framework menu/select keyboard parity and contract coverage.
+  - [x] Complete cross-framework menu/select keyboard parity and contract coverage.
     - [x] Add React menu/listbox focus entry, navigation, keyboard selection, and form coverage.
     - [x] Add Vue menu/listbox focus entry, navigation, keyboard selection, and form coverage.
+    - [x] Add Angular menu/listbox focus entry, navigation, keyboard selection, and form coverage.

@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import axe from 'axe-core';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { CheckboxComponent, DialogComponent, SelectComponent, TabDirective, TabPanelDirective, TabsComponent, type SelectOption } from '../src/index.js';
+import { CheckboxComponent, DialogComponent, DropdownMenuComponent, DropdownMenuItemDirective, SelectComponent, TabDirective, TabPanelDirective, TabsComponent, type SelectOption } from '../src/index.js';
 
 beforeAll(() => TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting()));
 
@@ -19,6 +19,9 @@ class DialogHost {}
 
 @Component({ standalone: true, imports: [TabsComponent, TabDirective, TabPanelDirective], template: `<simurgh-tabs value="one"><button tab simurghTab="one">One</button><button tab simurghTab="two">Two</button><section simurghTabPanel="one">First</section><section simurghTabPanel="two">Second</section></simurgh-tabs>` })
 class TabsHost {}
+
+@Component({ standalone: true, imports: [DropdownMenuComponent, DropdownMenuItemDirective], template: `<simurgh-dropdown-menu><span trigger>Actions</span><button simurghMenuItem>First</button><button simurghMenuItem (select)="selected()">Second</button></simurgh-dropdown-menu>` })
+class MenuHost { selected = vi.fn(); }
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -41,6 +44,22 @@ describe('Angular accessibility contract', () => {
     optionsDom[1]!.click(); fixture.detectChanges();
     expect(fixture.componentInstance.value).toBe('isfahan');
     fixture.destroy();
+  });
+
+  it('navigates menu items and selects with the keyboard', async () => {
+    const fixture = TestBed.createComponent(MenuHost); fixture.detectChanges();
+    (fixture.nativeElement.querySelector('[aria-haspopup=menu]') as HTMLButtonElement).click(); fixture.detectChanges(); await new Promise(resolve => setTimeout(resolve));
+    const menu = fixture.nativeElement.querySelector('[role=menu]') as HTMLElement; const items = menu.querySelectorAll('[role=menuitem]') as NodeListOf<HTMLButtonElement>;
+    expect(document.activeElement).toBe(items[0]); menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    expect(document.activeElement).toBe(items[1]); menu.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(fixture.componentInstance.selected).toHaveBeenCalledOnce(); fixture.destroy();
+  });
+
+  it('selects and serializes listbox options from the keyboard', async () => {
+    const fixture = TestBed.createComponent(SelectComponent); fixture.componentInstance.name = 'city'; fixture.componentInstance.options = [{ value: 'tehran', label: 'Tehran' }, { value: 'isfahan', label: 'Isfahan' }]; fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector('[role=combobox]') as HTMLButtonElement; trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })); fixture.detectChanges(); await new Promise(resolve => setTimeout(resolve));
+    const list = fixture.nativeElement.querySelector('[role=listbox]') as HTMLElement; list.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })); list.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); fixture.detectChanges();
+    expect(fixture.componentInstance.value).toBe('isfahan'); const hidden = fixture.nativeElement.querySelector('input[type=hidden]') as HTMLInputElement; expect(hidden.value).toBe('isfahan'); fixture.destroy();
   });
 
   it('contains dialog focus and restores it to the trigger', async () => {
