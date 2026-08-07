@@ -16,6 +16,7 @@ import {
   RadioGroup,
   RadioGroupItem,
   Select,
+  Separator,
   Tabs,
   TabsContent,
   TabsList,
@@ -176,5 +177,16 @@ describe('Vue accessibility contract', () => {
     });
     expect(screen.getByLabelText('Email address').id).toBe('email');
     expect((await axe.run(document.body)).violations).toEqual([]);
+  });
+  it('exposes separator orientation and decorative mode', async () => {
+    const view = render(Separator, { props: { orientation: 'vertical' } });
+    expect(screen.getByRole('separator').getAttribute('aria-orientation')).toBe(
+      'vertical',
+    );
+    await view.rerender({ decorative: true });
+    expect(view.container.firstElementChild?.getAttribute('aria-hidden')).toBe(
+      'true',
+    );
+    expect(screen.queryByRole('separator')).toBeNull();
   });
 });

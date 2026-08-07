@@ -401,6 +401,22 @@ export class CheckboxComponent extends CheckBase {}
 export class LabelComponent {
   @Input() for?: string;
 }
+
+@Component({
+  selector: 'simurgh-separator',
+  standalone: true,
+  template: '',
+  host: {
+    '[attr.role]': "decorative ? 'none' : 'separator'",
+    '[attr.aria-hidden]': 'decorative || null',
+    '[attr.aria-orientation]': 'decorative ? null : orientation',
+    '[attr.data-orientation]': 'orientation',
+  },
+})
+export class SeparatorComponent {
+  @Input() orientation: Orientation = 'horizontal';
+  @Input() decorative = false;
+}
 @Component({
   selector: 'simurgh-switch',
   standalone: true,
@@ -777,6 +793,7 @@ export const SIMURGH_COMPONENTS = [
   AccordionItemComponent,
   CheckboxComponent,
   LabelComponent,
+  SeparatorComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,

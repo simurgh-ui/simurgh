@@ -20,6 +20,7 @@ import {
   RadioGroupComponent,
   RadioGroupItemDirective,
   SelectComponent,
+  SeparatorComponent,
   TabDirective,
   TabPanelDirective,
   TabsComponent,
@@ -122,6 +123,13 @@ class ComboboxHost {
   </main>`,
 })
 class LabelHost {}
+
+@Component({
+  standalone: true,
+  imports: [SeparatorComponent],
+  template: `<simurgh-separator orientation="vertical" />`,
+})
+class SeparatorHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -324,6 +332,16 @@ describe('Angular accessibility contract', () => {
     ) as HTMLLabelElement;
     expect(label.htmlFor).toBe('email');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('exposes semantic separator orientation', () => {
+    const fixture = TestBed.createComponent(SeparatorHost);
+    fixture.detectChanges();
+    const separator = fixture.nativeElement.querySelector(
+      '[role=separator]',
+    ) as HTMLElement;
+    expect(separator.getAttribute('aria-orientation')).toBe('vertical');
+    expect(separator.dataset['orientation']).toBe('vertical');
     fixture.destroy();
   });
 });

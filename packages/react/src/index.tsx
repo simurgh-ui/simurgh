@@ -631,6 +631,28 @@ export const Label = forwardRef<
   return <label ref={ref} {...props} />;
 });
 
+export const Separator = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    orientation?: Orientation;
+    decorative?: boolean;
+  }
+>(function Separator(
+  { orientation = 'horizontal', decorative = false, ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role={decorative ? 'none' : 'separator'}
+      aria-hidden={decorative || undefined}
+      aria-orientation={decorative ? undefined : orientation}
+      data-orientation={orientation}
+      {...props}
+    />
+  );
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

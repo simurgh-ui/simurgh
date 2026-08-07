@@ -25,6 +25,7 @@ import {
   RadioGroup,
   RadioGroupItem,
   Select,
+  Separator,
   Tabs,
   TabsContent,
   TabsList,
@@ -189,5 +190,16 @@ describe('React accessibility contract', () => {
     );
     expect(screen.getByLabelText('Email address').id).toBe('email');
     expect((await axe.run(document.body)).violations).toEqual([]);
+  });
+  it('exposes separator orientation and decorative mode', () => {
+    const { rerender } = render(<Separator orientation="vertical" />);
+    expect(screen.getByRole('separator').getAttribute('aria-orientation')).toBe(
+      'vertical',
+    );
+    rerender(<Separator decorative data-testid="separator" />);
+    expect(screen.getByTestId('separator').getAttribute('aria-hidden')).toBe(
+      'true',
+    );
+    expect(screen.queryByRole('separator')).toBeNull();
   });
 });

@@ -1,0 +1,39 @@
+---
+title: Separator
+description: A semantic or decorative divider with orientation metadata.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Separator divides related sections visually and, by default, exposes the native `separator` role. Decorative mode removes it from the accessibility tree when the division is purely visual.
+
+<ComponentPreview title="Separator">
+  <div class="preview-stack">
+    <strong>Account</strong>
+    <span class="preview-muted">Manage profile and security preferences.</span>
+    <hr class="preview-separator" />
+    <strong>Notifications</strong>
+    <span class="preview-muted">Choose which updates you receive.</span>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Separator orientation="horizontal" />
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Separator orientation="horizontal" />
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-separator orientation="horizontal" />
+    ```
+  </TabItem>
+</Tabs>
+
+Use `vertical` orientation only when the rendered divider is visually vertical. Set `decorative` when adjacent structure or spacing already conveys the grouping.

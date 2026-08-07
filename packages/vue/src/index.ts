@@ -565,6 +565,27 @@ export const Label = defineComponent({
   },
 });
 
+export const Separator = defineComponent({
+  name: 'SimurghSeparator',
+  props: {
+    orientation: {
+      type: String as PropType<Orientation>,
+      default: 'horizontal',
+    },
+    decorative: Boolean,
+  },
+  setup(props, { attrs }) {
+    return () =>
+      h('div', {
+        ...attrs,
+        role: props.decorative ? 'none' : 'separator',
+        'aria-hidden': props.decorative || undefined,
+        'aria-orientation': props.decorative ? undefined : props.orientation,
+        'data-orientation': props.orientation,
+      });
+  },
+});
+
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');
 

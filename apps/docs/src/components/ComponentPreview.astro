@@ -120,4 +120,12 @@ const { title = 'Preview', align = 'center' } = Astro.props;
     color: hsl(var(--simurgh-muted-foreground));
     font-size: 0.9rem;
   }
+
+  :global(.preview-separator) {
+    inline-size: 100%;
+    block-size: 1px;
+    margin: 0;
+    border: 0;
+    background: hsl(var(--simurgh-border));
+  }
 </style>

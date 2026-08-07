@@ -13,6 +13,7 @@
     "accordion",
     "checkbox",
     "label",
+    "separator",
     "switch",
     "radio-group",
     "toast"
@@ -65,6 +66,7 @@
       ],
       "checkbox": ["Checkbox"],
       "label": ["Label"],
+      "separator": ["Separator"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -97,6 +99,7 @@
       ],
       "checkbox": ["Checkbox"],
       "label": ["Label"],
+      "separator": ["Separator"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -112,6 +115,7 @@
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],
       "label": ["LabelComponent"],
+      "separator": ["SeparatorComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]
