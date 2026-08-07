@@ -898,6 +898,22 @@ export const Textarea = forwardRef<
   return <textarea ref={ref} aria-invalid={invalid || undefined} {...props} />;
 });
 
+export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
+export const Badge = forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone; status?: boolean }
+>(function Badge({ tone = 'neutral', status = false, ...props }, ref) {
+  return (
+    <span
+      ref={ref}
+      data-tone={tone}
+      role={status ? 'status' : undefined}
+      aria-live={status ? 'polite' : undefined}
+      {...props}
+    />
+  );
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

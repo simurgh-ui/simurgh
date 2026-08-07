@@ -12,6 +12,7 @@ import {
   Button,
   Input,
   Textarea,
+  Badge,
   Combobox,
   Dialog,
   DialogContent,
@@ -311,5 +312,17 @@ describe('Vue accessibility contract', () => {
     expect(new FormData(view.container.querySelector('form')!).get('bio')).toBe(
       'Poet',
     );
+  });
+  it('keeps badges neutral unless dynamic status is requested', async () => {
+    const view = render(Badge, {
+      props: { tone: 'success' },
+      slots: { default: 'Published' },
+    });
+    expect(screen.getByText('Published').getAttribute('data-tone')).toBe(
+      'success',
+    );
+    expect(screen.queryByRole('status')).toBeNull();
+    await view.rerender({ status: true });
+    expect(screen.getByRole('status').getAttribute('aria-live')).toBe('polite');
   });
 });

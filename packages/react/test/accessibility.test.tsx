@@ -19,6 +19,7 @@ import {
   Button,
   Input,
   Textarea,
+  Badge,
   Combobox,
   Dialog,
   DialogContent,
@@ -318,5 +319,14 @@ describe('React accessibility contract', () => {
     );
     const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
     expect(new FormData(textarea.form!).get('bio')).toBe('Poet');
+  });
+  it('keeps badges neutral unless dynamic status is requested', () => {
+    const { rerender } = render(<Badge tone="success">Published</Badge>);
+    expect(screen.getByText('Published').getAttribute('data-tone')).toBe(
+      'success',
+    );
+    expect(screen.queryByRole('status')).toBeNull();
+    rerender(<Badge status>Published</Badge>);
+    expect(screen.getByRole('status').getAttribute('aria-live')).toBe('polite');
   });
 });

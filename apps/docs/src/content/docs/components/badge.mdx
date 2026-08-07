@@ -1,0 +1,39 @@
+---
+title: Badge
+description: Inline metadata and optional polite status feedback.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Badge is a neutral inline label by default. Tone is exposed through `data-tone` for recipes, while optional status mode announces dynamic updates politely.
+
+<ComponentPreview title="Badge">
+  <div class="preview-row">
+    <span class="preview-button">Draft</span>
+    <span class="preview-button" data-active="true">
+      Published
+    </span>
+    <span class="preview-button">Archived</span>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Badge tone="success">Published</Badge>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Badge tone="success">Published</Badge>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-badge tone="success">Published</simurgh-badge>
+    ```
+  </TabItem>
+</Tabs>
+
+Enable `status` only when badge text changes dynamically and should be announced.

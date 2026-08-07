@@ -20,6 +20,7 @@ import {
   ButtonComponent,
   InputComponent,
   TextareaComponent,
+  BadgeComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -242,6 +243,15 @@ class InputHost {}
   </form>`,
 })
 class TextareaHost {}
+
+@Component({
+  standalone: true,
+  imports: [BadgeComponent],
+  template: `<simurgh-badge tone="success" [status]="true"
+    >Published</simurgh-badge
+  >`,
+})
+class BadgeHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -579,6 +589,17 @@ describe('Angular accessibility contract', () => {
       'textarea',
     ) as HTMLTextAreaElement;
     expect(new FormData(textarea.form!).get('bio')).toBe('Poet');
+    fixture.destroy();
+  });
+  it('exposes badge tone and optional polite status', () => {
+    const fixture = TestBed.createComponent(BadgeHost);
+    fixture.detectChanges();
+    const badge = fixture.nativeElement.querySelector(
+      'simurgh-badge',
+    ) as HTMLElement;
+    expect(badge.dataset['tone']).toBe('success');
+    expect(badge.getAttribute('role')).toBe('status');
+    expect(badge.getAttribute('aria-live')).toBe('polite');
     fixture.destroy();
   });
 });
