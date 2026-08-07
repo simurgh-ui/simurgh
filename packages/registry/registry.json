@@ -1,0 +1,12 @@
+{
+  "$schema": "https://simurgh-ui.dev/schema/registry.json",
+  "name": "simurgh",
+  "version": "0.1.0",
+  "components": ["dialog", "popover", "tooltip", "dropdown-menu", "select", "tabs", "accordion", "checkbox", "switch", "toast"],
+  "frameworks": {
+    "react": { "extension": "tsx", "source": "packages/react/src/index.tsx", "dependencies": ["@floating-ui/react", "@simurgh-ui/core"] },
+    "vue": { "extension": "ts", "source": "packages/vue/src/index.ts", "dependencies": ["@floating-ui/dom", "@simurgh-ui/core"] },
+    "angular": { "extension": "ts", "source": "packages/angular/src/index.ts", "dependencies": ["@floating-ui/dom", "@simurgh-ui/core"] }
+  },
+  "shared": { "styles": ["packages/styles/tokens.css", "packages/styles/recipes.css"], "tokens": ["background", "foreground", "surface", "primary", "accent", "danger", "border", "ring"] }
+}

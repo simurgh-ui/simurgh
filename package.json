@@ -1,0 +1,24 @@
+{
+  "name": "simurgh-ui",
+  "private": true,
+  "packageManager": "pnpm@11.16.0",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "lint": "turbo lint",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@eslint/js": "^9.36.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.36.0",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.8",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.1",
+    "vitest": "^3.2.4"
+  }
+}

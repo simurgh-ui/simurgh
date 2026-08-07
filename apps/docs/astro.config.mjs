@@ -1,0 +1,16 @@
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+
+export default defineConfig({
+  integrations: [starlight({
+    title: 'Simurgh UI',
+    description: 'Accessible, source-owned primitives for Angular, React, and Vue.',
+    social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/simurgh-ui/simurgh' }],
+    customCss: ['./src/styles/custom.css'],
+    sidebar: [
+      { label: 'Start', items: [{ label: 'Introduction', slug: 'index' }, { label: 'Installation', slug: 'guides/installation' }] },
+      { label: 'Foundations', items: [{ label: 'Theming', slug: 'guides/theming' }, { label: 'Accessibility & RTL', slug: 'guides/accessibility-rtl' }] },
+      { label: 'Components', autogenerate: { directory: 'components' } },
+    ],
+  })],
+});

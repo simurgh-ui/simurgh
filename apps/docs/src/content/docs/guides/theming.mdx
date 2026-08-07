@@ -1,0 +1,17 @@
+---
+title: Theming
+---
+
+Raw heritage tokens describe palette colors; semantic tokens describe UI roles. Override semantic roles in your application rather than changing component source:
+
+```css
+:root {
+  --simurgh-primary: var(--simurgh-persian-blue);
+  --simurgh-accent: var(--simurgh-saffron);
+  --simurgh-ring: var(--simurgh-firuzeh);
+}
+```
+
+The dark theme activates under `.dark` or `[data-theme='dark']`. Motion durations collapse under `prefers-reduced-motion`. Recipes use logical CSS properties so direction changes do not require another stylesheet.
+
+The architectural palette is informed by documented Iranian turquoise and cobalt tile glazing, lapis and ultramarine decoration, ochre pigments and brick, and strong blue/yellow and red/white contrasts. Semantic mappings are adjusted where necessary to retain readable contrast.

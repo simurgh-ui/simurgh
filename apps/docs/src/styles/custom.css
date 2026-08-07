@@ -1,0 +1,5 @@
+@import '@simurgh-ui/styles/tokens.css';
+@import '@simurgh-ui/styles/recipes.css';
+:root { --sl-color-accent-low: hsl(var(--simurgh-persian-blue)); --sl-color-accent: hsl(var(--simurgh-firuzeh)); --sl-color-accent-high: hsl(var(--simurgh-saffron)); }
+.hero h1 { background: linear-gradient(90deg, hsl(var(--simurgh-persian-blue)), hsl(var(--simurgh-firuzeh))); background-clip: text; color: transparent; }
+code { border-radius: .25rem; }

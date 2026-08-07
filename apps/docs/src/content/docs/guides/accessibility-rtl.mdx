@@ -1,0 +1,13 @@
+---
+title: Accessibility and RTL
+---
+
+Simurgh primitives expose appropriate roles and states, keyboard navigation, escape dismissal, focus restoration, and native form values. Dialogs trap and restore focus; composite widgets support Home, End, and directional arrow keys.
+
+Set direction at the document or component boundary:
+
+```html
+<section dir="rtl">…</section>
+```
+
+Horizontal keyboard movement reverses in RTL. Vertical movement does not. Layout recipes use `inline` and `block` logical properties. V1 is RTL-compatible; complete Persian localization and exhaustive visual certification remain follow-up work.

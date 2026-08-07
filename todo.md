@@ -1,0 +1,22 @@
+# Simurgh UI v1 implementation
+
+- [x] Establish the pnpm/Turborepo workspace, strict TypeScript, Changesets, linting, and formatting.
+- [x] Implement the framework-neutral core utilities and initial unit tests.
+- [x] Implement the shared CSS tokens and optional Tailwind recipes.
+- [x] Implement all ten accessible React primitives.
+- [x] Implement all ten accessible Vue primitives.
+- [x] Implement all ten accessible Angular primitives.
+- [x] Build the versioned, framework-aware component registry.
+- [x] Implement `simurgh init`, `add`, `list`, and `diff`.
+- [x] Build the Astro/Starlight documentation site with framework examples and guides.
+- [ ] Add framework contract, accessibility, CLI fixture, and browser-level test coverage.
+- [x] Add CI for linting, type checking, builds, unit tests, accessibility checks, and CLI fixtures.
+- [x] Install dependencies and run type checks, unit tests, linting, CLI smoke checks, and the production documentation build.
+
+## Follow-up quality gate
+
+The remaining unchecked testing item is intentional: package compilation and unit coverage pass, but
+full Testing Library + axe contracts for all three frameworks, disposable CLI application fixtures,
+and Playwright browser scenarios still need to be implemented before a public v1 release.
+
+Items are checked only after their implementation exists and the relevant verification has passed.

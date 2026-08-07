@@ -1,0 +1,9 @@
+node_modules
+.pnpm-store
+dist
+.turbo
+.astro
+coverage
+playwright-report
+test-results
+.DS_Store
