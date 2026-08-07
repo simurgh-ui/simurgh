@@ -2,9 +2,22 @@
 title: Select
 description: A custom listbox that participates in native form submission.
 ---
+
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 Select owns combobox/listbox state, disabled options, selection events, and a hidden native form value. Supply a visible placeholder that also names the trigger.
+
+<ComponentPreview title="Select">
+  <div class="preview-stack">
+    <label for="language-preview">Framework</label>
+    <select id="language-preview" class="preview-input">
+      <option>React</option>
+      <option>Vue</option>
+      <option>Angular</option>
+    </select>
+  </div>
+</ComponentPreview>
 
 <Tabs>
 <TabItem label="React">

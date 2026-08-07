@@ -4,8 +4,25 @@ description: An editable, filterable single-choice control with native form sema
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 Combobox keeps DOM focus on its text input while arrow keys move an active option through `aria-activedescendant`. Enter commits, Escape restores the selected label, disabled options are skipped, and the selected value participates in native form submission.
+
+<ComponentPreview title="Combobox" align="start">
+  <div class="preview-stack">
+    <label for="city-preview">City</label>
+    <input
+      id="city-preview"
+      class="preview-input"
+      value="Isf"
+      aria-controls="city-options"
+    />
+    <ul id="city-options" class="preview-list preview-panel">
+      <li class="preview-item">Isfahan</li>
+      <li class="preview-item preview-muted">Isfara</li>
+    </ul>
+  </div>
+</ComponentPreview>
 
 <Tabs>
 <TabItem label="React">

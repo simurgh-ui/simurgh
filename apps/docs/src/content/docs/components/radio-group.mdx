@@ -2,9 +2,23 @@
 title: Radio Group
 description: A single-choice form control with roving keyboard focus.
 ---
+
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 Radio Group allows one value from a visible set. Arrow keys move and select, Home/End jump to the boundaries, horizontal movement follows RTL direction, and the selected value participates in native form submission.
+
+<ComponentPreview title="Radio Group">
+  <fieldset class="preview-stack">
+    <legend>Choose a plan</legend>
+    <label class="preview-row">
+      <input type="radio" name="plan-preview" checked /> Basic
+    </label>
+    <label class="preview-row">
+      <input type="radio" name="plan-preview" /> Pro
+    </label>
+  </fieldset>
+</ComponentPreview>
 
 <Tabs>
 <TabItem label="React">

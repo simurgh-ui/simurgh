@@ -41,3 +41,4 @@ Items are checked only after their implementation exists and the relevant verifi
   - [x] Implement and verify Angular Combobox.
   - [x] Register and document Combobox after framework parity passes.
 - [x] Add native Label across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add rendered component previews to every component guide.

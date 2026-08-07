@@ -2,9 +2,17 @@
 title: Checkbox
 description: A binary choice with native form serialization.
 ---
+
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 Checkbox exposes `aria-checked`, keyboard activation, controlled and uncontrolled state, and an optional native form value. Always provide a visible or programmatic label.
+
+<ComponentPreview title="Checkbox">
+  <label class="preview-row">
+    <input type="checkbox" checked /> Receive product updates
+  </label>
+</ComponentPreview>
 
 <Tabs>
 <TabItem label="React">

@@ -4,8 +4,21 @@ description: A native label primitive for accessible form-control naming.
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 Label renders a native HTML `<label>`. It provides reliable accessible naming and preserves browser behavior such as activating or focusing the associated control when the label is selected.
+
+<ComponentPreview title="Label">
+  <div class="preview-stack">
+    <label for="email-preview">Email address</label>
+    <input
+      id="email-preview"
+      class="preview-input"
+      type="email"
+      placeholder="you@example.com"
+    />
+  </div>
+</ComponentPreview>
 
 <Tabs>
   <TabItem label="React">

@@ -2,9 +2,23 @@
 title: Switch
 description: An immediate on/off setting with native form semantics.
 ---
+
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 Switch shares Checkbox's state and form contract but uses `role="switch"`. Use it for settings that take effect immediately, not for selecting items in a submission workflow.
+
+<ComponentPreview title="Switch">
+  <button
+    class="preview-button preview-row"
+    data-active="true"
+    type="button"
+    role="switch"
+    aria-checked="true"
+  >
+    <span aria-hidden="true">●</span> Reduced motion
+  </button>
+</ComponentPreview>
 
 <Tabs>
 <TabItem label="React">

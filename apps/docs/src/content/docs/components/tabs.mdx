@@ -2,9 +2,32 @@
 title: Tabs
 description: Direction-aware tab navigation with roving focus.
 ---
+
 import { Tabs as CodeTabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 The root coordinates a tab list, triggers, and panels. Home/End and arrow keys move focus and selection. Horizontal arrows reverse in RTL; vertical arrows do not.
+
+<ComponentPreview title="Tabs">
+  <div class="preview-stack">
+    <div class="preview-row" role="tablist">
+      <button
+        class="preview-button"
+        data-active="true"
+        role="tab"
+        aria-selected="true"
+      >
+        Account
+      </button>
+      <button class="preview-button" role="tab" aria-selected="false">
+        Security
+      </button>
+    </div>
+    <section class="preview-panel" role="tabpanel">
+      Manage your account preferences.
+    </section>
+  </div>
+</ComponentPreview>
 
 <CodeTabs>
 <TabItem label="React">

@@ -2,24 +2,52 @@
 title: Tooltip
 description: A short description revealed by pointer hover or keyboard focus.
 ---
+
 import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 Tooltips are supplementary descriptions, not containers for interactive controls. They appear for both hover and focus and use `role="tooltip"`.
 
+<ComponentPreview title="Tooltip">
+  <div class="preview-stack">
+    <button
+      class="preview-button"
+      type="button"
+      aria-describedby="copy-tooltip"
+    >
+      Copy link
+    </button>
+    <span id="copy-tooltip" class="preview-panel" role="tooltip">
+      Copy page URL
+    </span>
+  </div>
+</ComponentPreview>
+
 <Tabs>
-<TabItem label="React">
-```tsx
-<Tooltip><TooltipTrigger aria-label="Copy address">Copy</TooltipTrigger><TooltipContent>Copy address</TooltipContent></Tooltip>
-```
-</TabItem>
-<TabItem label="Vue">
-```vue
-<Tooltip><TooltipTrigger aria-label="Copy address">Copy</TooltipTrigger><TooltipContent>Copy address</TooltipContent></Tooltip>
-```
-</TabItem>
-<TabItem label="Angular">
-```html
-<simurgh-tooltip><button trigger aria-label="Copy address">Copy</button><span>Copy address</span></simurgh-tooltip>
-```
-</TabItem>
+  <TabItem label="React">
+    ```tsx
+    <Tooltip>
+      <TooltipTrigger aria-label="Copy address">Copy</TooltipTrigger>
+      <TooltipContent>Copy address</TooltipContent>
+    </Tooltip>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Tooltip>
+      <TooltipTrigger aria-label="Copy address">Copy</TooltipTrigger>
+      <TooltipContent>Copy address</TooltipContent>
+    </Tooltip>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-tooltip>
+      <button trigger aria-label="Copy address">
+        Copy
+      </button>
+      <span>Copy address</span>
+    </simurgh-tooltip>
+    ```
+  </TabItem>
 </Tabs>

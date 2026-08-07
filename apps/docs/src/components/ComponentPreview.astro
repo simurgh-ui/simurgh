@@ -1,0 +1,123 @@
+---
+interface Props {
+  title?: string;
+  align?: 'start' | 'center';
+}
+
+const { title = 'Preview', align = 'center' } = Astro.props;
+---
+
+<figure class="simurgh-preview" data-align={align}>
+  <figcaption>
+    <span>{title}</span>
+    <span class="simurgh-preview__mark" aria-hidden="true">◆</span>
+  </figcaption>
+  <div class="simurgh-preview__demo">
+    <slot />
+  </div>
+</figure>
+
+<style>
+  .simurgh-preview {
+    overflow: hidden;
+    margin-block: 1.5rem 2rem;
+    border: 1px solid hsl(var(--simurgh-border));
+    border-radius: 0.9rem;
+    background:
+      radial-gradient(circle at 90% 10%, hsl(var(--simurgh-saffron) / 0.12), transparent 32%),
+      hsl(var(--simurgh-surface));
+    box-shadow: 0 1rem 2.5rem hsl(var(--simurgh-persian-blue) / 0.08);
+  }
+
+  figcaption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.9rem;
+    border-block-end: 1px solid hsl(var(--simurgh-border));
+    color: hsl(var(--simurgh-muted-foreground));
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .simurgh-preview__mark {
+    color: hsl(var(--simurgh-firuzeh));
+  }
+
+  .simurgh-preview__demo {
+    display: flex;
+    min-block-size: 12rem;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  [data-align='start'] .simurgh-preview__demo {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  :global(.preview-stack) {
+    display: grid;
+    inline-size: min(100%, 24rem);
+    gap: 0.75rem;
+  }
+
+  :global(.preview-row) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  :global(.preview-button),
+  :global(.preview-input),
+  :global(.preview-panel),
+  :global(.preview-item) {
+    border: 1px solid hsl(var(--simurgh-border));
+    border-radius: 0.55rem;
+    background: hsl(var(--simurgh-background));
+    color: hsl(var(--simurgh-foreground));
+  }
+
+  :global(.preview-button) {
+    padding: 0.55rem 0.85rem;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  :global(.preview-button[data-active='true']) {
+    border-color: hsl(var(--simurgh-firuzeh));
+    background: hsl(var(--simurgh-firuzeh) / 0.14);
+  }
+
+  :global(.preview-input) {
+    inline-size: 100%;
+    padding: 0.65rem 0.75rem;
+    font: inherit;
+  }
+
+  :global(.preview-panel) {
+    padding: 1rem;
+    box-shadow: 0 0.8rem 2rem hsl(var(--simurgh-persian-blue) / 0.12);
+  }
+
+  :global(.preview-list) {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0.35rem;
+    list-style: none;
+  }
+
+  :global(.preview-item) {
+    padding: 0.5rem 0.7rem;
+  }
+
+  :global(.preview-muted) {
+    color: hsl(var(--simurgh-muted-foreground));
+    font-size: 0.9rem;
+  }
+</style>
