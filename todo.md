@@ -67,3 +67,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add semantic Meter across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Toolbar across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Toggle Group across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add native Scroll Area across Angular, React, Vue, the registry, documentation, and contract tests.

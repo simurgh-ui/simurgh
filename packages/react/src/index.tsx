@@ -1144,6 +1144,29 @@ export const ToolbarButton = forwardRef<
   );
 });
 
+export const ScrollArea = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    orientation?: 'vertical' | 'horizontal' | 'both';
+    label?: string;
+  }
+>(function ScrollArea(
+  { orientation = 'vertical', label, tabIndex = 0, ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role={label ? 'region' : undefined}
+      aria-label={label}
+      tabIndex={tabIndex}
+      data-orientation={orientation}
+      data-slot="scroll-area"
+      {...props}
+    />
+  );
+});
+
 export const Textarea = forwardRef<
   HTMLTextAreaElement,
   TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }

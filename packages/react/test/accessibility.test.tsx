@@ -24,6 +24,7 @@ import {
   ToolbarButton,
   ToggleGroup,
   ToggleGroupItem,
+  ScrollArea,
   Textarea,
   Badge,
   Breadcrumb,
@@ -409,6 +410,16 @@ describe('React accessibility contract', () => {
     expect(document.activeElement).toBe(
       screen.getByRole('button', { name: 'Center' }),
     );
+  });
+  it('creates a focusable named native scroll region', () => {
+    render(
+      <ScrollArea label="Activity" orientation="both">
+        Updates
+      </ScrollArea>,
+    );
+    const area = screen.getByRole('region', { name: 'Activity' });
+    expect(area.getAttribute('tabindex')).toBe('0');
+    expect(area.getAttribute('data-orientation')).toBe('both');
   });
   it('serializes native textarea values', () => {
     render(

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   Checkbox,
   Avatar,
@@ -17,6 +17,7 @@ import {
   ToolbarButton,
   ToggleGroup,
   ToggleGroupItem,
+  ScrollArea,
   Textarea,
   Badge,
   Breadcrumb,
@@ -461,6 +462,15 @@ describe('Vue accessibility contract', () => {
     expect(document.activeElement).toBe(
       screen.getByRole('button', { name: 'Center' }),
     );
+  });
+  it('creates a focusable named native scroll region', () => {
+    render(ScrollArea, {
+      props: { label: 'Activity', orientation: 'both' },
+      slots: { default: 'Updates' },
+    });
+    const area = screen.getByRole('region', { name: 'Activity' });
+    expect(area.getAttribute('tabindex')).toBe('0');
+    expect(area.getAttribute('data-orientation')).toBe('both');
   });
   it('serializes native textarea values', () => {
     const view = render({

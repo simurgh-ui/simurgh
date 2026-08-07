@@ -1145,6 +1145,32 @@ export const ToolbarButton = defineComponent({
   },
 });
 
+export const ScrollArea = defineComponent({
+  name: 'SimurghScrollArea',
+  props: {
+    orientation: {
+      type: String as PropType<'vertical' | 'horizontal' | 'both'>,
+      default: 'vertical',
+    },
+    label: String,
+  },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          role: props.label ? 'region' : undefined,
+          'aria-label': props.label,
+          tabindex: attrs['tabindex'] ?? 0,
+          'data-orientation': props.orientation,
+          'data-slot': 'scroll-area',
+        },
+        slots.default?.(),
+      );
+  },
+});
+
 export const Textarea = defineComponent({
   name: 'SimurghTextarea',
   props: {

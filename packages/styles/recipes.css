@@ -315,6 +315,28 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
+[data-slot='scroll-area'] {
+  max-block-size: 20rem;
+  max-inline-size: 100%;
+  overscroll-behavior: contain;
+  scrollbar-color: hsl(var(--simurgh-border)) transparent;
+  scrollbar-width: thin;
+}
+[data-slot='scroll-area'][data-orientation='vertical'] {
+  overflow-block: auto;
+  overflow-inline: hidden;
+}
+[data-slot='scroll-area'][data-orientation='horizontal'] {
+  overflow-block: hidden;
+  overflow-inline: auto;
+}
+[data-slot='scroll-area'][data-orientation='both'] {
+  overflow: auto;
+}
+[data-slot='scroll-area']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
 @media (prefers-reduced-motion: reduce) {
   [data-state='open'] {
     animation: none;

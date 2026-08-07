@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(37);
+    expect(manifest.components).toHaveLength(38);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -128,6 +128,13 @@ describe('CLI application fixture', () => {
       const toggleGroup = join(fixture, 'src/components/ui/toggle-group.tsx');
       expect(readFileSync(toggleGroup, 'utf8')).toContain(
         'export function ToggleGroup',
+      );
+      execFileSync(process.execPath, [cli, 'add', 'scroll-area'], {
+        cwd: fixture,
+      });
+      const scrollArea = join(fixture, 'src/components/ui/scroll-area.tsx');
+      expect(readFileSync(scrollArea, 'utf8')).toContain(
+        'export const ScrollArea',
       );
       execFileSync(process.execPath, [cli, 'add', 'textarea'], {
         cwd: fixture,

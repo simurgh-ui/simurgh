@@ -25,6 +25,7 @@ import {
   ToolbarComponent,
   ToggleGroupComponent,
   ToggleGroupItemDirective,
+  ScrollAreaComponent,
   TextareaComponent,
   BadgeComponent,
   BreadcrumbComponent,
@@ -400,6 +401,14 @@ class ToolbarHost {}
   >`,
 })
 class ToggleGroupHost {}
+@Component({
+  standalone: true,
+  imports: [ScrollAreaComponent],
+  template: `<simurgh-scroll-area label="Activity" orientation="both"
+    >Updates</simurgh-scroll-area
+  >`,
+})
+class ScrollAreaHost {}
 
 @Component({
   standalone: true,
@@ -814,6 +823,17 @@ describe('Angular accessibility contract', () => {
       new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
     );
     expect(document.activeElement).toBe(buttons[1]);
+    fixture.destroy();
+  });
+  it('creates a focusable named native scroll region', () => {
+    const fixture = TestBed.createComponent(ScrollAreaHost);
+    fixture.detectChanges();
+    const area = fixture.nativeElement.querySelector(
+      '[role=region]',
+    ) as HTMLElement;
+    expect(area.getAttribute('aria-label')).toBe('Activity');
+    expect(area.tabIndex).toBe(0);
+    expect(area.dataset['orientation']).toBe('both');
     fixture.destroy();
   });
   it('serializes native textarea values', () => {
