@@ -587,6 +587,24 @@ export class SkeletonComponent {
 export class SpinnerComponent {
   @Input() label = 'Loading';
 }
+
+@Component({
+  selector: 'simurgh-button',
+  standalone: true,
+  template: `<button
+    [attr.type]="type"
+    [disabled]="disabled || loading"
+    [attr.aria-busy]="loading || null"
+    [attr.data-state]="loading ? 'loading' : 'idle'"
+  >
+    <ng-content />
+  </button>`,
+})
+export class ButtonComponent {
+  @Input() type: 'button' | 'submit' | 'reset' = 'button';
+  @Input() loading = false;
+  @Input() disabled = false;
+}
 @Component({
   selector: 'simurgh-switch',
   standalone: true,
@@ -972,6 +990,7 @@ export const SIMURGH_COMPONENTS = [
   AspectRatioComponent,
   SkeletonComponent,
   SpinnerComponent,
+  ButtonComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,

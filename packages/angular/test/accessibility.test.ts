@@ -17,6 +17,7 @@ import {
   AspectRatioComponent,
   SkeletonComponent,
   SpinnerComponent,
+  ButtonComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -209,6 +210,13 @@ class SkeletonHost {}
   template: `<simurgh-spinner label="Loading results" />`,
 })
 class SpinnerHost {}
+
+@Component({
+  standalone: true,
+  imports: [ButtonComponent],
+  template: `<simurgh-button [loading]="true">Save</simurgh-button>`,
+})
+class ButtonHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -515,6 +523,17 @@ describe('Angular accessibility contract', () => {
     ) as HTMLElement;
     expect(spinner.getAttribute('aria-label')).toBe('Loading results');
     expect(spinner.getAttribute('aria-busy')).toBe('true');
+    fixture.destroy();
+  });
+  it('defaults buttons safely and disables them while loading', () => {
+    const fixture = TestBed.createComponent(ButtonHost);
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector(
+      'button',
+    ) as HTMLButtonElement;
+    expect(button.type).toBe('button');
+    expect(button.disabled).toBe(true);
+    expect(button.getAttribute('aria-busy')).toBe('true');
     fixture.destroy();
   });
 });

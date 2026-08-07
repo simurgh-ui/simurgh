@@ -810,6 +810,29 @@ export const Spinner = defineComponent({
   },
 });
 
+export const Button = defineComponent({
+  name: 'SimurghButton',
+  props: {
+    loading: Boolean,
+    disabled: Boolean,
+    type: { type: String, default: 'button' },
+  },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        'button',
+        {
+          ...attrs,
+          type: props.type,
+          disabled: props.disabled || props.loading,
+          'aria-busy': props.loading || undefined,
+          'data-state': props.loading ? 'loading' : 'idle',
+        },
+        slots.default?.(),
+      );
+  },
+});
+
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');
 

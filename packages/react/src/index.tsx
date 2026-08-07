@@ -861,6 +861,27 @@ export const Spinner = forwardRef<
   );
 });
 
+export const Button = forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean }
+>(function Button(
+  { type = 'button', loading = false, disabled, children, ...props },
+  ref,
+) {
+  return (
+    <button
+      ref={ref}
+      type={type}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      data-state={loading ? 'loading' : 'idle'}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

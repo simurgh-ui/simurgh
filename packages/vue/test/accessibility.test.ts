@@ -9,6 +9,7 @@ import {
   AspectRatio,
   Skeleton,
   Spinner,
+  Button,
   Combobox,
   Dialog,
   DialogContent,
@@ -273,5 +274,19 @@ describe('Vue accessibility contract', () => {
     const spinner = screen.getByRole('status', { name: 'Loading results' });
     expect(spinner.getAttribute('aria-busy')).toBe('true');
     expect(spinner.firstElementChild?.getAttribute('aria-hidden')).toBe('true');
+  });
+  it('defaults buttons safely and blocks activation while loading', async () => {
+    const clicked = vi.fn();
+    render(Button, {
+      props: { loading: true, onClick: clicked },
+      slots: { default: 'Save' },
+    });
+    const button = screen.getByRole('button', {
+      name: 'Save',
+    }) as HTMLButtonElement;
+    expect(button.type).toBe('button');
+    expect(button.disabled).toBe(true);
+    await fireEvent.click(button);
+    expect(clicked).not.toHaveBeenCalled();
   });
 });

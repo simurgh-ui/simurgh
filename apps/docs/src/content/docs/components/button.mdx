@@ -1,0 +1,40 @@
+---
+title: Button
+description: Native button behavior with safe type and loading semantics.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Button defaults to `type="button"` to avoid accidental form submission. Loading state disables activation and exposes `aria-busy` while preserving its accessible name.
+
+<ComponentPreview title="Button">
+  <div class="preview-row">
+    <button class="preview-button" data-active="true" type="button">
+      Save changes
+    </button>
+    <button class="preview-button" type="button" disabled aria-busy="true">
+      Saving…
+    </button>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Button loading={saving}>Save changes</Button>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Button :loading="saving">Save changes</Button>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-button [loading]="saving">Save changes</simurgh-button>
+```
+</TabItem>
+</Tabs>
+
+Set `type="submit"` explicitly for form submission. Loading state intentionally disables the native button, preventing duplicate actions.
