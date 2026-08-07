@@ -812,6 +812,7 @@ export const Spinner = defineComponent({
 
 export const Button = defineComponent({
   name: 'SimurghButton',
+  inheritAttrs: false,
   props: {
     loading: Boolean,
     disabled: Boolean,
@@ -827,6 +828,8 @@ export const Button = defineComponent({
           disabled: props.disabled || props.loading,
           'aria-busy': props.loading || undefined,
           'data-state': props.loading ? 'loading' : 'idle',
+          onClick:
+            props.disabled || props.loading ? undefined : attrs['onClick'],
         },
         slots.default?.(),
       );
