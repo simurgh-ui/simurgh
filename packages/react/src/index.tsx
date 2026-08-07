@@ -28,6 +28,7 @@ import React, {
   useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
+  type LabelHTMLAttributes,
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
@@ -623,6 +624,13 @@ function CheckControl({
     </>
   );
 }
+export const Label = forwardRef<
+  HTMLLabelElement,
+  LabelHTMLAttributes<HTMLLabelElement>
+>(function Label(props, ref) {
+  return <label ref={ref} {...props} />;
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

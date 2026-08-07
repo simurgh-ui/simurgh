@@ -40,3 +40,4 @@ Items are checked only after their implementation exists and the relevant verifi
   - [x] Implement and verify Vue Combobox.
   - [x] Implement and verify Angular Combobox.
   - [x] Register and document Combobox after framework parity passes.
+- [x] Add native Label across Angular, React, Vue, the registry, documentation, and contract tests.

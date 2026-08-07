@@ -392,6 +392,15 @@ abstract class CheckBase {
     />`,
 })
 export class CheckboxComponent extends CheckBase {}
+
+@Component({
+  selector: 'simurgh-label',
+  standalone: true,
+  template: `<label [attr.for]="for"><ng-content /></label>`,
+})
+export class LabelComponent {
+  @Input() for?: string;
+}
 @Component({
   selector: 'simurgh-switch',
   standalone: true,
@@ -767,6 +776,7 @@ export const SIMURGH_COMPONENTS = [
   AccordionComponent,
   AccordionItemComponent,
   CheckboxComponent,
+  LabelComponent,
   SwitchComponent,
   SelectComponent,
   ComboboxComponent,

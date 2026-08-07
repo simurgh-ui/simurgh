@@ -16,6 +16,7 @@ import {
   DialogComponent,
   DropdownMenuComponent,
   DropdownMenuItemDirective,
+  LabelComponent,
   RadioGroupComponent,
   RadioGroupItemDirective,
   SelectComponent,
@@ -112,6 +113,15 @@ class ComboboxHost {
     { value: 'shiraz', label: 'Shiraz', disabled: true },
   ];
 }
+
+@Component({
+  standalone: true,
+  imports: [LabelComponent],
+  template: `<main>
+    <simurgh-label for="email">Email address</simurgh-label><input id="email" />
+  </main>`,
+})
+class LabelHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -303,6 +313,16 @@ describe('Angular accessibility contract', () => {
     expect(
       new FormData(fixture.nativeElement.querySelector('form')).get('city'),
     ).toBe('isfahan');
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('associates a native label with its form control', async () => {
+    const fixture = TestBed.createComponent(LabelHost);
+    fixture.detectChanges();
+    const label = fixture.nativeElement.querySelector(
+      'label',
+    ) as HTMLLabelElement;
+    expect(label.htmlFor).toBe('email');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });

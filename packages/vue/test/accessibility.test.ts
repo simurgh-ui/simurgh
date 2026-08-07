@@ -12,6 +12,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Label,
   RadioGroup,
   RadioGroupItem,
   Select,
@@ -166,6 +167,14 @@ describe('Vue accessibility contract', () => {
     expect(
       new FormData(view.container.querySelector('form')!).get('city'),
     ).toBe('isfahan');
+    expect((await axe.run(document.body)).violations).toEqual([]);
+  });
+  it('associates a native label with its form control', async () => {
+    render({
+      components: { Label },
+      template: `<main><Label for="email">Email address</Label><input id="email" /></main>`,
+    });
+    expect(screen.getByLabelText('Email address').id).toBe('email');
     expect((await axe.run(document.body)).violations).toEqual([]);
   });
 });

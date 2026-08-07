@@ -557,6 +557,14 @@ function checkControl(role: 'checkbox' | 'switch', name: string) {
     },
   });
 }
+export const Label = defineComponent({
+  name: 'SimurghLabel',
+  inheritAttrs: false,
+  setup(_, { attrs, slots }) {
+    return () => h('label', attrs, slots.default?.());
+  },
+});
+
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');
 
