@@ -17,6 +17,7 @@ import {
   Skeleton,
   Spinner,
   Button,
+  Input,
   Combobox,
   Dialog,
   DialogContent,
@@ -296,5 +297,16 @@ describe('React accessibility contract', () => {
     expect(button.disabled).toBe(true);
     fireEvent.click(button);
     expect(clicked).not.toHaveBeenCalled();
+  });
+  it('preserves native input form and invalid semantics', () => {
+    render(
+      <form>
+        <Input name="email" defaultValue="ada@example.com" required invalid />
+      </form>,
+    );
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+    expect(input.required).toBe(true);
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
   });
 });

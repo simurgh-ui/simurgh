@@ -1,0 +1,41 @@
+---
+title: Input
+description: A native text input with framework-native value bindings.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Input preserves native form submission, browser validation, input types, required and disabled states, while exposing explicit invalid semantics.
+
+<ComponentPreview title="Input">
+  <div class="preview-stack">
+    <label for="preview-email">Email address</label>
+    <input
+      id="preview-email"
+      class="preview-input"
+      type="email"
+      value="ada@example.com"
+    />
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Input name="email" type="email" required invalid={hasError} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Input v-model="email" name="email" type="email" required :invalid="hasError" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-input [(value)]="email" name="email" type="email" [required]="true" [invalid]="hasError" />
+```
+</TabItem>
+</Tabs>
+
+Pair Input with Label and connect validation text using `aria-describedby`. The `invalid` option sets `aria-invalid`; it does not replace validation logic.

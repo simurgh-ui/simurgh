@@ -18,6 +18,7 @@ import {
   SkeletonComponent,
   SpinnerComponent,
   ButtonComponent,
+  InputComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -217,6 +218,20 @@ class SpinnerHost {}
   template: `<simurgh-button [loading]="true">Save</simurgh-button>`,
 })
 class ButtonHost {}
+
+@Component({
+  standalone: true,
+  imports: [InputComponent],
+  template: `<form>
+    <simurgh-input
+      name="email"
+      value="ada@example.com"
+      [required]="true"
+      [invalid]="true"
+    />
+  </form>`,
+})
+class InputHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -534,6 +549,17 @@ describe('Angular accessibility contract', () => {
     expect(button.type).toBe('button');
     expect(button.disabled).toBe(true);
     expect(button.getAttribute('aria-busy')).toBe('true');
+    fixture.destroy();
+  });
+  it('preserves native input form and invalid semantics', () => {
+    const fixture = TestBed.createComponent(InputHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    expect(input.required).toBe(true);
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
     fixture.destroy();
   });
 });

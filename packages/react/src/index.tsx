@@ -29,6 +29,7 @@ import React, {
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type LabelHTMLAttributes,
+  type InputHTMLAttributes,
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
@@ -880,6 +881,13 @@ export const Button = forwardRef<
       {children}
     </button>
   );
+});
+
+export const Input = forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
+>(function Input({ invalid = false, ...props }, ref) {
+  return <input ref={ref} aria-invalid={invalid || undefined} {...props} />;
 });
 
 export function Checkbox(props: CheckProps) {

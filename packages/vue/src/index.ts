@@ -833,6 +833,34 @@ export const Button = defineComponent({
   },
 });
 
+export const Input = defineComponent({
+  name: 'SimurghInput',
+  props: {
+    modelValue: { type: [String, Number], default: '' },
+    type: { type: String, default: 'text' },
+    name: String,
+    required: Boolean,
+    disabled: Boolean,
+    invalid: Boolean,
+  },
+  emits: ['update:modelValue', 'change'],
+  setup(props, { attrs, emit }) {
+    return () =>
+      h('input', {
+        ...attrs,
+        type: props.type,
+        name: props.name,
+        required: props.required,
+        disabled: props.disabled,
+        value: props.modelValue,
+        'aria-invalid': props.invalid || undefined,
+        onInput: (event: Event) =>
+          emit('update:modelValue', (event.target as HTMLInputElement).value),
+        onChange: (event: Event) => emit('change', event),
+      });
+  },
+});
+
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');
 

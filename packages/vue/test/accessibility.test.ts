@@ -10,6 +10,7 @@ import {
   Skeleton,
   Spinner,
   Button,
+  Input,
   Combobox,
   Dialog,
   DialogContent,
@@ -288,5 +289,17 @@ describe('Vue accessibility contract', () => {
     expect(button.disabled).toBe(true);
     await fireEvent.click(button);
     expect(clicked).not.toHaveBeenCalled();
+  });
+  it('preserves native input form and invalid semantics', () => {
+    const view = render({
+      components: { Input },
+      template: `<form><Input name="email" model-value="ada@example.com" required invalid /></form>`,
+    });
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+    expect(input.required).toBe(true);
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(
+      new FormData(view.container.querySelector('form')!).get('email'),
+    ).toBe('ada@example.com');
   });
 });
