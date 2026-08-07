@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
 import { afterEach, describe, expect, it } from 'vitest';
-import { Checkbox, Dialog, DialogContent, DialogTrigger, Tabs, TabsContent, TabsList, TabsTrigger, Tooltip, TooltipContent, TooltipTrigger } from '../src/index.js';
+import { Checkbox, Dialog, DialogContent, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Select, Tabs, TabsContent, TabsList, TabsTrigger, Tooltip, TooltipContent, TooltipTrigger } from '../src/index.js';
 
 afterEach(cleanup);
 
@@ -42,5 +42,20 @@ describe('Vue accessibility contract', () => {
     await fireEvent.mouseLeave(trigger); expect(screen.queryByRole('tooltip')).toBeNull();
     await fireEvent.focus(trigger); expect(screen.getByRole('tooltip')).toBeTruthy();
     await fireEvent.blur(trigger); expect(screen.queryByRole('tooltip')).toBeNull();
+  });
+
+  it('navigates and selects menu items from the keyboard', async () => {
+    const selected = vi.fn();
+    render({ components: { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem }, setup: () => ({ selected }), template: `<DropdownMenu><DropdownMenuTrigger>Actions</DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem>First</DropdownMenuItem><DropdownMenuItem @select="selected">Second</DropdownMenuItem></DropdownMenuContent></DropdownMenu>` });
+    await fireEvent.click(screen.getByRole('button', { name: 'Actions' })); const items = screen.getAllByRole('menuitem'); items[0]!.focus();
+    await fireEvent.keyDown(screen.getByRole('menu'), { key: 'ArrowDown' }); expect(document.activeElement).toBe(items[1]);
+    await fireEvent.keyDown(screen.getByRole('menu'), { key: 'Enter' }); expect(selected).toHaveBeenCalledOnce();
+  });
+
+  it('selects listbox options with arrows and serializes the form', async () => {
+    const view = render({ components: { Select }, data: () => ({ city: '' }), template: `<form><Select v-model="city" name="city" placeholder="Choose city" :options="[{value:'tehran',label:'Tehran'},{value:'isfahan',label:'Isfahan'}]" /></form>` });
+    await fireEvent.keyDown(screen.getByRole('combobox'), { key: 'ArrowDown' }); const list = screen.getByRole('listbox');
+    await fireEvent.keyDown(list, { key: 'ArrowDown' }); await fireEvent.keyDown(list, { key: 'Enter' });
+    expect(screen.getByRole('combobox').textContent).toBe('Isfahan'); expect(new FormData(view.container.querySelector('form')!).get('city')).toBe('isfahan');
   });
 });

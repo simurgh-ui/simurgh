@@ -29,3 +29,4 @@ Items are checked only after their implementation exists and the relevant verifi
   - [x] Add Vue tooltip hover/focus behavior, dialog focus containment, and overlay semantics.
   - [ ] Complete cross-framework menu/select keyboard parity and contract coverage.
     - [x] Add React menu/listbox focus entry, navigation, keyboard selection, and form coverage.
+    - [x] Add Vue menu/listbox focus entry, navigation, keyboard selection, and form coverage.
