@@ -27,6 +27,7 @@
     "textarea",
     "badge",
     "breadcrumb",
+    "card",
     "switch",
     "radio-group",
     "toast"
@@ -93,6 +94,14 @@
       "textarea": ["Textarea"],
       "badge": ["Badge", "BadgeTone"],
       "breadcrumb": ["Breadcrumb"],
+      "card": [
+        "Card",
+        "CardHeader",
+        "CardTitle",
+        "CardDescription",
+        "CardContent",
+        "CardFooter"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -139,6 +148,14 @@
       "textarea": ["Textarea"],
       "badge": ["Badge", "BadgeTone"],
       "breadcrumb": ["Breadcrumb"],
+      "card": [
+        "Card",
+        "CardHeader",
+        "CardTitle",
+        "CardDescription",
+        "CardContent",
+        "CardFooter"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -168,6 +185,14 @@
       "textarea": ["TextareaComponent"],
       "badge": ["BadgeComponent", "BadgeTone"],
       "breadcrumb": ["BreadcrumbComponent"],
+      "card": [
+        "CardComponent",
+        "CardHeaderComponent",
+        "CardTitleComponent",
+        "CardDescriptionComponent",
+        "CardContentComponent",
+        "CardFooterComponent"
+      ],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

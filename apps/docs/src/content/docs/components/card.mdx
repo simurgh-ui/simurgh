@@ -1,0 +1,62 @@
+---
+title: Card
+description: Composable content anatomy for grouping related information and actions.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Card provides stable styling hooks without imposing interactive semantics. Use native headings, links, and buttons inside its anatomy.
+
+<ComponentPreview title="Card">
+  <article data-slot="card" style="max-width: 26rem">
+    <header data-slot="card-header">
+      <h3 data-slot="card-title">The Conference of the Birds</h3>
+      <p data-slot="card-description">A journey through seven valleys.</p>
+    </header>
+    <div data-slot="card-content">
+      Discover a composable, framework-native component system.
+    </div>
+    <footer data-slot="card-footer">
+      <button class="simurgh-trigger">Read more</button>
+    </footer>
+  </article>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Card>
+      <CardHeader>
+        <CardTitle>Simurgh</CardTitle>
+        <CardDescription>Accessible UI</CardDescription>
+      </CardHeader>
+      <CardContent>Source-owned components.</CardContent>
+    </Card>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Card>
+      <CardHeader>
+        <CardTitle>Simurgh</CardTitle>
+        <CardDescription>Accessible UI</CardDescription>
+      </CardHeader>
+      <CardContent>Source-owned components.</CardContent>
+    </Card>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-card>
+      <simurgh-card-header>
+        <simurgh-card-title>Simurgh</simurgh-card-title>
+        <simurgh-card-description>Accessible UI</simurgh-card-description>
+      </simurgh-card-header>
+      <simurgh-card-content>Source-owned components.</simurgh-card-content>
+    </simurgh-card>
+    ```
+  </TabItem>
+</Tabs>
+
+Card is intentionally neutral. Add `article`, `region`, or accessible naming only when the content warrants those semantics.

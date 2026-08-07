@@ -21,6 +21,9 @@ import {
   Textarea,
   Badge,
   Breadcrumb,
+  Card,
+  CardDescription,
+  CardTitle,
   Combobox,
   Dialog,
   DialogContent,
@@ -346,6 +349,20 @@ describe('React accessibility contract', () => {
     expect(screen.getByRole('navigation', { name: 'Breadcrumb' })).toBeTruthy();
     expect(screen.getByText('Button').getAttribute('aria-current')).toBe(
       'page',
+    );
+  });
+  it('composes card anatomy with native heading semantics', () => {
+    render(
+      <Card>
+        <CardTitle>Release</CardTitle>
+        <CardDescription>Ready to publish</CardDescription>
+      </Card>,
+    );
+    expect(
+      screen.getByRole('heading', { name: 'Release', level: 3 }),
+    ).toBeTruthy();
+    expect(screen.getByText('Ready to publish').getAttribute('data-slot')).toBe(
+      'card-description',
     );
   });
 });

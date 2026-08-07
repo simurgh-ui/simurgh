@@ -14,6 +14,9 @@ import {
   Textarea,
   Badge,
   Breadcrumb,
+  Card,
+  CardDescription,
+  CardTitle,
   Combobox,
   Dialog,
   DialogContent,
@@ -42,6 +45,18 @@ import {
 afterEach(cleanup);
 
 describe('Vue accessibility contract', () => {
+  it('composes card anatomy with native heading semantics', () => {
+    render({
+      components: { Card, CardTitle, CardDescription },
+      template: `<Card><CardTitle>Release</CardTitle><CardDescription>Ready to publish</CardDescription></Card>`,
+    });
+    expect(
+      screen.getByRole('heading', { name: 'Release', level: 3 }),
+    ).toBeTruthy();
+    expect(screen.getByText('Ready to publish').getAttribute('data-slot')).toBe(
+      'card-description',
+    );
+  });
   it('opens a modal and passes an axe audit', async () => {
     render({
       components: { Dialog, DialogTrigger, DialogContent },

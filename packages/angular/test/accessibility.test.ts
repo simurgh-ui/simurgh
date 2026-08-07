@@ -22,6 +22,9 @@ import {
   TextareaComponent,
   BadgeComponent,
   BreadcrumbComponent,
+  CardComponent,
+  CardDescriptionComponent,
+  CardTitleComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -71,6 +74,18 @@ class CheckboxHost {
   >`,
 })
 class DialogHost {}
+
+@Component({
+  standalone: true,
+  imports: [CardComponent, CardTitleComponent, CardDescriptionComponent],
+  template: `<simurgh-card
+    ><simurgh-card-title>Release</simurgh-card-title
+    ><simurgh-card-description
+      >Ready to publish</simurgh-card-description
+    ></simurgh-card
+  >`,
+})
+class CardHost {}
 
 @Component({
   standalone: true,
@@ -623,6 +638,17 @@ describe('Angular accessibility contract', () => {
     expect(nav.querySelector('[aria-current=page]')?.textContent).toBe(
       'Button',
     );
+    fixture.destroy();
+  });
+  it('composes card anatomy with native heading semantics', () => {
+    const fixture = TestBed.createComponent(CardHost);
+    fixture.detectChanges();
+    const title = fixture.nativeElement.querySelector('h3') as HTMLElement;
+    const description = fixture.nativeElement.querySelector(
+      '[data-slot=card-description]',
+    ) as HTMLElement;
+    expect(title.textContent).toBe('Release');
+    expect(description.textContent).toBe('Ready to publish');
     fixture.destroy();
   });
 });

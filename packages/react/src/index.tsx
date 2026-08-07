@@ -921,6 +921,42 @@ export const Breadcrumb = forwardRef<
   return <nav ref={ref} aria-label={label} {...props} />;
 });
 
+export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  function Card(props, ref) {
+    return <div ref={ref} data-slot="card" {...props} />;
+  },
+);
+export const CardHeader = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function CardHeader(props, ref) {
+  return <div ref={ref} data-slot="card-header" {...props} />;
+});
+export const CardTitle = forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(function CardTitle(props, ref) {
+  return <h3 ref={ref} data-slot="card-title" {...props} />;
+});
+export const CardDescription = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function CardDescription(props, ref) {
+  return <p ref={ref} data-slot="card-description" {...props} />;
+});
+export const CardContent = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function CardContent(props, ref) {
+  return <div ref={ref} data-slot="card-content" {...props} />;
+});
+export const CardFooter = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function CardFooter(props, ref) {
+  return <div ref={ref} data-slot="card-footer" {...props} />;
+});
+
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
 }

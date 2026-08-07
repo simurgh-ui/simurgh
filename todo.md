@@ -57,3 +57,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add native Textarea across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add semantic Badge across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Breadcrumb across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add composable Card anatomy across Angular, React, Vue, the registry, documentation, and contract tests.

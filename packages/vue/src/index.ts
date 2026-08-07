@@ -924,6 +924,29 @@ export const Breadcrumb = defineComponent({
   },
 });
 
+function cardPart(name: string, tag: string, slot: string) {
+  return defineComponent({
+    name,
+    setup(_, { attrs, slots }) {
+      return () => h(tag, { ...attrs, 'data-slot': slot }, slots.default?.());
+    },
+  });
+}
+export const Card = cardPart('SimurghCard', 'div', 'card');
+export const CardHeader = cardPart('SimurghCardHeader', 'div', 'card-header');
+export const CardTitle = cardPart('SimurghCardTitle', 'h3', 'card-title');
+export const CardDescription = cardPart(
+  'SimurghCardDescription',
+  'p',
+  'card-description',
+);
+export const CardContent = cardPart(
+  'SimurghCardContent',
+  'div',
+  'card-content',
+);
+export const CardFooter = cardPart('SimurghCardFooter', 'div', 'card-footer');
+
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');
 
