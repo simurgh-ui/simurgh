@@ -21,6 +21,13 @@ import {
   Field,
   FieldError,
   FieldLegend,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   Combobox,
   Dialog,
   DialogContent,
@@ -72,6 +79,26 @@ describe('Vue accessibility contract', () => {
     });
     expect(screen.getByRole('group', { name: 'Notifications' })).toBeTruthy();
     expect(screen.getByRole('alert').textContent).toBe('Choose at least one.');
+  });
+  it('renders a captioned native table', () => {
+    render({
+      components: {
+        Table,
+        TableCaption,
+        TableHeader,
+        TableRow,
+        TableHead,
+        TableBody,
+        TableCell,
+      },
+      template: `<Table><TableCaption>Recent releases</TableCaption><TableHeader><TableRow><TableHead>Version</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell>0.1.0</TableCell></TableRow></TableBody></Table>`,
+    });
+    expect(screen.getByRole('table', { name: 'Recent releases' })).toBeTruthy();
+    expect(
+      screen
+        .getByRole('columnheader', { name: 'Version' })
+        .getAttribute('scope'),
+    ).toBe('col');
   });
   it('opens a modal and passes an axe audit', async () => {
     render({

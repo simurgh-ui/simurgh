@@ -30,6 +30,7 @@
     "card",
     "kbd",
     "field",
+    "table",
     "switch",
     "radio-group",
     "toast"
@@ -106,6 +107,16 @@
       ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
+      "table": [
+        "Table",
+        "TableHeader",
+        "TableBody",
+        "TableFooter",
+        "TableRow",
+        "TableHead",
+        "TableCell",
+        "TableCaption"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -162,6 +173,16 @@
       ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
+      "table": [
+        "Table",
+        "TableHeader",
+        "TableBody",
+        "TableFooter",
+        "TableRow",
+        "TableHead",
+        "TableCell",
+        "TableCaption"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -205,6 +226,16 @@
         "FieldLegendComponent",
         "FieldDescriptionComponent",
         "FieldErrorComponent"
+      ],
+      "table": [
+        "TableDirective",
+        "TableHeaderDirective",
+        "TableBodyDirective",
+        "TableFooterDirective",
+        "TableRowDirective",
+        "TableHeadDirective",
+        "TableCellDirective",
+        "TableCaptionDirective"
       ],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],

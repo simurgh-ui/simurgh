@@ -969,6 +969,36 @@ export const FieldError = defineComponent({
       );
   },
 });
+export const Table = cardPart('SimurghTable', 'table', 'table');
+export const TableHeader = cardPart(
+  'SimurghTableHeader',
+  'thead',
+  'table-header',
+);
+export const TableBody = cardPart('SimurghTableBody', 'tbody', 'table-body');
+export const TableFooter = cardPart(
+  'SimurghTableFooter',
+  'tfoot',
+  'table-footer',
+);
+export const TableRow = cardPart('SimurghTableRow', 'tr', 'table-row');
+export const TableHead = defineComponent({
+  name: 'SimurghTableHead',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(
+        'th',
+        { scope: 'col', ...attrs, 'data-slot': 'table-head' },
+        slots.default?.(),
+      );
+  },
+});
+export const TableCell = cardPart('SimurghTableCell', 'td', 'table-cell');
+export const TableCaption = cardPart(
+  'SimurghTableCaption',
+  'caption',
+  'table-caption',
+);
 
 export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
 export const Switch = checkControl('switch', 'SimurghSwitch');

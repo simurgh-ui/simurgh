@@ -1,0 +1,91 @@
+---
+title: Table
+description: Native table anatomy with logical alignment and semantic headers.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Table keeps native caption, section, row, header, and cell semantics while adding stable styling hooks.
+
+<ComponentPreview title="Table">
+  <table data-slot="table">
+    <caption data-slot="table-caption">Recent releases</caption>
+    <thead data-slot="table-header">
+      <tr data-slot="table-row">
+        <th scope="col" data-slot="table-head">
+          Version
+        </th>
+        <th scope="col" data-slot="table-head">
+          Status
+        </th>
+      </tr>
+    </thead>
+    <tbody data-slot="table-body">
+      <tr data-slot="table-row">
+        <td data-slot="table-cell">0.1.0</td>
+        <td data-slot="table-cell">Stable</td>
+      </tr>
+      <tr data-slot="table-row">
+        <td data-slot="table-cell">0.2.0</td>
+        <td data-slot="table-cell">Planned</td>
+      </tr>
+    </tbody>
+  </table>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Table>
+      <TableCaption>Releases</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Version</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>0.1.0</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Table>
+      <TableCaption>Releases</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Version</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>0.1.0</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <table simurghTable>
+      <caption simurghTableCaption>Releases</caption>
+      <thead simurghTableHeader>
+        <tr simurghTableRow>
+          <th simurghTableHead>Version</th>
+        </tr>
+      </thead>
+      <tbody simurghTableBody>
+        <tr simurghTableRow>
+          <td simurghTableCell>0.1.0</td>
+        </tr>
+      </tbody>
+    </table>
+    ```
+  </TabItem>
+</Tabs>
+
+Use a caption when the table needs an accessible name. Angular uses attribute directives to preserve valid native table structure.

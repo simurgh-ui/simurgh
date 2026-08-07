@@ -29,6 +29,13 @@ import {
   FieldComponent,
   FieldErrorComponent,
   FieldLegendComponent,
+  TableBodyDirective,
+  TableCaptionDirective,
+  TableCellDirective,
+  TableDirective,
+  TableHeadDirective,
+  TableHeaderDirective,
+  TableRowDirective,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -110,6 +117,35 @@ class KbdHost {}
   >`,
 })
 class FieldHost {}
+
+@Component({
+  standalone: true,
+  imports: [
+    TableDirective,
+    TableCaptionDirective,
+    TableHeaderDirective,
+    TableRowDirective,
+    TableHeadDirective,
+    TableBodyDirective,
+    TableCellDirective,
+  ],
+  template: `<table simurghTable>
+    <caption simurghTableCaption>
+      Recent releases
+    </caption>
+    <thead simurghTableHeader>
+      <tr simurghTableRow>
+        <th simurghTableHead>Version</th>
+      </tr>
+    </thead>
+    <tbody simurghTableBody>
+      <tr simurghTableRow>
+        <td simurghTableCell>0.1.0</td>
+      </tr>
+    </tbody>
+  </table>`,
+})
+class TableHost {}
 
 @Component({
   standalone: true,
@@ -692,6 +728,16 @@ describe('Angular accessibility contract', () => {
     expect(fieldset.querySelector('[role=alert]')?.textContent).toBe(
       'Choose at least one.',
     );
+    fixture.destroy();
+  });
+  it('renders a captioned native table', () => {
+    const fixture = TestBed.createComponent(TableHost);
+    fixture.detectChanges();
+    const table = fixture.nativeElement.querySelector(
+      'table',
+    ) as HTMLTableElement;
+    expect(table.caption?.textContent?.trim()).toBe('Recent releases');
+    expect(table.querySelector('th')?.getAttribute('scope')).toBe('col');
     fixture.destroy();
   });
 });
