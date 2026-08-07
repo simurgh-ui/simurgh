@@ -8,6 +8,7 @@ import {
   Alert,
   AspectRatio,
   Skeleton,
+  Spinner,
   Combobox,
   Dialog,
   DialogContent,
@@ -266,5 +267,11 @@ describe('Vue accessibility contract', () => {
     expect(
       screen.getByRole('status', { name: 'Loading profile' }),
     ).toBeTruthy();
+  });
+  it('provides a named busy status for spinners', () => {
+    render(Spinner, { props: { label: 'Loading results' } });
+    const spinner = screen.getByRole('status', { name: 'Loading results' });
+    expect(spinner.getAttribute('aria-busy')).toBe('true');
+    expect(spinner.firstElementChild?.getAttribute('aria-hidden')).toBe('true');
   });
 });

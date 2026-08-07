@@ -1,0 +1,43 @@
+---
+title: Spinner
+description: A named indeterminate loading status.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Spinner communicates short indeterminate work as a polite, named busy status. Its visual indicator is hidden from assistive technology so only the concise label is announced.
+
+<ComponentPreview title="Spinner">
+  <div class="preview-row">
+    <span
+      class="preview-button"
+      role="status"
+      aria-label="Loading results"
+      aria-busy="true"
+    >
+      ◌
+    </span>
+    <strong>Loading results</strong>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Spinner label="Loading results" />
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Spinner label="Loading results" />
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-spinner label="Loading results" />
+    ```
+  </TabItem>
+</Tabs>
+
+Prefer Progress when completion can be measured and Skeleton when previewing the eventual page structure.

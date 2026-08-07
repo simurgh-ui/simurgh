@@ -21,6 +21,7 @@
     "alert",
     "aspect-ratio",
     "skeleton",
+    "spinner",
     "switch",
     "radio-group",
     "toast"
@@ -81,6 +82,7 @@
       "alert": ["Alert"],
       "aspect-ratio": ["AspectRatio"],
       "skeleton": ["Skeleton"],
+      "spinner": ["Spinner"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -121,6 +123,7 @@
       "alert": ["Alert"],
       "aspect-ratio": ["AspectRatio"],
       "skeleton": ["Skeleton"],
+      "spinner": ["Spinner"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -144,6 +147,7 @@
       "alert": ["AlertComponent"],
       "aspect-ratio": ["AspectRatioComponent"],
       "skeleton": ["SkeletonComponent"],
+      "spinner": ["SpinnerComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

@@ -16,6 +16,7 @@ import {
   AlertComponent,
   AspectRatioComponent,
   SkeletonComponent,
+  SpinnerComponent,
   ComboboxComponent,
   DialogComponent,
   DropdownMenuComponent,
@@ -201,6 +202,13 @@ class AspectRatioHost {}
   template: `<simurgh-skeleton label="Loading profile" />`,
 })
 class SkeletonHost {}
+
+@Component({
+  standalone: true,
+  imports: [SpinnerComponent],
+  template: `<simurgh-spinner label="Loading results" />`,
+})
+class SpinnerHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -497,6 +505,16 @@ describe('Angular accessibility contract', () => {
     ) as HTMLElement;
     expect(skeleton.getAttribute('aria-label')).toBe('Loading profile');
     expect(skeleton.getAttribute('aria-busy')).toBe('true');
+    fixture.destroy();
+  });
+  it('provides a named busy status for spinners', () => {
+    const fixture = TestBed.createComponent(SpinnerHost);
+    fixture.detectChanges();
+    const spinner = fixture.nativeElement.querySelector(
+      '[role=status]',
+    ) as HTMLElement;
+    expect(spinner.getAttribute('aria-label')).toBe('Loading results');
+    expect(spinner.getAttribute('aria-busy')).toBe('true');
     fixture.destroy();
   });
 });
