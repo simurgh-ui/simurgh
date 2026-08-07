@@ -4,7 +4,7 @@
   "type": "module",
   "bin": { "simurgh": "dist/index.js" },
   "files": ["dist"],
-  "scripts": { "build": "tsc -p tsconfig.json", "test": "vitest run", "typecheck": "tsc -p tsconfig.json --noEmit", "lint": "eslint src test" },
+  "scripts": { "build": "tsc -p tsconfig.json", "test": "tsc -p tsconfig.json && vitest run", "typecheck": "tsc -p tsconfig.json --noEmit", "lint": "eslint src test" },
   "dependencies": { "@simurgh-ui/registry": "workspace:*", "cac": "^6.7.14", "picocolors": "^1.1.1" },
   "devDependencies": { "@types/node": "^24.5.2" }
 }

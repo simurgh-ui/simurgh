@@ -2,7 +2,7 @@
   "name": "@simurgh-ui/docs",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev", "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && cross-env ASTRO_TELEMETRY_DISABLED=1 astro build", "test": "vitest run --passWithNoTests", "typecheck": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check", "lint": "eslint src" },
+  "scripts": { "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev", "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview", "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && cross-env ASTRO_TELEMETRY_DISABLED=1 astro build", "test": "vitest run --passWithNoTests", "typecheck": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check", "lint": "eslint src" },
   "dependencies": { "@astrojs/starlight": "^0.36.0", "@simurgh-ui/styles": "workspace:*", "astro": "^5.13.7", "sharp": "^0.34.4" },
   "devDependencies": { "@astrojs/check": "^0.9.4" }
 }
