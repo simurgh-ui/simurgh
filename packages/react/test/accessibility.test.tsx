@@ -22,6 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Label,
+  Progress,
   RadioGroup,
   RadioGroupItem,
   Select,
@@ -201,5 +202,17 @@ describe('React accessibility contract', () => {
       'true',
     );
     expect(screen.queryByRole('separator')).toBeNull();
+  });
+  it('clamps determinate progress and omits value when indeterminate', () => {
+    const { rerender } = render(
+      <Progress aria-label="Upload" value={120} max={80} />,
+    );
+    expect(screen.getByRole('progressbar').getAttribute('aria-valuenow')).toBe(
+      '80',
+    );
+    rerender(<Progress aria-label="Upload" />);
+    expect(screen.getByRole('progressbar').hasAttribute('aria-valuenow')).toBe(
+      false,
+    );
   });
 });

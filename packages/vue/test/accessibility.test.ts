@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Label,
+  Progress,
   RadioGroup,
   RadioGroupItem,
   Select,
@@ -188,5 +189,18 @@ describe('Vue accessibility contract', () => {
       'true',
     );
     expect(screen.queryByRole('separator')).toBeNull();
+  });
+  it('clamps determinate progress and omits value when indeterminate', async () => {
+    const view = render(Progress, {
+      props: { value: 120, max: 80 },
+      attrs: { 'aria-label': 'Upload' },
+    });
+    expect(screen.getByRole('progressbar').getAttribute('aria-valuenow')).toBe(
+      '80',
+    );
+    await view.rerender({ value: null, max: 80 });
+    expect(screen.getByRole('progressbar').hasAttribute('aria-valuenow')).toBe(
+      false,
+    );
   });
 });

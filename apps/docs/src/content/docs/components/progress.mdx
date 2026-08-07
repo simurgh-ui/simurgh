@@ -1,0 +1,48 @@
+---
+title: Progress
+description: An accessible determinate or indeterminate progress indicator.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Progress communicates the completion state of a long-running task. Values are clamped between zero and `max`; omitting `value` creates an indeterminate indicator without `aria-valuenow`.
+
+<ComponentPreview title="Progress">
+  <div class="preview-stack">
+    <div class="preview-row">
+      <strong>Uploading assets</strong>
+      <span class="preview-muted">68%</span>
+    </div>
+    <div
+      class="preview-progress"
+      role="progressbar"
+      aria-label="Uploading assets"
+      aria-valuenow="68"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      <span style="inline-size: 68%"></span>
+    </div>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Progress aria-label="Uploading assets" value={68} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Progress aria-label="Uploading assets" :value="68" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-progress aria-label="Uploading assets" [value]="68" />
+```
+</TabItem>
+</Tabs>
+
+Provide an accessible name with a visible label, `aria-label`, or `aria-labelledby`. Use `getValueLabel` when a raw numeric value is not meaningful, such as “3 of 5 files”.

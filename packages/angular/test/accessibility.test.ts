@@ -17,6 +17,7 @@ import {
   DropdownMenuComponent,
   DropdownMenuItemDirective,
   LabelComponent,
+  ProgressComponent,
   RadioGroupComponent,
   RadioGroupItemDirective,
   SelectComponent,
@@ -130,6 +131,13 @@ class LabelHost {}
   template: `<simurgh-separator orientation="vertical" />`,
 })
 class SeparatorHost {}
+
+@Component({
+  standalone: true,
+  imports: [ProgressComponent],
+  template: `<simurgh-progress aria-label="Upload" [value]="120" [max]="80" />`,
+})
+class ProgressHost {}
 
 describe('Angular accessibility contract', () => {
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
@@ -342,6 +350,20 @@ describe('Angular accessibility contract', () => {
     ) as HTMLElement;
     expect(separator.getAttribute('aria-orientation')).toBe('vertical');
     expect(separator.dataset['orientation']).toBe('vertical');
+    fixture.destroy();
+  });
+  it('clamps determinate progress to its maximum', () => {
+    const fixture = TestBed.createComponent(ProgressHost);
+    fixture.detectChanges();
+    const progress = fixture.nativeElement.querySelector(
+      '[role=progressbar]',
+    ) as HTMLElement;
+    expect(progress.getAttribute('aria-valuenow')).toBe('80');
+    expect(progress.getAttribute('aria-valuemax')).toBe('80');
+    expect(
+      (progress.querySelector('[data-part=indicator]') as HTMLElement).style
+        .inlineSize,
+    ).toBe('100%');
     fixture.destroy();
   });
 });

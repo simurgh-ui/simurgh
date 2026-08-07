@@ -14,6 +14,7 @@
     "checkbox",
     "label",
     "separator",
+    "progress",
     "switch",
     "radio-group",
     "toast"
@@ -67,6 +68,7 @@
       "checkbox": ["Checkbox"],
       "label": ["Label"],
       "separator": ["Separator"],
+      "progress": ["Progress"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -100,6 +102,7 @@
       "checkbox": ["Checkbox"],
       "label": ["Label"],
       "separator": ["Separator"],
+      "progress": ["Progress"],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -116,6 +119,7 @@
       "checkbox": ["CheckboxComponent"],
       "label": ["LabelComponent"],
       "separator": ["SeparatorComponent"],
+      "progress": ["ProgressComponent"],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],
       "toast": ["ToastViewportComponent", "ToastMessage"]

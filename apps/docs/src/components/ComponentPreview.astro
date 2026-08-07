@@ -128,4 +128,23 @@ const { title = 'Preview', align = 'center' } = Astro.props;
     border: 0;
     background: hsl(var(--simurgh-border));
   }
+
+  :global(.preview-progress) {
+    overflow: hidden;
+    inline-size: 100%;
+    block-size: 0.7rem;
+    border-radius: 999px;
+    background: hsl(var(--simurgh-muted));
+  }
+
+  :global(.preview-progress > span) {
+    display: block;
+    block-size: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--simurgh-persian-blue)),
+      hsl(var(--simurgh-firuzeh))
+    );
+  }
 </style>
