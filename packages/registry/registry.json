@@ -33,6 +33,7 @@
     "textarea",
     "badge",
     "breadcrumb",
+    "navigation-menu",
     "card",
     "kbd",
     "field",
@@ -111,6 +112,12 @@
       "textarea": ["Textarea"],
       "badge": ["Badge", "BadgeTone"],
       "breadcrumb": ["Breadcrumb"],
+      "navigation-menu": [
+        "NavigationMenu",
+        "NavigationMenuList",
+        "NavigationMenuItem",
+        "NavigationMenuLink"
+      ],
       "card": [
         "Card",
         "CardHeader",
@@ -194,6 +201,12 @@
       "textarea": ["Textarea"],
       "badge": ["Badge", "BadgeTone"],
       "breadcrumb": ["Breadcrumb"],
+      "navigation-menu": [
+        "NavigationMenu",
+        "NavigationMenuList",
+        "NavigationMenuItem",
+        "NavigationMenuLink"
+      ],
       "card": [
         "Card",
         "CardHeader",
@@ -260,6 +273,12 @@
       "textarea": ["TextareaComponent"],
       "badge": ["BadgeComponent", "BadgeTone"],
       "breadcrumb": ["BreadcrumbComponent"],
+      "navigation-menu": [
+        "NavigationMenuComponent",
+        "NavigationMenuListDirective",
+        "NavigationMenuItemDirective",
+        "NavigationMenuLinkDirective"
+      ],
       "card": [
         "CardComponent",
         "CardHeaderComponent",

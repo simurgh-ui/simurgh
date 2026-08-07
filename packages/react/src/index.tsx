@@ -1238,6 +1238,40 @@ export const Breadcrumb = forwardRef<
   return <nav ref={ref} aria-label={label} {...props} />;
 });
 
+export const NavigationMenu = forwardRef<
+  HTMLElement,
+  React.HTMLAttributes<HTMLElement> & { label?: string }
+>(function NavigationMenu({ label = 'Main navigation', ...props }, ref) {
+  return (
+    <nav ref={ref} aria-label={label} data-slot="navigation-menu" {...props} />
+  );
+});
+export const NavigationMenuList = forwardRef<
+  HTMLUListElement,
+  React.HTMLAttributes<HTMLUListElement>
+>(function NavigationMenuList(props, ref) {
+  return <ul ref={ref} data-slot="navigation-menu-list" {...props} />;
+});
+export const NavigationMenuItem = forwardRef<
+  HTMLLIElement,
+  React.LiHTMLAttributes<HTMLLIElement>
+>(function NavigationMenuItem(props, ref) {
+  return <li ref={ref} data-slot="navigation-menu-item" {...props} />;
+});
+export const NavigationMenuLink = forwardRef<
+  HTMLAnchorElement,
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
+>(function NavigationMenuLink({ current = false, ...props }, ref) {
+  return (
+    <a
+      ref={ref}
+      {...props}
+      aria-current={current ? 'page' : props['aria-current']}
+      data-slot="navigation-menu-link"
+    />
+  );
+});
+
 export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function Card(props, ref) {
     return <div ref={ref} data-slot="card" {...props} />;

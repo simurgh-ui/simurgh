@@ -30,6 +30,10 @@ import {
   TextareaComponent,
   BadgeComponent,
   BreadcrumbComponent,
+  NavigationMenuComponent,
+  NavigationMenuListDirective,
+  NavigationMenuItemDirective,
+  NavigationMenuLinkDirective,
   CardComponent,
   CardDescriptionComponent,
   CardTitleComponent,
@@ -354,6 +358,27 @@ class LinkHost {
   external = true;
   disabled = false;
 }
+
+@Component({
+  standalone: true,
+  imports: [
+    NavigationMenuComponent,
+    NavigationMenuListDirective,
+    NavigationMenuItemDirective,
+    NavigationMenuLinkDirective,
+  ],
+  template: `<simurgh-navigation-menu label="Primary"
+    ><ul simurghNavigationMenuList>
+      <li simurghNavigationMenuItem>
+        <a simurghNavigationMenuLink href="/" [current]="true">Home</a>
+      </li>
+      <li simurghNavigationMenuItem>
+        <a simurghNavigationMenuLink href="/docs">Docs</a>
+      </li>
+    </ul></simurgh-navigation-menu
+  >`,
+})
+class NavigationMenuHost {}
 
 @Component({
   standalone: true,
@@ -786,6 +811,21 @@ describe('Angular accessibility contract', () => {
     expect(link.getAttribute('href')).toBeNull();
     expect(link.getAttribute('aria-disabled')).toBe('true');
     expect(link.tabIndex).toBe(-1);
+    fixture.destroy();
+  });
+  it('provides a named navigation landmark with current-page semantics', () => {
+    const fixture = TestBed.createComponent(NavigationMenuHost);
+    fixture.detectChanges();
+    const navigation = fixture.nativeElement.querySelector(
+      'nav',
+    ) as HTMLElement;
+    const links = fixture.nativeElement.querySelectorAll(
+      'a',
+    ) as NodeListOf<HTMLAnchorElement>;
+    expect(navigation.getAttribute('aria-label')).toBe('Primary');
+    expect(links).toHaveLength(2);
+    expect(links[0]?.getAttribute('aria-current')).toBe('page');
+    expect(links[1]?.tabIndex).toBe(0);
     fixture.destroy();
   });
   it('preserves native input form and invalid semantics', () => {

@@ -1,0 +1,70 @@
+---
+title: Navigation Menu
+description: Semantic site navigation with native links and current-page state.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Navigation Menu composes a named navigation landmark, a native list, and standard anchors. Browser link behavior remains intact for keyboard users, assistive technology, context menus, and modified clicks.
+
+<ComponentPreview title="Navigation Menu">
+  <nav aria-label="Preview navigation">
+    <ul data-slot="navigation-menu-list">
+      <li>
+        <a
+          data-slot="navigation-menu-link"
+          href="#navigation-menu-examples"
+          aria-current="page"
+        >
+          Overview
+        </a>
+      </li>
+      <li>
+        <a data-slot="navigation-menu-link" href="#navigation-menu-examples">
+          Components
+        </a>
+      </li>
+      <li>
+        <a data-slot="navigation-menu-link" href="#navigation-menu-examples">
+          Guides
+        </a>
+      </li>
+    </ul>
+  </nav>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<NavigationMenu label="Primary">
+  <NavigationMenuList>
+    <NavigationMenuItem><NavigationMenuLink href="/" current>Home</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/docs">Docs</NavigationMenuLink></NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<NavigationMenu label="Primary">
+  <NavigationMenuList>
+    <NavigationMenuItem><NavigationMenuLink href="/" current>Home</NavigationMenuLink></NavigationMenuItem>
+    <NavigationMenuItem><NavigationMenuLink href="/docs">Docs</NavigationMenuLink></NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-navigation-menu label="Primary">
+  <ul simurghNavigationMenuList>
+    <li simurghNavigationMenuItem><a simurghNavigationMenuLink href="/" [current]="true">Home</a></li>
+    <li simurghNavigationMenuItem><a simurghNavigationMenuLink href="/docs">Docs</a></li>
+  </ul>
+</simurgh-navigation-menu>
+```
+</TabItem>
+</Tabs>
+
+Use `current` only for the page represented by the active link. The recipes use logical spacing and naturally follow document direction.

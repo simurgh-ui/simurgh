@@ -29,6 +29,10 @@ import {
   Textarea,
   Badge,
   Breadcrumb,
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
   Card,
   CardDescription,
   CardTitle,
@@ -353,6 +357,28 @@ describe('React accessibility contract', () => {
     expect(disabled.getAttribute('tabindex')).toBe('-1');
     fireEvent.click(disabled);
     expect(clicked).not.toHaveBeenCalled();
+  });
+  it('provides a named navigation landmark with current-page semantics', () => {
+    render(
+      <NavigationMenu label="Primary">
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/" current>
+              Home
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/docs">Docs</NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>,
+    );
+    expect(screen.getByRole('navigation', { name: 'Primary' })).toBeTruthy();
+    expect(screen.getByRole('list').children).toHaveLength(2);
+    expect(
+      screen.getByRole('link', { name: 'Home' }).getAttribute('aria-current'),
+    ).toBe('page');
+    expect(screen.getByRole('link', { name: 'Docs' }).tabIndex).toBe(0);
   });
   it('preserves native input form and invalid semantics', () => {
     render(
