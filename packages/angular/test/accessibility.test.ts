@@ -23,6 +23,9 @@ import {
   ButtonGroupTextComponent,
   LinkComponent,
   InputComponent,
+  InputGroupAddonComponent,
+  InputGroupComponent,
+  InputGroupTextComponent,
   SliderComponent,
   MeterComponent,
   ToolbarButtonDirective,
@@ -512,6 +515,26 @@ class MenubarHost {}
   </form>`,
 })
 class InputHost {}
+
+@Component({
+  standalone: true,
+  imports: [
+    InputComponent,
+    InputGroupAddonComponent,
+    InputGroupComponent,
+    InputGroupTextComponent,
+  ],
+  template: `<form>
+    <label id="website-label" for="website">Website</label>
+    <simurgh-input-group aria-labelledby="website-label">
+      <simurgh-input-group-addon [decorative]="true">
+        <simurgh-input-group-text>https://</simurgh-input-group-text>
+      </simurgh-input-group-addon>
+      <simurgh-input id="website" name="website" value="example.com" />
+    </simurgh-input-group>
+  </form>`,
+})
+class InputGroupHost {}
 
 @Component({
   standalone: true,
@@ -1119,6 +1142,24 @@ describe('Angular accessibility contract', () => {
     expect(input.required).toBe(true);
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
+    fixture.destroy();
+  });
+  it('groups an input with a decorative addon without changing its form value', () => {
+    const fixture = TestBed.createComponent(InputGroupHost);
+    fixture.detectChanges();
+    const group = fixture.nativeElement.querySelector(
+      'simurgh-input-group',
+    ) as HTMLElement;
+    const addon = fixture.nativeElement.querySelector(
+      'simurgh-input-group-addon',
+    ) as HTMLElement;
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    expect(group.getAttribute('role')).toBe('group');
+    expect(group.getAttribute('aria-labelledby')).toBe('website-label');
+    expect(addon.getAttribute('aria-hidden')).toBe('true');
+    expect(new FormData(input.form!).get('website')).toBe('example.com');
     fixture.destroy();
   });
   it('updates and serializes native select values', () => {

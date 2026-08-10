@@ -22,6 +22,9 @@ import {
   ButtonGroupText,
   Link,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
   Slider,
   Meter,
   Toolbar,
@@ -567,6 +570,31 @@ describe('React accessibility contract', () => {
     expect(input.required).toBe(true);
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
+  });
+  it('groups an input with a decorative addon without changing its form value', () => {
+    render(
+      <form>
+        <label id="website-label" htmlFor="website">
+          Website
+        </label>
+        <InputGroup aria-labelledby="website-label">
+          <InputGroupAddon decorative>
+            <InputGroupText>https://</InputGroupText>
+          </InputGroupAddon>
+          <Input id="website" name="website" defaultValue="example.com" />
+        </InputGroup>
+      </form>,
+    );
+    const group = screen.getByRole('group', { name: 'Website' });
+    const input = screen.getByRole('textbox', { name: 'Website' });
+    expect(
+      group
+        .querySelector('[data-slot=input-group-addon]')
+        ?.getAttribute('aria-hidden'),
+    ).toBe('true');
+    expect(new FormData((input as HTMLInputElement).form!).get('website')).toBe(
+      'example.com',
+    );
   });
   it('uses native slider constraints and form serialization', () => {
     render(

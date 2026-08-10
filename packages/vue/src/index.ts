@@ -1408,6 +1408,61 @@ export const Input = defineComponent({
       });
   },
 });
+
+export const InputGroup = defineComponent({
+  name: 'SimurghInputGroup',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          role: attrs['role'] ?? 'group',
+          'data-slot': 'input-group',
+        },
+        slots.default?.(),
+      );
+  },
+});
+
+export const InputGroupAddon = defineComponent({
+  name: 'SimurghInputGroupAddon',
+  props: {
+    align: {
+      type: String as PropType<
+        'inline-start' | 'inline-end' | 'block-start' | 'block-end'
+      >,
+      default: 'inline-start',
+    },
+    decorative: Boolean,
+  },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          'aria-hidden': props.decorative || undefined,
+          'data-align': props.align,
+          'data-slot': 'input-group-addon',
+        },
+        slots.default?.(),
+      );
+  },
+});
+
+export const InputGroupText = defineComponent({
+  name: 'SimurghInputGroupText',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(
+        'span',
+        { ...attrs, 'data-slot': 'input-group-text' },
+        slots.default?.(),
+      );
+  },
+});
+
 export const NativeSelect = defineComponent({
   name: 'SimurghNativeSelect',
   props: {

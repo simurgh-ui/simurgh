@@ -15,6 +15,9 @@ import {
   ButtonGroupText,
   Link,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
   Slider,
   Meter,
   Toolbar,
@@ -627,6 +630,23 @@ describe('Vue accessibility contract', () => {
     expect(
       new FormData(view.container.querySelector('form')!).get('email'),
     ).toBe('ada@example.com');
+  });
+  it('groups an input with a decorative addon without changing its form value', () => {
+    const view = render({
+      components: { Input, InputGroup, InputGroupAddon, InputGroupText },
+      template: `<form><label id="website-label" for="website">Website</label><InputGroup aria-labelledby="website-label"><InputGroupAddon decorative><InputGroupText>https://</InputGroupText></InputGroupAddon><Input id="website" name="website" model-value="example.com" /></InputGroup></form>`,
+    });
+    const group = screen.getByRole('group', { name: 'Website' });
+    const input = screen.getByRole('textbox', { name: 'Website' });
+    expect(
+      group
+        .querySelector('[data-slot=input-group-addon]')
+        ?.getAttribute('aria-hidden'),
+    ).toBe('true');
+    expect(
+      new FormData(view.container.querySelector('form')!).get('website'),
+    ).toBe('example.com');
+    expect(input).toBeTruthy();
   });
   it('updates and serializes a native slider', async () => {
     render({
