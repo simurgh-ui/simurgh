@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(40);
+    expect(manifest.components).toHaveLength(41);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -17,6 +17,7 @@ describe('registry', () => {
       expect(
         registryEntry('combobox', framework).symbols.length,
       ).toBeGreaterThan(1);
+      expect(registryEntry('menubar', framework).symbols.length).toBe(2);
     }
   });
 });

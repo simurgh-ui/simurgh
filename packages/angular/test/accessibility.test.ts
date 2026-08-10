@@ -34,6 +34,8 @@ import {
   NavigationMenuListDirective,
   NavigationMenuItemDirective,
   NavigationMenuLinkDirective,
+  MenubarComponent,
+  MenubarItemDirective,
   CardComponent,
   CardDescriptionComponent,
   CardTitleComponent,
@@ -379,6 +381,17 @@ class LinkHost {
   >`,
 })
 class NavigationMenuHost {}
+
+@Component({
+  standalone: true,
+  imports: [MenubarComponent, MenubarItemDirective],
+  template: `<simurgh-menubar label="Editor" direction="rtl">
+    <button simurghMenubarItem>File</button>
+    <button simurghMenubarItem [disabled]="true">Edit</button>
+    <button simurghMenubarItem>View</button>
+  </simurgh-menubar>`,
+})
+class MenubarHost {}
 
 @Component({
   standalone: true,
@@ -826,6 +839,24 @@ describe('Angular accessibility contract', () => {
     expect(links).toHaveLength(2);
     expect(links[0]?.getAttribute('aria-current')).toBe('page');
     expect(links[1]?.tabIndex).toBe(0);
+    fixture.destroy();
+  });
+  it('provides RTL-aware roving focus in a named menubar', () => {
+    const fixture = TestBed.createComponent(MenubarHost);
+    fixture.detectChanges();
+    const items = fixture.nativeElement.querySelectorAll(
+      '[role=menuitem]',
+    ) as NodeListOf<HTMLButtonElement>;
+    items[0]!.focus();
+    items[0]!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(items[2]);
+    expect(
+      fixture.nativeElement
+        .querySelector('[role=menubar]')
+        .getAttribute('aria-label'),
+    ).toBe('Editor');
     fixture.destroy();
   });
   it('preserves native input form and invalid semantics', () => {

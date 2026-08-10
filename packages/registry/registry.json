@@ -34,6 +34,7 @@
     "badge",
     "breadcrumb",
     "navigation-menu",
+    "menubar",
     "card",
     "kbd",
     "field",
@@ -118,6 +119,7 @@
         "NavigationMenuItem",
         "NavigationMenuLink"
       ],
+      "menubar": ["Menubar", "MenubarItem"],
       "card": [
         "Card",
         "CardHeader",
@@ -207,6 +209,7 @@
         "NavigationMenuItem",
         "NavigationMenuLink"
       ],
+      "menubar": ["Menubar", "MenubarItem"],
       "card": [
         "Card",
         "CardHeader",
@@ -279,6 +282,7 @@
         "NavigationMenuItemDirective",
         "NavigationMenuLinkDirective"
       ],
+      "menubar": ["MenubarComponent", "MenubarItemDirective"],
       "card": [
         "CardComponent",
         "CardHeaderComponent",

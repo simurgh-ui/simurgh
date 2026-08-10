@@ -26,6 +26,8 @@ import {
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
+  Menubar,
+  MenubarItem,
   Card,
   CardDescription,
   CardTitle,
@@ -431,6 +433,19 @@ describe('Vue accessibility contract', () => {
       screen.getByRole('link', { name: 'Home' }).getAttribute('aria-current'),
     ).toBe('page');
     expect(screen.getByRole('link', { name: 'Docs' }).tabIndex).toBe(0);
+  });
+  it('provides RTL-aware roving focus in a named menubar', async () => {
+    render({
+      components: { Menubar, MenubarItem },
+      template: `<Menubar label="Editor" direction="rtl"><MenubarItem>File</MenubarItem><MenubarItem disabled>Edit</MenubarItem><MenubarItem>View</MenubarItem></Menubar>`,
+    });
+    const file = screen.getByRole('menuitem', { name: 'File' });
+    file.focus();
+    await fireEvent.keyDown(file, { key: 'ArrowLeft' });
+    expect(document.activeElement).toBe(
+      screen.getByRole('menuitem', { name: 'View' }),
+    );
+    expect(screen.getByRole('menubar', { name: 'Editor' })).toBeTruthy();
   });
   it('preserves native input form and invalid semantics', () => {
     const view = render({

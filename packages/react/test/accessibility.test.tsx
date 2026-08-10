@@ -33,6 +33,8 @@ import {
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
+  Menubar,
+  MenubarItem,
   Card,
   CardDescription,
   CardTitle,
@@ -379,6 +381,22 @@ describe('React accessibility contract', () => {
       screen.getByRole('link', { name: 'Home' }).getAttribute('aria-current'),
     ).toBe('page');
     expect(screen.getByRole('link', { name: 'Docs' }).tabIndex).toBe(0);
+  });
+  it('provides RTL-aware roving focus in a named menubar', () => {
+    render(
+      <Menubar label="Editor" direction="rtl">
+        <MenubarItem>File</MenubarItem>
+        <MenubarItem disabled>Edit</MenubarItem>
+        <MenubarItem>View</MenubarItem>
+      </Menubar>,
+    );
+    const file = screen.getByRole('menuitem', { name: 'File' });
+    file.focus();
+    fireEvent.keyDown(file, { key: 'ArrowLeft' });
+    expect(document.activeElement).toBe(
+      screen.getByRole('menuitem', { name: 'View' }),
+    );
+    expect(screen.getByRole('menubar', { name: 'Editor' })).toBeTruthy();
   });
   it('preserves native input form and invalid semantics', () => {
     render(
