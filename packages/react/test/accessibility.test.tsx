@@ -17,6 +17,9 @@ import {
   Skeleton,
   Spinner,
   Button,
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
   Link,
   Input,
   Slider,
@@ -476,6 +479,22 @@ describe('React accessibility contract', () => {
     expect(button.disabled).toBe(true);
     fireEvent.click(button);
     expect(clicked).not.toHaveBeenCalled();
+  });
+  it('groups related buttons with a name and orientation', () => {
+    render(
+      <ButtonGroup aria-label="Text alignment">
+        <ButtonGroupText>Align</ButtonGroupText>
+        <Button>Left</Button>
+        <ButtonGroupSeparator />
+        <Button>Right</Button>
+      </ButtonGroup>,
+    );
+    const group = screen.getByRole('group', { name: 'Text alignment' });
+    expect(group.getAttribute('aria-orientation')).toBe('horizontal');
+    expect(screen.getByRole('separator').getAttribute('aria-orientation')).toBe(
+      'vertical',
+    );
+    expect(screen.getAllByRole('button')).toHaveLength(2);
   });
   it('preserves native link semantics and safely disables navigation', () => {
     const clicked = vi.fn();

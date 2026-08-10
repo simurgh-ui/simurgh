@@ -28,6 +28,7 @@
     "skeleton",
     "spinner",
     "button",
+    "button-group",
     "link",
     "input",
     "slider",
@@ -135,6 +136,11 @@
       "skeleton": ["Skeleton"],
       "spinner": ["Spinner"],
       "button": ["Button"],
+      "button-group": [
+        "ButtonGroup",
+        "ButtonGroupText",
+        "ButtonGroupSeparator"
+      ],
       "link": ["Link"],
       "input": ["Input"],
       "slider": ["Slider"],
@@ -252,6 +258,11 @@
       "skeleton": ["Skeleton"],
       "spinner": ["Spinner"],
       "button": ["Button"],
+      "button-group": [
+        "ButtonGroup",
+        "ButtonGroupText",
+        "ButtonGroupSeparator"
+      ],
       "link": ["Link"],
       "input": ["Input"],
       "slider": ["Slider"],
@@ -335,6 +346,11 @@
       "skeleton": ["SkeletonComponent"],
       "spinner": ["SpinnerComponent"],
       "button": ["ButtonComponent"],
+      "button-group": [
+        "ButtonGroupComponent",
+        "ButtonGroupTextComponent",
+        "ButtonGroupSeparatorComponent"
+      ],
       "link": ["LinkComponent"],
       "input": ["InputComponent"],
       "slider": ["SliderComponent"],

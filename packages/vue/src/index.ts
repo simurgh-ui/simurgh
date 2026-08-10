@@ -1288,6 +1288,60 @@ export const Button = defineComponent({
   },
 });
 
+export const ButtonGroup = defineComponent({
+  name: 'SimurghButtonGroup',
+  props: {
+    orientation: {
+      type: String as PropType<Orientation>,
+      default: 'horizontal',
+    },
+  },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          role: attrs['role'] ?? 'group',
+          'aria-orientation': props.orientation,
+          'data-slot': 'button-group',
+        },
+        slots.default?.(),
+      );
+  },
+});
+
+export const ButtonGroupText = defineComponent({
+  name: 'SimurghButtonGroupText',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(
+        'span',
+        { ...attrs, 'data-slot': 'button-group-text' },
+        slots.default?.(),
+      );
+  },
+});
+
+export const ButtonGroupSeparator = defineComponent({
+  name: 'SimurghButtonGroupSeparator',
+  props: {
+    orientation: {
+      type: String as PropType<Orientation>,
+      default: 'vertical',
+    },
+  },
+  setup(props, { attrs }) {
+    return () =>
+      h('span', {
+        ...attrs,
+        role: attrs['role'] ?? 'separator',
+        'aria-orientation': props.orientation,
+        'data-slot': 'button-group-separator',
+      });
+  },
+});
+
 export const Link = defineComponent({
   name: 'SimurghLink',
   inheritAttrs: false,

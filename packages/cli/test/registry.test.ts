@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(47);
+    expect(manifest.components).toHaveLength(48);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -32,6 +32,7 @@ describe('registry', () => {
       ).toBeGreaterThan(2);
       expect(registryEntry('form', framework).symbols.length).toBe(2);
       expect(registryEntry('native-select', framework).symbols.length).toBe(1);
+      expect(registryEntry('button-group', framework).symbols.length).toBe(3);
     }
   });
 });

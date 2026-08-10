@@ -1,0 +1,54 @@
+---
+title: Button Group
+description: Related actions arranged as one named horizontal or vertical control group.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Button Group visually joins related actions while exposing a single named group to assistive technology. Use the text and separator parts for compact labels or for dividing distinct action sets.
+
+<ComponentPreview title="Button Group">
+  <div
+    role="group"
+    aria-label="Text alignment"
+    aria-orientation="horizontal"
+    data-slot="button-group"
+  >
+    <button type="button">Left</button>
+    <button type="button">Center</button>
+    <button type="button">Right</button>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <ButtonGroup aria-label="Text alignment">
+      <Button>Left</Button>
+      <Button>Center</Button>
+      <Button>Right</Button>
+    </ButtonGroup>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <ButtonGroup aria-label="Text alignment">
+      <Button>Left</Button>
+      <Button>Center</Button>
+      <Button>Right</Button>
+    </ButtonGroup>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-button-group aria-label="Text alignment">
+      <simurgh-button>Left</simurgh-button>
+      <simurgh-button>Center</simurgh-button>
+      <simurgh-button>Right</simurgh-button>
+    </simurgh-button-group>
+    ```
+  </TabItem>
+</Tabs>
+
+Give every Button Group an accessible name with `aria-label` or `aria-labelledby`. Keep keyboard behavior native to the contained controls; use Toggle Group when the buttons represent persistent selected states.

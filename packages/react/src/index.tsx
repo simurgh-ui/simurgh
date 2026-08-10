@@ -1298,6 +1298,49 @@ export const Button = forwardRef<
   );
 });
 
+export const ButtonGroup = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { orientation?: Orientation }
+>(function ButtonGroup(
+  { orientation = 'horizontal', role = 'group', ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role={role}
+      aria-orientation={orientation}
+      data-slot="button-group"
+      {...props}
+    />
+  );
+});
+
+export const ButtonGroupText = forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement>
+>(function ButtonGroupText(props, ref) {
+  return <span ref={ref} data-slot="button-group-text" {...props} />;
+});
+
+export const ButtonGroupSeparator = forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement> & { orientation?: Orientation }
+>(function ButtonGroupSeparator(
+  { orientation = 'vertical', role = 'separator', ...props },
+  ref,
+) {
+  return (
+    <span
+      ref={ref}
+      role={role}
+      aria-orientation={orientation}
+      data-slot="button-group-separator"
+      {...props}
+    />
+  );
+});
+
 export const Link = forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & {

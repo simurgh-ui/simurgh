@@ -10,6 +10,9 @@ import {
   Skeleton,
   Spinner,
   Button,
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
   Link,
   Input,
   Slider,
@@ -548,6 +551,23 @@ describe('Vue accessibility contract', () => {
     expect(button.disabled).toBe(true);
     await fireEvent.click(button);
     expect(clicked).not.toHaveBeenCalled();
+  });
+  it('groups related buttons with a name and orientation', () => {
+    render({
+      components: {
+        Button,
+        ButtonGroup,
+        ButtonGroupSeparator,
+        ButtonGroupText,
+      },
+      template: `<ButtonGroup aria-label="Text alignment"><ButtonGroupText>Align</ButtonGroupText><Button>Left</Button><ButtonGroupSeparator /><Button>Right</Button></ButtonGroup>`,
+    });
+    const group = screen.getByRole('group', { name: 'Text alignment' });
+    expect(group.getAttribute('aria-orientation')).toBe('horizontal');
+    expect(screen.getByRole('separator').getAttribute('aria-orientation')).toBe(
+      'vertical',
+    );
+    expect(screen.getAllByRole('button')).toHaveLength(2);
   });
   it('preserves native link semantics and safely disables navigation', async () => {
     const clicked = vi.fn();

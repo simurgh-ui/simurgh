@@ -18,6 +18,9 @@ import {
   SkeletonComponent,
   SpinnerComponent,
   ButtonComponent,
+  ButtonGroupComponent,
+  ButtonGroupSeparatorComponent,
+  ButtonGroupTextComponent,
   LinkComponent,
   InputComponent,
   SliderComponent,
@@ -430,6 +433,24 @@ class SpinnerHost {}
   template: `<simurgh-button [loading]="true">Save</simurgh-button>`,
 })
 class ButtonHost {}
+
+@Component({
+  standalone: true,
+  imports: [
+    ButtonComponent,
+    ButtonGroupComponent,
+    ButtonGroupSeparatorComponent,
+    ButtonGroupTextComponent,
+  ],
+  template: `<simurgh-button-group aria-label="Text alignment"
+    ><simurgh-button-group-text>Align</simurgh-button-group-text
+    ><simurgh-button>Left</simurgh-button
+    ><simurgh-button-group-separator /><simurgh-button
+      >Right</simurgh-button
+    ></simurgh-button-group
+  >`,
+})
+class ButtonGroupHost {}
 
 @Component({
   standalone: true,
@@ -1024,6 +1045,22 @@ describe('Angular accessibility contract', () => {
     expect(button.type).toBe('button');
     expect(button.disabled).toBe(true);
     expect(button.getAttribute('aria-busy')).toBe('true');
+    fixture.destroy();
+  });
+  it('groups related buttons with a name and orientation', () => {
+    const fixture = TestBed.createComponent(ButtonGroupHost);
+    fixture.detectChanges();
+    const group = fixture.nativeElement.querySelector(
+      'simurgh-button-group',
+    ) as HTMLElement;
+    const separator = fixture.nativeElement.querySelector(
+      'simurgh-button-group-separator',
+    ) as HTMLElement;
+    expect(group.getAttribute('role')).toBe('group');
+    expect(group.getAttribute('aria-label')).toBe('Text alignment');
+    expect(group.getAttribute('aria-orientation')).toBe('horizontal');
+    expect(separator.getAttribute('aria-orientation')).toBe('vertical');
+    expect(group.querySelectorAll('button')).toHaveLength(2);
     fixture.destroy();
   });
   it('preserves native link semantics and safely disables navigation', () => {
