@@ -207,6 +207,17 @@
   font-size: 0.875rem;
   margin: 0;
 }
+[data-slot='form-error-summary'] {
+  background: hsl(var(--simurgh-danger) / 0.08);
+  border: 1px solid hsl(var(--simurgh-danger));
+  border-radius: var(--simurgh-radius);
+  color: hsl(var(--simurgh-danger));
+  padding: 0.75rem;
+}
+[data-slot='form-error-summary']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
 [data-slot='field-description'] {
   color: hsl(var(--simurgh-muted-foreground));
 }

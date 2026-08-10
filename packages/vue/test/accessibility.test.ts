@@ -35,6 +35,8 @@ import {
   Field,
   FieldError,
   FieldLegend,
+  Form,
+  FormErrorSummary,
   Table,
   TableBody,
   TableCaption,
@@ -173,6 +175,20 @@ describe('Vue accessibility contract', () => {
     });
     expect(screen.getByRole('group', { name: 'Notifications' })).toBeTruthy();
     expect(screen.getByRole('alert').textContent).toBe('Choose at least one.');
+  });
+  it('focuses the first invalid form control and announces summary errors', async () => {
+    const invalid = vi.fn();
+    render({
+      components: { Form, FormErrorSummary },
+      setup: () => ({ invalid }),
+      template: `<Form @invalid="invalid"><label>Email <input name="email" required /></label><FormErrorSummary>Correct the highlighted fields.</FormErrorSummary></Form>`,
+    });
+    const input = screen.getByRole('textbox', { name: 'Email' });
+    await fireEvent.invalid(input);
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    expect(invalid).toHaveBeenCalledOnce();
+    expect(document.activeElement).toBe(input);
+    expect(screen.getByRole('alert').textContent).toContain('Correct');
   });
   it('renders a captioned native table', () => {
     render({

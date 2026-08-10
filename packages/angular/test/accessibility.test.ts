@@ -43,6 +43,8 @@ import {
   FieldComponent,
   FieldErrorComponent,
   FieldLegendComponent,
+  FormDirective,
+  FormErrorSummaryComponent,
   TableBodyDirective,
   TableCaptionDirective,
   TableCellDirective,
@@ -204,6 +206,20 @@ class KbdHost {}
   >`,
 })
 class FieldHost {}
+
+@Component({
+  standalone: true,
+  imports: [FormDirective, FormErrorSummaryComponent],
+  template: `<form simurghForm (invalidControl)="invalid($event)">
+    <label>Email <input name="email" required /></label>
+    <simurgh-form-error-summary
+      >Correct the highlighted fields.</simurgh-form-error-summary
+    >
+  </form>`,
+})
+class FormHost {
+  invalid = vi.fn();
+}
 
 @Component({
   standalone: true,
@@ -1172,6 +1188,21 @@ describe('Angular accessibility contract', () => {
     expect(fieldset.querySelector('[role=alert]')?.textContent).toBe(
       'Choose at least one.',
     );
+    fixture.destroy();
+  });
+  it('focuses the first invalid form control and announces summary errors', async () => {
+    const fixture = TestBed.createComponent(FormHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    input.dispatchEvent(new Event('invalid'));
+    await Promise.resolve();
+    expect(fixture.componentInstance.invalid).toHaveBeenCalledWith(input);
+    expect(document.activeElement).toBe(input);
+    expect(
+      fixture.nativeElement.querySelector('[role=alert]').textContent,
+    ).toContain('Correct');
     fixture.destroy();
   });
   it('renders a captioned native table', () => {

@@ -29,6 +29,7 @@ import React, {
   useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
+  type FormHTMLAttributes,
   type LabelHTMLAttributes,
   type InputHTMLAttributes,
   type TextareaHTMLAttributes,
@@ -1674,6 +1675,46 @@ export const FieldError = forwardRef<
   HTMLAttributes<HTMLParagraphElement>
 >(function FieldError(props, ref) {
   return <p ref={ref} data-slot="field-error" role="alert" {...props} />;
+});
+
+export const Form = forwardRef<
+  HTMLFormElement,
+  FormHTMLAttributes<HTMLFormElement> & { focusInvalid?: boolean }
+>(function Form({ focusInvalid = true, onInvalid, ...props }, ref) {
+  const focusQueued = useRef(false);
+  return (
+    <form
+      {...props}
+      ref={ref}
+      data-slot="form"
+      onInvalid={(event) => {
+        onInvalid?.(event);
+        if (focusQueued.current || !focusInvalid || event.defaultPrevented)
+          return;
+        focusQueued.current = true;
+        const first = event.target as HTMLElement;
+        requestAnimationFrame(() => {
+          first.focus();
+          focusQueued.current = false;
+        });
+      }}
+    />
+  );
+});
+export const FormErrorSummary = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function FormErrorSummary(props, ref) {
+  return (
+    <div
+      {...props}
+      ref={ref}
+      role="alert"
+      aria-live="assertive"
+      tabIndex={-1}
+      data-slot="form-error-summary"
+    />
+  );
 });
 
 export const Table = forwardRef<

@@ -42,6 +42,7 @@
     "card",
     "kbd",
     "field",
+    "form",
     "table",
     "pagination",
     "collapsible",
@@ -159,6 +160,7 @@
       ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
+      "form": ["Form", "FormErrorSummary"],
       "table": [
         "Table",
         "TableHeader",
@@ -274,6 +276,7 @@
       ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
+      "form": ["Form", "FormErrorSummary"],
       "table": [
         "Table",
         "TableHeader",
@@ -360,6 +363,7 @@
         "FieldDescriptionComponent",
         "FieldErrorComponent"
       ],
+      "form": ["FormDirective", "FormErrorSummaryComponent"],
       "table": [
         "TableDirective",
         "TableHeaderDirective",

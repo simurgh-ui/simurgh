@@ -1,0 +1,62 @@
+---
+title: Form
+description: Native form validation with predictable invalid-control focus and error summaries.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Form preserves browser submission and constraint-validation behavior while focusing the first invalid control. Form Error Summary provides an assertive announcement region for server, cross-field, or submission errors.
+
+<ComponentPreview title="Form">
+  <form data-slot="form">
+    <label for="form-preview-email">Email</label>
+    <input id="form-preview-email" name="email" type="email" required />
+    <div
+      role="alert"
+      aria-live="assertive"
+      tabindex="-1"
+      data-slot="form-error-summary"
+    >
+      Enter a valid email address.
+    </div>
+    <button type="submit">Continue</button>
+  </form>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Form onSubmit={save} onInvalid={trackInvalid}>
+  <Label htmlFor="email">Email</Label>
+  <Input id="email" name="email" type="email" required />
+  {errors.length > 0 && <FormErrorSummary>{errors.join(', ')}</FormErrorSummary>}
+  <Button type="submit">Continue</Button>
+</Form>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Form @submit="save" @invalid="trackInvalid">
+  <Label for="email">Email</Label>
+  <Input id="email" name="email" type="email" required />
+  <FormErrorSummary v-if="errors.length">{{ errors.join(', ') }}</FormErrorSummary>
+  <Button type="submit">Continue</Button>
+</Form>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<form simurghForm (submit)="save($event)" (invalidControl)="trackInvalid($event)">
+  <simurgh-label for="email">Email</simurgh-label>
+  <simurgh-input id="email" name="email" type="email" [required]="true" />
+  <simurgh-form-error-summary *ngIf="errors.length">
+    {{ errors.join(', ') }}
+  </simurgh-form-error-summary>
+  <simurgh-button type="submit">Continue</simurgh-button>
+</form>
+```
+</TabItem>
+</Tabs>
+
+Keep inline Field Error messages associated with their controls through `aria-describedby`. Use Form Error Summary to complement those messages, not replace them.
