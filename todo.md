@@ -73,3 +73,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add accessible Menubar across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Hover Card across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Context Menu across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Sheet across Angular, React, Vue, the registry, documentation, and contract tests.

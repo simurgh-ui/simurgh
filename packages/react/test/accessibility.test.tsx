@@ -63,6 +63,12 @@ import {
   DialogDescription,
   DialogTitle,
   DialogTrigger,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -105,6 +111,29 @@ describe('React accessibility contract', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open profile' }));
     expect(screen.getByRole('dialog', { name: 'Edit profile' })).toBeTruthy();
     expect((await axe.run(document.body)).violations).toEqual([]);
+  });
+
+  it('opens a side-anchored sheet and restores trigger focus', async () => {
+    render(
+      <Sheet>
+        <SheetTrigger>Open filters</SheetTrigger>
+        <SheetContent side="left">
+          <SheetTitle>Filters</SheetTitle>
+          <SheetDescription>Narrow the results.</SheetDescription>
+          <SheetClose>Done</SheetClose>
+        </SheetContent>
+      </Sheet>,
+    );
+    const trigger = screen.getByRole('button', { name: 'Open filters' });
+    trigger.focus();
+    fireEvent.click(trigger);
+    const sheet = screen.getByRole('dialog', { name: 'Filters' });
+    expect(sheet.getAttribute('data-side')).toBe('left');
+    await act(() => new Promise((resolve) => requestAnimationFrame(resolve)));
+    expect(document.activeElement).toBe(sheet);
+    fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
   });
 
   it('opens a labelled hover card with pointer and keyboard focus', () => {

@@ -53,6 +53,12 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -84,6 +90,29 @@ import {
 afterEach(cleanup);
 
 describe('Vue accessibility contract', () => {
+  it('opens a side-anchored sheet and restores trigger focus', async () => {
+    render({
+      components: {
+        Sheet,
+        SheetTrigger,
+        SheetContent,
+        SheetTitle,
+        SheetDescription,
+        SheetClose,
+      },
+      template: `<Sheet><SheetTrigger>Open filters</SheetTrigger><SheetContent side="left"><SheetTitle>Filters</SheetTitle><SheetDescription>Narrow the results.</SheetDescription><SheetClose>Done</SheetClose></SheetContent></Sheet>`,
+    });
+    const trigger = screen.getByRole('button', { name: 'Open filters' });
+    trigger.focus();
+    await fireEvent.click(trigger);
+    const sheet = screen.getByRole('dialog', { name: 'Filters' });
+    expect(sheet.getAttribute('data-side')).toBe('left');
+    expect(document.activeElement).toBe(sheet);
+    await fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
   it('composes card anatomy with native heading semantics', () => {
     render({
       components: { Card, CardTitle, CardDescription },

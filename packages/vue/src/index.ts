@@ -119,6 +119,8 @@ export const DialogContent = defineComponent({
                 'aria-labelledby': attrs['aria-label']
                   ? undefined
                   : `${c.id}-title`,
+                'aria-describedby':
+                  attrs['aria-describedby'] ?? `${c.id}-description`,
                 tabindex: -1,
                 class: ['simurgh-content simurgh-dialog', attrs.class],
                 onKeydown: (e: KeyboardEvent) => {
@@ -161,6 +163,32 @@ export const DialogClose = defineComponent({
         'button',
         { ...attrs, type: 'button', onClick: () => c.setOpen(false) },
         slots.default?.(),
+      );
+  },
+});
+
+export type SheetSide = 'top' | 'right' | 'bottom' | 'left';
+export const Sheet = Dialog;
+export const SheetTrigger = DialogTrigger;
+export const SheetTitle = DialogTitle;
+export const SheetDescription = DialogDescription;
+export const SheetClose = DialogClose;
+export const SheetContent = defineComponent({
+  name: 'SimurghSheetContent',
+  props: {
+    side: { type: String as PropType<SheetSide>, default: 'right' },
+  },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        DialogContent,
+        {
+          ...attrs,
+          'data-slot': 'sheet-content',
+          'data-side': props.side,
+          class: ['simurgh-sheet', attrs.class],
+        },
+        slots,
       );
   },
 });

@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "components": [
     "dialog",
+    "sheet",
     "popover",
     "tooltip",
     "hover-card",
@@ -75,6 +76,15 @@
         "DialogTitle",
         "DialogDescription",
         "DialogClose"
+      ],
+      "sheet": [
+        "Sheet",
+        "SheetTrigger",
+        "SheetContent",
+        "SheetTitle",
+        "SheetDescription",
+        "SheetClose",
+        "SheetSide"
       ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
@@ -173,6 +183,15 @@
         "DialogDescription",
         "DialogClose"
       ],
+      "sheet": [
+        "Sheet",
+        "SheetTrigger",
+        "SheetContent",
+        "SheetTitle",
+        "SheetDescription",
+        "SheetClose",
+        "SheetSide"
+      ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
       "hover-card": ["HoverCard", "HoverCardTrigger", "HoverCardContent"],
@@ -263,6 +282,7 @@
     },
     "angular": {
       "dialog": ["DialogComponent"],
+      "sheet": ["SheetComponent", "SheetSide"],
       "popover": ["PopoverComponent"],
       "tooltip": ["TooltipComponent"],
       "hover-card": ["HoverCardComponent"],

@@ -57,6 +57,7 @@ import {
   CollapsibleComponent,
   ComboboxComponent,
   DialogComponent,
+  SheetComponent,
   DropdownMenuComponent,
   DropdownMenuItemDirective,
   ContextMenuComponent,
@@ -107,6 +108,22 @@ class CheckboxHost {
   >`,
 })
 class DialogHost {}
+
+@Component({
+  standalone: true,
+  imports: [SheetComponent],
+  template: `<simurgh-sheet
+    #sheet
+    side="left"
+    labelledBy="sheet-title"
+    describedBy="sheet-description"
+    ><button trigger (click)="sheet.show()">Open filters</button>
+    <h2 id="sheet-title">Filters</h2>
+    <p id="sheet-description">Narrow the results.</p>
+    <button (click)="sheet.close()">Done</button></simurgh-sheet
+  >`,
+})
+class SheetHost {}
 
 @Component({
   standalone: true,
@@ -521,6 +538,32 @@ class BadgeHost {}
 class BreadcrumbHost {}
 
 describe('Angular accessibility contract', () => {
+  it('opens a side-anchored sheet and restores trigger focus', async () => {
+    const fixture = TestBed.createComponent(SheetHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '[trigger]',
+    ) as HTMLButtonElement;
+    trigger.focus();
+    trigger.click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    const sheet = fixture.nativeElement.querySelector(
+      '[role=dialog]',
+    ) as HTMLElement;
+    expect(sheet.getAttribute('data-side')).toBe('left');
+    expect(sheet.getAttribute('aria-labelledby')).toBe('sheet-title');
+    expect(document.activeElement).toBe(sheet);
+    (
+      fixture.nativeElement.querySelectorAll('button')[1] as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(fixture.nativeElement.querySelector('[role=dialog]')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    fixture.destroy();
+  });
+
   it('toggles a checkbox, emits, and passes an axe audit', async () => {
     const fixture = TestBed.createComponent(CheckboxHost);
     fixture.detectChanges();

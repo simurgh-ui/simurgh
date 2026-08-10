@@ -185,6 +185,30 @@ export const DialogClose = forwardRef<
   );
 });
 
+export type SheetSide = 'top' | 'right' | 'bottom' | 'left';
+export const Sheet = Dialog;
+export const SheetTrigger = DialogTrigger;
+export const SheetTitle = DialogTitle;
+export const SheetDescription = DialogDescription;
+export const SheetClose = DialogClose;
+export const SheetContent = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { side?: SheetSide }
+>(function SheetContent({ side = 'right', className, ...props }, ref) {
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogContent
+        {...props}
+        ref={ref}
+        data-slot="sheet-content"
+        data-side={side}
+        className={className ?? 'simurgh-content simurgh-sheet'}
+      />
+    </DialogPortal>
+  );
+});
+
 type FloatingKind = 'popover' | 'tooltip' | 'hovercard' | 'menu' | 'listbox';
 type FloatingContextValue = OverlayContextValue &
   ReturnType<typeof useFloating> & {
