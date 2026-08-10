@@ -6,6 +6,7 @@
     "dialog",
     "popover",
     "tooltip",
+    "hover-card",
     "dropdown-menu",
     "select",
     "combobox",
@@ -76,6 +77,7 @@
       ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
+      "hover-card": ["HoverCard", "HoverCardTrigger", "HoverCardContent"],
       "dropdown-menu": [
         "DropdownMenu",
         "DropdownMenuTrigger",
@@ -166,6 +168,7 @@
       ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
+      "hover-card": ["HoverCard", "HoverCardTrigger", "HoverCardContent"],
       "dropdown-menu": [
         "DropdownMenu",
         "DropdownMenuTrigger",
@@ -249,6 +252,7 @@
       "dialog": ["DialogComponent"],
       "popover": ["PopoverComponent"],
       "tooltip": ["TooltipComponent"],
+      "hover-card": ["HoverCardComponent"],
       "dropdown-menu": ["DropdownMenuComponent", "DropdownMenuItemDirective"],
       "select": ["SelectComponent", "SelectOption"],
       "combobox": ["ComboboxComponent", "SelectOption"],

@@ -27,6 +27,15 @@
   padding: 0.5rem;
   z-index: 50;
 }
+[data-slot='hover-card-content'] {
+  max-inline-size: min(22rem, calc(100vw - 2rem));
+  padding: 1rem;
+}
+[data-slot='hover-card-trigger']:focus-visible {
+  border-radius: calc(var(--simurgh-radius) / 2);
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
 .simurgh-overlay {
   background: rgb(2 6 23 / 0.58);
   inset: 0;

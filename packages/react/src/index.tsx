@@ -6,6 +6,7 @@ import {
   useClick,
   useDismiss,
   useFloating,
+  useFocus,
   useHover,
   useInteractions,
   useRole,
@@ -184,7 +185,7 @@ export const DialogClose = forwardRef<
   );
 });
 
-type FloatingKind = 'popover' | 'tooltip' | 'menu' | 'listbox';
+type FloatingKind = 'popover' | 'tooltip' | 'hovercard' | 'menu' | 'listbox';
 type FloatingContextValue = OverlayContextValue &
   ReturnType<typeof useFloating> & {
     kind: FloatingKind;
@@ -213,10 +214,15 @@ function FloatingRoot({
       shift({ padding: 8 }),
     ],
   });
-  const click = useClick(floating.context, { enabled: kind !== 'tooltip' });
+  const click = useClick(floating.context, {
+    enabled: kind !== 'tooltip' && kind !== 'hovercard',
+  });
   const hover = useHover(floating.context, {
-    enabled: kind === 'tooltip',
+    enabled: kind === 'tooltip' || kind === 'hovercard',
     move: false,
+  });
+  const focus = useFocus(floating.context, {
+    enabled: kind === 'tooltip' || kind === 'hovercard',
   });
   const dismiss = useDismiss(floating.context);
   const role = useRole(floating.context, {
@@ -229,7 +235,7 @@ function FloatingRoot({
             ? 'tooltip'
             : 'dialog',
   });
-  const interactions = useInteractions([click, hover, dismiss, role]);
+  const interactions = useInteractions([click, hover, focus, dismiss, role]);
   const value = useMemo(
     () => ({
       ...floating,
@@ -341,6 +347,30 @@ export function Tooltip(props: PropsWithChildren<OpenProps>) {
 }
 export const TooltipTrigger = FloatingTrigger;
 export const TooltipContent = FloatingContent;
+export function HoverCard(props: PropsWithChildren<OpenProps>) {
+  return <FloatingRoot {...props} kind="hovercard" />;
+}
+export const HoverCardTrigger = forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement>
+>(function HoverCardTrigger(props, ref) {
+  return (
+    <FloatingTrigger {...props} ref={ref} data-slot="hover-card-trigger" />
+  );
+});
+export function HoverCardContent({
+  label = 'Additional information',
+  ...props
+}: HTMLAttributes<HTMLDivElement> & { label?: string }) {
+  return (
+    <FloatingContent
+      {...props}
+      role="dialog"
+      aria-label={label}
+      data-slot="hover-card-content"
+    />
+  );
+}
 export function DropdownMenu(props: PropsWithChildren<OpenProps>) {
   return <FloatingRoot {...props} kind="menu" />;
 }

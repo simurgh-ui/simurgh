@@ -1,0 +1,58 @@
+---
+title: Hover Card
+description: Anchored supplementary content available by pointer hover or keyboard focus.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Hover Card reveals a compact, labelled preview without requiring activation. Its trigger works with pointer hover and keyboard focus, and the card uses collision-aware positioning.
+
+<ComponentPreview title="Hover Card">
+  <div>
+    <button type="button" data-slot="hover-card-trigger" aria-expanded="true">
+      Simurgh UI
+    </button>
+    <div
+      class="simurgh-content"
+      data-slot="hover-card-content"
+      role="dialog"
+      aria-label="Simurgh UI profile"
+    >
+      Accessible components for Angular, React, and Vue.
+    </div>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <HoverCard>
+      <HoverCardTrigger>Simurgh UI</HoverCardTrigger>
+      <HoverCardContent label="Simurgh UI profile">
+        Accessible components for Angular, React, and Vue.
+      </HoverCardContent>
+    </HoverCard>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <HoverCard>
+      <HoverCardTrigger>Simurgh UI</HoverCardTrigger>
+      <HoverCardContent label="Simurgh UI profile">
+        Accessible components for Angular, React, and Vue.
+      </HoverCardContent>
+    </HoverCard>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-hover-card label="Simurgh UI profile">
+      <button trigger>Simurgh UI</button>
+      <p>Accessible components for Angular, React, and Vue.</p>
+    </simurgh-hover-card>
+    ```
+  </TabItem>
+</Tabs>
+
+Keep hover-card content concise and nonessential. Use Dialog when the content requires a decision, form interaction, or modal focus management.

@@ -59,6 +59,7 @@ import {
   DialogComponent,
   DropdownMenuComponent,
   DropdownMenuItemDirective,
+  HoverCardComponent,
   LabelComponent,
   ProgressComponent,
   RadioGroupComponent,
@@ -104,6 +105,16 @@ class CheckboxHost {
   >`,
 })
 class DialogHost {}
+
+@Component({
+  standalone: true,
+  imports: [HoverCardComponent],
+  template: `<simurgh-hover-card label="Simurgh profile">
+    <button trigger>Simurgh</button>
+    <p>Cross-framework components</p>
+  </simurgh-hover-card>`,
+})
+class HoverCardHost {}
 
 @Component({
   standalone: true,
@@ -506,6 +517,27 @@ describe('Angular accessibility contract', () => {
     expect(checkbox.getAttribute('aria-checked')).toBe('true');
     expect(fixture.componentInstance.changed).toHaveBeenCalledWith(true);
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+
+  it('opens a labelled hover card with pointer and keyboard focus', () => {
+    const fixture = TestBed.createComponent(HoverCardHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '[data-slot=hover-card-trigger]',
+    ) as HTMLElement;
+    trigger.dispatchEvent(new MouseEvent('mouseenter'));
+    fixture.detectChanges();
+    const card = fixture.nativeElement.querySelector(
+      '[role=dialog]',
+    ) as HTMLElement;
+    expect(card.getAttribute('aria-label')).toBe('Simurgh profile');
+    trigger.dispatchEvent(new MouseEvent('mouseleave'));
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role=dialog]')).toBeNull();
+    trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role=dialog]')).toBeTruthy();
     fixture.destroy();
   });
 

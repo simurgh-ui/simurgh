@@ -67,6 +67,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   Label,
   Progress,
   RadioGroup,
@@ -98,6 +101,28 @@ describe('React accessibility contract', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open profile' }));
     expect(screen.getByRole('dialog', { name: 'Edit profile' })).toBeTruthy();
     expect((await axe.run(document.body)).violations).toEqual([]);
+  });
+
+  it('opens a labelled hover card with pointer and keyboard focus', () => {
+    render(
+      <HoverCard>
+        <HoverCardTrigger>Simurgh</HoverCardTrigger>
+        <HoverCardContent label="Simurgh profile">
+          Cross-framework components
+        </HoverCardContent>
+      </HoverCard>,
+    );
+    const trigger = screen.getByRole('button', { name: 'Simurgh' });
+    fireEvent.mouseEnter(trigger);
+    expect(
+      screen.getByRole('dialog', { name: 'Simurgh profile' }),
+    ).toBeTruthy();
+    fireEvent.mouseLeave(trigger);
+    expect(screen.queryByRole('dialog')).toBeNull();
+    fireEvent.focus(trigger);
+    expect(
+      screen.getByRole('dialog', { name: 'Simurgh profile' }),
+    ).toBeTruthy();
   });
 
   it('serializes checkbox state and emits changes', () => {

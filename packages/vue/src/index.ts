@@ -39,7 +39,7 @@ const floatingKey: InjectionKey<
   OpenContext & {
     trigger: Ref<HTMLElement | null>;
     content: Ref<HTMLElement | null>;
-    kind: 'popover' | 'tooltip' | 'menu';
+    kind: 'popover' | 'tooltip' | 'hovercard' | 'menu';
   }
 > = Symbol('floating');
 function openRoot(key: InjectionKey<OpenContext>, name: string) {
@@ -165,7 +165,10 @@ export const DialogClose = defineComponent({
   },
 });
 
-function floatingRoot(name: string, kind: 'popover' | 'tooltip' | 'menu') {
+function floatingRoot(
+  name: string,
+  kind: 'popover' | 'tooltip' | 'hovercard' | 'menu',
+) {
   return defineComponent({
     name,
     props: {
@@ -213,6 +216,7 @@ function floatingRoot(name: string, kind: 'popover' | 'tooltip' | 'menu') {
 }
 export const Popover = floatingRoot('SimurghPopover', 'popover');
 export const Tooltip = floatingRoot('SimurghTooltip', 'tooltip');
+export const HoverCard = floatingRoot('SimurghHoverCard', 'hovercard');
 export const DropdownMenu = floatingRoot('SimurghDropdownMenu', 'menu');
 export const FloatingTrigger = defineComponent({
   name: 'SimurghFloatingTrigger',
@@ -234,13 +238,25 @@ export const FloatingTrigger = defineComponent({
                 : 'dialog',
           'aria-describedby': c.kind === 'tooltip' ? c.id : undefined,
           onClick:
-            c.kind === 'tooltip' ? undefined : () => c.setOpen(!c.open.value),
+            c.kind === 'tooltip' || c.kind === 'hovercard'
+              ? undefined
+              : () => c.setOpen(!c.open.value),
           onMouseenter:
-            c.kind === 'tooltip' ? () => c.setOpen(true) : undefined,
+            c.kind === 'tooltip' || c.kind === 'hovercard'
+              ? () => c.setOpen(true)
+              : undefined,
           onMouseleave:
-            c.kind === 'tooltip' ? () => c.setOpen(false) : undefined,
-          onFocus: c.kind === 'tooltip' ? () => c.setOpen(true) : undefined,
-          onBlur: c.kind === 'tooltip' ? () => c.setOpen(false) : undefined,
+            c.kind === 'tooltip' || c.kind === 'hovercard'
+              ? () => c.setOpen(false)
+              : undefined,
+          onFocus:
+            c.kind === 'tooltip' || c.kind === 'hovercard'
+              ? () => c.setOpen(true)
+              : undefined,
+          onBlur:
+            c.kind === 'tooltip' || c.kind === 'hovercard'
+              ? () => c.setOpen(false)
+              : undefined,
         },
         slots.default?.(),
       );
@@ -302,6 +318,34 @@ function compositeKeydown(event: KeyboardEvent, selector: string) {
 }
 export const PopoverContent = FloatingContent,
   TooltipContent = FloatingContent;
+export const HoverCardTrigger = defineComponent({
+  name: 'SimurghHoverCardTrigger',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(
+        FloatingTrigger,
+        { ...attrs, 'data-slot': 'hover-card-trigger' },
+        slots,
+      );
+  },
+});
+export const HoverCardContent = defineComponent({
+  name: 'SimurghHoverCardContent',
+  props: { label: { type: String, default: 'Additional information' } },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        FloatingContent,
+        {
+          ...attrs,
+          role: 'dialog',
+          'aria-label': props.label,
+          'data-slot': 'hover-card-content',
+        },
+        slots,
+      );
+  },
+});
 export const DropdownMenuContent = defineComponent({
   name: 'SimurghDropdownMenuContent',
   setup(_, { slots, attrs }) {

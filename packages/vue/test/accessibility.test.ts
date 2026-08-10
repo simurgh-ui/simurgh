@@ -57,6 +57,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   Label,
   Progress,
   RadioGroup,
@@ -214,6 +217,24 @@ describe('Vue accessibility contract', () => {
     expect(screen.getByRole('tooltip')).toBeTruthy();
     await fireEvent.blur(trigger);
     expect(screen.queryByRole('tooltip')).toBeNull();
+  });
+
+  it('opens a labelled hover card with pointer and keyboard focus', async () => {
+    render({
+      components: { HoverCard, HoverCardTrigger, HoverCardContent },
+      template: `<HoverCard><HoverCardTrigger>Simurgh</HoverCardTrigger><HoverCardContent label="Simurgh profile">Cross-framework components</HoverCardContent></HoverCard>`,
+    });
+    const trigger = screen.getByRole('button', { name: 'Simurgh' });
+    await fireEvent.mouseEnter(trigger);
+    expect(
+      screen.getByRole('dialog', { name: 'Simurgh profile' }),
+    ).toBeTruthy();
+    await fireEvent.mouseLeave(trigger);
+    expect(screen.queryByRole('dialog')).toBeNull();
+    await fireEvent.focus(trigger);
+    expect(
+      screen.getByRole('dialog', { name: 'Simurgh profile' }),
+    ).toBeTruthy();
   });
 
   it('navigates and selects menu items from the keyboard', async () => {
