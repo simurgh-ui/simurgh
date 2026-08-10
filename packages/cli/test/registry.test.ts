@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(50);
+    expect(manifest.components).toHaveLength(51);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -35,6 +35,7 @@ describe('registry', () => {
       expect(registryEntry('button-group', framework).symbols.length).toBe(3);
       expect(registryEntry('input-group', framework).symbols.length).toBe(3);
       expect(registryEntry('empty', framework).symbols.length).toBe(6);
+      expect(registryEntry('input-otp', framework).symbols.length).toBe(1);
     }
   });
 });

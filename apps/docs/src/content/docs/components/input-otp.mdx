@@ -1,0 +1,46 @@
+---
+title: Input OTP
+description: Autofill-ready one-time code entry with paste, filtering, and form semantics.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Input OTP uses one native input so password managers, SMS code autofill, selection, and paste continue to work. The shared recipe presents the value as evenly spaced code cells without splitting keyboard focus across multiple controls.
+
+<ComponentPreview title="Input OTP">
+  <label for="otp-preview">Verification code</label>
+  <input
+    id="otp-preview"
+    name="code"
+    inputmode="numeric"
+    autocomplete="one-time-code"
+    pattern="[0-9]*"
+    maxlength="6"
+    data-slot="input-otp"
+    style="--simurgh-otp-length: 6"
+  />
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Label htmlFor="code">Verification code</Label>
+<InputOtp id="code" name="code" length={6} required />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Label for="code">Verification code</Label>
+<InputOtp id="code" name="code" :length="6" v-model="code" required />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-label for="code">Verification code</simurgh-label>
+<simurgh-input-otp id="code" name="code" [length]="6" [value]="code" [required]="true" (valueChange)="code = $event" />
+```
+</TabItem>
+</Tabs>
+
+The default digit-only mode removes non-numeric pasted characters and limits the value to `length`. Disable `digitsOnly` for alphanumeric recovery codes. Always provide a visible label and avoid masking one-time codes unless the threat model specifically requires it.

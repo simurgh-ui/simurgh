@@ -326,6 +326,41 @@
   font-size: 0.875rem;
   white-space: nowrap;
 }
+[data-slot='input-otp'] {
+  background-color: hsl(var(--simurgh-surface));
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(2.5rem - 1px),
+    hsl(var(--simurgh-border)) calc(2.5rem - 1px),
+    hsl(var(--simurgh-border)) 2.5rem
+  );
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  box-sizing: border-box;
+  color: hsl(var(--simurgh-foreground));
+  direction: ltr;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 1.125rem;
+  inline-size: calc(var(--simurgh-otp-length, 6) * 2.5rem);
+  letter-spacing: 1.5rem;
+  max-inline-size: 100%;
+  min-block-size: 2.75rem;
+  overflow: hidden;
+  padding-inline: 0.75rem 0;
+}
+[data-slot='input-otp']:focus-visible {
+  border-color: hsl(var(--simurgh-ring));
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+[data-slot='input-otp'][aria-invalid='true'] {
+  border-color: hsl(var(--simurgh-danger));
+}
+[data-slot='input-otp']:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 [data-slot='native-select'] {
   appearance: auto;
   background: hsl(var(--simurgh-surface));

@@ -25,6 +25,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  InputOtp,
   Slider,
   Meter,
   Toolbar,
@@ -601,6 +602,22 @@ describe('React accessibility contract', () => {
     expect(new FormData((input as HTMLInputElement).form!).get('website')).toBe(
       'example.com',
     );
+  });
+  it('filters, limits, and serializes one-time codes in one native input', () => {
+    render(
+      <form>
+        <label htmlFor="code">Verification code</label>
+        <InputOtp id="code" name="code" length={4} required />
+      </form>,
+    );
+    const input = screen.getByRole('textbox', {
+      name: 'Verification code',
+    }) as HTMLInputElement;
+    fireEvent.input(input, { target: { value: 'a1b2c3d4' } });
+    expect(input.value).toBe('1234');
+    expect(input.maxLength).toBe(4);
+    expect(input.autocomplete).toBe('one-time-code');
+    expect(new FormData(input.form!).get('code')).toBe('1234');
   });
   it('uses native slider constraints and form serialization', () => {
     render(

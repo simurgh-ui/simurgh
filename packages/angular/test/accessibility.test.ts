@@ -26,6 +26,7 @@ import {
   InputGroupAddonComponent,
   InputGroupComponent,
   InputGroupTextComponent,
+  InputOtpComponent,
   SliderComponent,
   MeterComponent,
   ToolbarButtonDirective,
@@ -569,6 +570,24 @@ class InputHost {}
   </form>`,
 })
 class InputGroupHost {}
+
+@Component({
+  standalone: true,
+  imports: [InputOtpComponent],
+  template: `<form>
+    <label for="code">Verification code</label>
+    <simurgh-input-otp
+      id="code"
+      name="code"
+      [length]="4"
+      [required]="true"
+      (valueChange)="changed($event)"
+    />
+  </form>`,
+})
+class InputOtpHost {
+  changed = vi.fn();
+}
 
 @Component({
   standalone: true,
@@ -1194,6 +1213,22 @@ describe('Angular accessibility contract', () => {
     expect(group.getAttribute('aria-labelledby')).toBe('website-label');
     expect(addon.getAttribute('aria-hidden')).toBe('true');
     expect(new FormData(input.form!).get('website')).toBe('example.com');
+    fixture.destroy();
+  });
+  it('filters, limits, and serializes one-time codes in one native input', () => {
+    const fixture = TestBed.createComponent(InputOtpHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    input.value = 'a1b2c3d4';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(input.value).toBe('1234');
+    expect(input.maxLength).toBe(4);
+    expect(input.autocomplete).toBe('one-time-code');
+    expect(fixture.componentInstance.changed).toHaveBeenCalledWith('1234');
+    expect(new FormData(input.form!).get('code')).toBe('1234');
     fixture.destroy();
   });
   it('updates and serializes native select values', () => {

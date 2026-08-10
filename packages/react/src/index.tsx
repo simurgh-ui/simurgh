@@ -1424,6 +1424,53 @@ export const InputGroupText = forwardRef<
   return <span ref={ref} data-slot="input-group-text" {...props} />;
 });
 
+export const InputOtp = forwardRef<
+  HTMLInputElement,
+  Omit<InputHTMLAttributes<HTMLInputElement>, 'maxLength'> & {
+    length?: number;
+    digitsOnly?: boolean;
+    invalid?: boolean;
+  }
+>(function InputOtp(
+  {
+    length = 6,
+    digitsOnly = true,
+    invalid = false,
+    autoComplete = 'one-time-code',
+    inputMode,
+    pattern,
+    style,
+    onInput,
+    ...props
+  },
+  ref,
+) {
+  return (
+    <input
+      ref={ref}
+      type="text"
+      maxLength={length}
+      autoComplete={autoComplete}
+      inputMode={inputMode ?? (digitsOnly ? 'numeric' : 'text')}
+      pattern={pattern ?? (digitsOnly ? '[0-9]*' : undefined)}
+      aria-invalid={invalid || undefined}
+      data-slot="input-otp"
+      style={
+        { '--simurgh-otp-length': length, ...style } as React.CSSProperties
+      }
+      onInput={(event) => {
+        if (digitsOnly) {
+          event.currentTarget.value = event.currentTarget.value
+            .replace(/\D/g, '')
+            .slice(0, length);
+        }
+        onInput?.(event);
+      }}
+      {...props}
+    />
+  );
+});
+
 export const NativeSelect = forwardRef<
   HTMLSelectElement,
   SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }
