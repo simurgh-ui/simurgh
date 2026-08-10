@@ -193,6 +193,92 @@ export const SheetContent = defineComponent({
   },
 });
 
+export const AlertDialog = Dialog;
+export const AlertDialogTrigger = DialogTrigger;
+export const AlertDialogTitle = DialogTitle;
+export const AlertDialogDescription = DialogDescription;
+export const AlertDialogContent = defineComponent({
+  name: 'SimurghAlertDialogContent',
+  setup(_, { slots, attrs }) {
+    const c = inject(dialogKey)!;
+    const el = ref<HTMLElement | null>(null);
+    let previous: HTMLElement | null = null;
+    watch(c.open, async (open) => {
+      if (open) {
+        previous = document.activeElement as HTMLElement;
+        await nextTick();
+        el.value
+          ?.querySelector<HTMLElement>('[data-slot=alert-dialog-cancel]')
+          ?.focus();
+      } else if (previous?.isConnected) previous.focus();
+    });
+    return () =>
+      c.open.value
+        ? h(Teleport, { to: 'body' }, [
+            h('div', {
+              class: 'simurgh-overlay',
+              onMousedown: (event: MouseEvent) => {
+                if (event.target === event.currentTarget) c.setOpen(false);
+              },
+            }),
+            h(
+              'div',
+              {
+                ...attrs,
+                ref: el,
+                role: 'alertdialog',
+                'aria-modal': 'true',
+                'aria-labelledby': attrs['aria-label']
+                  ? undefined
+                  : `${c.id}-title`,
+                'aria-describedby':
+                  attrs['aria-describedby'] ?? `${c.id}-description`,
+                tabindex: -1,
+                'data-slot': 'alert-dialog-content',
+                class: ['simurgh-content simurgh-dialog', attrs.class],
+                onKeydown: (event: KeyboardEvent) => {
+                  if (event.key === 'Escape') c.setOpen(false);
+                  else if (el.value) trapFocus(event, el.value);
+                },
+              },
+              slots.default?.(),
+            ),
+          ])
+        : null;
+  },
+});
+function alertDialogButton(name: string, slot: string) {
+  return defineComponent({
+    name,
+    emits: ['select'],
+    setup(_, { attrs, slots, emit }) {
+      const c = inject(dialogKey)!;
+      return () =>
+        h(
+          'button',
+          {
+            ...attrs,
+            type: 'button',
+            'data-slot': slot,
+            onClick: () => {
+              emit('select');
+              c.setOpen(false);
+            },
+          },
+          slots.default?.(),
+        );
+    },
+  });
+}
+export const AlertDialogAction = alertDialogButton(
+  'SimurghAlertDialogAction',
+  'alert-dialog-action',
+);
+export const AlertDialogCancel = alertDialogButton(
+  'SimurghAlertDialogCancel',
+  'alert-dialog-cancel',
+);
+
 function floatingRoot(
   name: string,
   kind: 'popover' | 'tooltip' | 'hovercard' | 'menu',

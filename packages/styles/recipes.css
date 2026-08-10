@@ -88,6 +88,13 @@
   max-inline-size: none;
   block-size: auto;
 }
+[data-slot='alert-dialog-content'] {
+  max-inline-size: min(32rem, calc(100vw - 2rem));
+}
+[data-slot='alert-dialog-action'] {
+  background: hsl(var(--simurgh-danger));
+  color: hsl(var(--simurgh-background));
+}
 .simurgh-sheet[data-side='top'] {
   inset-block-start: 0;
   inset-block-end: auto;

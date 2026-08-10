@@ -58,6 +58,9 @@ import {
   ComboboxComponent,
   DialogComponent,
   SheetComponent,
+  AlertDialogActionDirective,
+  AlertDialogCancelDirective,
+  AlertDialogComponent,
   DropdownMenuComponent,
   DropdownMenuItemDirective,
   ContextMenuComponent,
@@ -124,6 +127,28 @@ class DialogHost {}
   >`,
 })
 class SheetHost {}
+
+@Component({
+  standalone: true,
+  imports: [
+    AlertDialogComponent,
+    AlertDialogActionDirective,
+    AlertDialogCancelDirective,
+  ],
+  template: `<simurgh-alert-dialog
+    #dialog
+    labelledBy="delete-title"
+    describedBy="delete-description"
+    ><button trigger (click)="dialog.show()">Delete project</button>
+    <h2 id="delete-title">Delete project?</h2>
+    <p id="delete-description">This cannot be undone.</p>
+    <button simurghAlertDialogCancel>Cancel</button>
+    <button simurghAlertDialogAction (action)="confirmed()">Delete</button>
+  </simurgh-alert-dialog>`,
+})
+class AlertDialogHost {
+  confirmed = vi.fn();
+}
 
 @Component({
   standalone: true,
@@ -538,6 +563,37 @@ class BadgeHost {}
 class BreadcrumbHost {}
 
 describe('Angular accessibility contract', () => {
+  it('focuses the safe action in a destructive alert dialog', async () => {
+    const fixture = TestBed.createComponent(AlertDialogHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '[trigger]',
+    ) as HTMLButtonElement;
+    trigger.focus();
+    trigger.click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(
+      fixture.nativeElement.querySelector('[role=alertdialog]'),
+    ).toBeTruthy();
+    expect(document.activeElement).toBe(
+      fixture.nativeElement.querySelector('[simurghAlertDialogCancel]'),
+    );
+    (
+      fixture.nativeElement.querySelector(
+        '[simurghAlertDialogAction]',
+      ) as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(fixture.componentInstance.confirmed).toHaveBeenCalledOnce();
+    expect(
+      fixture.nativeElement.querySelector('[role=alertdialog]'),
+    ).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    fixture.destroy();
+  });
+
   it('opens a side-anchored sheet and restores trigger focus', async () => {
     const fixture = TestBed.createComponent(SheetHost);
     fixture.detectChanges();

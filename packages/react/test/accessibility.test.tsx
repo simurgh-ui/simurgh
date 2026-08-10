@@ -69,6 +69,13 @@ import {
   SheetDescription,
   SheetTitle,
   SheetTrigger,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -133,6 +140,37 @@ describe('React accessibility contract', () => {
     expect(document.activeElement).toBe(sheet);
     fireEvent.click(screen.getByRole('button', { name: 'Done' }));
     expect(screen.queryByRole('dialog')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('focuses the safe action in a destructive alert dialog', async () => {
+    const confirmed = vi.fn();
+    render(
+      <AlertDialog>
+        <AlertDialogTrigger>Delete project</AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogTitle>Delete project?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This cannot be undone.
+          </AlertDialogDescription>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={confirmed}>Delete</AlertDialogAction>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+    const trigger = screen.getByRole('button', { name: 'Delete project' });
+    trigger.focus();
+    fireEvent.click(trigger);
+    expect(
+      screen.getByRole('alertdialog', { name: 'Delete project?' }),
+    ).toBeTruthy();
+    await act(() => new Promise((resolve) => requestAnimationFrame(resolve)));
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: 'Cancel' }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    expect(confirmed).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('alertdialog')).toBeNull();
     expect(document.activeElement).toBe(trigger);
   });
 

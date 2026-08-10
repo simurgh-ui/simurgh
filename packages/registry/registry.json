@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "components": [
     "dialog",
+    "alert-dialog",
     "sheet",
     "popover",
     "tooltip",
@@ -76,6 +77,15 @@
         "DialogTitle",
         "DialogDescription",
         "DialogClose"
+      ],
+      "alert-dialog": [
+        "AlertDialog",
+        "AlertDialogTrigger",
+        "AlertDialogContent",
+        "AlertDialogTitle",
+        "AlertDialogDescription",
+        "AlertDialogAction",
+        "AlertDialogCancel"
       ],
       "sheet": [
         "Sheet",
@@ -183,6 +193,15 @@
         "DialogDescription",
         "DialogClose"
       ],
+      "alert-dialog": [
+        "AlertDialog",
+        "AlertDialogTrigger",
+        "AlertDialogContent",
+        "AlertDialogTitle",
+        "AlertDialogDescription",
+        "AlertDialogAction",
+        "AlertDialogCancel"
+      ],
       "sheet": [
         "Sheet",
         "SheetTrigger",
@@ -282,6 +301,11 @@
     },
     "angular": {
       "dialog": ["DialogComponent"],
+      "alert-dialog": [
+        "AlertDialogComponent",
+        "AlertDialogActionDirective",
+        "AlertDialogCancelDirective"
+      ],
       "sheet": ["SheetComponent", "SheetSide"],
       "popover": ["PopoverComponent"],
       "tooltip": ["TooltipComponent"],
