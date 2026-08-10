@@ -1739,6 +1739,58 @@ export const CardFooter = forwardRef<
   return <div ref={ref} data-slot="card-footer" {...props} />;
 });
 
+export const Empty = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { status?: boolean }
+>(function Empty({ status = false, role, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      {...props}
+      role={status ? 'status' : role}
+      aria-live={status ? 'polite' : props['aria-live']}
+      data-slot="empty"
+    />
+  );
+});
+export const EmptyHeader = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function EmptyHeader(props, ref) {
+  return <div ref={ref} data-slot="empty-header" {...props} />;
+});
+export const EmptyMedia = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
+>(function EmptyMedia({ decorative = true, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden={decorative || undefined}
+      data-slot="empty-media"
+      {...props}
+    />
+  );
+});
+export const EmptyTitle = forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(function EmptyTitle(props, ref) {
+  return <h3 ref={ref} data-slot="empty-title" {...props} />;
+});
+export const EmptyDescription = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function EmptyDescription(props, ref) {
+  return <p ref={ref} data-slot="empty-description" {...props} />;
+});
+export const EmptyContent = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function EmptyContent(props, ref) {
+  return <div ref={ref} data-slot="empty-content" {...props} />;
+});
+
 export const Kbd = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
   function Kbd(props, ref) {
     return <kbd ref={ref} data-slot="kbd" {...props} />;

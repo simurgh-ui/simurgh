@@ -43,6 +43,7 @@
     "navigation-menu",
     "menubar",
     "card",
+    "empty",
     "kbd",
     "field",
     "form",
@@ -168,6 +169,14 @@
         "CardContent",
         "CardFooter"
       ],
+      "empty": [
+        "Empty",
+        "EmptyHeader",
+        "EmptyMedia",
+        "EmptyTitle",
+        "EmptyDescription",
+        "EmptyContent"
+      ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
       "form": ["Form", "FormErrorSummary"],
@@ -291,6 +300,14 @@
         "CardContent",
         "CardFooter"
       ],
+      "empty": [
+        "Empty",
+        "EmptyHeader",
+        "EmptyMedia",
+        "EmptyTitle",
+        "EmptyDescription",
+        "EmptyContent"
+      ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
       "form": ["Form", "FormErrorSummary"],
@@ -383,6 +400,14 @@
         "CardDescriptionComponent",
         "CardContentComponent",
         "CardFooterComponent"
+      ],
+      "empty": [
+        "EmptyComponent",
+        "EmptyHeaderComponent",
+        "EmptyMediaComponent",
+        "EmptyTitleComponent",
+        "EmptyDescriptionComponent",
+        "EmptyContentComponent"
       ],
       "kbd": ["KbdComponent"],
       "field": [

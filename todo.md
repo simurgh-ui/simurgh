@@ -79,3 +79,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add native Select across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Button Group across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Input Group across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add semantic Empty State across Angular, React, Vue, the registry, documentation, and contract tests.

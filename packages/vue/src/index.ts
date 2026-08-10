@@ -1859,6 +1859,56 @@ export const CardContent = cardPart(
   'card-content',
 );
 export const CardFooter = cardPart('SimurghCardFooter', 'div', 'card-footer');
+
+export const Empty = defineComponent({
+  name: 'SimurghEmpty',
+  props: { status: Boolean },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          role: props.status ? 'status' : attrs['role'],
+          'aria-live': props.status ? 'polite' : attrs['aria-live'],
+          'data-slot': 'empty',
+        },
+        slots.default?.(),
+      );
+  },
+});
+export const EmptyHeader = cardPart(
+  'SimurghEmptyHeader',
+  'div',
+  'empty-header',
+);
+export const EmptyMedia = defineComponent({
+  name: 'SimurghEmptyMedia',
+  props: { decorative: { type: Boolean, default: true } },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          'aria-hidden': props.decorative || undefined,
+          'data-slot': 'empty-media',
+        },
+        slots.default?.(),
+      );
+  },
+});
+export const EmptyTitle = cardPart('SimurghEmptyTitle', 'h3', 'empty-title');
+export const EmptyDescription = cardPart(
+  'SimurghEmptyDescription',
+  'p',
+  'empty-description',
+);
+export const EmptyContent = cardPart(
+  'SimurghEmptyContent',
+  'div',
+  'empty-content',
+);
 export const Kbd = cardPart('SimurghKbd', 'kbd', 'kbd');
 export const Field = cardPart('SimurghField', 'fieldset', 'field');
 export const FieldLegend = cardPart(

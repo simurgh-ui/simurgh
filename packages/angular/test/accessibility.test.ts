@@ -45,6 +45,12 @@ import {
   CardComponent,
   CardDescriptionComponent,
   CardTitleComponent,
+  EmptyComponent,
+  EmptyContentComponent,
+  EmptyDescriptionComponent,
+  EmptyHeaderComponent,
+  EmptyMediaComponent,
+  EmptyTitleComponent,
   KbdComponent,
   FieldComponent,
   FieldErrorComponent,
@@ -193,6 +199,34 @@ class ContextMenuHost {
   >`,
 })
 class CardHost {}
+
+@Component({
+  standalone: true,
+  imports: [
+    ButtonComponent,
+    EmptyComponent,
+    EmptyContentComponent,
+    EmptyDescriptionComponent,
+    EmptyHeaderComponent,
+    EmptyMediaComponent,
+    EmptyTitleComponent,
+  ],
+  template: `<simurgh-empty [status]="status">
+    <simurgh-empty-media>+</simurgh-empty-media>
+    <simurgh-empty-header>
+      <simurgh-empty-title>No projects yet</simurgh-empty-title>
+      <simurgh-empty-description
+        >Create a project to begin.</simurgh-empty-description
+      >
+    </simurgh-empty-header>
+    <simurgh-empty-content
+      ><simurgh-button>Create project</simurgh-button></simurgh-empty-content
+    >
+  </simurgh-empty>`,
+})
+class EmptyHost {
+  status = false;
+}
 
 @Component({
   standalone: true,
@@ -1282,6 +1316,24 @@ describe('Angular accessibility contract', () => {
     ) as HTMLElement;
     expect(title.textContent).toBe('Release');
     expect(description.textContent).toBe('Ready to publish');
+    fixture.destroy();
+  });
+  it('keeps static empty content neutral and supports polite updates', () => {
+    const fixture = TestBed.createComponent(EmptyHost);
+    fixture.detectChanges();
+    const empty = fixture.nativeElement.querySelector(
+      'simurgh-empty',
+    ) as HTMLElement;
+    const media = fixture.nativeElement.querySelector(
+      'simurgh-empty-media',
+    ) as HTMLElement;
+    expect(empty.getAttribute('role')).toBeNull();
+    expect(empty.querySelector('h3')?.textContent).toBe('No projects yet');
+    expect(media.getAttribute('aria-hidden')).toBe('true');
+    fixture.componentInstance.status = true;
+    fixture.detectChanges();
+    expect(empty.getAttribute('role')).toBe('status');
+    expect(empty.getAttribute('aria-live')).toBe('polite');
     fixture.destroy();
   });
   it('renders keyboard input with native semantics', () => {

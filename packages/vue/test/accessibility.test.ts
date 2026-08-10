@@ -37,6 +37,12 @@ import {
   Card,
   CardDescription,
   CardTitle,
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
   Kbd,
   Field,
   FieldError,
@@ -170,6 +176,28 @@ describe('Vue accessibility contract', () => {
     expect(screen.getByText('Ready to publish').getAttribute('data-slot')).toBe(
       'card-description',
     );
+  });
+  it('keeps static empty content neutral and supports polite updates', async () => {
+    const view = render({
+      components: {
+        Button,
+        Empty,
+        EmptyContent,
+        EmptyDescription,
+        EmptyHeader,
+        EmptyMedia,
+        EmptyTitle,
+      },
+      props: ['status'],
+      template: `<Empty :status="status"><EmptyMedia>+</EmptyMedia><EmptyHeader><EmptyTitle>No projects yet</EmptyTitle><EmptyDescription>Create a project to begin.</EmptyDescription></EmptyHeader><EmptyContent><Button>Create project</Button></EmptyContent></Empty>`,
+    });
+    expect(screen.queryByRole('status')).toBeNull();
+    expect(
+      screen.getByRole('heading', { name: 'No projects yet', level: 3 }),
+    ).toBeTruthy();
+    expect(screen.getByText('+').getAttribute('aria-hidden')).toBe('true');
+    await view.rerender({ status: true });
+    expect(screen.getByRole('status').getAttribute('aria-live')).toBe('polite');
   });
   it('renders keyboard input with native semantics', () => {
     render({ components: { Kbd }, template: `<Kbd>Ctrl K</Kbd>` });
