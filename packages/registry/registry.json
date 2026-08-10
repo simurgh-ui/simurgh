@@ -12,6 +12,7 @@
     "dropdown-menu",
     "context-menu",
     "select",
+    "native-select",
     "combobox",
     "tabs",
     "accordion",
@@ -113,6 +114,7 @@
         "ContextMenuItem"
       ],
       "select": ["Select"],
+      "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "SelectOption"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
@@ -229,6 +231,7 @@
         "ContextMenuItem"
       ],
       "select": ["Select"],
+      "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "ComboboxOption"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
@@ -316,6 +319,7 @@
       "dropdown-menu": ["DropdownMenuComponent", "DropdownMenuItemDirective"],
       "context-menu": ["ContextMenuComponent", "ContextMenuItemDirective"],
       "select": ["SelectComponent", "SelectOption"],
+      "native-select": ["NativeSelectComponent"],
       "combobox": ["ComboboxComponent", "SelectOption"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],

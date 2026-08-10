@@ -32,6 +32,7 @@ import React, {
   type FormHTMLAttributes,
   type LabelHTMLAttributes,
   type InputHTMLAttributes,
+  type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
   type PropsWithChildren,
   type ReactNode,
@@ -1343,6 +1344,19 @@ export const Input = forwardRef<
   InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
 >(function Input({ invalid = false, ...props }, ref) {
   return <input ref={ref} aria-invalid={invalid || undefined} {...props} />;
+});
+export const NativeSelect = forwardRef<
+  HTMLSelectElement,
+  SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }
+>(function NativeSelect({ invalid = false, ...props }, ref) {
+  return (
+    <select
+      ref={ref}
+      aria-invalid={invalid || undefined}
+      data-slot="native-select"
+      {...props}
+    />
+  );
 });
 
 export const Slider = forwardRef<

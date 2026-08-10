@@ -73,6 +73,7 @@ import {
   RadioGroupComponent,
   RadioGroupItemDirective,
   SelectComponent,
+  NativeSelectComponent,
   SeparatorComponent,
   TabDirective,
   TabPanelDirective,
@@ -490,6 +491,26 @@ class MenubarHost {}
   </form>`,
 })
 class InputHost {}
+
+@Component({
+  standalone: true,
+  imports: [NativeSelectComponent],
+  template: `<form>
+    <label for="timezone">Timezone</label>
+    <simurgh-native-select
+      id="timezone"
+      name="timezone"
+      value="utc"
+      [invalid]="true"
+      (valueChange)="changed($event)"
+      ><option value="utc">UTC</option>
+      <option value="tehran">Tehran</option></simurgh-native-select
+    >
+  </form>`,
+})
+class NativeSelectHost {
+  changed = vi.fn();
+}
 
 @Component({
   standalone: true,
@@ -1061,6 +1082,20 @@ describe('Angular accessibility contract', () => {
     expect(input.required).toBe(true);
     expect(input.getAttribute('aria-invalid')).toBe('true');
     expect(new FormData(input.form!).get('email')).toBe('ada@example.com');
+    fixture.destroy();
+  });
+  it('updates and serializes native select values', () => {
+    const fixture = TestBed.createComponent(NativeSelectHost);
+    fixture.detectChanges();
+    const select = fixture.nativeElement.querySelector(
+      'select',
+    ) as HTMLSelectElement;
+    select.value = 'tehran';
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.changed).toHaveBeenCalledWith('tehran');
+    expect(select.getAttribute('aria-invalid')).toBe('true');
+    expect(new FormData(select.form!).get('timezone')).toBe('tehran');
     fixture.destroy();
   });
   it('uses native slider constraints and form serialization', () => {

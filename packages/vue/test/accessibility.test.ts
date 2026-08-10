@@ -84,6 +84,7 @@ import {
   RadioGroup,
   RadioGroupItem,
   Select,
+  NativeSelect,
   Separator,
   Tabs,
   TabsContent,
@@ -384,6 +385,21 @@ describe('Vue accessibility contract', () => {
     expect(
       new FormData(view.container.querySelector('form')!).get('city'),
     ).toBe('isfahan');
+  });
+  it('updates and serializes native select values', async () => {
+    const view = render({
+      components: { NativeSelect },
+      data: () => ({ timezone: 'utc' }),
+      template: `<form><label for="timezone">Timezone</label><NativeSelect id="timezone" name="timezone" v-model="timezone" invalid><option value="utc">UTC</option><option value="tehran">Tehran</option></NativeSelect></form>`,
+    });
+    const select = screen.getByRole('combobox', {
+      name: 'Timezone',
+    }) as HTMLSelectElement;
+    await fireEvent.update(select, 'tehran');
+    expect(select.getAttribute('aria-invalid')).toBe('true');
+    expect(
+      new FormData(view.container.querySelector('form')!).get('timezone'),
+    ).toBe('tehran');
   });
   it('navigates and serializes a radio group', async () => {
     const view = render({

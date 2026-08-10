@@ -94,6 +94,7 @@ import {
   RadioGroup,
   RadioGroupItem,
   Select,
+  NativeSelect,
   Separator,
   Tabs,
   TabsContent,
@@ -301,6 +302,22 @@ describe('React accessibility contract', () => {
     expect(new FormData(document.querySelector('form')!).get('city')).toBe(
       'isfahan',
     );
+  });
+  it('serializes native select values and preserves invalid semantics', () => {
+    render(
+      <form>
+        <label htmlFor="timezone">Timezone</label>
+        <NativeSelect id="timezone" name="timezone" defaultValue="utc" invalid>
+          <option value="utc">UTC</option>
+          <option value="tehran">Tehran</option>
+        </NativeSelect>
+      </form>,
+    );
+    const select = screen.getByRole('combobox', { name: 'Timezone' });
+    expect(select.getAttribute('aria-invalid')).toBe('true');
+    expect(
+      new FormData((select as HTMLSelectElement).form!).get('timezone'),
+    ).toBe('utc');
   });
   it('navigates and serializes a radio group', () => {
     render(
