@@ -59,6 +59,8 @@ import {
   DialogComponent,
   DropdownMenuComponent,
   DropdownMenuItemDirective,
+  ContextMenuComponent,
+  ContextMenuItemDirective,
   HoverCardComponent,
   LabelComponent,
   ProgressComponent,
@@ -115,6 +117,19 @@ class DialogHost {}
   </simurgh-hover-card>`,
 })
 class HoverCardHost {}
+
+@Component({
+  standalone: true,
+  imports: [ContextMenuComponent, ContextMenuItemDirective],
+  template: `<simurgh-context-menu>
+    <span trigger>Canvas</span>
+    <button simurghContextMenuItem [disabled]="true">Cut</button>
+    <button simurghContextMenuItem (select)="selected()">Copy</button>
+  </simurgh-context-menu>`,
+})
+class ContextMenuHost {
+  selected = vi.fn();
+}
 
 @Component({
   standalone: true,
@@ -538,6 +553,37 @@ describe('Angular accessibility contract', () => {
     trigger.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('[role=dialog]')).toBeTruthy();
+    fixture.destroy();
+  });
+
+  it('opens a context menu at the pointer and supports keyboard selection', async () => {
+    const fixture = TestBed.createComponent(ContextMenuHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '[data-slot=context-menu-trigger]',
+    ) as HTMLElement;
+    trigger.dispatchEvent(
+      new MouseEvent('contextmenu', {
+        clientX: 24,
+        clientY: 36,
+        bubbles: true,
+      }),
+    );
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    const menu = fixture.nativeElement.querySelector(
+      '[role=menu]',
+    ) as HTMLElement;
+    const items = menu.querySelectorAll(
+      '[role=menuitem]',
+    ) as NodeListOf<HTMLButtonElement>;
+    expect(document.activeElement).toBe(items[1]);
+    menu.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(fixture.componentInstance.selected).toHaveBeenCalledOnce();
+    expect(fixture.nativeElement.querySelector('[role=menu]')).toBeNull();
     fixture.destroy();
   });
 

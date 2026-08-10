@@ -8,6 +8,7 @@
     "tooltip",
     "hover-card",
     "dropdown-menu",
+    "context-menu",
     "select",
     "combobox",
     "tabs",
@@ -83,6 +84,12 @@
         "DropdownMenuTrigger",
         "DropdownMenuContent",
         "DropdownMenuItem"
+      ],
+      "context-menu": [
+        "ContextMenu",
+        "ContextMenuTrigger",
+        "ContextMenuContent",
+        "ContextMenuItem"
       ],
       "select": ["Select"],
       "combobox": ["Combobox", "SelectOption"],
@@ -175,6 +182,12 @@
         "DropdownMenuContent",
         "DropdownMenuItem"
       ],
+      "context-menu": [
+        "ContextMenu",
+        "ContextMenuTrigger",
+        "ContextMenuContent",
+        "ContextMenuItem"
+      ],
       "select": ["Select"],
       "combobox": ["Combobox", "ComboboxOption"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
@@ -254,6 +267,7 @@
       "tooltip": ["TooltipComponent"],
       "hover-card": ["HoverCardComponent"],
       "dropdown-menu": ["DropdownMenuComponent", "DropdownMenuItemDirective"],
+      "context-menu": ["ContextMenuComponent", "ContextMenuItemDirective"],
       "select": ["SelectComponent", "SelectOption"],
       "combobox": ["ComboboxComponent", "SelectOption"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],

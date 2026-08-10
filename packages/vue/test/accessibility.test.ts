@@ -57,6 +57,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
@@ -235,6 +239,32 @@ describe('Vue accessibility contract', () => {
     expect(
       screen.getByRole('dialog', { name: 'Simurgh profile' }),
     ).toBeTruthy();
+  });
+
+  it('opens a context menu at the pointer and supports keyboard selection', async () => {
+    const selected = vi.fn();
+    render({
+      components: {
+        ContextMenu,
+        ContextMenuTrigger,
+        ContextMenuContent,
+        ContextMenuItem,
+      },
+      setup: () => ({ selected }),
+      template: `<ContextMenu><ContextMenuTrigger>Canvas</ContextMenuTrigger><ContextMenuContent aria-label="Canvas actions"><ContextMenuItem disabled>Cut</ContextMenuItem><ContextMenuItem @select="selected">Copy</ContextMenuItem></ContextMenuContent></ContextMenu>`,
+    });
+    await fireEvent.contextMenu(screen.getByText('Canvas'), {
+      clientX: 24,
+      clientY: 36,
+    });
+    await new Promise((resolve) => setTimeout(resolve));
+    const menu = screen.getByRole('menu', { name: 'Canvas actions' });
+    expect(document.activeElement).toBe(
+      screen.getByRole('menuitem', { name: 'Copy' }),
+    );
+    await fireEvent.keyDown(menu, { key: 'Enter' });
+    expect(selected).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('menu')).toBeNull();
   });
 
   it('navigates and selects menu items from the keyboard', async () => {

@@ -67,6 +67,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
@@ -123,6 +127,31 @@ describe('React accessibility contract', () => {
     expect(
       screen.getByRole('dialog', { name: 'Simurgh profile' }),
     ).toBeTruthy();
+  });
+
+  it('opens a context menu at the pointer and supports keyboard selection', async () => {
+    const selected = vi.fn();
+    render(
+      <ContextMenu>
+        <ContextMenuTrigger>Canvas</ContextMenuTrigger>
+        <ContextMenuContent aria-label="Canvas actions">
+          <ContextMenuItem disabled>Cut</ContextMenuItem>
+          <ContextMenuItem onSelect={selected}>Copy</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>,
+    );
+    fireEvent.contextMenu(screen.getByText('Canvas'), {
+      clientX: 24,
+      clientY: 36,
+    });
+    const menu = screen.getByRole('menu', { name: 'Canvas actions' });
+    await act(() => new Promise((resolve) => requestAnimationFrame(resolve)));
+    expect(document.activeElement).toBe(
+      screen.getByRole('menuitem', { name: 'Copy' }),
+    );
+    fireEvent.keyDown(menu, { key: 'Enter' });
+    expect(selected).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('menu')).toBeNull();
   });
 
   it('serializes checkbox state and emits changes', () => {

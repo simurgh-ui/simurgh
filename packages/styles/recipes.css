@@ -36,6 +36,17 @@
   outline: 2px solid hsl(var(--simurgh-ring));
   outline-offset: 2px;
 }
+[data-slot='context-menu-trigger'] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+[data-slot='context-menu-trigger']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+[data-slot='context-menu-content'] {
+  min-inline-size: 10rem;
+}
 .simurgh-overlay {
   background: rgb(2 6 23 / 0.58);
   inset: 0;
