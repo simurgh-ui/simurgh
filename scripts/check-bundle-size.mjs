@@ -55,6 +55,24 @@ const cases = [
     budget: 2 * KiB,
   },
   {
+    name: 'react-tags-input',
+    framework: 'react',
+    subpath: 'tags-input',
+    budget: 2 * KiB,
+  },
+  {
+    name: 'vue-tags-input',
+    framework: 'vue',
+    subpath: 'tags-input',
+    budget: 2.5 * KiB,
+  },
+  {
+    name: 'angular-tags-input',
+    framework: 'angular',
+    subpath: 'tags-input',
+    budget: 2.5 * KiB,
+  },
+  {
     name: 'react-dialog',
     framework: 'react',
     subpath: 'dialog',

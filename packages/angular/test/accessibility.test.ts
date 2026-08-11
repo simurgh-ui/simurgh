@@ -100,6 +100,7 @@ import {
   PasswordInputComponent,
   NumberInputComponent,
   RatingComponent,
+  TagsInputComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -647,6 +648,20 @@ class NumberInputHost {
   />`,
 })
 class RatingHost {
+  changed = vi.fn();
+}
+
+@Component({
+  standalone: true,
+  imports: [TagsInputComponent],
+  template: `<simurgh-tags-input
+    aria-label="Skills"
+    inputLabel="Add skill"
+    name="skills"
+    (valueChange)="changed($event)"
+  />`,
+})
+class TagsInputHost {
   changed = vi.fn();
 }
 
@@ -1582,6 +1597,30 @@ describe('Angular accessibility contract', () => {
     expect(radios[3]?.checked).toBe(true);
     expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith(4);
     expect(radios[3]?.getAttribute('aria-label')).toBe('4 of 5');
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('adds and removes tags with the keyboard', async () => {
+    const fixture = TestBed.createComponent(TagsInputHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      '[data-slot=tags-input-control]',
+    ) as HTMLInputElement;
+    input.value = 'Accessibility';
+    input.dispatchEvent(new Event('input'));
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Accessibility');
+    expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith([
+      'Accessibility',
+    ]);
+    const remove = fixture.nativeElement.querySelector(
+      '[data-slot=tags-input-remove]',
+    ) as HTMLButtonElement;
+    expect(remove.getAttribute('aria-label')).toBe('Remove Accessibility');
+    remove.click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).not.toContain('Accessibility');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });

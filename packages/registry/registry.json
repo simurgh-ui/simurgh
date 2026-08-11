@@ -26,6 +26,7 @@
     "password-input",
     "number-input",
     "rating",
+    "tags-input",
     "tabs",
     "accordion",
     "checkbox",
@@ -167,6 +168,7 @@
       "password-input": ["PasswordInput"],
       "number-input": ["NumberInput"],
       "rating": ["Rating", "RatingProps"],
+      "tags-input": ["TagsInput", "TagsInputProps"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -342,6 +344,7 @@
       "password-input": ["PasswordInput"],
       "number-input": ["NumberInput"],
       "rating": ["Rating"],
+      "tags-input": ["TagsInput"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -485,6 +488,7 @@
       "password-input": ["PasswordInputComponent"],
       "number-input": ["NumberInputComponent"],
       "rating": ["RatingComponent"],
+      "tags-input": ["TagsInputComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],

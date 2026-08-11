@@ -36,6 +36,24 @@
       "brotli": 775,
       "budget": 2048
     },
+    "react-tags-input": {
+      "minified": 1604,
+      "gzip": 868,
+      "brotli": 754,
+      "budget": 2048
+    },
+    "vue-tags-input": {
+      "minified": 5353,
+      "gzip": 1938,
+      "brotli": 1724,
+      "budget": 2560
+    },
+    "angular-tags-input": {
+      "minified": 2887,
+      "gzip": 1231,
+      "brotli": 1050,
+      "budget": 2560
+    },
     "react-dialog": {
       "minified": 2457,
       "gzip": 1140,
@@ -61,46 +79,46 @@
       "budget": 2048
     },
     "react-complete": {
-      "minified": 83033,
-      "gzip": 26644,
-      "brotli": 24007,
+      "minified": 84498,
+      "gzip": 27119,
+      "brotli": 24401,
       "budget": 27648
     },
     "vue-complete": {
-      "minified": 74121,
-      "gzip": 20450,
-      "brotli": 18247,
+      "minified": 76097,
+      "gzip": 20876,
+      "brotli": 18631,
       "budget": 21504
     },
     "angular-complete": {
-      "minified": 133190,
-      "gzip": 25511,
-      "brotli": 21691,
+      "minified": 136078,
+      "gzip": 26130,
+      "brotli": 22212,
       "budget": 27648
     },
     "styles-complete": {
-      "minified": 30196,
-      "gzip": 4897,
-      "brotli": 4314
+      "minified": 31557,
+      "gzip": 5048,
+      "brotli": 4436
     }
   },
   "packages": {
     "react": {
-      "files": 133,
-      "unpacked": 273817,
-      "gzip": 39973,
+      "files": 135,
+      "unpacked": 281717,
+      "gzip": 41345,
       "budget": 307200
     },
     "vue": {
-      "files": 133,
-      "unpacked": 764426,
-      "gzip": 51853,
+      "files": 135,
+      "unpacked": 780988,
+      "gzip": 53521,
       "budget": 819200
     },
     "angular": {
-      "files": 137,
-      "unpacked": 244231,
-      "gzip": 32670,
+      "files": 139,
+      "unpacked": 249373,
+      "gzip": 33722,
       "budget": 281600
     }
   }

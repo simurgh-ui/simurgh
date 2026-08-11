@@ -1,0 +1,59 @@
+---
+title: Tags Input
+description: Accessible keyboard entry for compact lists of form values.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Tags Input turns short text values into removable tokens while retaining native text entry and form submission. Press Enter or comma to add the current value, Backspace on an empty control to remove the last tag, or use each tag's labelled remove button.
+
+<ComponentPreview title="Tags Input">
+  <div data-slot="tags-input" role="group" aria-label="Skills">
+    <span data-slot="tags-input-tag">
+      <span data-slot="tags-input-tag-text">TypeScript</span>
+      <button
+        type="button"
+        data-slot="tags-input-remove"
+        aria-label="Remove TypeScript"
+      >
+        &#215;
+      </button>
+    </span>
+    <span data-slot="tags-input-tag">
+      <span data-slot="tags-input-tag-text">Accessibility</span>
+      <button
+        type="button"
+        data-slot="tags-input-remove"
+        aria-label="Remove Accessibility"
+      >
+        &#215;
+      </button>
+    </span>
+    <input
+      data-slot="tags-input-control"
+      aria-label="Add skill"
+      placeholder="Add a skill"
+    />
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<TagsInput aria-label="Skills" inputLabel="Add skill" name="skills" defaultValue={['TypeScript']} onValueChange={setSkills} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<TagsInput v-model="skills" aria-label="Skills" input-label="Add skill" name="skills" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-tags-input aria-label="Skills" inputLabel="Add skill" name="skills" [value]="skills" (valueChange)="skills = $event" />
+```
+</TabItem>
+</Tabs>
+
+Duplicate and blank values are ignored. `maxTags` defaults to 20 and is capped at 100 to keep rendering bounded. When `name` is provided, every tag produces a hidden input with that name, so `FormData.getAll(name)` returns the complete list. Use `required` when at least one tag must be supplied, and provide localized input and removal labels where needed.

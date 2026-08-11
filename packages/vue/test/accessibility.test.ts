@@ -95,6 +95,7 @@ import {
   PasswordInput,
   NumberInput,
   Rating,
+  TagsInput,
   Dialog,
   DialogContent,
   DialogTrigger,
@@ -825,6 +826,28 @@ describe('Vue accessibility contract', () => {
     await fireEvent.click(four);
     expect((four as HTMLInputElement).checked).toBe(true);
     expect(changed).toHaveBeenLastCalledWith(4);
+    expect((await axe.run(view.container)).violations).toEqual([]);
+  });
+  it('adds and removes tags with the keyboard', async () => {
+    const changed = vi.fn();
+    const view = render(TagsInput, {
+      props: {
+        defaultValue: ['TypeScript'],
+        name: 'skills',
+        inputLabel: 'Add skill',
+        'onUpdate:modelValue': changed,
+      },
+      attrs: { 'aria-label': 'Skills' },
+    });
+    const input = screen.getByRole('textbox', { name: 'Add skill' });
+    await fireEvent.update(input, 'Accessibility');
+    await fireEvent.keyDown(input, { key: 'Enter' });
+    expect(screen.getByText('Accessibility')).toBeTruthy();
+    expect(changed).toHaveBeenLastCalledWith(['TypeScript', 'Accessibility']);
+    await fireEvent.click(
+      screen.getByRole('button', { name: 'Remove Accessibility' }),
+    );
+    expect(screen.queryByText('Accessibility')).toBeNull();
     expect((await axe.run(view.container)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {

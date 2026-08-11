@@ -94,6 +94,7 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add accessible Password Input across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Number Input across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Rating across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Tags Input across Angular, React, Vue, the registry, documentation, and contract tests.
 
 ## Bundle-size optimization
 
@@ -125,3 +126,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Eliminate duplicated Angular component output that currently contributes to an approximately 21.5 MiB `dist` directory.
 - [x] Add published-package size checks alongside browser bundle-size checks.
 - [x] Enforce standalone bundle budgets for the Rating component in every framework.
+- [x] Enforce standalone bundle budgets for the Tags Input component in every framework.

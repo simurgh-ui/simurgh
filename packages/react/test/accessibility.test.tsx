@@ -102,6 +102,7 @@ import {
   PasswordInput,
   NumberInput,
   Rating,
+  TagsInput,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -740,6 +741,35 @@ describe('React accessibility contract', () => {
     expect(changed).toHaveBeenLastCalledWith(4);
     const form = screen.getByTestId('rating-form') as HTMLFormElement;
     expect(new FormData(form).get('rating')).toBe('4');
+    expect((await axe.run(form)).violations).toEqual([]);
+  });
+  it('adds, submits, and removes tags with the keyboard', async () => {
+    const changed = vi.fn();
+    render(
+      <form data-testid="tags-form">
+        <TagsInput
+          aria-label="Skills"
+          inputLabel="Add skill"
+          name="skills"
+          defaultValue={['TypeScript']}
+          onValueChange={changed}
+        />
+      </form>,
+    );
+    const input = screen.getByRole('textbox', { name: 'Add skill' });
+    fireEvent.change(input, { target: { value: 'Accessibility' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(screen.getByText('Accessibility')).toBeTruthy();
+    expect(changed).toHaveBeenLastCalledWith(['TypeScript', 'Accessibility']);
+    const form = screen.getByTestId('tags-form') as HTMLFormElement;
+    expect(new FormData(form).getAll('skills')).toEqual([
+      'TypeScript',
+      'Accessibility',
+    ]);
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Remove Accessibility' }),
+    );
+    expect(screen.queryByText('Accessibility')).toBeNull();
     expect((await axe.run(form)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
