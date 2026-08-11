@@ -1643,55 +1643,9 @@ export { NumberInput } from './components/number-input.js';
 export { Rating } from './components/rating.js';
 export { TagsInput } from './components/tags-input.js';
 
-export type ToastMessage = { id: string; title: string; description?: string };
-const toastKey: InjectionKey<{
-  messages: Ref<ToastMessage[]>;
-  toast(m: Omit<ToastMessage, 'id'>): void;
-  dismiss(id: string): void;
-}> = Symbol('toast');
-export const ToastProvider = /* @__PURE__ */ defineComponent({
-  setup(_, { slots }) {
-    const messages = ref<ToastMessage[]>([]);
-    const dismiss = (id: string) =>
-      (messages.value = messages.value.filter((m) => m.id !== id));
-    provide(toastKey, {
-      messages,
-      dismiss,
-      toast: (m) => {
-        const id = createId('toast');
-        messages.value.push({ ...m, id });
-        setTimeout(() => dismiss(id), 5000);
-      },
-    });
-    return () => slots.default?.();
-  },
-});
-export function useToast() {
-  const c = inject(toastKey);
-  if (!c) throw new Error('useToast requires ToastProvider');
-  return c;
-}
-export const ToastViewport = /* @__PURE__ */ defineComponent({
-  setup() {
-    const c = useToast();
-    return () =>
-      h(
-        'div',
-        { class: 'simurgh-toast-region', 'aria-label': 'Notifications' },
-        c.messages.value.map((m) =>
-          h('div', { role: 'status', class: 'simurgh-content simurgh-toast' }, [
-            h('strong', m.title),
-            m.description && h('div', m.description),
-            h(
-              'button',
-              {
-                onClick: () => c.dismiss(m.id),
-                'aria-label': 'Dismiss notification',
-              },
-              '×',
-            ),
-          ]),
-        ),
-      );
-  },
-});
+export {
+  ToastProvider,
+  ToastViewport,
+  useToast,
+  type ToastMessage,
+} from './components/toast.js';

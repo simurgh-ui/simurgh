@@ -241,6 +241,12 @@ const cases = [
     budget: 990,
   },
   {
+    name: 'vue-toast',
+    framework: 'vue',
+    subpath: 'toast',
+    budget: 685,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',

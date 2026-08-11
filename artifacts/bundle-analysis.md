@@ -5,7 +5,7 @@ The enforced bundle report measures complete adapters twice: once with library d
 | Adapter | Complete | Without Floating UI | Contribution |
 | ------- | -------: | ------------------: | -----------: |
 | React   | 27,119 B |            14,290 B |     12,829 B |
-| Vue     | 22,091 B |            15,782 B |      6,309 B |
+| Vue     | 22,135 B |            15,837 B |      6,298 B |
 | Angular | 26,166 B |            19,749 B |      6,417 B |
 
 ## React integration decision
