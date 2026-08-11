@@ -96,6 +96,7 @@ import {
   SidebarMenuDirective,
   TreeDirective,
   TreeItemComponent,
+  FileUploadComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -589,6 +590,21 @@ class SidebarHost {
   </ul>`,
 })
 class TreeHost {}
+
+@Component({
+  standalone: true,
+  imports: [FileUploadComponent],
+  template: `<simurgh-file-upload
+    label="Upload documents"
+    description="PDF files only"
+    accept=".pdf"
+    [multiple]="true"
+    (filesChange)="changed($event)"
+  />`,
+})
+class FileUploadHost {
+  changed = vi.fn();
+}
 
 @Component({
   standalone: true,
@@ -1445,6 +1461,27 @@ describe('Angular accessibility contract', () => {
     expect(fixture.nativeElement.querySelector('[role=group]').hidden).toBe(
       true,
     );
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('filters and announces files selected through the native upload input', async () => {
+    const fixture = TestBed.createComponent(FileUploadHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      'input[type=file]',
+    ) as HTMLInputElement;
+    expect(input.accept).toBe('.pdf');
+    expect(input.multiple).toBe(true);
+    const pdf = new File(['pdf'], 'guide.pdf', { type: 'application/pdf' });
+    const text = new File(['text'], 'notes.txt', { type: 'text/plain' });
+    Object.defineProperty(input, 'files', {
+      configurable: true,
+      value: [pdf, text],
+    });
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith([pdf]);
+    expect(fixture.nativeElement.textContent).toContain('guide.pdf');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });

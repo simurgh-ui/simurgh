@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(60);
+    expect(manifest.components).toHaveLength(61);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -48,6 +48,7 @@ describe('registry', () => {
       expect(registryEntry('resizable', framework).symbols.length).toBe(3);
       expect(registryEntry('sidebar', framework).symbols.length).toBe(8);
       expect(registryEntry('tree', framework).symbols.length).toBe(2);
+      expect(registryEntry('file-upload', framework).symbols.length).toBe(1);
       expect(registryEntry('drawer', framework).symbols.length).toBeGreaterThan(
         0,
       );

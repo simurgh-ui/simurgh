@@ -22,6 +22,7 @@
     "resizable",
     "sidebar",
     "tree",
+    "file-upload",
     "tabs",
     "accordion",
     "checkbox",
@@ -159,6 +160,7 @@
         "SidebarMenu"
       ],
       "tree": ["Tree", "TreeItem"],
+      "file-upload": ["FileUpload"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -330,6 +332,7 @@
         "SidebarMenu"
       ],
       "tree": ["Tree", "TreeItem"],
+      "file-upload": ["FileUpload"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -469,6 +472,7 @@
         "SidebarMenuDirective"
       ],
       "tree": ["TreeDirective", "TreeItemComponent"],
+      "file-upload": ["FileUploadComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],

@@ -98,6 +98,7 @@ import {
   SidebarMenu,
   Tree,
   TreeItem,
+  FileUpload,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -651,6 +652,28 @@ describe('React accessibility contract', () => {
     expect(documents.getAttribute('aria-expanded')).toBe('false');
     expect(screen.queryByRole('treeitem', { name: 'Guide' })).toBeNull();
     expect((await axe.run(tree)).violations).toEqual([]);
+  });
+  it('filters and announces files selected through the native upload input', async () => {
+    const changed = vi.fn();
+    render(
+      <FileUpload
+        label="Upload documents"
+        description="PDF files only"
+        accept=".pdf"
+        multiple
+        onFilesChange={changed}
+      />,
+    );
+    const input = screen.getByLabelText(/Upload documents/) as HTMLInputElement;
+    expect(input.type).toBe('file');
+    expect(input.accept).toBe('.pdf');
+    expect(input.multiple).toBe(true);
+    const pdf = new File(['pdf'], 'guide.pdf', { type: 'application/pdf' });
+    const text = new File(['text'], 'notes.txt', { type: 'text/plain' });
+    fireEvent.change(input, { target: { files: [pdf, text] } });
+    expect(changed).toHaveBeenLastCalledWith([pdf]);
+    expect(screen.getByText('guide.pdf')).toBeTruthy();
+    expect((await axe.run(input.parentElement!)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
     render(
