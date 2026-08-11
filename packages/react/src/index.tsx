@@ -10,7 +10,7 @@ import {
   useHover,
   useInteractions,
   useRole,
-} from '@floating-ui/react';
+} from './floating.js';
 import {
   addCalendarMonths,
   calendarMonthDays,
@@ -65,7 +65,9 @@ type OverlayContextValue = {
   titleId: string;
   descriptionId: string;
 };
-const DialogContext = createContext<OverlayContextValue | null>(null);
+const DialogContext = /* @__PURE__ */ createContext<OverlayContextValue | null>(
+  null,
+);
 const useDialog = () => {
   const value = useContext(DialogContext);
   if (!value) throw new Error('Dialog parts must be inside Dialog');
@@ -88,7 +90,7 @@ export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
     </DialogContext.Provider>
   );
 }
-export const DialogTrigger = forwardRef<
+export const DialogTrigger = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
@@ -110,7 +112,7 @@ export const DialogTrigger = forwardRef<
 export function DialogPortal({ children }: PropsWithChildren) {
   return useBrowser() ? createPortal(children, document.body) : null;
 }
-export const DialogOverlay = forwardRef<
+export const DialogOverlay = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, ref) => {
@@ -127,7 +129,7 @@ export const DialogOverlay = forwardRef<
     />
   ) : null;
 });
-export const DialogContent = forwardRef<
+export const DialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, forwardedRef) => {
@@ -173,7 +175,7 @@ export function DialogDescription(props: HTMLAttributes<HTMLParagraphElement>) {
   const { descriptionId } = useDialog();
   return <p {...props} id={descriptionId} />;
 }
-export const DialogClose = forwardRef<
+export const DialogClose = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
@@ -197,7 +199,7 @@ export const SheetTrigger = DialogTrigger;
 export const SheetTitle = DialogTitle;
 export const SheetDescription = DialogDescription;
 export const SheetClose = DialogClose;
-export const SheetContent = forwardRef<
+export const SheetContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { side?: SheetSide }
 >(function SheetContent({ side = 'right', className, ...props }, ref) {
@@ -220,7 +222,7 @@ export const DrawerTrigger = DialogTrigger;
 export const DrawerTitle = DialogTitle;
 export const DrawerDescription = DialogDescription;
 export const DrawerClose = DialogClose;
-export const DrawerContent = forwardRef<
+export const DrawerContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { side?: 'top' | 'bottom' }
 >(function DrawerContent({ side = 'bottom', ...props }, ref) {
@@ -231,7 +233,7 @@ export const AlertDialog = Dialog;
 export const AlertDialogTrigger = DialogTrigger;
 export const AlertDialogTitle = DialogTitle;
 export const AlertDialogDescription = DialogDescription;
-export const AlertDialogContent = forwardRef<
+export const AlertDialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function AlertDialogContent(props, forwardedRef) {
@@ -316,7 +318,8 @@ type FloatingContextValue = OverlayContextValue &
       props?: Record<string, unknown>,
     ) => Record<string, unknown>;
   };
-const FloatingContext = createContext<FloatingContextValue | null>(null);
+const FloatingContext =
+  /* @__PURE__ */ createContext<FloatingContextValue | null>(null);
 function FloatingRoot({
   children,
   kind,
@@ -379,7 +382,7 @@ const useFloatingRoot = () => {
   if (!c) throw new Error('Floating parts require a root');
   return c;
 };
-const FloatingTrigger = forwardRef<
+const FloatingTrigger = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
@@ -470,7 +473,7 @@ export const TooltipContent = FloatingContent;
 export function HoverCard(props: PropsWithChildren<OpenProps>) {
   return <FloatingRoot {...props} kind="hovercard" />;
 }
-export const HoverCardTrigger = forwardRef<
+export const HoverCardTrigger = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >(function HoverCardTrigger(props, ref) {
@@ -539,7 +542,8 @@ type ContextMenuContextValue = {
   point: { x: number; y: number };
   openAt(x: number, y: number): void;
 };
-const ContextMenuContext = createContext<ContextMenuContextValue | null>(null);
+const ContextMenuContext =
+  /* @__PURE__ */ createContext<ContextMenuContextValue | null>(null);
 const useContextMenu = () => {
   const value = useContext(ContextMenuContext);
   if (!value) throw new Error('Context menu parts require a root');
@@ -561,7 +565,7 @@ export function ContextMenu({
     </ContextMenuContext.Provider>
   );
 }
-export const ContextMenuTrigger = forwardRef<
+export const ContextMenuTrigger = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function ContextMenuTrigger({ onContextMenu, onKeyDown, ...props }, ref) {
@@ -645,7 +649,7 @@ export function ContextMenuContent({
     document.body,
   );
 }
-export const ContextMenuItem = forwardRef<
+export const ContextMenuItem = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { disabled?: boolean; onSelect?: () => void }
 >(function ContextMenuItem({ disabled, onSelect, onClick, ...props }, ref) {
@@ -676,7 +680,9 @@ type TabsContextValue = {
   orientation: Orientation;
   direction: Direction;
 };
-const TabsContext = createContext<TabsContextValue | null>(null);
+const TabsContext = /* @__PURE__ */ createContext<TabsContextValue | null>(
+  null,
+);
 const useTabs = () => {
   const c = useContext(TabsContext);
   if (!c) throw new Error('Tabs parts require Tabs');
@@ -782,8 +788,9 @@ type AccordionContextValue = {
   multiple: boolean;
   id: string;
 };
-const AccordionContext = createContext<AccordionContextValue | null>(null);
-const AccordionItemContext = createContext<string>('');
+const AccordionContext =
+  /* @__PURE__ */ createContext<AccordionContextValue | null>(null);
+const AccordionItemContext = /* @__PURE__ */ createContext<string>('');
 export function Accordion({
   children,
   type = 'single',
@@ -853,7 +860,8 @@ export function AccordionContent(props: HTMLAttributes<HTMLDivElement>) {
   ) : null;
 }
 type CollapsibleContextValue = { open: boolean; toggle(): void; id: string };
-const CollapsibleContext = createContext<CollapsibleContextValue | null>(null);
+const CollapsibleContext =
+  /* @__PURE__ */ createContext<CollapsibleContextValue | null>(null);
 export function Collapsible({
   open,
   defaultOpen = false,
@@ -967,14 +975,14 @@ function CheckControl({
     </>
   );
 }
-export const Label = forwardRef<
+export const Label = /* @__PURE__ */ forwardRef<
   HTMLLabelElement,
   LabelHTMLAttributes<HTMLLabelElement>
 >(function Label(props, ref) {
   return <label ref={ref} {...props} />;
 });
 
-export const Separator = forwardRef<
+export const Separator = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     orientation?: Orientation;
@@ -996,7 +1004,7 @@ export const Separator = forwardRef<
   );
 });
 
-export const Progress = forwardRef<
+export const Progress = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     value?: number | null;
@@ -1040,7 +1048,7 @@ export const Progress = forwardRef<
   );
 });
 
-export const Toggle = forwardRef<
+export const Toggle = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> & {
     pressed?: boolean;
@@ -1084,7 +1092,8 @@ type ToggleGroupContextValue = {
   values: string[];
   toggle(value: string): void;
 };
-const ToggleGroupContext = createContext<ToggleGroupContextValue | null>(null);
+const ToggleGroupContext =
+  /* @__PURE__ */ createContext<ToggleGroupContextValue | null>(null);
 export function ToggleGroup({
   type = 'single',
   value,
@@ -1181,7 +1190,7 @@ const visuallyHiddenStyle: React.CSSProperties = {
   border: 0,
 };
 
-export const VisuallyHidden = forwardRef<
+export const VisuallyHidden = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement>
 >(function VisuallyHidden({ style, ...props }, ref) {
@@ -1190,7 +1199,7 @@ export const VisuallyHidden = forwardRef<
   );
 });
 
-export const Avatar = forwardRef<
+export const Avatar = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement> & {
     src?: string;
@@ -1224,7 +1233,7 @@ export const Avatar = forwardRef<
   );
 });
 
-export const Alert = forwardRef<
+export const Alert = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { urgent?: boolean }
 >(function Alert({ urgent = false, ...props }, ref) {
@@ -1240,7 +1249,7 @@ export const Alert = forwardRef<
   );
 });
 
-export const AspectRatio = forwardRef<
+export const AspectRatio = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { ratio?: number }
 >(function AspectRatio({ ratio = 1, style, ...props }, ref) {
@@ -1255,7 +1264,7 @@ export const AspectRatio = forwardRef<
   );
 });
 
-export const Skeleton = forwardRef<
+export const Skeleton = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { label?: string }
 >(function Skeleton({ label, ...props }, ref) {
@@ -1272,7 +1281,7 @@ export const Skeleton = forwardRef<
   );
 });
 
-export const Spinner = forwardRef<
+export const Spinner = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement> & { label?: string }
 >(function Spinner({ label = 'Loading', children, ...props }, ref) {
@@ -1293,7 +1302,7 @@ export const Spinner = forwardRef<
   );
 });
 
-export const Button = forwardRef<
+export const Button = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean }
 >(function Button(
@@ -1314,7 +1323,7 @@ export const Button = forwardRef<
   );
 });
 
-export const ButtonGroup = forwardRef<
+export const ButtonGroup = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { orientation?: Orientation }
 >(function ButtonGroup(
@@ -1332,14 +1341,14 @@ export const ButtonGroup = forwardRef<
   );
 });
 
-export const ButtonGroupText = forwardRef<
+export const ButtonGroupText = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement>
 >(function ButtonGroupText(props, ref) {
   return <span ref={ref} data-slot="button-group-text" {...props} />;
 });
 
-export const ButtonGroupSeparator = forwardRef<
+export const ButtonGroupSeparator = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement> & { orientation?: Orientation }
 >(function ButtonGroupSeparator(
@@ -1357,7 +1366,7 @@ export const ButtonGroupSeparator = forwardRef<
   );
 });
 
-export const Link = forwardRef<
+export const Link = /* @__PURE__ */ forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & {
     disabled?: boolean;
@@ -1398,21 +1407,21 @@ export const Link = forwardRef<
   );
 });
 
-export const Input = forwardRef<
+export const Input = /* @__PURE__ */ forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
 >(function Input({ invalid = false, ...props }, ref) {
   return <input ref={ref} aria-invalid={invalid || undefined} {...props} />;
 });
 
-export const InputGroup = forwardRef<
+export const InputGroup = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function InputGroup({ role = 'group', ...props }, ref) {
   return <div ref={ref} role={role} data-slot="input-group" {...props} />;
 });
 
-export const InputGroupAddon = forwardRef<
+export const InputGroupAddon = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     align?: 'inline-start' | 'inline-end' | 'block-start' | 'block-end';
@@ -1433,14 +1442,14 @@ export const InputGroupAddon = forwardRef<
   );
 });
 
-export const InputGroupText = forwardRef<
+export const InputGroupText = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement>
 >(function InputGroupText(props, ref) {
   return <span ref={ref} data-slot="input-group-text" {...props} />;
 });
 
-export const InputOtp = forwardRef<
+export const InputOtp = /* @__PURE__ */ forwardRef<
   HTMLInputElement,
   Omit<InputHTMLAttributes<HTMLInputElement>, 'maxLength'> & {
     length?: number;
@@ -1487,7 +1496,7 @@ export const InputOtp = forwardRef<
   );
 });
 
-export const NativeSelect = forwardRef<
+export const NativeSelect = /* @__PURE__ */ forwardRef<
   HTMLSelectElement,
   SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }
 >(function NativeSelect({ invalid = false, ...props }, ref) {
@@ -1501,7 +1510,7 @@ export const NativeSelect = forwardRef<
   );
 });
 
-export const Slider = forwardRef<
+export const Slider = /* @__PURE__ */ forwardRef<
   HTMLInputElement,
   Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
     invalid?: boolean;
@@ -1524,7 +1533,7 @@ export const Slider = forwardRef<
   );
 });
 
-export const Meter = forwardRef<
+export const Meter = /* @__PURE__ */ forwardRef<
   HTMLMeterElement,
   React.MeterHTMLAttributes<HTMLMeterElement> & { label?: string }
 >(function Meter(
@@ -1548,7 +1557,7 @@ export const Meter = forwardRef<
   );
 });
 
-export const Toolbar = forwardRef<
+export const Toolbar = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     orientation?: Orientation;
@@ -1595,7 +1604,7 @@ export const Toolbar = forwardRef<
     />
   );
 });
-export const ToolbarButton = forwardRef<
+export const ToolbarButton = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >(function ToolbarButton(props, ref) {
@@ -1610,7 +1619,7 @@ export const ToolbarButton = forwardRef<
   );
 });
 
-export const ScrollArea = forwardRef<
+export const ScrollArea = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     orientation?: 'vertical' | 'horizontal' | 'both';
@@ -1633,7 +1642,7 @@ export const ScrollArea = forwardRef<
   );
 });
 
-export const Textarea = forwardRef<
+export const Textarea = /* @__PURE__ */ forwardRef<
   HTMLTextAreaElement,
   TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }
 >(function Textarea({ invalid = false, ...props }, ref) {
@@ -1641,7 +1650,7 @@ export const Textarea = forwardRef<
 });
 
 export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
-export const Badge = forwardRef<
+export const Badge = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone; status?: boolean }
 >(function Badge({ tone = 'neutral', status = false, ...props }, ref) {
@@ -1656,14 +1665,14 @@ export const Badge = forwardRef<
   );
 });
 
-export const Breadcrumb = forwardRef<
+export const Breadcrumb = /* @__PURE__ */ forwardRef<
   HTMLElement,
   React.HTMLAttributes<HTMLElement> & { label?: string }
 >(function Breadcrumb({ label = 'Breadcrumb', ...props }, ref) {
   return <nav ref={ref} aria-label={label} {...props} />;
 });
 
-export const NavigationMenu = forwardRef<
+export const NavigationMenu = /* @__PURE__ */ forwardRef<
   HTMLElement,
   React.HTMLAttributes<HTMLElement> & { label?: string }
 >(function NavigationMenu({ label = 'Main navigation', ...props }, ref) {
@@ -1671,19 +1680,19 @@ export const NavigationMenu = forwardRef<
     <nav ref={ref} aria-label={label} data-slot="navigation-menu" {...props} />
   );
 });
-export const NavigationMenuList = forwardRef<
+export const NavigationMenuList = /* @__PURE__ */ forwardRef<
   HTMLUListElement,
   React.HTMLAttributes<HTMLUListElement>
 >(function NavigationMenuList(props, ref) {
   return <ul ref={ref} data-slot="navigation-menu-list" {...props} />;
 });
-export const NavigationMenuItem = forwardRef<
+export const NavigationMenuItem = /* @__PURE__ */ forwardRef<
   HTMLLIElement,
   React.LiHTMLAttributes<HTMLLIElement>
 >(function NavigationMenuItem(props, ref) {
   return <li ref={ref} data-slot="navigation-menu-item" {...props} />;
 });
-export const NavigationMenuLink = forwardRef<
+export const NavigationMenuLink = /* @__PURE__ */ forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
 >(function NavigationMenuLink({ current = false, ...props }, ref) {
@@ -1697,7 +1706,7 @@ export const NavigationMenuLink = forwardRef<
   );
 });
 
-export const Menubar = forwardRef<
+export const Menubar = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { label?: string; direction?: Direction }
 >(function Menubar(
@@ -1748,7 +1757,7 @@ export const Menubar = forwardRef<
     />
   );
 });
-export const MenubarItem = forwardRef<
+export const MenubarItem = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >(function MenubarItem({ disabled, ...props }, ref) {
@@ -1766,43 +1775,44 @@ export const MenubarItem = forwardRef<
   );
 });
 
-export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  function Card(props, ref) {
-    return <div ref={ref} data-slot="card" {...props} />;
-  },
-);
-export const CardHeader = forwardRef<
+export const Card = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function Card(props, ref) {
+  return <div ref={ref} data-slot="card" {...props} />;
+});
+export const CardHeader = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function CardHeader(props, ref) {
   return <div ref={ref} data-slot="card-header" {...props} />;
 });
-export const CardTitle = forwardRef<
+export const CardTitle = /* @__PURE__ */ forwardRef<
   HTMLHeadingElement,
   HTMLAttributes<HTMLHeadingElement>
 >(function CardTitle(props, ref) {
   return <h3 ref={ref} data-slot="card-title" {...props} />;
 });
-export const CardDescription = forwardRef<
+export const CardDescription = /* @__PURE__ */ forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(function CardDescription(props, ref) {
   return <p ref={ref} data-slot="card-description" {...props} />;
 });
-export const CardContent = forwardRef<
+export const CardContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function CardContent(props, ref) {
   return <div ref={ref} data-slot="card-content" {...props} />;
 });
-export const CardFooter = forwardRef<
+export const CardFooter = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function CardFooter(props, ref) {
   return <div ref={ref} data-slot="card-footer" {...props} />;
 });
 
-export const Empty = forwardRef<
+export const Empty = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { status?: boolean }
 >(function Empty({ status = false, role, ...props }, ref) {
@@ -1816,13 +1826,13 @@ export const Empty = forwardRef<
     />
   );
 });
-export const EmptyHeader = forwardRef<
+export const EmptyHeader = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function EmptyHeader(props, ref) {
   return <div ref={ref} data-slot="empty-header" {...props} />;
 });
-export const EmptyMedia = forwardRef<
+export const EmptyMedia = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
 >(function EmptyMedia({ decorative = true, ...props }, ref) {
@@ -1835,37 +1845,38 @@ export const EmptyMedia = forwardRef<
     />
   );
 });
-export const EmptyTitle = forwardRef<
+export const EmptyTitle = /* @__PURE__ */ forwardRef<
   HTMLHeadingElement,
   HTMLAttributes<HTMLHeadingElement>
 >(function EmptyTitle(props, ref) {
   return <h3 ref={ref} data-slot="empty-title" {...props} />;
 });
-export const EmptyDescription = forwardRef<
+export const EmptyDescription = /* @__PURE__ */ forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(function EmptyDescription(props, ref) {
   return <p ref={ref} data-slot="empty-description" {...props} />;
 });
-export const EmptyContent = forwardRef<
+export const EmptyContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function EmptyContent(props, ref) {
   return <div ref={ref} data-slot="empty-content" {...props} />;
 });
 
-export const ItemGroup = forwardRef<
+export const ItemGroup = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function ItemGroup({ role = 'list', ...props }, ref) {
   return <div ref={ref} role={role} data-slot="item-group" {...props} />;
 });
-export const Item = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  function Item({ role = 'listitem', ...props }, ref) {
-    return <div ref={ref} role={role} data-slot="item" {...props} />;
-  },
-);
-export const ItemMedia = forwardRef<
+export const Item = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function Item({ role = 'listitem', ...props }, ref) {
+  return <div ref={ref} role={role} data-slot="item" {...props} />;
+});
+export const ItemMedia = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
 >(function ItemMedia({ decorative = true, ...props }, ref) {
@@ -1878,63 +1889,64 @@ export const ItemMedia = forwardRef<
     />
   );
 });
-export const ItemContent = forwardRef<
+export const ItemContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function ItemContent(props, ref) {
   return <div ref={ref} data-slot="item-content" {...props} />;
 });
-export const ItemTitle = forwardRef<
+export const ItemTitle = /* @__PURE__ */ forwardRef<
   HTMLHeadingElement,
   HTMLAttributes<HTMLHeadingElement>
 >(function ItemTitle(props, ref) {
   return <h3 ref={ref} data-slot="item-title" {...props} />;
 });
-export const ItemDescription = forwardRef<
+export const ItemDescription = /* @__PURE__ */ forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(function ItemDescription(props, ref) {
   return <p ref={ref} data-slot="item-description" {...props} />;
 });
-export const ItemActions = forwardRef<
+export const ItemActions = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function ItemActions(props, ref) {
   return <div ref={ref} data-slot="item-actions" {...props} />;
 });
 
-export const Kbd = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
-  function Kbd(props, ref) {
-    return <kbd ref={ref} data-slot="kbd" {...props} />;
-  },
-);
+export const Kbd = /* @__PURE__ */ forwardRef<
+  HTMLElement,
+  HTMLAttributes<HTMLElement>
+>(function Kbd(props, ref) {
+  return <kbd ref={ref} data-slot="kbd" {...props} />;
+});
 
-export const Field = forwardRef<
+export const Field = /* @__PURE__ */ forwardRef<
   HTMLFieldSetElement,
   React.FieldsetHTMLAttributes<HTMLFieldSetElement>
 >(function Field(props, ref) {
   return <fieldset ref={ref} data-slot="field" {...props} />;
 });
-export const FieldLegend = forwardRef<
+export const FieldLegend = /* @__PURE__ */ forwardRef<
   HTMLLegendElement,
   HTMLAttributes<HTMLLegendElement>
 >(function FieldLegend(props, ref) {
   return <legend ref={ref} data-slot="field-legend" {...props} />;
 });
-export const FieldDescription = forwardRef<
+export const FieldDescription = /* @__PURE__ */ forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(function FieldDescription(props, ref) {
   return <p ref={ref} data-slot="field-description" {...props} />;
 });
-export const FieldError = forwardRef<
+export const FieldError = /* @__PURE__ */ forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(function FieldError(props, ref) {
   return <p ref={ref} data-slot="field-error" role="alert" {...props} />;
 });
 
-export const Form = forwardRef<
+export const Form = /* @__PURE__ */ forwardRef<
   HTMLFormElement,
   FormHTMLAttributes<HTMLFormElement> & { focusInvalid?: boolean }
 >(function Form({ focusInvalid = true, onInvalid, ...props }, ref) {
@@ -1958,7 +1970,7 @@ export const Form = forwardRef<
     />
   );
 });
-export const FormErrorSummary = forwardRef<
+export const FormErrorSummary = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function FormErrorSummary(props, ref) {
@@ -1974,74 +1986,74 @@ export const FormErrorSummary = forwardRef<
   );
 });
 
-export const Table = forwardRef<
+export const Table = /* @__PURE__ */ forwardRef<
   HTMLTableElement,
   React.TableHTMLAttributes<HTMLTableElement>
 >(function Table(props, ref) {
   return <table ref={ref} data-slot="table" {...props} />;
 });
-export const TableHeader = forwardRef<
+export const TableHeader = /* @__PURE__ */ forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(function TableHeader(props, ref) {
   return <thead ref={ref} data-slot="table-header" {...props} />;
 });
-export const TableBody = forwardRef<
+export const TableBody = /* @__PURE__ */ forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(function TableBody(props, ref) {
   return <tbody ref={ref} data-slot="table-body" {...props} />;
 });
-export const TableFooter = forwardRef<
+export const TableFooter = /* @__PURE__ */ forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(function TableFooter(props, ref) {
   return <tfoot ref={ref} data-slot="table-footer" {...props} />;
 });
-export const TableRow = forwardRef<
+export const TableRow = /* @__PURE__ */ forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
 >(function TableRow(props, ref) {
   return <tr ref={ref} data-slot="table-row" {...props} />;
 });
-export const TableHead = forwardRef<
+export const TableHead = /* @__PURE__ */ forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement>
 >(function TableHead({ scope = 'col', ...props }, ref) {
   return <th ref={ref} scope={scope} data-slot="table-head" {...props} />;
 });
-export const TableCell = forwardRef<
+export const TableCell = /* @__PURE__ */ forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement>
 >(function TableCell(props, ref) {
   return <td ref={ref} data-slot="table-cell" {...props} />;
 });
-export const TableCaption = forwardRef<
+export const TableCaption = /* @__PURE__ */ forwardRef<
   HTMLTableCaptionElement,
   React.HTMLAttributes<HTMLTableCaptionElement>
 >(function TableCaption(props, ref) {
   return <caption ref={ref} data-slot="table-caption" {...props} />;
 });
 
-export const Pagination = forwardRef<
+export const Pagination = /* @__PURE__ */ forwardRef<
   HTMLElement,
   React.HTMLAttributes<HTMLElement> & { label?: string }
 >(function Pagination({ label = 'Pagination', ...props }, ref) {
   return <nav ref={ref} aria-label={label} data-slot="pagination" {...props} />;
 });
-export const PaginationContent = forwardRef<
+export const PaginationContent = /* @__PURE__ */ forwardRef<
   HTMLUListElement,
   React.HTMLAttributes<HTMLUListElement>
 >(function PaginationContent(props, ref) {
   return <ul ref={ref} data-slot="pagination-content" {...props} />;
 });
-export const PaginationItem = forwardRef<
+export const PaginationItem = /* @__PURE__ */ forwardRef<
   HTMLLIElement,
   React.LiHTMLAttributes<HTMLLIElement>
 >(function PaginationItem(props, ref) {
   return <li ref={ref} data-slot="pagination-item" {...props} />;
 });
-export const PaginationLink = forwardRef<
+export const PaginationLink = /* @__PURE__ */ forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
 >(function PaginationLink({ current = false, ...props }, ref) {
@@ -2070,7 +2082,9 @@ type RadioContextValue = {
   disabled: boolean;
   direction: Direction;
 };
-const RadioContext = createContext<RadioContextValue | null>(null);
+const RadioContext = /* @__PURE__ */ createContext<RadioContextValue | null>(
+  null,
+);
 export function RadioGroup({
   children,
   value,
@@ -2654,7 +2668,8 @@ type CarouselContextValue = {
   setCount(count: number): void;
   goTo(index: number): void;
 };
-const CarouselContext = createContext<CarouselContextValue | null>(null);
+const CarouselContext =
+  /* @__PURE__ */ createContext<CarouselContextValue | null>(null);
 const useCarousel = () => {
   const context = useContext(CarouselContext);
   if (!context) throw new Error('Carousel parts require a Carousel root');
@@ -2742,7 +2757,7 @@ export function CarouselContent({
   );
 }
 
-export const CarouselItem = forwardRef<
+export const CarouselItem = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function CarouselItem(props, ref) {
@@ -2798,7 +2813,8 @@ type ResizableContextValue = {
   root: React.RefObject<HTMLDivElement | null>;
   adjust(boundary: number, delta: number): void;
 };
-const ResizableContext = createContext<ResizableContextValue | null>(null);
+const ResizableContext =
+  /* @__PURE__ */ createContext<ResizableContextValue | null>(null);
 const normalizePanelSizes = (values: number[]) => {
   const total = values.reduce((sum, value) => sum + Math.max(0, value), 0);
   return values.map((value) =>
@@ -3020,7 +3036,8 @@ type SidebarContextValue = {
   setOpen(open: boolean): void;
   contentId: string;
 };
-const SidebarContext = createContext<SidebarContextValue | null>(null);
+const SidebarContext =
+  /* @__PURE__ */ createContext<SidebarContextValue | null>(null);
 function useSidebarContext() {
   const context = useContext(SidebarContext);
   if (!context) throw new Error('Sidebar components require SidebarProvider');
@@ -3094,10 +3111,10 @@ function sidebarPart(slot: string) {
     return <div {...props} data-slot={slot} />;
   };
 }
-export const SidebarHeader = sidebarPart('sidebar-header');
-export const SidebarContent = sidebarPart('sidebar-content');
-export const SidebarFooter = sidebarPart('sidebar-footer');
-export const SidebarGroup = sidebarPart('sidebar-group');
+export const SidebarHeader = /* @__PURE__ */ sidebarPart('sidebar-header');
+export const SidebarContent = /* @__PURE__ */ sidebarPart('sidebar-content');
+export const SidebarFooter = /* @__PURE__ */ sidebarPart('sidebar-footer');
+export const SidebarGroup = /* @__PURE__ */ sidebarPart('sidebar-group');
 export function SidebarMenu(props: HTMLAttributes<HTMLUListElement>) {
   return <ul {...props} data-slot="sidebar-menu" />;
 }
@@ -3320,43 +3337,44 @@ type PasswordInputProps = Omit<
   revealLabel?: string;
   concealLabel?: string;
 };
-export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  function PasswordInput(
-    {
-      revealLabel = 'Show password',
-      concealLabel = 'Hide password',
-      disabled,
-      ...props
-    },
-    ref,
-  ) {
-    const [revealed, setRevealed] = useState(false);
-    const id = props.id ?? `simurgh-password-${useId().replace(/:/g, '')}`;
-    return (
-      <div data-slot="password-input" data-disabled={disabled || undefined}>
-        <input
-          {...props}
-          ref={ref}
-          id={id}
-          type={revealed ? 'text' : 'password'}
-          data-slot="password-input-control"
-          disabled={disabled}
-        />
-        <button
-          type="button"
-          data-slot="password-input-toggle"
-          aria-controls={id}
-          aria-label={revealed ? concealLabel : revealLabel}
-          aria-pressed={revealed}
-          disabled={disabled}
-          onClick={() => setRevealed((current) => !current)}
-        >
-          {revealed ? 'Hide' : 'Show'}
-        </button>
-      </div>
-    );
+export const PasswordInput = /* @__PURE__ */ forwardRef<
+  HTMLInputElement,
+  PasswordInputProps
+>(function PasswordInput(
+  {
+    revealLabel = 'Show password',
+    concealLabel = 'Hide password',
+    disabled,
+    ...props
   },
-);
+  ref,
+) {
+  const [revealed, setRevealed] = useState(false);
+  const id = props.id ?? `simurgh-password-${useId().replace(/:/g, '')}`;
+  return (
+    <div data-slot="password-input" data-disabled={disabled || undefined}>
+      <input
+        {...props}
+        ref={ref}
+        id={id}
+        type={revealed ? 'text' : 'password'}
+        data-slot="password-input-control"
+        disabled={disabled}
+      />
+      <button
+        type="button"
+        data-slot="password-input-toggle"
+        aria-controls={id}
+        aria-label={revealed ? concealLabel : revealLabel}
+        aria-pressed={revealed}
+        disabled={disabled}
+        onClick={() => setRevealed((current) => !current)}
+      >
+        {revealed ? 'Hide' : 'Show'}
+      </button>
+    </div>
+  );
+});
 
 export type ToastMessage = {
   id: string;
@@ -3369,7 +3387,9 @@ type ToastContextValue = {
   toast(message: Omit<ToastMessage, 'id'>): string;
   dismiss(id: string): void;
 };
-const ToastContext = createContext<ToastContextValue | null>(null);
+const ToastContext = /* @__PURE__ */ createContext<ToastContextValue | null>(
+  null,
+);
 export function ToastProvider({ children }: PropsWithChildren) {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const dismiss = (id: string) =>

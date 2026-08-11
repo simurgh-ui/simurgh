@@ -3,10 +3,45 @@
   "version": "0.1.0",
   "type": "module",
   "sideEffects": false,
-  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
-  "files": ["dist"],
-  "scripts": { "build": "tsc -p tsconfig.json", "test": "vitest run --passWithNoTests", "typecheck": "tsc -p tsconfig.json --noEmit", "lint": "eslint src" },
-  "dependencies": { "@floating-ui/dom": "^1.7.4", "@simurgh-ui/core": "workspace:*", "tslib": "^2.8.1" },
-  "peerDependencies": { "@angular/common": ">=18", "@angular/core": ">=18" },
-  "devDependencies": { "@angular/common": "^20.3.2", "@angular/compiler": "^20.3.2", "@angular/core": "^20.3.2", "@angular/platform-browser": "^20.3.2", "@angular/platform-browser-dynamic": "^20.3.2", "rxjs": "^7.8.2", "zone.js": "^0.15.1" }
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./all": {
+      "types": "./dist/all.d.ts",
+      "default": "./dist/all.js"
+    },
+    "./*": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "ngc -p tsconfig.json && node ../../scripts/build-adapter.mjs angular",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "ngc -p tsconfig.json --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.7.4",
+    "@simurgh-ui/core": "workspace:*",
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=18",
+    "@angular/core": ">=18"
+  },
+  "devDependencies": {
+    "@angular/common": "^20.3.2",
+    "@angular/compiler": "^20.3.2",
+    "@angular/core": "^20.3.2",
+    "@angular/platform-browser": "^20.3.2",
+    "@angular/platform-browser-dynamic": "^20.3.2",
+    "rxjs": "^7.8.2",
+    "zone.js": "^0.15.1"
+  }
 }

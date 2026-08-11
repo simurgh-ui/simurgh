@@ -1,0 +1,46 @@
+{
+  "react-button": {
+    "minified": 337,
+    "gzip": 240,
+    "brotli": 197,
+    "budget": 1024
+  },
+  "vue-button": {
+    "minified": 3770,
+    "gzip": 1379,
+    "brotli": 1228,
+    "budget": 1536
+  },
+  "angular-button": {
+    "minified": 1197,
+    "gzip": 479,
+    "brotli": 419,
+    "budget": 2048
+  },
+  "react-dialog": {
+    "minified": 2032,
+    "gzip": 950,
+    "brotli": 824,
+    "budget": 4096
+  },
+  "react-complete": {
+    "minified": 42276,
+    "gzip": 12570,
+    "brotli": 11227
+  },
+  "vue-complete": {
+    "minified": 53420,
+    "gzip": 12987,
+    "brotli": 11590
+  },
+  "angular-complete": {
+    "minified": 160888,
+    "gzip": 19852,
+    "brotli": 16132
+  },
+  "styles-complete": {
+    "minified": 27972,
+    "gzip": 4661,
+    "brotli": 4096
+  }
+}

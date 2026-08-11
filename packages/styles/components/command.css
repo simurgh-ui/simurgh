@@ -1,0 +1,50 @@
+@import '../tokens.css';
+
+[data-slot='command'] {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  box-shadow: var(--simurgh-shadow);
+  color: hsl(var(--simurgh-foreground));
+  inline-size: min(32rem, 100%);
+  overflow: hidden;
+}
+
+[data-slot='command'] input[role='combobox'] {
+  background: transparent;
+  border: 0;
+  border-block-end: 1px solid hsl(var(--simurgh-border));
+  box-sizing: border-box;
+  color: inherit;
+  font: inherit;
+  inline-size: 100%;
+  min-block-size: 3rem;
+  outline: 0;
+  padding-inline: 0.875rem;
+}
+
+[data-slot='command'] [role='listbox'] {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  max-block-size: 18rem;
+  overflow: auto;
+}
+
+[data-slot='command'] [role='option'] {
+  cursor: pointer;
+  display: flex;
+  inline-size: 100%;
+  justify-content: flex-start;
+  min-block-size: 2.25rem;
+  padding-inline: 0.625rem;
+}
+
+[data-slot='command'] [role='option'][data-highlighted='true'] {
+  background: hsl(var(--simurgh-muted));
+}
+
+[data-slot='command'] [role='option'][aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

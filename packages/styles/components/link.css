@@ -1,0 +1,25 @@
+@import '../tokens.css';
+
+[data-slot='link'] {
+  color: hsl(var(--simurgh-primary));
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.2em;
+}
+
+[data-slot='link']:hover {
+  color: hsl(var(--simurgh-accent));
+}
+
+[data-slot='link']:focus-visible {
+  border-radius: calc(var(--simurgh-radius) / 2);
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+[data-slot='link'][aria-disabled='true'] {
+  color: hsl(var(--simurgh-muted-foreground));
+  cursor: not-allowed;
+  opacity: 0.6;
+  text-decoration-style: dotted;
+}

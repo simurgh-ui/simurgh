@@ -3,10 +3,33 @@
   "version": "0.1.0",
   "type": "module",
   "sideEffects": false,
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
-  "files": ["dist"],
-  "scripts": { "build": "tsc -p tsconfig.json", "test": "vitest run --passWithNoTests", "typecheck": "tsc -p tsconfig.json --noEmit", "lint": "eslint src" },
-  "dependencies": { "@floating-ui/dom": "^1.7.4", "@simurgh-ui/core": "workspace:*" },
-  "peerDependencies": { "vue": ">=3.4" },
-  "devDependencies": { "vue": "^3.5.22" }
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node ../../scripts/build-adapter.mjs vue",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.7.4",
+    "@simurgh-ui/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": ">=3.4"
+  },
+  "devDependencies": {
+    "vue": "^3.5.22"
+  }
 }

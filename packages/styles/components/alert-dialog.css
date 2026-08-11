@@ -1,0 +1,46 @@
+@import '../tokens.css';
+
+.simurgh-trigger,
+.simurgh-item {
+  align-items: center;
+  border-radius: var(--simurgh-radius);
+  display: inline-flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.simurgh-trigger {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  color: hsl(var(--simurgh-foreground));
+  min-block-size: 2.5rem;
+  padding-inline: 0.875rem;
+}
+
+.simurgh-trigger:focus-visible,
+.simurgh-item:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+.simurgh-content {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  box-shadow: var(--simurgh-shadow);
+  color: hsl(var(--simurgh-foreground));
+  padding: 0.5rem;
+  z-index: 50;
+}
+
+.simurgh-overlay {
+  background: rgb(2 6 23 / 0.58);
+  inset: 0;
+  position: fixed;
+}
+
+.simurgh-item[aria-disabled='true'],
+.simurgh-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

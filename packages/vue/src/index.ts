@@ -4,7 +4,7 @@ import {
   flip,
   offset,
   shift,
-} from '@floating-ui/dom';
+} from './floating.js';
 import {
   addCalendarMonths,
   calendarMonthDays,
@@ -74,8 +74,8 @@ function openRoot(key: InjectionKey<OpenContext>, name: string) {
     },
   });
 }
-export const Dialog = openRoot(dialogKey, 'SimurghDialog');
-export const DialogTrigger = defineComponent({
+export const Dialog = /* @__PURE__ */ openRoot(dialogKey, 'SimurghDialog');
+export const DialogTrigger = /* @__PURE__ */ defineComponent({
   name: 'SimurghDialogTrigger',
   setup(_, { slots, attrs }) {
     const c = inject(dialogKey)!;
@@ -93,7 +93,7 @@ export const DialogTrigger = defineComponent({
       );
   },
 });
-export const DialogContent = defineComponent({
+export const DialogContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghDialogContent',
   setup(_, { slots, attrs }) {
     const c = inject(dialogKey)!;
@@ -140,7 +140,7 @@ export const DialogContent = defineComponent({
         : null;
   },
 });
-export const DialogTitle = defineComponent({
+export const DialogTitle = /* @__PURE__ */ defineComponent({
   name: 'SimurghDialogTitle',
   setup(_, { slots, attrs }) {
     const c = inject(dialogKey)!;
@@ -148,7 +148,7 @@ export const DialogTitle = defineComponent({
       h('h2', { ...attrs, id: attrs.id ?? `${c.id}-title` }, slots.default?.());
   },
 });
-export const DialogDescription = defineComponent({
+export const DialogDescription = /* @__PURE__ */ defineComponent({
   name: 'SimurghDialogDescription',
   setup(_, { slots, attrs }) {
     const c = inject(dialogKey)!;
@@ -160,7 +160,7 @@ export const DialogDescription = defineComponent({
       );
   },
 });
-export const DialogClose = defineComponent({
+export const DialogClose = /* @__PURE__ */ defineComponent({
   name: 'SimurghDialogClose',
   setup(_, { slots, attrs }) {
     const c = inject(dialogKey)!;
@@ -179,7 +179,7 @@ export const SheetTrigger = DialogTrigger;
 export const SheetTitle = DialogTitle;
 export const SheetDescription = DialogDescription;
 export const SheetClose = DialogClose;
-export const SheetContent = defineComponent({
+export const SheetContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghSheetContent',
   props: {
     side: { type: String as PropType<SheetSide>, default: 'right' },
@@ -204,7 +204,7 @@ export const DrawerTrigger = DialogTrigger;
 export const DrawerTitle = DialogTitle;
 export const DrawerDescription = DialogDescription;
 export const DrawerClose = DialogClose;
-export const DrawerContent = defineComponent({
+export const DrawerContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghDrawerContent',
   props: {
     side: {
@@ -222,7 +222,7 @@ export const AlertDialog = Dialog;
 export const AlertDialogTrigger = DialogTrigger;
 export const AlertDialogTitle = DialogTitle;
 export const AlertDialogDescription = DialogDescription;
-export const AlertDialogContent = defineComponent({
+export const AlertDialogContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghAlertDialogContent',
   setup(_, { slots, attrs }) {
     const c = inject(dialogKey)!;
@@ -295,11 +295,11 @@ function alertDialogButton(name: string, slot: string) {
     },
   });
 }
-export const AlertDialogAction = alertDialogButton(
+export const AlertDialogAction = /* @__PURE__ */ alertDialogButton(
   'SimurghAlertDialogAction',
   'alert-dialog-action',
 );
-export const AlertDialogCancel = alertDialogButton(
+export const AlertDialogCancel = /* @__PURE__ */ alertDialogButton(
   'SimurghAlertDialogCancel',
   'alert-dialog-cancel',
 );
@@ -353,11 +353,23 @@ function floatingRoot(
     },
   });
 }
-export const Popover = floatingRoot('SimurghPopover', 'popover');
-export const Tooltip = floatingRoot('SimurghTooltip', 'tooltip');
-export const HoverCard = floatingRoot('SimurghHoverCard', 'hovercard');
-export const DropdownMenu = floatingRoot('SimurghDropdownMenu', 'menu');
-export const FloatingTrigger = defineComponent({
+export const Popover = /* @__PURE__ */ floatingRoot(
+  'SimurghPopover',
+  'popover',
+);
+export const Tooltip = /* @__PURE__ */ floatingRoot(
+  'SimurghTooltip',
+  'tooltip',
+);
+export const HoverCard = /* @__PURE__ */ floatingRoot(
+  'SimurghHoverCard',
+  'hovercard',
+);
+export const DropdownMenu = /* @__PURE__ */ floatingRoot(
+  'SimurghDropdownMenu',
+  'menu',
+);
+export const FloatingTrigger = /* @__PURE__ */ defineComponent({
   name: 'SimurghFloatingTrigger',
   setup(_, { slots, attrs }) {
     const c = inject(floatingKey)!;
@@ -401,7 +413,7 @@ export const FloatingTrigger = defineComponent({
       );
   },
 });
-export const FloatingContent = defineComponent({
+export const FloatingContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghFloatingContent',
   setup(_, { slots, attrs }) {
     const c = inject(floatingKey)!;
@@ -463,7 +475,7 @@ function compositeKeydown(event: KeyboardEvent, selector: string) {
 }
 export const PopoverContent = FloatingContent,
   TooltipContent = FloatingContent;
-export const HoverCardTrigger = defineComponent({
+export const HoverCardTrigger = /* @__PURE__ */ defineComponent({
   name: 'SimurghHoverCardTrigger',
   setup(_, { attrs, slots }) {
     return () =>
@@ -474,7 +486,7 @@ export const HoverCardTrigger = defineComponent({
       );
   },
 });
-export const HoverCardContent = defineComponent({
+export const HoverCardContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghHoverCardContent',
   props: { label: { type: String, default: 'Additional information' } },
   setup(props, { attrs, slots }) {
@@ -491,7 +503,7 @@ export const HoverCardContent = defineComponent({
       );
   },
 });
-export const DropdownMenuContent = defineComponent({
+export const DropdownMenuContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghDropdownMenuContent',
   setup(_, { slots, attrs }) {
     return () =>
@@ -506,7 +518,7 @@ export const DropdownMenuContent = defineComponent({
       );
   },
 });
-export const DropdownMenuItem = defineComponent({
+export const DropdownMenuItem = /* @__PURE__ */ defineComponent({
   name: 'SimurghDropdownMenuItem',
   props: { disabled: Boolean },
   emits: ['select'],
@@ -540,7 +552,7 @@ type ContextMenuContext = {
   openAt(x: number, y: number): void;
 };
 const contextMenuKey: InjectionKey<ContextMenuContext> = Symbol('context-menu');
-export const ContextMenu = defineComponent({
+export const ContextMenu = /* @__PURE__ */ defineComponent({
   name: 'SimurghContextMenu',
   props: {
     open: { type: Boolean, default: undefined },
@@ -569,7 +581,7 @@ export const ContextMenu = defineComponent({
     return () => slots.default?.();
   },
 });
-export const ContextMenuTrigger = defineComponent({
+export const ContextMenuTrigger = /* @__PURE__ */ defineComponent({
   name: 'SimurghContextMenuTrigger',
   setup(_, { attrs, slots }) {
     const menu = inject(contextMenuKey)!;
@@ -603,7 +615,7 @@ export const ContextMenuTrigger = defineComponent({
       );
   },
 });
-export const ContextMenuContent = defineComponent({
+export const ContextMenuContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghContextMenuContent',
   setup(_, { attrs, slots }) {
     const menu = inject(contextMenuKey)!;
@@ -650,7 +662,7 @@ export const ContextMenuContent = defineComponent({
         : null;
   },
 });
-export const ContextMenuItem = defineComponent({
+export const ContextMenuItem = /* @__PURE__ */ defineComponent({
   name: 'SimurghContextMenuItem',
   props: { disabled: Boolean },
   emits: ['select'],
@@ -685,7 +697,7 @@ type TabsContext = {
   direction: Direction;
 };
 const tabsKey: InjectionKey<TabsContext> = Symbol('tabs');
-export const Tabs = defineComponent({
+export const Tabs = /* @__PURE__ */ defineComponent({
   name: 'SimurghTabs',
   props: {
     modelValue: { type: String, default: '' },
@@ -716,7 +728,7 @@ export const Tabs = defineComponent({
     return () => slots.default?.();
   },
 });
-export const TabsList = defineComponent({
+export const TabsList = /* @__PURE__ */ defineComponent({
   name: 'SimurghTabsList',
   setup(_, { slots, attrs }) {
     const c = inject(tabsKey)!;
@@ -746,7 +758,7 @@ export const TabsList = defineComponent({
       );
   },
 });
-export const TabsTrigger = defineComponent({
+export const TabsTrigger = /* @__PURE__ */ defineComponent({
   name: 'SimurghTabsTrigger',
   props: { value: { type: String, required: true } },
   setup(props, { slots, attrs }) {
@@ -766,7 +778,7 @@ export const TabsTrigger = defineComponent({
       );
   },
 });
-export const TabsContent = defineComponent({
+export const TabsContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghTabsContent',
   props: { value: { type: String, required: true } },
   setup(props, { slots, attrs }) {
@@ -787,7 +799,7 @@ const accordionKey: InjectionKey<{
   toggle(v: string): void;
 }> = Symbol('accordion');
 const itemKey: InjectionKey<string> = Symbol('item');
-export const Accordion = defineComponent({
+export const Accordion = /* @__PURE__ */ defineComponent({
   props: {
     multiple: Boolean,
     defaultValue: { type: Array as PropType<string[]>, default: () => [] },
@@ -806,14 +818,14 @@ export const Accordion = defineComponent({
     return () => slots.default?.();
   },
 });
-export const AccordionItem = defineComponent({
+export const AccordionItem = /* @__PURE__ */ defineComponent({
   props: { value: { type: String, required: true } },
   setup(props, { slots, attrs }) {
     provide(itemKey, props.value);
     return () => h('div', attrs, slots.default?.());
   },
 });
-export const AccordionTrigger = defineComponent({
+export const AccordionTrigger = /* @__PURE__ */ defineComponent({
   setup(_, { slots, attrs }) {
     const c = inject(accordionKey)!,
       value = inject(itemKey)!;
@@ -830,7 +842,7 @@ export const AccordionTrigger = defineComponent({
       );
   },
 });
-export const AccordionContent = defineComponent({
+export const AccordionContent = /* @__PURE__ */ defineComponent({
   setup(_, { slots, attrs }) {
     const c = inject(accordionKey)!,
       value = inject(itemKey)!;
@@ -845,7 +857,7 @@ const collapsibleKey: InjectionKey<{
   toggle(): void;
   id: string;
 }> = Symbol('collapsible');
-export const Collapsible = defineComponent({
+export const Collapsible = /* @__PURE__ */ defineComponent({
   props: {
     modelValue: { type: Boolean, default: undefined },
     defaultOpen: Boolean,
@@ -867,7 +879,7 @@ export const Collapsible = defineComponent({
     return () => slots.default?.();
   },
 });
-export const CollapsibleTrigger = defineComponent({
+export const CollapsibleTrigger = /* @__PURE__ */ defineComponent({
   props: { disabled: Boolean },
   setup(props, { attrs, slots }) {
     const c = inject(collapsibleKey)!;
@@ -886,7 +898,7 @@ export const CollapsibleTrigger = defineComponent({
       );
   },
 });
-export const CollapsibleContent = defineComponent({
+export const CollapsibleContent = /* @__PURE__ */ defineComponent({
   setup(_, { attrs, slots }) {
     const c = inject(collapsibleKey)!;
     return () =>
@@ -953,7 +965,7 @@ function checkControl(role: 'checkbox' | 'switch', name: string) {
     },
   });
 }
-export const Label = defineComponent({
+export const Label = /* @__PURE__ */ defineComponent({
   name: 'SimurghLabel',
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
@@ -961,7 +973,7 @@ export const Label = defineComponent({
   },
 });
 
-export const Separator = defineComponent({
+export const Separator = /* @__PURE__ */ defineComponent({
   name: 'SimurghSeparator',
   props: {
     orientation: {
@@ -982,7 +994,7 @@ export const Separator = defineComponent({
   },
 });
 
-export const Progress = defineComponent({
+export const Progress = /* @__PURE__ */ defineComponent({
   name: 'SimurghProgress',
   props: {
     value: { type: Number as PropType<number | null>, default: null },
@@ -1028,7 +1040,7 @@ export const Progress = defineComponent({
   },
 });
 
-export const Toggle = defineComponent({
+export const Toggle = /* @__PURE__ */ defineComponent({
   name: 'SimurghToggle',
   props: {
     modelValue: { type: Boolean, default: undefined },
@@ -1063,7 +1075,7 @@ const toggleGroupKey: InjectionKey<{
   values: Ref<string[]>;
   toggle(value: string): void;
 }> = Symbol('toggle-group');
-export const ToggleGroup = defineComponent({
+export const ToggleGroup = /* @__PURE__ */ defineComponent({
   props: {
     type: {
       type: String as PropType<'single' | 'multiple'>,
@@ -1123,7 +1135,7 @@ export const ToggleGroup = defineComponent({
       );
   },
 });
-export const ToggleGroupItem = defineComponent({
+export const ToggleGroupItem = /* @__PURE__ */ defineComponent({
   props: { value: { type: String, required: true }, disabled: Boolean },
   setup(props, { attrs, slots }) {
     const group = inject(toggleGroupKey)!;
@@ -1147,7 +1159,7 @@ export const ToggleGroupItem = defineComponent({
   },
 });
 
-export const VisuallyHidden = defineComponent({
+export const VisuallyHidden = /* @__PURE__ */ defineComponent({
   name: 'SimurghVisuallyHidden',
   setup(_, { attrs, slots }) {
     return () =>
@@ -1175,7 +1187,7 @@ export const VisuallyHidden = defineComponent({
   },
 });
 
-export const Avatar = defineComponent({
+export const Avatar = /* @__PURE__ */ defineComponent({
   name: 'SimurghAvatar',
   props: {
     src: String,
@@ -1214,7 +1226,7 @@ export const Avatar = defineComponent({
   },
 });
 
-export const Alert = defineComponent({
+export const Alert = /* @__PURE__ */ defineComponent({
   name: 'SimurghAlert',
   props: { urgent: Boolean },
   setup(props, { attrs, slots }) {
@@ -1233,7 +1245,7 @@ export const Alert = defineComponent({
   },
 });
 
-export const AspectRatio = defineComponent({
+export const AspectRatio = /* @__PURE__ */ defineComponent({
   name: 'SimurghAspectRatio',
   props: { ratio: { type: Number, default: 1 } },
   setup(props, { attrs, slots }) {
@@ -1253,7 +1265,7 @@ export const AspectRatio = defineComponent({
   },
 });
 
-export const Skeleton = defineComponent({
+export const Skeleton = /* @__PURE__ */ defineComponent({
   name: 'SimurghSkeleton',
   props: { label: String },
   setup(props, { attrs }) {
@@ -1269,7 +1281,7 @@ export const Skeleton = defineComponent({
   },
 });
 
-export const Spinner = defineComponent({
+export const Spinner = /* @__PURE__ */ defineComponent({
   name: 'SimurghSpinner',
   props: { label: { type: String, default: 'Loading' } },
   setup(props, { attrs, slots }) {
@@ -1293,7 +1305,7 @@ export const Spinner = defineComponent({
   },
 });
 
-export const Button = defineComponent({
+export const Button = /* @__PURE__ */ defineComponent({
   name: 'SimurghButton',
   inheritAttrs: false,
   props: {
@@ -1319,7 +1331,7 @@ export const Button = defineComponent({
   },
 });
 
-export const ButtonGroup = defineComponent({
+export const ButtonGroup = /* @__PURE__ */ defineComponent({
   name: 'SimurghButtonGroup',
   props: {
     orientation: {
@@ -1342,7 +1354,7 @@ export const ButtonGroup = defineComponent({
   },
 });
 
-export const ButtonGroupText = defineComponent({
+export const ButtonGroupText = /* @__PURE__ */ defineComponent({
   name: 'SimurghButtonGroupText',
   setup(_, { attrs, slots }) {
     return () =>
@@ -1354,7 +1366,7 @@ export const ButtonGroupText = defineComponent({
   },
 });
 
-export const ButtonGroupSeparator = defineComponent({
+export const ButtonGroupSeparator = /* @__PURE__ */ defineComponent({
   name: 'SimurghButtonGroupSeparator',
   props: {
     orientation: {
@@ -1373,7 +1385,7 @@ export const ButtonGroupSeparator = defineComponent({
   },
 });
 
-export const Link = defineComponent({
+export const Link = /* @__PURE__ */ defineComponent({
   name: 'SimurghLink',
   inheritAttrs: false,
   props: {
@@ -1412,7 +1424,7 @@ export const Link = defineComponent({
   },
 });
 
-export const Input = defineComponent({
+export const Input = /* @__PURE__ */ defineComponent({
   name: 'SimurghInput',
   props: {
     modelValue: { type: [String, Number], default: '' },
@@ -1440,7 +1452,7 @@ export const Input = defineComponent({
   },
 });
 
-export const InputGroup = defineComponent({
+export const InputGroup = /* @__PURE__ */ defineComponent({
   name: 'SimurghInputGroup',
   setup(_, { attrs, slots }) {
     return () =>
@@ -1456,7 +1468,7 @@ export const InputGroup = defineComponent({
   },
 });
 
-export const InputGroupAddon = defineComponent({
+export const InputGroupAddon = /* @__PURE__ */ defineComponent({
   name: 'SimurghInputGroupAddon',
   props: {
     align: {
@@ -1482,7 +1494,7 @@ export const InputGroupAddon = defineComponent({
   },
 });
 
-export const InputGroupText = defineComponent({
+export const InputGroupText = /* @__PURE__ */ defineComponent({
   name: 'SimurghInputGroupText',
   setup(_, { attrs, slots }) {
     return () =>
@@ -1494,7 +1506,7 @@ export const InputGroupText = defineComponent({
   },
 });
 
-export const InputOtp = defineComponent({
+export const InputOtp = /* @__PURE__ */ defineComponent({
   name: 'SimurghInputOtp',
   props: {
     modelValue: { type: String, default: '' },
@@ -1536,7 +1548,7 @@ export const InputOtp = defineComponent({
   },
 });
 
-export const NativeSelect = defineComponent({
+export const NativeSelect = /* @__PURE__ */ defineComponent({
   name: 'SimurghNativeSelect',
   props: {
     modelValue: { type: [String, Number], default: '' },
@@ -1574,7 +1586,7 @@ export const NativeSelect = defineComponent({
   },
 });
 
-export const Slider = defineComponent({
+export const Slider = /* @__PURE__ */ defineComponent({
   name: 'SimurghSlider',
   inheritAttrs: false,
   props: {
@@ -1610,7 +1622,7 @@ export const Slider = defineComponent({
   },
 });
 
-export const Meter = defineComponent({
+export const Meter = /* @__PURE__ */ defineComponent({
   name: 'SimurghMeter',
   props: {
     value: { type: Number, default: 0 },
@@ -1645,7 +1657,7 @@ export const Meter = defineComponent({
   },
 });
 
-export const Toolbar = defineComponent({
+export const Toolbar = /* @__PURE__ */ defineComponent({
   name: 'SimurghToolbar',
   props: {
     orientation: {
@@ -1689,7 +1701,7 @@ export const Toolbar = defineComponent({
       );
   },
 });
-export const ToolbarButton = defineComponent({
+export const ToolbarButton = /* @__PURE__ */ defineComponent({
   name: 'SimurghToolbarButton',
   setup(_, { attrs, slots }) {
     return () =>
@@ -1706,7 +1718,7 @@ export const ToolbarButton = defineComponent({
   },
 });
 
-export const ScrollArea = defineComponent({
+export const ScrollArea = /* @__PURE__ */ defineComponent({
   name: 'SimurghScrollArea',
   props: {
     orientation: {
@@ -1732,7 +1744,7 @@ export const ScrollArea = defineComponent({
   },
 });
 
-export const Textarea = defineComponent({
+export const Textarea = /* @__PURE__ */ defineComponent({
   name: 'SimurghTextarea',
   props: {
     modelValue: { type: String, default: '' },
@@ -1762,7 +1774,7 @@ export const Textarea = defineComponent({
 });
 
 export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
-export const Badge = defineComponent({
+export const Badge = /* @__PURE__ */ defineComponent({
   name: 'SimurghBadge',
   props: {
     tone: { type: String as PropType<BadgeTone>, default: 'neutral' },
@@ -1783,7 +1795,7 @@ export const Badge = defineComponent({
   },
 });
 
-export const Breadcrumb = defineComponent({
+export const Breadcrumb = /* @__PURE__ */ defineComponent({
   name: 'SimurghBreadcrumb',
   props: { label: { type: String, default: 'Breadcrumb' } },
   setup(props, { attrs, slots }) {
@@ -1792,7 +1804,7 @@ export const Breadcrumb = defineComponent({
   },
 });
 
-export const NavigationMenu = defineComponent({
+export const NavigationMenu = /* @__PURE__ */ defineComponent({
   name: 'SimurghNavigationMenu',
   props: { label: { type: String, default: 'Main navigation' } },
   setup(props, { attrs, slots }) {
@@ -1818,7 +1830,7 @@ export const NavigationMenuItem = cardPart(
   'li',
   'navigation-menu-item',
 );
-export const NavigationMenuLink = defineComponent({
+export const NavigationMenuLink = /* @__PURE__ */ defineComponent({
   name: 'SimurghNavigationMenuLink',
   props: { current: Boolean },
   setup(props, { attrs, slots }) {
@@ -1835,7 +1847,7 @@ export const NavigationMenuLink = defineComponent({
   },
 });
 
-export const Menubar = defineComponent({
+export const Menubar = /* @__PURE__ */ defineComponent({
   name: 'SimurghMenubar',
   props: {
     label: { type: String, default: 'Application menu' },
@@ -1887,7 +1899,7 @@ export const Menubar = defineComponent({
       );
   },
 });
-export const MenubarItem = defineComponent({
+export const MenubarItem = /* @__PURE__ */ defineComponent({
   name: 'SimurghMenubarItem',
   props: { disabled: Boolean },
   emits: ['select'],
@@ -1933,7 +1945,7 @@ export const CardContent = cardPart(
 );
 export const CardFooter = cardPart('SimurghCardFooter', 'div', 'card-footer');
 
-export const Empty = defineComponent({
+export const Empty = /* @__PURE__ */ defineComponent({
   name: 'SimurghEmpty',
   props: { status: Boolean },
   setup(props, { attrs, slots }) {
@@ -1955,7 +1967,7 @@ export const EmptyHeader = cardPart(
   'div',
   'empty-header',
 );
-export const EmptyMedia = defineComponent({
+export const EmptyMedia = /* @__PURE__ */ defineComponent({
   name: 'SimurghEmptyMedia',
   props: { decorative: { type: Boolean, default: true } },
   setup(props, { attrs, slots }) {
@@ -1982,7 +1994,7 @@ export const EmptyContent = cardPart(
   'div',
   'empty-content',
 );
-export const ItemGroup = defineComponent({
+export const ItemGroup = /* @__PURE__ */ defineComponent({
   name: 'SimurghItemGroup',
   setup(_, { attrs, slots }) {
     return () =>
@@ -1993,7 +2005,7 @@ export const ItemGroup = defineComponent({
       );
   },
 });
-export const Item = defineComponent({
+export const Item = /* @__PURE__ */ defineComponent({
   name: 'SimurghItem',
   setup(_, { attrs, slots }) {
     return () =>
@@ -2004,7 +2016,7 @@ export const Item = defineComponent({
       );
   },
 });
-export const ItemMedia = defineComponent({
+export const ItemMedia = /* @__PURE__ */ defineComponent({
   name: 'SimurghItemMedia',
   props: { decorative: { type: Boolean, default: true } },
   setup(props, { attrs, slots }) {
@@ -2048,7 +2060,7 @@ export const FieldDescription = cardPart(
   'p',
   'field-description',
 );
-export const FieldError = defineComponent({
+export const FieldError = /* @__PURE__ */ defineComponent({
   name: 'SimurghFieldError',
   setup(_, { attrs, slots }) {
     return () =>
@@ -2059,7 +2071,7 @@ export const FieldError = defineComponent({
       );
   },
 });
-export const Form = defineComponent({
+export const Form = /* @__PURE__ */ defineComponent({
   name: 'SimurghForm',
   props: { focusInvalid: { type: Boolean, default: true } },
   emits: ['invalid'],
@@ -2087,7 +2099,7 @@ export const Form = defineComponent({
       );
   },
 });
-export const FormErrorSummary = defineComponent({
+export const FormErrorSummary = /* @__PURE__ */ defineComponent({
   name: 'SimurghFormErrorSummary',
   setup(_, { attrs, slots }) {
     return () =>
@@ -2117,7 +2129,7 @@ export const TableFooter = cardPart(
   'table-footer',
 );
 export const TableRow = cardPart('SimurghTableRow', 'tr', 'table-row');
-export const TableHead = defineComponent({
+export const TableHead = /* @__PURE__ */ defineComponent({
   name: 'SimurghTableHead',
   setup(_, { attrs, slots }) {
     return () =>
@@ -2134,7 +2146,7 @@ export const TableCaption = cardPart(
   'caption',
   'table-caption',
 );
-export const Pagination = defineComponent({
+export const Pagination = /* @__PURE__ */ defineComponent({
   name: 'SimurghPagination',
   props: { label: { type: String, default: 'Pagination' } },
   setup(props, { attrs, slots }) {
@@ -2156,7 +2168,7 @@ export const PaginationItem = cardPart(
   'li',
   'pagination-item',
 );
-export const PaginationLink = defineComponent({
+export const PaginationLink = /* @__PURE__ */ defineComponent({
   name: 'SimurghPaginationLink',
   props: { current: Boolean },
   setup(props, { attrs, slots }) {
@@ -2182,7 +2194,7 @@ const radioKey: InjectionKey<{
   disabled: boolean;
   direction: Direction;
 }> = Symbol('radio');
-export const RadioGroup = defineComponent({
+export const RadioGroup = /* @__PURE__ */ defineComponent({
   name: 'SimurghRadioGroup',
   props: {
     modelValue: { type: String, default: '' },
@@ -2257,7 +2269,7 @@ export const RadioGroup = defineComponent({
       );
   },
 });
-export const RadioGroupItem = defineComponent({
+export const RadioGroupItem = /* @__PURE__ */ defineComponent({
   name: 'SimurghRadioGroupItem',
   props: { value: { type: String, required: true }, disabled: Boolean },
   setup(props, { slots, attrs }) {
@@ -2283,7 +2295,7 @@ export const RadioGroupItem = defineComponent({
     };
   },
 });
-export const Select = defineComponent({
+export const Select = /* @__PURE__ */ defineComponent({
   name: 'SimurghSelect',
   props: {
     modelValue: { type: String, default: '' },
@@ -2380,7 +2392,7 @@ export type ComboboxOption = {
   disabled?: boolean;
 };
 
-export const Combobox = defineComponent({
+export const Combobox = /* @__PURE__ */ defineComponent({
   name: 'SimurghCombobox',
   props: {
     modelValue: { type: String, default: '' },
@@ -2529,7 +2541,7 @@ export const Combobox = defineComponent({
   },
 });
 
-export const Command = defineComponent({
+export const Command = /* @__PURE__ */ defineComponent({
   name: 'SimurghCommand',
   props: {
     modelValue: { type: String, default: '' },
@@ -2563,7 +2575,7 @@ export const Command = defineComponent({
   },
 });
 
-export const Calendar = defineComponent({
+export const Calendar = /* @__PURE__ */ defineComponent({
   name: 'SimurghCalendar',
   props: {
     modelValue: String,
@@ -2757,7 +2769,7 @@ export const Calendar = defineComponent({
   },
 });
 
-export const DatePicker = defineComponent({
+export const DatePicker = /* @__PURE__ */ defineComponent({
   name: 'SimurghDatePicker',
   props: {
     modelValue: String,
@@ -2880,7 +2892,7 @@ type CarouselContext = {
 };
 const carouselKey: InjectionKey<CarouselContext> = Symbol('carousel');
 
-export const Carousel = defineComponent({
+export const Carousel = /* @__PURE__ */ defineComponent({
   name: 'SimurghCarousel',
   props: {
     label: { type: String, default: 'Carousel' },
@@ -2932,7 +2944,7 @@ export const Carousel = defineComponent({
   },
 });
 
-export const CarouselContent = defineComponent({
+export const CarouselContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghCarouselContent',
   setup(_, { attrs, slots }) {
     const context = inject(carouselKey)!;
@@ -2957,7 +2969,7 @@ export const CarouselContent = defineComponent({
   },
 });
 
-export const CarouselItem = defineComponent({
+export const CarouselItem = /* @__PURE__ */ defineComponent({
   name: 'SimurghCarouselItem',
   setup(_, { attrs, slots }) {
     return () =>
@@ -3036,7 +3048,7 @@ const normalizeResizableSizes = (values: number[]) => {
   );
 };
 
-export const ResizablePanelGroup = defineComponent({
+export const ResizablePanelGroup = /* @__PURE__ */ defineComponent({
   name: 'SimurghResizablePanelGroup',
   props: {
     orientation: {
@@ -3112,7 +3124,7 @@ export const ResizablePanelGroup = defineComponent({
   },
 });
 
-export const ResizablePanel = defineComponent({
+export const ResizablePanel = /* @__PURE__ */ defineComponent({
   name: 'SimurghResizablePanel',
   props: {
     defaultSize: { type: Number, default: 1 },
@@ -3142,7 +3154,7 @@ export const ResizablePanel = defineComponent({
   },
 });
 
-export const ResizableHandle = defineComponent({
+export const ResizableHandle = /* @__PURE__ */ defineComponent({
   name: 'SimurghResizableHandle',
   setup(_, { attrs, slots }) {
     const context = inject(resizableKey)!;
@@ -3265,7 +3277,7 @@ function useSidebarContext() {
   if (!context) throw new Error('Sidebar components require SidebarProvider');
   return context;
 }
-export const SidebarProvider = defineComponent({
+export const SidebarProvider = /* @__PURE__ */ defineComponent({
   name: 'SimurghSidebarProvider',
   props: {
     open: { type: Boolean, default: undefined },
@@ -3298,7 +3310,7 @@ export const SidebarProvider = defineComponent({
       );
   },
 });
-export const Sidebar = defineComponent({
+export const Sidebar = /* @__PURE__ */ defineComponent({
   name: 'SimurghSidebar',
   inheritAttrs: false,
   props: {
@@ -3321,7 +3333,7 @@ export const Sidebar = defineComponent({
       );
   },
 });
-export const SidebarTrigger = defineComponent({
+export const SidebarTrigger = /* @__PURE__ */ defineComponent({
   name: 'SimurghSidebarTrigger',
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
@@ -3366,14 +3378,14 @@ export const SidebarFooter = sidebarPart(
   'sidebar-footer',
 );
 export const SidebarGroup = sidebarPart('SimurghSidebarGroup', 'sidebar-group');
-export const SidebarMenu = defineComponent({
+export const SidebarMenu = /* @__PURE__ */ defineComponent({
   name: 'SimurghSidebarMenu',
   setup(_, { attrs, slots }) {
     return () =>
       h('ul', { ...attrs, 'data-slot': 'sidebar-menu' }, slots.default?.());
   },
 });
-export const Tree = defineComponent({
+export const Tree = /* @__PURE__ */ defineComponent({
   name: 'SimurghTree',
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
@@ -3458,7 +3470,7 @@ export const Tree = defineComponent({
       );
   },
 });
-export const TreeItem = defineComponent({
+export const TreeItem = /* @__PURE__ */ defineComponent({
   name: 'SimurghTreeItem',
   inheritAttrs: false,
   props: {
@@ -3531,7 +3543,7 @@ function acceptedUploadFiles(files: File[], accept?: string) {
     );
   });
 }
-export const FileUpload = defineComponent({
+export const FileUpload = /* @__PURE__ */ defineComponent({
   name: 'SimurghFileUpload',
   inheritAttrs: false,
   props: {
@@ -3605,7 +3617,7 @@ export const FileUpload = defineComponent({
       );
   },
 });
-export const PasswordInput = defineComponent({
+export const PasswordInput = /* @__PURE__ */ defineComponent({
   name: 'SimurghPasswordInput',
   inheritAttrs: false,
   props: {
@@ -3671,7 +3683,7 @@ const toastKey: InjectionKey<{
   toast(m: Omit<ToastMessage, 'id'>): void;
   dismiss(id: string): void;
 }> = Symbol('toast');
-export const ToastProvider = defineComponent({
+export const ToastProvider = /* @__PURE__ */ defineComponent({
   setup(_, { slots }) {
     const messages = ref<ToastMessage[]>([]);
     const dismiss = (id: string) =>
@@ -3693,7 +3705,7 @@ export function useToast() {
   if (!c) throw new Error('useToast requires ToastProvider');
   return c;
 }
-export const ToastViewport = defineComponent({
+export const ToastViewport = /* @__PURE__ */ defineComponent({
   setup() {
     const c = useToast();
     return () =>

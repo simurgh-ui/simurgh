@@ -13,13 +13,14 @@ import {
   signal,
 } from '@angular/core';
 import type { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+export { ButtonComponent } from './components/button.js';
 import {
   autoUpdate,
   computePosition,
   flip,
   offset,
   shift,
-} from '@floating-ui/dom';
+} from './floating.js';
 import {
   addCalendarMonths,
   calendarMonthDays,
@@ -629,6 +630,7 @@ export class CollapsibleComponent {
   }
 }
 
+@Directive()
 abstract class CheckBase {
   @Input() checked = false;
   @Input() disabled = false;
@@ -927,24 +929,6 @@ export class SkeletonComponent {
 })
 export class SpinnerComponent {
   @Input() label = 'Loading';
-}
-
-@Component({
-  selector: 'simurgh-button',
-  standalone: true,
-  template: `<button
-    [attr.type]="type"
-    [disabled]="disabled || loading"
-    [attr.aria-busy]="loading || null"
-    [attr.data-state]="loading ? 'loading' : 'idle'"
-  >
-    <ng-content />
-  </button>`,
-})
-export class ButtonComponent {
-  @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  @Input() loading = false;
-  @Input() disabled = false;
 }
 
 @Component({
@@ -1891,12 +1875,12 @@ export class SelectComponent {
 export class ComboboxComponent {
   @Input() options: SelectOption[] = [];
   @Input() value = '';
-  @Input() name?: string;
+  @Input() name: string | undefined;
   @Input() required = false;
   @Input() disabled = false;
   @Input() placeholder = 'Search options';
   @Input() noResults = 'No results';
-  @Input() ariaLabel?: string;
+  @Input() ariaLabel: string | undefined;
   @Output() valueChange = new EventEmitter<string>();
   readonly listId = createId('combobox-list');
   query = '';
@@ -2072,8 +2056,8 @@ export class CalendarComponent {
   @Input() locale = 'en';
   @Input() direction: Direction = 'ltr';
   @Input() firstDayOfWeek = 0;
-  @Input() min?: string;
-  @Input() max?: string;
+  @Input() min: string | undefined;
+  @Input() max: string | undefined;
   @Input() disabledDates: string[] = [];
   @Input() name?: string;
   @Input() label = 'Calendar';
@@ -3038,126 +3022,3 @@ export class ToastViewportComponent {
     this.messages.update((items) => items.filter((x) => x.id !== id));
   }
 }
-
-export const SIMURGH_COMPONENTS = [
-  DialogComponent,
-  SheetComponent,
-  DrawerComponent,
-  AlertDialogComponent,
-  AlertDialogActionDirective,
-  AlertDialogCancelDirective,
-  PopoverComponent,
-  TooltipComponent,
-  HoverCardComponent,
-  DropdownMenuComponent,
-  ContextMenuComponent,
-  ContextMenuItemDirective,
-  TabsComponent,
-  AccordionComponent,
-  AccordionItemComponent,
-  CollapsibleComponent,
-  CheckboxComponent,
-  LabelComponent,
-  SeparatorComponent,
-  ProgressComponent,
-  ToggleComponent,
-  ToggleGroupComponent,
-  ToggleGroupItemDirective,
-  VisuallyHiddenComponent,
-  AvatarComponent,
-  AlertComponent,
-  AspectRatioComponent,
-  SkeletonComponent,
-  SpinnerComponent,
-  ButtonComponent,
-  ButtonGroupComponent,
-  ButtonGroupTextComponent,
-  ButtonGroupSeparatorComponent,
-  LinkComponent,
-  InputComponent,
-  InputGroupComponent,
-  InputGroupAddonComponent,
-  InputGroupTextComponent,
-  InputOtpComponent,
-  NativeSelectComponent,
-  SliderComponent,
-  MeterComponent,
-  ToolbarComponent,
-  ToolbarButtonDirective,
-  ScrollAreaComponent,
-  TextareaComponent,
-  BadgeComponent,
-  BreadcrumbComponent,
-  NavigationMenuComponent,
-  NavigationMenuListDirective,
-  NavigationMenuItemDirective,
-  NavigationMenuLinkDirective,
-  MenubarComponent,
-  MenubarItemDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardTitleComponent,
-  CardDescriptionComponent,
-  CardContentComponent,
-  CardFooterComponent,
-  EmptyComponent,
-  EmptyHeaderComponent,
-  EmptyMediaComponent,
-  EmptyTitleComponent,
-  EmptyDescriptionComponent,
-  EmptyContentComponent,
-  ItemGroupComponent,
-  ItemComponent,
-  ItemMediaComponent,
-  ItemContentComponent,
-  ItemTitleComponent,
-  ItemDescriptionComponent,
-  ItemActionsComponent,
-  KbdComponent,
-  FieldComponent,
-  FieldLegendComponent,
-  FieldDescriptionComponent,
-  FieldErrorComponent,
-  FormDirective,
-  FormErrorSummaryComponent,
-  TableDirective,
-  TableHeaderDirective,
-  TableBodyDirective,
-  TableFooterDirective,
-  TableRowDirective,
-  TableHeadDirective,
-  TableCellDirective,
-  TableCaptionDirective,
-  PaginationComponent,
-  PaginationContentDirective,
-  PaginationItemDirective,
-  PaginationLinkDirective,
-  SwitchComponent,
-  SelectComponent,
-  ComboboxComponent,
-  CommandComponent,
-  CalendarComponent,
-  DatePickerComponent,
-  CarouselComponent,
-  CarouselContentComponent,
-  CarouselItemComponent,
-  CarouselPreviousComponent,
-  CarouselNextComponent,
-  ResizablePanelGroupComponent,
-  ResizablePanelComponent,
-  ResizableHandleComponent,
-  SidebarProviderComponent,
-  SidebarDirective,
-  SidebarTriggerDirective,
-  SidebarHeaderDirective,
-  SidebarContentDirective,
-  SidebarFooterDirective,
-  SidebarGroupDirective,
-  SidebarMenuDirective,
-  TreeDirective,
-  TreeItemComponent,
-  FileUploadComponent,
-  PasswordInputComponent,
-  RadioGroupComponent,
-  ToastViewportComponent,
-] as const;

@@ -92,3 +92,20 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add accessible Tree View across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible File Upload across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Password Input across Angular, React, Vue, the registry, documentation, and contract tests.
+
+## Bundle-size optimization
+
+- [x] Split each framework adapter into per-component source and output modules while retaining the root barrel exports.
+- [x] Add explicit per-component package subpath exports, such as `@simurgh-ui/react/button`.
+- [x] Mark top-level React and Vue component and helper factory calls as pure where they have no side effects.
+- [x] Isolate Floating UI imports to overlay and floating-component modules so basic components do not include it.
+- [x] Package Angular with `ng-packagr` or `ngc` using Angular partial compilation instead of plain `tsc`.
+- [x] Move Angular's `SIMURGH_COMPONENTS` aggregate into an opt-in `@simurgh-ui/angular/all` entry point.
+- [x] Fix the current Angular TypeScript build errors before establishing the optimized size baseline.
+- [x] Split the shared recipe CSS into per-component styles while preserving an aggregate `all.css` export.
+- [x] Add bundle-size regression checks for representative single-component imports and complete adapters.
+  - [x] Keep a React Button import below 1 KiB gzip.
+  - [x] Keep a Vue Button import below 1.5 KiB gzip.
+  - [x] Keep an Angular Button import below 2 KiB gzip.
+  - [x] Keep a React Dialog import below 4 KiB gzip.
+  - [x] Track the minified, gzip, and Brotli sizes of each complete framework adapter and the optional CSS.
