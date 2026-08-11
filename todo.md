@@ -91,3 +91,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add accessible Sidebar navigation across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Tree View across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible File Upload across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Password Input across Angular, React, Vue, the registry, documentation, and contract tests.

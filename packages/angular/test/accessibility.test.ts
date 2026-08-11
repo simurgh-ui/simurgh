@@ -97,6 +97,7 @@ import {
   TreeDirective,
   TreeItemComponent,
   FileUploadComponent,
+  PasswordInputComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -605,6 +606,18 @@ class TreeHost {}
 class FileUploadHost {
   changed = vi.fn();
 }
+
+@Component({
+  standalone: true,
+  imports: [PasswordInputComponent],
+  template: `<simurgh-password-input
+    aria-label="Account password"
+    name="password"
+    autocomplete="current-password"
+    value="secret"
+  />`,
+})
+class PasswordInputHost {}
 
 @Component({
   standalone: true,
@@ -1482,6 +1495,29 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith([pdf]);
     expect(fixture.nativeElement.textContent).toContain('guide.pdf');
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('reveals a password without replacing its native form control', async () => {
+    const fixture = TestBed.createComponent(PasswordInputHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    const toggle = fixture.nativeElement.querySelector(
+      'button',
+    ) as HTMLButtonElement;
+    expect(input.getAttribute('aria-label')).toBe('Account password');
+    expect(input.type).toBe('password');
+    expect(input.value).toBe('secret');
+    expect(toggle.getAttribute('aria-controls')).toBe(input.id);
+    expect(toggle.getAttribute('aria-pressed')).toBe('false');
+    toggle.click();
+    fixture.detectChanges();
+    expect(input.type).toBe('text');
+    expect(input.value).toBe('secret');
+    expect(toggle.getAttribute('aria-label')).toBe('Hide password');
+    expect(toggle.getAttribute('aria-pressed')).toBe('true');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });

@@ -99,6 +99,7 @@ import {
   Tree,
   TreeItem,
   FileUpload,
+  PasswordInput,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -673,6 +674,28 @@ describe('React accessibility contract', () => {
     fireEvent.change(input, { target: { files: [pdf, text] } });
     expect(changed).toHaveBeenLastCalledWith([pdf]);
     expect(screen.getByText('guide.pdf')).toBeTruthy();
+    expect((await axe.run(input.parentElement!)).violations).toEqual([]);
+  });
+  it('reveals a password without replacing its native form control', async () => {
+    render(
+      <PasswordInput
+        aria-label="Account password"
+        name="password"
+        autoComplete="current-password"
+        defaultValue="secret"
+      />,
+    );
+    const input = screen.getByLabelText('Account password') as HTMLInputElement;
+    const toggle = screen.getByRole('button', { name: 'Show password' });
+    expect(input.type).toBe('password');
+    expect(input.value).toBe('secret');
+    expect(toggle.getAttribute('aria-controls')).toBe(input.id);
+    expect(toggle.getAttribute('aria-pressed')).toBe('false');
+    fireEvent.click(toggle);
+    expect(input.type).toBe('text');
+    expect(input.value).toBe('secret');
+    expect(screen.getByRole('button', { name: 'Hide password' })).toBe(toggle);
+    expect(toggle.getAttribute('aria-pressed')).toBe('true');
     expect((await axe.run(input.parentElement!)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
