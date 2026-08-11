@@ -180,6 +180,24 @@
       "brotli": 671,
       "budget": 1000
     },
+    "vue-radio-group": {
+      "minified": 1892,
+      "gzip": 940,
+      "brotli": 814,
+      "budget": 1200
+    },
+    "vue-password-input": {
+      "minified": 1170,
+      "gzip": 577,
+      "brotli": 509,
+      "budget": 740
+    },
+    "vue-number-input": {
+      "minified": 1630,
+      "gzip": 713,
+      "brotli": 634,
+      "budget": 915
+    },
     "angular-button": {
       "minified": 722,
       "gzip": 398,
@@ -289,9 +307,9 @@
       "budget": 8192
     },
     "vue-basic": {
-      "minified": 16080,
-      "gzip": 4546,
-      "brotli": 4073,
+      "minified": 15195,
+      "gzip": 4238,
+      "brotli": 3794,
       "budget": 8192
     },
     "angular-basic": {
@@ -309,7 +327,7 @@
     "vue-overlays": {
       "minified": 26681,
       "gzip": 9618,
-      "brotli": 8593,
+      "brotli": 8637,
       "budget": 10752
     },
     "angular-overlays": {
@@ -325,9 +343,9 @@
       "budget": 27648
     },
     "vue-complete": {
-      "minified": 78693,
-      "gzip": 21729,
-      "brotli": 19399,
+      "minified": 78972,
+      "gzip": 21835,
+      "brotli": 19483,
       "budget": 22528
     },
     "angular-complete": {
@@ -342,9 +360,9 @@
       "brotli": 12769
     },
     "vue-without-floating": {
-      "minified": 62872,
-      "gzip": 15462,
-      "brotli": 13834
+      "minified": 63152,
+      "gzip": 15558,
+      "brotli": 13865
     },
     "angular-without-floating": {
       "minified": 120225,
@@ -364,7 +382,7 @@
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "vue": {
-        "gzip": 6267,
+        "gzip": 6277,
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "angular": {
@@ -381,9 +399,9 @@
       "budget": 307200
     },
     "vue": {
-      "files": 189,
-      "unpacked": 309045,
-      "gzip": 32374,
+      "files": 192,
+      "unpacked": 306964,
+      "gzip": 32070,
       "budget": 384000
     },
     "angular": {

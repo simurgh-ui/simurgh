@@ -199,6 +199,24 @@ const cases = [
     budget: 1000,
   },
   {
+    name: 'vue-radio-group',
+    framework: 'vue',
+    subpath: 'radio-group',
+    budget: 1200,
+  },
+  {
+    name: 'vue-password-input',
+    framework: 'vue',
+    subpath: 'password-input',
+    budget: 740,
+  },
+  {
+    name: 'vue-number-input',
+    framework: 'vue',
+    subpath: 'number-input',
+    budget: 915,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
