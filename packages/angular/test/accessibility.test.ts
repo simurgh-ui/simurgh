@@ -98,6 +98,7 @@ import {
   TreeItemComponent,
   FileUploadComponent,
   PasswordInputComponent,
+  NumberInputComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -618,6 +619,21 @@ class FileUploadHost {
   />`,
 })
 class PasswordInputHost {}
+
+@Component({
+  standalone: true,
+  imports: [NumberInputComponent],
+  template: `<simurgh-number-input
+    aria-label="Quantity"
+    [value]="2"
+    [min]="0"
+    [max]="3"
+    (valueChange)="changed($event)"
+  />`,
+})
+class NumberInputHost {
+  changed = vi.fn();
+}
 
 @Component({
   standalone: true,
@@ -1518,6 +1534,25 @@ describe('Angular accessibility contract', () => {
     expect(input.value).toBe('secret');
     expect(toggle.getAttribute('aria-label')).toBe('Hide password');
     expect(toggle.getAttribute('aria-pressed')).toBe('true');
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('steps and clamps a native number input', async () => {
+    const fixture = TestBed.createComponent(NumberInputHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      'input',
+    ) as HTMLInputElement;
+    const increment = fixture.nativeElement.querySelectorAll(
+      'button',
+    )[1] as HTMLButtonElement;
+    expect(input.getAttribute('aria-label')).toBe('Quantity');
+    expect(increment.getAttribute('aria-controls')).toBe(input.id);
+    increment.click();
+    fixture.detectChanges();
+    expect(input.valueAsNumber).toBe(3);
+    expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith(3);
+    expect(increment.disabled).toBe(true);
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });

@@ -1,0 +1,73 @@
+---
+title: Number Input
+description: Native numeric entry with accessible increment and decrement controls.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Number Input keeps native spinbutton semantics while providing larger, explicitly named step controls. Values are clamped to the configured minimum and maximum.
+
+<ComponentPreview title="Number Input">
+  <label for="quantity-preview" style="display:block;margin-bottom:.5rem">
+    Quantity
+  </label>
+  <div data-slot="number-input">
+    <button
+      type="button"
+      data-slot="number-input-decrement"
+      aria-label="Decrease value"
+      aria-controls="quantity-preview"
+    >
+      −
+    </button>
+    <input
+      id="quantity-preview"
+      type="number"
+      data-slot="number-input-control"
+      value="2"
+      min="0"
+      max="10"
+      step="1"
+    />
+    <button
+      type="button"
+      data-slot="number-input-increment"
+      aria-label="Increase value"
+      aria-controls="quantity-preview"
+    >
+      +
+    </button>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<NumberInput
+  aria-label="Quantity"
+  value={quantity}
+  min={0}
+  max={10}
+  onValueChange={setQuantity}
+/>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<NumberInput v-model="quantity" aria-label="Quantity" :min="0" :max="10" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-number-input
+  [(value)]="quantity"
+  aria-label="Quantity"
+  [min]="0"
+  [max]="10"
+/>
+```
+</TabItem>
+</Tabs>
+
+Use a visible label when possible. Set `step` to the smallest meaningful change, and provide both `min` and `max` when the value has a bounded domain.

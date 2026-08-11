@@ -100,6 +100,7 @@ import {
   TreeItem,
   FileUpload,
   PasswordInput,
+  NumberInput,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -696,6 +697,28 @@ describe('React accessibility contract', () => {
     expect(input.value).toBe('secret');
     expect(screen.getByRole('button', { name: 'Hide password' })).toBe(toggle);
     expect(toggle.getAttribute('aria-pressed')).toBe('true');
+    expect((await axe.run(input.parentElement!)).violations).toEqual([]);
+  });
+  it('steps and clamps a native number input', async () => {
+    const changed = vi.fn();
+    render(
+      <NumberInput
+        aria-label="Quantity"
+        defaultValue={2}
+        min={0}
+        max={3}
+        onValueChange={changed}
+      />,
+    );
+    const input = screen.getByRole('spinbutton', {
+      name: 'Quantity',
+    }) as HTMLInputElement;
+    const increment = screen.getByRole('button', { name: 'Increase value' });
+    expect(increment.getAttribute('aria-controls')).toBe(input.id);
+    fireEvent.click(increment);
+    expect(input.valueAsNumber).toBe(3);
+    expect(changed).toHaveBeenLastCalledWith(3);
+    expect((increment as HTMLButtonElement).disabled).toBe(true);
     expect((await axe.run(input.parentElement!)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {

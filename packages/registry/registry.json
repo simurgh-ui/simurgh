@@ -24,6 +24,7 @@
     "tree",
     "file-upload",
     "password-input",
+    "number-input",
     "tabs",
     "accordion",
     "checkbox",
@@ -163,6 +164,7 @@
       "tree": ["Tree", "TreeItem"],
       "file-upload": ["FileUpload"],
       "password-input": ["PasswordInput"],
+      "number-input": ["NumberInput"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -336,6 +338,7 @@
       "tree": ["Tree", "TreeItem"],
       "file-upload": ["FileUpload"],
       "password-input": ["PasswordInput"],
+      "number-input": ["NumberInput"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -477,6 +480,7 @@
       "tree": ["TreeDirective", "TreeItemComponent"],
       "file-upload": ["FileUploadComponent"],
       "password-input": ["PasswordInputComponent"],
+      "number-input": ["NumberInputComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],
