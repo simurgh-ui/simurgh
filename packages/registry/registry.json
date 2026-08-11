@@ -16,6 +16,7 @@
     "native-select",
     "combobox",
     "command",
+    "calendar",
     "tabs",
     "accordion",
     "checkbox",
@@ -132,6 +133,7 @@
       "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "SelectOption"],
       "command": ["Command"],
+      "calendar": ["Calendar", "CalendarProps"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -282,6 +284,7 @@
       "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "ComboboxOption"],
       "command": ["Command"],
+      "calendar": ["Calendar"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -396,6 +399,7 @@
       "native-select": ["NativeSelectComponent"],
       "combobox": ["ComboboxComponent", "SelectOption"],
       "command": ["CommandComponent"],
+      "calendar": ["CalendarComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],

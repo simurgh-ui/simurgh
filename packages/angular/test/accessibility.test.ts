@@ -79,6 +79,7 @@ import {
   CollapsibleComponent,
   ComboboxComponent,
   CommandComponent,
+  CalendarComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -444,6 +445,30 @@ class CommandHost {
     { value: 'settings', label: 'Open settings' },
   ];
   selected = vi.fn();
+}
+
+@Component({
+  standalone: true,
+  imports: [CalendarComponent],
+  template: `<form>
+    <simurgh-calendar
+      [value]="date"
+      month="2026-08"
+      name="appointment"
+      label="Appointment calendar"
+      [disabledDates]="disabledDates"
+      (valueChange)="select($event)"
+    />
+  </form>`,
+})
+class CalendarHost {
+  date = '2026-08-12';
+  disabledDates = ['2026-08-14'];
+  selected = vi.fn();
+  select(value: string) {
+    this.date = value;
+    this.selected(value);
+  }
 }
 
 @Component({
@@ -1115,6 +1140,45 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.selected).toHaveBeenCalledWith('settings');
     expect(input.value).toBe('Open settings');
+    fixture.destroy();
+  });
+  it('selects and keyboard-navigates a labelled calendar grid', async () => {
+    const fixture = TestBed.createComponent(CalendarHost);
+    fixture.detectChanges();
+    const grid = fixture.nativeElement.querySelector(
+      '[role=grid]',
+    ) as HTMLElement;
+    expect(grid.getAttribute('aria-labelledby')).toBeTruthy();
+    const twelfth = fixture.nativeElement.querySelector(
+      '[data-date="2026-08-12"]',
+    ) as HTMLButtonElement;
+    twelfth.focus();
+    twelfth.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+    );
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    const thirteenth = fixture.nativeElement.querySelector(
+      '[data-date="2026-08-13"]',
+    ) as HTMLButtonElement;
+    expect(document.activeElement).toBe(thirteenth);
+    thirteenth.click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.selected).toHaveBeenCalledWith(
+      '2026-08-13',
+    );
+    const fourteenth = fixture.nativeElement.querySelector(
+      '[data-date="2026-08-14"]',
+    ) as HTMLButtonElement;
+    expect(fourteenth.getAttribute('aria-disabled')).toBe('true');
+    fourteenth.click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.selected).toHaveBeenCalledOnce();
+    expect(
+      new FormData(fixture.nativeElement.querySelector('form')).get(
+        'appointment',
+      ),
+    ).toBe('2026-08-13');
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });
   it('associates a native label with its form control', async () => {

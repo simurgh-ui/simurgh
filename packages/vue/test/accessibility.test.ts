@@ -73,6 +73,7 @@ import {
   CollapsibleTrigger,
   Combobox,
   Command,
+  Calendar,
   Dialog,
   DialogContent,
   DialogTrigger,
@@ -555,6 +556,43 @@ describe('Vue accessibility contract', () => {
     await fireEvent.keyDown(input, { key: 'Enter' });
     expect(selected).toHaveBeenCalledWith('settings');
     expect((input as HTMLInputElement).value).toBe('Open settings');
+  });
+  it('selects and keyboard-navigates a labelled calendar grid', async () => {
+    const selected = vi.fn();
+    const view = render(Calendar, {
+      props: {
+        defaultValue: '2026-08-12',
+        defaultMonth: '2026-08',
+        name: 'appointment',
+        label: 'Appointment calendar',
+        disabledDates: ['2026-08-14'],
+        'onUpdate:modelValue': selected,
+      },
+    });
+    expect(screen.getByRole('grid', { name: 'August 2026' })).toBeTruthy();
+    const twelfth = screen.getByRole('button', {
+      name: 'Wednesday, August 12, 2026',
+    });
+    twelfth.focus();
+    await fireEvent.keyDown(twelfth, { key: 'ArrowRight' });
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    const thirteenth = screen.getByRole('button', {
+      name: 'Thursday, August 13, 2026',
+    });
+    expect(document.activeElement).toBe(thirteenth);
+    await fireEvent.click(thirteenth);
+    expect(selected).toHaveBeenCalledWith('2026-08-13');
+    const fourteenth = screen.getByRole('button', {
+      name: 'Friday, August 14, 2026',
+    });
+    expect(fourteenth.getAttribute('aria-disabled')).toBe('true');
+    await fireEvent.click(fourteenth);
+    expect(selected).toHaveBeenCalledOnce();
+    expect(
+      (view.container.querySelector('[name=appointment]') as HTMLInputElement)
+        .value,
+    ).toBe('2026-08-13');
+    expect((await axe.run(view.container)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
     render({

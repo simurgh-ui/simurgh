@@ -6,7 +6,11 @@ import {
   shift,
 } from '@floating-ui/dom';
 import {
+  addCalendarMonths,
+  calendarMonthDays,
+  calendarToday,
   createId,
+  moveCalendarDate,
   nextIndex,
   trapFocus,
   type Direction,
@@ -2548,6 +2552,200 @@ export const Command = defineComponent({
             emit('update:modelValue', value),
         }),
       ]);
+  },
+});
+
+export const Calendar = defineComponent({
+  name: 'SimurghCalendar',
+  props: {
+    modelValue: String,
+    defaultValue: { type: String, default: '' },
+    month: String,
+    defaultMonth: String,
+    locale: { type: String, default: 'en' },
+    direction: { type: String as PropType<Direction>, default: 'ltr' },
+    firstDayOfWeek: { type: Number, default: 0 },
+    min: String,
+    max: String,
+    disabledDates: { type: Array as PropType<string[]>, default: () => [] },
+    name: String,
+    label: { type: String, default: 'Calendar' },
+  },
+  emits: ['update:modelValue', 'update:month'],
+  setup(props, { emit }) {
+    const today = calendarToday();
+    const localValue = ref(props.defaultValue);
+    const localMonth = ref(
+      props.defaultMonth ?? (props.defaultValue || today).slice(0, 7),
+    );
+    const root = ref<HTMLElement | null>(null);
+    const titleId = createId('calendar-title');
+    const selected = computed(() => props.modelValue ?? localValue.value);
+    const displayedMonth = computed(() => props.month ?? localMonth.value);
+    const days = computed(() =>
+      calendarMonthDays(displayedMonth.value, props.firstDayOfWeek),
+    );
+    const isDisabled = (date: string) =>
+      (props.min !== undefined && date < props.min) ||
+      (props.max !== undefined && date > props.max) ||
+      props.disabledDates.includes(date);
+    const setMonth = (next: string) => {
+      if (props.month === undefined) localMonth.value = next;
+      emit('update:month', next);
+    };
+    const choose = (date: string) => {
+      if (isDisabled(date)) return;
+      if (props.modelValue === undefined) localValue.value = date;
+      if (date.slice(0, 7) !== displayedMonth.value) setMonth(date.slice(0, 7));
+      emit('update:modelValue', date);
+    };
+    const focusDate = (date: string) => {
+      if (date.slice(0, 7) !== displayedMonth.value) setMonth(date.slice(0, 7));
+      requestAnimationFrame(() =>
+        root.value
+          ?.querySelector<HTMLElement>(`[data-date="${date}"]`)
+          ?.focus(),
+      );
+    };
+    return () => {
+      const monthValue = displayedMonth.value;
+      const anchor =
+        selected.value.slice(0, 7) === monthValue
+          ? selected.value
+          : `${monthValue}-01`;
+      const dateFor = (date: string) => new Date(`${date}T00:00:00Z`);
+      const monthLabel = new Intl.DateTimeFormat(props.locale, {
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'UTC',
+      }).format(dateFor(`${monthValue}-01`));
+      const dayLabel = new Intl.DateTimeFormat(props.locale, {
+        dateStyle: 'full',
+        timeZone: 'UTC',
+      });
+      const weekdayLabel = new Intl.DateTimeFormat(props.locale, {
+        weekday: 'short',
+        timeZone: 'UTC',
+      });
+      return h(
+        'div',
+        {
+          ref: root,
+          'data-slot': 'calendar',
+          dir: props.direction,
+          role: 'group',
+          'aria-label': props.label,
+        },
+        [
+          h('div', { 'data-slot': 'calendar-header' }, [
+            h(
+              'button',
+              {
+                type: 'button',
+                'aria-label': 'Previous month',
+                onClick: () =>
+                  setMonth(
+                    addCalendarMonths(`${monthValue}-01`, -1).slice(0, 7),
+                  ),
+              },
+              '‹',
+            ),
+            h('h2', { id: titleId, 'aria-live': 'polite' }, monthLabel),
+            h(
+              'button',
+              {
+                type: 'button',
+                'aria-label': 'Next month',
+                onClick: () =>
+                  setMonth(
+                    addCalendarMonths(`${monthValue}-01`, 1).slice(0, 7),
+                  ),
+              },
+              '›',
+            ),
+          ]),
+          h('table', { role: 'grid', 'aria-labelledby': titleId }, [
+            h('thead', [
+              h(
+                'tr',
+                Array.from({ length: 7 }, (_, index) => {
+                  const date = new Date(
+                    Date.UTC(2023, 0, 1 + ((props.firstDayOfWeek + index) % 7)),
+                  );
+                  return h('th', { scope: 'col' }, weekdayLabel.format(date));
+                }),
+              ),
+            ]),
+            h(
+              'tbody',
+              Array.from({ length: 6 }, (_, week) =>
+                h(
+                  'tr',
+                  days.value.slice(week * 7, week * 7 + 7).map((day) =>
+                    h(
+                      'td',
+                      {
+                        role: 'gridcell',
+                        'aria-selected': selected.value === day.value,
+                      },
+                      h(
+                        'button',
+                        {
+                          type: 'button',
+                          'data-slot': 'calendar-day',
+                          'data-date': day.value,
+                          'data-outside': day.outside || undefined,
+                          'data-state':
+                            selected.value === day.value
+                              ? 'selected'
+                              : undefined,
+                          'aria-current':
+                            today === day.value ? 'date' : undefined,
+                          'aria-label': dayLabel.format(dateFor(day.value)),
+                          'aria-disabled': isDisabled(day.value) || undefined,
+                          tabindex: day.value === anchor ? 0 : -1,
+                          onClick: () => choose(day.value),
+                          onKeydown: (event: KeyboardEvent) => {
+                            if (
+                              ![
+                                'ArrowLeft',
+                                'ArrowRight',
+                                'ArrowUp',
+                                'ArrowDown',
+                                'Home',
+                                'End',
+                                'PageUp',
+                                'PageDown',
+                              ].includes(event.key)
+                            )
+                              return;
+                            event.preventDefault();
+                            focusDate(
+                              moveCalendarDate(day.value, event.key, {
+                                direction: props.direction,
+                                firstDayOfWeek: props.firstDayOfWeek,
+                              }),
+                            );
+                          },
+                        },
+                        String(day.day),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ]),
+          props.name
+            ? h('input', {
+                type: 'hidden',
+                name: props.name,
+                value: selected.value,
+              })
+            : null,
+        ],
+      );
+    };
   },
 });
 
