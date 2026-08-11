@@ -99,6 +99,7 @@ import {
   FileUploadComponent,
   PasswordInputComponent,
   NumberInputComponent,
+  RatingComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -632,6 +633,20 @@ class PasswordInputHost {}
   />`,
 })
 class NumberInputHost {
+  changed = vi.fn();
+}
+
+@Component({
+  standalone: true,
+  imports: [RatingComponent],
+  template: `<simurgh-rating
+    aria-label="Product rating"
+    name="rating"
+    [value]="2"
+    (valueChange)="changed($event)"
+  />`,
+})
+class RatingHost {
   changed = vi.fn();
 }
 
@@ -1553,6 +1568,20 @@ describe('Angular accessibility contract', () => {
     expect(input.valueAsNumber).toBe(3);
     expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith(3);
     expect(increment.disabled).toBe(true);
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('selects an accessible native rating', async () => {
+    const fixture = TestBed.createComponent(RatingHost);
+    fixture.detectChanges();
+    const radios = fixture.nativeElement.querySelectorAll(
+      'input[type=radio]',
+    ) as NodeListOf<HTMLInputElement>;
+    radios[3]?.click();
+    fixture.detectChanges();
+    expect(radios[3]?.checked).toBe(true);
+    expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith(4);
+    expect(radios[3]?.getAttribute('aria-label')).toBe('4 of 5');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });

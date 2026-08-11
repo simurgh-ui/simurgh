@@ -25,6 +25,7 @@
     "file-upload",
     "password-input",
     "number-input",
+    "rating",
     "tabs",
     "accordion",
     "checkbox",
@@ -165,6 +166,7 @@
       "file-upload": ["FileUpload"],
       "password-input": ["PasswordInput"],
       "number-input": ["NumberInput"],
+      "rating": ["Rating", "RatingProps"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -339,6 +341,7 @@
       "file-upload": ["FileUpload"],
       "password-input": ["PasswordInput"],
       "number-input": ["NumberInput"],
+      "rating": ["Rating"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -481,6 +484,7 @@
       "file-upload": ["FileUploadComponent"],
       "password-input": ["PasswordInputComponent"],
       "number-input": ["NumberInputComponent"],
+      "rating": ["RatingComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],

@@ -20,6 +20,7 @@ export * from './components/tree.js';
 export * from './components/file-upload.js';
 export * from './components/password-input.js';
 export * from './components/number-input.js';
+export * from './components/rating.js';
 export * from './components/tabs.js';
 export * from './components/accordion.js';
 export * from './components/checkbox.js';

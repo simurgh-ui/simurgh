@@ -37,6 +37,24 @@ const cases = [
     budget: 2 * KiB,
   },
   {
+    name: 'react-rating',
+    framework: 'react',
+    subpath: 'rating',
+    budget: 1.5 * KiB,
+  },
+  {
+    name: 'vue-rating',
+    framework: 'vue',
+    subpath: 'rating',
+    budget: 2 * KiB,
+  },
+  {
+    name: 'angular-rating',
+    framework: 'angular',
+    subpath: 'rating',
+    budget: 2 * KiB,
+  },
+  {
     name: 'react-dialog',
     framework: 'react',
     subpath: 'dialog',

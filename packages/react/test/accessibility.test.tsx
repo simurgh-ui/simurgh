@@ -101,6 +101,7 @@ import {
   FileUpload,
   PasswordInput,
   NumberInput,
+  Rating,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -720,6 +721,26 @@ describe('React accessibility contract', () => {
     expect(changed).toHaveBeenLastCalledWith(3);
     expect((increment as HTMLButtonElement).disabled).toBe(true);
     expect((await axe.run(input.parentElement!)).violations).toEqual([]);
+  });
+  it('selects and submits an accessible native rating', async () => {
+    const changed = vi.fn();
+    render(
+      <form data-testid="rating-form">
+        <Rating
+          aria-label="Product rating"
+          name="rating"
+          defaultValue={2}
+          onValueChange={changed}
+        />
+      </form>,
+    );
+    const four = screen.getByRole('radio', { name: '4 of 5' });
+    fireEvent.click(four);
+    expect((four as HTMLInputElement).checked).toBe(true);
+    expect(changed).toHaveBeenLastCalledWith(4);
+    const form = screen.getByTestId('rating-form') as HTMLFormElement;
+    expect(new FormData(form).get('rating')).toBe('4');
+    expect((await axe.run(form)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
     render(

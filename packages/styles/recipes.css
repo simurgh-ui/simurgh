@@ -1293,6 +1293,45 @@
   outline: 2px solid hsl(var(--simurgh-ring));
   outline-offset: -3px;
 }
+[data-slot='rating'] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+[data-slot='rating'][data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+[data-slot='rating-item'] {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+[data-slot='rating'][data-disabled] [data-slot='rating-item'] {
+  cursor: not-allowed;
+}
+[data-slot='rating-control'] {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+[data-slot='rating-icon'] {
+  padding: 0.125rem;
+  color: hsl(var(--simurgh-muted-foreground));
+  font-size: 1.5rem;
+  line-height: 1;
+}
+[data-slot='rating-icon'][data-selected] {
+  color: hsl(var(--simurgh-primary));
+}
+[data-slot='rating-item']:has([data-slot='rating-control']:focus-visible) {
+  border-radius: 0.25rem;
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 1px;
+}
 @media (prefers-reduced-motion: reduce) {
   [data-state='open'] {
     animation: none;

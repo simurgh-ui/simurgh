@@ -94,6 +94,7 @@ import {
   FileUpload,
   PasswordInput,
   NumberInput,
+  Rating,
   Dialog,
   DialogContent,
   DialogTrigger,
@@ -809,6 +810,22 @@ describe('Vue accessibility contract', () => {
     expect(changed).toHaveBeenLastCalledWith(3);
     expect((increment as HTMLButtonElement).disabled).toBe(true);
     expect((await axe.run(input.parentElement!)).violations).toEqual([]);
+  });
+  it('selects and submits an accessible native rating', async () => {
+    const changed = vi.fn();
+    const view = render(Rating, {
+      props: {
+        defaultValue: 2,
+        name: 'rating',
+        'onUpdate:modelValue': changed,
+      },
+      attrs: { 'aria-label': 'Product rating' },
+    });
+    const four = screen.getByRole('radio', { name: '4 of 5' });
+    await fireEvent.click(four);
+    expect((four as HTMLInputElement).checked).toBe(true);
+    expect(changed).toHaveBeenLastCalledWith(4);
+    expect((await axe.run(view.container)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
     render({
