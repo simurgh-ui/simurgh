@@ -109,6 +109,18 @@ const cases = [
     budget: 800,
   },
   {
+    name: 'vue-toggle',
+    framework: 'vue',
+    subpath: 'toggle',
+    budget: 450,
+  },
+  {
+    name: 'vue-toggle-group',
+    framework: 'vue',
+    subpath: 'toggle-group',
+    budget: 1150,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
@@ -247,7 +259,7 @@ const cases = [
     budget: 12 * KiB,
   },
   { name: 'react-complete', framework: 'react', budget: 27 * KiB },
-  { name: 'vue-complete', framework: 'vue', budget: 21 * KiB },
+  { name: 'vue-complete', framework: 'vue', budget: 22 * KiB },
   { name: 'angular-complete', framework: 'angular', budget: 27 * KiB },
   {
     name: 'react-without-floating',
