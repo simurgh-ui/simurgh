@@ -14,4 +14,6 @@ Raw heritage tokens describe palette colors; semantic tokens describe UI roles. 
 
 The dark theme activates under `.dark` or `[data-theme='dark']`. Motion durations collapse under `prefers-reduced-motion`. Recipes use logical CSS properties so direction changes do not require another stylesheet.
 
+For production applications, import `@simurgh-ui/styles/tokens.css` once and add component recipes such as `@simurgh-ui/styles/dialog.css` only where they are used. `all.css` is the deliberate full-catalog option; further micro-optimization of that aggregate is lower impact than keeping component-level CSS boundaries intact.
+
 The architectural palette is informed by documented Iranian turquoise and cobalt tile glazing, lapis and ultramarine decoration, ochre pigments and brick, and strong blue/yellow and red/white contrasts. Semantic mappings are adjusted where necessary to retain readable contrast.

@@ -127,3 +127,22 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add published-package size checks alongside browser bundle-size checks.
 - [x] Enforce standalone bundle budgets for the Rating component in every framework.
 - [x] Enforce standalone bundle budgets for the Tags Input component in every framework.
+
+## Bundle-size optimization third pass
+
+- [x] Remove residual Vue wrapper overhead by marking side-effect-free `Symbol`, `cardPart`, `checkControl`, `carouselControl`, and related helper calls as pure.
+- [ ] Move Vue implementations into genuine per-component modules so subpaths do not depend on tree-shaking the monolithic `index.ts`.
+  - [x] Move Button, Rating, Tags Input, Dialog, and Calendar into genuine modules.
+  - [ ] Split the remaining Vue catalog modules.
+- [x] Reduce representative Vue component bundles toward the verified optimized measurements.
+  - [x] Reduce Vue Button from approximately 1.41 KiB to 0.44 KiB gzip.
+  - [x] Reduce Vue Rating from approximately 1.70 KiB to 0.78 KiB gzip.
+  - [x] Reduce Vue Tags Input from approximately 1.99 KiB to 1.09 KiB gzip.
+  - [x] Reduce Vue Dialog from approximately 1.88 KiB to 0.95 KiB gzip.
+  - [ ] Reduce Vue Calendar from approximately 2.31 KiB to 1.38 KiB gzip.
+- [x] Evaluate replacing `@floating-ui/react` interaction hooks with a smaller `@floating-ui/dom` integration while preserving accessibility and behavior parity.
+- [x] Track and reduce Floating UI's approximate gzip contribution: React 12.5 KiB, Vue 6.0 KiB, and Angular 6.3 KiB.
+- [x] Add optional aggregate entry points such as `basic` and `overlays` so broad imports can exclude floating components.
+- [x] Recommend per-component subpath imports throughout the documentation and examples.
+- [x] Add a minimal production Angular fixture that measures bundles after Angular linking and production optimization.
+- [x] Keep component-level CSS imports as the recommended path and defer lower-impact full-CSS micro-optimization.

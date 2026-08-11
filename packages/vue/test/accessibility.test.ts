@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
+import { Calendar as CalendarSubpath } from '../src/components/calendar.js';
 import {
   Checkbox,
   Avatar,
@@ -581,7 +582,7 @@ describe('Vue accessibility contract', () => {
   });
   it('selects and keyboard-navigates a labelled calendar grid', async () => {
     const selected = vi.fn();
-    const view = render(Calendar, {
+    const view = render(CalendarSubpath, {
       props: {
         defaultValue: '2026-08-12',
         defaultMonth: '2026-08',

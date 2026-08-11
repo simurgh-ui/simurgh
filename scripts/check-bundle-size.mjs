@@ -28,7 +28,7 @@ const cases = [
     name: 'vue-button',
     framework: 'vue',
     subpath: 'button',
-    budget: 1.5 * KiB,
+    budget: 0.5 * KiB,
   },
   {
     name: 'angular-button',
@@ -46,7 +46,7 @@ const cases = [
     name: 'vue-rating',
     framework: 'vue',
     subpath: 'rating',
-    budget: 2 * KiB,
+    budget: 0.8 * KiB,
   },
   {
     name: 'angular-rating',
@@ -64,7 +64,7 @@ const cases = [
     name: 'vue-tags-input',
     framework: 'vue',
     subpath: 'tags-input',
-    budget: 2.5 * KiB,
+    budget: 1.1 * KiB,
   },
   {
     name: 'angular-tags-input',
@@ -77,6 +77,18 @@ const cases = [
     framework: 'react',
     subpath: 'dialog',
     budget: 4 * KiB,
+  },
+  {
+    name: 'vue-dialog',
+    framework: 'vue',
+    subpath: 'dialog',
+    budget: 1.25 * KiB,
+  },
+  {
+    name: 'vue-calendar',
+    framework: 'vue',
+    subpath: 'calendar',
+    budget: 1.875 * KiB,
   },
   {
     name: 'angular-dialog',
@@ -96,9 +108,60 @@ const cases = [
     source: `export { ButtonComponent } from '@simurgh-ui/angular';`,
     budget: 2 * KiB,
   },
+  {
+    name: 'react-basic',
+    framework: 'react',
+    subpath: 'basic',
+    budget: 8 * KiB,
+  },
+  {
+    name: 'vue-basic',
+    framework: 'vue',
+    subpath: 'basic',
+    budget: 8 * KiB,
+  },
+  {
+    name: 'angular-basic',
+    framework: 'angular',
+    subpath: 'basic',
+    budget: 12 * KiB,
+  },
+  {
+    name: 'react-overlays',
+    framework: 'react',
+    subpath: 'overlays',
+    budget: 18 * KiB,
+  },
+  {
+    name: 'vue-overlays',
+    framework: 'vue',
+    subpath: 'overlays',
+    budget: 10.5 * KiB,
+  },
+  {
+    name: 'angular-overlays',
+    framework: 'angular',
+    subpath: 'overlays',
+    budget: 12 * KiB,
+  },
   { name: 'react-complete', framework: 'react', budget: 27 * KiB },
   { name: 'vue-complete', framework: 'vue', budget: 21 * KiB },
   { name: 'angular-complete', framework: 'angular', budget: 27 * KiB },
+  {
+    name: 'react-without-floating',
+    framework: 'react',
+    external: ['@floating-ui/react', '@floating-ui/react/*'],
+  },
+  {
+    name: 'vue-without-floating',
+    framework: 'vue',
+    external: ['@floating-ui/dom', '@floating-ui/dom/*'],
+  },
+  {
+    name: 'angular-without-floating',
+    framework: 'angular',
+    external: ['@floating-ui/dom', '@floating-ui/dom/*'],
+  },
   {
     name: 'styles-complete',
     path: 'packages/styles/all.css',
@@ -152,7 +215,10 @@ for (const bundleCase of cases) {
             sourcefile: `${bundleCase.name}.js`,
           },
           format: 'esm',
-          external: peerDependencies[bundleCase.framework],
+          external: [
+            ...peerDependencies[bundleCase.framework],
+            ...(bundleCase.external ?? []),
+          ],
           plugins: [packageResolver()],
         }
       : { entryPoints: [resolve(root, bundleCase.path)] }),

@@ -1,0 +1,8 @@
+{
+  "minified": 753,
+  "gzip": 420,
+  "brotli": 366,
+  "budget": 2048,
+  "linked": true,
+  "optimized": true
+}

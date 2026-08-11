@@ -34,13 +34,30 @@ import {
   type PropType,
   type Ref,
 } from 'vue';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+  dialogKey,
+} from './components/dialog.js';
+
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from './components/dialog.js';
 
 type OpenContext = {
   open: Ref<boolean>;
   setOpen(value: boolean): void;
   id: string;
 };
-const dialogKey: InjectionKey<OpenContext> = Symbol('dialog');
 const floatingKey: InjectionKey<
   OpenContext & {
     trigger: Ref<HTMLElement | null>;
@@ -48,131 +65,6 @@ const floatingKey: InjectionKey<
     kind: 'popover' | 'tooltip' | 'hovercard' | 'menu';
   }
 > = Symbol('floating');
-function openRoot(key: InjectionKey<OpenContext>, name: string) {
-  return defineComponent({
-    name,
-    props: {
-      open: { type: Boolean, default: undefined },
-      defaultOpen: Boolean,
-    },
-    emits: ['update:open'],
-    setup(props, { slots, emit }) {
-      const local = ref(props.defaultOpen);
-      const current = computed({
-        get: () => props.open ?? local.value,
-        set: (v) => {
-          local.value = v;
-          emit('update:open', v);
-        },
-      });
-      provide(key, {
-        open: current,
-        setOpen: (v) => (current.value = v),
-        id: createId(name.toLowerCase()),
-      });
-      return () => slots.default?.();
-    },
-  });
-}
-export const Dialog = /* @__PURE__ */ openRoot(dialogKey, 'SimurghDialog');
-export const DialogTrigger = /* @__PURE__ */ defineComponent({
-  name: 'SimurghDialogTrigger',
-  setup(_, { slots, attrs }) {
-    const c = inject(dialogKey)!;
-    return () =>
-      h(
-        'button',
-        {
-          ...attrs,
-          type: 'button',
-          'aria-haspopup': 'dialog',
-          'aria-expanded': c.open.value,
-          onClick: () => c.setOpen(true),
-        },
-        slots.default?.(),
-      );
-  },
-});
-export const DialogContent = /* @__PURE__ */ defineComponent({
-  name: 'SimurghDialogContent',
-  setup(_, { slots, attrs }) {
-    const c = inject(dialogKey)!;
-    const el = ref<HTMLElement | null>(null);
-    let previous: HTMLElement | null = null;
-    watch(c.open, async (open) => {
-      if (open) {
-        previous = document.activeElement as HTMLElement;
-        await nextTick();
-        el.value?.focus();
-      } else if (previous?.isConnected) previous.focus();
-    });
-    return () =>
-      c.open.value
-        ? h(Teleport, { to: 'body' }, [
-            h('div', {
-              class: 'simurgh-overlay',
-              onMousedown: (event: MouseEvent) => {
-                if (event.target === event.currentTarget) c.setOpen(false);
-              },
-            }),
-            h(
-              'div',
-              {
-                ...attrs,
-                ref: el,
-                role: 'dialog',
-                'aria-modal': 'true',
-                'aria-labelledby': attrs['aria-label']
-                  ? undefined
-                  : `${c.id}-title`,
-                'aria-describedby':
-                  attrs['aria-describedby'] ?? `${c.id}-description`,
-                tabindex: -1,
-                class: ['simurgh-content simurgh-dialog', attrs.class],
-                onKeydown: (e: KeyboardEvent) => {
-                  if (e.key === 'Escape') c.setOpen(false);
-                  else if (el.value) trapFocus(e, el.value);
-                },
-              },
-              slots.default?.(),
-            ),
-          ])
-        : null;
-  },
-});
-export const DialogTitle = /* @__PURE__ */ defineComponent({
-  name: 'SimurghDialogTitle',
-  setup(_, { slots, attrs }) {
-    const c = inject(dialogKey)!;
-    return () =>
-      h('h2', { ...attrs, id: attrs.id ?? `${c.id}-title` }, slots.default?.());
-  },
-});
-export const DialogDescription = /* @__PURE__ */ defineComponent({
-  name: 'SimurghDialogDescription',
-  setup(_, { slots, attrs }) {
-    const c = inject(dialogKey)!;
-    return () =>
-      h(
-        'p',
-        { ...attrs, id: attrs.id ?? `${c.id}-description` },
-        slots.default?.(),
-      );
-  },
-});
-export const DialogClose = /* @__PURE__ */ defineComponent({
-  name: 'SimurghDialogClose',
-  setup(_, { slots, attrs }) {
-    const c = inject(dialogKey)!;
-    return () =>
-      h(
-        'button',
-        { ...attrs, type: 'button', onClick: () => c.setOpen(false) },
-        slots.default?.(),
-      );
-  },
-});
-
 export type SheetSide = 'top' | 'right' | 'bottom' | 'left';
 export const Sheet = Dialog;
 export const SheetTrigger = DialogTrigger;
@@ -1305,31 +1197,7 @@ export const Spinner = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const Button = /* @__PURE__ */ defineComponent({
-  name: 'SimurghButton',
-  inheritAttrs: false,
-  props: {
-    loading: Boolean,
-    disabled: Boolean,
-    type: { type: String, default: 'button' },
-  },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'button',
-        {
-          ...attrs,
-          type: props.type,
-          disabled: props.disabled || props.loading,
-          'aria-busy': props.loading || undefined,
-          'data-state': props.loading ? 'loading' : 'idle',
-          onClick:
-            props.disabled || props.loading ? undefined : attrs['onClick'],
-        },
-        slots.default?.(),
-      );
-  },
-});
+export { Button } from './components/button.js';
 
 export const ButtonGroup = /* @__PURE__ */ defineComponent({
   name: 'SimurghButtonGroup',
@@ -3770,202 +3638,8 @@ export const NumberInput = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const Rating = /* @__PURE__ */ defineComponent({
-  name: 'SimurghRating',
-  inheritAttrs: false,
-  props: {
-    modelValue: { type: Number, default: undefined },
-    defaultValue: { type: Number, default: 0 },
-    max: { type: Number, default: 5 },
-    name: { type: String, default: undefined },
-    disabled: Boolean,
-    required: Boolean,
-    getLabel: {
-      type: Function as PropType<(value: number, max: number) => string>,
-      default: (value: number, max: number) => `${value} of ${max}`,
-    },
-  },
-  emits: ['update:modelValue'],
-  setup(props, { attrs, emit }) {
-    const localValue = ref(props.defaultValue);
-    const generatedName = createId('rating');
-    const count = computed(() =>
-      Number.isFinite(props.max)
-        ? Math.min(100, Math.max(1, Math.floor(props.max)))
-        : 5,
-    );
-    const current = computed(() =>
-      Math.min(
-        count.value,
-        Math.max(0, Math.round(props.modelValue ?? localValue.value)),
-      ),
-    );
-    const commit = (value: number) => {
-      if (props.modelValue === undefined) localValue.value = value;
-      emit('update:modelValue', value);
-    };
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: 'radiogroup',
-          'data-slot': 'rating',
-          'data-disabled': props.disabled || undefined,
-        },
-        Array.from({ length: count.value }, (_, index) => {
-          const item = index + 1;
-          return h('label', { 'data-slot': 'rating-item' }, [
-            h('input', {
-              type: 'radio',
-              'data-slot': 'rating-control',
-              name: props.name ?? generatedName,
-              value: item,
-              checked: current.value === item,
-              disabled: props.disabled,
-              required: props.required,
-              'aria-label': props.getLabel(item, count.value),
-              onChange: () => commit(item),
-            }),
-            h(
-              'span',
-              {
-                'data-slot': 'rating-icon',
-                'data-selected': item <= current.value || undefined,
-                'aria-hidden': 'true',
-              },
-              '\u2605',
-            ),
-          ]);
-        }),
-      );
-  },
-});
-
-export const TagsInput = /* @__PURE__ */ defineComponent({
-  name: 'SimurghTagsInput',
-  inheritAttrs: false,
-  props: {
-    modelValue: { type: Array as PropType<string[]>, default: undefined },
-    defaultValue: {
-      type: Array as PropType<string[]>,
-      default: () => [],
-    },
-    name: { type: String, default: undefined },
-    disabled: Boolean,
-    readonly: Boolean,
-    required: Boolean,
-    maxTags: { type: Number, default: 20 },
-    placeholder: { type: String, default: 'Add a tag' },
-    inputLabel: { type: String, default: 'Add a tag' },
-    getRemoveLabel: {
-      type: Function as PropType<(tag: string) => string>,
-      default: (tag: string) => `Remove ${tag}`,
-    },
-  },
-  emits: ['update:modelValue'],
-  setup(props, { attrs, emit }) {
-    const localValue = ref([...props.defaultValue]);
-    const draft = ref('');
-    const input = ref<HTMLInputElement | null>(null);
-    const tags = computed(() =>
-      (props.modelValue ?? localValue.value).slice(0, 100),
-    );
-    const limit = computed(() =>
-      Number.isFinite(props.maxTags)
-        ? Math.min(100, Math.max(1, Math.floor(props.maxTags)))
-        : 20,
-    );
-    const commit = (next: string[]) => {
-      if (props.modelValue === undefined) localValue.value = next;
-      emit('update:modelValue', next);
-    };
-    const add = () => {
-      const tag = draft.value.trim();
-      if (
-        props.disabled ||
-        props.readonly ||
-        !tag ||
-        tags.value.includes(tag) ||
-        tags.value.length >= limit.value
-      )
-        return;
-      commit([...tags.value, tag]);
-      draft.value = '';
-    };
-    const remove = (index: number) => {
-      if (props.disabled || props.readonly) return;
-      commit(tags.value.filter((_, itemIndex) => itemIndex !== index));
-      input.value?.focus();
-    };
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: 'group',
-          'aria-label': attrs['aria-label'] ?? 'Tags',
-          'data-slot': 'tags-input',
-          'data-disabled': props.disabled || undefined,
-          'data-readonly': props.readonly || undefined,
-          onClick: (event: MouseEvent) => {
-            if (typeof attrs.onClick === 'function') attrs.onClick(event);
-            input.value?.focus();
-          },
-        },
-        [
-          ...tags.value.map((tag, index) =>
-            h('span', { 'data-slot': 'tags-input-tag' }, [
-              h('span', { 'data-slot': 'tags-input-tag-text' }, tag),
-              !props.readonly &&
-                h(
-                  'button',
-                  {
-                    type: 'button',
-                    'data-slot': 'tags-input-remove',
-                    'aria-label': props.getRemoveLabel(tag),
-                    disabled: props.disabled,
-                    onClick: (event: Event) => {
-                      event.stopPropagation();
-                      remove(index);
-                    },
-                  },
-                  '\u00d7',
-                ),
-              props.name &&
-                h('input', { type: 'hidden', name: props.name, value: tag }),
-            ]),
-          ),
-          h('input', {
-            ref: input,
-            type: 'text',
-            'data-slot': 'tags-input-control',
-            value: draft.value,
-            'aria-label': props.inputLabel,
-            placeholder: tags.value.length ? undefined : props.placeholder,
-            disabled: props.disabled || tags.value.length >= limit.value,
-            readonly: props.readonly,
-            required: props.required && tags.value.length === 0,
-            onInput: (event: Event) =>
-              (draft.value = (event.currentTarget as HTMLInputElement).value),
-            onKeydown: (event: KeyboardEvent) => {
-              if (event.key === 'Enter' || event.key === ',') {
-                event.preventDefault();
-                add();
-              } else if (
-                event.key === 'Backspace' &&
-                !draft.value &&
-                tags.value.length
-              ) {
-                event.preventDefault();
-                remove(tags.value.length - 1);
-              }
-            },
-          }),
-        ],
-      );
-  },
-});
+export { Rating } from './components/rating.js';
+export { TagsInput } from './components/tags-input.js';
 
 export type ToastMessage = { id: string; title: string; description?: string };
 const toastKey: InjectionKey<{
