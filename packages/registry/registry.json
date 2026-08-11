@@ -17,6 +17,7 @@
     "combobox",
     "command",
     "calendar",
+    "date-picker",
     "tabs",
     "accordion",
     "checkbox",
@@ -134,6 +135,7 @@
       "combobox": ["Combobox", "SelectOption"],
       "command": ["Command"],
       "calendar": ["Calendar", "CalendarProps"],
+      "date-picker": ["DatePicker", "DatePickerProps"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -285,6 +287,7 @@
       "combobox": ["Combobox", "ComboboxOption"],
       "command": ["Command"],
       "calendar": ["Calendar"],
+      "date-picker": ["DatePicker"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -400,6 +403,7 @@
       "combobox": ["ComboboxComponent", "SelectOption"],
       "command": ["CommandComponent"],
       "calendar": ["CalendarComponent"],
+      "date-picker": ["DatePickerComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],

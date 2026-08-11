@@ -80,6 +80,7 @@ import {
   ComboboxComponent,
   CommandComponent,
   CalendarComponent,
+  DatePickerComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -464,6 +465,28 @@ class CommandHost {
 class CalendarHost {
   date = '2026-08-12';
   disabledDates = ['2026-08-14'];
+  selected = vi.fn();
+  select(value: string) {
+    this.date = value;
+    this.selected(value);
+  }
+}
+
+@Component({
+  standalone: true,
+  imports: [DatePickerComponent],
+  template: `<form>
+    <simurgh-date-picker
+      [value]="date"
+      month="2026-08"
+      name="appointment"
+      label="Appointment date"
+      (valueChange)="select($event)"
+    />
+  </form>`,
+})
+class DatePickerHost {
+  date = '2026-08-12';
   selected = vi.fn();
   select(value: string) {
     this.date = value;
@@ -1179,6 +1202,45 @@ describe('Angular accessibility contract', () => {
       ),
     ).toBe('2026-08-13');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('selects a date from a popup and restores trigger focus', async () => {
+    const fixture = TestBed.createComponent(DatePickerHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      'simurgh-popover > button',
+    ) as HTMLButtonElement;
+    expect(trigger.textContent?.trim()).toBe('Aug 12, 2026');
+    trigger.click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role=grid]')).toBeTruthy();
+    const popup = fixture.nativeElement.querySelector(
+      '[role=dialog]',
+    ) as HTMLElement;
+    popup.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[role=grid]')).toBeNull();
+    trigger.click();
+    fixture.detectChanges();
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    const thirteenth = fixture.nativeElement.querySelector(
+      '[data-date="2026-08-13"]',
+    ) as HTMLButtonElement;
+    thirteenth.click();
+    fixture.detectChanges();
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    expect(fixture.componentInstance.selected).toHaveBeenCalledWith(
+      '2026-08-13',
+    );
+    expect(document.activeElement).toBe(trigger);
+    expect(fixture.nativeElement.querySelector('[role=grid]')).toBeNull();
+    expect(
+      new FormData(fixture.nativeElement.querySelector('form')).get(
+        'appointment',
+      ),
+    ).toBe('2026-08-13');
     fixture.destroy();
   });
   it('associates a native label with its form control', async () => {

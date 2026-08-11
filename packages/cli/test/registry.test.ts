@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(55);
+    expect(manifest.components).toHaveLength(56);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -40,6 +40,9 @@ describe('registry', () => {
       expect(registryEntry('command', framework).symbols.length).toBe(1);
       expect(
         registryEntry('calendar', framework).symbols.length,
+      ).toBeGreaterThan(0);
+      expect(
+        registryEntry('date-picker', framework).symbols.length,
       ).toBeGreaterThan(0);
       expect(registryEntry('drawer', framework).symbols.length).toBeGreaterThan(
         0,

@@ -82,6 +82,7 @@ import {
   Combobox,
   Command,
   Calendar,
+  DatePicker,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -481,6 +482,43 @@ describe('React accessibility contract', () => {
       new FormData(view.container.querySelector('form')!).get('appointment'),
     ).toBe('2026-08-13');
     expect((await axe.run(view.container)).violations).toEqual([]);
+  });
+  it('selects a date from a popup and restores trigger focus', async () => {
+    const selected = vi.fn();
+    const view = render(
+      <form>
+        <DatePicker
+          defaultValue="2026-08-12"
+          defaultMonth="2026-08"
+          name="appointment"
+          label="Appointment date"
+          onValueChange={selected}
+        />
+      </form>,
+    );
+    const trigger = screen.getByRole('button', { name: 'Aug 12, 2026' });
+    await act(async () => fireEvent.click(trigger));
+    expect(screen.getByRole('grid', { name: 'August 2026' })).toBeTruthy();
+    await act(async () =>
+      fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' }),
+    );
+    expect(screen.queryByRole('grid')).toBeNull();
+    await act(async () => fireEvent.click(trigger));
+    await act(async () => {
+      expect((await axe.run(document.body)).violations).toEqual([]);
+    });
+    await act(async () =>
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Thursday, August 13, 2026' }),
+      ),
+    );
+    await act(() => new Promise((resolve) => requestAnimationFrame(resolve)));
+    expect(selected).toHaveBeenCalledWith('2026-08-13');
+    expect(document.activeElement).toBe(trigger);
+    expect(screen.queryByRole('grid')).toBeNull();
+    expect(
+      new FormData(view.container.querySelector('form')!).get('appointment'),
+    ).toBe('2026-08-13');
   });
   it('associates a native label with its form control', async () => {
     render(

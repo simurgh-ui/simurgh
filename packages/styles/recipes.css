@@ -900,6 +900,37 @@
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
 }
+[data-slot='date-picker'] {
+  display: inline-block;
+}
+[data-slot='date-picker-trigger'] {
+  align-items: center;
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  color: hsl(var(--simurgh-foreground));
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  justify-content: flex-start;
+  min-inline-size: 12rem;
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem;
+}
+[data-slot='date-picker-trigger']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+[data-slot='date-picker-trigger']:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+[data-slot='date-picker-content'] {
+  padding: 0;
+}
+[data-slot='date-picker-content'] [data-slot='calendar'] {
+  border: 0;
+}
 @media (prefers-reduced-motion: reduce) {
   [data-state='open'] {
     animation: none;

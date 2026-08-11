@@ -85,3 +85,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add accessible Command across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Drawer across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Calendar across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Date Picker across Angular, React, Vue, the registry, documentation, and contract tests.
