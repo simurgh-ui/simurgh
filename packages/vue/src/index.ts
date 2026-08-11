@@ -995,72 +995,8 @@ export const ButtonGroupSeparator = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const Link = /* @__PURE__ */ defineComponent({
-  name: 'SimurghLink',
-  inheritAttrs: false,
-  props: {
-    href: String,
-    disabled: Boolean,
-    external: Boolean,
-    rel: String,
-    target: String,
-  },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'a',
-        {
-          ...attrs,
-          href: props.disabled ? undefined : props.href,
-          'aria-disabled': props.disabled || undefined,
-          'data-slot': 'link',
-          'data-external': props.external || undefined,
-          rel: props.external
-            ? (props.rel ?? 'noopener noreferrer')
-            : props.rel,
-          target: props.external ? (props.target ?? '_blank') : props.target,
-          tabindex: props.disabled ? -1 : attrs['tabindex'],
-          onClick: (event: MouseEvent) => {
-            if (props.disabled) {
-              event.preventDefault();
-              return;
-            }
-            const listener = attrs['onClick'];
-            if (typeof listener === 'function') listener(event);
-          },
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const Input = /* @__PURE__ */ defineComponent({
-  name: 'SimurghInput',
-  props: {
-    modelValue: { type: [String, Number], default: '' },
-    type: { type: String, default: 'text' },
-    name: String,
-    required: Boolean,
-    disabled: Boolean,
-    invalid: Boolean,
-  },
-  emits: ['update:modelValue', 'change'],
-  setup(props, { attrs, emit }) {
-    return () =>
-      h('input', {
-        ...attrs,
-        type: props.type,
-        name: props.name,
-        required: props.required,
-        disabled: props.disabled,
-        value: props.modelValue,
-        'aria-invalid': props.invalid || undefined,
-        onInput: (event: Event) =>
-          emit('update:modelValue', (event.target as HTMLInputElement).value),
-        onChange: (event: Event) => emit('change', event),
-      });
-  },
-});
+export { Input } from './components/input.js';
+export { Link } from './components/link.js';
 
 export const InputGroup = /* @__PURE__ */ defineComponent({
   name: 'SimurghInputGroup',
@@ -1158,114 +1094,9 @@ export const InputOtp = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const NativeSelect = /* @__PURE__ */ defineComponent({
-  name: 'SimurghNativeSelect',
-  props: {
-    modelValue: { type: [String, Number], default: '' },
-    name: String,
-    required: Boolean,
-    disabled: Boolean,
-    invalid: Boolean,
-    multiple: Boolean,
-  },
-  emits: ['update:modelValue', 'change'],
-  setup(props, { attrs, slots, emit }) {
-    return () =>
-      h(
-        'select',
-        {
-          ...attrs,
-          name: props.name,
-          required: props.required,
-          disabled: props.disabled,
-          multiple: props.multiple,
-          value: props.modelValue,
-          'aria-invalid': props.invalid || undefined,
-          'data-slot': 'native-select',
-          onChange: (event: Event) => {
-            const select = event.target as HTMLSelectElement;
-            const value = props.multiple
-              ? Array.from(select.selectedOptions, (option) => option.value)
-              : select.value;
-            emit('update:modelValue', value);
-            emit('change', event);
-          },
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const Slider = /* @__PURE__ */ defineComponent({
-  name: 'SimurghSlider',
-  inheritAttrs: false,
-  props: {
-    modelValue: { type: Number, default: undefined },
-    defaultValue: { type: Number, default: 0 },
-    min: { type: Number, default: 0 },
-    max: { type: Number, default: 100 },
-    step: { type: Number, default: 1 },
-    invalid: Boolean,
-  },
-  emits: ['update:modelValue', 'change'],
-  setup(props, { attrs, emit }) {
-    const local = ref(props.defaultValue);
-    const value = computed(() => props.modelValue ?? local.value);
-    return () =>
-      h('input', {
-        ...attrs,
-        type: 'range',
-        value: value.value,
-        min: props.min,
-        max: props.max,
-        step: props.step,
-        'aria-invalid': props.invalid || undefined,
-        'data-slot': 'slider',
-        onInput: (event: Event) => {
-          const next = (event.target as HTMLInputElement).valueAsNumber;
-          if (props.modelValue === undefined) local.value = next;
-          emit('update:modelValue', next);
-        },
-        onChange: (event: Event) =>
-          emit('change', (event.target as HTMLInputElement).valueAsNumber),
-      });
-  },
-});
-
-export const Meter = /* @__PURE__ */ defineComponent({
-  name: 'SimurghMeter',
-  props: {
-    value: { type: Number, default: 0 },
-    min: { type: Number, default: 0 },
-    max: { type: Number, default: 100 },
-    low: Number,
-    high: Number,
-    optimum: Number,
-    label: String,
-  },
-  setup(props, { attrs, slots }) {
-    const safeValue = computed(() =>
-      Math.min(props.max, Math.max(props.min, props.value)),
-    );
-    return () =>
-      h(
-        'meter',
-        {
-          ...attrs,
-          value: safeValue.value,
-          min: props.min,
-          max: props.max,
-          low: props.low,
-          high: props.high,
-          optimum: props.optimum,
-          role: 'meter',
-          'aria-label': props.label,
-          'data-slot': 'meter',
-        },
-        slots.default?.() ?? `${safeValue.value}`,
-      );
-  },
-});
+export { Meter } from './components/meter.js';
+export { NativeSelect } from './components/native-select.js';
+export { Slider } from './components/slider.js';
 
 export const Toolbar = /* @__PURE__ */ defineComponent({
   name: 'SimurghToolbar',
@@ -1328,60 +1159,8 @@ export const ToolbarButton = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const ScrollArea = /* @__PURE__ */ defineComponent({
-  name: 'SimurghScrollArea',
-  props: {
-    orientation: {
-      type: String as PropType<'vertical' | 'horizontal' | 'both'>,
-      default: 'vertical',
-    },
-    label: String,
-  },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: props.label ? 'region' : undefined,
-          'aria-label': props.label,
-          tabindex: attrs['tabindex'] ?? 0,
-          'data-orientation': props.orientation,
-          'data-slot': 'scroll-area',
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const Textarea = /* @__PURE__ */ defineComponent({
-  name: 'SimurghTextarea',
-  props: {
-    modelValue: { type: String, default: '' },
-    name: String,
-    required: Boolean,
-    disabled: Boolean,
-    invalid: Boolean,
-  },
-  emits: ['update:modelValue', 'change'],
-  setup(props, { attrs, emit }) {
-    return () =>
-      h('textarea', {
-        ...attrs,
-        name: props.name,
-        required: props.required,
-        disabled: props.disabled,
-        value: props.modelValue,
-        'aria-invalid': props.invalid || undefined,
-        onInput: (event: Event) =>
-          emit(
-            'update:modelValue',
-            (event.target as HTMLTextAreaElement).value,
-          ),
-        onChange: (event: Event) => emit('change', event),
-      });
-  },
-});
+export { ScrollArea } from './components/scroll-area.js';
+export { Textarea } from './components/textarea.js';
 
 export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
 export const Badge = /* @__PURE__ */ defineComponent({
@@ -1405,14 +1184,7 @@ export const Badge = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const Breadcrumb = /* @__PURE__ */ defineComponent({
-  name: 'SimurghBreadcrumb',
-  props: { label: { type: String, default: 'Breadcrumb' } },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h('nav', { ...attrs, 'aria-label': props.label }, slots.default?.());
-  },
-});
+export { Breadcrumb } from './components/breadcrumb.js';
 
 export const NavigationMenu = /* @__PURE__ */ defineComponent({
   name: 'SimurghNavigationMenu',

@@ -21,11 +21,14 @@ const external = [
 const extension = framework === 'react' ? 'tsx' : 'ts';
 const entryPoints = Object.fromEntries(
   registry.components.map((component) => [
-    component,
+    `components/${component}`,
     resolve(packageRoot, `src/components/${component}.${extension}`),
   ]),
 );
-const outputDirectory = resolve(packageRoot, 'dist/components');
+if (framework === 'vue') {
+  entryPoints.index = resolve(packageRoot, 'src/index.ts');
+}
+const outputDirectory = resolve(packageRoot, 'dist');
 await mkdir(outputDirectory, { recursive: true });
 await build({
   entryPoints,

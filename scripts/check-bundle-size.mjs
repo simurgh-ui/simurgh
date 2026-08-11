@@ -61,6 +61,30 @@ const cases = [
     budget: 560,
   },
   {
+    name: 'vue-input',
+    framework: 'vue',
+    subpath: 'input',
+    budget: 415,
+  },
+  {
+    name: 'vue-native-select',
+    framework: 'vue',
+    subpath: 'native-select',
+    budget: 490,
+  },
+  {
+    name: 'vue-slider',
+    framework: 'vue',
+    subpath: 'slider',
+    budget: 520,
+  },
+  {
+    name: 'vue-link',
+    framework: 'vue',
+    subpath: 'link',
+    budget: 480,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
@@ -293,7 +317,7 @@ for (const bundleCase of cases) {
   }
 }
 
-const packageBudgets = { react: 300 * KiB, vue: 450 * KiB, angular: 275 * KiB };
+const packageBudgets = { react: 300 * KiB, vue: 375 * KiB, angular: 275 * KiB };
 const publishedPackages = {};
 for (const framework of ['react', 'vue', 'angular']) {
   const isWindows = process.platform === 'win32';
