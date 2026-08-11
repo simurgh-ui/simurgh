@@ -1,11 +1,4 @@
 import {
-  autoUpdate,
-  computePosition,
-  flip,
-  offset,
-  shift,
-} from './floating.js';
-import {
   addCalendarMonths,
   calendarMonthDays,
   calendarToday,
@@ -15,21 +8,29 @@ import {
   type Orientation,
 } from '@simurgh-ui/core';
 import {
-  Teleport,
   computed,
   defineComponent,
   h,
   inject,
-  onBeforeUnmount,
   onMounted,
   provide,
   ref,
-  watch,
   type InjectionKey,
   type PropType,
   type Ref,
 } from 'vue';
 import { compositeKeydown } from './internal/composite-keydown.js';
+import {
+  FloatingContent,
+  FloatingTrigger,
+  floatingKey,
+  floatingRoot,
+} from './internal/floating-parts.js';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from './components/popover.js';
 
 export {
   Dialog,
@@ -40,18 +41,6 @@ export {
   DialogTrigger,
 } from './components/dialog.js';
 
-type OpenContext = {
-  open: Ref<boolean>;
-  setOpen(value: boolean): void;
-  id: string;
-};
-const floatingKey: InjectionKey<
-  OpenContext & {
-    trigger: Ref<HTMLElement | null>;
-    content: Ref<HTMLElement | null>;
-    kind: 'popover' | 'tooltip' | 'hovercard' | 'menu';
-  }
-> = Symbol('floating');
 export {
   Sheet,
   SheetClose,
@@ -79,185 +68,22 @@ export {
   AlertDialogTrigger,
 } from './components/alert-dialog.js';
 
-function floatingRoot(
-  name: string,
-  kind: 'popover' | 'tooltip' | 'hovercard' | 'menu',
-) {
-  return defineComponent({
-    name,
-    props: {
-      open: { type: Boolean, default: undefined },
-      defaultOpen: Boolean,
-    },
-    emits: ['update:open'],
-    setup(props, { slots, emit }) {
-      const local = ref(props.defaultOpen);
-      const current = computed({
-        get: () => props.open ?? local.value,
-        set: (v) => {
-          local.value = v;
-          emit('update:open', v);
-        },
-      });
-      const trigger = ref<HTMLElement | null>(null),
-        content = ref<HTMLElement | null>(null);
-      let cleanup: (() => void) | undefined;
-      watch([current, trigger, content], ([open, reference, floating]) => {
-        cleanup?.();
-        if (open && reference && floating)
-          cleanup = autoUpdate(reference, floating, async () => {
-            const p = await computePosition(reference, floating, {
-              middleware: [offset(8), flip(), shift({ padding: 8 })],
-            });
-            Object.assign(floating.style, {
-              left: `${p.x}px`,
-              top: `${p.y}px`,
-            });
-          });
-      });
-      onBeforeUnmount(() => cleanup?.());
-      provide(floatingKey, {
-        open: current,
-        setOpen: (v) => (current.value = v),
-        id: createId('floating'),
-        trigger,
-        content,
-        kind,
-      });
-      return () => slots.default?.();
-    },
-  });
-}
-export const Popover = /* @__PURE__ */ floatingRoot(
-  'SimurghPopover',
-  'popover',
-);
-export const Tooltip = /* @__PURE__ */ floatingRoot(
-  'SimurghTooltip',
-  'tooltip',
-);
-export const HoverCard = /* @__PURE__ */ floatingRoot(
-  'SimurghHoverCard',
-  'hovercard',
-);
+export { Popover, PopoverContent, PopoverTrigger };
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from './components/tooltip.js';
+export {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from './components/hover-card.js';
 export const DropdownMenu = /* @__PURE__ */ floatingRoot(
   'SimurghDropdownMenu',
   'menu',
 );
-export const FloatingTrigger = /* @__PURE__ */ defineComponent({
-  name: 'SimurghFloatingTrigger',
-  setup(_, { slots, attrs }) {
-    const c = inject(floatingKey)!;
-    return () =>
-      h(
-        'button',
-        {
-          ...attrs,
-          ref: c.trigger,
-          type: 'button',
-          'aria-expanded': c.kind === 'tooltip' ? undefined : c.open.value,
-          'aria-haspopup':
-            c.kind === 'tooltip'
-              ? undefined
-              : c.kind === 'menu'
-                ? 'menu'
-                : 'dialog',
-          'aria-describedby': c.kind === 'tooltip' ? c.id : undefined,
-          onClick:
-            c.kind === 'tooltip' || c.kind === 'hovercard'
-              ? undefined
-              : () => c.setOpen(!c.open.value),
-          onMouseenter:
-            c.kind === 'tooltip' || c.kind === 'hovercard'
-              ? () => c.setOpen(true)
-              : undefined,
-          onMouseleave:
-            c.kind === 'tooltip' || c.kind === 'hovercard'
-              ? () => c.setOpen(false)
-              : undefined,
-          onFocus:
-            c.kind === 'tooltip' || c.kind === 'hovercard'
-              ? () => c.setOpen(true)
-              : undefined,
-          onBlur:
-            c.kind === 'tooltip' || c.kind === 'hovercard'
-              ? () => c.setOpen(false)
-              : undefined,
-        },
-        slots.default?.(),
-      );
-  },
-});
-export const FloatingContent = /* @__PURE__ */ defineComponent({
-  name: 'SimurghFloatingContent',
-  setup(_, { slots, attrs }) {
-    const c = inject(floatingKey)!;
-    return () =>
-      c.open.value
-        ? h(
-            Teleport,
-            { to: 'body' },
-            h(
-              'div',
-              {
-                ...attrs,
-                id: attrs.id ?? (c.kind === 'tooltip' ? c.id : undefined),
-                role:
-                  attrs.role ??
-                  (c.kind === 'tooltip'
-                    ? 'tooltip'
-                    : c.kind === 'menu'
-                      ? 'menu'
-                      : 'dialog'),
-                ref: c.content,
-                class: ['simurgh-content', attrs.class],
-                style: [{ position: 'absolute' }, attrs.style],
-                onKeydown: (event: KeyboardEvent) => {
-                  if (typeof attrs.onKeydown === 'function')
-                    attrs.onKeydown(event);
-                  if (!event.defaultPrevented && event.key === 'Escape')
-                    c.setOpen(false);
-                },
-              },
-              slots.default?.(),
-            ),
-          )
-        : null;
-  },
-});
-export const PopoverTrigger = FloatingTrigger,
-  TooltipTrigger = FloatingTrigger,
-  DropdownMenuTrigger = FloatingTrigger;
-export const PopoverContent = FloatingContent,
-  TooltipContent = FloatingContent;
-export const HoverCardTrigger = /* @__PURE__ */ defineComponent({
-  name: 'SimurghHoverCardTrigger',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        FloatingTrigger,
-        { ...attrs, 'data-slot': 'hover-card-trigger' },
-        slots,
-      );
-  },
-});
-export const HoverCardContent = /* @__PURE__ */ defineComponent({
-  name: 'SimurghHoverCardContent',
-  props: { label: { type: String, default: 'Additional information' } },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        FloatingContent,
-        {
-          ...attrs,
-          role: 'dialog',
-          'aria-label': props.label,
-          'data-slot': 'hover-card-content',
-        },
-        slots,
-      );
-  },
-});
+export const DropdownMenuTrigger = FloatingTrigger;
 export const DropdownMenuContent = /* @__PURE__ */ defineComponent({
   name: 'SimurghDropdownMenuContent',
   setup(_, { slots, attrs }) {

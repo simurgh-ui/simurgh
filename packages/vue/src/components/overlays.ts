@@ -42,13 +42,7 @@ export {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
 } from '../index.js';
+export { HoverCard, HoverCardContent, HoverCardTrigger } from './hover-card.js';
+export { Popover, PopoverContent, PopoverTrigger } from './popover.js';
+export { Tooltip, TooltipContent, TooltipTrigger } from './tooltip.js';

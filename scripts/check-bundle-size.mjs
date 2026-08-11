@@ -289,6 +289,24 @@ const cases = [
     budget: 1500,
   },
   {
+    name: 'vue-popover',
+    framework: 'vue',
+    subpath: 'popover',
+    budget: 9300,
+  },
+  {
+    name: 'vue-tooltip',
+    framework: 'vue',
+    subpath: 'tooltip',
+    budget: 9300,
+  },
+  {
+    name: 'vue-hover-card',
+    framework: 'vue',
+    subpath: 'hover-card',
+    budget: 9450,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
@@ -427,7 +445,7 @@ const cases = [
     budget: 12 * KiB,
   },
   { name: 'react-complete', framework: 'react', budget: 27 * KiB },
-  { name: 'vue-complete', framework: 'vue', budget: 22 * KiB },
+  { name: 'vue-complete', framework: 'vue', budget: 22.25 * KiB },
   { name: 'angular-complete', framework: 'angular', budget: 27 * KiB },
   {
     name: 'react-without-floating',

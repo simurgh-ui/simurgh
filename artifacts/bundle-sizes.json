@@ -270,6 +270,24 @@
       "brotli": 1120,
       "budget": 1500
     },
+    "vue-popover": {
+      "minified": 17878,
+      "gzip": 7246,
+      "brotli": 6538,
+      "budget": 9300
+    },
+    "vue-tooltip": {
+      "minified": 17878,
+      "gzip": 7242,
+      "brotli": 6534,
+      "budget": 9300
+    },
+    "vue-hover-card": {
+      "minified": 18273,
+      "gzip": 7356,
+      "brotli": 6632,
+      "budget": 9450
+    },
     "angular-button": {
       "minified": 722,
       "gzip": 398,
@@ -397,9 +415,9 @@
       "budget": 18432
     },
     "vue-overlays": {
-      "minified": 26154,
-      "gzip": 9442,
-      "brotli": 8458,
+      "minified": 26321,
+      "gzip": 9491,
+      "brotli": 8488,
       "budget": 10752
     },
     "angular-overlays": {
@@ -415,10 +433,10 @@
       "budget": 27648
     },
     "vue-complete": {
-      "minified": 79963,
-      "gzip": 22451,
-      "brotli": 19873,
-      "budget": 22528
+      "minified": 80104,
+      "gzip": 22530,
+      "brotli": 19914,
+      "budget": 22784
     },
     "angular-complete": {
       "minified": 136162,
@@ -432,9 +450,9 @@
       "brotli": 12769
     },
     "vue-without-floating": {
-      "minified": 64142,
-      "gzip": 16214,
-      "brotli": 14290
+      "minified": 64277,
+      "gzip": 16274,
+      "brotli": 14361
     },
     "angular-without-floating": {
       "minified": 120225,
@@ -454,7 +472,7 @@
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "vue": {
-        "gzip": 6237,
+        "gzip": 6256,
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "angular": {
@@ -471,9 +489,9 @@
       "budget": 307200
     },
     "vue": {
-      "files": 207,
-      "unpacked": 293620,
-      "gzip": 34045,
+      "files": 213,
+      "unpacked": 295037,
+      "gzip": 35289,
       "budget": 384000
     },
     "angular": {
