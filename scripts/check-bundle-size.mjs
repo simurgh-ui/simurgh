@@ -235,6 +235,12 @@ const cases = [
     budget: 1560,
   },
   {
+    name: 'vue-file-upload',
+    framework: 'vue',
+    subpath: 'file-upload',
+    budget: 990,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
