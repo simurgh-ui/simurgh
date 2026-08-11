@@ -88,6 +88,9 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -560,6 +563,30 @@ describe('React accessibility contract', () => {
     fireEvent.keyDown(region, { key: 'ArrowLeft' });
     expect(changed).toHaveBeenLastCalledWith(0);
     expect((await axe.run(region)).violations).toEqual([]);
+  });
+  it('resizes adjacent panels with a constrained keyboard separator', async () => {
+    render(
+      <ResizablePanelGroup aria-label="Workspace panels">
+        <ResizablePanel defaultSize={35} minSize={20} maxSize={80}>
+          Navigation
+        </ResizablePanel>
+        <ResizableHandle aria-label="Resize panels" />
+        <ResizablePanel defaultSize={65} minSize={30}>
+          Content
+        </ResizablePanel>
+      </ResizablePanelGroup>,
+    );
+    const handle = screen.getByRole('separator', { name: 'Resize panels' });
+    expect(handle.getAttribute('aria-valuenow')).toBe('35');
+    expect(handle.getAttribute('aria-valuemax')).toBe('70');
+    fireEvent.keyDown(handle, { key: 'ArrowRight' });
+    expect(handle.getAttribute('aria-valuenow')).toBe('40');
+    fireEvent.keyDown(handle, { key: 'End' });
+    expect(handle.getAttribute('aria-valuenow')).toBe('70');
+    expect((screen.getByText('Content') as HTMLElement).style.flexBasis).toBe(
+      '30%',
+    );
+    expect((await axe.run(handle.parentElement!)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
     render(

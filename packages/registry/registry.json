@@ -19,6 +19,7 @@
     "calendar",
     "date-picker",
     "carousel",
+    "resizable",
     "tabs",
     "accordion",
     "checkbox",
@@ -144,6 +145,7 @@
         "CarouselPrevious",
         "CarouselNext"
       ],
+      "resizable": ["ResizablePanelGroup", "ResizablePanel", "ResizableHandle"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -303,6 +305,7 @@
         "CarouselPrevious",
         "CarouselNext"
       ],
+      "resizable": ["ResizablePanelGroup", "ResizablePanel", "ResizableHandle"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -425,6 +428,11 @@
         "CarouselItemComponent",
         "CarouselPreviousComponent",
         "CarouselNextComponent"
+      ],
+      "resizable": [
+        "ResizablePanelGroupComponent",
+        "ResizablePanelComponent",
+        "ResizableHandleComponent"
       ],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],

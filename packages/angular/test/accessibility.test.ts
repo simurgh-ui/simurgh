@@ -86,6 +86,9 @@ import {
   CarouselItemComponent,
   CarouselPreviousComponent,
   CarouselNextComponent,
+  ResizablePanelGroupComponent,
+  ResizablePanelComponent,
+  ResizableHandleComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -523,6 +526,25 @@ class DatePickerHost {
 class CarouselHost {
   changed = vi.fn();
 }
+
+@Component({
+  standalone: true,
+  imports: [
+    ResizablePanelGroupComponent,
+    ResizablePanelComponent,
+    ResizableHandleComponent,
+  ],
+  template: `<simurgh-resizable-panel-group aria-label="Workspace panels">
+    <simurgh-resizable-panel [defaultSize]="35" [minSize]="20" [maxSize]="80"
+      >Navigation</simurgh-resizable-panel
+    >
+    <simurgh-resizable-handle aria-label="Resize panels" />
+    <simurgh-resizable-panel [defaultSize]="65" [minSize]="30"
+      >Content</simurgh-resizable-panel
+    >
+  </simurgh-resizable-panel-group>`,
+})
+class ResizableHost {}
 
 @Component({
   standalone: true,
@@ -1300,6 +1322,31 @@ describe('Angular accessibility contract', () => {
     );
     fixture.detectChanges();
     expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith(0);
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('resizes adjacent panels with a constrained keyboard separator', async () => {
+    const fixture = TestBed.createComponent(ResizableHost);
+    fixture.detectChanges();
+    const handle = fixture.nativeElement.querySelector(
+      '[role=separator]',
+    ) as HTMLElement;
+    expect(handle.getAttribute('aria-valuenow')).toBe('35');
+    expect(handle.getAttribute('aria-valuemax')).toBe('70');
+    handle.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(handle.getAttribute('aria-valuenow')).toBe('40');
+    handle.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'End', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(handle.getAttribute('aria-valuenow')).toBe('70');
+    const panels = fixture.nativeElement.querySelectorAll(
+      'simurgh-resizable-panel',
+    ) as NodeListOf<HTMLElement>;
+    expect(panels[1]?.style.flexBasis).toBe('30%');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });

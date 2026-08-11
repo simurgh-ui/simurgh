@@ -2,6 +2,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { nextTick } from 'vue';
 import {
   Checkbox,
   Avatar,
@@ -80,6 +81,9 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
   Dialog,
   DialogContent,
   DialogTrigger,
@@ -662,6 +666,24 @@ describe('Vue accessibility contract', () => {
     await fireEvent.keyDown(region, { key: 'ArrowLeft' });
     expect(changed).toHaveBeenLastCalledWith(0);
     expect((await axe.run(region)).violations).toEqual([]);
+  });
+  it('resizes adjacent panels with a constrained keyboard separator', async () => {
+    render({
+      components: { ResizablePanelGroup, ResizablePanel, ResizableHandle },
+      template: `<ResizablePanelGroup aria-label="Workspace panels"><ResizablePanel :default-size="35" :min-size="20" :max-size="80">Navigation</ResizablePanel><ResizableHandle aria-label="Resize panels" /><ResizablePanel :default-size="65" :min-size="30">Content</ResizablePanel></ResizablePanelGroup>`,
+    });
+    await nextTick();
+    const handle = screen.getByRole('separator', { name: 'Resize panels' });
+    expect(handle.getAttribute('aria-valuenow')).toBe('35');
+    expect(handle.getAttribute('aria-valuemax')).toBe('70');
+    await fireEvent.keyDown(handle, { key: 'ArrowRight' });
+    expect(handle.getAttribute('aria-valuenow')).toBe('40');
+    await fireEvent.keyDown(handle, { key: 'End' });
+    expect(handle.getAttribute('aria-valuenow')).toBe('70');
+    expect((screen.getByText('Content') as HTMLElement).style.flexBasis).toBe(
+      '30%',
+    );
+    expect((await axe.run(handle.parentElement!)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
     render({

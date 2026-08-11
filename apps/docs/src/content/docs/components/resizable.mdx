@@ -1,0 +1,66 @@
+---
+title: Resizable
+description: Constrained split panels with pointer and direction-aware keyboard resizing.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Resizable groups coordinate adjacent panel percentages. Handles expose separator value semantics and support pointer dragging, Arrow keys in five-percent steps, and Home/End constraints.
+
+<ComponentPreview title="Resizable">
+  <div
+    data-slot="resizable-panel-group"
+    data-orientation="horizontal"
+    style="max-width: 36rem"
+  >
+    <section data-slot="resizable-panel" style="flex-basis: 35%">
+      Navigation
+    </section>
+    <button
+      type="button"
+      data-slot="resizable-handle"
+      role="separator"
+      aria-orientation="vertical"
+      aria-valuemin="20"
+      aria-valuemax="80"
+      aria-valuenow="35"
+      aria-label="Resize panels"
+    ></button>
+    <section data-slot="resizable-panel" style="flex-basis: 65%">
+      Content
+    </section>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<ResizablePanelGroup aria-label="Workspace panels">
+  <ResizablePanel defaultSize={35} minSize={20}>Navigation</ResizablePanel>
+  <ResizableHandle aria-label="Resize panels" />
+  <ResizablePanel defaultSize={65} minSize={30}>Content</ResizablePanel>
+</ResizablePanelGroup>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<ResizablePanelGroup aria-label="Workspace panels">
+  <ResizablePanel :default-size="35" :min-size="20">Navigation</ResizablePanel>
+  <ResizableHandle aria-label="Resize panels" />
+  <ResizablePanel :default-size="65" :min-size="30">Content</ResizablePanel>
+</ResizablePanelGroup>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-resizable-panel-group aria-label="Workspace panels">
+  <simurgh-resizable-panel [defaultSize]="35" [minSize]="20">Navigation</simurgh-resizable-panel>
+  <simurgh-resizable-handle aria-label="Resize panels" />
+  <simurgh-resizable-panel [defaultSize]="65" [minSize]="30">Content</simurgh-resizable-panel>
+</simurgh-resizable-panel-group>
+```
+</TabItem>
+</Tabs>
+
+Every handle needs an accessible label describing the panels it changes. Horizontal movement follows logical direction in RTL. Use `orientation="vertical"` for stacked panels and set meaningful minimums so important content cannot collapse.
