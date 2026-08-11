@@ -45,6 +45,7 @@
     "menubar",
     "card",
     "empty",
+    "item",
     "kbd",
     "field",
     "form",
@@ -179,6 +180,15 @@
         "EmptyDescription",
         "EmptyContent"
       ],
+      "item": [
+        "ItemGroup",
+        "Item",
+        "ItemMedia",
+        "ItemContent",
+        "ItemTitle",
+        "ItemDescription",
+        "ItemActions"
+      ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
       "form": ["Form", "FormErrorSummary"],
@@ -311,6 +321,15 @@
         "EmptyDescription",
         "EmptyContent"
       ],
+      "item": [
+        "ItemGroup",
+        "Item",
+        "ItemMedia",
+        "ItemContent",
+        "ItemTitle",
+        "ItemDescription",
+        "ItemActions"
+      ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
       "form": ["Form", "FormErrorSummary"],
@@ -412,6 +431,15 @@
         "EmptyTitleComponent",
         "EmptyDescriptionComponent",
         "EmptyContentComponent"
+      ],
+      "item": [
+        "ItemGroupComponent",
+        "ItemComponent",
+        "ItemMediaComponent",
+        "ItemContentComponent",
+        "ItemTitleComponent",
+        "ItemDescriptionComponent",
+        "ItemActionsComponent"
       ],
       "kbd": ["KbdComponent"],
       "field": [

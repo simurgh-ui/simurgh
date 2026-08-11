@@ -1838,6 +1838,55 @@ export const EmptyContent = forwardRef<
   return <div ref={ref} data-slot="empty-content" {...props} />;
 });
 
+export const ItemGroup = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemGroup({ role = 'list', ...props }, ref) {
+  return <div ref={ref} role={role} data-slot="item-group" {...props} />;
+});
+export const Item = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  function Item({ role = 'listitem', ...props }, ref) {
+    return <div ref={ref} role={role} data-slot="item" {...props} />;
+  },
+);
+export const ItemMedia = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
+>(function ItemMedia({ decorative = true, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden={decorative || undefined}
+      data-slot="item-media"
+      {...props}
+    />
+  );
+});
+export const ItemContent = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemContent(props, ref) {
+  return <div ref={ref} data-slot="item-content" {...props} />;
+});
+export const ItemTitle = forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(function ItemTitle(props, ref) {
+  return <h3 ref={ref} data-slot="item-title" {...props} />;
+});
+export const ItemDescription = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function ItemDescription(props, ref) {
+  return <p ref={ref} data-slot="item-description" {...props} />;
+});
+export const ItemActions = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemActions(props, ref) {
+  return <div ref={ref} data-slot="item-actions" {...props} />;
+});
+
 export const Kbd = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
   function Kbd(props, ref) {
     return <kbd ref={ref} data-slot="kbd" {...props} />;

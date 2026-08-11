@@ -1951,6 +1951,60 @@ export const EmptyContent = cardPart(
   'div',
   'empty-content',
 );
+export const ItemGroup = defineComponent({
+  name: 'SimurghItemGroup',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        { ...attrs, role: attrs['role'] ?? 'list', 'data-slot': 'item-group' },
+        slots.default?.(),
+      );
+  },
+});
+export const Item = defineComponent({
+  name: 'SimurghItem',
+  setup(_, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        { ...attrs, role: attrs['role'] ?? 'listitem', 'data-slot': 'item' },
+        slots.default?.(),
+      );
+  },
+});
+export const ItemMedia = defineComponent({
+  name: 'SimurghItemMedia',
+  props: { decorative: { type: Boolean, default: true } },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(
+        'div',
+        {
+          ...attrs,
+          'aria-hidden': props.decorative || undefined,
+          'data-slot': 'item-media',
+        },
+        slots.default?.(),
+      );
+  },
+});
+export const ItemContent = cardPart(
+  'SimurghItemContent',
+  'div',
+  'item-content',
+);
+export const ItemTitle = cardPart('SimurghItemTitle', 'h3', 'item-title');
+export const ItemDescription = cardPart(
+  'SimurghItemDescription',
+  'p',
+  'item-description',
+);
+export const ItemActions = cardPart(
+  'SimurghItemActions',
+  'div',
+  'item-actions',
+);
 export const Kbd = cardPart('SimurghKbd', 'kbd', 'kbd');
 export const Field = cardPart('SimurghField', 'fieldset', 'field');
 export const FieldLegend = cardPart(

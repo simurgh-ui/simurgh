@@ -1,0 +1,81 @@
+---
+title: Item
+description: Semantic list rows with media, content, description, and actions.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Item structures repeated rows such as files, settings, notifications, and search results. Item Group and Item provide native list/listitem roles while the remaining parts keep media, text, and actions consistently aligned.
+
+<ComponentPreview title="Item">
+  <div role="list" data-slot="item-group">
+    <div role="listitem" data-slot="item">
+      <div data-slot="item-media" aria-hidden="true">
+        D
+      </div>
+      <div data-slot="item-content">
+        <h3 data-slot="item-title">Design system</h3>
+        <p data-slot="item-description">Updated two minutes ago</p>
+      </div>
+      <div data-slot="item-actions">
+        <button type="button">Open</button>
+      </div>
+    </div>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <ItemGroup aria-label="Projects">
+      <Item>
+        <ItemMedia>D</ItemMedia>
+        <ItemContent>
+          <ItemTitle>Design system</ItemTitle>
+          <ItemDescription>Updated two minutes ago</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <Button>Open</Button>
+        </ItemActions>
+      </Item>
+    </ItemGroup>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <ItemGroup aria-label="Projects">
+      <Item>
+        <ItemMedia>D</ItemMedia>
+        <ItemContent>
+          <ItemTitle>Design system</ItemTitle>
+          <ItemDescription>Updated two minutes ago</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <Button>Open</Button>
+        </ItemActions>
+      </Item>
+    </ItemGroup>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-item-group aria-label="Projects">
+      <simurgh-item>
+        <simurgh-item-media>D</simurgh-item-media>
+        <simurgh-item-content>
+          <simurgh-item-title>Design system</simurgh-item-title>
+          <simurgh-item-description>
+            Updated two minutes ago
+          </simurgh-item-description>
+        </simurgh-item-content>
+        <simurgh-item-actions>
+          <simurgh-button>Open</simurgh-button>
+        </simurgh-item-actions>
+      </simurgh-item>
+    </simurgh-item-group>
+    ```
+  </TabItem>
+</Tabs>
+
+Give the group an accessible name when multiple lists occur on the same page. Media is decorative by default; set `decorative` to false when its accessible content adds information not repeated by the title or description.

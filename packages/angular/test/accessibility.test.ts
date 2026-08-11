@@ -52,6 +52,13 @@ import {
   EmptyHeaderComponent,
   EmptyMediaComponent,
   EmptyTitleComponent,
+  ItemActionsComponent,
+  ItemComponent,
+  ItemContentComponent,
+  ItemDescriptionComponent,
+  ItemGroupComponent,
+  ItemMediaComponent,
+  ItemTitleComponent,
   KbdComponent,
   FieldComponent,
   FieldErrorComponent,
@@ -228,6 +235,33 @@ class CardHost {}
 class EmptyHost {
   status = false;
 }
+
+@Component({
+  standalone: true,
+  imports: [
+    ButtonComponent,
+    ItemActionsComponent,
+    ItemComponent,
+    ItemContentComponent,
+    ItemDescriptionComponent,
+    ItemGroupComponent,
+    ItemMediaComponent,
+    ItemTitleComponent,
+  ],
+  template: `<simurgh-item-group aria-label="Projects">
+    <simurgh-item>
+      <simurgh-item-media>D</simurgh-item-media>
+      <simurgh-item-content>
+        <simurgh-item-title>Design system</simurgh-item-title>
+        <simurgh-item-description>Updated recently</simurgh-item-description>
+      </simurgh-item-content>
+      <simurgh-item-actions
+        ><simurgh-button>Open</simurgh-button></simurgh-item-actions
+      >
+    </simurgh-item>
+  </simurgh-item-group>`,
+})
+class ItemHost {}
 
 @Component({
   standalone: true,
@@ -1369,6 +1403,26 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     expect(empty.getAttribute('role')).toBe('status');
     expect(empty.getAttribute('aria-live')).toBe('polite');
+    fixture.destroy();
+  });
+  it('composes named lists with structured item content and actions', () => {
+    const fixture = TestBed.createComponent(ItemHost);
+    fixture.detectChanges();
+    const list = fixture.nativeElement.querySelector(
+      'simurgh-item-group',
+    ) as HTMLElement;
+    const item = fixture.nativeElement.querySelector(
+      'simurgh-item',
+    ) as HTMLElement;
+    const media = fixture.nativeElement.querySelector(
+      'simurgh-item-media',
+    ) as HTMLElement;
+    expect(list.getAttribute('role')).toBe('list');
+    expect(list.getAttribute('aria-label')).toBe('Projects');
+    expect(item.getAttribute('role')).toBe('listitem');
+    expect(item.querySelector('h3')?.textContent).toBe('Design system');
+    expect(media.getAttribute('aria-hidden')).toBe('true');
+    expect(item.querySelector('button')?.textContent?.trim()).toBe('Open');
     fixture.destroy();
   });
   it('renders keyboard input with native semantics', () => {

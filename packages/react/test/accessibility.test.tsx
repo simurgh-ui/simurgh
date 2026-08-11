@@ -51,6 +51,13 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
   Kbd,
   Field,
   FieldDescription,
@@ -773,6 +780,29 @@ describe('React accessibility contract', () => {
       </Empty>,
     );
     expect(screen.getByRole('status').getAttribute('aria-live')).toBe('polite');
+  });
+  it('composes named lists with structured item content and actions', () => {
+    render(
+      <ItemGroup aria-label="Projects">
+        <Item>
+          <ItemMedia>D</ItemMedia>
+          <ItemContent>
+            <ItemTitle>Design system</ItemTitle>
+            <ItemDescription>Updated recently</ItemDescription>
+          </ItemContent>
+          <ItemActions>
+            <Button>Open</Button>
+          </ItemActions>
+        </Item>
+      </ItemGroup>,
+    );
+    expect(screen.getByRole('list', { name: 'Projects' })).toBeTruthy();
+    expect(screen.getAllByRole('listitem')).toHaveLength(1);
+    expect(
+      screen.getByRole('heading', { name: 'Design system', level: 3 }),
+    ).toBeTruthy();
+    expect(screen.getByText('D').getAttribute('aria-hidden')).toBe('true');
+    expect(screen.getByRole('button', { name: 'Open' })).toBeTruthy();
   });
   it('renders keyboard input with native semantics', () => {
     render(<Kbd>Ctrl K</Kbd>);
