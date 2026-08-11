@@ -2234,6 +2234,18 @@ export function Select({
   );
 }
 
+export type ComboboxProps = {
+  options: Array<Omit<SelectOption, 'label'> & { label: string }>;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  required?: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+  noResults?: ReactNode;
+  onValueChange?: (value: string) => void;
+};
+
 export function Combobox({
   options,
   name,
@@ -2244,17 +2256,7 @@ export function Combobox({
   placeholder = 'Search…',
   noResults = 'No results',
   onValueChange,
-}: {
-  options: Array<Omit<SelectOption, 'label'> & { label: string }>;
-  name?: string;
-  value?: string;
-  defaultValue?: string;
-  required?: boolean;
-  disabled?: boolean;
-  placeholder?: string;
-  noResults?: ReactNode;
-  onValueChange?: (value: string) => void;
-}) {
+}: ComboboxProps) {
   const [local, setLocal] = useState(defaultValue);
   const selected = value ?? local;
   const selectedOption = options.find((option) => option.value === selected);
@@ -2360,6 +2362,14 @@ export function Combobox({
           style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}
         />
       )}
+    </div>
+  );
+}
+
+export function Command(props: ComboboxProps) {
+  return (
+    <div data-slot="command">
+      <Combobox {...props} />
     </div>
   );
 }

@@ -1,0 +1,64 @@
+---
+title: Command
+description: Searchable action selection with keyboard navigation and disabled-item handling.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Command packages the library's combobox interaction contract as a persistent command surface. Users can filter actions, move through enabled results with arrow, Home, and End keys, select with Enter, and dismiss a surrounding palette with Escape.
+
+<ComponentPreview title="Command">
+  <div data-slot="command">
+    <div>
+      <input
+        role="combobox"
+        aria-label="Search commands"
+        aria-expanded="true"
+        aria-controls="command-preview-list"
+        placeholder="Search commands"
+      />
+      <div id="command-preview-list" role="listbox" class="simurgh-content">
+        <div role="option" aria-selected="false" class="simurgh-item">
+          Open settings
+        </div>
+        <div role="option" aria-selected="false" class="simurgh-item">
+          Create project
+        </div>
+      </div>
+    </div>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Command
+  options={commands}
+  placeholder="Search commands"
+  onValueChange={runCommand}
+/>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Command
+  :options="commands"
+  placeholder="Search commands"
+  v-model="selectedCommand"
+/>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-command
+  [options]="commands"
+  placeholder="Search commands"
+  [value]="selectedCommand"
+  (valueChange)="runCommand($event)"
+/>
+```
+</TabItem>
+</Tabs>
+
+Use concise verb-first labels and mark unavailable actions as disabled instead of removing them when their presence explains product capability. Put Command inside Dialog for a modal command palette and provide a visible trigger with its keyboard shortcut.

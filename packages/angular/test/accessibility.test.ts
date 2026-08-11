@@ -78,6 +78,7 @@ import {
   PaginationLinkDirective,
   CollapsibleComponent,
   ComboboxComponent,
+  CommandComponent,
   DialogComponent,
   SheetComponent,
   AlertDialogActionDirective,
@@ -410,6 +411,23 @@ class ComboboxHost {
     { value: 'isfahan', label: 'Isfahan' },
     { value: 'shiraz', label: 'Shiraz', disabled: true },
   ];
+}
+
+@Component({
+  standalone: true,
+  imports: [CommandComponent],
+  template: `<simurgh-command
+    placeholder="Search commands"
+    [options]="options"
+    (valueChange)="selected($event)"
+  />`,
+})
+class CommandHost {
+  options: SelectOption[] = [
+    { value: 'locked', label: 'Locked action', disabled: true },
+    { value: 'settings', label: 'Open settings' },
+  ];
+  selected = vi.fn();
 }
 
 @Component({
@@ -1030,6 +1048,30 @@ describe('Angular accessibility contract', () => {
       new FormData(fixture.nativeElement.querySelector('form')).get('city'),
     ).toBe('isfahan');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('runs an enabled command while skipping disabled results', () => {
+    const fixture = TestBed.createComponent(CommandHost);
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector(
+      '[role=combobox]',
+    ) as HTMLInputElement;
+    input.dispatchEvent(new FocusEvent('focus'));
+    fixture.detectChanges();
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    fixture.detectChanges();
+    const active = fixture.nativeElement.querySelector(
+      `#${input.getAttribute('aria-activedescendant')}`,
+    ) as HTMLElement;
+    expect(active.textContent?.trim()).toBe('Open settings');
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(fixture.componentInstance.selected).toHaveBeenCalledWith('settings');
+    expect(input.value).toBe('Open settings');
     fixture.destroy();
   });
   it('associates a native label with its form control', async () => {

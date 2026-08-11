@@ -14,6 +14,7 @@
     "select",
     "native-select",
     "combobox",
+    "command",
     "tabs",
     "accordion",
     "checkbox",
@@ -121,6 +122,7 @@
       "select": ["Select"],
       "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "SelectOption"],
+      "command": ["Command"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -262,6 +264,7 @@
       "select": ["Select"],
       "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "ComboboxOption"],
+      "command": ["Command"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -374,6 +377,7 @@
       "select": ["SelectComponent", "SelectOption"],
       "native-select": ["NativeSelectComponent"],
       "combobox": ["ComboboxComponent", "SelectOption"],
+      "command": ["CommandComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],

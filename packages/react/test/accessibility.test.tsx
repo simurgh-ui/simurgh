@@ -80,6 +80,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Combobox,
+  Command,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -389,6 +390,28 @@ describe('React accessibility contract', () => {
       'isfahan',
     );
     expect((await axe.run(document.body)).violations).toEqual([]);
+  });
+  it('runs an enabled command while skipping disabled results', () => {
+    const selected = vi.fn();
+    render(
+      <Command
+        placeholder="Search commands"
+        options={[
+          { value: 'locked', label: 'Locked action', disabled: true },
+          { value: 'settings', label: 'Open settings' },
+        ]}
+        onValueChange={selected}
+      />,
+    );
+    const input = screen.getByRole('combobox', { name: 'Search commands' });
+    fireEvent.focus(input);
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+    expect(input.getAttribute('aria-activedescendant')).toBe(
+      screen.getByRole('option', { name: 'Open settings' }).id,
+    );
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(selected).toHaveBeenCalledWith('settings');
+    expect((input as HTMLInputElement).value).toBe('Open settings');
   });
   it('associates a native label with its form control', async () => {
     render(

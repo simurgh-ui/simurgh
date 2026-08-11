@@ -82,3 +82,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add semantic Empty State across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Input OTP across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add semantic Item anatomy across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Command across Angular, React, Vue, the registry, documentation, and contract tests.

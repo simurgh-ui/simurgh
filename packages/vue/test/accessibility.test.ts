@@ -72,6 +72,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Combobox,
+  Command,
   Dialog,
   DialogContent,
   DialogTrigger,
@@ -502,6 +503,28 @@ describe('Vue accessibility contract', () => {
       new FormData(view.container.querySelector('form')!).get('city'),
     ).toBe('isfahan');
     expect((await axe.run(document.body)).violations).toEqual([]);
+  });
+  it('runs an enabled command while skipping disabled results', async () => {
+    const selected = vi.fn();
+    render(Command, {
+      props: {
+        placeholder: 'Search commands',
+        options: [
+          { value: 'locked', label: 'Locked action', disabled: true },
+          { value: 'settings', label: 'Open settings' },
+        ],
+        'onUpdate:modelValue': selected,
+      },
+    });
+    const input = screen.getByRole('combobox', { name: 'Search commands' });
+    await fireEvent.focus(input);
+    await fireEvent.keyDown(input, { key: 'ArrowDown' });
+    expect(input.getAttribute('aria-activedescendant')).toBe(
+      screen.getByRole('option', { name: 'Open settings' }).id,
+    );
+    await fireEvent.keyDown(input, { key: 'Enter' });
+    expect(selected).toHaveBeenCalledWith('settings');
+    expect((input as HTMLInputElement).value).toBe('Open settings');
   });
   it('associates a native label with its form control', async () => {
     render({
