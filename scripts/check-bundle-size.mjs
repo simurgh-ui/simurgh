@@ -313,6 +313,12 @@ const cases = [
     budget: 9800,
   },
   {
+    name: 'vue-date-picker',
+    framework: 'vue',
+    subpath: 'date-picker',
+    budget: 11000,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',

@@ -19,11 +19,7 @@ import {
   type PropType,
   type Ref,
 } from 'vue';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from './components/popover.js';
+import { Calendar } from './components/calendar.js';
 
 export {
   Dialog,
@@ -61,7 +57,11 @@ export {
   AlertDialogTrigger,
 } from './components/alert-dialog.js';
 
-export { Popover, PopoverContent, PopoverTrigger };
+export {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from './components/popover.js';
 export {
   Tooltip,
   TooltipContent,
@@ -211,7 +211,7 @@ export { Combobox, type ComboboxOption } from './components/combobox.js';
 
 export { Command } from './components/command.js';
 
-export const Calendar = /* @__PURE__ */ defineComponent({
+const legacyCalendar = /* @__PURE__ */ defineComponent({
   name: 'SimurghCalendar',
   props: {
     modelValue: String,
@@ -404,120 +404,10 @@ export const Calendar = /* @__PURE__ */ defineComponent({
     };
   },
 });
+void legacyCalendar;
+export { Calendar };
 
-export const DatePicker = /* @__PURE__ */ defineComponent({
-  name: 'SimurghDatePicker',
-  props: {
-    modelValue: String,
-    defaultValue: { type: String, default: '' },
-    month: String,
-    defaultMonth: String,
-    locale: { type: String, default: 'en' },
-    direction: { type: String as PropType<Direction>, default: 'ltr' },
-    firstDayOfWeek: { type: Number, default: 0 },
-    min: String,
-    max: String,
-    disabledDates: { type: Array as PropType<string[]>, default: () => [] },
-    name: String,
-    label: { type: String, default: 'Date picker calendar' },
-    placeholder: { type: String, default: 'Pick a date' },
-    required: Boolean,
-    disabled: Boolean,
-  },
-  emits: ['update:modelValue', 'update:month'],
-  setup(props, { emit }) {
-    const localValue = ref(props.defaultValue);
-    const open = ref(false);
-    const root = ref<HTMLElement | null>(null);
-    const selected = computed(() => props.modelValue ?? localValue.value);
-    const displayValue = computed(() =>
-      selected.value
-        ? new Intl.DateTimeFormat(props.locale, {
-            dateStyle: 'medium',
-            timeZone: 'UTC',
-          }).format(new Date(`${selected.value}T00:00:00Z`))
-        : props.placeholder,
-    );
-    const choose = (date: string) => {
-      if (props.modelValue === undefined) localValue.value = date;
-      emit('update:modelValue', date);
-      open.value = false;
-      requestAnimationFrame(() =>
-        root.value
-          ?.querySelector<HTMLElement>('[data-slot="date-picker-trigger"]')
-          ?.focus(),
-      );
-    };
-    return () =>
-      h('div', { ref: root, 'data-slot': 'date-picker' }, [
-        h(
-          Popover,
-          {
-            open: open.value,
-            'onUpdate:open': (value: boolean) => (open.value = value),
-          },
-          {
-            default: () => [
-              h(
-                PopoverTrigger,
-                {
-                  'data-slot': 'date-picker-trigger',
-                  disabled: props.disabled,
-                },
-                () => displayValue.value,
-              ),
-              h(
-                PopoverContent,
-                {
-                  'data-slot': 'date-picker-content',
-                  'aria-label': props.label,
-                },
-                () =>
-                  h(Calendar, {
-                    modelValue: selected.value,
-                    ...(props.month === undefined
-                      ? {}
-                      : { month: props.month }),
-                    ...(props.defaultMonth === undefined
-                      ? {}
-                      : { defaultMonth: props.defaultMonth }),
-                    locale: props.locale,
-                    direction: props.direction,
-                    firstDayOfWeek: props.firstDayOfWeek,
-                    ...(props.min === undefined ? {} : { min: props.min }),
-                    ...(props.max === undefined ? {} : { max: props.max }),
-                    disabledDates: props.disabledDates,
-                    label: props.label,
-                    'onUpdate:modelValue': choose,
-                    'onUpdate:month': (value: string) =>
-                      emit('update:month', value),
-                  }),
-              ),
-            ],
-          },
-        ),
-        props.name
-          ? h('input', {
-              type: 'hidden',
-              name: props.name,
-              value: selected.value,
-              disabled: props.disabled,
-            })
-          : null,
-        props.required
-          ? h('input', {
-              tabindex: -1,
-              'aria-hidden': 'true',
-              required: true,
-              disabled: props.disabled,
-              value: selected.value,
-              style: 'position:absolute;opacity:0;pointer-events:none',
-              onInput: () => undefined,
-            })
-          : null,
-      ]);
-  },
-});
+export { DatePicker } from './components/date-picker.js';
 
 export {
   Carousel,

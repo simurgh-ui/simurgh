@@ -294,6 +294,12 @@
       "brotli": 6947,
       "budget": 9800
     },
+    "vue-date-picker": {
+      "minified": 23243,
+      "gzip": 9014,
+      "brotli": 8112,
+      "budget": 11000
+    },
     "angular-button": {
       "minified": 722,
       "gzip": 398,
@@ -375,7 +381,7 @@
     "vue-calendar": {
       "minified": 3502,
       "gzip": 1492,
-      "brotli": 1360,
+      "brotli": 1358,
       "budget": 1920
     },
     "angular-dialog": {
@@ -439,9 +445,9 @@
       "budget": 27648
     },
     "vue-complete": {
-      "minified": 80170,
-      "gzip": 22518,
-      "brotli": 19913,
+      "minified": 79541,
+      "gzip": 22457,
+      "brotli": 19811,
       "budget": 22784
     },
     "angular-complete": {
@@ -456,9 +462,9 @@
       "brotli": 12769
     },
     "vue-without-floating": {
-      "minified": 64345,
-      "gzip": 16288,
-      "brotli": 14331
+      "minified": 63717,
+      "gzip": 16075,
+      "brotli": 14194
     },
     "angular-without-floating": {
       "minified": 120225,
@@ -478,7 +484,7 @@
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "vue": {
-        "gzip": 6230,
+        "gzip": 6382,
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "angular": {
@@ -495,9 +501,9 @@
       "budget": 307200
     },
     "vue": {
-      "files": 214,
-      "unpacked": 292949,
-      "gzip": 35259,
+      "files": 216,
+      "unpacked": 282527,
+      "gzip": 33590,
       "budget": 384000
     },
     "angular": {
