@@ -121,6 +121,24 @@ const cases = [
     budget: 1150,
   },
   {
+    name: 'vue-tabs',
+    framework: 'vue',
+    subpath: 'tabs',
+    budget: 1125,
+  },
+  {
+    name: 'vue-accordion',
+    framework: 'vue',
+    subpath: 'accordion',
+    budget: 585,
+  },
+  {
+    name: 'vue-collapsible',
+    framework: 'vue',
+    subpath: 'collapsible',
+    budget: 665,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
