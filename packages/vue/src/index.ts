@@ -638,27 +638,7 @@ export { Toolbar, ToolbarButton } from './components/toolbar.js';
 export { ScrollArea } from './components/scroll-area.js';
 export { Textarea } from './components/textarea.js';
 
-export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
-export const Badge = /* @__PURE__ */ defineComponent({
-  name: 'SimurghBadge',
-  props: {
-    tone: { type: String as PropType<BadgeTone>, default: 'neutral' },
-    status: Boolean,
-  },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'span',
-        {
-          ...attrs,
-          'data-tone': props.tone,
-          role: props.status ? 'status' : undefined,
-          'aria-live': props.status ? 'polite' : undefined,
-        },
-        slots.default?.(),
-      );
-  },
-});
+export { Badge, type BadgeTone } from './components/badge.js';
 
 export { Breadcrumb } from './components/breadcrumb.js';
 
@@ -806,28 +786,12 @@ export {
   ItemTitle,
 } from './components/item.js';
 export { Kbd } from './components/kbd.js';
-export const Field = cardPart('SimurghField', 'fieldset', 'field');
-export const FieldLegend = cardPart(
-  'SimurghFieldLegend',
-  'legend',
-  'field-legend',
-);
-export const FieldDescription = cardPart(
-  'SimurghFieldDescription',
-  'p',
-  'field-description',
-);
-export const FieldError = /* @__PURE__ */ defineComponent({
-  name: 'SimurghFieldError',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'p',
-        { ...attrs, 'data-slot': 'field-error', role: 'alert' },
-        slots.default?.(),
-      );
-  },
-});
+export {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLegend,
+} from './components/field.js';
 export const Form = /* @__PURE__ */ defineComponent({
   name: 'SimurghForm',
   props: { focusInvalid: { type: Boolean, default: true } },
@@ -873,74 +837,22 @@ export const FormErrorSummary = /* @__PURE__ */ defineComponent({
       );
   },
 });
-export const Table = cardPart('SimurghTable', 'table', 'table');
-export const TableHeader = cardPart(
-  'SimurghTableHeader',
-  'thead',
-  'table-header',
-);
-export const TableBody = cardPart('SimurghTableBody', 'tbody', 'table-body');
-export const TableFooter = cardPart(
-  'SimurghTableFooter',
-  'tfoot',
-  'table-footer',
-);
-export const TableRow = cardPart('SimurghTableRow', 'tr', 'table-row');
-export const TableHead = /* @__PURE__ */ defineComponent({
-  name: 'SimurghTableHead',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'th',
-        { scope: 'col', ...attrs, 'data-slot': 'table-head' },
-        slots.default?.(),
-      );
-  },
-});
-export const TableCell = cardPart('SimurghTableCell', 'td', 'table-cell');
-export const TableCaption = cardPart(
-  'SimurghTableCaption',
-  'caption',
-  'table-caption',
-);
-export const Pagination = /* @__PURE__ */ defineComponent({
-  name: 'SimurghPagination',
-  props: { label: { type: String, default: 'Pagination' } },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'nav',
-        { ...attrs, 'aria-label': props.label, 'data-slot': 'pagination' },
-        slots.default?.(),
-      );
-  },
-});
-export const PaginationContent = cardPart(
-  'SimurghPaginationContent',
-  'ul',
-  'pagination-content',
-);
-export const PaginationItem = cardPart(
-  'SimurghPaginationItem',
-  'li',
-  'pagination-item',
-);
-export const PaginationLink = /* @__PURE__ */ defineComponent({
-  name: 'SimurghPaginationLink',
-  props: { current: Boolean },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'a',
-        {
-          ...attrs,
-          'aria-current': props.current ? 'page' : undefined,
-          'data-slot': 'pagination-link',
-        },
-        slots.default?.(),
-      );
-  },
-});
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './components/table.js';
+export {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from './components/pagination.js';
 
 const radioKey: InjectionKey<{
   value: Ref<string>;

@@ -157,6 +157,30 @@ const cases = [
     budget: 540,
   },
   {
+    name: 'vue-badge',
+    framework: 'vue',
+    subpath: 'badge',
+    budget: 300,
+  },
+  {
+    name: 'vue-field',
+    framework: 'vue',
+    subpath: 'field',
+    budget: 375,
+  },
+  {
+    name: 'vue-table',
+    framework: 'vue',
+    subpath: 'table',
+    budget: 465,
+  },
+  {
+    name: 'vue-pagination',
+    framework: 'vue',
+    subpath: 'pagination',
+    budget: 465,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
