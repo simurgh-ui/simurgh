@@ -139,7 +139,7 @@ Items are checked only after their implementation exists and the relevant verifi
   - [x] Reduce Vue Rating from approximately 1.70 KiB to 0.78 KiB gzip.
   - [x] Reduce Vue Tags Input from approximately 1.99 KiB to 1.09 KiB gzip.
   - [x] Reduce Vue Dialog from approximately 1.88 KiB to 0.95 KiB gzip.
-  - [ ] Reduce Vue Calendar from approximately 2.31 KiB to 1.38 KiB gzip.
+  - [x] Reduce Vue Calendar from approximately 2.31 KiB to 1.38 KiB gzip.
 - [x] Evaluate replacing `@floating-ui/react` interaction hooks with a smaller `@floating-ui/dom` integration while preserving accessibility and behavior parity.
 - [x] Track and reduce Floating UI's approximate gzip contribution: React 12.5 KiB, Vue 6.0 KiB, and Angular 6.3 KiB.
 - [x] Add optional aggregate entry points such as `basic` and `overlays` so broad imports can exclude floating components.

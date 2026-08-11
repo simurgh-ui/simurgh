@@ -611,6 +611,17 @@ describe('Vue accessibility contract', () => {
     expect(fourteenth.getAttribute('aria-disabled')).toBe('true');
     await fireEvent.click(fourteenth);
     expect(selected).toHaveBeenCalledOnce();
+    const augustThirtyFirst = screen.getByRole('button', {
+      name: 'Monday, August 31, 2026',
+    });
+    augustThirtyFirst.focus();
+    await fireEvent.keyDown(augustThirtyFirst, { key: 'PageDown' });
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    expect(
+      screen.getByRole('button', {
+        name: 'Wednesday, September 30, 2026',
+      }),
+    ).toBe(document.activeElement);
     expect(
       (view.container.querySelector('[name=appointment]') as HTMLInputElement)
         .value,

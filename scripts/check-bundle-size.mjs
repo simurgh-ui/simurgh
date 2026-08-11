@@ -406,7 +406,7 @@ const cases = [
     name: 'vue-calendar',
     framework: 'vue',
     subpath: 'calendar',
-    budget: 1.875 * KiB,
+    budget: 1.75 * KiB,
   },
   {
     name: 'angular-dialog',

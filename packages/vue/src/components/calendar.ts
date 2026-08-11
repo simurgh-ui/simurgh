@@ -1,36 +1,26 @@
 import type { Direction } from '@simurgh-ui/core';
-import { computed, defineComponent, h, ref, type PropType } from 'vue';
+import { defineComponent, h, ref, type PropType } from 'vue';
 
-const dateValue = (date: Date) => date.toISOString().slice(0, 10);
-const dateFrom = (value: string) => new Date(value);
+const dateValue = (date: Date) => date.toJSON().slice(0, 10);
 const addDays = (value: string, amount: number) => {
-  const date = dateFrom(value);
+  const date = new Date(value);
   date.setUTCDate(date.getUTCDate() + amount);
   return dateValue(date);
 };
 const addMonths = (value: string, amount: number) => {
-  const date = dateFrom(value);
+  const date = new Date(value);
   const day = date.getUTCDate();
-  date.setUTCDate(1);
-  date.setUTCMonth(date.getUTCMonth() + amount);
-  const last = new Date(
-    Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0),
-  ).getUTCDate();
-  date.setUTCDate(Math.min(day, last));
+  date.setUTCMonth(date.getUTCMonth() + amount, 1);
+  const month = date.getUTCMonth();
+  date.setUTCDate(day);
+  if (date.getUTCMonth() !== month) date.setUTCDate(0);
   return dateValue(date);
 };
 const monthDays = (month: string, firstDay: number) => {
-  const first = dateFrom(`${month}-01`);
+  const first = new Date(`${month}-01`);
   const offset = (first.getUTCDay() - firstDay + 7) % 7;
   const start = addDays(dateValue(first), -offset);
-  return Array.from({ length: 42 }, (_, index) => {
-    const value = addDays(start, index);
-    return {
-      value,
-      day: Number(value.slice(8, 10)),
-      outside: value.slice(0, 7) !== month,
-    };
-  });
+  return Array.from({ length: 42 }, (_, index) => addDays(start, index));
 };
 const moveDate = (
   value: string,
@@ -44,13 +34,14 @@ const moveDate = (
   if (key === 'ArrowRight') return addDays(value, direction === 'rtl' ? -1 : 1);
   if (key === 'PageUp') return addMonths(value, -1);
   if (key === 'PageDown') return addMonths(value, 1);
-  const offset = (dateFrom(value).getUTCDay() - firstDay + 7) % 7;
+  const offset = (new Date(value).getUTCDay() - firstDay + 7) % 7;
   return addDays(value, key === 'Home' ? -offset : 6 - offset);
 };
 const todayValue = () => {
   const today = new Date();
-  today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-  return dateValue(today);
+  return dateValue(
+    new Date(today.getTime() - today.getTimezoneOffset() * 60_000),
+  );
 };
 
 export const Calendar = /* @__PURE__ */ defineComponent({
@@ -76,11 +67,7 @@ export const Calendar = /* @__PURE__ */ defineComponent({
       props.defaultMonth ?? (props.defaultValue || today).slice(0, 7),
     );
     const root = ref<HTMLElement | null>(null);
-    const selected = computed(() => props.modelValue ?? localValue.value);
-    const displayedMonth = computed(() => props.month ?? localMonth.value);
-    const days = computed(() =>
-      monthDays(displayedMonth.value, props.firstDayOfWeek),
-    );
+    const displayedMonth = () => props.month ?? localMonth.value;
     const isDisabled = (date: string) =>
       (props.min !== undefined && date < props.min) ||
       (props.max !== undefined && date > props.max) ||
@@ -92,11 +79,11 @@ export const Calendar = /* @__PURE__ */ defineComponent({
     const choose = (date: string) => {
       if (isDisabled(date)) return;
       if (props.modelValue === undefined) localValue.value = date;
-      if (date.slice(0, 7) !== displayedMonth.value) setMonth(date.slice(0, 7));
+      if (date.slice(0, 7) !== displayedMonth()) setMonth(date.slice(0, 7));
       emit('update:modelValue', date);
     };
     const focusDate = (date: string) => {
-      if (date.slice(0, 7) !== displayedMonth.value) setMonth(date.slice(0, 7));
+      if (date.slice(0, 7) !== displayedMonth()) setMonth(date.slice(0, 7));
       requestAnimationFrame(() =>
         root.value
           ?.querySelector<HTMLElement>(`[data-date="${date}"]`)
@@ -104,12 +91,14 @@ export const Calendar = /* @__PURE__ */ defineComponent({
       );
     };
     return () => {
-      const monthValue = displayedMonth.value;
+      const monthValue = displayedMonth();
+      const selectedValue = props.modelValue ?? localValue.value;
+      const days = monthDays(monthValue, props.firstDayOfWeek);
       const anchor =
-        selected.value.slice(0, 7) === monthValue
-          ? selected.value
+        selectedValue.slice(0, 7) === monthValue
+          ? selectedValue
           : `${monthValue}-01`;
-      const monthLabel = dateFrom(`${monthValue}-01`).toLocaleDateString(
+      const monthLabel = new Date(`${monthValue}-01`).toLocaleDateString(
         props.locale,
         {
           month: 'long',
@@ -118,7 +107,7 @@ export const Calendar = /* @__PURE__ */ defineComponent({
         },
       );
       const fullDate = (value: string) =>
-        dateFrom(value).toLocaleDateString(props.locale, {
+        new Date(value).toLocaleDateString(props.locale, {
           dateStyle: 'full',
           timeZone: 'UTC',
         });
@@ -177,41 +166,46 @@ export const Calendar = /* @__PURE__ */ defineComponent({
               Array.from({ length: 6 }, (_, week) =>
                 h(
                   'tr',
-                  days.value.slice(week * 7, week * 7 + 7).map((day) =>
+                  days.slice(week * 7, week * 7 + 7).map((day) =>
                     h(
                       'td',
                       {
                         role: 'gridcell',
-                        'aria-selected': selected.value === day.value,
+                        'aria-selected': selectedValue === day,
                       },
                       h(
                         'button',
                         {
                           type: 'button',
                           'data-slot': 'calendar-day',
-                          'data-date': day.value,
-                          'data-outside': day.outside || undefined,
+                          'data-date': day,
+                          'data-outside':
+                            day.slice(0, 7) !== monthValue || undefined,
                           'data-state':
-                            selected.value === day.value
-                              ? 'selected'
-                              : undefined,
-                          'aria-current':
-                            today === day.value ? 'date' : undefined,
-                          'aria-label': fullDate(day.value),
-                          'aria-disabled': isDisabled(day.value) || undefined,
-                          tabindex: day.value === anchor ? 0 : -1,
-                          onClick: () => choose(day.value),
+                            selectedValue === day ? 'selected' : undefined,
+                          'aria-current': today === day ? 'date' : undefined,
+                          'aria-label': fullDate(day),
+                          'aria-disabled': isDisabled(day),
+                          tabindex: day === anchor ? 0 : -1,
+                          onClick: () => choose(day),
                           onKeydown: (event: KeyboardEvent) => {
                             if (
-                              !/^(Arrow(Left|Right|Up|Down)|Home|End|Page(Up|Down))$/.test(
-                                event.key,
-                              )
+                              ![
+                                'ArrowLeft',
+                                'ArrowRight',
+                                'ArrowUp',
+                                'ArrowDown',
+                                'Home',
+                                'End',
+                                'PageUp',
+                                'PageDown',
+                              ].includes(event.key)
                             )
                               return;
                             event.preventDefault();
                             focusDate(
                               moveDate(
-                                day.value,
+                                day,
                                 event.key,
                                 props.direction,
                                 props.firstDayOfWeek,
@@ -219,7 +213,7 @@ export const Calendar = /* @__PURE__ */ defineComponent({
                             );
                           },
                         },
-                        String(day.day),
+                        Number(day.slice(8)),
                       ),
                     ),
                   ),
@@ -231,7 +225,7 @@ export const Calendar = /* @__PURE__ */ defineComponent({
             ? h('input', {
                 type: 'hidden',
                 name: props.name,
-                value: selected.value,
+                value: selectedValue,
               })
             : null,
         ],
