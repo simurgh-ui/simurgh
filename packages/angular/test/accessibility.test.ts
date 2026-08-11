@@ -81,6 +81,7 @@ import {
   CommandComponent,
   DialogComponent,
   SheetComponent,
+  DrawerComponent,
   AlertDialogActionDirective,
   AlertDialogCancelDirective,
   AlertDialogComponent,
@@ -151,6 +152,21 @@ class DialogHost {}
   >`,
 })
 class SheetHost {}
+
+@Component({
+  standalone: true,
+  imports: [DrawerComponent],
+  template: `<simurgh-drawer
+    #drawer
+    labelledBy="drawer-title"
+    describedBy="drawer-description"
+    ><button trigger (click)="drawer.show()">Edit profile</button>
+    <h2 id="drawer-title">Edit profile</h2>
+    <p id="drawer-description">Update your details.</p>
+    <button (click)="drawer.close()">Done</button></simurgh-drawer
+  >`,
+})
+class DrawerHost {}
 
 @Component({
   standalone: true,
@@ -796,6 +812,33 @@ describe('Angular accessibility contract', () => {
     expect(sheet.getAttribute('data-side')).toBe('left');
     expect(sheet.getAttribute('aria-labelledby')).toBe('sheet-title');
     expect(document.activeElement).toBe(sheet);
+    (
+      fixture.nativeElement.querySelectorAll('button')[1] as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(fixture.nativeElement.querySelector('[role=dialog]')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    fixture.destroy();
+  });
+
+  it('opens a bottom drawer and restores trigger focus', async () => {
+    const fixture = TestBed.createComponent(DrawerHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '[trigger]',
+    ) as HTMLButtonElement;
+    trigger.focus();
+    trigger.click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve));
+    const drawer = fixture.nativeElement.querySelector(
+      '[role=dialog]',
+    ) as HTMLElement;
+    expect(drawer.getAttribute('data-side')).toBe('bottom');
+    expect(drawer.hasAttribute('data-drawer')).toBe(true);
+    expect(drawer.getAttribute('aria-labelledby')).toBe('drawer-title');
+    expect(document.activeElement).toBe(drawer);
     (
       fixture.nativeElement.querySelectorAll('button')[1] as HTMLButtonElement
     ).click();

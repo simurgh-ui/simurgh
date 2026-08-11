@@ -6,6 +6,7 @@
     "dialog",
     "alert-dialog",
     "sheet",
+    "drawer",
     "popover",
     "tooltip",
     "hover-card",
@@ -103,6 +104,14 @@
         "SheetDescription",
         "SheetClose",
         "SheetSide"
+      ],
+      "drawer": [
+        "Drawer",
+        "DrawerTrigger",
+        "DrawerContent",
+        "DrawerTitle",
+        "DrawerDescription",
+        "DrawerClose"
       ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
@@ -246,6 +255,14 @@
         "SheetClose",
         "SheetSide"
       ],
+      "drawer": [
+        "Drawer",
+        "DrawerTrigger",
+        "DrawerContent",
+        "DrawerTitle",
+        "DrawerDescription",
+        "DrawerClose"
+      ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
       "hover-card": ["HoverCard", "HoverCardTrigger", "HoverCardContent"],
@@ -369,6 +386,7 @@
         "AlertDialogCancelDirective"
       ],
       "sheet": ["SheetComponent", "SheetSide"],
+      "drawer": ["DrawerComponent"],
       "popover": ["PopoverComponent"],
       "tooltip": ["TooltipComponent"],
       "hover-card": ["HoverCardComponent"],

@@ -193,6 +193,25 @@ export const SheetContent = defineComponent({
   },
 });
 
+export const Drawer = Dialog;
+export const DrawerTrigger = DialogTrigger;
+export const DrawerTitle = DialogTitle;
+export const DrawerDescription = DialogDescription;
+export const DrawerClose = DialogClose;
+export const DrawerContent = defineComponent({
+  name: 'SimurghDrawerContent',
+  props: {
+    side: {
+      type: String as PropType<'top' | 'bottom'>,
+      default: 'bottom',
+    },
+  },
+  setup(props, { attrs, slots }) {
+    return () =>
+      h(SheetContent, { ...attrs, side: props.side, 'data-drawer': '' }, slots);
+  },
+});
+
 export const AlertDialog = Dialog;
 export const AlertDialogTrigger = DialogTrigger;
 export const AlertDialogTitle = DialogTitle;

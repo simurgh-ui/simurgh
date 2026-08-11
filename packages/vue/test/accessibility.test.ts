@@ -82,6 +82,12 @@ import {
   SheetDescription,
   SheetTitle,
   SheetTrigger,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -139,6 +145,30 @@ describe('Vue accessibility contract', () => {
     const sheet = screen.getByRole('dialog', { name: 'Filters' });
     expect(sheet.getAttribute('data-side')).toBe('left');
     expect(document.activeElement).toBe(sheet);
+    await fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('opens a bottom drawer and restores trigger focus', async () => {
+    render({
+      components: {
+        Drawer,
+        DrawerTrigger,
+        DrawerContent,
+        DrawerTitle,
+        DrawerDescription,
+        DrawerClose,
+      },
+      template: `<Drawer><DrawerTrigger>Edit profile</DrawerTrigger><DrawerContent><DrawerTitle>Edit profile</DrawerTitle><DrawerDescription>Update your details.</DrawerDescription><DrawerClose>Done</DrawerClose></DrawerContent></Drawer>`,
+    });
+    const trigger = screen.getByRole('button', { name: 'Edit profile' });
+    trigger.focus();
+    await fireEvent.click(trigger);
+    const drawer = screen.getByRole('dialog', { name: 'Edit profile' });
+    expect(drawer.getAttribute('data-side')).toBe('bottom');
+    expect(drawer.hasAttribute('data-drawer')).toBe(true);
+    expect(document.activeElement).toBe(drawer);
     await fireEvent.click(screen.getByRole('button', { name: 'Done' }));
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(document.activeElement).toBe(trigger);

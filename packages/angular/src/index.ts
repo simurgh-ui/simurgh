@@ -136,6 +136,33 @@ export class SheetComponent extends DialogComponent {
 }
 
 @Component({
+  selector: 'simurgh-drawer',
+  standalone: true,
+  imports: [CommonModule],
+  template: `<ng-content select="[trigger]" />
+    <div *ngIf="open" class="simurgh-overlay" (click)="close()"></div>
+    <section
+      #content
+      *ngIf="open"
+      class="simurgh-content simurgh-sheet"
+      data-slot="drawer-content"
+      data-drawer
+      [attr.data-side]="side"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="labelledBy"
+      [attr.aria-describedby]="describedBy"
+      tabindex="-1"
+      (keydown)="onKeydown($event)"
+    >
+      <ng-content />
+    </section>`,
+})
+export class DrawerComponent extends DialogComponent {
+  @Input() side: 'top' | 'bottom' = 'bottom';
+}
+
+@Component({
   selector: 'simurgh-alert-dialog',
   standalone: true,
   imports: [CommonModule],
@@ -2089,6 +2116,7 @@ export class ToastViewportComponent {
 export const SIMURGH_COMPONENTS = [
   DialogComponent,
   SheetComponent,
+  DrawerComponent,
   AlertDialogComponent,
   AlertDialogActionDirective,
   AlertDialogCancelDirective,

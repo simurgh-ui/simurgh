@@ -211,6 +211,18 @@ export const SheetContent = forwardRef<
   );
 });
 
+export const Drawer = Dialog;
+export const DrawerTrigger = DialogTrigger;
+export const DrawerTitle = DialogTitle;
+export const DrawerDescription = DialogDescription;
+export const DrawerClose = DialogClose;
+export const DrawerContent = forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { side?: 'top' | 'bottom' }
+>(function DrawerContent({ side = 'bottom', ...props }, ref) {
+  return <SheetContent {...props} ref={ref} side={side} data-drawer="" />;
+});
+
 export const AlertDialog = Dialog;
 export const AlertDialogTrigger = DialogTrigger;
 export const AlertDialogTitle = DialogTitle;
