@@ -265,6 +265,12 @@ const cases = [
     budget: 1540,
   },
   {
+    name: 'vue-carousel',
+    framework: 'vue',
+    subpath: 'carousel',
+    budget: 1250,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
