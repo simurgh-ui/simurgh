@@ -1,4 +1,12 @@
 export { Checkbox } from './checkbox.js';
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './card.js';
 export { Alert } from './alert.js';
 export {
   Accordion,
@@ -16,18 +24,7 @@ export { Spinner } from './spinner.js';
 export { Switch } from './switch.js';
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs.js';
 export { Textarea } from './textarea.js';
-export {
-  Badge,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  NumberInput,
-  RadioGroup,
-  RadioGroupItem,
-} from '../index.js';
+export { Badge, NumberInput, RadioGroup, RadioGroupItem } from '../index.js';
 export { Button } from './button.js';
 export { Rating } from './rating.js';
 export { TagsInput } from './tags-input.js';

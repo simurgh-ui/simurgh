@@ -43,6 +43,7 @@ import {
   DialogTrigger,
   dialogKey,
 } from './components/dialog.js';
+import { cardPart } from './internal/card-part.js';
 
 export {
   Dialog,
@@ -779,133 +780,32 @@ export const MenubarItem = /* @__PURE__ */ defineComponent({
   },
 });
 
-function cardPart(name: string, tag: string, slot: string) {
-  return defineComponent({
-    name,
-    setup(_, { attrs, slots }) {
-      return () => h(tag, { ...attrs, 'data-slot': slot }, slots.default?.());
-    },
-  });
-}
-export const Card = cardPart('SimurghCard', 'div', 'card');
-export const CardHeader = cardPart('SimurghCardHeader', 'div', 'card-header');
-export const CardTitle = cardPart('SimurghCardTitle', 'h3', 'card-title');
-export const CardDescription = cardPart(
-  'SimurghCardDescription',
-  'p',
-  'card-description',
-);
-export const CardContent = cardPart(
-  'SimurghCardContent',
-  'div',
-  'card-content',
-);
-export const CardFooter = cardPart('SimurghCardFooter', 'div', 'card-footer');
-
-export const Empty = /* @__PURE__ */ defineComponent({
-  name: 'SimurghEmpty',
-  props: { status: Boolean },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: props.status ? 'status' : attrs['role'],
-          'aria-live': props.status ? 'polite' : attrs['aria-live'],
-          'data-slot': 'empty',
-        },
-        slots.default?.(),
-      );
-  },
-});
-export const EmptyHeader = cardPart(
-  'SimurghEmptyHeader',
-  'div',
-  'empty-header',
-);
-export const EmptyMedia = /* @__PURE__ */ defineComponent({
-  name: 'SimurghEmptyMedia',
-  props: { decorative: { type: Boolean, default: true } },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          'aria-hidden': props.decorative || undefined,
-          'data-slot': 'empty-media',
-        },
-        slots.default?.(),
-      );
-  },
-});
-export const EmptyTitle = cardPart('SimurghEmptyTitle', 'h3', 'empty-title');
-export const EmptyDescription = cardPart(
-  'SimurghEmptyDescription',
-  'p',
-  'empty-description',
-);
-export const EmptyContent = cardPart(
-  'SimurghEmptyContent',
-  'div',
-  'empty-content',
-);
-export const ItemGroup = /* @__PURE__ */ defineComponent({
-  name: 'SimurghItemGroup',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        { ...attrs, role: attrs['role'] ?? 'list', 'data-slot': 'item-group' },
-        slots.default?.(),
-      );
-  },
-});
-export const Item = /* @__PURE__ */ defineComponent({
-  name: 'SimurghItem',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        { ...attrs, role: attrs['role'] ?? 'listitem', 'data-slot': 'item' },
-        slots.default?.(),
-      );
-  },
-});
-export const ItemMedia = /* @__PURE__ */ defineComponent({
-  name: 'SimurghItemMedia',
-  props: { decorative: { type: Boolean, default: true } },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          'aria-hidden': props.decorative || undefined,
-          'data-slot': 'item-media',
-        },
-        slots.default?.(),
-      );
-  },
-});
-export const ItemContent = cardPart(
-  'SimurghItemContent',
-  'div',
-  'item-content',
-);
-export const ItemTitle = cardPart('SimurghItemTitle', 'h3', 'item-title');
-export const ItemDescription = cardPart(
-  'SimurghItemDescription',
-  'p',
-  'item-description',
-);
-export const ItemActions = cardPart(
-  'SimurghItemActions',
-  'div',
-  'item-actions',
-);
-export const Kbd = cardPart('SimurghKbd', 'kbd', 'kbd');
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './components/card.js';
+export {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from './components/empty.js';
+export {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from './components/item.js';
+export { Kbd } from './components/kbd.js';
 export const Field = cardPart('SimurghField', 'fieldset', 'field');
 export const FieldLegend = cardPart(
   'SimurghFieldLegend',

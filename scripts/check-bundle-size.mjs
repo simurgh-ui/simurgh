@@ -139,6 +139,24 @@ const cases = [
     budget: 665,
   },
   {
+    name: 'vue-card',
+    framework: 'vue',
+    subpath: 'card',
+    budget: 370,
+  },
+  {
+    name: 'vue-empty',
+    framework: 'vue',
+    subpath: 'empty',
+    budget: 550,
+  },
+  {
+    name: 'vue-item',
+    framework: 'vue',
+    subpath: 'item',
+    budget: 540,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
