@@ -6,22 +6,36 @@ export {
   AlertDialogDescription,
   AlertDialogTitle,
   AlertDialogTrigger,
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
+} from './alert-dialog.js';
+export {
   Dialog,
   DialogClose,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
+} from './dialog.js';
+export {
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerTitle,
   DrawerTrigger,
+} from './drawer.js';
+export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from './sheet.js';
+export {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -32,12 +46,6 @@ export {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-  SheetTrigger,
   Tooltip,
   TooltipContent,
   TooltipTrigger,

@@ -247,6 +247,24 @@ const cases = [
     budget: 685,
   },
   {
+    name: 'vue-sheet',
+    framework: 'vue',
+    subpath: 'sheet',
+    budget: 1440,
+  },
+  {
+    name: 'vue-drawer',
+    framework: 'vue',
+    subpath: 'drawer',
+    budget: 1500,
+  },
+  {
+    name: 'vue-alert-dialog',
+    framework: 'vue',
+    subpath: 'alert-dialog',
+    budget: 1540,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
