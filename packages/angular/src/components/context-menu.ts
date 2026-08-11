@@ -11,7 +11,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { compositeKeydown } from '../internal.js';
+import { compositeKeydown } from '../internal/composite-keydown.js';
 
 @Component({
   selector: 'simurgh-context-menu',

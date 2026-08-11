@@ -2,7 +2,7 @@ import type { Direction } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref, type PropType } from 'vue';
 
 const dateValue = (date: Date) => date.toISOString().slice(0, 10);
-const dateFrom = (value: string) => new Date(`${value}T00:00:00Z`);
+const dateFrom = (value: string) => new Date(value);
 const addDays = (value: string, amount: number) => {
   const date = dateFrom(value);
   date.setUTCDate(date.getUTCDate() + amount);
@@ -49,11 +49,8 @@ const moveDate = (
 };
 const todayValue = () => {
   const today = new Date();
-  return `${today.getFullYear().toString().padStart(4, '0')}-${(
-    today.getMonth() + 1
-  )
-    .toString()
-    .padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+  return dateValue(today);
 };
 
 export const Calendar = /* @__PURE__ */ defineComponent({

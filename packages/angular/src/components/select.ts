@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { compositeKeydown } from '../internal.js';
+import { compositeKeydown } from '../internal/composite-keydown.js';
 import { createId } from '@simurgh-ui/core';
 
 export type SelectOption = { value: string; label: string; disabled?: boolean };

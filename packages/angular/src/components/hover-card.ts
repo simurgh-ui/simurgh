@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FloatingBase } from '../internal.js';
+import { FloatingBase } from '../internal/floating-base.js';
 
 @Component({
   selector: 'simurgh-hover-card',

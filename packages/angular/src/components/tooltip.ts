@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FloatingBase } from '../internal.js';
+import { FloatingBase } from '../internal/floating-base.js';
 
 @Component({
   selector: 'simurgh-tooltip',

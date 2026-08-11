@@ -146,3 +146,30 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Recommend per-component subpath imports throughout the documentation and examples.
 - [x] Add a minimal production Angular fixture that measures bundles after Angular linking and production optimization.
 - [x] Keep component-level CSS imports as the recommended path and defer lower-impact full-CSS micro-optimization.
+
+## Bundle-size optimization fourth pass
+
+- [x] Split Angular's shared `internal.ts` into focused modules so non-floating controls do not bundle Floating UI.
+  - [x] Move `FloatingBase` into `internal/floating-base.ts`.
+  - [x] Move `CheckBase` into `internal/check-base.ts`.
+  - [x] Move `compositeKeydown` into `internal/composite-keydown.ts`.
+  - [x] Reduce Angular Checkbox from approximately 7.37 KiB to 1.10 KiB gzip.
+  - [x] Reduce Angular Switch from approximately 7.37 KiB to 1.11 KiB gzip.
+  - [x] Reduce Angular Context Menu from approximately 8.16 KiB to 1.98 KiB gzip.
+  - [x] Reduce Angular Select from approximately 8.18 KiB to 1.98 KiB gzip.
+  - [x] Reduce the Angular `basic` entry from approximately 12.24 KiB to 6 KiB gzip.
+- [ ] Finish moving the remaining Vue catalog implementations out of monolithic `index.ts` re-exports and into genuine per-component modules.
+  - [ ] Reduce individual Vue component overhead and reliance on bundler purity analysis.
+  - [x] Reduce the Vue package from its current approximately 722 KiB unpacked size.
+- [x] Tighten standalone bundle regression budgets to approximately 20–30% above verified measurements.
+  - [x] Tighten React Button from its 1 KiB budget around the current 226 B gzip measurement.
+  - [x] Tighten Angular Button from its 2 KiB budget around the current 398 B gzip measurement.
+  - [x] Tighten React Dialog from its 4 KiB budget around the current 1.14 KiB gzip measurement.
+- [x] Expand the linked and optimized Angular production-size fixture beyond Button.
+  - [x] Measure Angular Checkbox in the production fixture.
+  - [x] Measure Angular Select in the production fixture.
+  - [x] Measure Angular Calendar in the production fixture.
+  - [x] Measure the Angular `basic` entry in the production fixture.
+  - [x] Measure the Angular `overlays` entry in the production fixture.
+- [x] Treat Floating UI as an explicit feature cost in bundle reports: approximately 12.8 KiB gzip for React and 6.2 KiB for Vue and Angular.
+- [x] Preserve component subpaths and the non-floating `basic` entry so consumers can avoid Floating UI when overlays are unused.

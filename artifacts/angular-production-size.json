@@ -1,8 +1,50 @@
 {
-  "minified": 753,
-  "gzip": 420,
-  "brotli": 366,
-  "budget": 2048,
-  "linked": true,
-  "optimized": true
+  "button": {
+    "minified": 753,
+    "gzip": 420,
+    "brotli": 366,
+    "budget": 512,
+    "linked": true,
+    "optimized": true
+  },
+  "checkbox": {
+    "minified": 1907,
+    "gzip": 803,
+    "brotli": 701,
+    "budget": 1024,
+    "linked": true,
+    "optimized": true
+  },
+  "select": {
+    "minified": 4537,
+    "gzip": 1682,
+    "brotli": 1480,
+    "budget": 2048,
+    "linked": true,
+    "optimized": true
+  },
+  "calendar": {
+    "minified": 7633,
+    "gzip": 2446,
+    "brotli": 2218,
+    "budget": 3072,
+    "linked": true,
+    "optimized": true
+  },
+  "basic": {
+    "minified": 31554,
+    "gzip": 6402,
+    "brotli": 5580,
+    "budget": 7168,
+    "linked": true,
+    "optimized": true
+  },
+  "overlays": {
+    "minified": 39147,
+    "gzip": 10721,
+    "brotli": 9311,
+    "budget": 12288,
+    "linked": true,
+    "optimized": true
+  }
 }

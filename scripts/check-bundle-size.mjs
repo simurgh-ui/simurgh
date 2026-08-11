@@ -22,7 +22,7 @@ const cases = [
     name: 'react-button',
     framework: 'react',
     subpath: 'button',
-    budget: 1 * KiB,
+    budget: 300,
   },
   {
     name: 'vue-button',
@@ -34,6 +34,30 @@ const cases = [
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
+    budget: 512,
+  },
+  {
+    name: 'angular-checkbox',
+    framework: 'angular',
+    subpath: 'checkbox',
+    budget: 1.1 * KiB,
+  },
+  {
+    name: 'angular-switch',
+    framework: 'angular',
+    subpath: 'switch',
+    budget: 1.1 * KiB,
+  },
+  {
+    name: 'angular-context-menu',
+    framework: 'angular',
+    subpath: 'context-menu',
+    budget: 2 * KiB,
+  },
+  {
+    name: 'angular-select',
+    framework: 'angular',
+    subpath: 'select',
     budget: 2 * KiB,
   },
   {
@@ -76,7 +100,7 @@ const cases = [
     name: 'react-dialog',
     framework: 'react',
     subpath: 'dialog',
-    budget: 4 * KiB,
+    budget: 1480,
   },
   {
     name: 'vue-dialog',
@@ -106,7 +130,7 @@ const cases = [
     name: 'angular-root-button',
     framework: 'angular',
     source: `export { ButtonComponent } from '@simurgh-ui/angular';`,
-    budget: 2 * KiB,
+    budget: 512,
   },
   {
     name: 'react-basic',
@@ -124,7 +148,7 @@ const cases = [
     name: 'angular-basic',
     framework: 'angular',
     subpath: 'basic',
-    budget: 12 * KiB,
+    budget: 6 * KiB,
   },
   {
     name: 'react-overlays',
@@ -239,7 +263,7 @@ for (const bundleCase of cases) {
   }
 }
 
-const packageBudgets = { react: 300 * KiB, vue: 800 * KiB, angular: 275 * KiB };
+const packageBudgets = { react: 300 * KiB, vue: 450 * KiB, angular: 275 * KiB };
 const publishedPackages = {};
 for (const framework of ['react', 'vue', 'angular']) {
   const isWindows = process.platform === 'win32';
@@ -280,12 +304,28 @@ for (const framework of ['react', 'vue', 'angular']) {
   }
 }
 
-const report = { bundles: measurements, packages: publishedPackages };
+const floatingUi = Object.fromEntries(
+  ['react', 'vue', 'angular'].map((framework) => [
+    framework,
+    {
+      gzip:
+        measurements[`${framework}-complete`].gzip -
+        measurements[`${framework}-without-floating`].gzip,
+      calculation: 'complete bundle minus bundle with Floating UI externalized',
+    },
+  ]),
+);
+const report = {
+  bundles: measurements,
+  featureCosts: { floatingUi },
+  packages: publishedPackages,
+};
 await mkdir(resolve(root, 'artifacts'), { recursive: true });
 await writeFile(
   resolve(root, 'artifacts/bundle-sizes.json'),
   `${JSON.stringify(report, null, 2)}\n`,
 );
 console.table(measurements);
+console.table(floatingUi);
 console.table(publishedPackages);
 if (failures.length) throw new Error(failures.join('\n'));

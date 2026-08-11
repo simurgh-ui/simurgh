@@ -31,6 +31,8 @@ await build({
   entryPoints,
   outdir: outputDirectory,
   bundle: true,
+  splitting: framework === 'vue',
+  chunkNames: 'chunks/[name]-[hash]',
   format: 'esm',
   platform: 'browser',
   target: 'es2022',

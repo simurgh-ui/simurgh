@@ -1,4 +1,4 @@
-import { CheckBase } from '../internal.js';
+import { CheckBase } from '../internal/check-base.js';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 

@@ -8,7 +8,8 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { FloatingBase, compositeKeydown } from '../internal.js';
+import { compositeKeydown } from '../internal/composite-keydown.js';
+import { FloatingBase } from '../internal/floating-base.js';
 
 @Component({
   selector: 'simurgh-dropdown-menu',
