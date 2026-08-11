@@ -31,6 +31,36 @@ const cases = [
     budget: 0.5 * KiB,
   },
   {
+    name: 'vue-checkbox',
+    framework: 'vue',
+    subpath: 'checkbox',
+    budget: 520,
+  },
+  {
+    name: 'vue-switch',
+    framework: 'vue',
+    subpath: 'switch',
+    budget: 540,
+  },
+  {
+    name: 'vue-label',
+    framework: 'vue',
+    subpath: 'label',
+    budget: 210,
+  },
+  {
+    name: 'vue-separator',
+    framework: 'vue',
+    subpath: 'separator',
+    budget: 315,
+  },
+  {
+    name: 'vue-progress',
+    framework: 'vue',
+    subpath: 'progress',
+    budget: 560,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',

@@ -12,6 +12,36 @@
       "brotli": 226,
       "budget": 512
     },
+    "vue-checkbox": {
+      "minified": 751,
+      "gzip": 413,
+      "brotli": 358,
+      "budget": 520
+    },
+    "vue-switch": {
+      "minified": 745,
+      "gzip": 418,
+      "brotli": 362,
+      "budget": 540
+    },
+    "vue-label": {
+      "minified": 177,
+      "gzip": 162,
+      "brotli": 137,
+      "budget": 210
+    },
+    "vue-separator": {
+      "minified": 382,
+      "gzip": 245,
+      "brotli": 209,
+      "budget": 315
+    },
+    "vue-progress": {
+      "minified": 800,
+      "gzip": 437,
+      "brotli": 394,
+      "budget": 560
+    },
     "angular-button": {
       "minified": 722,
       "gzip": 398,
@@ -121,9 +151,9 @@
       "budget": 8192
     },
     "vue-basic": {
-      "minified": 16552,
-      "gzip": 4679,
-      "brotli": 4199,
+      "minified": 16958,
+      "gzip": 4776,
+      "brotli": 4305,
       "budget": 8192
     },
     "angular-basic": {
@@ -139,9 +169,9 @@
       "budget": 18432
     },
     "vue-overlays": {
-      "minified": 29142,
-      "gzip": 10236,
-      "brotli": 9212,
+      "minified": 28450,
+      "gzip": 10019,
+      "brotli": 9004,
       "budget": 10752
     },
     "angular-overlays": {
@@ -157,9 +187,9 @@
       "budget": 27648
     },
     "vue-complete": {
-      "minified": 76292,
-      "gzip": 21122,
-      "brotli": 18847,
+      "minified": 76910,
+      "gzip": 21290,
+      "brotli": 18953,
       "budget": 21504
     },
     "angular-complete": {
@@ -174,9 +204,9 @@
       "brotli": 12769
     },
     "vue-without-floating": {
-      "minified": 60471,
-      "gzip": 14919,
-      "brotli": 13250
+      "minified": 61092,
+      "gzip": 15089,
+      "brotli": 13390
     },
     "angular-without-floating": {
       "minified": 120225,
@@ -196,7 +226,7 @@
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "vue": {
-        "gzip": 6203,
+        "gzip": 6201,
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "angular": {
@@ -213,9 +243,9 @@
       "budget": 307200
     },
     "vue": {
-      "files": 144,
-      "unpacked": 368865,
-      "gzip": 43832,
+      "files": 158,
+      "unpacked": 387738,
+      "gzip": 44512,
       "budget": 460800
     },
     "angular": {

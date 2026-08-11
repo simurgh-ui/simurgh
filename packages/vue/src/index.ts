@@ -807,130 +807,11 @@ export const CollapsibleContent = /* @__PURE__ */ defineComponent({
   },
 });
 
-function checkControl(role: 'checkbox' | 'switch', name: string) {
-  return defineComponent({
-    name,
-    inheritAttrs: false,
-    props: {
-      modelValue: Boolean,
-      defaultChecked: Boolean,
-      name: String,
-      value: { type: String, default: 'on' },
-      required: Boolean,
-      disabled: Boolean,
-    },
-    emits: ['update:modelValue'],
-    setup(props, { slots, attrs, emit }) {
-      const local = ref(props.defaultChecked);
-      const checked = computed(() => props.modelValue || local.value);
-      const toggle = () => {
-        if (!props.disabled) {
-          local.value = !checked.value;
-          emit('update:modelValue', local.value);
-        }
-      };
-      return () => [
-        h(
-          'button',
-          {
-            ...attrs,
-            type: 'button',
-            role,
-            'aria-checked': checked.value,
-            disabled: props.disabled,
-            onClick: toggle,
-          },
-          slots.default?.(),
-        ),
-        props.name
-          ? h('input', {
-              type: 'checkbox',
-              hidden: true,
-              name: props.name,
-              value: props.value,
-              checked: checked.value,
-              required: props.required,
-              disabled: props.disabled,
-            })
-          : null,
-      ];
-    },
-  });
-}
-export const Label = /* @__PURE__ */ defineComponent({
-  name: 'SimurghLabel',
-  inheritAttrs: false,
-  setup(_, { attrs, slots }) {
-    return () => h('label', attrs, slots.default?.());
-  },
-});
-
-export const Separator = /* @__PURE__ */ defineComponent({
-  name: 'SimurghSeparator',
-  props: {
-    orientation: {
-      type: String as PropType<Orientation>,
-      default: 'horizontal',
-    },
-    decorative: Boolean,
-  },
-  setup(props, { attrs }) {
-    return () =>
-      h('div', {
-        ...attrs,
-        role: props.decorative ? 'none' : 'separator',
-        'aria-hidden': props.decorative || undefined,
-        'aria-orientation': props.decorative ? undefined : props.orientation,
-        'data-orientation': props.orientation,
-      });
-  },
-});
-
-export const Progress = /* @__PURE__ */ defineComponent({
-  name: 'SimurghProgress',
-  props: {
-    value: { type: Number as PropType<number | null>, default: null },
-    max: { type: Number, default: 100 },
-    getValueLabel: Function as PropType<(value: number, max: number) => string>,
-  },
-  setup(props, { attrs, slots }) {
-    const safeMax = computed(() =>
-      Number.isFinite(props.max) && props.max > 0 ? props.max : 100,
-    );
-    const safeValue = computed(() =>
-      props.value == null || !Number.isFinite(props.value)
-        ? null
-        : Math.min(safeMax.value, Math.max(0, props.value)),
-    );
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: 'progressbar',
-          'aria-valuemin': 0,
-          'aria-valuemax': safeMax.value,
-          'aria-valuenow': safeValue.value ?? undefined,
-          'aria-valuetext':
-            safeValue.value == null
-              ? undefined
-              : props.getValueLabel?.(safeValue.value, safeMax.value),
-          'data-state':
-            safeValue.value == null ? 'indeterminate' : 'determinate',
-          'data-value': safeValue.value ?? undefined,
-          'data-max': safeMax.value,
-        },
-        slots.default?.() ??
-          h('span', {
-            'data-part': 'indicator',
-            style:
-              safeValue.value == null
-                ? undefined
-                : { inlineSize: `${(safeValue.value / safeMax.value) * 100}%` },
-          }),
-      );
-  },
-});
+export { Checkbox } from './components/checkbox.js';
+export { Label } from './components/label.js';
+export { Progress } from './components/progress.js';
+export { Separator } from './components/separator.js';
+export { Switch } from './components/switch.js';
 
 export const Toggle = /* @__PURE__ */ defineComponent({
   name: 'SimurghToggle',
@@ -1051,151 +932,12 @@ export const ToggleGroupItem = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const VisuallyHidden = /* @__PURE__ */ defineComponent({
-  name: 'SimurghVisuallyHidden',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'span',
-        {
-          ...attrs,
-          style: [
-            {
-              position: 'absolute',
-              inlineSize: '1px',
-              blockSize: '1px',
-              padding: 0,
-              margin: '-1px',
-              overflow: 'hidden',
-              clip: 'rect(0, 0, 0, 0)',
-              whiteSpace: 'nowrap',
-              border: 0,
-            },
-            attrs['style'],
-          ],
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const Avatar = /* @__PURE__ */ defineComponent({
-  name: 'SimurghAvatar',
-  props: {
-    src: String,
-    alt: { type: String, required: true },
-    fallback: { type: String, required: true },
-  },
-  setup(props, { attrs, slots }) {
-    const loaded = ref(false);
-    watch(
-      () => props.src,
-      () => (loaded.value = false),
-    );
-    return () =>
-      h(
-        'span',
-        { ...attrs, 'data-state': loaded.value ? 'loaded' : 'fallback' },
-        [
-          props.src
-            ? h('img', {
-                src: props.src,
-                alt: props.alt,
-                hidden: !loaded.value,
-                onLoad: () => (loaded.value = true),
-                onError: () => (loaded.value = false),
-              })
-            : null,
-          !loaded.value
-            ? h(
-                'span',
-                { 'data-part': 'fallback' },
-                slots.fallback?.() ?? props.fallback,
-              )
-            : null,
-        ],
-      );
-  },
-});
-
-export const Alert = /* @__PURE__ */ defineComponent({
-  name: 'SimurghAlert',
-  props: { urgent: Boolean },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: props.urgent ? 'alert' : 'status',
-          'aria-live': props.urgent ? 'assertive' : 'polite',
-          'aria-atomic': 'true',
-          'data-urgent': props.urgent || undefined,
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const AspectRatio = /* @__PURE__ */ defineComponent({
-  name: 'SimurghAspectRatio',
-  props: { ratio: { type: Number, default: 1 } },
-  setup(props, { attrs, slots }) {
-    const safeRatio = computed(() =>
-      Number.isFinite(props.ratio) && props.ratio > 0 ? props.ratio : 1,
-    );
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          'data-ratio': safeRatio.value,
-          style: [{ aspectRatio: String(safeRatio.value) }, attrs['style']],
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const Skeleton = /* @__PURE__ */ defineComponent({
-  name: 'SimurghSkeleton',
-  props: { label: String },
-  setup(props, { attrs }) {
-    return () =>
-      h('div', {
-        ...attrs,
-        role: props.label ? 'status' : undefined,
-        'aria-label': props.label,
-        'aria-busy': props.label ? 'true' : undefined,
-        'aria-hidden': props.label ? undefined : 'true',
-        'data-state': 'loading',
-      });
-  },
-});
-
-export const Spinner = /* @__PURE__ */ defineComponent({
-  name: 'SimurghSpinner',
-  props: { label: { type: String, default: 'Loading' } },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'span',
-        {
-          ...attrs,
-          role: 'status',
-          'aria-label': props.label,
-          'aria-live': 'polite',
-          'aria-busy': 'true',
-          'data-state': 'loading',
-        },
-        h(
-          'span',
-          { 'aria-hidden': 'true', 'data-part': 'indicator' },
-          slots.default?.() ?? '◌',
-        ),
-      );
-  },
-});
+export { Alert } from './components/alert.js';
+export { AspectRatio } from './components/aspect-ratio.js';
+export { Avatar } from './components/avatar.js';
+export { Skeleton } from './components/skeleton.js';
+export { Spinner } from './components/spinner.js';
+export { VisuallyHidden } from './components/visually-hidden.js';
 
 export { Button } from './components/button.js';
 
@@ -2052,9 +1794,6 @@ export const PaginationLink = /* @__PURE__ */ defineComponent({
       );
   },
 });
-
-export const Checkbox = checkControl('checkbox', 'SimurghCheckbox');
-export const Switch = checkControl('switch', 'SimurghSwitch');
 
 const radioKey: InjectionKey<{
   value: Ref<string>;

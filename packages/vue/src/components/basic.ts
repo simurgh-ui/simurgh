@@ -1,34 +1,34 @@
+export { Checkbox } from './checkbox.js';
+export { Alert } from './alert.js';
+export { Label } from './label.js';
+export { Progress } from './progress.js';
+export { Separator } from './separator.js';
+export { Skeleton } from './skeleton.js';
+export { Spinner } from './spinner.js';
+export { Switch } from './switch.js';
 export {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Alert,
   Badge,
-  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-  Checkbox,
   Input,
-  Label,
   NativeSelect,
   NumberInput,
-  Progress,
   RadioGroup,
   RadioGroupItem,
-  Rating,
-  Separator,
-  Skeleton,
-  Spinner,
-  Switch,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  TagsInput,
   Textarea,
 } from '../index.js';
+export { Button } from './button.js';
+export { Rating } from './rating.js';
+export { TagsInput } from './tags-input.js';
