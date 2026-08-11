@@ -21,6 +21,7 @@
     "carousel",
     "resizable",
     "sidebar",
+    "tree",
     "tabs",
     "accordion",
     "checkbox",
@@ -157,6 +158,7 @@
         "SidebarGroup",
         "SidebarMenu"
       ],
+      "tree": ["Tree", "TreeItem"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -327,6 +329,7 @@
         "SidebarGroup",
         "SidebarMenu"
       ],
+      "tree": ["Tree", "TreeItem"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -465,6 +468,7 @@
         "SidebarGroupDirective",
         "SidebarMenuDirective"
       ],
+      "tree": ["TreeDirective", "TreeItemComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],

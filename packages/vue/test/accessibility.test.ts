@@ -89,6 +89,8 @@ import {
   SidebarTrigger,
   SidebarContent,
   SidebarMenu,
+  Tree,
+  TreeItem,
   Dialog,
   DialogContent,
   DialogTrigger,
@@ -715,6 +717,29 @@ describe('Vue accessibility contract', () => {
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(sidebar.hidden).toBe(true);
     expect(screen.queryByRole('link', { name: 'Projects' })).toBeNull();
+  });
+  it('navigates and collapses a hierarchical tree with roving focus', async () => {
+    render({
+      components: { Tree, TreeItem },
+      template: `<Tree aria-label="Files"><TreeItem label="Documents" default-expanded><TreeItem label="Guide" /><TreeItem label="Locked" disabled /></TreeItem><TreeItem label="Images" /></Tree>`,
+    });
+    const tree = screen.getByRole('tree', { name: 'Files' });
+    const documents = screen.getByRole('treeitem', { name: 'Documents' });
+    const guide = screen.getByRole('treeitem', { name: 'Guide' });
+    const images = screen.getByRole('treeitem', { name: 'Images' });
+    expect(documents.tabIndex).toBe(0);
+    expect(guide.tabIndex).toBe(-1);
+    documents.focus();
+    await fireEvent.keyDown(documents, { key: 'ArrowDown' });
+    expect(document.activeElement).toBe(guide);
+    await fireEvent.keyDown(guide, { key: 'ArrowDown' });
+    expect(document.activeElement).toBe(images);
+    await fireEvent.keyDown(images, { key: 'Home' });
+    expect(document.activeElement).toBe(documents);
+    await fireEvent.keyDown(documents, { key: 'ArrowLeft' });
+    expect(documents.getAttribute('aria-expanded')).toBe('false');
+    expect(screen.queryByRole('treeitem', { name: 'Guide' })).toBeNull();
+    expect((await axe.run(tree)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
     render({

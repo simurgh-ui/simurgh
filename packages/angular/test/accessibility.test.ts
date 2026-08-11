@@ -94,6 +94,8 @@ import {
   SidebarTriggerDirective,
   SidebarContentDirective,
   SidebarMenuDirective,
+  TreeDirective,
+  TreeItemComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -574,6 +576,19 @@ class ResizableHost {}
 class SidebarHost {
   changed = vi.fn();
 }
+
+@Component({
+  standalone: true,
+  imports: [TreeDirective, TreeItemComponent],
+  template: `<ul simurghTree aria-label="Files">
+    <simurgh-tree-item label="Documents" [expandable]="true" [expanded]="true">
+      <simurgh-tree-item label="Guide" />
+      <simurgh-tree-item label="Locked" [disabled]="true" />
+    </simurgh-tree-item>
+    <simurgh-tree-item label="Images" />
+  </ul>`,
+})
+class TreeHost {}
 
 @Component({
   standalone: true,
@@ -1395,6 +1410,42 @@ describe('Angular accessibility contract', () => {
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(sidebar.hidden).toBe(true);
     expect(sidebar.querySelector('a')).toBeTruthy();
+    fixture.destroy();
+  });
+  it('navigates and collapses a hierarchical tree with roving focus', async () => {
+    const fixture = TestBed.createComponent(TreeHost);
+    fixture.detectChanges();
+    const tree = fixture.nativeElement.querySelector(
+      '[role=tree]',
+    ) as HTMLElement;
+    const items = Array.from(
+      tree.querySelectorAll<HTMLButtonElement>('[role=treeitem]'),
+    );
+    const [documents, guide, , images] = items;
+    expect(documents?.tabIndex).toBe(0);
+    expect(guide?.tabIndex).toBe(-1);
+    documents?.focus();
+    documents?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(guide);
+    guide?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(images);
+    images?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Home', bubbles: true }),
+    );
+    expect(document.activeElement).toBe(documents);
+    documents?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(documents?.getAttribute('aria-expanded')).toBe('false');
+    expect(fixture.nativeElement.querySelector('[role=group]').hidden).toBe(
+      true,
+    );
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });
   it('associates a native label with its form control', async () => {
