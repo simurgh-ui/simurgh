@@ -85,6 +85,30 @@ const cases = [
     budget: 480,
   },
   {
+    name: 'vue-button-group',
+    framework: 'vue',
+    subpath: 'button-group',
+    budget: 400,
+  },
+  {
+    name: 'vue-input-group',
+    framework: 'vue',
+    subpath: 'input-group',
+    budget: 405,
+  },
+  {
+    name: 'vue-input-otp',
+    framework: 'vue',
+    subpath: 'input-otp',
+    budget: 630,
+  },
+  {
+    name: 'vue-toolbar',
+    framework: 'vue',
+    subpath: 'toolbar',
+    budget: 800,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',

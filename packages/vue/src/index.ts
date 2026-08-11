@@ -941,223 +941,27 @@ export { VisuallyHidden } from './components/visually-hidden.js';
 
 export { Button } from './components/button.js';
 
-export const ButtonGroup = /* @__PURE__ */ defineComponent({
-  name: 'SimurghButtonGroup',
-  props: {
-    orientation: {
-      type: String as PropType<Orientation>,
-      default: 'horizontal',
-    },
-  },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: attrs['role'] ?? 'group',
-          'aria-orientation': props.orientation,
-          'data-slot': 'button-group',
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const ButtonGroupText = /* @__PURE__ */ defineComponent({
-  name: 'SimurghButtonGroupText',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'span',
-        { ...attrs, 'data-slot': 'button-group-text' },
-        slots.default?.(),
-      );
-  },
-});
-
-export const ButtonGroupSeparator = /* @__PURE__ */ defineComponent({
-  name: 'SimurghButtonGroupSeparator',
-  props: {
-    orientation: {
-      type: String as PropType<Orientation>,
-      default: 'vertical',
-    },
-  },
-  setup(props, { attrs }) {
-    return () =>
-      h('span', {
-        ...attrs,
-        role: attrs['role'] ?? 'separator',
-        'aria-orientation': props.orientation,
-        'data-slot': 'button-group-separator',
-      });
-  },
-});
+export {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+} from './components/button-group.js';
 
 export { Input } from './components/input.js';
 export { Link } from './components/link.js';
 
-export const InputGroup = /* @__PURE__ */ defineComponent({
-  name: 'SimurghInputGroup',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: attrs['role'] ?? 'group',
-          'data-slot': 'input-group',
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const InputGroupAddon = /* @__PURE__ */ defineComponent({
-  name: 'SimurghInputGroupAddon',
-  props: {
-    align: {
-      type: String as PropType<
-        'inline-start' | 'inline-end' | 'block-start' | 'block-end'
-      >,
-      default: 'inline-start',
-    },
-    decorative: Boolean,
-  },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          'aria-hidden': props.decorative || undefined,
-          'data-align': props.align,
-          'data-slot': 'input-group-addon',
-        },
-        slots.default?.(),
-      );
-  },
-});
-
-export const InputGroupText = /* @__PURE__ */ defineComponent({
-  name: 'SimurghInputGroupText',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'span',
-        { ...attrs, 'data-slot': 'input-group-text' },
-        slots.default?.(),
-      );
-  },
-});
-
-export const InputOtp = /* @__PURE__ */ defineComponent({
-  name: 'SimurghInputOtp',
-  props: {
-    modelValue: { type: String, default: '' },
-    length: { type: Number, default: 6 },
-    digitsOnly: { type: Boolean, default: true },
-    name: String,
-    required: Boolean,
-    disabled: Boolean,
-    invalid: Boolean,
-    autocomplete: { type: String, default: 'one-time-code' },
-  },
-  emits: ['update:modelValue', 'change'],
-  setup(props, { attrs, emit }) {
-    return () =>
-      h('input', {
-        ...attrs,
-        type: 'text',
-        name: props.name,
-        value: props.modelValue,
-        maxlength: props.length,
-        required: props.required,
-        disabled: props.disabled,
-        autocomplete: props.autocomplete,
-        inputmode: props.digitsOnly ? 'numeric' : 'text',
-        pattern: props.digitsOnly ? '[0-9]*' : undefined,
-        'aria-invalid': props.invalid || undefined,
-        'data-slot': 'input-otp',
-        style: [{ '--simurgh-otp-length': props.length }, attrs['style']],
-        onInput: (event: Event) => {
-          const input = event.target as HTMLInputElement;
-          const value = (
-            props.digitsOnly ? input.value.replace(/\D/g, '') : input.value
-          ).slice(0, props.length);
-          input.value = value;
-          emit('update:modelValue', value);
-        },
-        onChange: (event: Event) => emit('change', event),
-      });
-  },
-});
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+} from './components/input-group.js';
+export { InputOtp } from './components/input-otp.js';
 
 export { Meter } from './components/meter.js';
 export { NativeSelect } from './components/native-select.js';
 export { Slider } from './components/slider.js';
 
-export const Toolbar = /* @__PURE__ */ defineComponent({
-  name: 'SimurghToolbar',
-  props: {
-    orientation: {
-      type: String as PropType<Orientation>,
-      default: 'horizontal',
-    },
-    direction: { type: String as PropType<Direction>, default: 'ltr' },
-    label: { type: String, default: 'Toolbar' },
-  },
-  setup(props, { attrs, slots }) {
-    return () =>
-      h(
-        'div',
-        {
-          ...attrs,
-          role: 'toolbar',
-          'aria-label': props.label,
-          'aria-orientation': props.orientation,
-          dir: props.direction,
-          'data-slot': 'toolbar',
-          onKeydown: (event: KeyboardEvent) => {
-            const items = Array.from(
-              (
-                event.currentTarget as HTMLElement
-              ).querySelectorAll<HTMLElement>(
-                '[data-toolbar-item]:not(:disabled)',
-              ),
-            );
-            const index = items.indexOf(document.activeElement as HTMLElement);
-            const target = nextIndex(index, items.length, event.key, {
-              orientation: props.orientation,
-              direction: props.direction,
-            });
-            if (target !== index) {
-              event.preventDefault();
-              items[target]?.focus();
-            }
-          },
-        },
-        slots.default?.(),
-      );
-  },
-});
-export const ToolbarButton = /* @__PURE__ */ defineComponent({
-  name: 'SimurghToolbarButton',
-  setup(_, { attrs, slots }) {
-    return () =>
-      h(
-        'button',
-        {
-          ...attrs,
-          type: 'button',
-          'data-toolbar-item': '',
-          'data-slot': 'toolbar-button',
-        },
-        slots.default?.(),
-      );
-  },
-});
+export { Toolbar, ToolbarButton } from './components/toolbar.js';
 
 export { ScrollArea } from './components/scroll-area.js';
 export { Textarea } from './components/textarea.js';
