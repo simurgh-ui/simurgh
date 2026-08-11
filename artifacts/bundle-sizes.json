@@ -1,46 +1,89 @@
 {
-  "react-button": {
-    "minified": 337,
-    "gzip": 240,
-    "brotli": 197,
-    "budget": 1024
+  "bundles": {
+    "react-button": {
+      "minified": 312,
+      "gzip": 226,
+      "brotli": 182,
+      "budget": 1024
+    },
+    "vue-button": {
+      "minified": 3737,
+      "gzip": 1363,
+      "brotli": 1210,
+      "budget": 1536
+    },
+    "angular-button": {
+      "minified": 722,
+      "gzip": 398,
+      "brotli": 333,
+      "budget": 2048
+    },
+    "react-dialog": {
+      "minified": 2457,
+      "gzip": 1140,
+      "brotli": 988,
+      "budget": 4096
+    },
+    "angular-dialog": {
+      "minified": 2152,
+      "gzip": 1016,
+      "brotli": 859,
+      "budget": 2048
+    },
+    "angular-calendar": {
+      "minified": 5992,
+      "gzip": 2232,
+      "brotli": 2011,
+      "budget": 3072
+    },
+    "angular-root-button": {
+      "minified": 722,
+      "gzip": 398,
+      "brotli": 333,
+      "budget": 2048
+    },
+    "react-complete": {
+      "minified": 81143,
+      "gzip": 26087,
+      "brotli": 23487,
+      "budget": 27648
+    },
+    "vue-complete": {
+      "minified": 71492,
+      "gzip": 19921,
+      "brotli": 17787,
+      "budget": 21504
+    },
+    "angular-complete": {
+      "minified": 128976,
+      "gzip": 24759,
+      "brotli": 21026,
+      "budget": 27648
+    },
+    "styles-complete": {
+      "minified": 27972,
+      "gzip": 4661,
+      "brotli": 4096
+    }
   },
-  "vue-button": {
-    "minified": 3770,
-    "gzip": 1379,
-    "brotli": 1228,
-    "budget": 1536
-  },
-  "angular-button": {
-    "minified": 1197,
-    "gzip": 479,
-    "brotli": 419,
-    "budget": 2048
-  },
-  "react-dialog": {
-    "minified": 2032,
-    "gzip": 950,
-    "brotli": 824,
-    "budget": 4096
-  },
-  "react-complete": {
-    "minified": 42276,
-    "gzip": 12570,
-    "brotli": 11227
-  },
-  "vue-complete": {
-    "minified": 53420,
-    "gzip": 12987,
-    "brotli": 11590
-  },
-  "angular-complete": {
-    "minified": 160888,
-    "gzip": 19852,
-    "brotli": 16132
-  },
-  "styles-complete": {
-    "minified": 27972,
-    "gzip": 4661,
-    "brotli": 4096
+  "packages": {
+    "react": {
+      "files": 129,
+      "unpacked": 263868,
+      "gzip": 38297,
+      "budget": 307200
+    },
+    "vue": {
+      "files": 129,
+      "unpacked": 737639,
+      "gzip": 50019,
+      "budget": 819200
+    },
+    "angular": {
+      "files": 133,
+      "unpacked": 236083,
+      "gzip": 31565,
+      "budget": 281600
+    }
   }
 }

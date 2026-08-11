@@ -14,10 +14,11 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && node ../../scripts/build-adapter.mjs react",
+    "build": "node ../../scripts/clean-dist.mjs react && tsc -p tsconfig.json && node ../../scripts/build-adapter.mjs react",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src"

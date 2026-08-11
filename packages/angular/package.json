@@ -18,10 +18,11 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
-    "build": "ngc -p tsconfig.json && node ../../scripts/build-adapter.mjs angular",
+    "build": "node ../../scripts/clean-dist.mjs angular && ngc -p tsconfig.json && node ../../scripts/optimize-angular.mjs",
     "test": "vitest run --passWithNoTests",
     "typecheck": "ngc -p tsconfig.json --noEmit",
     "lint": "eslint src"

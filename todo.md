@@ -109,3 +109,16 @@ Items are checked only after their implementation exists and the relevant verifi
   - [x] Keep an Angular Button import below 2 KiB gzip.
   - [x] Keep a React Dialog import below 4 KiB gzip.
   - [x] Track the minified, gzip, and Brotli sizes of each complete framework adapter and the optional CSS.
+
+## Bundle-size optimization follow-up
+
+- [x] Move Angular component implementations out of the monolithic `index.ts` into genuine per-component modules instead of re-exporting them from `../index.js`.
+- [x] Reduce complex Angular component subpaths, including Dialog and Calendar, from approximately 26.35 KiB gzip to component-granular bundles.
+- [x] Make root Angular named imports tree-shake effectively; importing Button currently costs approximately 25.3 KiB gzip.
+- [x] Expand bundle-size regression checks to cover root named imports and representative complex Angular subpaths.
+- [x] Measure consumer bundle sizes with only framework peer dependencies externalized so Core and Floating UI costs remain visible.
+- [x] Correct the complete-adapter baselines to include library dependencies: React 25.48 KiB gzip, Vue 19.45 KiB gzip, and Angular 26.36 KiB gzip.
+- [x] Add enforced gzip budgets for complete framework adapters instead of recording their sizes without limits.
+- [x] Reduce published package weight by generating source maps without embedded source content or excluding source maps from published packages.
+- [x] Eliminate duplicated Angular component output that currently contributes to an approximately 21.5 MiB `dist` directory.
+- [x] Add published-package size checks alongside browser bundle-size checks.

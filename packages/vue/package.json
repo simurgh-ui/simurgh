@@ -14,10 +14,11 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && node ../../scripts/build-adapter.mjs vue",
+    "build": "node ../../scripts/clean-dist.mjs vue && tsc -p tsconfig.json && node ../../scripts/build-adapter.mjs vue",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src"
