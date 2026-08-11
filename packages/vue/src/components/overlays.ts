@@ -36,6 +36,8 @@ export {
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
+} from './context-menu.js';
+export {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,

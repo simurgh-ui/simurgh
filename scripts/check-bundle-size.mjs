@@ -283,6 +283,12 @@ const cases = [
     budget: 1340,
   },
   {
+    name: 'vue-context-menu',
+    framework: 'vue',
+    subpath: 'context-menu',
+    budget: 1500,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
