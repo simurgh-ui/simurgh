@@ -307,6 +307,12 @@ const cases = [
     budget: 9450,
   },
   {
+    name: 'vue-dropdown-menu',
+    framework: 'vue',
+    subpath: 'dropdown-menu',
+    budget: 9800,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
