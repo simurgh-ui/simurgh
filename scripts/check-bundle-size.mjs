@@ -217,6 +217,24 @@ const cases = [
     budget: 915,
   },
   {
+    name: 'vue-select',
+    framework: 'vue',
+    subpath: 'select',
+    budget: 1320,
+  },
+  {
+    name: 'vue-combobox',
+    framework: 'vue',
+    subpath: 'combobox',
+    budget: 1390,
+  },
+  {
+    name: 'vue-command',
+    framework: 'vue',
+    subpath: 'command',
+    budget: 1560,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
