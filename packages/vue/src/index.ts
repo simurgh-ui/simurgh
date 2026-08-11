@@ -436,7 +436,7 @@ const normalizeResizableSizes = (values: number[]) => {
   );
 };
 
-export const ResizablePanelGroup = /* @__PURE__ */ defineComponent({
+const legacyResizablePanelGroup = /* @__PURE__ */ defineComponent({
   name: 'SimurghResizablePanelGroup',
   props: {
     orientation: {
@@ -512,7 +512,7 @@ export const ResizablePanelGroup = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const ResizablePanel = /* @__PURE__ */ defineComponent({
+const legacyResizablePanel = /* @__PURE__ */ defineComponent({
   name: 'SimurghResizablePanel',
   props: {
     defaultSize: { type: Number, default: 1 },
@@ -542,7 +542,7 @@ export const ResizablePanel = /* @__PURE__ */ defineComponent({
   },
 });
 
-export const ResizableHandle = /* @__PURE__ */ defineComponent({
+const legacyResizableHandle = /* @__PURE__ */ defineComponent({
   name: 'SimurghResizableHandle',
   setup(_, { attrs, slots }) {
     const context = inject(resizableKey)!;
@@ -653,6 +653,15 @@ export const ResizableHandle = /* @__PURE__ */ defineComponent({
       );
   },
 });
+void legacyResizablePanelGroup;
+void legacyResizablePanel;
+void legacyResizableHandle;
+
+export {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from './components/resizable.js';
 
 export {
   Sidebar,

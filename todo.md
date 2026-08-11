@@ -131,9 +131,9 @@ Items are checked only after their implementation exists and the relevant verifi
 ## Bundle-size optimization third pass
 
 - [x] Remove residual Vue wrapper overhead by marking side-effect-free `Symbol`, `cardPart`, `checkControl`, `carouselControl`, and related helper calls as pure.
-- [ ] Move Vue implementations into genuine per-component modules so subpaths do not depend on tree-shaking the monolithic `index.ts`.
-  - [x] Move Button, Rating, Tags Input, Dialog, Calendar, Checkbox, Switch, Label, Separator, Progress, Alert, Aspect Ratio, Avatar, Skeleton, Spinner, Visually Hidden, Link, Input, Native Select, Slider, Meter, Scroll Area, Textarea, Breadcrumb, Button Group, Input Group, Input OTP, Toolbar, Toggle, Toggle Group, Tabs, Accordion, Collapsible, Card, Empty, Item, Kbd, Badge, Field, Table, Pagination, Form, Navigation Menu, Menubar, Radio Group, Password Input, Number Input, Select, Combobox, Command, File Upload, Toast, Sheet, Drawer, Alert Dialog, Carousel, Sidebar, Tree, Context Menu, Popover, Tooltip, Hover Card, Dropdown Menu, and Date Picker into genuine modules.
-  - [ ] Split the remaining Vue catalog modules.
+- [x] Move Vue implementations into genuine per-component modules so subpaths do not depend on tree-shaking the monolithic `index.ts`.
+  - [x] Move Button, Rating, Tags Input, Dialog, Calendar, Checkbox, Switch, Label, Separator, Progress, Alert, Aspect Ratio, Avatar, Skeleton, Spinner, Visually Hidden, Link, Input, Native Select, Slider, Meter, Scroll Area, Textarea, Breadcrumb, Button Group, Input Group, Input OTP, Toolbar, Toggle, Toggle Group, Tabs, Accordion, Collapsible, Card, Empty, Item, Kbd, Badge, Field, Table, Pagination, Form, Navigation Menu, Menubar, Radio Group, Password Input, Number Input, Select, Combobox, Command, File Upload, Toast, Sheet, Drawer, Alert Dialog, Carousel, Sidebar, Tree, Context Menu, Popover, Tooltip, Hover Card, Dropdown Menu, Date Picker, and Resizable into genuine modules.
+  - [x] Split the remaining Vue catalog modules.
 - [x] Reduce representative Vue component bundles toward the verified optimized measurements.
   - [x] Reduce Vue Button from approximately 1.41 KiB to 0.44 KiB gzip.
   - [x] Reduce Vue Rating from approximately 1.70 KiB to 0.78 KiB gzip.
@@ -158,8 +158,8 @@ Items are checked only after their implementation exists and the relevant verifi
   - [x] Reduce Angular Context Menu from approximately 8.16 KiB to 1.98 KiB gzip.
   - [x] Reduce Angular Select from approximately 8.18 KiB to 1.98 KiB gzip.
   - [x] Reduce the Angular `basic` entry from approximately 12.24 KiB to 6 KiB gzip.
-- [ ] Finish moving the remaining Vue catalog implementations out of monolithic `index.ts` re-exports and into genuine per-component modules.
-  - [ ] Reduce individual Vue component overhead and reliance on bundler purity analysis.
+- [x] Finish moving the remaining Vue catalog implementations out of monolithic `index.ts` re-exports and into genuine per-component modules.
+  - [x] Reduce individual Vue component overhead and reliance on bundler purity analysis.
   - [x] Reduce the Vue package from its current approximately 722 KiB unpacked size.
 - [x] Tighten standalone bundle regression budgets to approximately 20–30% above verified measurements.
   - [x] Tighten React Button from its 1 KiB budget around the current 226 B gzip measurement.

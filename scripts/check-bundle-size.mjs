@@ -319,6 +319,12 @@ const cases = [
     budget: 11000,
   },
   {
+    name: 'vue-resizable',
+    framework: 'vue',
+    subpath: 'resizable',
+    budget: 1.5 * KiB,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
