@@ -20,6 +20,7 @@
     "date-picker",
     "carousel",
     "resizable",
+    "sidebar",
     "tabs",
     "accordion",
     "checkbox",
@@ -146,6 +147,16 @@
         "CarouselNext"
       ],
       "resizable": ["ResizablePanelGroup", "ResizablePanel", "ResizableHandle"],
+      "sidebar": [
+        "SidebarProvider",
+        "Sidebar",
+        "SidebarTrigger",
+        "SidebarHeader",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarGroup",
+        "SidebarMenu"
+      ],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -306,6 +317,16 @@
         "CarouselNext"
       ],
       "resizable": ["ResizablePanelGroup", "ResizablePanel", "ResizableHandle"],
+      "sidebar": [
+        "SidebarProvider",
+        "Sidebar",
+        "SidebarTrigger",
+        "SidebarHeader",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarGroup",
+        "SidebarMenu"
+      ],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -433,6 +454,16 @@
         "ResizablePanelGroupComponent",
         "ResizablePanelComponent",
         "ResizableHandleComponent"
+      ],
+      "sidebar": [
+        "SidebarProviderComponent",
+        "SidebarDirective",
+        "SidebarTriggerDirective",
+        "SidebarHeaderDirective",
+        "SidebarContentDirective",
+        "SidebarFooterDirective",
+        "SidebarGroupDirective",
+        "SidebarMenuDirective"
       ],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],

@@ -91,6 +91,11 @@ import {
   ResizablePanelGroup,
   ResizablePanel,
   ResizableHandle,
+  SidebarProvider,
+  Sidebar,
+  SidebarTrigger,
+  SidebarContent,
+  SidebarMenu,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -587,6 +592,35 @@ describe('React accessibility contract', () => {
       '30%',
     );
     expect((await axe.run(handle.parentElement!)).violations).toEqual([]);
+  });
+  it('toggles a labelled navigation sidebar without exposing hidden links', async () => {
+    const changed = vi.fn();
+    render(
+      <SidebarProvider onOpenChange={changed}>
+        <SidebarTrigger>Toggle navigation</SidebarTrigger>
+        <Sidebar aria-label="Workspace navigation">
+          <SidebarContent>
+            <SidebarMenu>
+              <li>
+                <a href="/projects">Projects</a>
+              </li>
+            </SidebarMenu>
+          </SidebarContent>
+        </Sidebar>
+      </SidebarProvider>,
+    );
+    const trigger = screen.getByRole('button', { name: 'Toggle navigation' });
+    const sidebar = screen.getByRole('complementary', {
+      name: 'Workspace navigation',
+    });
+    expect(trigger.getAttribute('aria-controls')).toBe(sidebar.id);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect((await axe.run(sidebar.parentElement!)).violations).toEqual([]);
+    fireEvent.click(trigger);
+    expect(changed).toHaveBeenLastCalledWith(false);
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(sidebar.hidden).toBe(true);
+    expect(screen.queryByRole('link', { name: 'Projects' })).toBeNull();
   });
   it('associates a native label with its form control', async () => {
     render(

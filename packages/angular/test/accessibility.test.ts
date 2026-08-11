@@ -89,6 +89,11 @@ import {
   ResizablePanelGroupComponent,
   ResizablePanelComponent,
   ResizableHandleComponent,
+  SidebarProviderComponent,
+  SidebarDirective,
+  SidebarTriggerDirective,
+  SidebarContentDirective,
+  SidebarMenuDirective,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -545,6 +550,30 @@ class CarouselHost {
   </simurgh-resizable-panel-group>`,
 })
 class ResizableHost {}
+
+@Component({
+  standalone: true,
+  imports: [
+    SidebarProviderComponent,
+    SidebarDirective,
+    SidebarTriggerDirective,
+    SidebarContentDirective,
+    SidebarMenuDirective,
+  ],
+  template: `<simurgh-sidebar-provider (openChange)="changed($event)">
+    <button simurghSidebarTrigger>Toggle navigation</button>
+    <aside simurghSidebar aria-label="Workspace navigation">
+      <div simurghSidebarContent>
+        <ul simurghSidebarMenu>
+          <li><a href="/projects">Projects</a></li>
+        </ul>
+      </div>
+    </aside>
+  </simurgh-sidebar-provider>`,
+})
+class SidebarHost {
+  changed = vi.fn();
+}
 
 @Component({
   standalone: true,
@@ -1348,6 +1377,24 @@ describe('Angular accessibility contract', () => {
     ) as NodeListOf<HTMLElement>;
     expect(panels[1]?.style.flexBasis).toBe('30%');
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    fixture.destroy();
+  });
+  it('toggles a labelled navigation sidebar without exposing hidden links', async () => {
+    const fixture = TestBed.createComponent(SidebarHost);
+    fixture.detectChanges();
+    const trigger = fixture.nativeElement.querySelector(
+      '[simurghSidebarTrigger]',
+    ) as HTMLButtonElement;
+    const sidebar = fixture.nativeElement.querySelector('aside') as HTMLElement;
+    expect(trigger.getAttribute('aria-controls')).toBe(sidebar.id);
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
+    trigger.click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith(false);
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(sidebar.hidden).toBe(true);
+    expect(sidebar.querySelector('a')).toBeTruthy();
     fixture.destroy();
   });
   it('associates a native label with its form control', async () => {

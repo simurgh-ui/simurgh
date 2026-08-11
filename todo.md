@@ -88,3 +88,4 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add accessible Date Picker across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Carousel across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Resizable panels across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Sidebar navigation across Angular, React, Vue, the registry, documentation, and contract tests.
