@@ -162,6 +162,24 @@
       "brotli": 309,
       "budget": 465
     },
+    "vue-form": {
+      "minified": 630,
+      "gzip": 373,
+      "brotli": 341,
+      "budget": 480
+    },
+    "vue-navigation-menu": {
+      "minified": 856,
+      "gzip": 373,
+      "brotli": 321,
+      "budget": 480
+    },
+    "vue-menubar": {
+      "minified": 1502,
+      "gzip": 779,
+      "brotli": 671,
+      "budget": 1000
+    },
     "angular-button": {
       "minified": 722,
       "gzip": 398,
@@ -271,9 +289,9 @@
       "budget": 8192
     },
     "vue-basic": {
-      "minified": 16208,
-      "gzip": 4589,
-      "brotli": 4114,
+      "minified": 16080,
+      "gzip": 4546,
+      "brotli": 4073,
       "budget": 8192
     },
     "angular-basic": {
@@ -289,9 +307,9 @@
       "budget": 18432
     },
     "vue-overlays": {
-      "minified": 26976,
-      "gzip": 9723,
-      "brotli": 8696,
+      "minified": 26681,
+      "gzip": 9618,
+      "brotli": 8593,
       "budget": 10752
     },
     "angular-overlays": {
@@ -307,9 +325,9 @@
       "budget": 27648
     },
     "vue-complete": {
-      "minified": 78501,
-      "gzip": 21797,
-      "brotli": 19328,
+      "minified": 78693,
+      "gzip": 21729,
+      "brotli": 19399,
       "budget": 22528
     },
     "angular-complete": {
@@ -324,9 +342,9 @@
       "brotli": 12769
     },
     "vue-without-floating": {
-      "minified": 62680,
-      "gzip": 15491,
-      "brotli": 13788
+      "minified": 62872,
+      "gzip": 15462,
+      "brotli": 13834
     },
     "angular-without-floating": {
       "minified": 120225,
@@ -346,7 +364,7 @@
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "vue": {
-        "gzip": 6306,
+        "gzip": 6267,
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "angular": {
@@ -363,9 +381,9 @@
       "budget": 307200
     },
     "vue": {
-      "files": 186,
-      "unpacked": 310659,
-      "gzip": 32372,
+      "files": 189,
+      "unpacked": 309045,
+      "gzip": 32374,
       "budget": 384000
     },
     "angular": {

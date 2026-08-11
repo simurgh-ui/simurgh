@@ -181,6 +181,24 @@ const cases = [
     budget: 465,
   },
   {
+    name: 'vue-form',
+    framework: 'vue',
+    subpath: 'form',
+    budget: 480,
+  },
+  {
+    name: 'vue-navigation-menu',
+    framework: 'vue',
+    subpath: 'navigation-menu',
+    budget: 480,
+  },
+  {
+    name: 'vue-menubar',
+    framework: 'vue',
+    subpath: 'menubar',
+    budget: 1000,
+  },
+  {
     name: 'angular-button',
     framework: 'angular',
     subpath: 'button',
