@@ -18,6 +18,7 @@
     "command",
     "calendar",
     "date-picker",
+    "carousel",
     "tabs",
     "accordion",
     "checkbox",
@@ -136,6 +137,13 @@
       "command": ["Command"],
       "calendar": ["Calendar", "CalendarProps"],
       "date-picker": ["DatePicker", "DatePickerProps"],
+      "carousel": [
+        "Carousel",
+        "CarouselContent",
+        "CarouselItem",
+        "CarouselPrevious",
+        "CarouselNext"
+      ],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -288,6 +296,13 @@
       "command": ["Command"],
       "calendar": ["Calendar"],
       "date-picker": ["DatePicker"],
+      "carousel": [
+        "Carousel",
+        "CarouselContent",
+        "CarouselItem",
+        "CarouselPrevious",
+        "CarouselNext"
+      ],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -404,6 +419,13 @@
       "command": ["CommandComponent"],
       "calendar": ["CalendarComponent"],
       "date-picker": ["DatePickerComponent"],
+      "carousel": [
+        "CarouselComponent",
+        "CarouselContentComponent",
+        "CarouselItemComponent",
+        "CarouselPreviousComponent",
+        "CarouselNextComponent"
+      ],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],

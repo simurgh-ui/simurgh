@@ -81,6 +81,11 @@ import {
   CommandComponent,
   CalendarComponent,
   DatePickerComponent,
+  CarouselComponent,
+  CarouselContentComponent,
+  CarouselItemComponent,
+  CarouselPreviousComponent,
+  CarouselNextComponent,
   DialogComponent,
   SheetComponent,
   DrawerComponent,
@@ -492,6 +497,31 @@ class DatePickerHost {
     this.date = value;
     this.selected(value);
   }
+}
+
+@Component({
+  standalone: true,
+  imports: [
+    CarouselComponent,
+    CarouselContentComponent,
+    CarouselItemComponent,
+    CarouselPreviousComponent,
+    CarouselNextComponent,
+  ],
+  template: `<simurgh-carousel
+    label="Featured projects"
+    (indexChange)="changed($event)"
+  >
+    <simurgh-carousel-content>
+      <simurgh-carousel-item>Design system</simurgh-carousel-item>
+      <simurgh-carousel-item>Documentation</simurgh-carousel-item>
+    </simurgh-carousel-content>
+    <simurgh-carousel-previous>‹</simurgh-carousel-previous>
+    <simurgh-carousel-next>›</simurgh-carousel-next>
+  </simurgh-carousel>`,
+})
+class CarouselHost {
+  changed = vi.fn();
 }
 
 @Component({
@@ -1241,6 +1271,36 @@ describe('Angular accessibility contract', () => {
         'appointment',
       ),
     ).toBe('2026-08-13');
+    fixture.destroy();
+  });
+  it('labels slides and bounds carousel navigation', async () => {
+    const fixture = TestBed.createComponent(CarouselHost);
+    fixture.detectChanges();
+    const region = fixture.nativeElement.querySelector(
+      '[role=region]',
+    ) as HTMLElement;
+    expect(region.getAttribute('aria-label')).toBe('Featured projects');
+    const previous = fixture.nativeElement.querySelector(
+      '[data-slot=carousel-previous]',
+    ) as HTMLButtonElement;
+    const next = fixture.nativeElement.querySelector(
+      '[data-slot=carousel-next]',
+    ) as HTMLButtonElement;
+    expect(previous.disabled).toBe(true);
+    next.click();
+    fixture.detectChanges();
+    const visible = fixture.nativeElement.querySelector(
+      'simurgh-carousel-item:not([hidden])',
+    ) as HTMLElement;
+    expect(visible.textContent?.trim()).toBe('Documentation');
+    expect(visible.getAttribute('aria-label')).toBe('2 of 2');
+    expect(next.disabled).toBe(true);
+    region.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }),
+    );
+    fixture.detectChanges();
+    expect(fixture.componentInstance.changed).toHaveBeenLastCalledWith(0);
+    expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });
   it('associates a native label with its form control', async () => {

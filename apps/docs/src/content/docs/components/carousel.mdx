@@ -1,0 +1,82 @@
+---
+title: Carousel
+description: Composable labelled slides with direction-aware controls and optional looping.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Carousel exposes a named region, one visible slide at a time, positional slide labels, bounded controls, and logical Arrow Left/Right navigation. Enable `loop` only when wrapping is expected.
+
+<ComponentPreview title="Carousel">
+  <div
+    data-slot="carousel"
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="Featured projects"
+  >
+    <button
+      type="button"
+      data-slot="carousel-previous"
+      aria-label="Previous slide"
+      disabled
+    >
+      ‹
+    </button>
+    <div data-slot="carousel-content">
+      <article
+        data-slot="carousel-item"
+        role="group"
+        aria-roledescription="slide"
+        aria-label="1 of 3"
+      >
+        <strong>Design system</strong>
+        <p>Shared accessible patterns for product teams.</p>
+      </article>
+    </div>
+    <button type="button" data-slot="carousel-next" aria-label="Next slide">
+      ›
+    </button>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Carousel label="Featured projects">
+      <CarouselContent>
+        <CarouselItem>Design system</CarouselItem>
+        <CarouselItem>Documentation</CarouselItem>
+      </CarouselContent>
+      <CarouselPrevious>‹</CarouselPrevious>
+      <CarouselNext>›</CarouselNext>
+    </Carousel>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Carousel label="Featured projects">
+      <CarouselContent>
+        <CarouselItem>Design system</CarouselItem>
+        <CarouselItem>Documentation</CarouselItem>
+      </CarouselContent>
+      <CarouselPrevious>‹</CarouselPrevious>
+      <CarouselNext>›</CarouselNext>
+    </Carousel>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-carousel label="Featured projects">
+      <simurgh-carousel-content>
+        <simurgh-carousel-item>Design system</simurgh-carousel-item>
+        <simurgh-carousel-item>Documentation</simurgh-carousel-item>
+      </simurgh-carousel-content>
+      <simurgh-carousel-previous>‹</simurgh-carousel-previous>
+      <simurgh-carousel-next>›</simurgh-carousel-next>
+    </simurgh-carousel>
+    ```
+  </TabItem>
+</Tabs>
+
+The carousel itself is focusable in Angular; in React and Vue, arrow events from focused controls bubble to the root. Supply concise slide content and avoid automatic advancement unless users can pause it.

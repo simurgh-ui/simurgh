@@ -75,6 +75,11 @@ import {
   Command,
   Calendar,
   DatePicker,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
   Dialog,
   DialogContent,
   DialogTrigger,
@@ -624,6 +629,39 @@ describe('Vue accessibility contract', () => {
       (view.container.querySelector('[name=appointment]') as HTMLInputElement)
         .value,
     ).toBe('2026-08-13');
+  });
+  it('labels slides and bounds carousel navigation', async () => {
+    const changed = vi.fn();
+    render({
+      components: {
+        Carousel,
+        CarouselContent,
+        CarouselItem,
+        CarouselPrevious,
+        CarouselNext,
+      },
+      template: `<Carousel label="Featured projects" @update:index="changed"><CarouselContent><CarouselItem>Design system</CarouselItem><CarouselItem>Documentation</CarouselItem></CarouselContent><CarouselPrevious>‹</CarouselPrevious><CarouselNext>›</CarouselNext></Carousel>`,
+      setup: () => ({ changed }),
+    });
+    const region = screen.getByRole('region', { name: 'Featured projects' });
+    expect(region.getAttribute('aria-roledescription')).toBe('carousel');
+    expect(screen.getByRole('group', { name: '1 of 2' }).textContent).toBe(
+      'Design system',
+    );
+    expect(
+      (
+        screen.getByRole('button', {
+          name: 'Previous slide',
+        }) as HTMLButtonElement
+      ).disabled,
+    ).toBe(true);
+    await fireEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+    expect(screen.getByRole('group', { name: '2 of 2' }).textContent).toBe(
+      'Documentation',
+    );
+    await fireEvent.keyDown(region, { key: 'ArrowLeft' });
+    expect(changed).toHaveBeenLastCalledWith(0);
+    expect((await axe.run(region)).violations).toEqual([]);
   });
   it('associates a native label with its form control', async () => {
     render({
