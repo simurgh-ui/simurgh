@@ -451,9 +451,9 @@
       "budget": 27648
     },
     "vue-complete": {
-      "minified": 79333,
-      "gzip": 22304,
-      "brotli": 19764,
+      "minified": 79321,
+      "gzip": 22302,
+      "brotli": 19749,
       "budget": 22784
     },
     "angular-complete": {
@@ -468,9 +468,9 @@
       "brotli": 12769
     },
     "vue-without-floating": {
-      "minified": 63511,
-      "gzip": 15923,
-      "brotli": 14090
+      "minified": 63499,
+      "gzip": 15921,
+      "brotli": 14069
     },
     "angular-without-floating": {
       "minified": 120225,
@@ -508,8 +508,8 @@
     },
     "vue": {
       "files": 216,
-      "unpacked": 280026,
-      "gzip": 32666,
+      "unpacked": 279763,
+      "gzip": 32586,
       "budget": 384000
     },
     "angular": {
