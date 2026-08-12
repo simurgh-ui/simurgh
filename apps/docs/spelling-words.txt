@@ -870,6 +870,7 @@ giving
 glaze
 glazing
 global
+glossaries
 graph
 green
 grid
@@ -1053,6 +1054,7 @@ keep
 keeping
 keeps
 key
+key-value
 keyboard
 keyboard-navigable
 keyboard-only
@@ -1869,6 +1871,7 @@ span
 spatial
 specific
 specifically
+specifications
 specificity
 spinbutton
 spinner
@@ -1939,6 +1942,7 @@ such
 suffix
 suitable
 suite
+summaries
 summary
 supplemental
 supplementary
@@ -1990,6 +1994,7 @@ template
 template-driven
 template's
 temporary
+term
 test
 tested
 testing
