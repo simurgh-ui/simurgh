@@ -57,6 +57,7 @@ ago
 al
 alert
 alert-dialog
+alerts
 aligned
 all
 allowing
@@ -141,6 +142,7 @@ attached
 attar
 attention
 attribute
+attribute-forwarding
 attributes
 aug
 august
@@ -163,6 +165,7 @@ background
 backspace
 backward
 badge
+badges
 base
 basic
 be
@@ -213,6 +216,7 @@ brand
 breadcrumb
 break
 breaking
+breakpoints
 brick
 bridge
 brief
@@ -246,6 +250,7 @@ button
 button's
 buttons
 by
+bypass
 bypassed
 bypasses
 calculate
@@ -294,6 +299,7 @@ checkbox's
 checked
 checking
 checklist
+checkmarks
 checks
 child
 children
@@ -362,6 +368,7 @@ commonly
 communicate
 communicates
 compact
+compact-mode
 compare
 compares
 compatibility
@@ -431,6 +438,7 @@ containers
 containment
 contains
 content
+content-sized
 contents
 context
 contexts
@@ -490,6 +498,7 @@ customize
 customized
 cycle
 cycles
+danger
 dark
 data
 date
@@ -518,11 +527,13 @@ defer
 deferred
 define
 definition
+delay
 delete
 deleting
 deliberate
 deliberately
 delivery
+density
 depend
 dependencies
 dependency
@@ -569,6 +580,7 @@ diffs
 digit-only
 dimensions
 direct
+directed
 direction
 direction-aware
 directional
@@ -668,12 +680,14 @@ entry
 environment
 environments
 equal
+equally
 equivalent
 equivalents
 error
 errors
 escalating
 escape
+especially
 essential
 establish
 even
@@ -723,6 +737,7 @@ expressed
 extend
 external
 extra
+fades
 failed
 fails
 failure
@@ -733,6 +748,7 @@ fallthrough
 false
 familiar
 faq
+faster
 features
 feedback
 feel
@@ -741,6 +757,7 @@ fetched
 fetching
 field
 fielderror
+fields
 fights
 file
 filename
@@ -767,6 +784,7 @@ fixes
 fixture
 fixtures
 flag
+flex
 flip
 floating
 flow
@@ -816,6 +834,7 @@ full-screen
 fully
 functions
 future
+gap
 gaps
 gate
 gecko
@@ -866,6 +885,7 @@ hidden
 hide
 hierarchical
 hierarchy
+high-contrast
 higher
 hint
 historical
@@ -891,6 +911,7 @@ icon-only
 icons
 id
 identical
+identified
 identify
 identity
 ids
@@ -982,6 +1003,7 @@ invalid
 invalid-field
 invasive
 invent
+inversions
 invoking
 iranian
 is
@@ -1074,12 +1096,15 @@ locations
 lockfile
 logic
 logical
+logos
+long
 long-running
 look
 loop
 lose
 lovelace
 lower
+ltr
 macos
 main
 maintain
@@ -1087,6 +1112,7 @@ maintained
 maintainer
 make
 makes
+making
 manage
 management
 manager
@@ -1139,6 +1165,7 @@ minimums
 minor
 minutes
 mirror
+mirrored
 mismatch
 missing
 mix
@@ -1181,6 +1208,7 @@ named
 names
 naming
 narrow
+narrow-viewport
 narrowest
 native
 native-attribute
@@ -1191,6 +1219,7 @@ navigate
 navigating
 navigation
 nearby
+nearest
 necessarily
 necessary
 need
@@ -1315,6 +1344,7 @@ pairs
 palette
 panel
 panels
+parallax
 parameter
 parent
 parent-owned
@@ -1344,6 +1374,7 @@ peer
 peer-dependency
 pending
 per
+per-component
 perceivable
 percentages
 period
@@ -1367,6 +1398,7 @@ planned
 platform
 platform-aware
 platform-native
+playback
 playwright
 plugin
 plus
@@ -1435,12 +1467,14 @@ programmatic
 programmatically
 progress
 project
+project-owned
 project's
 projected
 projection
 projects
 promise
 promised
+promising
 prop
 properties
 proportion
@@ -1492,6 +1526,7 @@ reads
 real
 real-world
 reapply
+rearrange
 reason
 receive
 receives
@@ -1526,11 +1561,13 @@ registry's
 related
 relationship
 relationships
+relative
 release
 released
 releases
 relevant
 reliable
+relying
 remain
 remaining
 remains
@@ -1592,6 +1629,7 @@ resolve
 resolving
 resource
 respond
+responds
 responsibility
 responsible
 responsive
@@ -1607,6 +1645,7 @@ retaining
 retries
 return
 returns
+reuse
 reveal
 revealing
 reveals
@@ -1683,10 +1722,12 @@ selectable
 selected
 selecting
 selection
+selectively
 selector
 selectors
 selects
 semantic
+semantic-token
 semantically
 semantics
 separate
@@ -1746,6 +1787,7 @@ single-line
 site
 six-week
 size
+sizes
 skeleton
 skip
 skipped
@@ -1753,6 +1795,7 @@ skipping
 slide
 slider
 slides
+slightly
 slot
 slots
 small
@@ -1769,6 +1812,7 @@ space
 spaced
 spacing
 span
+spatial
 specific
 specifically
 specificity
@@ -1821,6 +1865,7 @@ styles
 stylesheet
 stylesheets
 styling
+styling-contract
 styling-hook
 su
 submission
@@ -1831,11 +1876,13 @@ subpaths
 subsequent
 substitute
 subtle
+subtree
 success
 successful
 successfully
 such
 suffix
+suitable
 suite
 summary
 supplemental
@@ -1892,6 +1939,7 @@ tested
 testing
 tests
 text
+text-direction-independent
 textarea
 textual
 th
@@ -1937,6 +1985,7 @@ tone
 tool
 tool-specific
 toolbar
+toolbars
 tooling
 tools
 tooltip
@@ -1952,6 +2001,8 @@ transferred
 transfers
 transforms
 transition
+transitions
+translated
 translating
 transport
 trap
@@ -1997,6 +2048,7 @@ unexpectedly
 unified
 unique
 unit
+universal
 unlayered
 unless
 unnamed
@@ -2043,6 +2095,8 @@ value
 values
 variable
 variables
+variant
+variants
 variations
 vendor
 verb-first
@@ -2056,12 +2110,14 @@ vertical
 view
 viewchild
 viewport
+viewports
 views
 virtual
 visibility
 visible
 visual
 visually
+vocabulary
 volume
 vue
 vue's
@@ -2087,6 +2143,7 @@ whether
 which
 while
 white
+whole
 whose
 why
 widget's
@@ -2125,3 +2182,5 @@ z-index
 zero
 zero-state
 zone
+zoom
+zoomed

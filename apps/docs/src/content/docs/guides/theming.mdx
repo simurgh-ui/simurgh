@@ -277,6 +277,154 @@ Recipes use logical CSS properties so `dir="rtl"` does not require a separate st
 logical properties such as `padding-inline`, `margin-inline-start`, and `inset-inline-end` in
 application overrides to preserve that behavior.
 
+## Component customization patterns
+
+Simurgh does not impose a universal `size`, `density`, or `variant` prop. Native attributes and
+behavioral props belong to the adapter API; visual choices belong to application classes, stable
+parts, state attributes, and semantic tokens. This keeps copied and headless components open to an
+application's own design vocabulary without promising a variant API that a component does not
+implement.
+
+### Sizes and density
+
+Set control size with logical dimensions and spacing. Keep interactive targets at least `2.5rem`
+unless the surrounding product has an equally accessible compact-mode policy. Scope density on an
+ancestor instead of repeating overrides on every child:
+
+```css
+.account-toolbar[data-density='compact'] {
+  --account-control-block-size: 2.25rem;
+  --account-control-padding: 0.5rem;
+}
+
+.account-toolbar :is(button, input, select, [role='button']) {
+  min-block-size: var(--account-control-block-size, 2.5rem);
+  padding-inline: var(--account-control-padding, 0.75rem);
+}
+```
+
+Content-sized surfaces such as Dialog, Popover, Sheet, Sidebar, and Tooltip already use viewport
+relative maximum sizes. Override their documented recipe class with `min()`, `max()`, `clamp()`, and
+logical dimensions rather than relying on internal wrappers.
+
+### Visual variants
+
+Create application variants with a class or a project-owned `data-variant` attribute. Forward it to
+the same root element identified by the component page's attribute-forwarding and styling-contract
+sections:
+
+```tsx
+<Button className="billing-action" data-variant="danger">
+  Delete payment method
+</Button>
+```
+
+```css
+.billing-action[data-variant='danger'] {
+  background: hsl(var(--simurgh-danger));
+  color: white;
+}
+```
+
+Do not reuse behavioral attributes such as `data-state`, `aria-expanded`, or `aria-invalid` as a
+visual variant switch. They describe component state and must retain their documented meaning.
+
+### Icons
+
+Icons are consumer content; Simurgh does not require an icon package. Decorative icons need
+`aria-hidden="true"`, while an icon-only control needs an accessible name. Use `currentColor`, a
+logical gap, and a fixed flex size so the icon follows disabled, danger, dark, and high-contrast
+foreground styles:
+
+```tsx
+<Button className="button-with-icon">
+  <TrashIcon aria-hidden="true" focusable="false" />
+  Delete
+</Button>
+
+<Button aria-label="Close dialog" className="icon-button">
+  <CloseIcon aria-hidden="true" focusable="false" />
+</Button>
+```
+
+```css
+.button-with-icon { display: inline-flex; gap: 0.5rem; align-items: center; }
+.button-with-icon > svg, .icon-button > svg { inline-size: 1em; block-size: 1em; flex: none; }
+.icon-button { inline-size: 2.5rem; padding-inline: 0; }
+```
+
+### Responsive behavior
+
+Prefer container queries when a component responds to its placement and media queries when the
+whole viewport changes the interaction. Preserve DOM order, keyboard order, labels, and component
+state across breakpoints; CSS may rearrange presentation, but it should not create a second hidden
+interactive copy.
+
+```css
+.profile-card { container-type: inline-size; }
+.profile-card__actions { display: flex; gap: 0.75rem; }
+
+@container (inline-size < 24rem) {
+  .profile-card__actions { flex-direction: column; }
+  .profile-card__actions > * { inline-size: 100%; }
+}
+```
+
+For overlays, test narrow and short viewports, browser zoom, virtual keyboards, and long translated
+labels. Use `100dvh` only with a suitable fallback when older target browsers are supported.
+
+### Animation and reduced motion
+
+Build optional transitions from `--simurgh-duration` and the component's documented state hooks.
+Reduced motion should remove spatial movement, repeated animation, parallax, and long fades rather
+than merely making them slightly faster:
+
+```css
+.simurgh-dialog {
+  transition: opacity var(--simurgh-duration) ease,
+              transform var(--simurgh-duration) ease;
+}
+
+.simurgh-dialog[data-state='closed'] { opacity: 0; transform: translateY(0.5rem); }
+
+@media (prefers-reduced-motion: reduce) {
+  .simurgh-dialog { transition: none; }
+  .simurgh-dialog[data-state='closed'] { transform: none; }
+}
+```
+
+Never delay focus movement, form feedback, or dismissal until an animation finishes. When replacing
+recipe CSS, retain state semantics even if no animation is rendered.
+
+### Dark mode and RTL
+
+Use `.dark` or `[data-theme='dark']` for theme activation and `dir="rtl"` on the document or the
+nearest independently directed subtree. Prefer semantic-token overrides for dark mode; avoid
+per-component color inversions that bypass contrast pairs. Prefer logical properties and directional
+icons. Mirror arrows that communicate previous/next or physical direction, but do not mirror logos,
+media playback icons, checkmarks, or text-direction-independent symbols.
+
+```css
+.next-icon { transform: rotate(0deg); }
+[dir='rtl'] .next-icon { transform: rotate(180deg); }
+```
+
+### What applies where
+
+| Concern | Most relevant components | Recommended surface |
+| --- | --- | --- |
+| Size and density | Buttons, fields, menus, toolbars, pagination, tags | Root class plus project-owned density ancestor |
+| Visual variants | Actions, badges, alerts, cards, feedback states | Project-owned class or `data-variant` |
+| Icons | Buttons, menu items, fields, tree items, navigation | Consumer content using `currentColor` and accessible naming |
+| Responsive layout | Dialog, Sheet, Drawer, Sidebar, tables, forms, toolbars | Logical dimensions, container/media queries, stable DOM order |
+| Animation | Dialog, Drawer, Sheet, Popover, Tooltip, Toast, disclosure components | Documented `data-state` or ARIA hooks and `--simurgh-duration` |
+| Dark mode | Every visible recipe | Semantic tokens under `.dark` or `[data-theme='dark']` |
+| RTL | Every directional layout; especially Sheet, Dialog, Tree, navigation | `dir`, logical CSS properties, and selectively mirrored icons |
+
+Test customized components in their default, hover, focus-visible, active, disabled, invalid,
+loading, open/closed, light/dark, LTR/RTL, reduced-motion, forced-colors, zoomed, and narrow-viewport
+states where those states apply.
+
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
 {/* doc-verification:end */}

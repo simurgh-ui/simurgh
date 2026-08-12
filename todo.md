@@ -246,7 +246,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       headless styling without recipe CSS.
 - [x] Add per-framework class/style forwarding examples and clarify which element receives
       forwarded attributes for wrapper components.
-- [ ] Document sizing, density, variants, icons, responsive behavior, animation, reduced motion,
+- [x] Document sizing, density, variants, icons, responsive behavior, animation, reduced motion,
       dark mode, and RTL customization where relevant.
 - [x] Explain CSS import order, cascade layers/specificity, global reset assumptions, Tailwind use,
       and how to avoid duplicate token imports.
