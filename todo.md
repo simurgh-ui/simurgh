@@ -177,7 +177,7 @@ Items are checked only after their implementation exists and the relevant verifi
 ## Bundle-size optimization fifth pass
 
 - [x] Audit component-level CSS exports and documentation so consumers can load only the recipes they use instead of the complete stylesheet.
-- [ ] Add lazy-loading guidance and fixtures for overlay-heavy entry points so Floating UI stays out of initial application bundles.
+- [x] Add lazy-loading guidance and fixtures for overlay-heavy entry points so Floating UI stays out of initial application bundles.
 - [ ] Move the remaining React implementations out of the monolithic `index.tsx` into genuine per-component source modules.
 - [ ] Evaluate esbuild code splitting for the React adapter and verify that shared chunks reduce multi-component consumption without adding excessive module overhead.
 - [ ] Revisit the custom `@floating-ui/dom` React adapter only if its estimated savings justify the accessibility and interaction-maintenance risk.

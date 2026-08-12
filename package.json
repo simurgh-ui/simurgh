@@ -10,7 +10,7 @@
     "typecheck": "turbo typecheck",
     "lint": "turbo lint",
     "generate:entries": "node scripts/generate-entrypoints.mjs && node scripts/generate-styles.mjs",
-    "bundle:size": "node scripts/check-bundle-size.mjs && node scripts/check-angular-production-size.mjs",
+    "bundle:size": "node scripts/check-bundle-size.mjs && node scripts/check-angular-production-size.mjs && node scripts/check-lazy-overlay-size.mjs",
     "format": "prettier --write .",
     "test:contracts": "vitest run packages/react/test packages/vue/test packages/angular/test packages/cli/test",
     "test:e2e": "playwright test"

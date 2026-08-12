@@ -27,3 +27,40 @@ Each component stylesheet includes the shared tokens, so applications can import
 The same pattern applies to Vue (`@simurgh-ui/vue/button`) and Angular (`@simurgh-ui/angular/button`). When several primitives are needed together, `@simurgh-ui/{framework}/basic` provides common non-floating controls, while `@simurgh-ui/{framework}/overlays` provides dialogs, menus, tooltips, and related positioned UI. The `basic` boundary intentionally excludes Floating UI.
 
 Root adapter imports and `@simurgh-ui/styles/all.css` remain convenient opt-in aggregates. Use them when the complete catalog is genuinely required; component JavaScript and CSS subpaths are the recommended production default.
+
+## Lazy-load overlays
+
+Dialogs, menus, tooltips, and other positioned components include Floating UI. Keep that positioning code out of the initial application bundle by loading an overlay at its route or interaction boundary.
+
+```tsx
+// React
+import { lazy } from 'react';
+
+const Dialog = lazy(() =>
+  import('@simurgh-ui/react/dialog').then((module) => ({
+    default: module.Dialog,
+  })),
+);
+```
+
+```ts
+// Vue
+import { defineAsyncComponent } from 'vue';
+
+const Dialog = defineAsyncComponent(() =>
+  import('@simurgh-ui/vue/dialog').then((module) => module.Dialog),
+);
+```
+
+```ts
+// Angular route
+{
+  path: 'dialog-example',
+  loadComponent: () =>
+    import('@simurgh-ui/angular/dialog').then(
+      (module) => module.DialogComponent,
+    ),
+}
+```
+
+Lazy loading moves the overlay and Floating UI into an asynchronous chunk. It does not reduce the total downloaded code when the overlay is opened, but it keeps that cost off the initial path.
