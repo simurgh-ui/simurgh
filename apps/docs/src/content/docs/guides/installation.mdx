@@ -1,15 +1,136 @@
 ---
 title: Installation
+description: Install Simurgh as editable source or framework packages in Angular, React, and Vue.
 ---
 
-Run the initializer inside an Angular, React, or Vue application:
+Simurgh supports two installation models. Choose one model for a component and keep its import path
+consistent:
+
+- **Copy source with the CLI** when you want the component implementation inside your application
+  and expect to edit it.
+- **Install packages** when you want normal dependency upgrades and imports from
+  `@simurgh-ui/{framework}`.
+
+The project is pre-release. Pin exact versions in production and review changes before upgrading or
+overwriting copied source.
+
+## Copy editable source with the CLI
+
+Run the initializer from the root of an existing Angular, React, or Vue application:
 
 ```sh
 pnpm dlx @simurgh-ui/cli init
 pnpm dlx @simurgh-ui/cli add dialog tabs checkbox
 ```
 
-`init` detects the framework, writes `simurgh.json`, copies tokens and recipes, and installs the core and positioning dependencies. `add` writes one framework-native source file per component and preserves existing files unless `--overwrite` is supplied. Use `simurgh diff dialog` before adopting registry updates.
+`init` detects the framework from `package.json`, writes `simurgh.json`, copies the token and recipe
+stylesheets, and installs that adapter's runtime dependencies. Pass `--framework react`,
+`--framework vue`, or `--framework angular` only when detection cannot choose correctly. Use
+`--skip-install` when your package manager or workspace policy requires installing dependencies
+separately.
+
+Generated files default to these locations:
+
+| Framework | Component source | Styles |
+| --- | --- | --- |
+| React | `src/components/ui/<component>.tsx` | `src/styles/simurgh/` |
+| Vue | `src/components/ui/<component>.ts` | `src/styles/simurgh/` |
+| Angular | `src/app/components/ui/<component>.ts` | `src/styles/simurgh/` |
+
+`add` writes one framework-native source file per component. Existing files are preserved unless
+`--overwrite` is supplied. With no component names, `add` copies the complete catalog.
+
+```sh
+# Inspect available registry components
+pnpm dlx @simurgh-ui/cli list
+
+# Check one locally copied component against the current registry
+pnpm dlx @simurgh-ui/cli diff dialog
+```
+
+`diff` exits with a non-zero status when the local source differs, including intentional local
+customizations. Review the difference before running `add dialog --overwrite`; overwrite replaces
+the local component and is not a merge operation. Commit or otherwise back up local changes first.
+
+Import copied components from their local path, not from `@simurgh-ui/react`,
+`@simurgh-ui/vue`, or `@simurgh-ui/angular`. Add the copied `tokens.css` and `recipes.css` to the
+application's global stylesheet entry according to the framework build tool.
+
+## Install as packages
+
+Install the adapter for your framework plus the optional recipe package:
+
+```sh
+# React
+pnpm add @simurgh-ui/react @simurgh-ui/styles
+
+# Vue
+pnpm add @simurgh-ui/vue @simurgh-ui/styles
+
+# Angular
+pnpm add @simurgh-ui/angular @simurgh-ui/styles
+```
+
+The package manager installs Core and positioning dependencies declared by the chosen adapter.
+React 18 or newer, Vue 3.4 or newer, or Angular 18 or newer is required. Import recipe CSS in a
+global stylesheet or framework-level entry so it is available before the component renders.
+
+## React quick start
+
+```tsx
+import { Button } from '@simurgh-ui/react/button';
+import '@simurgh-ui/styles/button.css';
+
+export function SaveButton() {
+  return <Button type="button">Save changes</Button>;
+}
+```
+
+React components accept the documented component props together with supported native attributes.
+Use the component subpath shown above to keep unrelated components out of the bundle.
+
+## Vue quick start
+
+```vue
+<script setup lang="ts">
+import { Button } from '@simurgh-ui/vue/button';
+import '@simurgh-ui/styles/button.css';
+</script>
+
+<template>
+  <Button type="button">Save changes</Button>
+</template>
+```
+
+Vue components forward supported attributes to their interactive element. Importing component CSS
+from a global application entry is also valid and avoids repeating it across single-file
+components.
+
+## Angular quick start
+
+```ts
+import { Component } from '@angular/core';
+import { ButtonComponent } from '@simurgh-ui/angular/button';
+
+@Component({
+  selector: 'app-save-button',
+  standalone: true,
+  imports: [ButtonComponent],
+  template: `<simurgh-button type="button">Save changes</simurgh-button>`,
+})
+export class SaveButtonComponent {}
+```
+
+Add the recipe to the application's global styles entry:
+
+```css
+@import '@simurgh-ui/styles/button.css';
+```
+
+Angular exports standalone components. Import the documented component class into the consuming
+standalone component or NgModule.
+
+## Styles: recipes or headless behavior
 
 Import `tokens.css` for semantic variables and component recipes for the optional visual layer. Headless behavior does not depend on either stylesheet. Avoid importing the complete `recipes.css` catalog in production unless the application genuinely uses most components.
 

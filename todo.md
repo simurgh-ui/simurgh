@@ -212,7 +212,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       components such as Dialog, Select, Tabs, Accordion, Menu, Form, and Date Picker.
 - [ ] Add a tested quick start for a fresh React, Vue, and Angular application, covering both CLI
       source-copy installation and package consumption.
-- [ ] Explain the actual distribution model clearly: when users own copied source, when they import
+- [x] Explain the actual distribution model clearly: when users own copied source, when they import
       `@simurgh-ui/*`, which dependencies are installed, and how registry updates/diffs work.
 - [ ] Replace all mojibake still visible in consumer docs and add a UTF-8/mojibake check to CI.
 
