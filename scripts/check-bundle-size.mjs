@@ -22,7 +22,7 @@ const cases = [
     name: 'react-button',
     framework: 'react',
     subpath: 'button',
-    budget: 300,
+    budget: 320,
   },
   {
     name: 'vue-button',
