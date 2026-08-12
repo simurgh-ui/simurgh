@@ -241,6 +241,24 @@ Content projection: none.
 | `choose(): void` |
 {/* angular-api:end */}
 
+{/* framework-parity:start */}
+### Framework parity and differences
+
+The adapters target the same user-visible behavior and accessibility contract. Their public shapes
+follow each framework's conventions and are not expected to be symbol-for-symbol identical.
+
+| Concern | Contract |
+| --- | --- |
+| Public composition | All adapters export 2 public symbols, with framework-idiomatic names. |
+| State and change events | No controlled state contract; use native attributes, inputs, or events documented above. |
+| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
+| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild. |
+
+These differences are intentional adapter design. Behavioral or accessibility differences not stated
+on this page are parity defects rather than supported variations.
+{/* framework-parity:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

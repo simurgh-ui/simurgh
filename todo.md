@@ -206,7 +206,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       inherited attribute from the exported TypeScript API.
 - [x] Document every public Angular input, output, content slot/directive, public method, default
       value, and host/native attribute behavior from the exported TypeScript API.
-- [ ] State framework parity and intentional API differences beside each component API instead of
+- [x] State framework parity and intentional API differences beside each component API instead of
       making users compare three source packages.
 - [ ] Document required parent/child composition and which parts are optional for compound
       components such as Dialog, Select, Tabs, Accordion, Menu, Form, and Date Picker.
