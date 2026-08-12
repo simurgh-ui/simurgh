@@ -5,17 +5,20 @@
   border: 1px solid hsl(var(--simurgh-border));
   border-radius: var(--simurgh-radius);
 }
+
 [data-slot='disclosure-summary'] {
   cursor: pointer;
   font-weight: 600;
   padding-block: 0.75rem;
   padding-inline: 1rem;
 }
+
 [data-slot='disclosure-summary']:focus-visible {
   border-radius: var(--simurgh-radius);
   outline: 2px solid hsl(var(--simurgh-ring));
   outline-offset: 2px;
 }
+
 [data-slot='disclosure-content'] {
   border-block-start: 1px solid hsl(var(--simurgh-border));
   padding-block: 0.75rem;

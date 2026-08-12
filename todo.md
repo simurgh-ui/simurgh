@@ -174,6 +174,15 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Treat Floating UI as an explicit feature cost in bundle reports: approximately 12.8 KiB gzip for React and 6.2 KiB for Vue and Angular.
 - [x] Preserve component subpaths and the non-floating `basic` entry so consumers can avoid Floating UI when overlays are unused.
 
+## Bundle-size optimization fifth pass
+
+- [x] Audit component-level CSS exports and documentation so consumers can load only the recipes they use instead of the complete stylesheet.
+- [ ] Add lazy-loading guidance and fixtures for overlay-heavy entry points so Floating UI stays out of initial application bundles.
+- [ ] Move the remaining React implementations out of the monolithic `index.tsx` into genuine per-component source modules.
+- [ ] Evaluate esbuild code splitting for the React adapter and verify that shared chunks reduce multi-component consumption without adding excessive module overhead.
+- [ ] Revisit the custom `@floating-ui/dom` React adapter only if its estimated savings justify the accessibility and interaction-maintenance risk.
+- [ ] Resolve the React Button budget regression (301 B gzip against a 300 B budget) by either a behavior-preserving reduction or a less brittle measured budget.
+
 ## Catalog expansion fifth pass
 
 - [x] Add native Disclosure across Angular, React, Vue, the registry, documentation, and contract tests.

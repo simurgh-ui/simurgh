@@ -11,7 +11,7 @@ pnpm dlx @simurgh-ui/cli add dialog tabs checkbox
 
 `init` detects the framework, writes `simurgh.json`, copies tokens and recipes, and installs the core and positioning dependencies. `add` writes one framework-native source file per component and preserves existing files unless `--overwrite` is supplied. Use `simurgh diff dialog` before adopting registry updates.
 
-Import `tokens.css` for semantic variables and `recipes.css` for the optional visual layer. Headless behavior does not depend on either stylesheet.
+Import `tokens.css` for semantic variables and component recipes for the optional visual layer. Headless behavior does not depend on either stylesheet. Avoid importing the complete `recipes.css` catalog in production unless the application genuinely uses most components.
 
 ## Production imports
 
@@ -21,6 +21,8 @@ Prefer component subpaths so application bundlers receive the narrowest possible
 import { Button } from '@simurgh-ui/react/button';
 import '@simurgh-ui/styles/button.css';
 ```
+
+Each component stylesheet includes the shared tokens, so applications can import only `button.css` in this example. Import `tokens.css` separately when an application consumes tokens without a component recipe.
 
 The same pattern applies to Vue (`@simurgh-ui/vue/button`) and Angular (`@simurgh-ui/angular/button`). When several primitives are needed together, `@simurgh-ui/{framework}/basic` provides common non-floating controls, while `@simurgh-ui/{framework}/overlays` provides dialogs, menus, tooltips, and related positioned UI. The `basic` boundary intentionally excludes Floating UI.
 
