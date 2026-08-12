@@ -53,7 +53,9 @@ for (const path of files) {
     'u',
   );
   const withoutMarker = contents.replace(markerPattern, '').trimEnd();
-  const guidanceIndex = withoutMarker.indexOf('\n## Further guidance');
+  const guidanceIndex = withoutMarker.search(
+    /\n## (?:Further guidance|Related components)/u,
+  );
   const expected =
     guidanceIndex >= 0
       ? `${withoutMarker.slice(0, guidanceIndex).trimEnd()}\n\n${marker}\n${withoutMarker.slice(guidanceIndex)}\n`

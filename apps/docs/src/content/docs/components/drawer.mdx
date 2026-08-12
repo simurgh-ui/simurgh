@@ -56,7 +56,16 @@ Omit the component stylesheet for fully headless styling. CLI-copied components 
 written to `simurgh.json` and the copied application styles instead of these package imports.
 {/* component-installation:end */}
 
+## Purpose
+
 Drawer presents focused tasks from the bottom edge while retaining the library's modal dialog contract: accessible naming, focus containment, Escape and overlay dismissal, and trigger-focus restoration. Use the optional top side for interfaces anchored to the upper viewport edge.
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+## Basic usage
 
 <ComponentPreview title="Drawer">
   <button type="button">Edit profile</button>
@@ -70,6 +79,8 @@ Drawer presents focused tasks from the bottom edge while retaining the library's
     <p>Update your public account details.</p>
   </div>
 </ComponentPreview>
+
+## Examples
 
 <Tabs>
 <TabItem label="React">
@@ -108,13 +119,37 @@ Drawer presents focused tasks from the bottom edge while retaining the library's
 </TabItem>
 </Tabs>
 
+## State model
+
 Prefer Drawer for compact, touch-friendly tasks that fit within a partial viewport. Use Dialog for centered decisions and Sheet for full-height side panels. Drawer does not impose gesture handling, so applications can add drag behavior without changing its accessibility contract.
+
+## API surface
+
+- React exports: `Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerTitle`, `DrawerDescription`, `DrawerClose`
+- Vue exports: `Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerTitle`, `DrawerDescription`, `DrawerClose`
+- Angular exports: `DrawerComponent`
+
+Import these public symbols from the component subpath shown in Installation. Framework-specific
+props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
+tables on this page; use the linked source only to verify the current implementation.
+
+## Customization
+
+Load the optional component stylesheet for the default recipe, override semantic tokens for broad
+theme changes, or omit the recipe CSS for headless styling. See [theming and styling
+hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
 {/* doc-verification:end */}
 
-## Further guidance
+## Related components
 
 - Review the shared [accessibility and RTL guidance](/guides/accessibility-rtl/) and
   [theming and styling hooks](/guides/theming/).

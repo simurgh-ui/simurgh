@@ -57,7 +57,16 @@ Omit the component stylesheet for fully headless styling. CLI-copied components 
 written to `simurgh.json` and the copied application styles instead of these package imports.
 {/* component-installation:end */}
 
+## Purpose
+
 Pagination provides a named navigation landmark and composable list/link anatomy. Routing remains owned by the application.
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+## Basic usage
 
 <ComponentPreview title="Pagination">
   <nav aria-label="Pagination" data-slot="pagination">
@@ -91,6 +100,8 @@ Pagination provides a named navigation landmark and composable list/link anatomy
   </nav>
 </ComponentPreview>
 
+## Examples
+
 <Tabs>
 <TabItem label="React">
 ```tsx
@@ -109,13 +120,37 @@ Pagination provides a named navigation landmark and composable list/link anatomy
 </TabItem>
 </Tabs>
 
+## State model
+
 Use real links so open-in-new-tab, copy-link, and browser history continue to work. Mark unavailable links with `aria-disabled="true"` and prevent navigation in application routing logic.
+
+## API surface
+
+- React exports: `Pagination`, `PaginationContent`, `PaginationItem`, `PaginationLink`
+- Vue exports: `Pagination`, `PaginationContent`, `PaginationItem`, `PaginationLink`
+- Angular exports: `PaginationComponent`, `PaginationContentDirective`, `PaginationItemDirective`, `PaginationLinkDirective`
+
+Import these public symbols from the component subpath shown in Installation. Framework-specific
+props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
+tables on this page; use the linked source only to verify the current implementation.
+
+## Customization
+
+Load the optional component stylesheet for the default recipe, override semantic tokens for broad
+theme changes, or omit the recipe CSS for headless styling. See [theming and styling
+hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
 {/* doc-verification:end */}
 
-## Further guidance
+## Related components
 
 - Review the shared [accessibility and RTL guidance](/guides/accessibility-rtl/) and
   [theming and styling hooks](/guides/theming/).

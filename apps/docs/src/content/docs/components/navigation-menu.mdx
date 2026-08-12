@@ -57,7 +57,16 @@ Omit the component stylesheet for fully headless styling. CLI-copied components 
 written to `simurgh.json` and the copied application styles instead of these package imports.
 {/* component-installation:end */}
 
+## Purpose
+
 Navigation Menu composes a named navigation landmark, a native list, and standard anchors. Browser link behavior remains intact for keyboard users, assistive technology, context menus, and modified clicks.
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+## Basic usage
 
 <ComponentPreview title="Navigation Menu">
   <nav aria-label="Preview navigation">
@@ -84,6 +93,8 @@ Navigation Menu composes a named navigation landmark, a native list, and standar
     </ul>
   </nav>
 </ComponentPreview>
+
+## Examples
 
 <Tabs>
 <TabItem label="React">
@@ -118,13 +129,37 @@ Navigation Menu composes a named navigation landmark, a native list, and standar
 </TabItem>
 </Tabs>
 
+## State model
+
 Use `current` only for the page represented by the active link. The recipes use logical spacing and naturally follow document direction.
+
+## API surface
+
+- React exports: `NavigationMenu`, `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuLink`
+- Vue exports: `NavigationMenu`, `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuLink`
+- Angular exports: `NavigationMenuComponent`, `NavigationMenuListDirective`, `NavigationMenuItemDirective`, `NavigationMenuLinkDirective`
+
+Import these public symbols from the component subpath shown in Installation. Framework-specific
+props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
+tables on this page; use the linked source only to verify the current implementation.
+
+## Customization
+
+Load the optional component stylesheet for the default recipe, override semantic tokens for broad
+theme changes, or omit the recipe CSS for headless styling. See [theming and styling
+hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
 {/* doc-verification:end */}
 
-## Further guidance
+## Related components
 
 - Review the shared [accessibility and RTL guidance](/guides/accessibility-rtl/) and
   [theming and styling hooks](/guides/theming/).

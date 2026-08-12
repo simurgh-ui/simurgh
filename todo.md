@@ -196,7 +196,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 ### P0: make the library usable from the documentation alone
 
-- [ ] Define and apply one required component-page template: purpose, import/install, anatomy,
+- [x] Define and apply one required component-page template: purpose, import/install, anatomy,
       basic usage, API, state model, customization, accessibility, examples, and related components.
 - [x] Add copy-pasteable package imports and component CSS imports to every component page for
       React, Vue, and Angular; do not show unimported component snippets.

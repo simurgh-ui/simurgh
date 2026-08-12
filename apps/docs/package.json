@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview",
-    "build": "node ../../scripts/check-doc-encoding.mjs && node ../../scripts/check-doc-spelling.mjs && node ../../scripts/check-doc-verification.mjs && node ../../scripts/check-component-installation.mjs && node ../../scripts/check-component-guidance.mjs && node ../../scripts/check-doc-integrity.mjs && node ../../scripts/check-example-theme-contrast.mjs && cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "build": "node ../../scripts/check-doc-encoding.mjs && node ../../scripts/check-doc-spelling.mjs && node ../../scripts/check-doc-verification.mjs && node ../../scripts/check-component-installation.mjs && node ../../scripts/check-component-template.mjs && node ../../scripts/check-component-guidance.mjs && node ../../scripts/check-doc-integrity.mjs && node ../../scripts/check-example-theme-contrast.mjs && cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
     "test": "vitest run --passWithNoTests",
     "typecheck": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check",
     "lint": "eslint src"

@@ -42,13 +42,24 @@ Omit the component stylesheet for fully headless styling. CLI-copied components 
 written to `simurgh.json` and the copied application styles instead of these package imports.
 {/* component-installation:end */}
 
+## Purpose
+
 Checkbox exposes `aria-checked`, keyboard activation, controlled and uncontrolled state, and an optional native form value. Always provide a visible or programmatic label.
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+## Basic usage
 
 <ComponentPreview title="Checkbox">
   <label class="preview-row">
     <input type="checkbox" checked /> Receive product updates
   </label>
 </ComponentPreview>
+
+## Examples
 
 <Tabs>
 <TabItem label="React">
@@ -68,11 +79,35 @@ Checkbox exposes `aria-checked`, keyboard activation, controlled and uncontrolle
 </TabItem>
 </Tabs>
 
+## State model
+
+## API surface
+
+- React exports: `Checkbox`
+- Vue exports: `Checkbox`
+- Angular exports: `CheckboxComponent`
+
+Import these public symbols from the component subpath shown in Installation. Framework-specific
+props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
+tables on this page; use the linked source only to verify the current implementation.
+
+## Customization
+
+Load the optional component stylesheet for the default recipe, override semantic tokens for broad
+theme changes, or omit the recipe CSS for headless styling. See [theming and styling
+hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
+
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
 {/* doc-verification:end */}
 
-## Further guidance
+## Related components
 
 - Review the shared [accessibility and RTL guidance](/guides/accessibility-rtl/) and
   [theming and styling hooks](/guides/theming/).

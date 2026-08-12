@@ -4,7 +4,7 @@ import process from 'node:process';
 
 const root = resolve(import.meta.dirname, '..');
 const componentsRoot = resolve(root, 'apps/docs/src/content/docs/components');
-const marker = '## Further guidance';
+const marker = '## Related components';
 
 function footer(component) {
   const repository = 'https://github.com/simurgh-ui/simurgh/blob/main';
@@ -40,7 +40,7 @@ for (const path of files) {
       ? source.slice(0, source.indexOf(marker)).trimEnd()
       : source.trimEnd();
     await writeFile(path, `${withoutExisting}\n\n${expected}`);
-  } else if (!source.endsWith(expected)) {
+  } else if (!source.trimEnd().endsWith(expected.trimEnd())) {
     failures.push(component);
   }
 }
