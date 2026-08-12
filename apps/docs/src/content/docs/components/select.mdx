@@ -27,7 +27,10 @@ import '@simurgh-ui/styles/select.css';
 ### Vue
 
 ```ts
-import { Select } from '@simurgh-ui/vue/select';
+import {
+  Select,
+  SelectOption,
+} from '@simurgh-ui/vue/select';
 import '@simurgh-ui/styles/select.css';
 ```
 
@@ -202,6 +205,10 @@ Vue attribute fallthrough is enabled for the rendered root.
 Slots: none.
 
 Exposed methods: none.
+
+### `SelectOption`
+
+Exported type: `{ value: string; label: string; disabled?: boolean; }`.
 {/* vue-api:end */}
 
 {/* angular-api:start */}
@@ -254,7 +261,7 @@ is used. Do not render a state-consuming part by itself.
 | Framework | Required parent/child relationship | Conditional parts | Supporting types |
 | --- | --- | --- | --- |
 | React | `Select` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
-| Vue | `Select` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
+| Vue | `Select` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `SelectOption`. |
 | Angular | `SelectComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `SelectOption`. |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
@@ -269,7 +276,7 @@ follow each framework's conventions and are not expected to be symbol-for-symbol
 
 | Concern | Contract |
 | --- | --- |
-| Public composition | React exports 1 parts, Vue 1, and Angular 2. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
+| Public composition | React exports 1 parts, Vue 2, and Angular 2. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
 | State and change events | React uses controlled/default props and callbacks for `value`; Vue uses `v-model`; Angular uses `[(value)]`. |
 | Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
 | Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |

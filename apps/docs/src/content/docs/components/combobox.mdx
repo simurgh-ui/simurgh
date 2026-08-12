@@ -22,6 +22,7 @@ For package consumption, import from the component subpath and load its optional
 ```tsx
 import {
   Combobox,
+  ComboboxProps,
   SelectOption,
 } from '@simurgh-ui/react/combobox';
 import '@simurgh-ui/styles/combobox.css';
@@ -215,6 +216,10 @@ Complete props type: `ComboboxProps`.
 | `required` | `boolean` | `undefined` |
 | `value` | `string` | `undefined` |
 
+### `ComboboxProps`
+
+Exported type: `{ options: Array<Omit<SelectOption, "label"> & { label: string; }>; name?: string; value?: string; defaultValue?: string; required?: boolean; disabled?: boolean; placeholder?: string; noResults?: ReactNode; onValueChange?: (value: string) => void; }`.
+
 ### `SelectOption`
 
 Exported type: `{ value: string; label: ReactNode; disabled?: boolean; }`.
@@ -306,7 +311,7 @@ is used. Do not render a state-consuming part by itself.
 
 | Framework | Required parent/child relationship | Conditional parts | Supporting types |
 | --- | --- | --- | --- |
-| React | `Combobox` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `SelectOption`. |
+| React | `Combobox` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `ComboboxProps`, `SelectOption`. |
 | Vue | `Combobox` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `ComboboxOption`. |
 | Angular | `ComboboxComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `SelectOption`. |
 
@@ -322,7 +327,7 @@ follow each framework's conventions and are not expected to be symbol-for-symbol
 
 | Concern | Contract |
 | --- | --- |
-| Public composition | All adapters export 2 public symbols, with framework-idiomatic names. |
+| Public composition | React exports 3 parts, Vue 2, and Angular 2. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
 | State and change events | React uses controlled/default props and callbacks for `value`; Vue uses `v-model`; Angular uses `[(value)]`. |
 | Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
 | Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |

@@ -272,7 +272,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 ### Documentation quality gate
 
-- [ ] Generate or validate API tables from source declarations so undocumented public APIs and stale
+- [x] Generate or validate API tables from source declarations so undocumented public APIs and stale
       defaults fail CI across all three adapters.
 - [ ] Compile every React, Vue, and Angular documentation example in CI rather than treating fenced
       code blocks as unverified text.

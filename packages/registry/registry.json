@@ -142,7 +142,7 @@
       ],
       "select": ["Select"],
       "native-select": ["NativeSelect"],
-      "combobox": ["Combobox", "SelectOption"],
+      "combobox": ["Combobox", "ComboboxProps", "SelectOption"],
       "command": ["Command"],
       "calendar": ["Calendar", "CalendarProps"],
       "date-picker": ["DatePicker", "DatePickerProps"],
@@ -317,7 +317,7 @@
         "ContextMenuContent",
         "ContextMenuItem"
       ],
-      "select": ["Select"],
+      "select": ["Select", "SelectOption"],
       "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "ComboboxOption"],
       "command": ["Command"],
