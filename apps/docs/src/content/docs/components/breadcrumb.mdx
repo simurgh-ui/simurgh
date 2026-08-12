@@ -231,6 +231,26 @@ attribute. Keep status and error messages accessible when they are rendered outs
 | Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 {/* component-supported-states:end */}
 
+{/* component-styling-contract:start */}
+### Styling contract
+
+The selectors below are used by the published component recipe or emitted consistently by an
+adapter. Treat these as the supported styling surface. Element order, anonymous wrappers, and
+undocumented descendants are implementation details and should not be targeted.
+
+| Surface | Stable hooks |
+| --- | --- |
+| Recipe classes | No component-specific recipe class; this stylesheet currently imports shared tokens only. |
+| Stable DOM parts | No named `data-slot` parts are emitted; target the forwarded root class or attributes documented in the API. |
+| Stable data attributes | No documented `data-*` hook. |
+| ARIA/state selectors used by the recipe | No ARIA state selector is used by this recipe. |
+| CSS custom properties consumed | No component-specific token consumption beyond the shared token import. |
+
+Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
+component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
+even if your replacement styles use different selectors.
+{/* component-styling-contract:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

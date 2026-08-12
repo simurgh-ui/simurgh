@@ -87,6 +87,7 @@ announcement
 announcements
 announces
 announcing
+anonymous
 another
 any
 api
@@ -182,6 +183,7 @@ belongs
 below
 beside
 between
+beyond
 bind
 binding
 bindings
@@ -373,6 +375,7 @@ completing
 completion
 complex
 component
+component-scoped
 component-specific
 component's
 componentpreview
@@ -414,6 +417,7 @@ constraint
 constraint-validation
 constraints
 consume
+consumed
 consumer
 consumers
 consumes
@@ -1870,6 +1874,7 @@ tailwind
 take
 taking
 target
+targeted
 targets
 task
 task-based
@@ -1896,6 +1901,7 @@ the
 their
 them
 theme
+theme-wide
 themes
 theming
 then

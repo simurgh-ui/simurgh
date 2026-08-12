@@ -336,6 +336,26 @@ attribute. Keep status and error messages accessible when they are rendered outs
 | Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 {/* component-supported-states:end */}
 
+{/* component-styling-contract:start */}
+### Styling contract
+
+The selectors below are used by the published component recipe or emitted consistently by an
+adapter. Treat these as the supported styling surface. Element order, anonymous wrappers, and
+undocumented descendants are implementation details and should not be targeted.
+
+| Surface | Stable hooks |
+| --- | --- |
+| Recipe classes | `.simurgh-content`, `.simurgh-item`, `.simurgh-trigger` |
+| Stable DOM parts | `[data-slot="hover-card-content"]`, `[data-slot="hover-card-trigger"]` |
+| Stable data attributes | `[data-slot]` |
+| ARIA/state selectors used by the recipe | `[aria-disabled]` |
+| CSS custom properties consumed | `--simurgh-border`, `--simurgh-foreground`, `--simurgh-radius`, `--simurgh-ring`, `--simurgh-shadow`, `--simurgh-surface` |
+
+Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
+component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
+even if your replacement styles use different selectors.
+{/* component-styling-contract:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
