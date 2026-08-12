@@ -420,6 +420,21 @@ Load the optional component stylesheet for the default recipe, override semantic
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
 
+{/* component-keyboard:start */}
+### Keyboard interactions
+
+These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
+applies to descendant links, buttons, and form controls unless the component overrides it.
+
+| Concern / keys | Behavior |
+| --- | --- |
+| Focus entry and exit (Tab / Shift+Tab) | Shift+F10 or the Context Menu key opens from the trigger; Tab follows browser focus order. |
+| Navigation and activation | Arrow Down/Up and Home/End move among enabled menu items; Enter or Space activates. |
+| Escape | Closes the menu and restores trigger focus. |
+| RTL differences | No RTL-specific key mapping. |
+| Typeahead | Not supported. |
+{/* component-keyboard:end */}
+
 ## Accessibility
 
 Preserve the documented composition and accessible names when wrapping or restyling this component.

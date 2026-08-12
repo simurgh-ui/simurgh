@@ -297,6 +297,21 @@ Load the optional component stylesheet for the default recipe, override semantic
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
 
+{/* component-keyboard:start */}
+### Keyboard interactions
+
+These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
+applies to descendant links, buttons, and form controls unless the component overrides it.
+
+| Concern / keys | Behavior |
+| --- | --- |
+| Focus entry and exit (Tab / Shift+Tab) | Tab enters at the roving-tabindex control and leaves after the toolbar. |
+| Navigation and activation | Arrow keys move focus; Home/End move to first/last; Enter or Space activates. |
+| Escape | Not handled by the component. |
+| RTL differences | Horizontal previous/next arrows reverse in RTL. |
+| Typeahead | Not supported. |
+{/* component-keyboard:end */}
+
 ## Accessibility
 
 Preserve the documented composition and accessible names when wrapping or restyling this component.

@@ -20,6 +20,7 @@ across
 action
 actions
 activate
+activates
 activating
 activation
 active
@@ -329,6 +330,7 @@ code
 codes
 codetabs
 collapse
+collapses
 collapsible
 collection
 collection-level
@@ -478,11 +480,13 @@ customizations
 customize
 customized
 cycle
+cycles
 dark
 data
 date
 dates
 day
+days
 decide
 deciding
 decision
@@ -516,6 +520,7 @@ depends
 deprecation
 derive
 deriving
+descendant
 descendants
 describe
 described
@@ -558,6 +563,7 @@ direction
 direction-aware
 directional
 directionality
+directions
 directive
 directives
 directly
@@ -683,6 +689,7 @@ exit
 exits
 expand
 expandable
+expands
 expansion
 expect
 expectation
@@ -823,6 +830,7 @@ guide
 guides
 hafez
 handle
+handled
 handler
 handlers
 handles
@@ -882,6 +890,7 @@ imperative
 implement
 implementation
 implementations
+implemented
 implicit
 import
 import-only
@@ -940,6 +949,7 @@ intentional
 intentionally
 interact
 interaction
+interactions
 interactive
 intercepting
 interface
@@ -1200,6 +1210,7 @@ nonessential
 nonmodal
 normal
 normalize
+normally
 not
 notes
 notices
@@ -1232,6 +1243,7 @@ only
 onto
 open
 open-in-new-tab
+open-menu
 opened
 opener
 opening
@@ -1448,6 +1460,7 @@ ratios
 raw
 re-export
 reach
+reaches
 reaching
 react
 react's
@@ -1550,6 +1563,7 @@ reserving
 reset
 resets
 resizable
+resize
 resolve
 resolving
 resource
@@ -1590,11 +1604,13 @@ routes
 routine
 routing
 roving
+roving-tabindex
 row
 row-and-column
 rows
 rtl
 rtl-compatible
+rtl-specific
 rule
 rules
 rumi
@@ -1642,6 +1658,7 @@ selecting
 selection
 selector
 selectors
+selects
 semantic
 semantically
 semantics
@@ -1782,6 +1799,7 @@ submit
 submitted
 subpath
 subpaths
+subsequent
 substitute
 subtle
 successfully
@@ -1923,6 +1941,7 @@ turquoise
 two
 two-way
 type
+typeahead
 typed
 types
 typescript

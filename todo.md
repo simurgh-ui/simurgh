@@ -224,7 +224,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       required, validation/error state, submission value, and framework form integration.
 - [x] Document loading, empty, invalid, read-only, disabled, and error states wherever supported;
       explicitly say when a state is not supported.
-- [ ] Document keyboard interactions in a compact table for every composite widget, including RTL
+- [x] Document keyboard interactions in a compact table for every composite widget, including RTL
       differences, focus entry/exit, Escape behavior, and typeahead where applicable.
 - [x] Document focus management for overlays: initial focus, focus trapping, restoration, portals,
       nested overlays, outside interaction, and programmatic open/close.
