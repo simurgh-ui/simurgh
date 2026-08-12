@@ -1,0 +1,149 @@
+---
+title: SSR and hydration
+description: Keep Simurgh markup stable across server rendering, hydration, portals, and lazy loading.
+---
+
+Simurgh components can participate in server-rendered applications, but the first client render must
+match the server output. Treat hydration as a state-consistency requirement: the same component
+tree, IDs, values, open state, item order, direction, and accessible labels must exist on both sides.
+
+## Stable initial state
+
+Do not calculate initial component state from browser-only or time-dependent values during render:
+
+- `window`, `document`, viewport width, media queries, or element measurements
+- `localStorage`, cookies unavailable to the server, or client-only authentication state
+- `Date.now()`, the current time zone, random numbers, or locale-dependent sorting
+- generated collection order that differs between server and client
+
+Pass request-known data into the server render, or use a deterministic fallback and update it after
+hydration. For controlled components, the server `value` or `open` state must equal the first client
+value. For uncontrolled components, keep `defaultValue` and `defaultOpen` deterministic.
+
+## IDs and accessible relationships
+
+Compound components connect triggers, labels, descriptions, controls, and panels through IDs. Let
+the adapter generate IDs when its API supports that. When supplying IDs yourself, derive them from
+stable application data rather than array indexes that can reorder or random values created during
+render.
+
+Do not render a title or description only on the server while omitting it on the first client render.
+That changes both DOM and accessible-name relationships during hydration.
+
+## Portals and overlays
+
+Portalled content may be absent from server HTML and mount after the browser is available. Keep the
+overlay closed for the server and first client render unless the application and framework provide a
+tested server portal target. Opening an overlay from stored client preference should happen after
+mount, not while hydrating.
+
+Portal destinations must exist before the overlay mounts. Avoid reading a destination with
+`document.querySelector` during server render. When the adapter accepts a custom destination,
+resolve it after mount and render the overlay only after that reference exists.
+
+Focus cannot be moved on the server. Initial focus, focus containment, and restoration begin after
+the overlay mounts in the browser. Do not remove the opener between server render and hydration if
+focus must later return to it.
+
+## React
+
+Read browser-only preferences in an effect and preserve the server fallback for the initial render:
+
+```tsx
+import { useEffect, useState } from 'react';
+import { Dialog } from '@simurgh-ui/react/dialog';
+
+export function PreferencesDialog() {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(window.localStorage.getItem('show-preferences') === 'true');
+  }, []);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* parts */}
+    </Dialog>
+  );
+}
+```
+
+React's `useId` is stable when the component tree is identical. Conditional server/client branches
+can still shift generated IDs, so keep hook and component order the same. A lazy component must be
+rendered under an appropriate `Suspense` boundary; its fallback should have stable dimensions and
+must not duplicate an interactive control's accessible name or form value.
+
+## Vue
+
+Use `onMounted` for browser-only state and keep the initial ref deterministic:
+
+```vue
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { Dialog } from '@simurgh-ui/vue/dialog';
+
+const open = ref(false);
+
+onMounted(() => {
+  open.value = window.localStorage.getItem('show-preferences') === 'true';
+});
+</script>
+
+<template>
+  <Dialog v-model:open="open"><!-- parts --></Dialog>
+</template>
+```
+
+Create async adapters at module scope with `defineAsyncComponent`; do not create a new async
+component definition during every render. Vue Teleport targets must exist in the initial document.
+Use a client-only boundary supplied by the application framework only when the component genuinely
+cannot render a deterministic server fallback.
+
+## Angular
+
+Guard direct DOM access with platform-aware application code or defer it with `afterNextRender`:
+
+```ts
+import { afterNextRender, Component } from '@angular/core';
+
+@Component({
+  selector: 'app-preferences',
+  standalone: true,
+  template: `<!-- Simurgh dialog using the open property -->`,
+})
+export class PreferencesComponent {
+  open = false;
+
+  constructor() {
+    afterNextRender(() => {
+      this.open = window.localStorage.getItem('show-preferences') === 'true';
+    });
+  }
+}
+```
+
+Keep server and browser providers aligned for locale, direction, and initial form values. Angular
+route `loadComponent` and deferred views may move code out of the initial bundle; ensure the loading
+placeholder is non-interactive when it would otherwise duplicate the final control.
+
+## Async data and collections
+
+Render a deterministic loading or empty state until async options arrive. Do not preselect the first
+client-fetched item if the server rendered no selection. When replacing options in Select,
+Combobox, Command, Tabs, Accordion, Tree, or Calendar, retain stable keys and confirm that the active
+or selected value still exists.
+
+If data can be fetched on the server, serialize the exact result into the first client render. If it
+must be fetched in the browser, keep the first client render equal to the server fallback and update
+after hydration.
+
+## Verification checklist
+
+Test a production SSR build rather than development-only client navigation:
+
+1. Load the server-rendered URL directly with a clean browser profile.
+2. Confirm the console reports no hydration mismatch.
+3. Compare server HTML with the first hydrated state for IDs, values, labels, and item order.
+4. Open and close every overlay using keyboard and pointer, then verify focus restoration.
+5. Repeat in RTL, dark mode, reduced motion, and with persisted browser preferences.
+6. Navigate to and away from lazy routes to detect duplicated portals, listeners, or stale focus.

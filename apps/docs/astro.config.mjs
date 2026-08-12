@@ -40,6 +40,7 @@ export default defineConfig({
           items: [
             { label: 'Theming', slug: 'guides/theming' },
             { label: 'Accessibility & RTL', slug: 'guides/accessibility-rtl' },
+            { label: 'SSR and hydration', slug: 'guides/ssr-and-hydration' },
           ],
         },
         { label: 'Components', autogenerate: { directory: 'components' } },

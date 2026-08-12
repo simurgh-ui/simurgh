@@ -231,7 +231,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 - [ ] Add realistic examples rather than only minimal anatomy snippets: async Dialog submission,
       validated Form, searchable Combobox, server-backed Command, Date Picker constraints,
       upload validation, and dynamic Tabs/Accordion items.
-- [ ] Add SSR and hydration guidance for generated IDs, portals, browser-only APIs, and async/lazy
+- [x] Add SSR and hydration guidance for generated IDs, portals, browser-only APIs, and async/lazy
       components in Angular, React, and Vue.
 - [ ] Add TypeScript examples for extending props, wrapping components, typing values/events, and
       forwarding refs or native attributes.
