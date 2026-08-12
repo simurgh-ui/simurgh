@@ -21,7 +21,23 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
 }
 function clean(value) {
-  return value.replaceAll('|', '\\|').replace(/\s+/gu, ' ').trim();
+  return value
+    .replace(
+      /import\(["'][^"']*[\\/]packages[\\/]([^\\/]+)[\\/](?:src|dist)[\\/]index["']\)\./gu,
+      '',
+    )
+    .replaceAll('|', '\\|')
+    .replace(/\s+/gu, ' ')
+    .trim();
+}
+
+for (const fixture of [
+  'import("D:/repo/packages/core/dist/index").CalendarDay[]',
+  'import("/home/runner/work/repo/packages/core/dist/index").CalendarDay[]',
+  String.raw`import("D:\repo\packages\core\dist\index").CalendarDay[]`,
+]) {
+  if (clean(fixture) !== 'CalendarDay[]')
+    throw new Error(`Workspace import normalization failed for ${fixture}`);
 }
 function inlineCode(value) {
   const text = clean(value);
@@ -117,7 +133,10 @@ function componentSection(name) {
       !/^ngOn(?:Init|Changes|Destroy|Check)$|^ngAfter|^ngDoCheck$/u.test(memberName)
     ) {
       const signature = checker.getSignatureFromDeclaration(member);
-      methods.push(`| \`${memberName}${checker.signatureToString(signature, declaration, ts.TypeFormatFlags.NoTruncation).replace(/^\(/u, '(')}\` |`);
+      const signatureText = clean(
+        checker.signatureToString(signature, declaration, ts.TypeFormatFlags.NoTruncation),
+      );
+      methods.push(`| \`${memberName}${signatureText.replace(/^\(/u, '(')}\` |`);
     }
   }
   const slots = [...template.matchAll(/<ng-content(?:\s+select="([^"]+)")?\s*\/?\s*>/gu)]
