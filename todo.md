@@ -226,7 +226,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       explicitly say when a state is not supported.
 - [ ] Document keyboard interactions in a compact table for every composite widget, including RTL
       differences, focus entry/exit, Escape behavior, and typeahead where applicable.
-- [ ] Document focus management for overlays: initial focus, focus trapping, restoration, portals,
+- [x] Document focus management for overlays: initial focus, focus trapping, restoration, portals,
       nested overlays, outside interaction, and programmatic open/close.
 - [ ] Add realistic examples rather than only minimal anatomy snippets: async Dialog submission,
       validated Form, searchable Combobox, server-backed Command, Date Picker constraints,

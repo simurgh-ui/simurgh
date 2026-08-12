@@ -1,0 +1,122 @@
+---
+title: Overlay focus management
+description: Understand initial focus, containment, restoration, portals, dismissal, nesting, and programmatic control.
+---
+
+Overlay behavior depends on whether a surface is modal. Dialog, Alert Dialog, Sheet, and Drawer keep
+keyboard focus inside while open. Popover, menus, Select, Combobox, Hover Card, and Tooltip are
+non-modal and use their component-specific focus or active-item model.
+
+Always provide the accessible title, description, or label required by the component page. Focus
+management does not replace accessible naming.
+
+## Modal focus lifecycle
+
+| Stage                       | Dialog, Sheet, and Drawer                                                        | Alert Dialog                                                                           |
+| --------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Open                        | Record the currently focused element.                                            | Record the currently focused element.                                                  |
+| Initial focus               | Focus the modal content container. Users then Tab to the first control.          | Focus the designated cancel control when present.                                      |
+| Tab and Shift+Tab           | Wrap within focusable descendants of the content.                                | Wrap within focusable descendants of the content.                                      |
+| Escape                      | Close the top-level modal.                                                       | Close the alert dialog. Do not make Escape the only safe cancellation method.          |
+| Overlay pointer interaction | Clicking the separate overlay closes the surface.                                | Current adapters also close on overlay click; always render an explicit cancel action. |
+| Close                       | Restore focus to the element recorded when the modal opened, if it still exists. | Restore focus to the recorded opener, if it still exists.                              |
+
+The content container has `tabindex="-1"`, allowing initial focus even when it contains no
+interactive child. Alert Dialog's safe initial target is the element marked as its cancel part. If
+that part is missing, verify the adapter's fallback and add a visible cancel action before shipping.
+
+## Framework differences
+
+| Adapter | Portal behavior                                                                                                                         | Programmatic open/close                                                                                                                                                 |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| React   | `DialogPortal` mounts its children in `document.body`. Alert Dialog content creates its portal internally.                              | Control `open` with `onOpenChange`, or use `defaultOpen` for local state. Preserve the trigger while open so restoration has a live target.                             |
+| Vue     | Modal content uses Vue `Teleport` to `body`.                                                                                            | Use `v-model:open` or `default-open`. Opening and closing through the reactive model runs the content watcher that captures and restores focus.                         |
+| Angular | Modal content renders inside the component host; there is no built-in body portal. Ancestor overflow and stacking contexts still apply. | Call `show()` and `close()` on the component instance so opener capture, initial focus, events, and restoration run. Directly assigning `open` bypasses that lifecycle. |
+
+React example with explicit portal anatomy:
+
+```tsx
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger>Edit profile</DialogTrigger>
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogContent>
+      <DialogTitle>Edit profile</DialogTitle>
+      <DialogDescription>Change your public details.</DialogDescription>
+      <DialogClose>Done</DialogClose>
+    </DialogContent>
+  </DialogPortal>
+</Dialog>
+```
+
+Angular programmatic control should call the component methods:
+
+```html
+<button type="button" (click)="profile.show()">Edit profile</button>
+<simurgh-dialog
+  #profile
+  labelledBy="profile-title"
+  describedBy="profile-description"
+>
+  <h2 id="profile-title">Edit profile</h2>
+  <p id="profile-description">Change your public details.</p>
+  <button type="button" (click)="profile.close()">Done</button>
+</simurgh-dialog>
+```
+
+## Non-modal overlays
+
+Non-modal overlays must not trap Tab. Their focus model depends on purpose:
+
+- Tooltip and Hover Card disclose supplementary content from hover or focus without moving focus
+  into a modal loop.
+- Popover exposes interactive anchored content and closes with Escape; return focus deliberately
+  when the workflow requires it.
+- Dropdown Menu and Context Menu move focus among menu items and close after selection or Escape.
+- Select, Combobox, and Command manage an active option or action while retaining their documented
+  form or input behavior.
+
+Some adapters use Floating UI dismissal behavior while others implement Escape and pointer handling
+directly. Test outside pointer interaction, Escape, Tab, and focus return in the consuming framework;
+do not assume modal trapping applies to a non-modal surface.
+
+## Nested overlays
+
+Simurgh does not currently expose a cross-framework overlay-stack manager as a public API. Avoid
+nesting one modal inside another when a single composed modal can represent the task. When nesting
+is necessary:
+
+1. Open the child from a stable element inside the parent.
+2. Ensure the child is visually and semantically above the parent.
+3. Press Escape once and verify only the child closes.
+4. Verify focus returns to the child opener inside the parent.
+5. Close the parent and verify focus returns to its original opener.
+6. Repeat with outside pointer interaction; an event must not dismiss both layers.
+
+Do not remove, disable, or replace an opener while its overlay is open. If business logic must remove
+it, choose and focus a documented fallback after close.
+
+## Initial-focus decisions
+
+The default modal container focus is predictable and prevents destructive actions from receiving
+focus accidentally. After the modal opens, applications may move focus only when the task requires
+it and the destination is stable. Prefer:
+
+- The first invalid field when reopening a failed form.
+- A safe cancel action in a destructive confirmation.
+- A heading or content container when focusing the first action would skip important context.
+
+Avoid automatically focusing a destructive confirmation button, a control that immediately opens
+another overlay, or a field whose focus causes disruptive scrolling on small screens.
+
+## Verification
+
+For every overlay, test with keyboard only:
+
+1. Focus the opener and activate it with Enter or Space as appropriate.
+2. Confirm the initial focus target and accessible name.
+3. Traverse forward and backward through every focusable element.
+4. Press Escape and verify only the intended surface closes.
+5. Reopen, dismiss through the overlay or documented outside interaction, and verify focus return.
+6. Remove the opener in a test case and confirm the application provides a safe fallback.
+7. Repeat for nested surfaces, RTL, reduced motion, a scrolled page, and a mobile-sized viewport.
