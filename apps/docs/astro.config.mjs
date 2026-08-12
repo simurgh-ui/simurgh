@@ -27,6 +27,10 @@ export default defineConfig({
             { label: 'Introduction', slug: 'index' },
             { label: 'Installation', slug: 'guides/installation' },
             { label: 'Choose a component', slug: 'guides/component-chooser' },
+            {
+              label: 'Updates and migrations',
+              slug: 'guides/updates-and-migrations',
+            },
             { label: 'Troubleshooting', slug: 'guides/troubleshooting' },
           ],
         },

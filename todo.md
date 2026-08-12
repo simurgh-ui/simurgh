@@ -261,7 +261,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       Accordion vs Disclosure vs Collapsible.
 - [ ] Add package/version requirements, browser support, framework peer-version support, and a
       compatibility matrix backed by CI.
-- [ ] Add migration and update guides for CLI-copied source and package consumers, including how to
+- [x] Add migration and update guides for CLI-copied source and package consumers, including how to
       resolve `simurgh diff` conflicts safely.
 - [x] Add troubleshooting for missing styles, overlay clipping/z-index, portals, hydration mismatch,
       form submission, focus restoration, Tailwind conflicts, and RTL layout issues.
