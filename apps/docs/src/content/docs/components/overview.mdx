@@ -1,58 +1,115 @@
 ---
 title: Component overview
-description: Sixty-two accessible primitives with framework-native APIs.
+description: Sixty-six accessible primitives for Angular, React, and Vue, organized by purpose.
 ---
 
-| Primitive       | Primary accessibility contract                      | Native form value |
-| --------------- | --------------------------------------------------- | ----------------- |
-| Dialog          | Modal semantics, focus containment and restoration  | —                 |
-| Popover         | Dismissible, collision-aware anchored content       | —                 |
-| Tooltip         | Hover and focus description                         | —                 |
-| Dropdown Menu   | Menu roles, disabled items and selection            | —                 |
-| Select          | Combobox/listbox semantics and option selection     | Yes               |
-| Combobox        | Editable filtering with active-descendant focus     | Yes               |
-| Command         | Searchable actions with active-descendant focus     | Optional          |
-| Calendar        | Labelled date grid with roving keyboard focus       | Yes               |
-| Date Picker     | Dismissible calendar popup with focus restoration   | Yes               |
-| Carousel        | Labelled slides with bounded directional navigation | No                |
-| Resizable       | Keyboard and pointer adjustable panel separator     | No                |
-| Sidebar         | Labelled complementary navigation and disclosure    | No                |
-| Tree            | Hierarchical disclosure with roving keyboard focus  | No                |
-| File Upload     | Native file input with labelled drop-zone feedback  | Yes               |
-| Password Input  | Native password entry with a named reveal toggle    | Yes               |
-| Tabs            | Roving focus, directional navigation and panels     | —                 |
-| Accordion       | Disclosure state and labelled regions               | —                 |
-| Checkbox        | Checkbox role, checked and disabled states          | Yes               |
-| Separator       | Semantic or decorative content division             | —                 |
-| Progress        | Determinate or indeterminate task status            | —                 |
-| Label           | Native accessible naming and control association    | —                 |
-| Toggle          | Native pressed state and keyboard activation        | —                 |
-| Visually Hidden | Screen-reader text without visual layout impact     | —                 |
-| Avatar          | Image loading with deterministic text fallback      | —                 |
-| Alert           | Polite or assertive live-region feedback            | —                 |
-| Aspect Ratio    | Stable media proportions with safe fallback         | —                 |
-| Skeleton        | Decorative or named busy loading placeholder        | —                 |
-| Spinner         | Named polite busy status for indeterminate work     | —                 |
-| Button          | Native activation with disabled and busy states     | —                 |
-| Button Group    | Named grouping and visual composition of actions    | No                |
-| Input           | Native form value and validation semantics          | Yes               |
-| Input Group     | Grouped input with contextual prefix or suffix      | Yes               |
-| Input OTP       | Autofill-ready one-time code entry and validation   | Yes               |
-| Empty           | Static zero-state content or optional polite status | No                |
-| Item            | Native list structure with named row content        | No                |
-| Textarea        | Native multiline form and validation semantics      | Yes               |
-| Badge           | Neutral metadata or optional polite status          | —                 |
-| Breadcrumb      | Named navigation landmark and current page          | —                 |
-| Switch          | Switch role, checked and disabled states            | Yes               |
-| Radio Group     | Roving focus and single-choice selection            | Yes               |
-| Menubar         | Direction-aware roving focus for application menus  | No                |
-| Hover Card      | Hover and focus disclosure of supplementary detail  | No                |
-| Context Menu    | Pointer and keyboard access to contextual actions   | No                |
-| Sheet           | Side-anchored modal with focus containment          | No                |
-| Drawer          | Bottom-anchored modal with focus containment        | No                |
-| Alert Dialog    | Interruptive confirmation with safe initial focus   | No                |
-| Form            | Native validation with first-invalid focus          | Yes               |
-| Native Select   | Platform-native option selection and validation     | Yes               |
-| Toast           | Polite status announcements and dismissal           | —                 |
+Simurgh provides 66 primitives. Every component has Angular, React, and Vue implementations with a
+shared accessibility contract and framework-native APIs: inputs and outputs in Angular, props and
+callbacks in React, and props, events, and slots in Vue.
 
-Every registry item has Angular, React, and Vue source. APIs share the same anatomy while preserving each framework’s conventions: inputs/outputs in Angular, props/callbacks in React, and props/emits with slots in Vue.
+## Actions and selection
+
+| Component | Choose it for |
+| --- | --- |
+| [Button](/components/button/) | A native action or form submission control. |
+| [Button Group](/components/button-group/) | Visually composing related buttons. |
+| [Toggle](/components/toggle/) | One independently pressed/unpressed option. |
+| [Toggle Group](/components/toggle-group/) | One or more pressed options in a related set. |
+| [Toolbar](/components/toolbar/) | A keyboard-navigable collection of controls. |
+| [Rating](/components/rating/) | Selecting or displaying a bounded rating. |
+
+## Forms and data entry
+
+| Component | Choose it for |
+| --- | --- |
+| [Form](/components/form/) | Coordinating native validation and invalid-field focus. |
+| [Field](/components/field/) | Grouping a label, control, description, and validation message. |
+| [Label](/components/label/) | Giving a native form control an accessible name. |
+| [Input](/components/input/) | Single-line native text entry. |
+| [Textarea](/components/textarea/) | Multiline native text entry. |
+| [Input Group](/components/input-group/) | Adding a visual prefix, suffix, or action to an input. |
+| [Password Input](/components/password-input/) | Password entry with an accessible reveal control. |
+| [Number Input](/components/number-input/) | Numeric entry with bounded increment/decrement controls. |
+| [Input OTP](/components/input-otp/) | Autofill-ready one-time-code entry. |
+| [Checkbox](/components/checkbox/) | Independent boolean or mixed-state selection. |
+| [Switch](/components/switch/) | An immediately applied on/off setting. |
+| [Radio Group](/components/radio-group/) | One required choice from a visible set. |
+| [Native Select](/components/native-select/) | Platform-native selection from a fixed list. |
+| [Select](/components/select/) | A custom-styled fixed-option listbox. |
+| [Combobox](/components/combobox/) | Editable search and selection from filtered options. |
+| [Slider](/components/slider/) | Pointer and keyboard selection within a numeric range. |
+| [Tags Input](/components/tags-input/) | Creating and removing multiple short text values. |
+| [File Upload](/components/file-upload/) | Native file selection with drop-zone feedback. |
+| [Calendar](/components/calendar/) | Selecting or navigating dates in a visible grid. |
+| [Date Picker](/components/date-picker/) | Date entry through a dismissible calendar popup. |
+
+## Overlays and temporary surfaces
+
+| Component | Choose it for |
+| --- | --- |
+| [Dialog](/components/dialog/) | A modal task that contains focus until dismissed. |
+| [Alert Dialog](/components/alert-dialog/) | An interruptive confirmation requiring an explicit choice. |
+| [Sheet](/components/sheet/) | A side-anchored modal task or detail surface. |
+| [Drawer](/components/drawer/) | A bottom-anchored modal surface, often on smaller screens. |
+| [Popover](/components/popover/) | Interactive, dismissible content anchored to a trigger. |
+| [Tooltip](/components/tooltip/) | A short, non-interactive description on hover or focus. |
+| [Hover Card](/components/hover-card/) | Supplementary preview content on hover or focus. |
+| [Dropdown Menu](/components/dropdown-menu/) | A trigger-opened list of actions. |
+| [Context Menu](/components/context-menu/) | Actions for a specific target or pointer location. |
+| [Toast](/components/toast/) | Brief, non-blocking status feedback. |
+
+## Disclosure and navigation
+
+| Component | Choose it for |
+| --- | --- |
+| [Disclosure](/components/disclosure/) | One native summary/details disclosure. |
+| [Collapsible](/components/collapsible/) | Programmatically controlled show/hide content. |
+| [Accordion](/components/accordion/) | A coordinated set of disclosure sections. |
+| [Tabs](/components/tabs/) | Switching between peer panels in the same context. |
+| [Breadcrumb](/components/breadcrumb/) | Showing location within a page hierarchy. |
+| [Pagination](/components/pagination/) | Navigating pages of a larger result set. |
+| [Link](/components/link/) | Navigation to a URL with native link behavior. |
+| [Navigation Menu](/components/navigation-menu/) | Site or application navigation with expandable groups. |
+| [Menubar](/components/menubar/) | Desktop-style application command menus. |
+| [Sidebar](/components/sidebar/) | Complementary application navigation with disclosure. |
+| [Tree](/components/tree/) | Navigating a hierarchical, expandable item structure. |
+| [Carousel](/components/carousel/) | Sequential navigation through labelled slides. |
+| [Command](/components/command/) | Searching and invoking a collection of actions. |
+
+## Layout and composition
+
+| Component | Choose it for |
+| --- | --- |
+| [Card](/components/card/) | Composing a bounded content summary or action area. |
+| [Item](/components/item/) | Building consistently structured list rows. |
+| [Separator](/components/separator/) | A semantic or decorative content division. |
+| [Aspect Ratio](/components/aspect-ratio/) | Reserving a stable media proportion. |
+| [Scroll Area](/components/scroll-area/) | A bounded region with native scrolling behavior. |
+| [Resizable](/components/resizable/) | Keyboard- and pointer-adjustable adjacent panels. |
+
+## Data display and feedback
+
+| Component | Choose it for |
+| --- | --- |
+| [Table](/components/table/) | Semantic row-and-column data. |
+| [Avatar](/components/avatar/) | An image identity with deterministic text fallback. |
+| [Badge](/components/badge/) | Compact metadata or status. |
+| [Kbd](/components/kbd/) | A keyboard key or shortcut hint. |
+| [Alert](/components/alert/) | Persistent polite or assertive feedback. |
+| [Empty](/components/empty/) | A zero-state explanation and next action. |
+| [Progress](/components/progress/) | Determinate or indeterminate task completion. |
+| [Meter](/components/meter/) | A scalar measurement within a known range. |
+| [Skeleton](/components/skeleton/) | A loading placeholder that preserves layout. |
+| [Spinner](/components/spinner/) | Compact indeterminate busy feedback. |
+| [Visually Hidden](/components/visually-hidden/) | Screen-reader text without visible layout. |
+
+## Common choices
+
+- Choose **Native Select** for the smallest, most familiar fixed-option control; **Select** when a
+  custom listbox presentation is required; and **Combobox** when users need to type or filter.
+- Choose **Tooltip** for a short non-interactive description, **Hover Card** for a richer preview,
+  and **Popover** for interactive content that must remain open while used.
+- Choose **Dialog** for a general modal task and **Alert Dialog** only for an interruptive decision.
+  **Sheet** and **Drawer** use the same modal model with side- or bottom-anchored presentation.
+- Choose **Disclosure** for one native details section, **Collapsible** for controlled visibility,
+  and **Accordion** for a coordinated set of sections.
