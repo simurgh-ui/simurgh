@@ -1,0 +1,40 @@
+:root {
+  --simurgh-background: 40 33% 98%;
+  --simurgh-foreground: 225 35% 14%;
+  --simurgh-surface: 0 0% 100%;
+  --simurgh-muted: 220 18% 90%;
+  --simurgh-muted-foreground: 225 20% 32%;
+  --simurgh-primary: 266 70% 32%;
+  --simurgh-primary-foreground: 0 0% 100%;
+  --simurgh-accent: 35 90% 50%;
+  --simurgh-danger: 350 75% 36%;
+  --simurgh-border: 225 18% 58%;
+  --simurgh-ring: 266 80% 40%;
+  --simurgh-radius: 0.375rem;
+  --simurgh-shadow: 0 18px 50px rgb(24 18 43 / 0.18);
+  --simurgh-duration: 140ms;
+}
+
+.dark,
+[data-theme='dark'] {
+  --simurgh-background: 225 35% 8%;
+  --simurgh-foreground: 40 25% 94%;
+  --simurgh-surface: 225 30% 13%;
+  --simurgh-muted: 225 22% 22%;
+  --simurgh-muted-foreground: 220 16% 72%;
+  --simurgh-primary: 266 75% 70%;
+  --simurgh-primary-foreground: 225 35% 8%;
+  --simurgh-accent: 35 90% 62%;
+  --simurgh-danger: 350 78% 68%;
+  --simurgh-border: 220 18% 45%;
+  --simurgh-ring: 266 85% 74%;
+  --simurgh-radius: 0.375rem;
+  --simurgh-shadow: 0 18px 50px rgb(0 0 0 / 0.42);
+  --simurgh-duration: 140ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --simurgh-duration: 1ms;
+  }
+}

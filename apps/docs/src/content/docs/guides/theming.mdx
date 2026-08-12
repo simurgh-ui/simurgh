@@ -241,6 +241,23 @@ Override dark roles under the same selector after the Simurgh import:
 }
 ```
 
+## Complete custom theme example
+
+The [downloadable light/dark theme](/examples/custom-theme.css) overrides every semantic color,
+shape, shadow, and motion token and preserves the reduced-motion override. Load it after a Simurgh
+component recipe:
+
+```css
+@import '@simurgh-ui/styles/dialog.css';
+@import '/examples/custom-theme.css';
+```
+
+The documentation build validates that both theme blocks define all 14 semantic tokens. It also
+checks 20 WCAG contrast pairings: normal text pairs at a minimum of 4.5:1 and focus-ring and border
+boundaries at a minimum of 3:1. These automated checks cover the declared pairings, not every
+component state; keyboard focus, forced colors, disabled states, and application overrides still
+require browser testing.
+
 ## Raw heritage palette
 
 The shipped palette exposes `firuzeh`, `persian-blue`, `lapis`, `cobalt`, `brick`, `ochre`,
