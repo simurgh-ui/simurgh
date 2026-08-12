@@ -256,7 +256,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 - [x] Update the component overview from the stale "Sixty-two" count and include all 66 primitive
       pages, grouped by form, overlay, navigation, feedback, layout, and data display.
-- [ ] Add a component chooser comparing commonly confused primitives: Select vs Native Select vs
+- [x] Add a component chooser comparing commonly confused primitives: Select vs Native Select vs
       Combobox, Dialog vs Alert Dialog vs Sheet vs Drawer, Tooltip vs Hover Card vs Popover, and
       Accordion vs Disclosure vs Collapsible.
 - [ ] Add package/version requirements, browser support, framework peer-version support, and a

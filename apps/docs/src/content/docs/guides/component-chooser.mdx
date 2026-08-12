@@ -1,0 +1,64 @@
+---
+title: Choose a component
+description: Compare similar Simurgh primitives by behavior, accessibility model, and intended use.
+---
+
+Choose a component by the interaction users need, not by its visual appearance. Recipes can make
+different primitives look similar, but their keyboard behavior, focus model, semantics, and form
+values remain different.
+
+## Select, Native Select, or Combobox
+
+| Need                                                            | Choose                                      | Why                                                                                                 |
+| --------------------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| A familiar fixed list with the smallest integration cost        | [Native Select](/components/native-select/) | Uses the platform picker, native form behavior, and native mobile UI.                               |
+| A fixed list with a custom trigger and popup presentation       | [Select](/components/select/)               | Provides combobox/listbox semantics and keyboard navigation while allowing custom option rendering. |
+| Typing, filtering, autocomplete, or accepting an editable query | [Combobox](/components/combobox/)           | Keeps text entry in the interaction model and manages an active filtered option.                    |
+
+Start with Native Select unless product requirements need custom option presentation. Select is not
+a text input; use Combobox when typing is part of the task. For a small set of choices that should
+always remain visible, use [Radio Group](/components/radio-group/) instead.
+
+## Dialog, Alert Dialog, Sheet, or Drawer
+
+| Need                                                           | Choose                                    | Why                                                                             |
+| -------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------- |
+| A focused modal task                                           | [Dialog](/components/dialog/)             | Contains focus, dismisses with Escape, and restores focus to its opener.        |
+| An interruptive decision with meaningful consequences          | [Alert Dialog](/components/alert-dialog/) | Uses alert-dialog semantics and requires a deliberate confirm or cancel choice. |
+| A modal task anchored to a side of the viewport                | [Sheet](/components/sheet/)               | Uses the modal model with side-panel presentation.                              |
+| A modal task anchored to the bottom, commonly on small screens | [Drawer](/components/drawer/)             | Uses the modal model with bottom-panel presentation.                            |
+
+Do not use Alert Dialog for ordinary forms or informational messages. Visual placement alone does
+not make a surface a Sheet or Drawer: all four choices must preserve their documented focus,
+labelling, dismissal, and restoration behavior. Use [Popover](/components/popover/) when content
+should be non-modal and anchored to a trigger.
+
+## Tooltip, Hover Card, or Popover
+
+| Need                                                       | Choose                                | Why                                                                            |
+| ---------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------ |
+| A short, non-interactive description                       | [Tooltip](/components/tooltip/)       | Appears on hover or focus and contributes a description without taking focus.  |
+| A richer, non-essential preview                            | [Hover Card](/components/hover-card/) | Supports supplementary preview content while retaining hover/focus disclosure. |
+| Interactive controls or content that stays open while used | [Popover](/components/popover/)       | Is explicitly opened, dismissible, focusable, and anchored to a trigger.       |
+
+Never place buttons, links, or form controls in a Tooltip. If users must interact with the surface,
+use Popover. Do not put information required to complete a task only in hover-triggered content;
+touch and keyboard users must receive the same information.
+
+## Accordion, Disclosure, or Collapsible
+
+| Need                                                           | Choose                                  | Why                                                                          |
+| -------------------------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------------------- |
+| One simple, natively toggled details section                   | [Disclosure](/components/disclosure/)   | Builds on native summary/details behavior.                                   |
+| One region whose visibility is controlled by application state | [Collapsible](/components/collapsible/) | Provides an explicit trigger/content relationship and controlled state.      |
+| A coordinated set of expandable sections                       | [Accordion](/components/accordion/)     | Adds collection-level keyboard behavior and single/multiple expansion rules. |
+
+Do not use Tabs as a visual substitute for Accordion. [Tabs](/components/tabs/) represents peer
+panels where one panel is active; Accordion represents independently disclosed sections in a
+document flow.
+
+## Still deciding?
+
+Check the component page's accessibility and state contracts before choosing. Prefer the simplest
+native primitive that meets the requirement, then customize its tokens and recipes rather than
+switching to a behaviorally different component for appearance alone.
