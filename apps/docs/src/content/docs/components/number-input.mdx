@@ -6,6 +6,42 @@ description: Native numeric entry with accessible increment and decrement contro
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add number-input
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import { NumberInput } from '@simurgh-ui/react/number-input';
+import '@simurgh-ui/styles/number-input.css';
+```
+
+### Vue
+
+```ts
+import { NumberInput } from '@simurgh-ui/vue/number-input';
+import '@simurgh-ui/styles/number-input.css';
+```
+
+### Angular
+
+```ts
+import { NumberInputComponent } from '@simurgh-ui/angular/number-input';
+import '@simurgh-ui/styles/number-input.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Number Input keeps native spinbutton semantics while providing larger, explicitly named step controls. Values are clamped to the configured minimum and maximum.
 
 <ComponentPreview title="Number Input">

@@ -6,6 +6,51 @@ description: Single or multiple pressed-state controls with logical keyboard nav
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add toggle-group
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@simurgh-ui/react/toggle-group';
+import '@simurgh-ui/styles/toggle-group.css';
+```
+
+### Vue
+
+```ts
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@simurgh-ui/vue/toggle-group';
+import '@simurgh-ui/styles/toggle-group.css';
+```
+
+### Angular
+
+```ts
+import {
+  ToggleGroupComponent,
+  ToggleGroupItemDirective,
+} from '@simurgh-ui/angular/toggle-group';
+import '@simurgh-ui/styles/toggle-group.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Toggle Group coordinates related toggle buttons, selection state, and orientation-aware focus movement.
 
 <ComponentPreview title="Toggle Group">

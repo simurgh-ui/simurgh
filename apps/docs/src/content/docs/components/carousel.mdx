@@ -6,6 +6,60 @@ description: Composable labelled slides with direction-aware controls and option
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add carousel
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@simurgh-ui/react/carousel';
+import '@simurgh-ui/styles/carousel.css';
+```
+
+### Vue
+
+```ts
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@simurgh-ui/vue/carousel';
+import '@simurgh-ui/styles/carousel.css';
+```
+
+### Angular
+
+```ts
+import {
+  CarouselComponent,
+  CarouselContentComponent,
+  CarouselItemComponent,
+  CarouselPreviousComponent,
+  CarouselNextComponent,
+} from '@simurgh-ui/angular/carousel';
+import '@simurgh-ui/styles/carousel.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Carousel exposes a named region, one visible slide at a time, positional slide labels, bounded controls, and logical Arrow Left/Right navigation. Enable `loop` only when wrapping is expected.
 
 <ComponentPreview title="Carousel">

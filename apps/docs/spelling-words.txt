@@ -884,6 +884,7 @@ inherits
 initial
 initial-focus
 initialization
+initialized
 initializer
 initials
 injected
@@ -1991,6 +1992,7 @@ wrappers
 wrapping
 writes
 writing
+written
 yellow
 yet
 you

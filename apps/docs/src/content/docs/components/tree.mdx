@@ -6,6 +6,51 @@ description: Hierarchical disclosure with roving focus and native-direction nest
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add tree
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import {
+  Tree,
+  TreeItem,
+} from '@simurgh-ui/react/tree';
+import '@simurgh-ui/styles/tree.css';
+```
+
+### Vue
+
+```ts
+import {
+  Tree,
+  TreeItem,
+} from '@simurgh-ui/vue/tree';
+import '@simurgh-ui/styles/tree.css';
+```
+
+### Angular
+
+```ts
+import {
+  TreeDirective,
+  TreeItemComponent,
+} from '@simurgh-ui/angular/tree';
+import '@simurgh-ui/styles/tree.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Tree presents nested data as one keyboard stop. Arrow Up and Arrow Down move through visible items, Home and End jump to boundaries, and Arrow Right and Arrow Left expand, collapse, and move between parent and child items.
 
 <ComponentPreview title="Tree">

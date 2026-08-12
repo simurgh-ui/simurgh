@@ -6,6 +6,57 @@ description: Native grouping, legend, help text, and validation anatomy for rela
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add field
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import {
+  Field,
+  FieldLegend,
+  FieldDescription,
+  FieldError,
+} from '@simurgh-ui/react/field';
+import '@simurgh-ui/styles/field.css';
+```
+
+### Vue
+
+```ts
+import {
+  Field,
+  FieldLegend,
+  FieldDescription,
+  FieldError,
+} from '@simurgh-ui/vue/field';
+import '@simurgh-ui/styles/field.css';
+```
+
+### Angular
+
+```ts
+import {
+  FieldComponent,
+  FieldLegendComponent,
+  FieldDescriptionComponent,
+  FieldErrorComponent,
+} from '@simurgh-ui/angular/field';
+import '@simurgh-ui/styles/field.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Field preserves native `fieldset` and `legend` behavior while providing consistent anatomy for help and error messages.
 
 <ComponentPreview title="Field">

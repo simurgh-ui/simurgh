@@ -6,6 +6,42 @@ description: Native-input-backed file selection with drag-and-drop and live feed
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add file-upload
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import { FileUpload } from '@simurgh-ui/react/file-upload';
+import '@simurgh-ui/styles/file-upload.css';
+```
+
+### Vue
+
+```ts
+import { FileUpload } from '@simurgh-ui/vue/file-upload';
+import '@simurgh-ui/styles/file-upload.css';
+```
+
+### Angular
+
+```ts
+import { FileUploadComponent } from '@simurgh-ui/angular/file-upload';
+import '@simurgh-ui/styles/file-upload.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 File Upload keeps the platform file input as its focusable control while presenting a larger drop target. Selection and dropped files share the same accept filtering, single/multiple behavior, and polite filename announcement.
 
 <ComponentPreview title="File Upload">

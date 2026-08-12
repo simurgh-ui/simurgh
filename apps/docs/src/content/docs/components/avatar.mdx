@@ -6,6 +6,42 @@ description: An identity image with deterministic accessible fallback content.
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add avatar
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import { Avatar } from '@simurgh-ui/react/avatar';
+import '@simurgh-ui/styles/avatar.css';
+```
+
+### Vue
+
+```ts
+import { Avatar } from '@simurgh-ui/vue/avatar';
+import '@simurgh-ui/styles/avatar.css';
+```
+
+### Angular
+
+```ts
+import { AvatarComponent } from '@simurgh-ui/angular/avatar';
+import '@simurgh-ui/styles/avatar.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Avatar displays an image after it loads successfully and otherwise renders fallback content. Initialization is SSR-safe because fallback content is the deterministic first render.
 
 <ComponentPreview title="Avatar">

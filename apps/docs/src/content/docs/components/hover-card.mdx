@@ -6,6 +6,50 @@ description: Anchored supplementary content available by pointer hover or keyboa
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add hover-card
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+} from '@simurgh-ui/react/hover-card';
+import '@simurgh-ui/styles/hover-card.css';
+```
+
+### Vue
+
+```ts
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+} from '@simurgh-ui/vue/hover-card';
+import '@simurgh-ui/styles/hover-card.css';
+```
+
+### Angular
+
+```ts
+import { HoverCardComponent } from '@simurgh-ui/angular/hover-card';
+import '@simurgh-ui/styles/hover-card.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Hover Card reveals a compact, labelled preview without requiring activation. Its trigger works with pointer hover and keyboard focus, and the card uses collision-aware positioning.
 
 <ComponentPreview title="Hover Card">

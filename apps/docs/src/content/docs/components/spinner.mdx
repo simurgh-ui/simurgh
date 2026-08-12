@@ -6,6 +6,42 @@ description: A named indeterminate loading status.
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add spinner
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import { Spinner } from '@simurgh-ui/react/spinner';
+import '@simurgh-ui/styles/spinner.css';
+```
+
+### Vue
+
+```ts
+import { Spinner } from '@simurgh-ui/vue/spinner';
+import '@simurgh-ui/styles/spinner.css';
+```
+
+### Angular
+
+```ts
+import { SpinnerComponent } from '@simurgh-ui/angular/spinner';
+import '@simurgh-ui/styles/spinner.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Spinner communicates short indeterminate work as a polite, named busy status. Its visual indicator is hidden from assistive technology so only the concise label is announced.
 
 <ComponentPreview title="Spinner">

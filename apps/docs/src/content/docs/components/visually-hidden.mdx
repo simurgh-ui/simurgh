@@ -6,6 +6,42 @@ description: Screen-reader-accessible content removed from visual layout.
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add visually-hidden
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import { VisuallyHidden } from '@simurgh-ui/react/visually-hidden';
+import '@simurgh-ui/styles/visually-hidden.css';
+```
+
+### Vue
+
+```ts
+import { VisuallyHidden } from '@simurgh-ui/vue/visually-hidden';
+import '@simurgh-ui/styles/visually-hidden.css';
+```
+
+### Angular
+
+```ts
+import { VisuallyHiddenComponent } from '@simurgh-ui/angular/visually-hidden';
+import '@simurgh-ui/styles/visually-hidden.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Visually Hidden keeps meaningful text available to assistive technology without taking up visual space. It is useful for icon-only controls and supplemental instructions that would otherwise repeat visible context.
 
 <ComponentPreview title="Visually Hidden">

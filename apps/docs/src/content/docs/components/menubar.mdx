@@ -6,6 +6,51 @@ description: A named horizontal application menu with roving keyboard focus.
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add menubar
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import {
+  Menubar,
+  MenubarItem,
+} from '@simurgh-ui/react/menubar';
+import '@simurgh-ui/styles/menubar.css';
+```
+
+### Vue
+
+```ts
+import {
+  Menubar,
+  MenubarItem,
+} from '@simurgh-ui/vue/menubar';
+import '@simurgh-ui/styles/menubar.css';
+```
+
+### Angular
+
+```ts
+import {
+  MenubarComponent,
+  MenubarItemDirective,
+} from '@simurgh-ui/angular/menubar';
+import '@simurgh-ui/styles/menubar.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Menubar groups persistent application commands. Arrow keys move focus according to text direction, Home and End jump to the edges, and disabled items are skipped.
 
 <ComponentPreview title="Menubar">

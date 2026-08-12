@@ -6,6 +6,42 @@ description: Polite or urgent live-region feedback for meaningful changes.
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add alert
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import { Alert } from '@simurgh-ui/react/alert';
+import '@simurgh-ui/styles/alert.css';
+```
+
+### Vue
+
+```ts
+import { Alert } from '@simurgh-ui/vue/alert';
+import '@simurgh-ui/styles/alert.css';
+```
+
+### Angular
+
+```ts
+import { AlertComponent } from '@simurgh-ui/angular/alert';
+import '@simurgh-ui/styles/alert.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Alert announces feedback using a polite status region by default. Urgent mode switches to assertive alert semantics for important failures that require immediate attention.
 
 <ComponentPreview title="Alert">

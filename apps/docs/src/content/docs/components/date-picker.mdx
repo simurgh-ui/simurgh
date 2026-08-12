@@ -6,6 +6,45 @@ description: Calendar popover with locale-aware display, ISO form values, and fo
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
+<!-- component-installation:start -->
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add date-picker
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import {
+  DatePicker,
+  DatePickerProps,
+} from '@simurgh-ui/react/date-picker';
+import '@simurgh-ui/styles/date-picker.css';
+```
+
+### Vue
+
+```ts
+import { DatePicker } from '@simurgh-ui/vue/date-picker';
+import '@simurgh-ui/styles/date-picker.css';
+```
+
+### Angular
+
+```ts
+import { DatePickerComponent } from '@simurgh-ui/angular/date-picker';
+import '@simurgh-ui/styles/date-picker.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+<!-- component-installation:end -->
+
 Date Picker composes Popover and Calendar into a form-ready single-date control. The trigger shows a localized date while the submitted and emitted value remains `YYYY-MM-DD`.
 
 <ComponentPreview title="Date Picker">
