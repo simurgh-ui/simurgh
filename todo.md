@@ -238,7 +238,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 ### P1: customization and styling
 
-- [ ] Expand the theming guide into a complete semantic-token reference with token name, purpose,
+- [x] Expand the theming guide into a complete semantic-token reference with token name, purpose,
       default value, dark-mode value, and contrast expectations.
 - [ ] Document the styling contract for every component: recipe class names, `data-*` state hooks,
       ARIA/state selectors, CSS custom properties, and stable DOM parts that consumers may target.

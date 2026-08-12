@@ -1,19 +1,109 @@
 ---
 title: Theming
+description: Customize Simurgh semantic color, shape, shadow, and motion tokens for light and dark themes.
 ---
 
-Raw heritage tokens describe palette colors; semantic tokens describe UI roles. Override semantic roles in your application rather than changing component source:
+Simurgh separates raw heritage colors from semantic UI roles. Components consume semantic tokens,
+so applications can change the visual theme without editing component source or redefining the
+meaning of a palette color.
+
+## Import tokens
+
+Package consumers can import tokens without any component recipes:
+
+```css
+@import '@simurgh-ui/styles/tokens.css';
+```
+
+Each component stylesheet also includes the shared tokens. An application that imports only
+`@simurgh-ui/styles/button.css` does not need a second token import. CLI consumers should load the
+copied `src/styles/simurgh/tokens.css` file from the application's global stylesheet entry.
+
+## Semantic token reference
+
+Color values are HSL channels rather than complete color functions. Use them as
+`hsl(var(--simurgh-primary))`, including an optional alpha such as
+`hsl(var(--simurgh-primary) / 0.8)`.
+
+| Token                          | Light default                      | Dark default         | Role and contrast expectation                                                                               |
+| ------------------------------ | ---------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `--simurgh-background`         | `39 55% 97%`                       | `222 47% 9%`         | Application canvas. Pair with `foreground`.                                                                 |
+| `--simurgh-foreground`         | `var(--simurgh-ink)`               | `39 55% 92%`         | Primary text and icons. Must remain readable on `background` and `surface`.                                 |
+| `--simurgh-surface`            | `40 43% 99%`                       | `222 40% 13%`        | Raised controls, cards, menus, and dialogs. Pair with `foreground`.                                         |
+| `--simurgh-muted`              | `39 31% 91%`                       | `220 30% 20%`        | Subtle selected, hover, and secondary surfaces.                                                             |
+| `--simurgh-muted-foreground`   | `217 20% 38%`                      | `39 18% 70%`         | Secondary text. Must remain readable on `background`, `surface`, and `muted`.                               |
+| `--simurgh-primary`            | `var(--simurgh-persian-blue)`      | `176 57% 47%`        | Primary actions and emphasized states. Pair with `primary-foreground`.                                      |
+| `--simurgh-primary-foreground` | `0 0% 100%`                        | `222 47% 9%`         | Text and icons placed on `primary`.                                                                         |
+| `--simurgh-accent`             | `var(--simurgh-saffron)`           | `42 88% 62%`         | Accent decoration or emphasis. Do not assume it is a text background without testing the chosen foreground. |
+| `--simurgh-danger`             | `var(--simurgh-pomegranate)`       | Inherits light value | Destructive actions and error emphasis. Pairings require contrast testing in both themes.                   |
+| `--simurgh-border`             | `32 28% 78%`                       | `219 29% 28%`        | Control and surface boundaries. Must remain perceivable next to adjacent surfaces.                          |
+| `--simurgh-ring`               | `var(--simurgh-firuzeh)`           | `176 57% 53%`        | Keyboard focus indicator. Must contrast with every surface on which focus can appear.                       |
+| `--simurgh-radius`             | `0.625rem`                         | Inherits light value | Shared corner radius for recipe surfaces and controls.                                                      |
+| `--simurgh-shadow`             | `0 14px 40px rgb(15 23 42 / 0.16)` | Inherits light value | Elevation shadow for floating and raised surfaces.                                                          |
+| `--simurgh-duration`           | `160ms`                            | Inherits light value | Shared transition duration; becomes `1ms` under reduced-motion preference.                                  |
+
+"Inherits light value" means the dark selector does not override that token; normal CSS inheritance
+keeps the `:root` value.
+
+Changing a semantic pair transfers responsibility for its contrast to the application. At minimum,
+test `foreground` on `background` and `surface`, `muted-foreground` on its supported surfaces,
+`primary-foreground` on `primary`, focus `ring` against every focusable surface, and `border` against
+both sides of the boundary. Test light, dark, forced-colors, disabled, hover, focus, and selected
+states rather than checking isolated swatches.
+
+## Override semantic roles
+
+Declare application overrides after importing Simurgh styles:
 
 ```css
 :root {
   --simurgh-primary: var(--simurgh-persian-blue);
   --simurgh-accent: var(--simurgh-saffron);
   --simurgh-ring: var(--simurgh-firuzeh);
+  --simurgh-radius: 0.375rem;
 }
 ```
 
-The dark theme activates under `.dark` or `[data-theme='dark']`. Motion durations collapse under `prefers-reduced-motion`. Recipes use logical CSS properties so direction changes do not require another stylesheet.
+Prefer semantic overrides to changing raw heritage tokens. A raw token such as
+`--simurgh-persian-blue` describes a color; `--simurgh-primary` describes how the interface uses a
+color.
 
-For production applications, import `@simurgh-ui/styles/tokens.css` once and add component recipes such as `@simurgh-ui/styles/dialog.css` only where they are used. `all.css` is the deliberate full-catalog option; further micro-optimization of that aggregate is lower impact than keeping component-level CSS boundaries intact.
+## Dark mode
 
-The architectural palette is informed by documented Iranian turquoise and cobalt tile glazing, lapis and ultramarine decoration, ochre pigments and brick, and strong blue/yellow and red/white contrasts. Semantic mappings are adjusted where necessary to retain readable contrast.
+Dark tokens activate when `.dark` or `data-theme="dark"` appears on the component or any ancestor:
+
+```html
+<html data-theme="dark">
+  <!-- application -->
+</html>
+```
+
+Override dark roles under the same selector after the Simurgh import:
+
+```css
+.dark,
+[data-theme='dark'] {
+  --simurgh-background: 225 32% 8%;
+  --simurgh-surface: 225 28% 12%;
+  --simurgh-foreground: 40 35% 94%;
+}
+```
+
+## Raw heritage palette
+
+The shipped palette exposes `firuzeh`, `persian-blue`, `lapis`, `cobalt`, `brick`, `ochre`,
+`saffron`, `pomegranate`, `ivory`, and `ink` under the `--simurgh-*` prefix. These are source colors
+for semantic mapping, not guaranteed foreground/background pairs.
+
+The palette is informed by Iranian turquoise and cobalt tile glazing, lapis and ultramarine
+decoration, ochre pigments and brick, and strong blue/yellow and red/white contrasts. Semantic
+mappings are adjusted where necessary to retain readable interface contrast.
+
+## Motion and RTL
+
+`--simurgh-duration` becomes `1ms` under `prefers-reduced-motion: reduce`. Preserve that behavior in
+custom animation rules and avoid introducing essential information through motion alone.
+
+Recipes use logical CSS properties so `dir="rtl"` does not require a separate stylesheet. Use
+logical properties such as `padding-inline`, `margin-inline-start`, and `inset-inline-end` in
+application overrides to preserve that behavior.
