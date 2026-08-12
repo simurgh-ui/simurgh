@@ -5,8 +5,8 @@ The enforced bundle report measures complete adapters twice: once with library d
 | Adapter | Complete | Without Floating UI | Contribution |
 | ------- | -------: | ------------------: | -----------: |
 | React   | 27,119 B |            14,290 B |     12,829 B |
-| Vue     | 22,302 B |            15,921 B |      6,381 B |
-| Angular | 26,166 B |            19,749 B |      6,417 B |
+| Vue     | 22,213 B |            15,935 B |      6,278 B |
+| Angular | 26,975 B |            20,565 B |      6,410 B |
 
 ## React integration decision
 
@@ -18,3 +18,7 @@ Replacing `@floating-ui/react` interaction hooks with a hand-built `@floating-ui
 - the size checker continues to report the Floating UI delta so the decision can be revisited with evidence.
 
 This avoids a high-risk accessibility rewrite while giving non-overlay consumers a path that does not bundle Floating UI.
+
+## 2026-08 revisit
+
+The current measurements still support the original decision. React's potential reduction remains meaningful, but a custom DOM adapter would assume ownership of composed click, hover, focus, dismissal, role, and focus-management behavior. Component subpaths, the non-floating `basic` entry, and lazy overlay chunks now provide lower-risk ways to avoid paying that cost on initial application paths. Retain `@floating-ui/react` until profiling demonstrates that total overlay download size—not initial loading—is a product constraint.
