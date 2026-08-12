@@ -1,0 +1,81 @@
+---
+title: Tree
+description: Hierarchical disclosure with roving focus and native-direction nesting.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Tree presents nested data as one keyboard stop. Arrow Up and Arrow Down move through visible items, Home and End jump to boundaries, and Arrow Right and Arrow Left expand, collapse, and move between parent and child items.
+
+<ComponentPreview title="Tree">
+  <ul role="tree" data-slot="tree" aria-label="Files">
+    <li role="none" data-slot="tree-node">
+      <button
+        type="button"
+        role="treeitem"
+        data-slot="tree-item"
+        aria-expanded="true"
+        aria-controls="tree-preview-documents"
+        tabindex="0"
+      >
+        Documents
+      </button>
+      <ul id="tree-preview-documents" role="group" data-slot="tree-group">
+        <li role="none" data-slot="tree-node">
+          <button
+            type="button"
+            role="treeitem"
+            data-slot="tree-item"
+            tabindex="-1"
+          >
+            Guide
+          </button>
+        </li>
+      </ul>
+    </li>
+    <li role="none" data-slot="tree-node">
+      <button type="button" role="treeitem" data-slot="tree-item" tabindex="-1">
+        Images
+      </button>
+    </li>
+  </ul>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Tree aria-label="Files">
+  <TreeItem label="Documents" defaultExpanded>
+    <TreeItem label="Guide" />
+    <TreeItem label="Locked" disabled />
+  </TreeItem>
+  <TreeItem label="Images" />
+</Tree>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Tree aria-label="Files">
+  <TreeItem label="Documents" default-expanded>
+    <TreeItem label="Guide" />
+    <TreeItem label="Locked" disabled />
+  </TreeItem>
+  <TreeItem label="Images" />
+</Tree>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<ul simurghTree aria-label="Files">
+  <simurgh-tree-item label="Documents" [expandable]="true" [expanded]="true">
+    <simurgh-tree-item label="Guide" />
+    <simurgh-tree-item label="Locked" [disabled]="true" />
+  </simurgh-tree-item>
+  <simurgh-tree-item label="Images" />
+</ul>
+```
+</TabItem>
+</Tabs>
+
+Use Tree for hierarchical data, not site navigation. Supply a concise label on the root, keep item labels unique within their branch, and mark unavailable nodes disabled. Controlled `expanded` state is available when expansion must be synchronized with application state.

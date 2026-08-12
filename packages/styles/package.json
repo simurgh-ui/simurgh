@@ -1,8 +1,23 @@
 {
   "name": "@simurgh-ui/styles",
   "version": "0.1.0",
-  "sideEffects": ["*.css"],
-  "exports": { "./tokens.css": "./tokens.css", "./recipes.css": "./recipes.css" },
-  "files": ["*.css"],
-  "scripts": { "build": "node -e \"process.exit(0)\"", "test": "node -e \"process.exit(0)\"", "typecheck": "node -e \"process.exit(0)\"", "lint": "node -e \"process.exit(0)\"" }
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./recipes.css": "./recipes.css",
+    "./all.css": "./all.css",
+    "./*.css": "./components/*.css"
+  },
+  "files": [
+    "*.css",
+    "components/*.css"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/generate-styles.mjs",
+    "test": "node -e \"process.exit(0)\"",
+    "typecheck": "node -e \"process.exit(0)\"",
+    "lint": "node -e \"process.exit(0)\""
+  }
 }

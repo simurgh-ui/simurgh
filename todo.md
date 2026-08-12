@@ -70,3 +70,106 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Add native Scroll Area across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add native Link across Angular, React, Vue, the registry, documentation, and contract tests.
 - [x] Add accessible Navigation Menu across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Menubar across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Hover Card across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Context Menu across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Sheet across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Alert Dialog across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Form across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add native Select across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Button Group across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Input Group across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add semantic Empty State across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Input OTP across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add semantic Item anatomy across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Command across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Drawer across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Calendar across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Date Picker across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Carousel across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Resizable panels across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Sidebar navigation across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Tree View across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible File Upload across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Password Input across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Number Input across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Rating across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add accessible Tags Input across Angular, React, Vue, the registry, documentation, and contract tests.
+
+## Bundle-size optimization
+
+- [x] Split each framework adapter into per-component source and output modules while retaining the root barrel exports.
+- [x] Add explicit per-component package subpath exports, such as `@simurgh-ui/react/button`.
+- [x] Mark top-level React and Vue component and helper factory calls as pure where they have no side effects.
+- [x] Isolate Floating UI imports to overlay and floating-component modules so basic components do not include it.
+- [x] Package Angular with `ng-packagr` or `ngc` using Angular partial compilation instead of plain `tsc`.
+- [x] Move Angular's `SIMURGH_COMPONENTS` aggregate into an opt-in `@simurgh-ui/angular/all` entry point.
+- [x] Fix the current Angular TypeScript build errors before establishing the optimized size baseline.
+- [x] Split the shared recipe CSS into per-component styles while preserving an aggregate `all.css` export.
+- [x] Add bundle-size regression checks for representative single-component imports and complete adapters.
+  - [x] Keep a React Button import below 1 KiB gzip.
+  - [x] Keep a Vue Button import below 1.5 KiB gzip.
+  - [x] Keep an Angular Button import below 2 KiB gzip.
+  - [x] Keep a React Dialog import below 4 KiB gzip.
+  - [x] Track the minified, gzip, and Brotli sizes of each complete framework adapter and the optional CSS.
+
+## Bundle-size optimization follow-up
+
+- [x] Move Angular component implementations out of the monolithic `index.ts` into genuine per-component modules instead of re-exporting them from `../index.js`.
+- [x] Reduce complex Angular component subpaths, including Dialog and Calendar, from approximately 26.35 KiB gzip to component-granular bundles.
+- [x] Make root Angular named imports tree-shake effectively; importing Button currently costs approximately 25.3 KiB gzip.
+- [x] Expand bundle-size regression checks to cover root named imports and representative complex Angular subpaths.
+- [x] Measure consumer bundle sizes with only framework peer dependencies externalized so Core and Floating UI costs remain visible.
+- [x] Correct the complete-adapter baselines to include library dependencies: React 25.48 KiB gzip, Vue 19.45 KiB gzip, and Angular 26.36 KiB gzip.
+- [x] Add enforced gzip budgets for complete framework adapters instead of recording their sizes without limits.
+- [x] Reduce published package weight by generating source maps without embedded source content or excluding source maps from published packages.
+- [x] Eliminate duplicated Angular component output that currently contributes to an approximately 21.5 MiB `dist` directory.
+- [x] Add published-package size checks alongside browser bundle-size checks.
+- [x] Enforce standalone bundle budgets for the Rating component in every framework.
+- [x] Enforce standalone bundle budgets for the Tags Input component in every framework.
+
+## Bundle-size optimization third pass
+
+- [x] Remove residual Vue wrapper overhead by marking side-effect-free `Symbol`, `cardPart`, `checkControl`, `carouselControl`, and related helper calls as pure.
+- [x] Move Vue implementations into genuine per-component modules so subpaths do not depend on tree-shaking the monolithic `index.ts`.
+  - [x] Move Button, Rating, Tags Input, Dialog, Calendar, Checkbox, Switch, Label, Separator, Progress, Alert, Aspect Ratio, Avatar, Skeleton, Spinner, Visually Hidden, Link, Input, Native Select, Slider, Meter, Scroll Area, Textarea, Breadcrumb, Button Group, Input Group, Input OTP, Toolbar, Toggle, Toggle Group, Tabs, Accordion, Collapsible, Card, Empty, Item, Kbd, Badge, Field, Table, Pagination, Form, Navigation Menu, Menubar, Radio Group, Password Input, Number Input, Select, Combobox, Command, File Upload, Toast, Sheet, Drawer, Alert Dialog, Carousel, Sidebar, Tree, Context Menu, Popover, Tooltip, Hover Card, Dropdown Menu, Date Picker, and Resizable into genuine modules.
+  - [x] Split the remaining Vue catalog modules.
+- [x] Reduce representative Vue component bundles toward the verified optimized measurements.
+  - [x] Reduce Vue Button from approximately 1.41 KiB to 0.44 KiB gzip.
+  - [x] Reduce Vue Rating from approximately 1.70 KiB to 0.78 KiB gzip.
+  - [x] Reduce Vue Tags Input from approximately 1.99 KiB to 1.09 KiB gzip.
+  - [x] Reduce Vue Dialog from approximately 1.88 KiB to 0.95 KiB gzip.
+  - [x] Reduce Vue Calendar from approximately 2.31 KiB to 1.38 KiB gzip.
+- [x] Evaluate replacing `@floating-ui/react` interaction hooks with a smaller `@floating-ui/dom` integration while preserving accessibility and behavior parity.
+- [x] Track and reduce Floating UI's approximate gzip contribution: React 12.5 KiB, Vue 6.0 KiB, and Angular 6.3 KiB.
+- [x] Add optional aggregate entry points such as `basic` and `overlays` so broad imports can exclude floating components.
+- [x] Recommend per-component subpath imports throughout the documentation and examples.
+- [x] Add a minimal production Angular fixture that measures bundles after Angular linking and production optimization.
+- [x] Keep component-level CSS imports as the recommended path and defer lower-impact full-CSS micro-optimization.
+
+## Bundle-size optimization fourth pass
+
+- [x] Split Angular's shared `internal.ts` into focused modules so non-floating controls do not bundle Floating UI.
+  - [x] Move `FloatingBase` into `internal/floating-base.ts`.
+  - [x] Move `CheckBase` into `internal/check-base.ts`.
+  - [x] Move `compositeKeydown` into `internal/composite-keydown.ts`.
+  - [x] Reduce Angular Checkbox from approximately 7.37 KiB to 1.10 KiB gzip.
+  - [x] Reduce Angular Switch from approximately 7.37 KiB to 1.11 KiB gzip.
+  - [x] Reduce Angular Context Menu from approximately 8.16 KiB to 1.98 KiB gzip.
+  - [x] Reduce Angular Select from approximately 8.18 KiB to 1.98 KiB gzip.
+  - [x] Reduce the Angular `basic` entry from approximately 12.24 KiB to 6 KiB gzip.
+- [x] Finish moving the remaining Vue catalog implementations out of monolithic `index.ts` re-exports and into genuine per-component modules.
+  - [x] Reduce individual Vue component overhead and reliance on bundler purity analysis.
+  - [x] Reduce the Vue package from its current approximately 722 KiB unpacked size.
+- [x] Tighten standalone bundle regression budgets to approximately 20–30% above verified measurements.
+  - [x] Tighten React Button from its 1 KiB budget around the current 226 B gzip measurement.
+  - [x] Tighten Angular Button from its 2 KiB budget around the current 398 B gzip measurement.
+  - [x] Tighten React Dialog from its 4 KiB budget around the current 1.14 KiB gzip measurement.
+- [x] Expand the linked and optimized Angular production-size fixture beyond Button.
+  - [x] Measure Angular Checkbox in the production fixture.
+  - [x] Measure Angular Select in the production fixture.
+  - [x] Measure Angular Calendar in the production fixture.
+  - [x] Measure the Angular `basic` entry in the production fixture.
+  - [x] Measure the Angular `overlays` entry in the production fixture.
+- [x] Treat Floating UI as an explicit feature cost in bundle reports: approximately 12.8 KiB gzip for React and 6.2 KiB for Vue and Angular.
+- [x] Preserve component subpaths and the non-floating `basic` entry so consumers can avoid Floating UI when overlays are unused.

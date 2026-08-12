@@ -1,0 +1,81 @@
+---
+title: Calendar
+description: Accessible single-date calendar with keyboard navigation and native form serialization.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Calendar renders a labelled six-week date grid. It supports controlled or uncontrolled selection, month navigation, locale-aware labels, RTL arrows, constrained dates, and ISO `YYYY-MM-DD` form values.
+
+<ComponentPreview title="Calendar">
+  <div
+    data-slot="calendar"
+    aria-label="Appointment calendar"
+    style="max-width: 20rem"
+  >
+    <div data-slot="calendar-header">
+      <button type="button" aria-label="Previous month">
+        ‹
+      </button>
+      <strong>August 2026</strong>
+      <button type="button" aria-label="Next month">
+        ›
+      </button>
+    </div>
+    <div class="preview-calendar-grid" aria-hidden="true">
+      <span>Su</span>
+      <span>Mo</span>
+      <span>Tu</span>
+      <span>We</span>
+      <span>Th</span>
+      <span>Fr</span>
+      <span>Sa</span>
+      <span>9</span>
+      <span>10</span>
+      <span>11</span>
+      <button data-slot="calendar-day" data-state="selected">
+        12
+      </button>
+      <span>13</span>
+      <span>14</span>
+      <span>15</span>
+    </div>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Calendar
+  defaultValue="2026-08-12"
+  defaultMonth="2026-08"
+  name="appointment"
+  label="Appointment calendar"
+  onValueChange={setDate}
+/>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Calendar
+  v-model="date"
+  v-model:month="month"
+  name="appointment"
+  label="Appointment calendar"
+/>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-calendar
+  [(value)]="date"
+  [(month)]="month"
+  name="appointment"
+  label="Appointment calendar"
+/>
+```
+</TabItem>
+</Tabs>
+
+Arrow keys move by day or week; Home and End move within the week; Page Up and Page Down move by month. Use `min`, `max`, or `disabledDates` for unavailable dates. The component uses locale-aware spoken labels while keeping emitted and submitted values stable ISO dates.

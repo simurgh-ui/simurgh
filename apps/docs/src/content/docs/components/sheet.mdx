@@ -1,0 +1,66 @@
+---
+title: Sheet
+description: A side-anchored modal panel with complete focus management.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Sheet presents modal content from a logical edge of the viewport. It shares Dialog's accessible naming, focus containment, Escape dismissal, overlay behavior, and trigger-focus restoration.
+
+<ComponentPreview title="Sheet">
+  <div>
+    <button type="button">Open filters</button>
+    <section
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sheet-preview-title"
+      class="simurgh-content simurgh-sheet"
+      data-slot="sheet-content"
+      data-side="right"
+    >
+      <h2 id="sheet-preview-title">Filters</h2>
+      <p>Narrow the visible results.</p>
+      <button type="button">Done</button>
+    </section>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Sheet>
+  <SheetTrigger>Open filters</SheetTrigger>
+  <SheetContent side="right">
+    <SheetTitle>Filters</SheetTitle>
+    <SheetDescription>Narrow the visible results.</SheetDescription>
+    <SheetClose>Done</SheetClose>
+  </SheetContent>
+</Sheet>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Sheet>
+  <SheetTrigger>Open filters</SheetTrigger>
+  <SheetContent side="right">
+    <SheetTitle>Filters</SheetTitle>
+    <SheetDescription>Narrow the visible results.</SheetDescription>
+    <SheetClose>Done</SheetClose>
+  </SheetContent>
+</Sheet>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-sheet #sheet side="right" labelledBy="filters-title" describedBy="filters-description">
+  <button trigger (click)="sheet.show()">Open filters</button>
+  <h2 id="filters-title">Filters</h2>
+  <p id="filters-description">Narrow the visible results.</p>
+  <button (click)="sheet.close()">Done</button>
+</simurgh-sheet>
+```
+</TabItem>
+</Tabs>
+
+Choose `left` or `right` for narrow task panels and `top` or `bottom` for short horizontal workflows. Logical inline positioning automatically follows document direction.

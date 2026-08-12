@@ -4,11 +4,29 @@
   "version": "0.1.0",
   "components": [
     "dialog",
+    "alert-dialog",
+    "sheet",
+    "drawer",
     "popover",
     "tooltip",
+    "hover-card",
     "dropdown-menu",
+    "context-menu",
     "select",
+    "native-select",
     "combobox",
+    "command",
+    "calendar",
+    "date-picker",
+    "carousel",
+    "resizable",
+    "sidebar",
+    "tree",
+    "file-upload",
+    "password-input",
+    "number-input",
+    "rating",
+    "tags-input",
     "tabs",
     "accordion",
     "checkbox",
@@ -23,8 +41,11 @@
     "skeleton",
     "spinner",
     "button",
+    "button-group",
     "link",
     "input",
+    "input-group",
+    "input-otp",
     "slider",
     "meter",
     "toolbar",
@@ -34,9 +55,13 @@
     "badge",
     "breadcrumb",
     "navigation-menu",
+    "menubar",
     "card",
+    "empty",
+    "item",
     "kbd",
     "field",
+    "form",
     "table",
     "pagination",
     "collapsible",
@@ -73,16 +98,77 @@
         "DialogDescription",
         "DialogClose"
       ],
+      "alert-dialog": [
+        "AlertDialog",
+        "AlertDialogTrigger",
+        "AlertDialogContent",
+        "AlertDialogTitle",
+        "AlertDialogDescription",
+        "AlertDialogAction",
+        "AlertDialogCancel"
+      ],
+      "sheet": [
+        "Sheet",
+        "SheetTrigger",
+        "SheetContent",
+        "SheetTitle",
+        "SheetDescription",
+        "SheetClose",
+        "SheetSide"
+      ],
+      "drawer": [
+        "Drawer",
+        "DrawerTrigger",
+        "DrawerContent",
+        "DrawerTitle",
+        "DrawerDescription",
+        "DrawerClose"
+      ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
+      "hover-card": ["HoverCard", "HoverCardTrigger", "HoverCardContent"],
       "dropdown-menu": [
         "DropdownMenu",
         "DropdownMenuTrigger",
         "DropdownMenuContent",
         "DropdownMenuItem"
       ],
+      "context-menu": [
+        "ContextMenu",
+        "ContextMenuTrigger",
+        "ContextMenuContent",
+        "ContextMenuItem"
+      ],
       "select": ["Select"],
+      "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "SelectOption"],
+      "command": ["Command"],
+      "calendar": ["Calendar", "CalendarProps"],
+      "date-picker": ["DatePicker", "DatePickerProps"],
+      "carousel": [
+        "Carousel",
+        "CarouselContent",
+        "CarouselItem",
+        "CarouselPrevious",
+        "CarouselNext"
+      ],
+      "resizable": ["ResizablePanelGroup", "ResizablePanel", "ResizableHandle"],
+      "sidebar": [
+        "SidebarProvider",
+        "Sidebar",
+        "SidebarTrigger",
+        "SidebarHeader",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarGroup",
+        "SidebarMenu"
+      ],
+      "tree": ["Tree", "TreeItem"],
+      "file-upload": ["FileUpload"],
+      "password-input": ["PasswordInput"],
+      "number-input": ["NumberInput"],
+      "rating": ["Rating", "RatingProps"],
+      "tags-input": ["TagsInput", "TagsInputProps"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -102,8 +188,15 @@
       "skeleton": ["Skeleton"],
       "spinner": ["Spinner"],
       "button": ["Button"],
+      "button-group": [
+        "ButtonGroup",
+        "ButtonGroupText",
+        "ButtonGroupSeparator"
+      ],
       "link": ["Link"],
       "input": ["Input"],
+      "input-group": ["InputGroup", "InputGroupAddon", "InputGroupText"],
+      "input-otp": ["InputOtp"],
       "slider": ["Slider"],
       "meter": ["Meter"],
       "toolbar": ["Toolbar", "ToolbarButton"],
@@ -118,6 +211,7 @@
         "NavigationMenuItem",
         "NavigationMenuLink"
       ],
+      "menubar": ["Menubar", "MenubarItem"],
       "card": [
         "Card",
         "CardHeader",
@@ -126,8 +220,26 @@
         "CardContent",
         "CardFooter"
       ],
+      "empty": [
+        "Empty",
+        "EmptyHeader",
+        "EmptyMedia",
+        "EmptyTitle",
+        "EmptyDescription",
+        "EmptyContent"
+      ],
+      "item": [
+        "ItemGroup",
+        "Item",
+        "ItemMedia",
+        "ItemContent",
+        "ItemTitle",
+        "ItemDescription",
+        "ItemActions"
+      ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
+      "form": ["Form", "FormErrorSummary"],
       "table": [
         "Table",
         "TableHeader",
@@ -162,16 +274,77 @@
         "DialogDescription",
         "DialogClose"
       ],
+      "alert-dialog": [
+        "AlertDialog",
+        "AlertDialogTrigger",
+        "AlertDialogContent",
+        "AlertDialogTitle",
+        "AlertDialogDescription",
+        "AlertDialogAction",
+        "AlertDialogCancel"
+      ],
+      "sheet": [
+        "Sheet",
+        "SheetTrigger",
+        "SheetContent",
+        "SheetTitle",
+        "SheetDescription",
+        "SheetClose",
+        "SheetSide"
+      ],
+      "drawer": [
+        "Drawer",
+        "DrawerTrigger",
+        "DrawerContent",
+        "DrawerTitle",
+        "DrawerDescription",
+        "DrawerClose"
+      ],
       "popover": ["Popover", "PopoverTrigger", "PopoverContent"],
       "tooltip": ["Tooltip", "TooltipTrigger", "TooltipContent"],
+      "hover-card": ["HoverCard", "HoverCardTrigger", "HoverCardContent"],
       "dropdown-menu": [
         "DropdownMenu",
         "DropdownMenuTrigger",
         "DropdownMenuContent",
         "DropdownMenuItem"
       ],
+      "context-menu": [
+        "ContextMenu",
+        "ContextMenuTrigger",
+        "ContextMenuContent",
+        "ContextMenuItem"
+      ],
       "select": ["Select"],
+      "native-select": ["NativeSelect"],
       "combobox": ["Combobox", "ComboboxOption"],
+      "command": ["Command"],
+      "calendar": ["Calendar"],
+      "date-picker": ["DatePicker"],
+      "carousel": [
+        "Carousel",
+        "CarouselContent",
+        "CarouselItem",
+        "CarouselPrevious",
+        "CarouselNext"
+      ],
+      "resizable": ["ResizablePanelGroup", "ResizablePanel", "ResizableHandle"],
+      "sidebar": [
+        "SidebarProvider",
+        "Sidebar",
+        "SidebarTrigger",
+        "SidebarHeader",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarGroup",
+        "SidebarMenu"
+      ],
+      "tree": ["Tree", "TreeItem"],
+      "file-upload": ["FileUpload"],
+      "password-input": ["PasswordInput"],
+      "number-input": ["NumberInput"],
+      "rating": ["Rating"],
+      "tags-input": ["TagsInput"],
       "tabs": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
       "accordion": [
         "Accordion",
@@ -191,8 +364,15 @@
       "skeleton": ["Skeleton"],
       "spinner": ["Spinner"],
       "button": ["Button"],
+      "button-group": [
+        "ButtonGroup",
+        "ButtonGroupText",
+        "ButtonGroupSeparator"
+      ],
       "link": ["Link"],
       "input": ["Input"],
+      "input-group": ["InputGroup", "InputGroupAddon", "InputGroupText"],
+      "input-otp": ["InputOtp"],
       "slider": ["Slider"],
       "meter": ["Meter"],
       "toolbar": ["Toolbar", "ToolbarButton"],
@@ -207,6 +387,7 @@
         "NavigationMenuItem",
         "NavigationMenuLink"
       ],
+      "menubar": ["Menubar", "MenubarItem"],
       "card": [
         "Card",
         "CardHeader",
@@ -215,8 +396,26 @@
         "CardContent",
         "CardFooter"
       ],
+      "empty": [
+        "Empty",
+        "EmptyHeader",
+        "EmptyMedia",
+        "EmptyTitle",
+        "EmptyDescription",
+        "EmptyContent"
+      ],
+      "item": [
+        "ItemGroup",
+        "Item",
+        "ItemMedia",
+        "ItemContent",
+        "ItemTitle",
+        "ItemDescription",
+        "ItemActions"
+      ],
       "kbd": ["Kbd"],
       "field": ["Field", "FieldLegend", "FieldDescription", "FieldError"],
+      "form": ["Form", "FormErrorSummary"],
       "table": [
         "Table",
         "TableHeader",
@@ -244,11 +443,52 @@
     },
     "angular": {
       "dialog": ["DialogComponent"],
+      "alert-dialog": [
+        "AlertDialogComponent",
+        "AlertDialogActionDirective",
+        "AlertDialogCancelDirective"
+      ],
+      "sheet": ["SheetComponent", "SheetSide"],
+      "drawer": ["DrawerComponent"],
       "popover": ["PopoverComponent"],
       "tooltip": ["TooltipComponent"],
+      "hover-card": ["HoverCardComponent"],
       "dropdown-menu": ["DropdownMenuComponent", "DropdownMenuItemDirective"],
+      "context-menu": ["ContextMenuComponent", "ContextMenuItemDirective"],
       "select": ["SelectComponent", "SelectOption"],
+      "native-select": ["NativeSelectComponent"],
       "combobox": ["ComboboxComponent", "SelectOption"],
+      "command": ["CommandComponent"],
+      "calendar": ["CalendarComponent"],
+      "date-picker": ["DatePickerComponent"],
+      "carousel": [
+        "CarouselComponent",
+        "CarouselContentComponent",
+        "CarouselItemComponent",
+        "CarouselPreviousComponent",
+        "CarouselNextComponent"
+      ],
+      "resizable": [
+        "ResizablePanelGroupComponent",
+        "ResizablePanelComponent",
+        "ResizableHandleComponent"
+      ],
+      "sidebar": [
+        "SidebarProviderComponent",
+        "SidebarDirective",
+        "SidebarTriggerDirective",
+        "SidebarHeaderDirective",
+        "SidebarContentDirective",
+        "SidebarFooterDirective",
+        "SidebarGroupDirective",
+        "SidebarMenuDirective"
+      ],
+      "tree": ["TreeDirective", "TreeItemComponent"],
+      "file-upload": ["FileUploadComponent"],
+      "password-input": ["PasswordInputComponent"],
+      "number-input": ["NumberInputComponent"],
+      "rating": ["RatingComponent"],
+      "tags-input": ["TagsInputComponent"],
       "tabs": ["TabsComponent", "TabDirective", "TabPanelDirective"],
       "accordion": ["AccordionComponent", "AccordionItemComponent"],
       "checkbox": ["CheckboxComponent"],
@@ -263,8 +503,19 @@
       "skeleton": ["SkeletonComponent"],
       "spinner": ["SpinnerComponent"],
       "button": ["ButtonComponent"],
+      "button-group": [
+        "ButtonGroupComponent",
+        "ButtonGroupTextComponent",
+        "ButtonGroupSeparatorComponent"
+      ],
       "link": ["LinkComponent"],
       "input": ["InputComponent"],
+      "input-group": [
+        "InputGroupComponent",
+        "InputGroupAddonComponent",
+        "InputGroupTextComponent"
+      ],
+      "input-otp": ["InputOtpComponent"],
       "slider": ["SliderComponent"],
       "meter": ["MeterComponent"],
       "toolbar": ["ToolbarComponent", "ToolbarButtonDirective"],
@@ -279,6 +530,7 @@
         "NavigationMenuItemDirective",
         "NavigationMenuLinkDirective"
       ],
+      "menubar": ["MenubarComponent", "MenubarItemDirective"],
       "card": [
         "CardComponent",
         "CardHeaderComponent",
@@ -287,6 +539,23 @@
         "CardContentComponent",
         "CardFooterComponent"
       ],
+      "empty": [
+        "EmptyComponent",
+        "EmptyHeaderComponent",
+        "EmptyMediaComponent",
+        "EmptyTitleComponent",
+        "EmptyDescriptionComponent",
+        "EmptyContentComponent"
+      ],
+      "item": [
+        "ItemGroupComponent",
+        "ItemComponent",
+        "ItemMediaComponent",
+        "ItemContentComponent",
+        "ItemTitleComponent",
+        "ItemDescriptionComponent",
+        "ItemActionsComponent"
+      ],
       "kbd": ["KbdComponent"],
       "field": [
         "FieldComponent",
@@ -294,6 +563,7 @@
         "FieldDescriptionComponent",
         "FieldErrorComponent"
       ],
+      "form": ["FormDirective", "FormErrorSummaryComponent"],
       "table": [
         "TableDirective",
         "TableHeaderDirective",

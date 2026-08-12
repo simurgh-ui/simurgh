@@ -1,0 +1,67 @@
+---
+title: Input Group
+description: Form controls composed with contextual prefixes, suffixes, and block adornments.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Input Group keeps a form control and its supporting adornments visually connected. Addons can appear on either inline edge or span the block start or end of the group.
+
+<ComponentPreview title="Input Group">
+  <label id="website-preview-label" for="website-preview">
+    Website
+  </label>
+  <div
+    role="group"
+    aria-labelledby="website-preview-label"
+    data-slot="input-group"
+  >
+    <div
+      data-slot="input-group-addon"
+      data-align="inline-start"
+      aria-hidden="true"
+    >
+      <span data-slot="input-group-text">https://</span>
+    </div>
+    <input id="website-preview" name="website" placeholder="example.com" />
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Label id="website-label" htmlFor="website">Website</Label>
+<InputGroup aria-labelledby="website-label">
+  <InputGroupAddon decorative>
+    <InputGroupText>https://</InputGroupText>
+  </InputGroupAddon>
+  <Input id="website" name="website" placeholder="example.com" />
+</InputGroup>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Label id="website-label" for="website">Website</Label>
+<InputGroup aria-labelledby="website-label">
+  <InputGroupAddon decorative>
+    <InputGroupText>https://</InputGroupText>
+  </InputGroupAddon>
+  <Input id="website" name="website" v-model="website" placeholder="example.com" />
+</InputGroup>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-label id="website-label" for="website">Website</simurgh-label>
+<simurgh-input-group aria-labelledby="website-label">
+  <simurgh-input-group-addon [decorative]="true">
+    <simurgh-input-group-text>https://</simurgh-input-group-text>
+  </simurgh-input-group-addon>
+  <simurgh-input id="website" name="website" [value]="website" (valueChange)="website = $event" />
+</simurgh-input-group>
+```
+</TabItem>
+</Tabs>
+
+Keep the actual input label visible or provide an equivalent accessible name. Set `decorative` only when the addon repeats visual context that should not be announced; otherwise its text remains available to assistive technology.

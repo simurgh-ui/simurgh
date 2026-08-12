@@ -1,0 +1,52 @@
+---
+title: Date Picker
+description: Calendar popover with locale-aware display, ISO form values, and focus restoration.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Date Picker composes Popover and Calendar into a form-ready single-date control. The trigger shows a localized date while the submitted and emitted value remains `YYYY-MM-DD`.
+
+<ComponentPreview title="Date Picker">
+  <div data-slot="date-picker">
+    <button type="button" data-slot="date-picker-trigger">
+      Aug 12, 2026
+    </button>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<DatePicker
+  defaultValue="2026-08-12"
+  name="appointment"
+  label="Appointment date"
+  onValueChange={setDate}
+/>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<DatePicker
+  v-model="date"
+  v-model:month="month"
+  name="appointment"
+  label="Appointment date"
+/>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-date-picker
+  [(value)]="date"
+  [(month)]="month"
+  name="appointment"
+  label="Appointment date"
+/>
+```
+</TabItem>
+</Tabs>
+
+Use `required` for native constraint validation and `disabled` to make the entire control unavailable. Calendar constraints such as `min`, `max`, and `disabledDates` pass through unchanged. Selection closes the popup and returns focus to the trigger.

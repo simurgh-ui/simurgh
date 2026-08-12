@@ -6,12 +6,17 @@ import {
   useClick,
   useDismiss,
   useFloating,
+  useFocus,
   useHover,
   useInteractions,
   useRole,
-} from '@floating-ui/react';
+} from './floating.js';
 import {
+  addCalendarMonths,
+  calendarMonthDays,
+  calendarToday,
   createId,
+  moveCalendarDate,
   nextIndex,
   trapFocus,
   type Direction,
@@ -28,8 +33,10 @@ import React, {
   useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
+  type FormHTMLAttributes,
   type LabelHTMLAttributes,
   type InputHTMLAttributes,
+  type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
   type PropsWithChildren,
   type ReactNode,
@@ -58,7 +65,9 @@ type OverlayContextValue = {
   titleId: string;
   descriptionId: string;
 };
-const DialogContext = createContext<OverlayContextValue | null>(null);
+const DialogContext = /* @__PURE__ */ createContext<OverlayContextValue | null>(
+  null,
+);
 const useDialog = () => {
   const value = useContext(DialogContext);
   if (!value) throw new Error('Dialog parts must be inside Dialog');
@@ -81,7 +90,7 @@ export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
     </DialogContext.Provider>
   );
 }
-export const DialogTrigger = forwardRef<
+export const DialogTrigger = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
@@ -103,7 +112,7 @@ export const DialogTrigger = forwardRef<
 export function DialogPortal({ children }: PropsWithChildren) {
   return useBrowser() ? createPortal(children, document.body) : null;
 }
-export const DialogOverlay = forwardRef<
+export const DialogOverlay = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, ref) => {
@@ -120,7 +129,7 @@ export const DialogOverlay = forwardRef<
     />
   ) : null;
 });
-export const DialogContent = forwardRef<
+export const DialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, forwardedRef) => {
@@ -166,7 +175,7 @@ export function DialogDescription(props: HTMLAttributes<HTMLParagraphElement>) {
   const { descriptionId } = useDialog();
   return <p {...props} id={descriptionId} />;
 }
-export const DialogClose = forwardRef<
+export const DialogClose = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
@@ -184,7 +193,121 @@ export const DialogClose = forwardRef<
   );
 });
 
-type FloatingKind = 'popover' | 'tooltip' | 'menu' | 'listbox';
+export type SheetSide = 'top' | 'right' | 'bottom' | 'left';
+export const Sheet = Dialog;
+export const SheetTrigger = DialogTrigger;
+export const SheetTitle = DialogTitle;
+export const SheetDescription = DialogDescription;
+export const SheetClose = DialogClose;
+export const SheetContent = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { side?: SheetSide }
+>(function SheetContent({ side = 'right', className, ...props }, ref) {
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogContent
+        {...props}
+        ref={ref}
+        data-slot="sheet-content"
+        data-side={side}
+        className={className ?? 'simurgh-content simurgh-sheet'}
+      />
+    </DialogPortal>
+  );
+});
+
+export const Drawer = Dialog;
+export const DrawerTrigger = DialogTrigger;
+export const DrawerTitle = DialogTitle;
+export const DrawerDescription = DialogDescription;
+export const DrawerClose = DialogClose;
+export const DrawerContent = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { side?: 'top' | 'bottom' }
+>(function DrawerContent({ side = 'bottom', ...props }, ref) {
+  return <SheetContent {...props} ref={ref} side={side} data-drawer="" />;
+});
+
+export const AlertDialog = Dialog;
+export const AlertDialogTrigger = DialogTrigger;
+export const AlertDialogTitle = DialogTitle;
+export const AlertDialogDescription = DialogDescription;
+export const AlertDialogContent = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function AlertDialogContent(props, forwardedRef) {
+  const { open, setOpen, titleId, descriptionId } = useDialog();
+  const localRef = useRef<HTMLDivElement>(null);
+  const previous = useRef<Element | null>(null);
+  useEffect(() => {
+    if (!open) return;
+    previous.current = document.activeElement;
+    requestAnimationFrame(() =>
+      localRef.current
+        ?.querySelector<HTMLElement>('[data-slot=alert-dialog-cancel]')
+        ?.focus(),
+    );
+    return () => {
+      if (previous.current instanceof HTMLElement) previous.current.focus();
+    };
+  }, [open]);
+  if (!open) return null;
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <div
+        {...props}
+        ref={(node) => {
+          localRef.current = node;
+          if (typeof forwardedRef === 'function') forwardedRef(node);
+          else if (forwardedRef) forwardedRef.current = node;
+        }}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        tabIndex={-1}
+        data-slot="alert-dialog-content"
+        className={props.className ?? 'simurgh-content simurgh-dialog'}
+        onKeyDown={(event) => {
+          props.onKeyDown?.(event);
+          if (event.key === 'Escape') setOpen(false);
+          trapFocus(event.nativeEvent, event.currentTarget);
+        }}
+      />
+    </DialogPortal>
+  );
+});
+function AlertDialogButton({
+  slot,
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement> & { slot: string }) {
+  const { setOpen } = useDialog();
+  return (
+    <button
+      type="button"
+      {...props}
+      data-slot={slot}
+      onClick={(event) => {
+        props.onClick?.(event);
+        if (!event.defaultPrevented) setOpen(false);
+      }}
+    />
+  );
+}
+export function AlertDialogAction(
+  props: ButtonHTMLAttributes<HTMLButtonElement>,
+) {
+  return <AlertDialogButton {...props} slot="alert-dialog-action" />;
+}
+export function AlertDialogCancel(
+  props: ButtonHTMLAttributes<HTMLButtonElement>,
+) {
+  return <AlertDialogButton {...props} slot="alert-dialog-cancel" />;
+}
+
+type FloatingKind = 'popover' | 'tooltip' | 'hovercard' | 'menu' | 'listbox';
 type FloatingContextValue = OverlayContextValue &
   ReturnType<typeof useFloating> & {
     kind: FloatingKind;
@@ -195,7 +318,8 @@ type FloatingContextValue = OverlayContextValue &
       props?: Record<string, unknown>,
     ) => Record<string, unknown>;
   };
-const FloatingContext = createContext<FloatingContextValue | null>(null);
+const FloatingContext =
+  /* @__PURE__ */ createContext<FloatingContextValue | null>(null);
 function FloatingRoot({
   children,
   kind,
@@ -213,10 +337,15 @@ function FloatingRoot({
       shift({ padding: 8 }),
     ],
   });
-  const click = useClick(floating.context, { enabled: kind !== 'tooltip' });
+  const click = useClick(floating.context, {
+    enabled: kind !== 'tooltip' && kind !== 'hovercard',
+  });
   const hover = useHover(floating.context, {
-    enabled: kind === 'tooltip',
+    enabled: kind === 'tooltip' || kind === 'hovercard',
     move: false,
+  });
+  const focus = useFocus(floating.context, {
+    enabled: kind === 'tooltip' || kind === 'hovercard',
   });
   const dismiss = useDismiss(floating.context);
   const role = useRole(floating.context, {
@@ -229,7 +358,7 @@ function FloatingRoot({
             ? 'tooltip'
             : 'dialog',
   });
-  const interactions = useInteractions([click, hover, dismiss, role]);
+  const interactions = useInteractions([click, hover, focus, dismiss, role]);
   const value = useMemo(
     () => ({
       ...floating,
@@ -253,7 +382,7 @@ const useFloatingRoot = () => {
   if (!c) throw new Error('Floating parts require a root');
   return c;
 };
-const FloatingTrigger = forwardRef<
+const FloatingTrigger = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
@@ -341,6 +470,30 @@ export function Tooltip(props: PropsWithChildren<OpenProps>) {
 }
 export const TooltipTrigger = FloatingTrigger;
 export const TooltipContent = FloatingContent;
+export function HoverCard(props: PropsWithChildren<OpenProps>) {
+  return <FloatingRoot {...props} kind="hovercard" />;
+}
+export const HoverCardTrigger = /* @__PURE__ */ forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement>
+>(function HoverCardTrigger(props, ref) {
+  return (
+    <FloatingTrigger {...props} ref={ref} data-slot="hover-card-trigger" />
+  );
+});
+export function HoverCardContent({
+  label = 'Additional information',
+  ...props
+}: HTMLAttributes<HTMLDivElement> & { label?: string }) {
+  return (
+    <FloatingContent
+      {...props}
+      role="dialog"
+      aria-label={label}
+      data-slot="hover-card-content"
+    />
+  );
+}
 export function DropdownMenu(props: PropsWithChildren<OpenProps>) {
   return <FloatingRoot {...props} kind="menu" />;
 }
@@ -383,6 +536,143 @@ export function DropdownMenuItem({
   );
 }
 
+type ContextMenuContextValue = {
+  open: boolean;
+  setOpen(open: boolean): void;
+  point: { x: number; y: number };
+  openAt(x: number, y: number): void;
+};
+const ContextMenuContext =
+  /* @__PURE__ */ createContext<ContextMenuContextValue | null>(null);
+const useContextMenu = () => {
+  const value = useContext(ContextMenuContext);
+  if (!value) throw new Error('Context menu parts require a root');
+  return value;
+};
+export function ContextMenu({
+  children,
+  ...props
+}: PropsWithChildren<OpenProps>) {
+  const [open, setOpen] = useOpen(props);
+  const [point, setPoint] = useState({ x: 0, y: 0 });
+  const openAt = (x: number, y: number) => {
+    setPoint({ x, y });
+    setOpen(true);
+  };
+  return (
+    <ContextMenuContext.Provider value={{ open, setOpen, point, openAt }}>
+      {children}
+    </ContextMenuContext.Provider>
+  );
+}
+export const ContextMenuTrigger = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ContextMenuTrigger({ onContextMenu, onKeyDown, ...props }, ref) {
+  const menu = useContextMenu();
+  return (
+    <div
+      ref={ref}
+      tabIndex={0}
+      aria-haspopup="menu"
+      aria-expanded={menu.open}
+      data-slot="context-menu-trigger"
+      onContextMenu={(event) => {
+        onContextMenu?.(event);
+        if (event.defaultPrevented) return;
+        event.preventDefault();
+        menu.openAt(event.clientX, event.clientY);
+      }}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (
+          event.defaultPrevented ||
+          (event.key !== 'ContextMenu' &&
+            !(event.shiftKey && event.key === 'F10'))
+        )
+          return;
+        event.preventDefault();
+        const rect = event.currentTarget.getBoundingClientRect();
+        menu.openAt(rect.left, rect.bottom);
+      }}
+      {...props}
+    />
+  );
+});
+export function ContextMenuContent({
+  className,
+  style,
+  onKeyDown,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  const menu = useContextMenu();
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!menu.open) return;
+    requestAnimationFrame(() =>
+      contentRef.current
+        ?.querySelector<HTMLElement>(
+          '[role=menuitem]:not([aria-disabled=true])',
+        )
+        ?.focus(),
+    );
+    const dismiss = (event: PointerEvent) => {
+      if (!contentRef.current?.contains(event.target as Node))
+        menu.setOpen(false);
+    };
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
+  }, [menu.open, menu.setOpen]);
+  if (!menu.open || !useBrowser()) return null;
+  return createPortal(
+    <div
+      {...props}
+      ref={contentRef}
+      role="menu"
+      data-slot="context-menu-content"
+      className={className ?? 'simurgh-content'}
+      style={{
+        position: 'fixed',
+        left: menu.point.x,
+        top: menu.point.y,
+        ...style,
+      }}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented) return;
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          menu.setOpen(false);
+        } else onCompositeKeyDown(event, '[role=menuitem]');
+      }}
+    />,
+    document.body,
+  );
+}
+export const ContextMenuItem = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { disabled?: boolean; onSelect?: () => void }
+>(function ContextMenuItem({ disabled, onSelect, onClick, ...props }, ref) {
+  const menu = useContextMenu();
+  return (
+    <div
+      {...props}
+      ref={ref}
+      role="menuitem"
+      tabIndex={disabled ? undefined : -1}
+      aria-disabled={disabled || undefined}
+      className={props.className ?? 'simurgh-item'}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!disabled) {
+          onSelect?.();
+          menu.setOpen(false);
+        }
+      }}
+    />
+  );
+});
+
 type TabsContextValue = {
   value: string;
   setValue(value: string): void;
@@ -390,7 +680,9 @@ type TabsContextValue = {
   orientation: Orientation;
   direction: Direction;
 };
-const TabsContext = createContext<TabsContextValue | null>(null);
+const TabsContext = /* @__PURE__ */ createContext<TabsContextValue | null>(
+  null,
+);
 const useTabs = () => {
   const c = useContext(TabsContext);
   if (!c) throw new Error('Tabs parts require Tabs');
@@ -496,8 +788,9 @@ type AccordionContextValue = {
   multiple: boolean;
   id: string;
 };
-const AccordionContext = createContext<AccordionContextValue | null>(null);
-const AccordionItemContext = createContext<string>('');
+const AccordionContext =
+  /* @__PURE__ */ createContext<AccordionContextValue | null>(null);
+const AccordionItemContext = /* @__PURE__ */ createContext<string>('');
 export function Accordion({
   children,
   type = 'single',
@@ -567,7 +860,8 @@ export function AccordionContent(props: HTMLAttributes<HTMLDivElement>) {
   ) : null;
 }
 type CollapsibleContextValue = { open: boolean; toggle(): void; id: string };
-const CollapsibleContext = createContext<CollapsibleContextValue | null>(null);
+const CollapsibleContext =
+  /* @__PURE__ */ createContext<CollapsibleContextValue | null>(null);
 export function Collapsible({
   open,
   defaultOpen = false,
@@ -681,14 +975,14 @@ function CheckControl({
     </>
   );
 }
-export const Label = forwardRef<
+export const Label = /* @__PURE__ */ forwardRef<
   HTMLLabelElement,
   LabelHTMLAttributes<HTMLLabelElement>
 >(function Label(props, ref) {
   return <label ref={ref} {...props} />;
 });
 
-export const Separator = forwardRef<
+export const Separator = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     orientation?: Orientation;
@@ -710,7 +1004,7 @@ export const Separator = forwardRef<
   );
 });
 
-export const Progress = forwardRef<
+export const Progress = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     value?: number | null;
@@ -754,7 +1048,7 @@ export const Progress = forwardRef<
   );
 });
 
-export const Toggle = forwardRef<
+export const Toggle = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> & {
     pressed?: boolean;
@@ -798,7 +1092,8 @@ type ToggleGroupContextValue = {
   values: string[];
   toggle(value: string): void;
 };
-const ToggleGroupContext = createContext<ToggleGroupContextValue | null>(null);
+const ToggleGroupContext =
+  /* @__PURE__ */ createContext<ToggleGroupContextValue | null>(null);
 export function ToggleGroup({
   type = 'single',
   value,
@@ -895,7 +1190,7 @@ const visuallyHiddenStyle: React.CSSProperties = {
   border: 0,
 };
 
-export const VisuallyHidden = forwardRef<
+export const VisuallyHidden = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement>
 >(function VisuallyHidden({ style, ...props }, ref) {
@@ -904,7 +1199,7 @@ export const VisuallyHidden = forwardRef<
   );
 });
 
-export const Avatar = forwardRef<
+export const Avatar = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement> & {
     src?: string;
@@ -938,7 +1233,7 @@ export const Avatar = forwardRef<
   );
 });
 
-export const Alert = forwardRef<
+export const Alert = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { urgent?: boolean }
 >(function Alert({ urgent = false, ...props }, ref) {
@@ -954,7 +1249,7 @@ export const Alert = forwardRef<
   );
 });
 
-export const AspectRatio = forwardRef<
+export const AspectRatio = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { ratio?: number }
 >(function AspectRatio({ ratio = 1, style, ...props }, ref) {
@@ -969,7 +1264,7 @@ export const AspectRatio = forwardRef<
   );
 });
 
-export const Skeleton = forwardRef<
+export const Skeleton = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { label?: string }
 >(function Skeleton({ label, ...props }, ref) {
@@ -986,7 +1281,7 @@ export const Skeleton = forwardRef<
   );
 });
 
-export const Spinner = forwardRef<
+export const Spinner = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement> & { label?: string }
 >(function Spinner({ label = 'Loading', children, ...props }, ref) {
@@ -1007,7 +1302,7 @@ export const Spinner = forwardRef<
   );
 });
 
-export const Button = forwardRef<
+export const Button = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean }
 >(function Button(
@@ -1028,7 +1323,50 @@ export const Button = forwardRef<
   );
 });
 
-export const Link = forwardRef<
+export const ButtonGroup = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { orientation?: Orientation }
+>(function ButtonGroup(
+  { orientation = 'horizontal', role = 'group', ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role={role}
+      aria-orientation={orientation}
+      data-slot="button-group"
+      {...props}
+    />
+  );
+});
+
+export const ButtonGroupText = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement>
+>(function ButtonGroupText(props, ref) {
+  return <span ref={ref} data-slot="button-group-text" {...props} />;
+});
+
+export const ButtonGroupSeparator = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement> & { orientation?: Orientation }
+>(function ButtonGroupSeparator(
+  { orientation = 'vertical', role = 'separator', ...props },
+  ref,
+) {
+  return (
+    <span
+      ref={ref}
+      role={role}
+      aria-orientation={orientation}
+      data-slot="button-group-separator"
+      {...props}
+    />
+  );
+});
+
+export const Link = /* @__PURE__ */ forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & {
     disabled?: boolean;
@@ -1069,14 +1407,110 @@ export const Link = forwardRef<
   );
 });
 
-export const Input = forwardRef<
+export const Input = /* @__PURE__ */ forwardRef<
   HTMLInputElement,
   InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
 >(function Input({ invalid = false, ...props }, ref) {
   return <input ref={ref} aria-invalid={invalid || undefined} {...props} />;
 });
 
-export const Slider = forwardRef<
+export const InputGroup = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function InputGroup({ role = 'group', ...props }, ref) {
+  return <div ref={ref} role={role} data-slot="input-group" {...props} />;
+});
+
+export const InputGroupAddon = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    align?: 'inline-start' | 'inline-end' | 'block-start' | 'block-end';
+    decorative?: boolean;
+  }
+>(function InputGroupAddon(
+  { align = 'inline-start', decorative = false, ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden={decorative || undefined}
+      data-align={align}
+      data-slot="input-group-addon"
+      {...props}
+    />
+  );
+});
+
+export const InputGroupText = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement>
+>(function InputGroupText(props, ref) {
+  return <span ref={ref} data-slot="input-group-text" {...props} />;
+});
+
+export const InputOtp = /* @__PURE__ */ forwardRef<
+  HTMLInputElement,
+  Omit<InputHTMLAttributes<HTMLInputElement>, 'maxLength'> & {
+    length?: number;
+    digitsOnly?: boolean;
+    invalid?: boolean;
+  }
+>(function InputOtp(
+  {
+    length = 6,
+    digitsOnly = true,
+    invalid = false,
+    autoComplete = 'one-time-code',
+    inputMode,
+    pattern,
+    style,
+    onInput,
+    ...props
+  },
+  ref,
+) {
+  return (
+    <input
+      ref={ref}
+      type="text"
+      maxLength={length}
+      autoComplete={autoComplete}
+      inputMode={inputMode ?? (digitsOnly ? 'numeric' : 'text')}
+      pattern={pattern ?? (digitsOnly ? '[0-9]*' : undefined)}
+      aria-invalid={invalid || undefined}
+      data-slot="input-otp"
+      style={
+        { '--simurgh-otp-length': length, ...style } as React.CSSProperties
+      }
+      onInput={(event) => {
+        if (digitsOnly) {
+          event.currentTarget.value = event.currentTarget.value
+            .replace(/\D/g, '')
+            .slice(0, length);
+        }
+        onInput?.(event);
+      }}
+      {...props}
+    />
+  );
+});
+
+export const NativeSelect = /* @__PURE__ */ forwardRef<
+  HTMLSelectElement,
+  SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }
+>(function NativeSelect({ invalid = false, ...props }, ref) {
+  return (
+    <select
+      ref={ref}
+      aria-invalid={invalid || undefined}
+      data-slot="native-select"
+      {...props}
+    />
+  );
+});
+
+export const Slider = /* @__PURE__ */ forwardRef<
   HTMLInputElement,
   Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
     invalid?: boolean;
@@ -1099,7 +1533,7 @@ export const Slider = forwardRef<
   );
 });
 
-export const Meter = forwardRef<
+export const Meter = /* @__PURE__ */ forwardRef<
   HTMLMeterElement,
   React.MeterHTMLAttributes<HTMLMeterElement> & { label?: string }
 >(function Meter(
@@ -1123,7 +1557,7 @@ export const Meter = forwardRef<
   );
 });
 
-export const Toolbar = forwardRef<
+export const Toolbar = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     orientation?: Orientation;
@@ -1170,7 +1604,7 @@ export const Toolbar = forwardRef<
     />
   );
 });
-export const ToolbarButton = forwardRef<
+export const ToolbarButton = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >(function ToolbarButton(props, ref) {
@@ -1185,7 +1619,7 @@ export const ToolbarButton = forwardRef<
   );
 });
 
-export const ScrollArea = forwardRef<
+export const ScrollArea = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
     orientation?: 'vertical' | 'horizontal' | 'both';
@@ -1208,7 +1642,7 @@ export const ScrollArea = forwardRef<
   );
 });
 
-export const Textarea = forwardRef<
+export const Textarea = /* @__PURE__ */ forwardRef<
   HTMLTextAreaElement,
   TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }
 >(function Textarea({ invalid = false, ...props }, ref) {
@@ -1216,7 +1650,7 @@ export const Textarea = forwardRef<
 });
 
 export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
-export const Badge = forwardRef<
+export const Badge = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone; status?: boolean }
 >(function Badge({ tone = 'neutral', status = false, ...props }, ref) {
@@ -1231,14 +1665,14 @@ export const Badge = forwardRef<
   );
 });
 
-export const Breadcrumb = forwardRef<
+export const Breadcrumb = /* @__PURE__ */ forwardRef<
   HTMLElement,
   React.HTMLAttributes<HTMLElement> & { label?: string }
 >(function Breadcrumb({ label = 'Breadcrumb', ...props }, ref) {
   return <nav ref={ref} aria-label={label} {...props} />;
 });
 
-export const NavigationMenu = forwardRef<
+export const NavigationMenu = /* @__PURE__ */ forwardRef<
   HTMLElement,
   React.HTMLAttributes<HTMLElement> & { label?: string }
 >(function NavigationMenu({ label = 'Main navigation', ...props }, ref) {
@@ -1246,19 +1680,19 @@ export const NavigationMenu = forwardRef<
     <nav ref={ref} aria-label={label} data-slot="navigation-menu" {...props} />
   );
 });
-export const NavigationMenuList = forwardRef<
+export const NavigationMenuList = /* @__PURE__ */ forwardRef<
   HTMLUListElement,
   React.HTMLAttributes<HTMLUListElement>
 >(function NavigationMenuList(props, ref) {
   return <ul ref={ref} data-slot="navigation-menu-list" {...props} />;
 });
-export const NavigationMenuItem = forwardRef<
+export const NavigationMenuItem = /* @__PURE__ */ forwardRef<
   HTMLLIElement,
   React.LiHTMLAttributes<HTMLLIElement>
 >(function NavigationMenuItem(props, ref) {
   return <li ref={ref} data-slot="navigation-menu-item" {...props} />;
 });
-export const NavigationMenuLink = forwardRef<
+export const NavigationMenuLink = /* @__PURE__ */ forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
 >(function NavigationMenuLink({ current = false, ...props }, ref) {
@@ -1272,141 +1706,354 @@ export const NavigationMenuLink = forwardRef<
   );
 });
 
-export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  function Card(props, ref) {
-    return <div ref={ref} data-slot="card" {...props} />;
-  },
-);
-export const CardHeader = forwardRef<
+export const Menubar = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { label?: string; direction?: Direction }
+>(function Menubar(
+  { label = 'Application menu', direction = 'ltr', onKeyDown, ...props },
+  forwardedRef,
+) {
+  const localRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const items = localRef.current?.querySelectorAll<HTMLElement>(
+      '[role=menuitem]:not([aria-disabled=true])',
+    );
+    if (items?.length && !Array.from(items).some((item) => item.tabIndex === 0))
+      items[0]!.tabIndex = 0;
+  }, []);
+  return (
+    <div
+      ref={(node) => {
+        localRef.current = node;
+        if (typeof forwardedRef === 'function') forwardedRef(node);
+        else if (forwardedRef) forwardedRef.current = node;
+      }}
+      role="menubar"
+      aria-label={label}
+      dir={direction}
+      data-slot="menubar"
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented) return;
+        const items = Array.from(
+          event.currentTarget.querySelectorAll<HTMLElement>(
+            '[role=menuitem]:not([aria-disabled=true])',
+          ),
+        );
+        const current = items.indexOf(document.activeElement as HTMLElement);
+        const target = nextIndex(current, items.length, event.key, {
+          orientation: 'horizontal',
+          direction,
+        });
+        if (target !== current) {
+          event.preventDefault();
+          items.forEach(
+            (item, index) => (item.tabIndex = index === target ? 0 : -1),
+          );
+          items[target]?.focus();
+        }
+      }}
+      {...props}
+    />
+  );
+});
+export const MenubarItem = /* @__PURE__ */ forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement>
+>(function MenubarItem({ disabled, ...props }, ref) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      role="menuitem"
+      tabIndex={-1}
+      aria-disabled={disabled || undefined}
+      disabled={disabled}
+      data-slot="menubar-item"
+      {...props}
+    />
+  );
+});
+
+export const Card = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function Card(props, ref) {
+  return <div ref={ref} data-slot="card" {...props} />;
+});
+export const CardHeader = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function CardHeader(props, ref) {
   return <div ref={ref} data-slot="card-header" {...props} />;
 });
-export const CardTitle = forwardRef<
+export const CardTitle = /* @__PURE__ */ forwardRef<
   HTMLHeadingElement,
   HTMLAttributes<HTMLHeadingElement>
 >(function CardTitle(props, ref) {
   return <h3 ref={ref} data-slot="card-title" {...props} />;
 });
-export const CardDescription = forwardRef<
+export const CardDescription = /* @__PURE__ */ forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(function CardDescription(props, ref) {
   return <p ref={ref} data-slot="card-description" {...props} />;
 });
-export const CardContent = forwardRef<
+export const CardContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function CardContent(props, ref) {
   return <div ref={ref} data-slot="card-content" {...props} />;
 });
-export const CardFooter = forwardRef<
+export const CardFooter = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function CardFooter(props, ref) {
   return <div ref={ref} data-slot="card-footer" {...props} />;
 });
 
-export const Kbd = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
-  function Kbd(props, ref) {
-    return <kbd ref={ref} data-slot="kbd" {...props} />;
-  },
-);
+export const Empty = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { status?: boolean }
+>(function Empty({ status = false, role, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      {...props}
+      role={status ? 'status' : role}
+      aria-live={status ? 'polite' : props['aria-live']}
+      data-slot="empty"
+    />
+  );
+});
+export const EmptyHeader = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function EmptyHeader(props, ref) {
+  return <div ref={ref} data-slot="empty-header" {...props} />;
+});
+export const EmptyMedia = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
+>(function EmptyMedia({ decorative = true, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden={decorative || undefined}
+      data-slot="empty-media"
+      {...props}
+    />
+  );
+});
+export const EmptyTitle = /* @__PURE__ */ forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(function EmptyTitle(props, ref) {
+  return <h3 ref={ref} data-slot="empty-title" {...props} />;
+});
+export const EmptyDescription = /* @__PURE__ */ forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function EmptyDescription(props, ref) {
+  return <p ref={ref} data-slot="empty-description" {...props} />;
+});
+export const EmptyContent = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function EmptyContent(props, ref) {
+  return <div ref={ref} data-slot="empty-content" {...props} />;
+});
 
-export const Field = forwardRef<
+export const ItemGroup = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemGroup({ role = 'list', ...props }, ref) {
+  return <div ref={ref} role={role} data-slot="item-group" {...props} />;
+});
+export const Item = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function Item({ role = 'listitem', ...props }, ref) {
+  return <div ref={ref} role={role} data-slot="item" {...props} />;
+});
+export const ItemMedia = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
+>(function ItemMedia({ decorative = true, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden={decorative || undefined}
+      data-slot="item-media"
+      {...props}
+    />
+  );
+});
+export const ItemContent = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemContent(props, ref) {
+  return <div ref={ref} data-slot="item-content" {...props} />;
+});
+export const ItemTitle = /* @__PURE__ */ forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(function ItemTitle(props, ref) {
+  return <h3 ref={ref} data-slot="item-title" {...props} />;
+});
+export const ItemDescription = /* @__PURE__ */ forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function ItemDescription(props, ref) {
+  return <p ref={ref} data-slot="item-description" {...props} />;
+});
+export const ItemActions = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemActions(props, ref) {
+  return <div ref={ref} data-slot="item-actions" {...props} />;
+});
+
+export const Kbd = /* @__PURE__ */ forwardRef<
+  HTMLElement,
+  HTMLAttributes<HTMLElement>
+>(function Kbd(props, ref) {
+  return <kbd ref={ref} data-slot="kbd" {...props} />;
+});
+
+export const Field = /* @__PURE__ */ forwardRef<
   HTMLFieldSetElement,
   React.FieldsetHTMLAttributes<HTMLFieldSetElement>
 >(function Field(props, ref) {
   return <fieldset ref={ref} data-slot="field" {...props} />;
 });
-export const FieldLegend = forwardRef<
+export const FieldLegend = /* @__PURE__ */ forwardRef<
   HTMLLegendElement,
   HTMLAttributes<HTMLLegendElement>
 >(function FieldLegend(props, ref) {
   return <legend ref={ref} data-slot="field-legend" {...props} />;
 });
-export const FieldDescription = forwardRef<
+export const FieldDescription = /* @__PURE__ */ forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(function FieldDescription(props, ref) {
   return <p ref={ref} data-slot="field-description" {...props} />;
 });
-export const FieldError = forwardRef<
+export const FieldError = /* @__PURE__ */ forwardRef<
   HTMLParagraphElement,
   HTMLAttributes<HTMLParagraphElement>
 >(function FieldError(props, ref) {
   return <p ref={ref} data-slot="field-error" role="alert" {...props} />;
 });
 
-export const Table = forwardRef<
+export const Form = /* @__PURE__ */ forwardRef<
+  HTMLFormElement,
+  FormHTMLAttributes<HTMLFormElement> & { focusInvalid?: boolean }
+>(function Form({ focusInvalid = true, onInvalid, ...props }, ref) {
+  const focusQueued = useRef(false);
+  return (
+    <form
+      {...props}
+      ref={ref}
+      data-slot="form"
+      onInvalid={(event) => {
+        onInvalid?.(event);
+        if (focusQueued.current || !focusInvalid || event.defaultPrevented)
+          return;
+        focusQueued.current = true;
+        const first = event.target as HTMLElement;
+        requestAnimationFrame(() => {
+          first.focus();
+          focusQueued.current = false;
+        });
+      }}
+    />
+  );
+});
+export const FormErrorSummary = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function FormErrorSummary(props, ref) {
+  return (
+    <div
+      {...props}
+      ref={ref}
+      role="alert"
+      aria-live="assertive"
+      tabIndex={-1}
+      data-slot="form-error-summary"
+    />
+  );
+});
+
+export const Table = /* @__PURE__ */ forwardRef<
   HTMLTableElement,
   React.TableHTMLAttributes<HTMLTableElement>
 >(function Table(props, ref) {
   return <table ref={ref} data-slot="table" {...props} />;
 });
-export const TableHeader = forwardRef<
+export const TableHeader = /* @__PURE__ */ forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(function TableHeader(props, ref) {
   return <thead ref={ref} data-slot="table-header" {...props} />;
 });
-export const TableBody = forwardRef<
+export const TableBody = /* @__PURE__ */ forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(function TableBody(props, ref) {
   return <tbody ref={ref} data-slot="table-body" {...props} />;
 });
-export const TableFooter = forwardRef<
+export const TableFooter = /* @__PURE__ */ forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(function TableFooter(props, ref) {
   return <tfoot ref={ref} data-slot="table-footer" {...props} />;
 });
-export const TableRow = forwardRef<
+export const TableRow = /* @__PURE__ */ forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
 >(function TableRow(props, ref) {
   return <tr ref={ref} data-slot="table-row" {...props} />;
 });
-export const TableHead = forwardRef<
+export const TableHead = /* @__PURE__ */ forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement>
 >(function TableHead({ scope = 'col', ...props }, ref) {
   return <th ref={ref} scope={scope} data-slot="table-head" {...props} />;
 });
-export const TableCell = forwardRef<
+export const TableCell = /* @__PURE__ */ forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement>
 >(function TableCell(props, ref) {
   return <td ref={ref} data-slot="table-cell" {...props} />;
 });
-export const TableCaption = forwardRef<
+export const TableCaption = /* @__PURE__ */ forwardRef<
   HTMLTableCaptionElement,
   React.HTMLAttributes<HTMLTableCaptionElement>
 >(function TableCaption(props, ref) {
   return <caption ref={ref} data-slot="table-caption" {...props} />;
 });
 
-export const Pagination = forwardRef<
+export const Pagination = /* @__PURE__ */ forwardRef<
   HTMLElement,
   React.HTMLAttributes<HTMLElement> & { label?: string }
 >(function Pagination({ label = 'Pagination', ...props }, ref) {
   return <nav ref={ref} aria-label={label} data-slot="pagination" {...props} />;
 });
-export const PaginationContent = forwardRef<
+export const PaginationContent = /* @__PURE__ */ forwardRef<
   HTMLUListElement,
   React.HTMLAttributes<HTMLUListElement>
 >(function PaginationContent(props, ref) {
   return <ul ref={ref} data-slot="pagination-content" {...props} />;
 });
-export const PaginationItem = forwardRef<
+export const PaginationItem = /* @__PURE__ */ forwardRef<
   HTMLLIElement,
   React.LiHTMLAttributes<HTMLLIElement>
 >(function PaginationItem(props, ref) {
   return <li ref={ref} data-slot="pagination-item" {...props} />;
 });
-export const PaginationLink = forwardRef<
+export const PaginationLink = /* @__PURE__ */ forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
 >(function PaginationLink({ current = false, ...props }, ref) {
@@ -1435,7 +2082,9 @@ type RadioContextValue = {
   disabled: boolean;
   direction: Direction;
 };
-const RadioContext = createContext<RadioContextValue | null>(null);
+const RadioContext = /* @__PURE__ */ createContext<RadioContextValue | null>(
+  null,
+);
 export function RadioGroup({
   children,
   value,
@@ -1615,6 +2264,18 @@ export function Select({
   );
 }
 
+export type ComboboxProps = {
+  options: Array<Omit<SelectOption, 'label'> & { label: string }>;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  required?: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+  noResults?: ReactNode;
+  onValueChange?: (value: string) => void;
+};
+
 export function Combobox({
   options,
   name,
@@ -1625,17 +2286,7 @@ export function Combobox({
   placeholder = 'Search…',
   noResults = 'No results',
   onValueChange,
-}: {
-  options: Array<Omit<SelectOption, 'label'> & { label: string }>;
-  name?: string;
-  value?: string;
-  defaultValue?: string;
-  required?: boolean;
-  disabled?: boolean;
-  placeholder?: string;
-  noResults?: ReactNode;
-  onValueChange?: (value: string) => void;
-}) {
+}: ComboboxProps) {
   const [local, setLocal] = useState(defaultValue);
   const selected = value ?? local;
   const selectedOption = options.find((option) => option.value === selected);
@@ -1745,6 +2396,1289 @@ export function Combobox({
   );
 }
 
+export function Command(props: ComboboxProps) {
+  return (
+    <div data-slot="command">
+      <Combobox {...props} />
+    </div>
+  );
+}
+
+export type CalendarProps = {
+  value?: string;
+  defaultValue?: string;
+  month?: string;
+  defaultMonth?: string;
+  locale?: string;
+  direction?: Direction;
+  firstDayOfWeek?: number;
+  min?: string;
+  max?: string;
+  disabledDates?: string[];
+  name?: string;
+  label?: string;
+  onValueChange?: (value: string) => void;
+  onMonthChange?: (month: string) => void;
+};
+
+export function Calendar({
+  value,
+  defaultValue = '',
+  month,
+  defaultMonth,
+  locale = 'en',
+  direction = 'ltr',
+  firstDayOfWeek = 0,
+  min,
+  max,
+  disabledDates = [],
+  name,
+  label = 'Calendar',
+  onValueChange,
+  onMonthChange,
+}: CalendarProps) {
+  const today = useMemo(calendarToday, []);
+  const [localValue, setLocalValue] = useState(defaultValue);
+  const selected = value ?? localValue;
+  const [localMonth, setLocalMonth] = useState(
+    defaultMonth ?? (defaultValue || today).slice(0, 7),
+  );
+  const displayedMonth = month ?? localMonth;
+  const days = calendarMonthDays(displayedMonth, firstDayOfWeek);
+  const root = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  const disabled = new Set(disabledDates);
+  const isDisabled = (date: string) =>
+    (min !== undefined && date < min) ||
+    (max !== undefined && date > max) ||
+    disabled.has(date);
+  const anchor =
+    selected.slice(0, 7) === displayedMonth ? selected : `${displayedMonth}-01`;
+  const dateFor = (date: string) => new Date(`${date}T00:00:00Z`);
+  const monthLabel = new Intl.DateTimeFormat(locale, {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(dateFor(`${displayedMonth}-01`));
+  const dayLabel = new Intl.DateTimeFormat(locale, {
+    dateStyle: 'full',
+    timeZone: 'UTC',
+  });
+  const weekdayLabel = new Intl.DateTimeFormat(locale, {
+    weekday: 'short',
+    timeZone: 'UTC',
+  });
+  const setMonth = (next: string) => {
+    if (month === undefined) setLocalMonth(next);
+    onMonthChange?.(next);
+  };
+  const choose = (date: string) => {
+    if (isDisabled(date)) return;
+    if (value === undefined) setLocalValue(date);
+    if (date.slice(0, 7) !== displayedMonth) setMonth(date.slice(0, 7));
+    onValueChange?.(date);
+  };
+  const focusDate = (date: string) => {
+    if (date.slice(0, 7) !== displayedMonth) setMonth(date.slice(0, 7));
+    requestAnimationFrame(() =>
+      root.current
+        ?.querySelector<HTMLElement>(`[data-date="${date}"]`)
+        ?.focus(),
+    );
+  };
+  return (
+    <div
+      ref={root}
+      data-slot="calendar"
+      dir={direction}
+      role="group"
+      aria-label={label}
+    >
+      <div data-slot="calendar-header">
+        <button
+          type="button"
+          aria-label="Previous month"
+          onClick={() =>
+            setMonth(addCalendarMonths(`${displayedMonth}-01`, -1).slice(0, 7))
+          }
+        >
+          ‹
+        </button>
+        <h2 id={titleId} aria-live="polite">
+          {monthLabel}
+        </h2>
+        <button
+          type="button"
+          aria-label="Next month"
+          onClick={() =>
+            setMonth(addCalendarMonths(`${displayedMonth}-01`, 1).slice(0, 7))
+          }
+        >
+          ›
+        </button>
+      </div>
+      <table role="grid" aria-labelledby={titleId}>
+        <thead>
+          <tr>
+            {Array.from({ length: 7 }, (_, index) => {
+              const date = new Date(
+                Date.UTC(2023, 0, 1 + ((firstDayOfWeek + index) % 7)),
+              );
+              return (
+                <th key={index} scope="col">
+                  {weekdayLabel.format(date)}
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: 6 }, (_, week) => (
+            <tr key={week}>
+              {days.slice(week * 7, week * 7 + 7).map((day) => (
+                <td
+                  key={day.value}
+                  role="gridcell"
+                  aria-selected={selected === day.value}
+                >
+                  <button
+                    type="button"
+                    data-slot="calendar-day"
+                    data-date={day.value}
+                    data-outside={day.outside || undefined}
+                    data-state={selected === day.value ? 'selected' : undefined}
+                    aria-current={today === day.value ? 'date' : undefined}
+                    aria-label={dayLabel.format(dateFor(day.value))}
+                    aria-disabled={isDisabled(day.value) || undefined}
+                    tabIndex={day.value === anchor ? 0 : -1}
+                    onClick={() => choose(day.value)}
+                    onKeyDown={(event) => {
+                      if (
+                        ![
+                          'ArrowLeft',
+                          'ArrowRight',
+                          'ArrowUp',
+                          'ArrowDown',
+                          'Home',
+                          'End',
+                          'PageUp',
+                          'PageDown',
+                        ].includes(event.key)
+                      )
+                        return;
+                      event.preventDefault();
+                      focusDate(
+                        moveCalendarDate(day.value, event.key, {
+                          direction,
+                          firstDayOfWeek,
+                        }),
+                      );
+                    }}
+                  >
+                    {day.day}
+                  </button>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {name && <input type="hidden" name={name} value={selected} />}
+    </div>
+  );
+}
+
+export type DatePickerProps = CalendarProps & {
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+};
+
+export function DatePicker({
+  value,
+  defaultValue = '',
+  name,
+  locale = 'en',
+  label = 'Date picker calendar',
+  placeholder = 'Pick a date',
+  required = false,
+  disabled = false,
+  onValueChange,
+  ...calendarProps
+}: DatePickerProps) {
+  const [localValue, setLocalValue] = useState(defaultValue);
+  const selected = value ?? localValue;
+  const [open, setOpen] = useState(false);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const displayValue = selected
+    ? new Intl.DateTimeFormat(locale, {
+        dateStyle: 'medium',
+        timeZone: 'UTC',
+      }).format(new Date(`${selected}T00:00:00Z`))
+    : placeholder;
+  const choose = (date: string) => {
+    if (value === undefined) setLocalValue(date);
+    onValueChange?.(date);
+    setOpen(false);
+    requestAnimationFrame(() => trigger.current?.focus());
+  };
+  return (
+    <div data-slot="date-picker">
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger
+          ref={trigger}
+          data-slot="date-picker-trigger"
+          disabled={disabled}
+        >
+          {displayValue}
+        </PopoverTrigger>
+        <PopoverContent data-slot="date-picker-content" aria-label={label}>
+          <Calendar
+            {...calendarProps}
+            value={selected}
+            locale={locale}
+            label={label}
+            onValueChange={choose}
+          />
+        </PopoverContent>
+      </Popover>
+      {name && (
+        <input type="hidden" name={name} value={selected} disabled={disabled} />
+      )}
+      {required && (
+        <input
+          tabIndex={-1}
+          aria-hidden="true"
+          required
+          disabled={disabled}
+          value={selected}
+          onChange={() => undefined}
+          style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}
+        />
+      )}
+    </div>
+  );
+}
+
+type CarouselContextValue = {
+  index: number;
+  count: number;
+  loop: boolean;
+  direction: Direction;
+  setCount(count: number): void;
+  goTo(index: number): void;
+};
+const CarouselContext =
+  /* @__PURE__ */ createContext<CarouselContextValue | null>(null);
+const useCarousel = () => {
+  const context = useContext(CarouselContext);
+  if (!context) throw new Error('Carousel parts require a Carousel root');
+  return context;
+};
+
+export function Carousel({
+  label = 'Carousel',
+  direction = 'ltr',
+  loop = false,
+  defaultIndex = 0,
+  onIndexChange,
+  onKeyDown,
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement> & {
+  label?: string;
+  direction?: Direction;
+  loop?: boolean;
+  defaultIndex?: number;
+  onIndexChange?: (index: number) => void;
+}) {
+  const [index, setIndex] = useState(Math.max(0, defaultIndex));
+  const [count, setCount] = useState(0);
+  const goTo = (next: number) => {
+    if (!count) return;
+    const resolved = loop
+      ? (next + count) % count
+      : Math.max(0, Math.min(count - 1, next));
+    if (resolved !== index) {
+      setIndex(resolved);
+      onIndexChange?.(resolved);
+    }
+  };
+  return (
+    <CarouselContext.Provider
+      value={{ index, count, loop, direction, setCount, goTo }}
+    >
+      <div
+        {...props}
+        data-slot="carousel"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label={label}
+        dir={direction}
+        onKeyDown={(event) => {
+          onKeyDown?.(event);
+          if (event.defaultPrevented) return;
+          const previous = direction === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
+          const next = direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+          if (event.key === previous || event.key === next) {
+            event.preventDefault();
+            goTo(index + (event.key === next ? 1 : -1));
+          }
+        }}
+      >
+        {children}
+      </div>
+    </CarouselContext.Provider>
+  );
+}
+
+export function CarouselContent({
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  const context = useCarousel();
+  const slides = React.Children.toArray(children);
+  useEffect(() => context.setCount(slides.length), [context, slides.length]);
+  return (
+    <div {...props} data-slot="carousel-content" aria-live="polite">
+      {slides.map((child, index) =>
+        React.isValidElement(child)
+          ? React.cloneElement(
+              child as React.ReactElement<HTMLAttributes<HTMLDivElement>>,
+              {
+                'aria-label': `${index + 1} of ${slides.length}`,
+                'aria-hidden': context.index !== index,
+                hidden: context.index !== index,
+              },
+            )
+          : child,
+      )}
+    </div>
+  );
+}
+
+export const CarouselItem = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function CarouselItem(props, ref) {
+  return (
+    <div
+      {...props}
+      ref={ref}
+      data-slot="carousel-item"
+      role="group"
+      aria-roledescription="slide"
+    />
+  );
+});
+
+function CarouselControl({
+  step,
+  label,
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement> & { step: -1 | 1; label: string }) {
+  const context = useCarousel();
+  const unavailable =
+    !context.loop &&
+    (step < 0 ? context.index <= 0 : context.index >= context.count - 1);
+  return (
+    <button
+      type="button"
+      {...props}
+      data-slot={step < 0 ? 'carousel-previous' : 'carousel-next'}
+      aria-label={label}
+      disabled={unavailable || props.disabled}
+      onClick={(event) => {
+        props.onClick?.(event);
+        if (!event.defaultPrevented) context.goTo(context.index + step);
+      }}
+    />
+  );
+}
+export function CarouselPrevious(
+  props: ButtonHTMLAttributes<HTMLButtonElement>,
+) {
+  return <CarouselControl {...props} step={-1} label="Previous slide" />;
+}
+export function CarouselNext(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return <CarouselControl {...props} step={1} label="Next slide" />;
+}
+
+type ResizableContextValue = {
+  orientation: Orientation;
+  direction: Direction;
+  sizes: number[];
+  minimums: number[];
+  maximums: number[];
+  root: React.RefObject<HTMLDivElement | null>;
+  adjust(boundary: number, delta: number): void;
+};
+const ResizableContext =
+  /* @__PURE__ */ createContext<ResizableContextValue | null>(null);
+const normalizePanelSizes = (values: number[]) => {
+  const total = values.reduce((sum, value) => sum + Math.max(0, value), 0);
+  return values.map((value) =>
+    total ? (Math.max(0, value) / total) * 100 : 100 / values.length,
+  );
+};
+
+export function ResizablePanelGroup({
+  orientation = 'horizontal',
+  direction = 'ltr',
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement> & {
+  orientation?: Orientation;
+  direction?: Direction;
+}) {
+  const parts = React.Children.toArray(children);
+  const panels = parts.filter(
+    (child) => React.isValidElement(child) && child.type === ResizablePanel,
+  ) as React.ReactElement<ResizablePanelProps>[];
+  const [sizes, setSizes] = useState(() =>
+    normalizePanelSizes(panels.map((panel) => panel.props.defaultSize ?? 1)),
+  );
+  const minimums = panels.map((panel) => panel.props.minSize ?? 10);
+  const maximums = panels.map((panel) => panel.props.maxSize ?? 90);
+  const root = useRef<HTMLDivElement>(null);
+  const adjust = (boundary: number, delta: number) => {
+    setSizes((current) => {
+      if (boundary < 0 || boundary >= current.length - 1) return current;
+      const total = current[boundary]! + current[boundary + 1]!;
+      const low = Math.max(
+        minimums[boundary]!,
+        total - maximums[boundary + 1]!,
+      );
+      const high = Math.min(
+        maximums[boundary]!,
+        total - minimums[boundary + 1]!,
+      );
+      const before = Math.max(low, Math.min(high, current[boundary]! + delta));
+      const next = [...current];
+      next[boundary] = before;
+      next[boundary + 1] = total - before;
+      return next;
+    });
+  };
+  let panelIndex = 0;
+  return (
+    <ResizableContext.Provider
+      value={{
+        orientation,
+        direction,
+        sizes,
+        minimums,
+        maximums,
+        root,
+        adjust,
+      }}
+    >
+      <div
+        {...props}
+        ref={root}
+        data-slot="resizable-panel-group"
+        data-orientation={orientation}
+        dir={direction}
+      >
+        {parts.map((child, index) => {
+          if (!React.isValidElement(child)) return child;
+          if (child.type === ResizablePanel) {
+            const current = panelIndex++;
+            return React.cloneElement(
+              child as React.ReactElement<ResizablePanelProps>,
+              { _index: current, key: child.key ?? index },
+            );
+          }
+          if (child.type === ResizableHandle)
+            return React.cloneElement(
+              child as React.ReactElement<ResizableHandleProps>,
+              { _boundary: panelIndex - 1, key: child.key ?? index },
+            );
+          return child;
+        })}
+      </div>
+    </ResizableContext.Provider>
+  );
+}
+
+type ResizablePanelProps = HTMLAttributes<HTMLDivElement> & {
+  defaultSize?: number;
+  minSize?: number;
+  maxSize?: number;
+  _index?: number;
+};
+export function ResizablePanel(props: ResizablePanelProps) {
+  const context = useContext(ResizableContext);
+  const forwardedProps = { ...props };
+  delete forwardedProps.defaultSize;
+  delete forwardedProps.minSize;
+  delete forwardedProps.maxSize;
+  delete forwardedProps._index;
+  return (
+    <div
+      {...forwardedProps}
+      data-slot="resizable-panel"
+      style={{
+        ...props.style,
+        flexBasis: `${context?.sizes[props._index ?? 0] ?? 100}%`,
+      }}
+    />
+  );
+}
+
+type ResizableHandleProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  _boundary?: number;
+};
+export function ResizableHandle({
+  _boundary = 0,
+  onKeyDown,
+  onPointerDown,
+  ...props
+}: ResizableHandleProps) {
+  const context = useContext(ResizableContext);
+  if (!context)
+    throw new Error('ResizableHandle requires a ResizablePanelGroup');
+  const total =
+    (context.sizes[_boundary] ?? 0) + (context.sizes[_boundary + 1] ?? 0);
+  const effectiveMinimum = Math.max(
+    context.minimums[_boundary]!,
+    total - context.maximums[_boundary + 1]!,
+  );
+  const effectiveMaximum = Math.min(
+    context.maximums[_boundary]!,
+    total - context.minimums[_boundary + 1]!,
+  );
+  const move = (key: string) => {
+    const current = context.sizes[_boundary] ?? 0;
+    if (key === 'Home')
+      return context.adjust(_boundary, effectiveMinimum - current);
+    if (key === 'End')
+      return context.adjust(_boundary, effectiveMaximum - current);
+    const previous =
+      context.orientation === 'vertical'
+        ? 'ArrowUp'
+        : context.direction === 'rtl'
+          ? 'ArrowRight'
+          : 'ArrowLeft';
+    const next =
+      context.orientation === 'vertical'
+        ? 'ArrowDown'
+        : context.direction === 'rtl'
+          ? 'ArrowLeft'
+          : 'ArrowRight';
+    if (key === previous) context.adjust(_boundary, -5);
+    else if (key === next) context.adjust(_boundary, 5);
+  };
+  return (
+    <button
+      type="button"
+      {...props}
+      data-slot="resizable-handle"
+      role="separator"
+      aria-orientation={
+        context.orientation === 'horizontal' ? 'vertical' : 'horizontal'
+      }
+      aria-valuemin={effectiveMinimum}
+      aria-valuemax={effectiveMaximum}
+      aria-valuenow={Math.round(context.sizes[_boundary] ?? 0)}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (
+          !event.defaultPrevented &&
+          [
+            'ArrowLeft',
+            'ArrowRight',
+            'ArrowUp',
+            'ArrowDown',
+            'Home',
+            'End',
+          ].includes(event.key)
+        ) {
+          event.preventDefault();
+          move(event.key);
+        }
+      }}
+      onPointerDown={(event) => {
+        onPointerDown?.(event);
+        if (event.defaultPrevented) return;
+        let previous =
+          context.orientation === 'horizontal' ? event.clientX : event.clientY;
+        const size =
+          context.orientation === 'horizontal'
+            ? context.root.current?.clientWidth
+            : context.root.current?.clientHeight;
+        if (!size) return;
+        const onMove = (next: PointerEvent) => {
+          const coordinate =
+            context.orientation === 'horizontal' ? next.clientX : next.clientY;
+          let delta = ((coordinate - previous) / size) * 100;
+          previous = coordinate;
+          if (
+            context.orientation === 'horizontal' &&
+            context.direction === 'rtl'
+          )
+            delta *= -1;
+          context.adjust(_boundary, delta);
+        };
+        const onUp = () => {
+          window.removeEventListener('pointermove', onMove);
+          window.removeEventListener('pointerup', onUp);
+        };
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp, { once: true });
+      }}
+    />
+  );
+}
+
+type SidebarContextValue = {
+  open: boolean;
+  setOpen(open: boolean): void;
+  contentId: string;
+};
+const SidebarContext =
+  /* @__PURE__ */ createContext<SidebarContextValue | null>(null);
+function useSidebarContext() {
+  const context = useContext(SidebarContext);
+  if (!context) throw new Error('Sidebar components require SidebarProvider');
+  return context;
+}
+
+export function SidebarProvider({
+  open: controlledOpen,
+  defaultOpen = true,
+  onOpenChange,
+  children,
+}: PropsWithChildren<OpenProps>) {
+  const [localOpen, setLocalOpen] = useState(defaultOpen);
+  const open = controlledOpen ?? localOpen;
+  const contentId = `simurgh-sidebar-${useId().replace(/:/g, '')}`;
+  const setOpen = (next: boolean) => {
+    if (controlledOpen === undefined) setLocalOpen(next);
+    onOpenChange?.(next);
+  };
+  return (
+    <SidebarContext.Provider value={{ open, setOpen, contentId }}>
+      <div data-slot="sidebar-provider" data-state={open ? 'open' : 'closed'}>
+        {children}
+      </div>
+    </SidebarContext.Provider>
+  );
+}
+
+export function Sidebar({
+  side = 'start',
+  ...props
+}: HTMLAttributes<HTMLElement> & { side?: 'start' | 'end' }) {
+  const context = useSidebarContext();
+  return (
+    <aside
+      {...props}
+      id={context.contentId}
+      data-slot="sidebar"
+      data-side={side}
+      data-state={context.open ? 'open' : 'closed'}
+      hidden={!context.open}
+    />
+  );
+}
+
+export function SidebarTrigger({
+  onClick,
+  children,
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  const context = useSidebarContext();
+  return (
+    <button
+      {...props}
+      type={props.type ?? 'button'}
+      data-slot="sidebar-trigger"
+      aria-controls={context.contentId}
+      aria-expanded={context.open}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) context.setOpen(!context.open);
+      }}
+    >
+      {children ?? (context.open ? 'Close navigation' : 'Open navigation')}
+    </button>
+  );
+}
+
+function sidebarPart(slot: string) {
+  return function SidebarPart(props: HTMLAttributes<HTMLDivElement>) {
+    return <div {...props} data-slot={slot} />;
+  };
+}
+export const SidebarHeader = /* @__PURE__ */ sidebarPart('sidebar-header');
+export const SidebarContent = /* @__PURE__ */ sidebarPart('sidebar-content');
+export const SidebarFooter = /* @__PURE__ */ sidebarPart('sidebar-footer');
+export const SidebarGroup = /* @__PURE__ */ sidebarPart('sidebar-group');
+export function SidebarMenu(props: HTMLAttributes<HTMLUListElement>) {
+  return <ul {...props} data-slot="sidebar-menu" />;
+}
+
+export function Tree({
+  onKeyDown,
+  ...props
+}: HTMLAttributes<HTMLUListElement>) {
+  const rootRef = useRef<HTMLUListElement>(null);
+  useEffect(() => {
+    const items =
+      rootRef.current?.querySelectorAll<HTMLButtonElement>('[role="treeitem"]');
+    items?.forEach((item, index) => (item.tabIndex = index === 0 ? 0 : -1));
+  }, []);
+  const focusItem = (
+    items: HTMLButtonElement[],
+    current: number,
+    target: number,
+  ) => {
+    if (target < 0 || target === current) return;
+    items[current]?.setAttribute('tabindex', '-1');
+    if (items[target]) {
+      items[target].tabIndex = 0;
+      items[target].focus();
+    }
+  };
+  const moveFocus = (event: React.KeyboardEvent<HTMLUListElement>) => {
+    const root = event.currentTarget;
+    const items = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[role="treeitem"]'),
+    ).filter(
+      (item) => !item.disabled && !item.closest('[role="group"][hidden]'),
+    );
+    const current = items.indexOf(document.activeElement as HTMLButtonElement);
+    let target = current;
+    if (event.key === 'ArrowDown')
+      target = Math.min(current + 1, items.length - 1);
+    else if (event.key === 'ArrowUp') target = Math.max(current - 1, 0);
+    else if (event.key === 'Home') target = 0;
+    else if (event.key === 'End') target = items.length - 1;
+    else if (event.key === 'ArrowRight' && current >= 0) {
+      const item = items[current]!;
+      if (item.getAttribute('aria-expanded') === 'false') item.click();
+      else {
+        const child = item
+          .closest('li')
+          ?.querySelector<HTMLButtonElement>(
+            '[role="group"] [role="treeitem"]',
+          );
+        if (child) focusItem(items, current, items.indexOf(child));
+      }
+      event.preventDefault();
+      return;
+    } else if (event.key === 'ArrowLeft' && current >= 0) {
+      const item = items[current]!;
+      if (item.getAttribute('aria-expanded') === 'true') item.click();
+      else {
+        const parent = item.parentElement?.parentElement
+          ?.closest('li')
+          ?.querySelector<HTMLButtonElement>(':scope > [role="treeitem"]');
+        if (parent) focusItem(items, current, items.indexOf(parent));
+      }
+      event.preventDefault();
+      return;
+    } else return;
+    if (target !== current && target >= 0) {
+      event.preventDefault();
+      focusItem(items, current, target);
+    }
+  };
+  return (
+    <ul
+      {...props}
+      ref={rootRef}
+      role="tree"
+      data-slot="tree"
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (!event.defaultPrevented) moveFocus(event);
+      }}
+    />
+  );
+}
+
+type TreeItemProps = Omit<HTMLAttributes<HTMLLIElement>, 'children'> & {
+  label: ReactNode;
+  children?: ReactNode;
+  expandable?: boolean;
+  expanded?: boolean;
+  defaultExpanded?: boolean;
+  disabled?: boolean;
+  onExpandedChange?: (expanded: boolean) => void;
+};
+export function TreeItem({
+  label,
+  children,
+  expandable = children !== undefined,
+  expanded: controlledExpanded,
+  defaultExpanded = false,
+  disabled = false,
+  onExpandedChange,
+  ...props
+}: TreeItemProps) {
+  const [localExpanded, setLocalExpanded] = useState(defaultExpanded);
+  const expanded = controlledExpanded ?? localExpanded;
+  const groupId = `simurgh-tree-group-${useId().replace(/:/g, '')}`;
+  const setExpanded = (next: boolean) => {
+    if (controlledExpanded === undefined) setLocalExpanded(next);
+    onExpandedChange?.(next);
+  };
+  return (
+    <li {...props} role="none" data-slot="tree-node">
+      <button
+        type="button"
+        role="treeitem"
+        data-slot="tree-item"
+        aria-expanded={expandable ? expanded : undefined}
+        aria-controls={expandable ? groupId : undefined}
+        aria-disabled={disabled || undefined}
+        disabled={disabled}
+        tabIndex={-1}
+        onClick={() => expandable && setExpanded(!expanded)}
+      >
+        {label}
+      </button>
+      {expandable && (
+        <ul id={groupId} role="group" data-slot="tree-group" hidden={!expanded}>
+          {children}
+        </ul>
+      )}
+    </li>
+  );
+}
+
+function acceptedFiles(files: File[], accept?: string) {
+  if (!accept) return files;
+  const rules = accept
+    .split(',')
+    .map((rule) => rule.trim().toLowerCase())
+    .filter(Boolean);
+  return files.filter((file) => {
+    const name = file.name.toLowerCase();
+    const type = file.type.toLowerCase();
+    return rules.some((rule) =>
+      rule.startsWith('.')
+        ? name.endsWith(rule)
+        : rule.endsWith('/*')
+          ? type.startsWith(rule.slice(0, -1))
+          : type === rule,
+    );
+  });
+}
+type FileUploadProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type' | 'onChange'
+> & {
+  label: ReactNode;
+  description?: ReactNode;
+  onFilesChange?: (files: File[]) => void;
+};
+export function FileUpload({
+  label,
+  description = 'Drop files here or browse',
+  onFilesChange,
+  accept,
+  disabled,
+  multiple,
+  ...props
+}: FileUploadProps) {
+  const id = props.id ?? `simurgh-file-${useId().replace(/:/g, '')}`;
+  const [names, setNames] = useState<string[]>([]);
+  const update = (files: File[]) => {
+    if (disabled) return;
+    const accepted = acceptedFiles(files, accept);
+    const next = multiple ? accepted : accepted.slice(0, 1);
+    setNames(next.map((file) => file.name));
+    onFilesChange?.(next);
+  };
+  return (
+    <label
+      htmlFor={id}
+      data-slot="file-upload"
+      data-disabled={disabled || undefined}
+      onDragOver={(event) => {
+        if (!disabled) event.preventDefault();
+      }}
+      onDrop={(event) => {
+        if (disabled) return;
+        event.preventDefault();
+        update(Array.from(event.dataTransfer.files));
+      }}
+    >
+      <input
+        {...props}
+        id={id}
+        type="file"
+        data-slot="file-upload-input"
+        accept={accept}
+        disabled={disabled}
+        multiple={multiple}
+        onChange={(event) =>
+          update(Array.from(event.currentTarget.files ?? []))
+        }
+      />
+      <strong data-slot="file-upload-label">{label}</strong>
+      {description && (
+        <span data-slot="file-upload-description">{description}</span>
+      )}
+      <span data-slot="file-upload-status" aria-live="polite">
+        {names.length ? names.join(', ') : 'No files selected'}
+      </span>
+    </label>
+  );
+}
+
+type PasswordInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type'
+> & {
+  revealLabel?: string;
+  concealLabel?: string;
+};
+export const PasswordInput = /* @__PURE__ */ forwardRef<
+  HTMLInputElement,
+  PasswordInputProps
+>(function PasswordInput(
+  {
+    revealLabel = 'Show password',
+    concealLabel = 'Hide password',
+    disabled,
+    ...props
+  },
+  ref,
+) {
+  const [revealed, setRevealed] = useState(false);
+  const id = props.id ?? `simurgh-password-${useId().replace(/:/g, '')}`;
+  return (
+    <div data-slot="password-input" data-disabled={disabled || undefined}>
+      <input
+        {...props}
+        ref={ref}
+        id={id}
+        type={revealed ? 'text' : 'password'}
+        data-slot="password-input-control"
+        disabled={disabled}
+      />
+      <button
+        type="button"
+        data-slot="password-input-toggle"
+        aria-controls={id}
+        aria-label={revealed ? concealLabel : revealLabel}
+        aria-pressed={revealed}
+        disabled={disabled}
+        onClick={() => setRevealed((current) => !current)}
+      >
+        {revealed ? 'Hide' : 'Show'}
+      </button>
+    </div>
+  );
+});
+
+type NumberInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type' | 'value' | 'defaultValue' | 'min' | 'max' | 'step'
+> & {
+  value?: number;
+  defaultValue?: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  incrementLabel?: string;
+  decrementLabel?: string;
+  onValueChange?: (value: number) => void;
+};
+export const NumberInput = /* @__PURE__ */ forwardRef<
+  HTMLInputElement,
+  NumberInputProps
+>(function NumberInput(
+  {
+    value,
+    defaultValue = 0,
+    min,
+    max,
+    step = 1,
+    disabled,
+    readOnly,
+    incrementLabel = 'Increase value',
+    decrementLabel = 'Decrease value',
+    onValueChange,
+    onChange,
+    ...props
+  },
+  ref,
+) {
+  const [localValue, setLocalValue] = useState(defaultValue);
+  const current = value ?? localValue;
+  const safeStep = Number.isFinite(step) && step > 0 ? step : 1;
+  const inputId = props.id ?? `simurgh-number-${useId().replace(/:/g, '')}`;
+  const normalize = (next: number) =>
+    Math.min(max ?? Infinity, Math.max(min ?? -Infinity, next));
+  const commit = (next: number) => {
+    const normalized = normalize(next);
+    if (value === undefined) setLocalValue(normalized);
+    onValueChange?.(normalized);
+  };
+  return (
+    <div
+      data-slot="number-input"
+      data-disabled={disabled || undefined}
+      data-readonly={readOnly || undefined}
+    >
+      <button
+        type="button"
+        data-slot="number-input-decrement"
+        aria-label={decrementLabel}
+        aria-controls={inputId}
+        disabled={disabled || readOnly || current <= (min ?? -Infinity)}
+        onClick={() => commit(current - safeStep)}
+      >
+        −
+      </button>
+      <input
+        {...props}
+        ref={ref}
+        id={inputId}
+        type="number"
+        data-slot="number-input-control"
+        value={current}
+        min={min}
+        max={max}
+        step={safeStep}
+        disabled={disabled}
+        readOnly={readOnly}
+        onChange={(event) => {
+          onChange?.(event);
+          if (!Number.isNaN(event.currentTarget.valueAsNumber))
+            commit(event.currentTarget.valueAsNumber);
+        }}
+      />
+      <button
+        type="button"
+        data-slot="number-input-increment"
+        aria-label={incrementLabel}
+        aria-controls={inputId}
+        disabled={disabled || readOnly || current >= (max ?? Infinity)}
+        onClick={() => commit(current + safeStep)}
+      >
+        +
+      </button>
+    </div>
+  );
+});
+
+export type RatingProps = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'defaultValue' | 'onChange'
+> & {
+  value?: number;
+  defaultValue?: number;
+  max?: number;
+  name?: string;
+  disabled?: boolean;
+  required?: boolean;
+  onValueChange?: (value: number) => void;
+  getLabel?: (value: number, max: number) => string;
+};
+export const Rating = /* @__PURE__ */ forwardRef<HTMLDivElement, RatingProps>(
+  function Rating(
+    {
+      value,
+      defaultValue = 0,
+      max = 5,
+      name,
+      disabled,
+      required,
+      onValueChange,
+      getLabel = (item, total) => `${item} of ${total}`,
+      'aria-label': ariaLabel = 'Rating',
+      ...props
+    },
+    ref,
+  ) {
+    const [localValue, setLocalValue] = useState(defaultValue);
+    const count = Number.isFinite(max)
+      ? Math.min(100, Math.max(1, Math.floor(max)))
+      : 5;
+    const current = Math.min(
+      count,
+      Math.max(0, Math.round(value ?? localValue)),
+    );
+    const generatedName = `simurgh-rating-${useId().replace(/:/g, '')}`;
+    const groupName = name ?? generatedName;
+    const commit = (next: number) => {
+      if (value === undefined) setLocalValue(next);
+      onValueChange?.(next);
+    };
+    return (
+      <div
+        {...props}
+        ref={ref}
+        role="radiogroup"
+        aria-label={ariaLabel}
+        data-slot="rating"
+        data-disabled={disabled || undefined}
+      >
+        {Array.from({ length: count }, (_, index) => {
+          const item = index + 1;
+          return (
+            <label key={item} data-slot="rating-item">
+              <input
+                type="radio"
+                data-slot="rating-control"
+                name={groupName}
+                value={item}
+                checked={current === item}
+                disabled={disabled}
+                required={required}
+                aria-label={getLabel(item, count)}
+                onChange={() => commit(item)}
+              />
+              <span
+                data-slot="rating-icon"
+                data-selected={item <= current || undefined}
+                aria-hidden="true"
+              >
+                {'\u2605'}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+    );
+  },
+);
+
+export type TagsInputProps = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'defaultValue' | 'onChange'
+> & {
+  value?: string[];
+  defaultValue?: string[];
+  name?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  maxTags?: number;
+  placeholder?: string;
+  inputLabel?: string;
+  getRemoveLabel?: (tag: string) => string;
+  onValueChange?: (value: string[]) => void;
+};
+export const TagsInput = /* @__PURE__ */ forwardRef<
+  HTMLInputElement,
+  TagsInputProps
+>(function TagsInput(
+  {
+    value,
+    defaultValue = [],
+    name,
+    disabled,
+    readOnly,
+    required,
+    maxTags = 20,
+    placeholder = 'Add a tag',
+    inputLabel = 'Add a tag',
+    getRemoveLabel = (tag) => `Remove ${tag}`,
+    onValueChange,
+    onClick,
+    'aria-label': ariaLabel = 'Tags',
+    ...props
+  },
+  forwardedRef,
+) {
+  const [localValue, setLocalValue] = useState(defaultValue);
+  const [draft, setDraft] = useState('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const tags = (value ?? localValue).slice(0, 100);
+  const limit = Number.isFinite(maxTags)
+    ? Math.min(100, Math.max(1, Math.floor(maxTags)))
+    : 20;
+  const commit = (next: string[]) => {
+    if (value === undefined) setLocalValue(next);
+    onValueChange?.(next);
+  };
+  const add = () => {
+    const tag = draft.trim();
+    if (
+      disabled ||
+      readOnly ||
+      !tag ||
+      tags.includes(tag) ||
+      tags.length >= limit
+    )
+      return;
+    commit([...tags, tag]);
+    setDraft('');
+  };
+  const remove = (index: number) => {
+    if (disabled || readOnly) return;
+    commit(tags.filter((_, itemIndex) => itemIndex !== index));
+    inputRef.current?.focus();
+  };
+  return (
+    <div
+      {...props}
+      role="group"
+      aria-label={ariaLabel}
+      data-slot="tags-input"
+      data-disabled={disabled || undefined}
+      data-readonly={readOnly || undefined}
+      onClick={(event) => {
+        onClick?.(event);
+        inputRef.current?.focus();
+      }}
+    >
+      {tags.map((tag, index) => (
+        <span key={`${tag}-${index}`} data-slot="tags-input-tag">
+          <span data-slot="tags-input-tag-text">{tag}</span>
+          {!readOnly && (
+            <button
+              type="button"
+              data-slot="tags-input-remove"
+              aria-label={getRemoveLabel(tag)}
+              disabled={disabled}
+              onClick={(event) => {
+                event.stopPropagation();
+                remove(index);
+              }}
+            >
+              {'\u00d7'}
+            </button>
+          )}
+          {name && <input type="hidden" name={name} value={tag} />}
+        </span>
+      ))}
+      <input
+        ref={(node) => {
+          inputRef.current = node;
+          if (typeof forwardedRef === 'function') forwardedRef(node);
+          else if (forwardedRef) forwardedRef.current = node;
+        }}
+        type="text"
+        data-slot="tags-input-control"
+        value={draft}
+        aria-label={inputLabel}
+        placeholder={tags.length ? undefined : placeholder}
+        disabled={disabled || tags.length >= limit}
+        readOnly={readOnly}
+        required={required && tags.length === 0}
+        onChange={(event) => setDraft(event.currentTarget.value)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ',') {
+            event.preventDefault();
+            add();
+          } else if (event.key === 'Backspace' && !draft && tags.length) {
+            event.preventDefault();
+            remove(tags.length - 1);
+          }
+        }}
+      />
+    </div>
+  );
+});
+
 export type ToastMessage = {
   id: string;
   title: ReactNode;
@@ -1756,7 +3690,9 @@ type ToastContextValue = {
   toast(message: Omit<ToastMessage, 'id'>): string;
   dismiss(id: string): void;
 };
-const ToastContext = createContext<ToastContextValue | null>(null);
+const ToastContext = /* @__PURE__ */ createContext<ToastContextValue | null>(
+  null,
+);
 export function ToastProvider({ children }: PropsWithChildren) {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const dismiss = (id: string) =>

@@ -1,0 +1,79 @@
+---
+title: Empty
+description: Structured zero-state content with optional live-status announcements.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Empty presents a clear explanation and next action when a collection or workspace has no content. Its static form stays out of the accessibility tree's live regions; enable status only when the empty state appears after an asynchronous update.
+
+<ComponentPreview title="Empty">
+  <div data-slot="empty">
+    <div data-slot="empty-media" aria-hidden="true">
+      +
+    </div>
+    <div data-slot="empty-header">
+      <h3 data-slot="empty-title">No projects yet</h3>
+      <p data-slot="empty-description">
+        Create a project to organize your work.
+      </p>
+    </div>
+    <div data-slot="empty-content">
+      <button type="button">Create project</button>
+    </div>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    <Empty>
+      <EmptyMedia>+</EmptyMedia>
+      <EmptyHeader>
+        <EmptyTitle>No projects yet</EmptyTitle>
+        <EmptyDescription>
+          Create a project to organize your work.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button>Create project</Button>
+      </EmptyContent>
+    </Empty>
+    ```
+  </TabItem>
+  <TabItem label="Vue">
+    ```vue
+    <Empty>
+      <EmptyMedia>+</EmptyMedia>
+      <EmptyHeader>
+        <EmptyTitle>No projects yet</EmptyTitle>
+        <EmptyDescription>
+          Create a project to organize your work.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button>Create project</Button>
+      </EmptyContent>
+    </Empty>
+    ```
+  </TabItem>
+  <TabItem label="Angular">
+    ```html
+    <simurgh-empty>
+      <simurgh-empty-media>+</simurgh-empty-media>
+      <simurgh-empty-header>
+        <simurgh-empty-title>No projects yet</simurgh-empty-title>
+        <simurgh-empty-description>
+          Create a project to organize your work.
+        </simurgh-empty-description>
+      </simurgh-empty-header>
+      <simurgh-empty-content>
+        <simurgh-button>Create project</simurgh-button>
+      </simurgh-empty-content>
+    </simurgh-empty>
+    ```
+  </TabItem>
+</Tabs>
+
+Use a concise heading, explain why the state is empty, and provide one primary recovery or creation action. Set `status` only for content that changes dynamically; persistent page content should remain static.

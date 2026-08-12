@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { rmSync } from 'node:fs';
 describe('registry', () => {
   it('contains the component catalog for every framework', () => {
-    expect(manifest.components).toHaveLength(40);
+    expect(manifest.components).toHaveLength(65);
     for (const framework of ['react', 'vue', 'angular'] as const) {
       expect(registryEntry('dialog', framework).framework).toBe(framework);
       expect(
@@ -17,6 +17,42 @@ describe('registry', () => {
       expect(
         registryEntry('combobox', framework).symbols.length,
       ).toBeGreaterThan(1);
+      expect(registryEntry('menubar', framework).symbols.length).toBe(2);
+      expect(
+        registryEntry('hover-card', framework).symbols.length,
+      ).toBeGreaterThan(0);
+      expect(
+        registryEntry('context-menu', framework).symbols.length,
+      ).toBeGreaterThan(1);
+      expect(registryEntry('sheet', framework).symbols.length).toBeGreaterThan(
+        1,
+      );
+      expect(
+        registryEntry('alert-dialog', framework).symbols.length,
+      ).toBeGreaterThan(2);
+      expect(registryEntry('form', framework).symbols.length).toBe(2);
+      expect(registryEntry('native-select', framework).symbols.length).toBe(1);
+      expect(registryEntry('button-group', framework).symbols.length).toBe(3);
+      expect(registryEntry('input-group', framework).symbols.length).toBe(3);
+      expect(registryEntry('empty', framework).symbols.length).toBe(6);
+      expect(registryEntry('input-otp', framework).symbols.length).toBe(1);
+      expect(registryEntry('item', framework).symbols.length).toBe(7);
+      expect(registryEntry('command', framework).symbols.length).toBe(1);
+      expect(
+        registryEntry('calendar', framework).symbols.length,
+      ).toBeGreaterThan(0);
+      expect(
+        registryEntry('date-picker', framework).symbols.length,
+      ).toBeGreaterThan(0);
+      expect(registryEntry('carousel', framework).symbols.length).toBe(5);
+      expect(registryEntry('resizable', framework).symbols.length).toBe(3);
+      expect(registryEntry('sidebar', framework).symbols.length).toBe(8);
+      expect(registryEntry('tree', framework).symbols.length).toBe(2);
+      expect(registryEntry('file-upload', framework).symbols.length).toBe(1);
+      expect(registryEntry('password-input', framework).symbols.length).toBe(1);
+      expect(registryEntry('drawer', framework).symbols.length).toBeGreaterThan(
+        0,
+      );
     }
   });
 });

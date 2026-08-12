@@ -1,0 +1,65 @@
+---
+title: Menubar
+description: A named horizontal application menu with roving keyboard focus.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Menubar groups persistent application commands. Arrow keys move focus according to text direction, Home and End jump to the edges, and disabled items are skipped.
+
+<ComponentPreview title="Menubar">
+  <div role="menubar" aria-label="Editor" data-slot="menubar">
+    <button type="button" role="menuitem" tabindex="0" data-slot="menubar-item">
+      File
+    </button>
+    <button
+      type="button"
+      role="menuitem"
+      tabindex="-1"
+      data-slot="menubar-item"
+    >
+      Edit
+    </button>
+    <button
+      type="button"
+      role="menuitem"
+      tabindex="-1"
+      data-slot="menubar-item"
+    >
+      View
+    </button>
+  </div>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Menubar label="Editor">
+  <MenubarItem onClick={createDocument}>File</MenubarItem>
+  <MenubarItem onClick={undo}>Edit</MenubarItem>
+  <MenubarItem disabled>View</MenubarItem>
+</Menubar>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Menubar label="Editor">
+  <MenubarItem @select="createDocument">File</MenubarItem>
+  <MenubarItem @select="undo">Edit</MenubarItem>
+  <MenubarItem disabled>View</MenubarItem>
+</Menubar>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-menubar label="Editor">
+  <button simurghMenubarItem (select)="createDocument()">File</button>
+  <button simurghMenubarItem (select)="undo()">Edit</button>
+  <button simurghMenubarItem [disabled]="true">View</button>
+</simurgh-menubar>
+```
+</TabItem>
+</Tabs>
+
+Use Menubar for application commands rather than ordinary site navigation. Navigation links belong in Navigation Menu.

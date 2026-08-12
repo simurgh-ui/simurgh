@@ -1,0 +1,69 @@
+---
+title: File Upload
+description: Native-input-backed file selection with drag-and-drop and live feedback.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+File Upload keeps the platform file input as its focusable control while presenting a larger drop target. Selection and dropped files share the same accept filtering, single/multiple behavior, and polite filename announcement.
+
+<ComponentPreview title="File Upload">
+  <label for="upload-preview" data-slot="file-upload">
+    <input
+      id="upload-preview"
+      type="file"
+      accept=".pdf"
+      multiple
+      data-slot="file-upload-input"
+    />
+    <strong data-slot="file-upload-label">Upload documents</strong>
+    <span data-slot="file-upload-description">
+      Drop PDF files here or browse
+    </span>
+    <span data-slot="file-upload-status" aria-live="polite">
+      No files selected
+    </span>
+  </label>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<FileUpload
+  label="Upload documents"
+  description="PDF files only"
+  accept=".pdf"
+  multiple
+  name="documents"
+  onFilesChange={setFiles}
+/>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<FileUpload
+  label="Upload documents"
+  description="PDF files only"
+  accept=".pdf"
+  multiple
+  name="documents"
+  @files-change="files = $event"
+/>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-file-upload
+  label="Upload documents"
+  description="PDF files only"
+  accept=".pdf"
+  name="documents"
+  [multiple]="true"
+  (filesChange)="files = $event"
+/>
+```
+</TabItem>
+</Tabs>
+
+Treat `accept` as a convenience filter, not a security boundary; validate type, size, and contents on the server. Announce upload progress and errors separately after transfer begins. The component emits `File[]` and leaves transport, retries, previews, and removal policy to the application.
