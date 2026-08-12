@@ -233,7 +233,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       upload validation, and dynamic Tabs/Accordion items.
 - [x] Add SSR and hydration guidance for generated IDs, portals, browser-only APIs, and async/lazy
       components in Angular, React, and Vue.
-- [ ] Add TypeScript examples for extending props, wrapping components, typing values/events, and
+- [x] Add TypeScript examples for extending props, wrapping components, typing values/events, and
       forwarding refs or native attributes.
 
 ### P1: customization and styling

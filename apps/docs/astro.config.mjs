@@ -41,6 +41,7 @@ export default defineConfig({
             { label: 'Theming', slug: 'guides/theming' },
             { label: 'Accessibility & RTL', slug: 'guides/accessibility-rtl' },
             { label: 'SSR and hydration', slug: 'guides/ssr-and-hydration' },
+            { label: 'TypeScript patterns', slug: 'guides/typescript' },
           ],
         },
         { label: 'Components', autogenerate: { directory: 'components' } },

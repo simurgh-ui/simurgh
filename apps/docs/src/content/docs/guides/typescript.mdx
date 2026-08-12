@@ -1,0 +1,171 @@
+---
+title: TypeScript patterns
+description: Type Simurgh wrappers, values, events, native attributes, and element references in React, Vue, and Angular.
+---
+
+Prefer deriving types from the installed component when the adapter does not export a dedicated
+props type. This keeps wrappers aligned when native attributes or component props change. Import
+public value types, such as `SelectOption`, from the same component subpath as the implementation.
+
+## React: extend props and forward a ref
+
+Use `ComponentPropsWithoutRef` to inherit Button's `loading` prop and native button attributes, then
+add application-specific props. Use `ComponentRef` for the element exposed by the component:
+
+```tsx
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type ComponentRef,
+} from 'react';
+import { Button } from '@simurgh-ui/react/button';
+
+type ButtonProps = ComponentPropsWithoutRef<typeof Button>;
+type SaveButtonProps = ButtonProps & {
+  savedLabel?: string;
+};
+
+export const SaveButton = forwardRef<
+  ComponentRef<typeof Button>,
+  SaveButtonProps
+>(function SaveButton({ savedLabel = 'Save changes', ...props }, ref) {
+  return (
+    <Button {...props} ref={ref}>
+      {savedLabel}
+    </Button>
+  );
+});
+```
+
+Spread wrapper-owned defaults before `...props` when callers should be able to override them, and
+after `...props` when the wrapper must enforce them. Preserve the forwarded ref and native event
+object rather than replacing them with an untyped callback.
+
+## React: type values and callbacks
+
+```tsx
+import { useState } from 'react';
+import { Select, type SelectOption } from '@simurgh-ui/react/select';
+
+const countries: SelectOption[] = [
+  { value: 'ir', label: 'Iran' },
+  { value: 'am', label: 'Armenia' },
+];
+
+export function CountrySelect() {
+  const [country, setCountry] = useState<string>('ir');
+
+  return (
+    <Select
+      options={countries}
+      value={country}
+      onValueChange={(next: string) => setCountry(next)}
+    />
+  );
+}
+```
+
+Native components expose native event types through their inherited attributes. For example,
+`ComponentPropsWithoutRef<typeof Button>['onClick']` is the exact click-handler type accepted by
+Button.
+
+## Vue: type props, models, and fallthrough attributes
+
+Vue wrappers can declare application props and use `defineModel` for the adapter's documented
+`v-model` contract. Import value types from the component subpath:
+
+```vue
+<script setup lang="ts">
+import { useAttrs } from 'vue';
+import { Select, type SelectOption } from '@simurgh-ui/vue/select';
+
+defineOptions({ inheritAttrs: false });
+
+const props = defineProps<{
+  options: SelectOption[];
+  label: string;
+  name?: string;
+}>();
+const value = defineModel<string>({ default: '' });
+const attrs = useAttrs();
+</script>
+
+<template>
+  <label>
+    {{ props.label }}
+    <Select
+      v-bind="attrs"
+      v-model="value"
+      :name="props.name"
+      :options="props.options"
+    />
+  </label>
+</template>
+```
+
+`inheritAttrs: false` prevents attributes from landing on the wrapper root accidentally.
+`v-bind="attrs"` forwards them deliberately to Select. Attribute forwarding is component-specific:
+check the component API to learn which internal element receives them. Do not assume a Vue
+component exposes a DOM ref unless its API documents an exposed method or element.
+
+For a native event wrapper, type the handler parameter directly:
+
+```ts
+function onInput(event: Event) {
+  const value = (event.currentTarget as HTMLInputElement).value;
+  // use value
+}
+```
+
+## Angular: type inputs, outputs, and projected attributes
+
+Angular wrappers should expose typed inputs and outputs rather than accepting an untyped options
+object. The wrapper imports the standalone Simurgh component and maps its application API
+explicitly:
+
+```ts
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { SelectComponent, type SelectOption } from '@simurgh-ui/angular/select';
+
+@Component({
+  selector: 'app-country-select',
+  standalone: true,
+  imports: [SelectComponent],
+  template: `
+    <label>
+      {{ label }}
+      <simurgh-select
+        [options]="options"
+        [value]="value"
+        [name]="name"
+        (valueChange)="valueChange.emit($event)"
+      />
+    </label>
+  `,
+})
+export class CountrySelectComponent {
+  @Input({ required: true }) label!: string;
+  @Input({ required: true }) options: SelectOption[] = [];
+  @Input() value = '';
+  @Input() name?: string;
+  @Output() readonly valueChange = new EventEmitter<string>();
+}
+```
+
+Angular attributes bind to the Simurgh component host unless the component declares an input or
+host binding that forwards them. Use documented inputs for `disabled`, `required`, `name`, and ARIA
+configuration. Native bubbling events such as `click` may reach a wrapper host, but prefer a
+documented output when the component provides one because it carries the component's typed value.
+
+Use `@ViewChild(ComponentClass)` only for documented public component methods. Reaching through a
+component to an undocumented internal native element creates a brittle ref contract; wrap or edit
+CLI-owned source when the application genuinely requires a new public focus method.
+
+## Wrapper checklist
+
+- Preserve accessible labels, descriptions, IDs, and required compound-component anatomy.
+- Forward disabled, invalid, required, and loading state without changing their semantics.
+- Keep controlled values controlled; do not create a second unsynchronized local state in a wrapper.
+- Preserve native attributes and refs only on the element documented by the component API.
+- Re-export application wrapper types when they are part of the application's public design system.
+- Add type tests or compiled usage examples so adapter upgrades reveal wrapper drift.
