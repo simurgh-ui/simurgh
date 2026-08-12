@@ -105,6 +105,30 @@ Do not convert “manual release check required” to a pass without recording t
 observations. A fully green CI run is necessary but is not evidence that focus, contrast perception,
 screen-reader announcements, or reader comprehension were manually observed.
 
+## Published documentation browser observation
+
+On 2026-08-12, the built documentation site was observed in the Codex in-app Chromium browser on
+Windows. The desktop viewport and a `390 × 844` responsive viewport were exercised against the
+published static output.
+
+- React, Vue, and Angular example tabs changed their visible framework-native snippets. Arrow Right
+  moved selection and focus to Angular, and Home returned selection and focus to React.
+- The active example's copy control produced the visible polite status message `Copied!`.
+- The labeled Checkbox preview was operable by pointer and exposed a native, enabled, focusable
+  checkbox. The Button preview exposed named enabled and disabled controls.
+- Dark theme selection set `data-theme="dark"`, produced a dark browser color scheme, and retained
+  readable foreground and background presentation.
+- At `390 × 844`, the page had no horizontal document overflow. The mobile menu opened, closed with
+  Escape, removed its expanded-page state, and restored focus to the Menu button.
+- The RTL guide and its horizontal-keyboard reversal guidance were visible. The observed browser did
+  not request reduced motion, so reduced-motion preference behavior remains CI-validated rather than
+  manually observed in this run.
+
+This observation validates the documentation reader interface, not the runtime behavior of a
+consumer application. The React, Vue, and Angular release-candidate journeys above still require
+separate application runs, including form submission, overlay focus containment, event counts,
+200% zoom, forced RTL, forced reduced motion, contrast measurement, and assistive-technology output.
+
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
 {/* doc-verification:end */}

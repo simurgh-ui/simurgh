@@ -289,5 +289,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       open an overlay, handle an event, and update a copied component using only the published docs.
   - [x] Publish the reproducible acceptance protocol and validate its automated package, CLI, API,
         example-compilation, contrast, and documentation-integrity evidence.
-  - [ ] Record the manual keyboard, focus, zoom, RTL, reduced-motion, contrast, and reader-observation
-        evidence for React, Vue, and Angular release-candidate applications.
+  - [x] Record the published documentation site's framework-tab, copy-feedback, keyboard-navigation,
+        dark-theme, mobile-menu, responsive-overflow, and RTL-guidance browser observations.
+  - [ ] Record keyboard, focus, form, overlay, event, 200% zoom, forced RTL/reduced-motion, contrast,
+        and assistive-technology evidence in React, Vue, and Angular release-candidate applications.
