@@ -186,3 +186,101 @@ Items are checked only after their implementation exists and the relevant verifi
 ## Catalog expansion fifth pass
 
 - [x] Add native Disclosure across Angular, React, Vue, the registry, documentation, and contract tests.
+
+## Documentation completion: first-time user audit
+
+Audit date: 2026-08-12. The site has 67 component pages and framework examples, but none of the
+component pages currently has a dedicated Installation, Usage, API/Props, Customization,
+Accessibility, Examples, or Troubleshooting section. Treat the older checked item "complete
+per-component documentation" as example coverage, not as complete consumer documentation.
+
+### P0: make the library usable from the documentation alone
+
+- [ ] Define and apply one required component-page template: purpose, import/install, anatomy,
+      basic usage, API, state model, customization, accessibility, examples, and related components.
+- [ ] Add copy-pasteable package imports and component CSS imports to every component page for
+      React, Vue, and Angular; do not show unimported component snippets.
+- [ ] Document every public React prop, callback, ref, default value, inherited native attribute,
+      and controlled/uncontrolled pair from the exported TypeScript API.
+- [ ] Document every public Vue prop, emitted event, slot, exposed method, default value, and
+      inherited attribute from the exported TypeScript API.
+- [ ] Document every public Angular input, output, content slot/directive, public method, default
+      value, and host/native attribute behavior from the exported TypeScript API.
+- [ ] State framework parity and intentional API differences beside each component API instead of
+      making users compare three source packages.
+- [ ] Document required parent/child composition and which parts are optional for compound
+      components such as Dialog, Select, Tabs, Accordion, Menu, Form, and Date Picker.
+- [ ] Add a tested quick start for a fresh React, Vue, and Angular application, covering both CLI
+      source-copy installation and package consumption.
+- [ ] Explain the actual distribution model clearly: when users own copied source, when they import
+      `@simurgh-ui/*`, which dependencies are installed, and how registry updates/diffs work.
+- [ ] Replace all mojibake still visible in consumer docs and add a UTF-8/mojibake check to CI.
+
+### P1: props, state, and real usage
+
+- [ ] Add controlled and uncontrolled examples for all stateful controls, including the exact
+      value/change APIs in each framework and guidance for resetting state.
+- [ ] Add form examples for every form-capable component: field name, initial value, disabled,
+      required, validation/error state, submission value, and framework form integration.
+- [ ] Document loading, empty, invalid, read-only, disabled, and error states wherever supported;
+      explicitly say when a state is not supported.
+- [ ] Document keyboard interactions in a compact table for every composite widget, including RTL
+      differences, focus entry/exit, Escape behavior, and typeahead where applicable.
+- [ ] Document focus management for overlays: initial focus, focus trapping, restoration, portals,
+      nested overlays, outside interaction, and programmatic open/close.
+- [ ] Add realistic examples rather than only minimal anatomy snippets: async Dialog submission,
+      validated Form, searchable Combobox, server-backed Command, Date Picker constraints,
+      upload validation, and dynamic Tabs/Accordion items.
+- [ ] Add SSR and hydration guidance for generated IDs, portals, browser-only APIs, and async/lazy
+      components in Angular, React, and Vue.
+- [ ] Add TypeScript examples for extending props, wrapping components, typing values/events, and
+      forwarding refs or native attributes.
+
+### P1: customization and styling
+
+- [ ] Expand the theming guide into a complete semantic-token reference with token name, purpose,
+      default value, dark-mode value, and contrast expectations.
+- [ ] Document the styling contract for every component: recipe class names, `data-*` state hooks,
+      ARIA/state selectors, CSS custom properties, and stable DOM parts that consumers may target.
+- [ ] Show three customization levels: semantic token overrides, recipe/class overrides, and fully
+      headless styling without recipe CSS.
+- [ ] Add per-framework class/style forwarding examples and clarify which element receives
+      forwarded attributes for wrapper components.
+- [ ] Document sizing, density, variants, icons, responsive behavior, animation, reduced motion,
+      dark mode, and RTL customization where relevant.
+- [ ] Explain CSS import order, cascade layers/specificity, global reset assumptions, Tailwind use,
+      and how to avoid duplicate token imports.
+- [ ] Add a custom-theme example with a complete light/dark token set and automated contrast checks.
+
+### P2: navigation and decision support
+
+- [ ] Update the component overview from the stale "Sixty-two" count and include all 67 component
+      pages, grouped by form, overlay, navigation, feedback, layout, and data display.
+- [ ] Add a component chooser comparing commonly confused primitives: Select vs Native Select vs
+      Combobox, Dialog vs Alert Dialog vs Sheet vs Drawer, Tooltip vs Hover Card vs Popover, and
+      Accordion vs Disclosure vs Collapsible.
+- [ ] Add package/version requirements, browser support, framework peer-version support, and a
+      compatibility matrix backed by CI.
+- [ ] Add migration and update guides for CLI-copied source and package consumers, including how to
+      resolve `simurgh diff` conflicts safely.
+- [ ] Add troubleshooting for missing styles, overlay clipping/z-index, portals, hydration mismatch,
+      form submission, focus restoration, Tailwind conflicts, and RTL layout issues.
+- [ ] Add links between each component page and its relevant accessibility pattern, theming hooks,
+      related components, and registry source.
+- [ ] Add visible pre-release/versioning guidance, stability expectations, changelog links, and the
+      policy for breaking API or copied-source updates.
+
+### Documentation quality gate
+
+- [ ] Generate or validate API tables from source declarations so undocumented public APIs and stale
+      defaults fail CI across all three adapters.
+- [ ] Compile every React, Vue, and Angular documentation example in CI rather than treating fenced
+      code blocks as unverified text.
+- [ ] Add link checking, heading/anchor checking, spelling, and package-export validation to the docs
+      build.
+- [ ] Add browser tests for framework tabs, copy buttons, component previews, mobile navigation,
+      dark mode, RTL, and keyboard-only reading flows.
+- [ ] Give every page a last-verified version/source marker and require documentation changes for
+      public API changes in the pull-request checklist.
+- [ ] Run a final task-based user test: install one component, customize its theme, build a form,
+      open an overlay, handle an event, and update a copied component using only the published docs.
