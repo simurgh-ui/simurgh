@@ -12,7 +12,12 @@
   },
   "dependencies": {
     "@astrojs/starlight": "^0.36.0",
+    "@simurgh-ui/angular": "workspace:*",
+    "@simurgh-ui/core": "workspace:*",
+    "@simurgh-ui/react": "workspace:*",
+    "@simurgh-ui/registry": "workspace:*",
     "@simurgh-ui/styles": "workspace:*",
+    "@simurgh-ui/vue": "workspace:*",
     "astro": "^5.13.7",
     "sharp": "^0.34.4"
   },

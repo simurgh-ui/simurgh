@@ -68,9 +68,24 @@ importers:
       '@astrojs/starlight':
         specifier: ^0.36.0
         version: 0.36.3(astro@5.18.2(@types/node@24.13.3)(rollup@4.62.4)(supports-color@7.2.0)(typescript@5.9.3)(yaml@2.9.0))(supports-color@7.2.0)
+      '@simurgh-ui/angular':
+        specifier: workspace:*
+        version: link:../../packages/angular
+      '@simurgh-ui/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@simurgh-ui/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@simurgh-ui/registry':
+        specifier: workspace:*
+        version: link:../../packages/registry
       '@simurgh-ui/styles':
         specifier: workspace:*
         version: link:../../packages/styles
+      '@simurgh-ui/vue':
+        specifier: workspace:*
+        version: link:../../packages/vue
       astro:
         specifier: ^5.13.7
         version: 5.18.2(@types/node@24.13.3)(rollup@4.62.4)(supports-color@7.2.0)(typescript@5.9.3)(yaml@2.9.0)
