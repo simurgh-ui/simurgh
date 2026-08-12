@@ -173,3 +173,7 @@ Items are checked only after their implementation exists and the relevant verifi
   - [x] Measure the Angular `overlays` entry in the production fixture.
 - [x] Treat Floating UI as an explicit feature cost in bundle reports: approximately 12.8 KiB gzip for React and 6.2 KiB for Vue and Angular.
 - [x] Preserve component subpaths and the non-floating `basic` entry so consumers can avoid Floating UI when overlays are unused.
+
+## Catalog expansion fifth pass
+
+- [x] Add native Disclosure across Angular, React, Vue, the registry, documentation, and contract tests.

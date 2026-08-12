@@ -60,6 +60,7 @@ export * from './components/form.js';
 export * from './components/table.js';
 export * from './components/pagination.js';
 export * from './components/collapsible.js';
+export * from './components/disclosure.js';
 export * from './components/switch.js';
 export * from './components/radio-group.js';
 export * from './components/toast.js';

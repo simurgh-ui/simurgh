@@ -79,6 +79,9 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
+  Disclosure,
+  DisclosureContent,
+  DisclosureSummary,
   Combobox,
   Command,
   Calendar,
@@ -1280,5 +1283,21 @@ describe('React accessibility contract', () => {
     expect(screen.getByText('Hidden details').hasAttribute('hidden')).toBe(
       false,
     );
+  });
+  it('uses native disclosure semantics and reports open changes', () => {
+    const changed = vi.fn();
+    render(
+      <Disclosure onOpenChange={changed}>
+        <DisclosureSummary>What is Simurgh?</DisclosureSummary>
+        <DisclosureContent>A framework-neutral UI toolkit.</DisclosureContent>
+      </Disclosure>,
+    );
+    const summary = screen.getByText('What is Simurgh?');
+    const details = summary.closest('details') as HTMLDetailsElement;
+    expect(details.open).toBe(false);
+    details.open = true;
+    fireEvent(details, new Event('toggle', { bubbles: true }));
+    expect(details.open).toBe(true);
+    expect(changed).toHaveBeenLastCalledWith(true);
   });
 });

@@ -1,0 +1,48 @@
+---
+title: Disclosure
+description: Native details and summary semantics for expandable content.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+
+Disclosure builds on native `<details>` and `<summary>`, preserving browser keyboard interaction, find-in-page behavior, and no-JavaScript fallback while exposing framework-native state events.
+
+<ComponentPreview title="Disclosure">
+  <details data-slot="disclosure">
+    <summary data-slot="disclosure-summary">Why use native disclosure?</summary>
+    <div data-slot="disclosure-content">
+      It remains interactive before hydration and follows the browser's
+      accessibility model.
+    </div>
+  </details>
+</ComponentPreview>
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Disclosure onOpenChange={setOpen}>
+  <DisclosureSummary>What is Simurgh?</DisclosureSummary>
+  <DisclosureContent>A framework-neutral UI toolkit.</DisclosureContent>
+</Disclosure>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Disclosure v-model="open">
+  <DisclosureSummary>What is Simurgh?</DisclosureSummary>
+  <DisclosureContent>A framework-neutral UI toolkit.</DisclosureContent>
+</Disclosure>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-disclosure [(open)]="open">
+  <summary simurghDisclosureSummary>What is Simurgh?</summary>
+  <div simurghDisclosureContent>A framework-neutral UI toolkit.</div>
+</simurgh-disclosure>
+```
+</TabItem>
+</Tabs>
+
+Use Disclosure for independent expandable information. Use Accordion when several related sections need coordinated open state.

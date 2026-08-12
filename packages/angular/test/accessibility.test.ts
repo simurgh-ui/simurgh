@@ -77,6 +77,9 @@ import {
   PaginationItemDirective,
   PaginationLinkDirective,
   CollapsibleComponent,
+  DisclosureComponent,
+  DisclosureContentDirective,
+  DisclosureSummaryDirective,
   ComboboxComponent,
   CommandComponent,
   CalendarComponent,
@@ -394,6 +397,24 @@ class PaginationHost {}
   >`,
 })
 class CollapsibleHost {}
+
+@Component({
+  standalone: true,
+  imports: [
+    DisclosureComponent,
+    DisclosureContentDirective,
+    DisclosureSummaryDirective,
+  ],
+  template: `<simurgh-disclosure [(open)]="open"
+    ><summary simurghDisclosureSummary>What is Simurgh?</summary>
+    <div simurghDisclosureContent>
+      A framework-neutral UI toolkit.
+    </div></simurgh-disclosure
+  >`,
+})
+class DisclosureHost {
+  open = false;
+}
 
 @Component({
   standalone: true,
@@ -2084,6 +2105,20 @@ describe('Angular accessibility contract', () => {
       (fixture.nativeElement.querySelector('[data-state]') as HTMLElement)
         .hidden,
     ).toBe(false);
+    fixture.destroy();
+  });
+  it('uses native disclosure semantics and updates bound state', () => {
+    const fixture = TestBed.createComponent(DisclosureHost);
+    fixture.detectChanges();
+    const details = fixture.nativeElement.querySelector(
+      'details',
+    ) as HTMLDetailsElement;
+    expect(details.open).toBe(false);
+    details.open = true;
+    details.dispatchEvent(new Event('toggle', { bubbles: true }));
+    fixture.detectChanges();
+    expect(details.open).toBe(true);
+    expect(fixture.componentInstance.open).toBe(true);
     fixture.destroy();
   });
 });
