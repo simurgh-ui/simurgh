@@ -274,7 +274,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 - [x] Generate or validate API tables from source declarations so undocumented public APIs and stale
       defaults fail CI across all three adapters.
-- [ ] Compile every React, Vue, and Angular documentation example in CI rather than treating fenced
+- [x] Compile every React, Vue, and Angular documentation example in CI rather than treating fenced
       code blocks as unverified text.
 - [x] Add link checking, heading/anchor checking, spelling, and package-export validation to the docs
       build.
