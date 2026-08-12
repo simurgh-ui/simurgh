@@ -265,7 +265,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       resolve `simurgh diff` conflicts safely.
 - [x] Add troubleshooting for missing styles, overlay clipping/z-index, portals, hydration mismatch,
       form submission, focus restoration, Tailwind conflicts, and RTL layout issues.
-- [ ] Add links between each component page and its relevant accessibility pattern, theming hooks,
+- [x] Add links between each component page and its relevant accessibility pattern, theming hooks,
       related components, and registry source.
 - [x] Add visible pre-release/versioning guidance, stability expectations, changelog links, and the
       policy for breaking API or copied-source updates.

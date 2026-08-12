@@ -281,6 +281,7 @@ children
 choice
 choices
 choose
+chooser
 choosing
 chosen
 chrome
@@ -766,6 +767,7 @@ full-height
 full-screen
 fully
 functions
+further
 future
 gaps
 gate
@@ -1028,6 +1030,7 @@ management
 manager
 managers
 manages
+manifest
 manually
 mapping
 mappings
@@ -1789,6 +1792,7 @@ their
 them
 theme
 themes
+theming
 then
 there
 therefore
