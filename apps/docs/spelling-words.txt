@@ -131,6 +131,8 @@ astrojs
 async
 asynchronous
 at
+attach
+attached
 attar
 attention
 attribute
@@ -443,6 +445,7 @@ core
 corner
 correct
 correctly
+corresponding
 cost
 counts
 cover
@@ -526,6 +529,7 @@ detect
 detection
 detects
 determinate
+determined
 deterministic
 development
 development-only
@@ -1040,6 +1044,7 @@ lose
 lovelace
 lower
 macos
+main
 maintain
 maintained
 maintainer
@@ -1153,6 +1158,7 @@ need
 needed
 needs
 negative
+nest
 nested
 nesting
 network
@@ -1723,10 +1729,12 @@ start
 starts
 state
 state-consistency
+state-consuming
 stated
 states
 static
 status
+stay
 stays
 step
 steps
@@ -1738,6 +1746,7 @@ stored
 string
 strong
 stronger
+structural
 structure
 structured
 structures

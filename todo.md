@@ -208,7 +208,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       value, and host/native attribute behavior from the exported TypeScript API.
 - [x] State framework parity and intentional API differences beside each component API instead of
       making users compare three source packages.
-- [ ] Document required parent/child composition and which parts are optional for compound
+- [x] Document required parent/child composition and which parts are optional for compound
       components such as Dialog, Select, Tabs, Accordion, Menu, Form, and Date Picker.
 - [x] Add a tested quick start for a fresh React, Vue, and Angular application, covering both CLI
       source-copy installation and package consumption.

@@ -229,6 +229,24 @@ Content projection: none.
 | `select(): void` |
 {/* angular-api:end */}
 
+{/* component-composition:start */}
+### Composition contract
+
+Follow the framework example as a structural contract. Root components own shared state; parts that
+consume that state must stay under the root (or be attached to projected descendants in Angular).
+Parts described as conditional are optional until their corresponding interaction or semantic region
+is used. Do not render a state-consuming part by itself.
+
+| Framework | Required parent/child relationship | Conditional parts | Supporting types |
+| --- | --- | --- | --- |
+| React | Render `RadioGroup` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `RadioGroupItem` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Vue | Render `RadioGroup` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `RadioGroupItem` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Angular | Create `RadioGroupComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `RadioGroupItemDirective` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+
+Accessible names, descriptions, and form labels remain required whenever the component's purpose
+cannot otherwise be determined, even when the corresponding visual part is optional.
+{/* component-composition:end */}
+
 {/* framework-parity:start */}
 ### Framework parity and differences
 
