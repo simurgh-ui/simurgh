@@ -13,7 +13,9 @@ export default defineConfig({
   reporter: process.env.CI ? 'github' : 'list',
   use: { baseURL: 'http://127.0.0.1:4321', trace: 'on-first-retry' },
   webServer: {
-    command: 'pnpm --dir apps/docs preview --host 127.0.0.1 --port 4321',
+    command:
+      'node apps/docs/node_modules/astro/astro.js preview --root apps/docs --host 127.0.0.1 --port 4321',
+    env: { ASTRO_TELEMETRY_DISABLED: '1' },
     url: 'http://127.0.0.1:4321',
     reuseExistingServer: !process.env.CI,
   },

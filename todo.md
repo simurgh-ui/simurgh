@@ -280,7 +280,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       build.
   - [x] Validate internal links, heading anchors, public downloads, and documented package exports.
   - [x] Add offline spelling validation with a project terminology dictionary.
-- [ ] Add browser tests for framework tabs, copy buttons, component previews, mobile navigation,
+- [x] Add browser tests for framework tabs, copy buttons, component previews, mobile navigation,
       dark mode, RTL, and keyboard-only reading flows.
 - [x] Give every page a last-verified version/source marker and require documentation changes for
       public API changes in the pull-request checklist.
