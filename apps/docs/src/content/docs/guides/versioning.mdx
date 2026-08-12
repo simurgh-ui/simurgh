@@ -1,0 +1,79 @@
+---
+title: Versioning and stability
+description: Understand Simurgh pre-release versions, breaking changes, release notes, and copied-source updates.
+---
+
+Simurgh is currently pre-release. Most packages are at `0.1.0`; the CLI may have a different patch
+version because packages are released independently. Pin exact versions for production use and
+review release notes and application diffs before every update.
+
+## Package versions
+
+Simurgh uses Changesets to record package releases. A change can update only the affected package,
+so `@simurgh-ui/react`, `@simurgh-ui/styles`, and `@simurgh-ui/cli` are not guaranteed to share the
+same version number.
+
+During the `0.x` pre-release period:
+
+- A patch or minor release may contain a breaking public API, rendered DOM, styling-hook, or
+  interaction change.
+- Release notes must identify breaking changes and the affected adapters or registry components.
+- Consumers should update the framework adapter and `@simurgh-ui/styles` together when a release
+  changes both behavior and recipes.
+- Peer-dependency ranges describe install compatibility, not a guarantee that every version in the
+  range has identical runtime behavior.
+
+The [CLI changelog](https://github.com/simurgh-ui/simurgh/blob/main/packages/cli/CHANGELOG.md) records
+published CLI changes. Changesets and package changelogs in the
+[repository](https://github.com/simurgh-ui/simurgh) are the release source of truth until a unified
+release page is available.
+
+## What counts as breaking
+
+A change is breaking when an existing consumer may need to change application code, styling, tests,
+or usage to preserve behavior. This includes:
+
+- Removing or renaming a prop, callback, input, output, event, slot, exported symbol, or package
+  subpath.
+- Changing a default, controlled/uncontrolled contract, submitted value, emitted payload, or public
+  method.
+- Changing required compound-component anatomy, rendered semantics, focus order, keyboard behavior,
+  accessible naming, or dismissal behavior.
+- Removing a documented recipe class, CSS variable, `data-*` hook, stable DOM part, or theme token.
+- Changing CLI target paths, generated filenames, configuration shape, or overwrite behavior.
+
+Bug fixes that restore an already documented accessibility contract may alter observable behavior.
+Release notes should still call out that change even when it is not classified as a breaking API.
+
+## Package-consumer policy
+
+Package consumers adopt changes when they update their lockfile. Breaking release notes must include
+the old contract, new contract, affected packages, and a migration example. Consumers should be
+able to remain on the previous exact version while migrating; releases must not modify application
+source automatically.
+
+Validate upgrades with type checking, unit and browser tests, keyboard flows, form submission, RTL,
+dark mode, and application theme overrides. See [Updates and migrations](/guides/updates-and-migrations/)
+for the complete workflow.
+
+## Copied-source policy
+
+CLI-copied components belong to the consuming application. Installing a newer CLI or registry does
+not update those files. Registry changes become application changes only when the consumer reviews
+and adopts them.
+
+`simurgh diff` reports whether a local file matches the selected registry; it is not a semantic
+migration or merge. `simurgh add <component> --overwrite` replaces the local file and therefore may
+remove application customization. Simurgh will preserve existing files by default and requires the
+explicit overwrite flag for replacement.
+
+When registry behavior changes, release notes must name the affected component and describe any
+accessibility, API, style-hook, dependency, or configuration migration. Consumers may intentionally
+remain different from the registry after reviewing and porting only relevant fixes.
+
+## Stabilization target
+
+Before a stable `1.0.0`, the project should publish complete API and styling contracts, verify its
+compatibility matrix in CI, and document a deprecation window. Until then, do not assume an
+undocumented rendered element, class name, or internal helper is stable. Documented public APIs and
+release notes are the only intended integration contracts.
