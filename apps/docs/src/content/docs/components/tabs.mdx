@@ -120,6 +120,53 @@ Import these public symbols from the component subpath shown in Installation. Fr
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
 tables on this page; use the linked source only to verify the current implementation.
 
+{/* react-api:start */}
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `Tabs`
+
+Complete props type: `PropsWithChildren<{ value?: string; defaultValue?: string; onValueChange?: (value: string) => void; orientation?: Orientation; direction?: Direction; }>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `defaultValue` | `string` | `undefined` |
+| `direction` | `Direction` | `undefined` |
+| `onValueChange` | `(value: string) => void` | `undefined` |
+| `orientation` | `Orientation` | `undefined` |
+| `value` | `string` | `undefined` |
+
+### `TabsList`
+
+Inherited attributes: `HTMLAttributes<HTMLDivElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `TabsTrigger`
+
+Inherited attributes: `ButtonHTMLAttributes<HTMLButtonElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `value` | `string \| (readonly string[] & string)` | Required |
+
+### `TabsContent`
+
+Inherited attributes: `HTMLAttributes<HTMLDivElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `value` | `string` | Required |
+{/* react-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

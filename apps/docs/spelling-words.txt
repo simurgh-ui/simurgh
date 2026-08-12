@@ -501,6 +501,7 @@ derive
 deriving
 descendants
 describe
+described
 describes
 describing
 description
@@ -801,6 +802,7 @@ guides
 hafez
 handle
 handler
+handlers
 handles
 handling
 happen
@@ -883,6 +885,7 @@ informed
 inherit
 inheritance
 inherited
+inherited-attributes
 inherits
 initial
 initial-focus

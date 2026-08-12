@@ -148,6 +148,35 @@ Import these public symbols from the component subpath shown in Installation. Fr
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
 tables on this page; use the linked source only to verify the current implementation.
 
+{/* react-api:start */}
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `Rating`
+
+Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `defaultValue` | `number` | `0` |
+| `disabled` | `boolean` | `undefined` |
+| `getLabel` | `(value: number, max: number) => string` | `` (item, total) => `${item} of ${total}` `` |
+| `max` | `number` | `5` |
+| `name` | `string` | `undefined` |
+| `onValueChange` | `(value: number) => void` | `undefined` |
+| `ref` | `Ref<HTMLDivElement> \| undefined` | `undefined` |
+| `required` | `boolean` | `undefined` |
+| `value` | `number` | `undefined` |
+
+### `RatingProps`
+
+Exported type: `Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" \| "onChange"> & { value?: number; defaultValue?: number; max?: number; name?: string; disabled?: boolean; required?: boolean; onValueChange?: (value: number) => void; getLabel?: (value: number, max: number) => string; }`.
+{/* react-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

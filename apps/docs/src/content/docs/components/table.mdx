@@ -176,6 +176,86 @@ Import these public symbols from the component subpath shown in Installation. Fr
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
 tables on this page; use the linked source only to verify the current implementation.
 
+{/* react-api:start */}
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `Table`
+
+Inherited attributes: `TableHTMLAttributes<HTMLTableElement> & RefAttributes<HTMLTableElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableElement> \| undefined` | `undefined` |
+
+### `TableHeader`
+
+Inherited attributes: `HTMLAttributes<HTMLTableSectionElement> & RefAttributes<HTMLTableSectionElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableSectionElement> \| undefined` | `undefined` |
+
+### `TableBody`
+
+Inherited attributes: `HTMLAttributes<HTMLTableSectionElement> & RefAttributes<HTMLTableSectionElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableSectionElement> \| undefined` | `undefined` |
+
+### `TableFooter`
+
+Inherited attributes: `HTMLAttributes<HTMLTableSectionElement> & RefAttributes<HTMLTableSectionElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableSectionElement> \| undefined` | `undefined` |
+
+### `TableRow`
+
+Inherited attributes: `HTMLAttributes<HTMLTableRowElement> & RefAttributes<HTMLTableRowElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableRowElement> \| undefined` | `undefined` |
+
+### `TableHead`
+
+Inherited attributes: `ThHTMLAttributes<HTMLTableCellElement> & RefAttributes<HTMLTableCellElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableCellElement> \| undefined` | `undefined` |
+
+### `TableCell`
+
+Inherited attributes: `TdHTMLAttributes<HTMLTableCellElement> & RefAttributes<HTMLTableCellElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableCellElement> \| undefined` | `undefined` |
+
+### `TableCaption`
+
+Inherited attributes: `HTMLAttributes<HTMLTableCaptionElement> & RefAttributes<HTMLTableCaptionElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableCaptionElement> \| undefined` | `undefined` |
+{/* react-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

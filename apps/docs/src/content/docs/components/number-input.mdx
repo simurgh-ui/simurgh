@@ -131,6 +131,31 @@ Import these public symbols from the component subpath shown in Installation. Fr
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
 tables on this page; use the linked source only to verify the current implementation.
 
+{/* react-api:start */}
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `NumberInput`
+
+Inherited attributes: `InputHTMLAttributes<HTMLInputElement> & RefAttributes<HTMLInputElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `decrementLabel` | `string` | `'Decrease value'` |
+| `defaultValue` | `number` | `0` |
+| `incrementLabel` | `string` | `'Increase value'` |
+| `max` | `number` | `undefined` |
+| `min` | `number` | `undefined` |
+| `onValueChange` | `(value: number) => void` | `undefined` |
+| `ref` | `Ref<HTMLInputElement> \| undefined` | `undefined` |
+| `step` | `number` | `1` |
+| `value` | `number` | `undefined` |
+{/* react-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

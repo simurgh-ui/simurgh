@@ -101,6 +101,24 @@ Import these public symbols from the component subpath shown in Installation. Fr
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
 tables on this page; use the linked source only to verify the current implementation.
 
+{/* react-api:start */}
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `Spinner`
+
+Inherited attributes: `HTMLAttributes<HTMLSpanElement> & RefAttributes<HTMLSpanElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `label` | `string` | `'Loading'` |
+| `ref` | `Ref<HTMLSpanElement> \| undefined` | `undefined` |
+{/* react-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

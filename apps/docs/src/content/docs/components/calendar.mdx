@@ -142,6 +142,39 @@ Import these public symbols from the component subpath shown in Installation. Fr
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
 tables on this page; use the linked source only to verify the current implementation.
 
+{/* react-api:start */}
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `Calendar`
+
+Complete props type: `CalendarProps`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `defaultMonth` | `string` | `undefined` |
+| `defaultValue` | `string` | `undefined` |
+| `direction` | `Direction` | `undefined` |
+| `disabledDates` | `string[]` | `undefined` |
+| `firstDayOfWeek` | `number` | `undefined` |
+| `label` | `string` | `undefined` |
+| `locale` | `string` | `undefined` |
+| `max` | `string` | `undefined` |
+| `min` | `string` | `undefined` |
+| `month` | `string` | `undefined` |
+| `name` | `string` | `undefined` |
+| `onMonthChange` | `(month: string) => void` | `undefined` |
+| `onValueChange` | `(value: string) => void` | `undefined` |
+| `value` | `string` | `undefined` |
+
+### `CalendarProps`
+
+Exported type: `{ value?: string; defaultValue?: string; month?: string; defaultMonth?: string; locale?: string; direction?: Direction; firstDayOfWeek?: number; min?: string; max?: string; disabledDates?: string[]; name?: string; label?: string; onValueChange?: (value: string) => void; onMonthChange?: (month: string) => void; }`.
+{/* react-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

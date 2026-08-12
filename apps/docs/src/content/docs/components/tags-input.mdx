@@ -120,6 +120,38 @@ Import these public symbols from the component subpath shown in Installation. Fr
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
 tables on this page; use the linked source only to verify the current implementation.
 
+{/* react-api:start */}
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `TagsInput`
+
+Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLInputElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `defaultValue` | `string[]` | `[]` |
+| `disabled` | `boolean` | `undefined` |
+| `getRemoveLabel` | `(tag: string) => string` | `` (tag) => `Remove ${tag}` `` |
+| `inputLabel` | `string` | `'Add a tag'` |
+| `maxTags` | `number` | `20` |
+| `name` | `string` | `undefined` |
+| `onValueChange` | `(value: string[]) => void` | `undefined` |
+| `placeholder` | `string` | `'Add a tag'` |
+| `readOnly` | `boolean` | `undefined` |
+| `ref` | `Ref<HTMLInputElement> \| undefined` | `undefined` |
+| `required` | `boolean` | `undefined` |
+| `value` | `string[]` | `undefined` |
+
+### `TagsInputProps`
+
+Exported type: `Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" \| "onChange"> & { value?: string[]; defaultValue?: string[]; name?: string; disabled?: boolean; readOnly?: boolean; required?: boolean; maxTags?: number; placeholder?: string; inputLabel?: string; getRemoveLabel?: (tag: string) => string; onValueChange?: (value: string[]) => void; }`.
+{/* react-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

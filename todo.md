@@ -200,7 +200,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       basic usage, API, state model, customization, accessibility, examples, and related components.
 - [x] Add copy-pasteable package imports and component CSS imports to every component page for
       React, Vue, and Angular; do not show unimported component snippets.
-- [ ] Document every public React prop, callback, ref, default value, inherited native attribute,
+- [x] Document every public React prop, callback, ref, default value, inherited native attribute,
       and controlled/uncontrolled pair from the exported TypeScript API.
 - [ ] Document every public Vue prop, emitted event, slot, exposed method, default value, and
       inherited attribute from the exported TypeScript API.

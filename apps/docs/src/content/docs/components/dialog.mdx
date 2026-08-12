@@ -126,6 +126,85 @@ Import these public symbols from the component subpath shown in Installation. Fr
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
 tables on this page; use the linked source only to verify the current implementation.
 
+{/* react-api:start */}
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `Dialog`
+
+Complete props type: `PropsWithChildren<OpenProps>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `defaultOpen` | `boolean` | `undefined` |
+| `onOpenChange` | `(open: boolean) => void` | `undefined` |
+| `open` | `boolean` | `undefined` |
+
+### `DialogTrigger`
+
+Inherited attributes: `ButtonHTMLAttributes<HTMLButtonElement> & RefAttributes<HTMLButtonElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLButtonElement> \| undefined` | `undefined` |
+
+### `DialogPortal`
+
+Complete props type: `{ children?: ReactNode; }`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `DialogOverlay`
+
+Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLDivElement> \| undefined` | `undefined` |
+
+### `DialogContent`
+
+Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLDivElement> \| undefined` | `undefined` |
+
+### `DialogTitle`
+
+Inherited attributes: `HTMLAttributes<HTMLHeadingElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `DialogDescription`
+
+Inherited attributes: `HTMLAttributes<HTMLParagraphElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `DialogClose`
+
+Inherited attributes: `ButtonHTMLAttributes<HTMLButtonElement> & RefAttributes<HTMLButtonElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLButtonElement> \| undefined` | `undefined` |
+{/* react-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
