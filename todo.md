@@ -242,7 +242,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       default value, dark-mode value, and contrast expectations.
 - [ ] Document the styling contract for every component: recipe class names, `data-*` state hooks,
       ARIA/state selectors, CSS custom properties, and stable DOM parts that consumers may target.
-- [ ] Show three customization levels: semantic token overrides, recipe/class overrides, and fully
+- [x] Show three customization levels: semantic token overrides, recipe/class overrides, and fully
       headless styling without recipe CSS.
 - [ ] Add per-framework class/style forwarding examples and clarify which element receives
       forwarded attributes for wrapper components.

@@ -51,6 +51,92 @@ test `foreground` on `background` and `surface`, `muted-foreground` on its suppo
 both sides of the boundary. Test light, dark, forced-colors, disabled, hover, focus, and selected
 states rather than checking isolated swatches.
 
+## Three customization levels
+
+Choose the least invasive level that meets the design requirement. The levels can be combined, but
+each one transfers more styling responsibility to the application.
+
+### 1. Override semantic tokens
+
+Use tokens for brand colors, corner shape, elevation, and motion while retaining the shipped
+component recipes:
+
+```css
+@import '@simurgh-ui/styles/dialog.css';
+
+:root {
+  --simurgh-primary: 265 72% 44%;
+  --simurgh-ring: 265 82% 55%;
+  --simurgh-radius: 1rem;
+}
+```
+
+This is the preferred application-wide customization level. Behavior, DOM, recipe selectors, and
+state presentation remain owned by Simurgh.
+
+### 2. Override recipe classes and state hooks
+
+Load the component recipe, then add application rules after it. Dialog recipes expose classes such
+as `.simurgh-overlay`, `.simurgh-content`, and `.simurgh-dialog`; interactive components also expose
+documented ARIA and `data-*` state attributes.
+
+```css
+@import '@simurgh-ui/styles/dialog.css';
+
+.simurgh-dialog {
+  border-block-start: 0.25rem solid hsl(var(--simurgh-accent));
+  padding: 1.5rem;
+}
+
+.simurgh-overlay[data-state='open'] {
+  backdrop-filter: blur(0.25rem);
+}
+```
+
+Only target classes, attributes, and DOM parts documented on the component page. Internal element
+order and undocumented selectors are not a stable styling contract during the pre-release period.
+
+### 3. Provide fully headless styling
+
+Omit the component recipe when the application will provide every visual state. Keep tokens only if
+the application still wants the shared semantic system:
+
+```tsx
+import {
+  Dialog,
+  DialogContent,
+  DialogOverlay,
+  DialogPortal,
+  DialogTrigger,
+} from '@simurgh-ui/react/dialog';
+import '@simurgh-ui/styles/tokens.css';
+import './account-dialog.css';
+
+export function AccountDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger className="account-dialog-trigger">
+        Edit account
+      </DialogTrigger>
+      <DialogPortal>
+        <DialogOverlay className="account-dialog-overlay" />
+        <DialogContent
+          className="account-dialog-content"
+          aria-label="Edit account"
+        >
+          Account fields
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
+  );
+}
+```
+
+Headless styling removes only the optional visual recipe; component behavior and accessibility
+logic still run. The application must style default, hover, focus-visible, active, open/closed,
+disabled, invalid, loading, reduced-motion, forced-colors, dark, and RTL states that apply. CLI
+consumers may also edit the copied markup and classes because that source is application-owned.
+
 ## Override semantic roles
 
 Declare application overrides after importing Simurgh styles:
