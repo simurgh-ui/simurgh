@@ -8,6 +8,15 @@ const assetsRoot = resolve(packageRoot, 'assets');
 
 mkdirSync(resolve(assetsRoot, 'styles'), { recursive: true });
 
+for (const framework of ['vue', 'angular']) {
+  const frameworkAssets = resolve(assetsRoot, framework);
+  mkdirSync(frameworkAssets, { recursive: true });
+  copyFileSync(
+    resolve(workspaceRoot, `packages/${framework}/src/components/button.ts`),
+    resolve(frameworkAssets, 'button.ts'),
+  );
+}
+
 for (const [source, target] of [
   ['packages/react/src/index.tsx', 'react.tsx'],
   ['packages/vue/src/index.ts', 'vue.ts'],

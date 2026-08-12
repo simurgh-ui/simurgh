@@ -74,6 +74,11 @@ export {
   CollapsibleContent,
   CollapsibleTrigger,
 } from './components/collapsible.js';
+export {
+  Disclosure,
+  DisclosureContent,
+  DisclosureSummary,
+} from './components/disclosure.js';
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './components/tabs.js';
 
 export { Checkbox } from './components/checkbox.js';

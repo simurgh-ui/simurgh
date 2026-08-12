@@ -210,7 +210,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       making users compare three source packages.
 - [ ] Document required parent/child composition and which parts are optional for compound
       components such as Dialog, Select, Tabs, Accordion, Menu, Form, and Date Picker.
-- [ ] Add a tested quick start for a fresh React, Vue, and Angular application, covering both CLI
+- [x] Add a tested quick start for a fresh React, Vue, and Angular application, covering both CLI
       source-copy installation and package consumption.
 - [x] Explain the actual distribution model clearly: when users own copied source, when they import
       `@simurgh-ui/*`, which dependencies are installed, and how registry updates/diffs work.

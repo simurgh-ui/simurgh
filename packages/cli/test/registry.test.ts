@@ -58,6 +58,57 @@ describe('registry', () => {
 });
 
 describe('CLI application fixture', () => {
+  it.each([
+    ['react', 'react', 'src/components/ui/button.tsx', 'export const Button'],
+    ['vue', 'vue', 'src/components/ui/button.ts', 'export const Button'],
+    [
+      'angular',
+      '@angular/core',
+      'src/app/components/ui/button.ts',
+      'export class ButtonComponent',
+    ],
+  ] as const)(
+    'initializes a fresh %s source-copy quick start',
+    (framework, dependency, componentPath, expectedExport) => {
+      const fixture = mkdtempSync(join(tmpdir(), `simurgh-${framework}-`));
+      const cli = fileURLToPath(new URL('../dist/index.js', import.meta.url));
+      try {
+        writeFileSync(
+          join(fixture, 'package.json'),
+          JSON.stringify({
+            name: `${framework}-quick-start`,
+            private: true,
+            dependencies: { [dependency]: '*' },
+          }),
+        );
+        execFileSync(
+          process.execPath,
+          [cli, 'init', '--framework', framework, '--skip-install'],
+          { cwd: fixture },
+        );
+        execFileSync(process.execPath, [cli, 'add', 'button'], {
+          cwd: fixture,
+        });
+
+        const config = JSON.parse(
+          readFileSync(join(fixture, 'simurgh.json'), 'utf8'),
+        ) as { framework: string };
+        expect(config.framework).toBe(framework);
+        expect(readFileSync(join(fixture, componentPath), 'utf8')).toContain(
+          expectedExport,
+        );
+        expect(existsSync(join(fixture, 'src/styles/simurgh/tokens.css'))).toBe(
+          true,
+        );
+        expect(
+          existsSync(join(fixture, 'src/styles/simurgh/recipes.css')),
+        ).toBe(true);
+      } finally {
+        rmSync(fixture, { recursive: true, force: true });
+      }
+    },
+  );
+
   it('initializes, adds idempotently, and detects local changes', () => {
     const fixture = mkdtempSync(join(tmpdir(), 'simurgh-cli-'));
     const cli = fileURLToPath(new URL('../dist/index.js', import.meta.url));

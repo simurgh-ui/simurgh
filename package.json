@@ -14,7 +14,8 @@
     "bundle:react-splitting": "node scripts/analyze-react-code-splitting.mjs",
     "format": "prettier --write .",
     "test:contracts": "vitest run packages/react/test packages/vue/test packages/angular/test packages/cli/test",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:quick-starts": "node scripts/check-package-quick-starts.mjs"
   },
   "devDependencies": {
     "@angular/compiler-cli": "20.3.2",
