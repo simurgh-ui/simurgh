@@ -79,6 +79,12 @@ export {
   DisclosureContent,
   DisclosureSummary,
 } from './components/disclosure.js';
+export {
+  DescriptionList,
+  DescriptionListDetails,
+  DescriptionListGroup,
+  DescriptionListTerm,
+} from './components/description-list.js';
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './components/tabs.js';
 
 export { Checkbox } from './components/checkbox.js';

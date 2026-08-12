@@ -760,6 +760,25 @@
   padding-block: 0.75rem;
   padding-inline: 1rem;
 }
+[data-slot='description-list'] {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+[data-slot='description-list-group'] {
+  border-block-end: 1px solid hsl(var(--simurgh-border));
+  display: grid;
+  gap: 0.25rem;
+  padding-block: 0.75rem;
+}
+[data-slot='description-list-term'] {
+  color: hsl(var(--simurgh-muted-foreground));
+  font-weight: 600;
+}
+[data-slot='description-list-details'] {
+  color: hsl(var(--simurgh-foreground));
+  margin: 0;
+}
 [data-slot='menubar'] {
   align-items: center;
   background: hsl(var(--simurgh-surface));

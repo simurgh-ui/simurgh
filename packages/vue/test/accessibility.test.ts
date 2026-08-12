@@ -76,6 +76,10 @@ import {
   Disclosure,
   DisclosureContent,
   DisclosureSummary,
+  DescriptionList,
+  DescriptionListDetails,
+  DescriptionListGroup,
+  DescriptionListTerm,
   Combobox,
   Command,
   Calendar,
@@ -376,6 +380,22 @@ describe('Vue accessibility contract', () => {
     expect(details.open).toBe(true);
     expect(changed).toHaveBeenLastCalledWith(true);
     view.unmount();
+  });
+  it('composes native description list semantics', () => {
+    const view = render({
+      components: {
+        DescriptionList,
+        DescriptionListDetails,
+        DescriptionListGroup,
+        DescriptionListTerm,
+      },
+      template: `<DescriptionList><DescriptionListGroup><DescriptionListTerm>Frameworks</DescriptionListTerm><DescriptionListDetails>Angular, React, and Vue</DescriptionListDetails></DescriptionListGroup></DescriptionList>`,
+    });
+    expect(view.container.querySelector('dl')).toBeTruthy();
+    expect(view.container.querySelector('dt')?.textContent).toBe('Frameworks');
+    expect(view.container.querySelector('dd')?.textContent).toBe(
+      'Angular, React, and Vue',
+    );
   });
   it('opens a modal and passes an axe audit', async () => {
     render({

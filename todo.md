@@ -186,6 +186,7 @@ Items are checked only after their implementation exists and the relevant verifi
 ## Catalog expansion fifth pass
 
 - [x] Add native Disclosure across Angular, React, Vue, the registry, documentation, and contract tests.
+- [x] Add semantic Description List across Angular, React, Vue, the registry, documentation, and contract tests.
 
 ## Documentation completion: first-time user audit
 

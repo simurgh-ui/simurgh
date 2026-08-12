@@ -66,6 +66,7 @@
     "pagination",
     "collapsible",
     "disclosure",
+    "description-list",
     "switch",
     "radio-group",
     "toast"
@@ -263,6 +264,12 @@
         "CollapsibleContent"
       ],
       "disclosure": ["Disclosure", "DisclosureSummary", "DisclosureContent"],
+      "description-list": [
+        "DescriptionList",
+        "DescriptionListGroup",
+        "DescriptionListTerm",
+        "DescriptionListDetails"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -440,6 +447,12 @@
         "CollapsibleContent"
       ],
       "disclosure": ["Disclosure", "DisclosureSummary", "DisclosureContent"],
+      "description-list": [
+        "DescriptionList",
+        "DescriptionListGroup",
+        "DescriptionListTerm",
+        "DescriptionListDetails"
+      ],
       "switch": ["Switch"],
       "radio-group": ["RadioGroup", "RadioGroupItem"],
       "toast": ["ToastProvider", "useToast", "ToastViewport", "ToastMessage"]
@@ -588,6 +601,12 @@
         "DisclosureComponent",
         "DisclosureSummaryDirective",
         "DisclosureContentDirective"
+      ],
+      "description-list": [
+        "DescriptionListDirective",
+        "DescriptionListGroupDirective",
+        "DescriptionListTermDirective",
+        "DescriptionListDetailsDirective"
       ],
       "switch": ["SwitchComponent"],
       "radio-group": ["RadioGroupComponent", "RadioGroupItemDirective"],

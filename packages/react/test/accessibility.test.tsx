@@ -82,6 +82,10 @@ import {
   Disclosure,
   DisclosureContent,
   DisclosureSummary,
+  DescriptionList,
+  DescriptionListDetails,
+  DescriptionListGroup,
+  DescriptionListTerm,
   Combobox,
   Command,
   Calendar,
@@ -1299,5 +1303,22 @@ describe('React accessibility contract', () => {
     fireEvent(details, new Event('toggle', { bubbles: true }));
     expect(details.open).toBe(true);
     expect(changed).toHaveBeenLastCalledWith(true);
+  });
+  it('composes native description list semantics', () => {
+    const { container } = render(
+      <DescriptionList>
+        <DescriptionListGroup>
+          <DescriptionListTerm>Frameworks</DescriptionListTerm>
+          <DescriptionListDetails>
+            Angular, React, and Vue
+          </DescriptionListDetails>
+        </DescriptionListGroup>
+      </DescriptionList>,
+    );
+    expect(container.querySelector('dl')).toBeTruthy();
+    expect(container.querySelector('dt')?.textContent).toBe('Frameworks');
+    expect(container.querySelector('dd')?.textContent).toBe(
+      'Angular, React, and Vue',
+    );
   });
 });

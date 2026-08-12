@@ -80,6 +80,10 @@ import {
   DisclosureComponent,
   DisclosureContentDirective,
   DisclosureSummaryDirective,
+  DescriptionListDetailsDirective,
+  DescriptionListDirective,
+  DescriptionListGroupDirective,
+  DescriptionListTermDirective,
   ComboboxComponent,
   CommandComponent,
   CalendarComponent,
@@ -415,6 +419,23 @@ class CollapsibleHost {}
 class DisclosureHost {
   open = false;
 }
+
+@Component({
+  standalone: true,
+  imports: [
+    DescriptionListDetailsDirective,
+    DescriptionListDirective,
+    DescriptionListGroupDirective,
+    DescriptionListTermDirective,
+  ],
+  template: `<dl simurghDescriptionList>
+    <div simurghDescriptionListGroup>
+      <dt simurghDescriptionListTerm>Frameworks</dt>
+      <dd simurghDescriptionListDetails>Angular, React, and Vue</dd>
+    </div>
+  </dl>`,
+})
+class DescriptionListHost {}
 
 @Component({
   standalone: true,
@@ -2119,6 +2140,18 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     expect(details.open).toBe(true);
     expect(fixture.componentInstance.open).toBe(true);
+    fixture.destroy();
+  });
+  it('composes native description list semantics', () => {
+    const fixture = TestBed.createComponent(DescriptionListHost);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('dl')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('dt')?.textContent).toBe(
+      'Frameworks',
+    );
+    expect(fixture.nativeElement.querySelector('dd')?.textContent).toBe(
+      'Angular, React, and Vue',
+    );
     fixture.destroy();
   });
 });
