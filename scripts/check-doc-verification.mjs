@@ -10,10 +10,16 @@ const registry = JSON.parse(
 const verification = JSON.parse(
   await readFile(resolve(root, 'apps/docs/verification.json'), 'utf8'),
 );
-const start = '<!-- doc-verification:start -->';
-const end = '<!-- doc-verification:end -->';
+const start = '{/* doc-verification:start */}';
+const end = '{/* doc-verification:end */}';
+const legacyStart = '<!-- doc-verification:start -->';
+const legacyEnd = '<!-- doc-verification:end -->';
 const source =
   'https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json';
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+}
 
 if (verification.registryVersion !== registry.version) {
   throw new Error(
@@ -42,7 +48,10 @@ const failures = [];
 const files = await walk(docsRoot);
 for (const path of files) {
   const contents = await readFile(path, 'utf8');
-  const markerPattern = new RegExp(`${start}[\\s\\S]*?${end}\\s*`, 'u');
+  const markerPattern = new RegExp(
+    `(?:${escapeRegExp(start)}|${escapeRegExp(legacyStart)})[\\s\\S]*?(?:${escapeRegExp(end)}|${escapeRegExp(legacyEnd)})\\s*`,
+    'u',
+  );
   const withoutMarker = contents.replace(markerPattern, '').trimEnd();
   const guidanceIndex = withoutMarker.indexOf('\n## Further guidance');
   const expected =

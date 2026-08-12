@@ -6,7 +6,7 @@ description: An identity image with deterministic accessible fallback content.
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
-<!-- component-installation:start -->
+{/* component-installation:start */}
 ## Installation
 
 Copy editable source into an initialized application:
@@ -40,7 +40,7 @@ import '@simurgh-ui/styles/avatar.css';
 
 Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
 written to `simurgh.json` and the copied application styles instead of these package imports.
-<!-- component-installation:end -->
+{/* component-installation:end */}
 
 Avatar displays an image after it loads successfully and otherwise renders fallback content. Initialization is SSR-safe because fallback content is the deterministic first render.
 
@@ -76,9 +76,9 @@ Avatar displays an image after it loads successfully and otherwise renders fallb
 
 Use meaningful alternative text when the image conveys identity. If adjacent visible text already names the person, pass an empty `alt` value to avoid repetition. Fallback initials should remain concise.
 
-<!-- doc-verification:start -->
+{/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
-<!-- doc-verification:end -->
+{/* doc-verification:end */}
 
 ## Further guidance
 

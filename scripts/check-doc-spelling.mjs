@@ -34,6 +34,7 @@ function prose(source) {
   return source
     .replace(/^---[\s\S]*?---/u, '')
     .replace(/```[\s\S]*?```/gu, ' ')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/gu, ' ')
     .replace(/`[^`]*`/gu, ' ')
     .replace(/<[^>]+>/gu, ' ')
     .replace(

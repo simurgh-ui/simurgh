@@ -6,7 +6,7 @@ description: Structured zero-state content with optional live-status announcemen
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
-<!-- component-installation:start -->
+{/* component-installation:start */}
 ## Installation
 
 Copy editable source into an initialized application:
@@ -61,7 +61,7 @@ import '@simurgh-ui/styles/empty.css';
 
 Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
 written to `simurgh.json` and the copied application styles instead of these package imports.
-<!-- component-installation:end -->
+{/* component-installation:end */}
 
 Empty presents a clear explanation and next action when a collection or workspace has no content. Its static form stays out of the accessibility tree's live regions; enable status only when the empty state appears after an asynchronous update.
 
@@ -135,9 +135,9 @@ Empty presents a clear explanation and next action when a collection or workspac
 
 Use a concise heading, explain why the state is empty, and provide one primary recovery or creation action. Set `status` only for content that changes dynamically; persistent page content should remain static.
 
-<!-- doc-verification:start -->
+{/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
-<!-- doc-verification:end -->
+{/* doc-verification:end */}
 
 ## Further guidance
 

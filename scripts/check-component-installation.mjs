@@ -7,9 +7,15 @@ const docsRoot = resolve(root, 'apps/docs/src/content/docs/components');
 const registry = JSON.parse(
   await readFile(resolve(root, 'packages/registry/registry.json'), 'utf8'),
 );
-const start = '<!-- component-installation:start -->';
-const end = '<!-- component-installation:end -->';
+const start = '{/* component-installation:start */}';
+const end = '{/* component-installation:end */}';
+const legacyStart = '<!-- component-installation:start -->';
+const legacyEnd = '<!-- component-installation:end -->';
 const failures = [];
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+}
 
 function formatImport(framework, component, symbols) {
   const specifier = `@simurgh-ui/${framework}/${component}`;
@@ -64,7 +70,10 @@ for (const component of registry.components) {
   );
   await Promise.all([access(path), access(stylesheet)]);
   const source = await readFile(path, 'utf8');
-  const pattern = new RegExp(`${start}[\\s\\S]*?${end}\\s*`, 'u');
+  const pattern = new RegExp(
+    `(?:${escapeRegExp(start)}|${escapeRegExp(legacyStart)})[\\s\\S]*?(?:${escapeRegExp(end)}|${escapeRegExp(legacyEnd)})\\s*`,
+    'u',
+  );
   const withoutSection = source.replace(pattern, '');
   const importMatches = [...withoutSection.matchAll(/^import .+;$/gmu)];
   const insertion = importMatches.at(-1)?.index;

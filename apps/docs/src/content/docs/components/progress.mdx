@@ -6,7 +6,7 @@ description: An accessible determinate or indeterminate progress indicator.
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
-<!-- component-installation:start -->
+{/* component-installation:start */}
 ## Installation
 
 Copy editable source into an initialized application:
@@ -40,7 +40,7 @@ import '@simurgh-ui/styles/progress.css';
 
 Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
 written to `simurgh.json` and the copied application styles instead of these package imports.
-<!-- component-installation:end -->
+{/* component-installation:end */}
 
 Progress communicates the completion state of a long-running task. Values are clamped between zero and `max`; omitting `value` creates an indeterminate indicator without `aria-valuenow`.
 
@@ -83,9 +83,9 @@ Progress communicates the completion state of a long-running task. Values are cl
 
 Provide an accessible name with a visible label, `aria-label`, or `aria-labelledby`. Use `getValueLabel` when a raw numeric value is not meaningful, such as “3 of 5 files”.
 
-<!-- doc-verification:start -->
+{/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
-<!-- doc-verification:end -->
+{/* doc-verification:end */}
 
 ## Further guidance
 
