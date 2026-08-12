@@ -181,6 +181,54 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `RadioGroupComponent`
+
+Component selector: `simurgh-radio-group`. The template's first native element is `div`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `string` | `''` |
+| `name` | `string` | `undefined` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `direction` | `Direction` | `'ltr'` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string` |
+
+Content projection: `default`.
+
+| Public method |
+| --- |
+| `select(value: string): void` |
+| `navigate(event: KeyboardEvent): void` |
+
+### `RadioGroupItemDirective`
+
+Attribute directive selector: `[simurghRadio]`; behavior applies to its host element.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `simurghRadio` | `string` | `''` |
+| `disabled` | `boolean` | `false` |
+
+No outputs.
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `select(): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

@@ -208,6 +208,54 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `ButtonGroupComponent`
+
+Component selector: `simurgh-button-group`. The template's first native element is `ng-content`. Angular host bindings: `{ role: 'group', '[attr.aria-orientation]': 'orientation', '[attr.data-slot]': "'button-group'", }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `orientation` | `Orientation` | `'horizontal'` |
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `ButtonGroupTextComponent`
+
+Component selector: `simurgh-button-group-text`. The template's first native element is `ng-content`. Angular host bindings: `{ '[attr.data-slot]': "'button-group-text'" }`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `ButtonGroupSeparatorComponent`
+
+Component selector: `simurgh-button-group-separator`. The component has no single native template root. Angular host bindings: `{ role: 'separator', '[attr.aria-orientation]': 'orientation', '[attr.data-slot]': "'button-group-separator'", }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `orientation` | `Orientation` | `'vertical'` |
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

@@ -366,6 +366,120 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `SidebarProviderComponent`
+
+Component selector: `simurgh-sidebar-provider`. The template's first native element is `ng-content`. Angular host bindings: `{ 'data-slot': 'sidebar-provider' }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `open` | `boolean` | `true` |
+
+| Output | Payload |
+| --- | --- |
+| `openChange` | `boolean` |
+
+Content projection: `default`.
+
+| Public method |
+| --- |
+| `setOpen(open: boolean): void` |
+
+### `SidebarDirective`
+
+Attribute directive selector: `aside[simurghSidebar]`; behavior applies to its host element.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `side` | `"start" \| "end"` | `'start'` |
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `SidebarTriggerDirective`
+
+Attribute directive selector: `button[simurghSidebarTrigger]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `toggle(): void` |
+
+### `SidebarHeaderDirective`
+
+Attribute directive selector: `[simurghSidebarHeader]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `SidebarContentDirective`
+
+Attribute directive selector: `[simurghSidebarContent]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `SidebarFooterDirective`
+
+Attribute directive selector: `[simurghSidebarFooter]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `SidebarGroupDirective`
+
+Attribute directive selector: `[simurghSidebarGroup]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `SidebarMenuDirective`
+
+Attribute directive selector: `ul[simurghSidebarMenu]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

@@ -149,6 +149,40 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `SliderComponent`
+
+Component selector: `simurgh-slider`. The template's first native element is `input`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `number` | `0` |
+| `min` | `number` | `0` |
+| `max` | `number` | `100` |
+| `step` | `number` | `1` |
+| `name` | `string` | `undefined` |
+| `label` | `string` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `required` | `boolean` | `false` |
+| `invalid` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `number` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `update(event: Event): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

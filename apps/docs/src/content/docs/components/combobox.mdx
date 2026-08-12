@@ -182,6 +182,49 @@ Exposed methods: none.
 Exported type: `{ value: string; label: string; disabled?: boolean; }`.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `ComboboxComponent`
+
+Component selector: `simurgh-combobox`. The template's first native element is `div`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `options` | `SelectOption[]` | `[]` |
+| `value` | `string` | `''` |
+| `name` | `string \| undefined` | `undefined` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `placeholder` | `string` | `'Search options'` |
+| `noResults` | `string` | `'No results'` |
+| `ariaLabel` | `string \| undefined` | `undefined` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `optionId(index: number): string` |
+| `show(): void` |
+| `onInput(event: Event): void` |
+| `move(step: 1 | -1): void` |
+| `onKeydown(event: KeyboardEvent): void` |
+| `chooseFromPointer(event: MouseEvent, option: SelectOption): void` |
+| `choose(option: SelectOption): void` |
+
+### `SelectOption`
+
+Exported type: `{ value: string; label: string; disabled?: boolean; }`.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

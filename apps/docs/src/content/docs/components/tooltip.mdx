@@ -203,6 +203,28 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `TooltipComponent`
+
+Component selector: `simurgh-tooltip`. The template's first native element is `span`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `[trigger]`, `default`.
+
+| Public method |
+| --- |
+| `setOpen(value: boolean): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

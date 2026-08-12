@@ -142,6 +142,36 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `TextareaComponent`
+
+Component selector: `simurgh-textarea`. The template's first native element is `textarea`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `name` | `string` | `undefined` |
+| `value` | `string` | `''` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `invalid` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `onInput(event: Event): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

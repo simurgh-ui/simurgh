@@ -204,6 +204,56 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `DisclosureComponent`
+
+Component selector: `simurgh-disclosure`. The template's first native element is `details`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `open` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `openChange` | `boolean` |
+
+Content projection: `default`.
+
+| Public method |
+| --- |
+| `onToggle(event: Event): void` |
+
+### `DisclosureSummaryDirective`
+
+Attribute directive selector: `summary[simurghDisclosureSummary]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `DisclosureContentDirective`
+
+Attribute directive selector: `[simurghDisclosureContent]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

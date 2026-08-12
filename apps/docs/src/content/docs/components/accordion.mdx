@@ -230,6 +230,46 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `AccordionComponent`
+
+Component selector: `simurgh-accordion`. The template's first native element is `ng-content`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `multiple` | `boolean` | `false` |
+
+No outputs.
+
+Content projection: `default`.
+
+| Public method |
+| --- |
+| `toggle(value: string): void` |
+
+### `AccordionItemComponent`
+
+Component selector: `simurgh-accordion-item`. The template's first native element is `h3`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `string` | `''` |
+
+No outputs.
+
+Content projection: `[trigger]`, `default`.
+
+| Public method |
+| --- |
+| `toggle(): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

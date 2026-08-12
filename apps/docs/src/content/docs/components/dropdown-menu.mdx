@@ -231,6 +231,47 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `DropdownMenuComponent`
+
+Component selector: `simurgh-dropdown-menu`. The template's first native element is `button`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `[trigger]`, `default`.
+
+| Public method |
+| --- |
+| `toggle(): void` |
+| `onKeydown(event: KeyboardEvent): void` |
+
+### `DropdownMenuItemDirective`
+
+Attribute directive selector: `[simurghMenuItem]`; behavior applies to its host element.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `disabled` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `select` | `void` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `onClick(): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

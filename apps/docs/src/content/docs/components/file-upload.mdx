@@ -175,6 +175,41 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `FileUploadComponent`
+
+Component selector: `simurgh-file-upload`. The template's first native element is `label`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `inputId` | `string` | `createId('file')` |
+| `label` | `string` | `''` |
+| `description` | `string` | `'Drop files here or browse'` |
+| `accept` | `string` | `undefined` |
+| `name` | `string` | `undefined` |
+| `multiple` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `required` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `filesChange` | `File[]` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `onChange(event: Event): void` |
+| `onDragover(event: DragEvent): void` |
+| `onDrop(event: DragEvent): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

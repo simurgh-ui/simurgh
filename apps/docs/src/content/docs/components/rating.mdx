@@ -206,6 +206,38 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `RatingComponent`
+
+Component selector: `simurgh-rating`. The template's first native element is `div`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `number` | `0` |
+| `name` | `string` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `required` | `boolean` | `false` |
+| `aria-label` | `string` | `'Rating'` |
+| `max` | `number` | `undefined` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `number` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `itemLabel(value: number): string` |
+| `select(value: number): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

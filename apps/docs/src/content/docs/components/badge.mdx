@@ -155,6 +155,33 @@ Exposed methods: none.
 Exported type: `"neutral" \| "accent" \| "success" \| "warning" \| "danger"`.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `BadgeComponent`
+
+Component selector: `simurgh-badge`. The template's first native element is `ng-content`. Angular host bindings: `{ '[attr.data-tone]': 'tone', '[attr.role]': "status ? 'status' : null", '[attr.aria-live]': "status ? 'polite' : null", }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `tone` | `BadgeTone` | `'neutral'` |
+| `status` | `boolean` | `false` |
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `BadgeTone`
+
+Exported type: `"neutral" \| "accent" \| "success" \| "warning" \| "danger"`.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

@@ -177,6 +177,7 @@ beside
 between
 bind
 binding
+bindings
 biography
 birds
 blank
@@ -237,6 +238,7 @@ bypasses
 calculate
 calendar
 call
+callable
 callback
 callbacks
 callers
@@ -540,6 +542,7 @@ direction
 direction-aware
 directional
 directionality
+directive
 directives
 directly
 disable
@@ -831,6 +834,7 @@ hook
 hooks
 horizontal
 host
+hosts
 hover
 hover-card
 hover-triggered
@@ -1375,6 +1379,7 @@ progress
 project
 project's
 projected
+projection
 projects
 promise
 promised
@@ -1793,6 +1798,7 @@ technology
 tehran
 teleport
 template
+template's
 temporary
 test
 tested

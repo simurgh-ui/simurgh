@@ -184,6 +184,44 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `TagsInputComponent`
+
+Component selector: `simurgh-tags-input`. The template's first native element is `div`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `string[]` | `undefined` |
+| `name` | `string` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `required` | `boolean` | `false` |
+| `maxTags` | `number` | `20` |
+| `placeholder` | `string` | `'Add a tag'` |
+| `inputLabel` | `string` | `'Add a tag'` |
+| `aria-label` | `string` | `'Tags'` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string[]` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `removeLabel(tag: string): string` |
+| `commit(value: string[]): void` |
+| `add(): void` |
+| `remove(index: number, event?: Event): void` |
+| `handleKeydown(event: KeyboardEvent): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

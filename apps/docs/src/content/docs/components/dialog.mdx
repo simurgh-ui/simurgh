@@ -289,6 +289,36 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `DialogComponent`
+
+Component selector: `simurgh-dialog`. The template's first native element is `ng-content`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `open` | `boolean` | `false` |
+| `labelledBy` | `string` | `undefined` |
+| `describedBy` | `string` | `undefined` |
+
+| Output | Payload |
+| --- | --- |
+| `openChange` | `boolean` |
+
+Content projection: `[trigger]`, `default`.
+
+| Public method |
+| --- |
+| `show(): void` |
+| `close(): void` |
+| `onKeydown(event: KeyboardEvent): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

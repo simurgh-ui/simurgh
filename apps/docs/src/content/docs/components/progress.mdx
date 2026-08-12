@@ -149,6 +149,30 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `ProgressComponent`
+
+Component selector: `simurgh-progress`. The template's first native element is `span`. Angular host bindings: `{ role: 'progressbar', '[attr.aria-valuemin]': '0', '[attr.aria-valuemax]': 'safeMax', '[attr.aria-valuenow]': 'safeValue', '[attr.aria-valuetext]': 'valueText', '[attr.data-state]': "safeValue === null ? 'indeterminate' : 'determinate'", '[attr.data-value]': 'safeValue', '[attr.data-max]': 'safeMax', }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `number \| null` | `null` |
+| `max` | `number` | `100` |
+| `getValueLabel` | `(value: number, max: number) => string` | `undefined` |
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

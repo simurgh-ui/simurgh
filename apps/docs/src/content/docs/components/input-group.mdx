@@ -220,6 +220,53 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `InputGroupComponent`
+
+Component selector: `simurgh-input-group`. The template's first native element is `ng-content`. Angular host bindings: `{ role: 'group', '[attr.data-slot]': "'input-group'" }`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `InputGroupAddonComponent`
+
+Component selector: `simurgh-input-group-addon`. The template's first native element is `ng-content`. Angular host bindings: `{ '[attr.aria-hidden]': 'decorative \|\| null', '[attr.data-align]': 'align', '[attr.data-slot]': "'input-group-addon'", }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `align` | `"inline-start" \| "inline-end" \| "block-start" \| "block-end"` | `'inline-start'` |
+| `decorative` | `boolean` | `false` |
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `InputGroupTextComponent`
+
+Component selector: `simurgh-input-group-text`. The template's first native element is `ng-content`. Angular host bindings: `{ '[attr.data-slot]': "'input-group-text'" }`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

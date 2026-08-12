@@ -231,6 +231,64 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `FieldComponent`
+
+Component selector: `simurgh-field`. The template's first native element is `fieldset`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `disabled` | `boolean` | `false` |
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `FieldLegendComponent`
+
+Component selector: `simurgh-field-legend`. The template's first native element is `legend`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `FieldDescriptionComponent`
+
+Component selector: `simurgh-field-description`. The template's first native element is `p`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `FieldErrorComponent`
+
+Component selector: `simurgh-field-error`. The template's first native element is `p`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

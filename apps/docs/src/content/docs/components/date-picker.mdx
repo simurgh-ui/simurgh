@@ -187,6 +187,46 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `DatePickerComponent`
+
+Component selector: `simurgh-date-picker`. The template's first native element is `div`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `string` | `''` |
+| `month` | `string` | `calendarToday().slice(0, 7)` |
+| `locale` | `string` | `'en'` |
+| `direction` | `Direction` | `'ltr'` |
+| `firstDayOfWeek` | `number` | `0` |
+| `min` | `string` | `undefined` |
+| `max` | `string` | `undefined` |
+| `disabledDates` | `string[]` | `[]` |
+| `name` | `string` | `undefined` |
+| `label` | `string` | `'Date picker calendar'` |
+| `placeholder` | `string` | `'Pick a date'` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string` |
+| `monthChange` | `string` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `choose(value: string): void` |
+| `updateMonth(month: string): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

@@ -286,6 +286,87 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `CarouselComponent`
+
+Component selector: `simurgh-carousel`. The template's first native element is `ng-content`. Angular host bindings: `{ 'data-slot': 'carousel', role: 'region', 'aria-roledescription': 'carousel', '[attr.aria-label]': 'label', '[attr.dir]': 'direction', tabindex: '0', }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `label` | `string` | `'Carousel'` |
+| `direction` | `Direction` | `'ltr'` |
+| `loop` | `boolean` | `false` |
+| `defaultIndex` | `number` | `undefined` |
+
+| Output | Payload |
+| --- | --- |
+| `indexChange` | `number` |
+
+Content projection: `default`.
+
+| Public method |
+| --- |
+| `register(item: CarouselItemComponent): void` |
+| `unregister(item: CarouselItemComponent): void` |
+| `itemIndex(item: CarouselItemComponent): number` |
+| `goTo(next: number): void` |
+| `onKeydown(event: KeyboardEvent): void` |
+
+### `CarouselContentComponent`
+
+Component selector: `simurgh-carousel-content`. The template's first native element is `ng-content`. Angular host bindings: `{ 'data-slot': 'carousel-content', 'aria-live': 'polite' }`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `CarouselItemComponent`
+
+Component selector: `simurgh-carousel-item`. The template's first native element is `ng-content`. Angular host bindings: `{ 'data-slot': 'carousel-item', role: 'group', 'aria-roledescription': 'slide', }`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `CarouselPreviousComponent`
+
+Component selector: `simurgh-carousel-previous`. The template's first native element is `button`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `CarouselNextComponent`
+
+Component selector: `simurgh-carousel-next`. The template's first native element is `button`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

@@ -217,6 +217,49 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `TreeDirective`
+
+Attribute directive selector: `ul[simurghTree]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `onKeydown(event: KeyboardEvent): void` |
+
+### `TreeItemComponent`
+
+Component selector: `simurgh-tree-item`. The template's first native element is `button`. Angular host bindings: `{ role: 'none', 'data-slot': 'tree-node' }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `label` | `string` | `''` |
+| `expandable` | `boolean` | `false` |
+| `expanded` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `expandedChange` | `boolean` |
+
+Content projection: `default`.
+
+| Public method |
+| --- |
+| `toggle(): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

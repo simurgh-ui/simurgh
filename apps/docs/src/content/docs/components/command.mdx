@@ -175,6 +175,39 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `CommandComponent`
+
+Component selector: `simurgh-command`. The template's first native element is `div`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `options` | `SelectOption[]` | `[]` |
+| `value` | `string` | `''` |
+| `name` | `string` | `undefined` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `placeholder` | `string` | `'Search commands'` |
+| `noResults` | `string` | `'No commands found'` |
+| `ariaLabel` | `string` | `undefined` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `choose(value: string): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

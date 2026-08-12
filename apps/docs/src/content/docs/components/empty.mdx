@@ -305,6 +305,90 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `EmptyComponent`
+
+Component selector: `simurgh-empty`. The template's first native element is `ng-content`. Angular host bindings: `{ '[attr.role]': "status ? 'status' : null", '[attr.aria-live]': "status ? 'polite' : null", '[attr.data-slot]': "'empty'", }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `status` | `boolean` | `false` |
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `EmptyHeaderComponent`
+
+Component selector: `simurgh-empty-header`. The template's first native element is `ng-content`. Angular host bindings: `{ '[attr.data-slot]': "'empty-header'" }`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `EmptyMediaComponent`
+
+Component selector: `simurgh-empty-media`. The template's first native element is `ng-content`. Angular host bindings: `{ '[attr.aria-hidden]': 'decorative \|\| null', '[attr.data-slot]': "'empty-media'", }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `decorative` | `boolean` | `true` |
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `EmptyTitleComponent`
+
+Component selector: `simurgh-empty-title`. The template's first native element is `h3`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `EmptyDescriptionComponent`
+
+Component selector: `simurgh-empty-description`. The template's first native element is `p`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `EmptyContentComponent`
+
+Component selector: `simurgh-empty-content`. The template's first native element is `ng-content`. Angular host bindings: `{ '[attr.data-slot]': "'empty-content'" }`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

@@ -138,6 +138,28 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `SkeletonComponent`
+
+Component selector: `simurgh-skeleton`. The component has no single native template root. Angular host bindings: `{ '[attr.role]': "label ? 'status' : null", '[attr.aria-label]': 'label \|\| null', '[attr.aria-busy]': "label ? 'true' : null", '[attr.aria-hidden]': "label ? null : 'true'", '[attr.data-state]': "'loading'", }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `label` | `string` | `undefined` |
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

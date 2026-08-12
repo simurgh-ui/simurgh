@@ -150,6 +150,34 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `MeterComponent`
+
+Component selector: `simurgh-meter`. The template's first native element is `meter`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `number` | `0` |
+| `min` | `number` | `0` |
+| `max` | `number` | `100` |
+| `low` | `number` | `undefined` |
+| `high` | `number` | `undefined` |
+| `optimum` | `number` | `undefined` |
+| `label` | `string` | `undefined` |
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

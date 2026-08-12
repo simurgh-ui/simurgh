@@ -253,6 +253,53 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `ContextMenuComponent`
+
+Component selector: `simurgh-context-menu`. The template's first native element is `div`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `open` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `openChange` | `boolean` |
+
+Content projection: `[trigger]`, `default`.
+
+| Public method |
+| --- |
+| `openPointer(event: MouseEvent): void` |
+| `openKeyboard(event: KeyboardEvent, trigger: HTMLElement): void` |
+| `close(): void` |
+| `onKeydown(event: KeyboardEvent): void` |
+
+### `ContextMenuItemDirective`
+
+Attribute directive selector: `[simurghContextMenuItem]`; behavior applies to its host element.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `disabled` | `boolean` | `false` |
+
+| Output | Payload |
+| --- | --- |
+| `select` | `void` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `choose(): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

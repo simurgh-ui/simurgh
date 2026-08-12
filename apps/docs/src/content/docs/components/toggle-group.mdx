@@ -188,6 +188,53 @@ Slots: `default`.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `ToggleGroupComponent`
+
+Component selector: `simurgh-toggle-group`. The template's first native element is `ng-content`. Angular host bindings: `{ role: 'group', 'data-slot': 'toggle-group', '[attr.aria-orientation]': 'orientation', '[attr.dir]': 'direction', }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `type` | `"single" \| "multiple"` | `'single'` |
+| `value` | `string[]` | `[]` |
+| `orientation` | `Orientation` | `'horizontal'` |
+| `direction` | `Direction` | `'ltr'` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string[]` |
+
+Content projection: `default`.
+
+| Public method |
+| --- |
+| `toggle(item: string): void` |
+| `onKeyDown(event: KeyboardEvent): void` |
+
+### `ToggleGroupItemDirective`
+
+Attribute directive selector: `button[simurghToggleGroupItem]`; behavior applies to its host element.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `simurghToggleGroupItem` | `string` | `''` |
+| `disabled` | `boolean` | `false` |
+
+No outputs.
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `activate(): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

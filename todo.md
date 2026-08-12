@@ -204,7 +204,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       and controlled/uncontrolled pair from the exported TypeScript API.
 - [x] Document every public Vue prop, emitted event, slot, exposed method, default value, and
       inherited attribute from the exported TypeScript API.
-- [ ] Document every public Angular input, output, content slot/directive, public method, default
+- [x] Document every public Angular input, output, content slot/directive, public method, default
       value, and host/native attribute behavior from the exported TypeScript API.
 - [ ] State framework parity and intentional API differences beside each component API instead of
       making users compare three source packages.

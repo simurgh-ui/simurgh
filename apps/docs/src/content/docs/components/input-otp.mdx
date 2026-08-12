@@ -155,6 +155,39 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `InputOtpComponent`
+
+Component selector: `simurgh-input-otp`. The template's first native element is `input`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `name` | `string` | `undefined` |
+| `value` | `string` | `''` |
+| `length` | `number` | `6` |
+| `digitsOnly` | `boolean` | `true` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `invalid` | `boolean` | `false` |
+| `autocomplete` | `string` | `'one-time-code'` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `update(event: Event): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

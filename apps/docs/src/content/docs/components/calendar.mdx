@@ -210,6 +210,50 @@ Slots: none.
 Exposed methods: none.
 {/* vue-api:end */}
 
+{/* angular-api:start */}
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `CalendarComponent`
+
+Component selector: `simurgh-calendar`. The template's first native element is `div`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `string` | `''` |
+| `month` | `string` | `calendarToday().slice(0, 7)` |
+| `locale` | `string` | `'en'` |
+| `direction` | `Direction` | `'ltr'` |
+| `firstDayOfWeek` | `number` | `0` |
+| `min` | `string \| undefined` | `undefined` |
+| `max` | `string \| undefined` | `undefined` |
+| `disabledDates` | `string[]` | `[]` |
+| `name` | `string` | `undefined` |
+| `label` | `string` | `'Calendar'` |
+
+| Output | Payload |
+| --- | --- |
+| `valueChange` | `string` |
+| `monthChange` | `string` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `weekDays(week: number): import("D:/Projects/simurgh/packages/core/dist/index").CalendarDay[]` |
+| `weekdayLabel(index: number): string` |
+| `dayLabel(value: string): string` |
+| `isDisabled(value: string): boolean` |
+| `tabIndex(value: string): -1 | 0` |
+| `setMonth(month: string): void` |
+| `moveMonth(amount: number): void` |
+| `choose(value: string): void` |
+| `onDayKeydown(event: KeyboardEvent, value: string): void` |
+{/* angular-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
