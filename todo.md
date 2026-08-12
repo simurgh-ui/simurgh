@@ -282,7 +282,7 @@ per-component documentation" as example coverage, not as complete consumer docum
   - [x] Add offline spelling validation with a project terminology dictionary.
 - [ ] Add browser tests for framework tabs, copy buttons, component previews, mobile navigation,
       dark mode, RTL, and keyboard-only reading flows.
-- [ ] Give every page a last-verified version/source marker and require documentation changes for
+- [x] Give every page a last-verified version/source marker and require documentation changes for
       public API changes in the pull-request checklist.
 - [ ] Run a final task-based user test: install one component, customize its theme, build a form,
       open an overlay, handle an event, and update a copied component using only the published docs.
