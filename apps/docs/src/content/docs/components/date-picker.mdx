@@ -99,6 +99,23 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* realistic-example:start */}
+### Real-world example: constrained appointment dates
+
+Keep constraints in ISO date form and validate again on the server because client constraints can be
+bypassed. Explain unavailable dates outside the calendar when users need the reason.
+
+```tsx
+const disabledDates = holidays.map((holiday) => holiday.date);
+<DatePicker value={date} onValueChange={setDate} name="appointment"
+  min="2026-08-14" max="2026-09-30" disabledDates={disabledDates}
+  label="Appointment date" required />
+```
+
+Vue uses `v-model="date"` with `:disabled-dates="disabledDates"`; Angular uses `[(value)]="date"`
+with `[disabledDates]="disabledDates"`. Keep `min`, `max`, locale, and first-day settings identical.
+{/* realistic-example:end */}
+
 {/* component-state-model:start */}
 ## State model
 

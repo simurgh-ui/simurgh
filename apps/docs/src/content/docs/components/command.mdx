@@ -108,6 +108,29 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* realistic-example:start */}
+### Real-world example: server-backed command search
+
+Cancel stale requests, expose loading separately, and keep the last successful result list stable.
+
+```tsx
+const [serverCommands, setServerCommands] = useState<SelectOption[]>([]);
+const [loading, setLoading] = useState(false);
+useEffect(() => {
+  const request = new AbortController(); setLoading(true);
+  fetch(`/api/commands?q=${encodeURIComponent(query)}`, { signal: request.signal })
+    .then((response) => response.json()).then(setServerCommands)
+    .finally(() => setLoading(false));
+  return () => request.abort();
+}, [query]);
+<Command options={serverCommands} onValueChange={runCommand}
+  noResults={loading ? 'Loading commands…' : 'No commands found'} />
+```
+
+Use Vue `v-model` or Angular `(valueChange)` for selection; debounce the query and retain the same
+`AbortController` cancellation rule in the framework lifecycle.
+{/* realistic-example:end */}
+
 {/* component-state-model:start */}
 ## State model
 

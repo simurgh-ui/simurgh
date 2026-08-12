@@ -108,6 +108,26 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </CodeTabs>
 
+{/* realistic-example:start */}
+### Real-world example: dynamic workspace tabs
+
+Use stable IDs as values, preserve the active value when data refreshes, and select a predictable
+neighbor if the active tab is removed.
+
+```tsx
+const [activeTab, setActiveTab] = useState(workspaceTabs[0]?.id ?? '');
+<Tabs value={activeTab} onValueChange={setActiveTab}>
+  <TabsList>{workspaceTabs.map((tab) =>
+    <TabsTrigger key={tab.id} value={tab.id}>{tab.label}</TabsTrigger>)}</TabsList>
+  {workspaceTabs.map((tab) =>
+    <TabsContent key={tab.id} value={tab.id}>{tab.content}</TabsContent>)}
+</Tabs>
+```
+
+Vue uses `v-model="activeTab"` with `v-for`; Angular uses `[(value)]="activeTab"` with `*ngFor`
+and `trackBy`. Never use array indexes as tab values when items can be reordered.
+{/* realistic-example:end */}
+
 {/* component-state-model:start */}
 ## State model
 

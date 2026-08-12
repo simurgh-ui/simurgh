@@ -115,6 +115,31 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* realistic-example:start */}
+### Real-world example: validated account form
+
+Validate on submit, keep inline errors associated with controls, and put a concise summary first.
+
+```tsx
+function submit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  const values = Object.fromEntries(new FormData(event.currentTarget));
+  const nextErrors = validate(values); setErrors(nextErrors);
+  if (Object.keys(nextErrors).length === 0) save(values);
+}
+<Form onSubmit={submit} onInvalid={(event) => event.preventDefault()}>
+  {errors.email && <FormErrorSummary>Correct the email field.</FormErrorSummary>}
+  <Label htmlFor="account-email">Email</Label>
+  <Input id="account-email" name="email" type="email" required
+    invalid={Boolean(errors.email)} aria-describedby="email-error" />
+  <p id="email-error" role="alert">{errors.email}</p>
+</Form>
+```
+
+Vue uses `@invalid`; Angular uses `(invalidControl)` to receive the first invalid element. Preserve
+the same `aria-describedby` relationship and summary in every adapter.
+{/* realistic-example:end */}
+
 {/* component-state-model:start */}
 ## State model
 

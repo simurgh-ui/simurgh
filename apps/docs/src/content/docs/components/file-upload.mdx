@@ -113,6 +113,28 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* realistic-example:start */}
+### Real-world example: validated document upload
+
+Validate before transport and repeat validation server-side. The `accept` attribute is only a picker
+hint; it does not prove file type or safety.
+
+```tsx
+const MAX_BYTES = 5 * 1024 * 1024;
+function validateFiles(files: File[]) {
+  const accepted = files.filter((file) =>
+    file.type === 'application/pdf' && file.size <= MAX_BYTES);
+  setErrors(accepted.length === files.length ? [] : ['Use PDF files up to 5 MB.']);
+  setFiles(accepted);
+}
+<FileUpload label="Supporting documents" accept="application/pdf" multiple
+  name="documents" onFilesChange={validateFiles} />
+```
+
+Vue uses `@files-change="validateFiles"`; Angular uses `(filesChange)="validateFiles($event)"`.
+Announce errors and upload progress in a nearby live region.
+{/* realistic-example:end */}
+
 {/* component-state-model:start */}
 ## State model
 

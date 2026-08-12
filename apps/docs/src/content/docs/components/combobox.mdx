@@ -98,6 +98,25 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* realistic-example:start */}
+### Real-world example: searchable assignee picker
+
+Filter application data without replacing the component's built-in keyboard navigation.
+
+```tsx
+const [query, setQuery] = useState('');
+const searchableOptions = users.filter((user) =>
+  user.label.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
+<Combobox options={searchableOptions} value={assignee} onValueChange={setAssignee}
+  noResults="No matching people" aria-label="Assignee" />
+<Input value={query} onChange={(event) => setQuery(event.currentTarget.value)}
+  aria-label="Filter assignees" />
+```
+
+Vue binds selection with `v-model`; Angular binds `[(value)]`. Pass the filtered options and the
+same `noResults` message to each adapter.
+{/* realistic-example:end */}
+
 {/* component-state-model:start */}
 ## State model
 

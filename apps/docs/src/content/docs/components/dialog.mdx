@@ -112,6 +112,32 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* realistic-example:start */}
+### Real-world example: async profile submission
+
+Keep the dialog controlled while saving so success can close it and failure can leave the form open.
+Disable repeated submission and announce the result without moving focus unexpectedly.
+
+```tsx
+const [open, setOpen] = useState(false);
+const [saving, setSaving] = useState(false);
+const [message, setMessage] = useState('');
+async function submitProfile(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault(); setSaving(true); setMessage('');
+  try { await saveProfile(new FormData(event.currentTarget)); setOpen(false); }
+  catch { setMessage('Could not save the profile. Try again.'); }
+  finally { setSaving(false); }
+}
+<Dialog open={open} onOpenChange={setOpen}>…<form onSubmit={submitProfile}>
+  <Button type="submit" loading={saving}>Save</Button>
+  <p aria-live="polite">{message}</p>
+</form>…</Dialog>
+```
+
+Vue uses `v-model:open="open"` and Angular uses `[(open)]="open"`; apply the same pending, error,
+and close-on-success flow in the component script or class.
+{/* realistic-example:end */}
+
 {/* component-state-model:start */}
 ## State model
 

@@ -103,6 +103,7 @@ applications
 applied
 applies
 apply
+appointment
 appropriate
 appropriately
 arbitrarily
@@ -122,6 +123,7 @@ as
 aspect
 assertive
 assets
+assignee
 assigning
 assistive
 assistive-technology
@@ -183,6 +185,7 @@ between
 bind
 binding
 bindings
+binds
 biography
 birds
 blank
@@ -241,6 +244,7 @@ button
 button's
 buttons
 by
+bypassed
 bypasses
 calculate
 calculated
@@ -322,6 +326,7 @@ client-only
 clipped
 clipping
 close
+close-on-success
 closed
 closes
 closing
@@ -487,6 +492,7 @@ date
 dates
 day
 days
+debounce
 decide
 deciding
 decision
@@ -689,6 +695,7 @@ exit
 exits
 expand
 expandable
+expanded
 expands
 expansion
 expect
@@ -714,12 +721,14 @@ external
 extra
 failed
 fails
+failure
 failures
 fall
 fallback
 fallthrough
 false
 familiar
+faq
 features
 feedback
 feel
@@ -744,6 +753,7 @@ finishes
 fire
 firefox
 first
+first-day
 firuzeh
 fit
 five-percent
@@ -1176,12 +1186,14 @@ naturally
 navigate
 navigating
 navigation
+nearby
 necessarily
 necessary
 need
 needed
 needs
 negative
+neighbor
 nest
 nested
 nesting
@@ -1326,6 +1338,7 @@ payload
 pdf
 peer
 peer-dependency
+pending
 per
 perceivable
 percentages
@@ -1428,6 +1441,7 @@ prop
 properties
 proportion
 props
+prove
 provide
 provided
 providers
@@ -1472,6 +1486,7 @@ readers
 reading
 reads
 real
+real-world
 reapply
 reason
 receive
@@ -1498,6 +1513,7 @@ ref
 refactor
 reference
 references
+refreshes
 refs
 region
 regions
@@ -1517,6 +1533,7 @@ remains
 removable
 removal
 remove
+removed
 removes
 removing
 rename
@@ -1528,6 +1545,8 @@ renders
 reopen
 reopening
 reorder
+reordered
+reordering
 repeat
 repeated
 repeatedly
@@ -1551,6 +1570,7 @@ reproducing
 reproduction
 request
 request-known
+requests
 require
 required
 requirement
@@ -1624,6 +1644,7 @@ safari
 safe
 safely
 safer
+safety
 saffron
 same
 same-looking
@@ -1639,11 +1660,13 @@ score
 screen
 screen-reader
 screens
+script
 scroll
 scrollbar
 scrolled
 scrolling
 search
+searchable
 searching
 second
 secondary
@@ -1672,7 +1695,9 @@ sequential
 serialization
 serialize
 server
+server-backed
 server-rendered
+server-side
 set
 sets
 setting
@@ -1802,6 +1827,8 @@ subpaths
 subsequent
 substitute
 subtle
+success
+successful
 successfully
 such
 suffix
@@ -1960,6 +1987,7 @@ underline
 understand
 undocumented
 undone
+unexpectedly
 unified
 unique
 unit
@@ -2000,6 +2028,7 @@ utilities
 utility
 valid
 validate
+validated
 validates
 validation
 validity

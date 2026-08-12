@@ -228,7 +228,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       differences, focus entry/exit, Escape behavior, and typeahead where applicable.
 - [x] Document focus management for overlays: initial focus, focus trapping, restoration, portals,
       nested overlays, outside interaction, and programmatic open/close.
-- [ ] Add realistic examples rather than only minimal anatomy snippets: async Dialog submission,
+- [x] Add realistic examples rather than only minimal anatomy snippets: async Dialog submission,
       validated Form, searchable Combobox, server-backed Command, Date Picker constraints,
       upload validation, and dynamic Tabs/Accordion items.
 - [x] Add SSR and hydration guidance for generated IDs, portals, browser-only APIs, and async/lazy

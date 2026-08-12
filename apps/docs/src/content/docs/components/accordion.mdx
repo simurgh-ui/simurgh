@@ -115,6 +115,26 @@ compound components depend on their documented parent/child nesting.
   </TabItem>
 </Tabs>
 
+{/* realistic-example:start */}
+### Real-world example: dynamic FAQ items
+
+Use stable values so expanded state follows an item across filtering or reordering.
+
+```tsx
+<Accordion type="multiple">
+  {faqItems.map((item) => (
+    <AccordionItem key={item.id} value={item.id}>
+      <AccordionTrigger>{item.question}</AccordionTrigger>
+      <AccordionContent>{item.answer}</AccordionContent>
+    </AccordionItem>
+  ))}
+</Accordion>
+```
+
+Vue renders the same collection with `v-for="item in faqItems"` and `:key="item.id"`. Angular uses
+`*ngFor="let item of faqItems; trackBy: trackBy"`; `trackBy` must return `item.id`.
+{/* realistic-example:end */}
+
 {/* component-state-model:start */}
 ## State model
 
