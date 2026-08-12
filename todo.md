@@ -259,7 +259,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 - [x] Add a component chooser comparing commonly confused primitives: Select vs Native Select vs
       Combobox, Dialog vs Alert Dialog vs Sheet vs Drawer, Tooltip vs Hover Card vs Popover, and
       Accordion vs Disclosure vs Collapsible.
-- [ ] Add package/version requirements, browser support, framework peer-version support, and a
+- [x] Add package/version requirements, browser support, framework peer-version support, and a
       compatibility matrix backed by CI.
 - [x] Add migration and update guides for CLI-copied source and package consumers, including how to
       resolve `simurgh diff` conflicts safely.

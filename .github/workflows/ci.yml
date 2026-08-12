@@ -19,5 +19,5 @@ jobs:
       - run: pnpm build
       - run: pnpm test:quick-starts
       - run: pnpm bundle:size
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm test:e2e

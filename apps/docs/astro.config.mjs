@@ -26,6 +26,7 @@ export default defineConfig({
           items: [
             { label: 'Introduction', slug: 'index' },
             { label: 'Installation', slug: 'guides/installation' },
+            { label: 'Compatibility', slug: 'guides/compatibility' },
             { label: 'Choose a component', slug: 'guides/component-chooser' },
             {
               label: 'Updates and migrations',

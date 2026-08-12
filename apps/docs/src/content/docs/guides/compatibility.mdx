@@ -1,0 +1,78 @@
+---
+title: Compatibility
+description: Supported framework peer versions, package requirements, browser engines, and CI verification scope.
+---
+
+Simurgh is pre-release. This page distinguishes **declared compatibility** from **versions exercised
+in this repository**. A peer range allows installation; CI coverage provides stronger evidence for
+the exact versions and environments it runs.
+
+## Framework compatibility
+
+| Adapter               | Declared peer requirement         | Repository development version | CI verification                                                                                                         |
+| --------------------- | --------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `@simurgh-ui/react`   | React `>=18` and React DOM `>=18` | React `19.1.1`                 | Type checks, contract tests, package quick start, build, and browser documentation scenarios.                           |
+| `@simurgh-ui/vue`     | Vue `>=3.4`                       | Vue `3.5.22`                   | Type checks, contract tests, package quick start, build, and browser documentation scenarios.                           |
+| `@simurgh-ui/angular` | Angular Core and Common `>=18`    | Angular `20.3.2`               | Angular compilation, contract tests, package quick start, production-size fixture, and browser documentation scenarios. |
+
+The repository does not currently run a framework-version matrix for every minor version inside
+those peer ranges. Treat the lower peer bound as intended install support, report failures with a
+minimal reproduction, and use the development versions above when maximum verification is needed.
+
+Install only one framework adapter in a consuming application. Framework peer dependencies remain
+the application's responsibility; Simurgh does not bundle React, Vue, or Angular into the adapter.
+
+## Runtime and tooling
+
+| Tool            | Requirement or verified version                                                                                                                       |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Package format  | ECMAScript modules with TypeScript declarations. The application bundler must resolve package `exports`.                                              |
+| Package manager | Any package manager that installs peer dependencies and package exports; this repository and CLI examples use pnpm.                                   |
+| pnpm            | Repository builds are pinned to `11.16.0`. Consumer applications do not need this exact version unless reproducing the monorepo.                      |
+| Node.js         | CI builds, CLI fixtures, and quick starts run on Node.js 22. No broader CLI engine range is declared yet.                                             |
+| TypeScript      | Component declarations are produced with TypeScript 5.9.2 in the repository. Consumers should use a version compatible with their selected framework. |
+
+The packages do not currently declare a Node `engines` field. Node 22 is therefore the verified CLI
+environment, not a promised minimum. Browser-delivered component code must still be processed by a
+framework-compatible application build.
+
+## Browser support
+
+Every pull request runs the documentation browser suite against the current Playwright builds of:
+
+- Chromium, using the Desktop Chrome device profile
+- Firefox, using the Desktop Firefox device profile
+- WebKit, using the Desktop Safari device profile
+
+This provides engine-level coverage for current Chromium, Gecko, and WebKit behavior. It does not
+promise support for an arbitrary historical browser version, embedded webview, or assistive
+technology/browser combination. Simurgh uses modern platform features, including CSS custom
+properties, logical properties, native form controls, and ECMAScript modules.
+
+Applications with a formal browser policy should run their own production build and task-based
+component scenarios on the exact browser versions in that policy. Pay particular attention to
+native Select and date/file controls, focus-visible presentation, portal stacking, mobile virtual
+keyboards, forced colors, and RTL scrolling.
+
+## What CI verifies
+
+The compatibility gate currently includes:
+
+1. Frozen dependency installation on Ubuntu and Node.js 22.
+2. Lint, type checking, framework compilation, unit and accessibility contract tests.
+3. React, Vue, and Angular package-import quick starts.
+4. React, Vue, and Angular CLI source-copy quick starts.
+5. Production documentation build and package-export validation.
+6. Bundle-size and Angular production compilation fixtures.
+7. Playwright scenarios in Chromium, Firefox, and WebKit.
+
+CI does not yet cover Windows/macOS builds, mobile-device hardware, all supported framework minor
+versions, screen-reader automation, or legacy browsers. These are compatibility gaps rather than
+implicit support claims.
+
+## Reporting a compatibility problem
+
+Include the Simurgh package and version, installation model, framework and version, TypeScript,
+Node.js and package manager when relevant, browser/OS, and a minimal reproduction. State whether the
+problem occurs in development, SSR, hydration, or a production build and whether it reproduces with
+recipes disabled.

@@ -145,6 +145,7 @@ autofill-ready
 automated
 automatic
 automatically
+automation
 available
 avatar
 avoid
@@ -202,11 +203,14 @@ breaking
 brick
 brief
 brittle
+broader
 browse
 browser
+browser-delivered
 browser-native
 browser-only
 browser's
+browsers
 browsing
 bubble
 bubbling
@@ -217,6 +221,8 @@ builds
 built
 built-in
 bundle
+bundle-size
+bundler
 bundlers
 business
 busy
@@ -277,9 +283,12 @@ choices
 choose
 choosing
 chosen
+chrome
+chromium
 chunk
 ci
 city
+claims
 clamped
 class
 classes
@@ -315,6 +324,7 @@ collects
 collision-aware
 color
 colors
+combination
 combine
 combined
 combines
@@ -333,6 +343,8 @@ compact
 compare
 compares
 compatibility
+compatible
+compilation
 compiled
 complement
 complementary
@@ -426,6 +438,7 @@ correctly
 cost
 counts
 cover
+coverage
 create
 created
 creates
@@ -492,6 +505,7 @@ descriptions
 design
 designated
 desirable
+desktop
 desktop-style
 destination
 destinations
@@ -503,7 +517,9 @@ detection
 detects
 determinate
 deterministic
+development
 development-only
+device
 dialog
 dialog's
 dialogs
@@ -541,6 +557,7 @@ displays
 disposable
 disruptive
 distinct
+distinguishes
 divider
 divides
 dividing
@@ -577,6 +594,7 @@ dynamically
 e'tesami
 each
 easier
+ecmascript
 edge
 edges
 edit
@@ -589,6 +607,7 @@ element
 elements
 elevation
 email
+embedded
 emits
 emitted
 emphasis
@@ -598,11 +617,15 @@ enable
 enabled
 end
 enforce
+engine
+engine-level
 ensure
 enter
 enters
 entire
 entry
+environment
+environments
 equal
 equivalent
 equivalents
@@ -618,6 +641,7 @@ event
 events
 eventual
 every
+evidence
 exact
 example
 examples
@@ -625,6 +649,7 @@ excellent
 excludes
 exclusive
 exercise
+exercised
 exhaustive
 exist
 existing
@@ -662,6 +687,7 @@ fallback
 fallthrough
 false
 familiar
+features
 feedback
 feel
 ferdowsi
@@ -683,6 +709,7 @@ final
 find-in-page
 finishes
 fire
+firefox
 first
 firuzeh
 fit
@@ -690,6 +717,8 @@ five-percent
 fixed
 fixed-option
 fixes
+fixture
+fixtures
 flag
 flip
 floating
@@ -713,6 +742,8 @@ forcing
 foreground
 form
 form-ready
+formal
+format
 forms
 forward
 forwarded
@@ -722,17 +753,23 @@ four
 fr
 fragments
 framework
+framework-compatible
 framework-level
 framework-native
 framework-neutral
+framework-version
 framework's
 free
 from
+frozen
 full-height
 full-screen
 fully
 functions
 future
+gaps
+gate
+gecko
 general
 generally
 generate
@@ -763,6 +800,7 @@ handles
 handling
 happen
 harder
+hardware
 has
 have
 header
@@ -779,6 +817,7 @@ hierarchical
 hierarchy
 higher
 hint
+historical
 history
 home
 hook
@@ -812,6 +851,7 @@ immediately
 implement
 implementation
 implementations
+implicit
 import
 import-only
 important
@@ -908,6 +948,7 @@ keeps
 key
 keyboard
 keyboard-navigable
+keyboards
 keys
 khayyam
 known
@@ -936,6 +977,7 @@ least
 leave
 leaves
 left
+legacy
 let
 level
 levels
@@ -945,6 +987,7 @@ light
 limits
 link
 links
+lint
 list
 listbox
 listeners
@@ -974,6 +1017,7 @@ loop
 lose
 lovelace
 lower
+macos
 maintain
 maintained
 maintainer
@@ -1035,16 +1079,20 @@ mix
 mixed-state
 mo
 mobile
+mobile-device
 mobile-sized
 modal
 modals
 mode
 model
 models
+modern
 modes
 modified
 modify
 module
+modules
+monorepo
 month
 more
 most
@@ -1093,6 +1141,8 @@ ngmodule
 nizami
 no
 no-javascript
+node
+node.js
 nodes
 non-blocking
 non-essential
@@ -1116,6 +1166,7 @@ numeric
 object
 observable
 occur
+occurs
 ochre
 of
 off
@@ -1153,6 +1204,7 @@ organize
 orientation
 orientation-aware
 original
+os
 other
 others
 otherwise
@@ -1176,6 +1228,8 @@ owned
 owns
 package
 package-consumer
+package-export
+package-import
 packages
 page
 page's
@@ -1193,6 +1247,7 @@ part
 partial
 participate
 participates
+particular
 parts
 parvin
 pass
@@ -1206,6 +1261,7 @@ paths
 pattern
 patterns
 pause
+pay
 payload
 pdf
 peer
@@ -1223,6 +1279,7 @@ physical
 picker
 pigments
 pin
+pinned
 pioneer
 place
 placed
@@ -1233,8 +1290,10 @@ planned
 platform
 platform-aware
 platform-native
+playwright
 plugin
 plus
+pnpm
 poet
 pointer
 pointer-adjustable
@@ -1288,9 +1347,12 @@ primitives
 pro
 problem
 process
+processed
+produced
 produces
 product
 production
+production-size
 profile
 programmatic
 programmatically
@@ -1299,6 +1361,8 @@ project
 project's
 projected
 projects
+promise
+promised
 prop
 properties
 proportion
@@ -1311,6 +1375,7 @@ providing
 public
 publish
 published
+pull
 purely
 purpose
 push
@@ -1417,7 +1482,10 @@ repository
 represent
 represented
 represents
+reproduces
+reproducing
 reproduction
+request
 request-known
 require
 required
@@ -1484,6 +1552,7 @@ runs
 runtime
 sa
 saadi
+safari
 safe
 safely
 safer
@@ -1495,6 +1564,7 @@ saved
 saving
 scalar
 scale
+scenarios
 scope
 score
 screen
@@ -1595,6 +1665,7 @@ solve
 some
 sorting
 source
+source-copy
 space
 spaced
 spacing
@@ -1636,6 +1707,7 @@ stops
 storage
 stored
 strong
+stronger
 structure
 structured
 structures
@@ -1657,6 +1729,7 @@ subtle
 successfully
 such
 suffix
+suite
 summary
 supplemental
 supplementary
@@ -1749,6 +1822,7 @@ tone
 tool
 tool-specific
 toolbar
+tooling
 tools
 tooltip
 tooltips
@@ -1788,6 +1862,7 @@ types
 typescript
 typing
 typography
+ubuntu
 ui
 ultramarine
 unavailable
@@ -1847,6 +1922,8 @@ variables
 vendor
 verb-first
 verification
+verified
+verifies
 verify
 version
 versions
@@ -1854,6 +1931,7 @@ vertical
 view
 viewport
 views
+virtual
 visibility
 visible
 visual
@@ -1868,7 +1946,9 @@ watcher
 ways
 wcag
 we
+webkit
 website
+webview
 week
 were
 what
@@ -1887,6 +1967,7 @@ widgets
 width
 will
 window
+windows
 wins
 with
 within
