@@ -5,6 +5,11 @@ export default defineConfig({
   integrations: [starlight({
     title: 'Simurgh UI',
     description: 'Accessible, source-owned primitives for Angular, React, and Vue.',
+    logo: {
+      src: './src/assets/simurgh-ui-logo.png',
+      alt: 'Simurgh UI',
+    },
+    favicon: '/brand/simurgh-ui-logo.png',
     social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/simurgh-ui/simurgh' }],
     customCss: ['./src/styles/custom.css'],
     sidebar: [

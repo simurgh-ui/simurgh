@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 960" role="img" aria-labelledby="title desc">
+  <title id="title">Simurgh UI logo</title>
+  <desc id="desc">A geometric Simurgh bird assembled from modular interface tiles above the Simurgh UI wordmark.</desc>
+  <defs>
+    <style>
+      .ink { fill: #102a4c; }
+      .lapis { fill: #1762b8; }
+      .turquoise { fill: #20a7a4; }
+      .firuzeh { fill: #168f9b; }
+      .saffron { fill: #edae17; }
+    </style>
+  </defs>
+
+  <!-- Modular wings -->
+  <g aria-label="geometric wings">
+    <path class="firuzeh" d="M223 222v68c0 42 24 67 66 77v-71z"/>
+    <rect class="lapis" x="299" y="296" width="42" height="42" rx="9"/>
+    <path class="saffron" d="M235 360v42c0 31 18 49 54 56v-70z"/>
+    <path class="lapis" d="M299 352h84c38 0 69 19 91 52H337c-24 0-38-15-38-39z"/>
+    <path class="firuzeh" d="M285 419h81v70h-27c-32 0-54-18-54-52z"/>
+    <rect class="turquoise" x="374" y="419" width="70" height="70" rx="10"/>
+
+    <path class="turquoise" d="M737 222v68c0 42-24 67-66 77v-71z"/>
+    <rect class="firuzeh" x="619" y="296" width="42" height="42" rx="9"/>
+    <path class="saffron" d="M725 360v42c0 31-18 49-54 56v-70z"/>
+    <path class="lapis" d="M661 352h-84c-38 0-69 19-91 52h137c24 0 38-15 38-39z"/>
+    <path class="firuzeh" d="M675 419h-81v70h27c32 0 54-18 54-52z"/>
+    <rect class="lapis" x="516" y="419" width="70" height="70" rx="10"/>
+  </g>
+
+  <!-- Bird body and head -->
+  <g aria-label="Simurgh bird">
+    <path class="ink" d="M478 266c-25-13-41-33-45-59 25 23 55 35 91 36-18-15-28-35-28-60 14 22 33 37 57 46 23 8 39 24 47 48-31-17-59-20-84-9 44 2 75 17 94 45-26-2-47 6-62 23-18 21-26 50-25 87 2 55 19 108 51 160-25-20-47-46-66-78-28-46-50-92-66-138-14-40-8-74 17-101 19-20 42-29 69-30z"/>
+    <path class="ink" d="M579 302c14-5 28-3 41 7-16 2-28 8-36 18-1-11-3-19-5-25z"/>
+    <circle cx="575" cy="283" r="5" fill="#fff"/>
+
+    <path class="lapis" d="M445 423c42 23 74 57 96 101 22 45 22 88 0 129l-52 78V534c0-39-15-76-44-111z"/>
+    <path class="turquoise" d="M489 594c27 17 40 41 40 72 0 28-13 52-40 72z"/>
+    <path class="firuzeh" d="M481 650v121l-57 67v-111z"/>
+    <path class="turquoise" d="M489 734c32-20 55-48 70-82v91c0 42-24 72-70 91z"/>
+    <path class="saffron" d="M568 572h54v61c0 31-18 50-54 56z"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g aria-label="Simurgh UI" transform="translate(0 14)">
+    <text x="480" y="900" text-anchor="middle" font-family="Inter, Avenir Next, Segoe UI, Arial, sans-serif" font-size="92" font-weight="650" letter-spacing="-4" class="ink">Simurgh <tspan class="turquoise" font-weight="600">UI</tspan></text>
+  </g>
+</svg>

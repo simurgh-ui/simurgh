@@ -1,0 +1,48 @@
+:root {
+  color-scheme: light;
+  /* Heritage pigments and materials from Iranian tilework, manuscripts, and brickwork. */
+  --simurgh-firuzeh: 176 68% 36%;
+  --simurgh-persian-blue: 222 70% 32%;
+  --simurgh-lapis: 220 63% 38%;
+  --simurgh-cobalt: 216 64% 39%;
+  --simurgh-brick: 19 57% 41%;
+  --simurgh-ochre: 38 64% 47%;
+  --simurgh-saffron: 42 88% 58%;
+  --simurgh-pomegranate: 350 72% 38%;
+  --simurgh-ivory: 39 55% 89%;
+  --simurgh-ink: 217 42% 16%;
+
+  /* Semantic tokens preserve accessible contrast while referencing that palette. */
+  --simurgh-background: 39 55% 97%;
+  --simurgh-foreground: var(--simurgh-ink);
+  --simurgh-surface: 40 43% 99%;
+  --simurgh-muted: 39 31% 91%;
+  --simurgh-muted-foreground: 217 20% 38%;
+  --simurgh-primary: var(--simurgh-persian-blue);
+  --simurgh-primary-foreground: 0 0% 100%;
+  --simurgh-accent: var(--simurgh-saffron);
+  --simurgh-danger: var(--simurgh-pomegranate);
+  --simurgh-border: 32 28% 78%;
+  --simurgh-ring: var(--simurgh-firuzeh);
+  --simurgh-radius: 0.625rem;
+  --simurgh-shadow: 0 14px 40px rgb(15 23 42 / 0.16);
+  --simurgh-duration: 160ms;
+}
+
+.dark, [data-theme='dark'] {
+  color-scheme: dark;
+  --simurgh-background: 222 47% 9%;
+  --simurgh-foreground: 39 55% 92%;
+  --simurgh-surface: 222 40% 13%;
+  --simurgh-muted: 220 30% 20%;
+  --simurgh-muted-foreground: 39 18% 70%;
+  --simurgh-primary: 176 57% 47%;
+  --simurgh-primary-foreground: 222 47% 9%;
+  --simurgh-accent: 42 88% 62%;
+  --simurgh-border: 219 29% 28%;
+  --simurgh-ring: 176 57% 53%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --simurgh-duration: 1ms; }
+}

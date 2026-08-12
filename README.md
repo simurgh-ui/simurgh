@@ -6,8 +6,8 @@ Accessible, source-owned UI primitives for Angular, React, and Vue. Simurgh sepa
 pnpm install
 pnpm build
 pnpm test
-pnpm simurgh init
-pnpm simurgh add dialog
+pnpm dlx @simurgh-ui/cli init
+pnpm dlx @simurgh-ui/cli add dialog
 ```
 
 The project is pre-release. The `@simurgh-ui` scope is provisional pending name and trademark checks.

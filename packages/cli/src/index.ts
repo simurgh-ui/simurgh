@@ -19,10 +19,10 @@ function detectFramework(): Framework {
   throw new Error('Could not detect Angular, React, or Vue. Pass --framework.');
 }
 function loadConfig(): Config { if (!existsSync(configPath())) throw new Error('simurgh.json not found. Run `simurgh init` first.'); return readJson<Config>(configPath()); }
-function workspaceRoot(): string {
-  const fromDist = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
-  if (existsSync(join(fromDist, 'packages/registry/registry.json'))) return fromDist;
-  throw new Error('The development registry source is unavailable. Configure the hosted registry before publishing the CLI.');
+function assetRoot(): string {
+  const root = resolve(dirname(fileURLToPath(import.meta.url)), '../assets');
+  if (existsSync(join(root, 'styles/tokens.css'))) return root;
+  throw new Error('The bundled registry assets are unavailable. Reinstall @simurgh-ui/cli.');
 }
 function ensureParent(path: string) { mkdirSync(dirname(path), { recursive: true }); }
 function copy(path: string, target: string) { ensureParent(target); writeFileSync(target, readFileSync(path)); }
@@ -51,7 +51,7 @@ export function extractComponentSource(source: string, symbols: readonly string[
 }
 
 function expectedSource(config: Config, component: string): string {
-  const entry = registryEntry(component, config.framework); const sourcePath = join(workspaceRoot(), entry.source);
+  const entry = registryEntry(component, config.framework); const sourcePath = join(assetRoot(), `${config.framework}.${entry.extension}`);
   return extractComponentSource(readFileSync(sourcePath, 'utf8'), entry.symbols, sourcePath);
 }
 
@@ -59,10 +59,11 @@ const cli = cac('simurgh');
 cli.command('init', 'Initialize Simurgh in the current application').option('--framework <framework>', 'react, vue, or angular').option('--skip-install', 'Do not install runtime dependencies').action((options: { framework?: Framework; skipInstall?: boolean }) => {
   if (existsSync(configPath())) throw new Error('simurgh.json already exists.');
   const framework = options.framework ?? detectFramework(); if (!(framework in manifest.frameworks)) throw new Error(`Unsupported framework: ${framework}`);
+  const root = assetRoot();
   const config: Config = { framework, components: framework === 'angular' ? 'src/app/components/ui' : 'src/components/ui', styles: 'src/styles/simurgh', registryVersion: manifest.version };
   writeFileSync(configPath(), `${JSON.stringify(config, null, 2)}\n`);
-  const root = workspaceRoot(); mkdirSync(join(cwd(), config.styles), { recursive: true });
-  copy(join(root, 'packages/styles/tokens.css'), join(cwd(), config.styles, 'tokens.css')); copy(join(root, 'packages/styles/recipes.css'), join(cwd(), config.styles, 'recipes.css'));
+  mkdirSync(join(cwd(), config.styles), { recursive: true });
+  copy(join(root, 'styles/tokens.css'), join(cwd(), config.styles, 'tokens.css')); copy(join(root, 'styles/recipes.css'), join(cwd(), config.styles, 'recipes.css'));
   if (!options.skipInstall) execFileSync('pnpm', ['add', ...manifest.frameworks[framework].dependencies], { cwd: cwd(), stdio: 'inherit', shell: process.platform === 'win32' });
   console.log(pc.green(`Initialized Simurgh for ${framework}.`));
 });

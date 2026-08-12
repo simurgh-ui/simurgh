@@ -5,7 +5,7 @@
   "sideEffects": false,
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
   "files": ["dist"],
-  "scripts": { "build": "tsc -p tsconfig.json", "test": "vitest run --passWithNoTests", "typecheck": "tsc -p tsconfig.json --noEmit", "lint": "eslint src" },
+  "scripts": { "build": "tsc -p tsconfig.json", "test": "vitest run --passWithNoTests", "coverage": "vitest run --coverage --config ../../vitest.coverage.ts", "typecheck": "tsc -p tsconfig.json --noEmit", "lint": "eslint src" },
   "dependencies": { "@floating-ui/dom": "^1.7.4", "@simurgh-ui/core": "workspace:*" },
   "peerDependencies": { "vue": ">=3.4" },
   "devDependencies": { "vue": "^3.5.22" }

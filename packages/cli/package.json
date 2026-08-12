@@ -1,10 +1,29 @@
 {
-  "name": "simurgh",
-  "version": "0.1.0",
+  "name": "@simurgh-ui/cli",
+  "version": "0.1.1",
   "type": "module",
-  "bin": { "simurgh": "dist/index.js" },
-  "files": ["dist"],
-  "scripts": { "build": "tsc -p tsconfig.json", "test": "tsc -p tsconfig.json && vitest run", "typecheck": "tsc -p tsconfig.json --noEmit", "lint": "eslint src test" },
-  "dependencies": { "@simurgh-ui/registry": "workspace:*", "cac": "^6.7.14", "picocolors": "^1.1.1", "typescript": "^5.9.2" },
-  "devDependencies": { "@types/node": "^24.5.2" }
+  "bin": {
+    "simurgh": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "assets"
+  ],
+  "scripts": {
+    "build": "node scripts/build-assets.mjs && tsc -p tsconfig.json",
+    "prepack": "pnpm build",
+    "test": "pnpm build && vitest run",
+    "coverage": "vitest run --coverage --config ../../vitest.coverage.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test"
+  },
+  "dependencies": {
+    "@simurgh-ui/registry": "workspace:*",
+    "cac": "^6.7.14",
+    "picocolors": "^1.1.1",
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2"
+  }
 }
