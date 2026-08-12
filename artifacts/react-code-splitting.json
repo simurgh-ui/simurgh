@@ -1,0 +1,16 @@
+{
+  "isolated": {
+    "outputFiles": 66,
+    "totalMinified": 128805,
+    "buttonFiles": 1,
+    "buttonMinified": 1215,
+    "buttonGzip": 623
+  },
+  "split": {
+    "outputFiles": 67,
+    "totalMinified": 52056,
+    "buttonFiles": 2,
+    "buttonMinified": 44622,
+    "buttonGzip": 13597
+  }
+}
