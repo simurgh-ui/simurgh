@@ -222,7 +222,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       value/change APIs in each framework and guidance for resetting state.
 - [x] Add form examples for every form-capable component: field name, initial value, disabled,
       required, validation/error state, submission value, and framework form integration.
-- [ ] Document loading, empty, invalid, read-only, disabled, and error states wherever supported;
+- [x] Document loading, empty, invalid, read-only, disabled, and error states wherever supported;
       explicitly say when a state is not supported.
 - [ ] Document keyboard interactions in a compact table for every composite widget, including RTL
       differences, focus entry/exit, Escape behavior, and typeahead where applicable.

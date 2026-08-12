@@ -324,6 +324,23 @@ to your form control. The component does not implement `ControlValueAccessor`; u
 validation state from the Angular form explicitly.
 {/* component-form:end */}
 
+{/* component-supported-states:start */}
+### Supported states
+
+The table distinguishes component behavior from application-owned presentation. “Not supported”
+means there is no public state contract for that adapter; do not invent one with an undocumented
+attribute. Keep status and error messages accessible when they are rendered outside the component.
+
+| State | React | Vue | Angular |
+| --- | --- | --- | --- |
+| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Invalid | Supported with `invalid={true}`; also associate visible error text. | Supported with `:invalid="true"`; also associate visible error text. | Supported with `[invalid]="true"`; also associate visible error text. |
+| Read-only | Supported with `readOnly={true}`; focus and value submission remain available while editing is blocked. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Disabled | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
+| Error | Set the invalid state and render a separate labeled error message; invalid styling alone is not an error description. | Set the invalid state and render a separate labeled error message; invalid styling alone is not an error description. | Set the invalid state and render a separate labeled error message; invalid styling alone is not an error description. |
+{/* component-supported-states:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
