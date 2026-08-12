@@ -134,7 +134,61 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* component-state-model:start */}
 ## State model
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**React**
+
+```tsx
+const initialValue = '';
+const [value, setValue] = useState(initialValue);
+const [resetKey, setResetKey] = useState(0);
+
+<Rating value={value} onValueChange={setValue}>…</Rating>
+<button onClick={() => setValue(initialValue)}>Reset controlled</button>
+<Rating key={resetKey} defaultValue={initialValue}>…</Rating>
+<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
+```
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Rating v-model="state">…</Rating>
+<button @click="state = initial">Reset controlled</button>
+<Rating :key="resetKey" :defaultValue="initial">…</Rating>
+<button @click="resetKey++">Reset uncontrolled</button>
+```
+
+**Angular**
+
+```ts
+initial = '';
+value = this.initial;
+reset() { this.value = this.initial; }
+```
+
+```html
+<simurgh-rating [(value)]="value">…</simurgh-rating>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
 
 Set `max` to change the scale, up to 100 items. Provide `getLabel` in React or Vue when labels such as “Excellent” should replace the default “4 of 5” wording. Angular exposes the same default item labels and announces the group through `aria-label`.
 

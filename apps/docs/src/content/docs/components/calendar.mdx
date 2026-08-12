@@ -128,7 +128,61 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* component-state-model:start */}
 ## State model
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `month` + `onMonthChange`. Uncontrolled: `defaultMonth`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.<br />Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`.<br />Controlled: `v-model:month` (`month` + `update:month`). Uncontrolled: `defaultMonth`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.<br />Controlled two-way binding: `[(month)]` (`month` + `monthChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**React**
+
+```tsx
+const initialMonth = '';
+const [month, setMonth] = useState(initialMonth);
+const [resetKey, setResetKey] = useState(0);
+
+<Calendar month={month} onMonthChange={setMonth}>…</Calendar>
+<button onClick={() => setMonth(initialMonth)}>Reset controlled</button>
+<Calendar key={resetKey} defaultMonth={initialMonth}>…</Calendar>
+<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
+```
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Calendar v-model="state">…</Calendar>
+<button @click="state = initial">Reset controlled</button>
+<Calendar :key="resetKey" :defaultValue="initial">…</Calendar>
+<button @click="resetKey++">Reset uncontrolled</button>
+```
+
+**Angular**
+
+```ts
+initial = '';
+value = this.initial;
+reset() { this.value = this.initial; }
+```
+
+```html
+<simurgh-calendar [(value)]="value">…</simurgh-calendar>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
 
 Arrow keys move by day or week; Home and End move within the week; Page Up and Page Down move by month. Use `min`, `max`, or `disabledDates` for unavailable dates. The component uses locale-aware spoken labels while keeping emitted and submitted values stable ISO dates.
 

@@ -119,7 +119,48 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* component-state-model:start */}
 ## State model
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `open` + `onOpenChange`. Uncontrolled: `defaultOpen`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model:open` (`open` + `update:open`). Uncontrolled: `defaultOpen`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | No public two-way state binding is exposed. |
+
+**React**
+
+```tsx
+const initialOpen = false;
+const [open, setOpen] = useState(initialOpen);
+const [resetKey, setResetKey] = useState(0);
+
+<Drawer open={open} onOpenChange={setOpen}>…</Drawer>
+<button onClick={() => setOpen(initialOpen)}>Reset controlled</button>
+<Drawer key={resetKey} defaultOpen={initialOpen}>…</Drawer>
+<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
+```
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = false;
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Drawer v-model:open="state">…</Drawer>
+<button @click="state = initial">Reset controlled</button>
+<Drawer :key="resetKey" :defaultOpen="initial">…</Drawer>
+<button @click="resetKey++">Reset uncontrolled</button>
+```
+{/* component-state-model:end */}
 
 Prefer Drawer for compact, touch-friendly tasks that fit within a partial viewport. Use Dialog for centered decisions and Sheet for full-height side panels. Drawer does not impose gesture handling, so applications can add drag behavior without changing its accessibility contract.
 

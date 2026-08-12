@@ -144,7 +144,35 @@ compound components depend on their documented parent/child nesting.
   </TabItem>
 </Tabs>
 
+{/* component-state-model:start */}
 ## State model
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | No public controlled/uncontrolled state pair is exposed. |
+| Vue | Controlled: `v-model:index` (`index` + `update:index`). Uncontrolled: `defaultIndex`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | No public two-way state binding is exposed. |
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Carousel v-model:index="state">…</Carousel>
+<button @click="state = initial">Reset controlled</button>
+<Carousel :key="resetKey" :defaultIndex="initial">…</Carousel>
+<button @click="resetKey++">Reset uncontrolled</button>
+```
+{/* component-state-model:end */}
 
 The carousel itself is focusable in Angular; in React and Vue, arrow events from focused controls bubble to the root. Supply concise slide content and avoid automatic advancement unless users can pause it.
 

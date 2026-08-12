@@ -382,6 +382,7 @@ conditionally
 conference
 configuration
 configurations
+configure
 configured
 confirm
 confirmation
@@ -904,6 +905,7 @@ inherits
 initial
 initial-focus
 initialization
+initialize
 initialized
 initializer
 initials
@@ -1274,6 +1276,7 @@ panel
 panels
 parameter
 parent
+parent-owned
 parity
 part
 partial
@@ -1440,6 +1443,7 @@ read
 readable
 readers
 reading
+reads
 real
 reapply
 reason
@@ -1901,6 +1905,7 @@ tuesday
 turns
 turquoise
 two
+two-way
 type
 typed
 types

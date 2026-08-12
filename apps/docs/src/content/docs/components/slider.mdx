@@ -88,7 +88,48 @@ compound components depend on their documented parent/child nesting.
 </TabItem>
 </Tabs>
 
+{/* component-state-model:start */}
 ## State model
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | No public controlled/uncontrolled state pair is exposed. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Slider v-model="state">…</Slider>
+<button @click="state = initial">Reset controlled</button>
+<Slider :key="resetKey" :defaultValue="initial">…</Slider>
+<button @click="resetKey++">Reset uncontrolled</button>
+```
+
+**Angular**
+
+```ts
+initial = '';
+value = this.initial;
+reset() { this.value = this.initial; }
+```
+
+```html
+<simurgh-slider [(value)]="value">…</simurgh-slider>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
 
 Always provide an accessible name through a visible label or `aria-label`. Native range inputs automatically support arrow, Home, End, pointer, and touch interaction.
 

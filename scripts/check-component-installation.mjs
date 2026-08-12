@@ -75,7 +75,9 @@ for (const component of registry.components) {
     'u',
   );
   const withoutSection = source.replace(pattern, '');
-  const importMatches = [...withoutSection.matchAll(/^import .+;$/gmu)];
+  const firstHeading = withoutSection.indexOf('\n## ');
+  const preamble = firstHeading < 0 ? withoutSection : withoutSection.slice(0, firstHeading);
+  const importMatches = [...preamble.matchAll(/^import .+;$/gmu)];
   const insertion = importMatches.at(-1)?.index;
   if (insertion === undefined) {
     failures.push(`${component}: page has no MDX import insertion point`);

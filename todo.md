@@ -218,7 +218,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 ### P1: props, state, and real usage
 
-- [ ] Add controlled and uncontrolled examples for all stateful controls, including the exact
+- [x] Add controlled and uncontrolled examples for all stateful controls, including the exact
       value/change APIs in each framework and guidance for resetting state.
 - [ ] Add form examples for every form-capable component: field name, initial value, disabled,
       required, validation/error state, submission value, and framework form integration.
