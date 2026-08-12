@@ -278,6 +278,8 @@ per-component documentation" as example coverage, not as complete consumer docum
       code blocks as unverified text.
 - [ ] Add link checking, heading/anchor checking, spelling, and package-export validation to the docs
       build.
+  - [x] Validate internal links, heading anchors, public downloads, and documented package exports.
+  - [ ] Add offline spelling validation with a project terminology dictionary.
 - [ ] Add browser tests for framework tabs, copy buttons, component previews, mobile navigation,
       dark mode, RTL, and keyboard-only reading flows.
 - [ ] Give every page a last-verified version/source marker and require documentation changes for
