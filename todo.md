@@ -214,7 +214,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       source-copy installation and package consumption.
 - [x] Explain the actual distribution model clearly: when users own copied source, when they import
       `@simurgh-ui/*`, which dependencies are installed, and how registry updates/diffs work.
-- [ ] Replace all mojibake still visible in consumer docs and add a UTF-8/mojibake check to CI.
+- [x] Replace all mojibake still visible in consumer docs and add a UTF-8/mojibake check to CI.
 
 ### P1: props, state, and real usage
 
