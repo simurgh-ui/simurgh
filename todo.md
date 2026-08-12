@@ -248,7 +248,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       forwarded attributes for wrapper components.
 - [ ] Document sizing, density, variants, icons, responsive behavior, animation, reduced motion,
       dark mode, and RTL customization where relevant.
-- [ ] Explain CSS import order, cascade layers/specificity, global reset assumptions, Tailwind use,
+- [x] Explain CSS import order, cascade layers/specificity, global reset assumptions, Tailwind use,
       and how to avoid duplicate token imports.
 - [ ] Add a custom-theme example with a complete light/dark token set and automated contrast checks.
 

@@ -19,6 +19,72 @@ Each component stylesheet also includes the shared tokens. An application that i
 `@simurgh-ui/styles/button.css` does not need a second token import. CLI consumers should load the
 copied `src/styles/simurgh/tokens.css` file from the application's global stylesheet entry.
 
+## CSS composition and import order
+
+Load CSS in this order:
+
+1. The application reset or framework base layer.
+2. Simurgh tokens and component recipes.
+3. Application token, recipe, and utility overrides.
+
+```css
+@import './reset.css';
+@import '@simurgh-ui/styles/dialog.css';
+@import './theme.css';
+@import './component-overrides.css';
+```
+
+Simurgh does not ship a global reset and does not normalize every native element. The consuming
+application remains responsible for global `box-sizing`, typography inheritance, body margin, and
+other reset policy. Inspect native controls when switching between resets because browser defaults
+can remain visible on components with deliberately minimal recipes.
+
+Simurgh styles do not currently declare CSS cascade layers. Their normal selectors participate in
+the unlayered author cascade. If an application uses layers, place the imports into an explicit
+project layer and keep application overrides in a later layer:
+
+```css
+@layer reset, vendor, app;
+
+@import './reset.css' layer(reset);
+@import '@simurgh-ui/styles/dialog.css' layer(vendor);
+
+@layer app {
+  .simurgh-dialog {
+    padding: 1.5rem;
+  }
+}
+```
+
+Use source order and intentional layers before increasing selector specificity or adding
+`!important`. Component recipes generally use single classes and documented state attributes so an
+application rule in the same layer and later source order can override them predictably.
+
+### Avoid redundant token imports
+
+Choose one of these patterns per CSS entry:
+
+- Import only the component stylesheets in use; each one includes `tokens.css`.
+- Import `tokens.css` alone for fully headless components or application code that consumes tokens
+  without recipes.
+- Import `all.css` once when the application deliberately needs the complete recipe catalog.
+
+Do not import `tokens.css`, `recipes.css`, `all.css`, and component stylesheets together by default.
+That repeats declarations and makes source order harder to understand. Build tools may deduplicate
+identical imports, but the application should not depend on tool-specific deduplication for correct
+cascade behavior.
+
+### Tailwind
+
+Tailwind is optional; Simurgh requires no Tailwind plugin or preset. Put Simurgh CSS in the project's
+vendor/component layer and application utilities in the intended later layer. Tailwind versions and
+project configurations differ in how generated utilities are layered, so confirm the built CSS
+order rather than assuming a utility always wins.
+
+Use semantic tokens for application-wide brand decisions and utilities for local layout or
+composition. When a utility repeatedly fights a recipe selector, prefer a documented recipe or
+token override instead of escalating specificity at every call site.
+
 ## Semantic token reference
 
 Color values are HSL channels rather than complete color functions. Use them as
