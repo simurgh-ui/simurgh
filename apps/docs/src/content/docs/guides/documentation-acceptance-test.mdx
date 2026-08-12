@@ -1,0 +1,110 @@
+---
+title: Documentation acceptance test
+description: Reproduce the final reader journey for installation, theming, forms, overlays, events, copied-source updates, and framework switching.
+---
+
+This acceptance test evaluates the documentation as a reader would use it. Start from an existing
+framework application without reading Simurgh source. Follow only linked published pages, record the
+commands and observations, and fail the run when a required step needs undocumented knowledge.
+
+## Test setup
+
+Run the journey once in React, Vue, and Angular. Use supported framework versions from the
+[compatibility matrix](/guides/compatibility/), a clean working tree, keyboard access, and a browser
+with developer tools. Use package consumption for tasks 1–5 and a separate disposable application
+for the copied-source task.
+
+Record the framework and Simurgh versions, package manager, browser, operating system, viewport,
+color scheme, text direction, reduced-motion preference, and test date. Pin exact package versions
+so another reader can reproduce the result.
+
+## 1. Install one component
+
+Follow [Installation](/guides/installation/) and the Button page. Install the active adapter and
+styles package, import Button from its component subpath, import `button.css`, and render a named
+button.
+
+Pass when the application production build resolves both JavaScript and CSS, the button is keyboard
+focusable, and pressing Enter or Space activates it once. Fail for an undocumented dependency,
+aggregate-only import, missing recipe, or inaccessible name.
+
+## 2. Customize its theme
+
+Follow [Theming](/guides/theming/). Override semantic primary, foreground, focus-ring, radius, and
+duration tokens after the recipe import. Activate light and dark modes with the documented selectors,
+then repeat in RTL and reduced motion.
+
+Pass when the override wins without `!important`, focus remains visible, text contrast remains
+acceptable in both themes, logical layout follows direction, and reduced motion removes nonessential
+movement. Record contrast measurements and screenshots with the result.
+
+## 3. Build and submit a form
+
+Use the Form, Field, Label, Input, Checkbox, and Button pages. Build a labeled account form with one
+required text value and one optional checkbox. Submit invalid and valid data and inspect the resulting
+`FormData`.
+
+Pass when errors are associated and announced, the first invalid control can receive focus, valid
+named controls submit the documented values, disabled controls are omitted, and a loading submit
+button prevents duplicate activation. Test keyboard-only operation and browser validation behavior.
+
+## 4. Open an overlay
+
+Follow the Dialog page and [Overlay focus](/guides/overlay-focus/). Open a Dialog from a trigger,
+move through its controls, dismiss it with Escape and its close control, and repeat after scrolling.
+
+Pass when focus enters the dialog, stays within the modal interaction, Escape closes it, focus
+returns to the trigger, the background is not operable while modal, and the surface remains usable
+at a narrow viewport and 200% zoom. Repeat in RTL, dark mode, and reduced motion.
+
+## 5. Handle an event
+
+Use the Checkbox page and its framework API table. Listen for the documented change contract, store
+the next value in application state, display that value in a live status region, and toggle by mouse
+and keyboard.
+
+Pass when React's callback, Vue's emitted update, or Angular's output fires once per activation with
+the documented value; controlled state stays synchronized; and the status is exposed without moving
+focus. Switching framework tabs must reveal an equivalent framework-native event example.
+
+## 6. Update a copied component
+
+Follow [Updates and migrations](/guides/updates-and-migrations/). In a disposable application, run
+CLI initialization, add Dialog, make an identifiable local class customization, and commit or back
+up the file. Run `diff`, generate the newer source separately, perform the documented three-way
+review, and preserve the customization while adopting upstream behavior.
+
+Pass when `diff` reports the intentional difference, the original edit remains recoverable,
+overwrite is never used without an inspected backup, accessibility and keyboard behavior are
+retested, and the adopted registry version is recorded only after review.
+
+## Framework-switch checkpoint
+
+After each task, switch the documentation tabs from React to Vue to Angular. Verify that imports,
+props or inputs, events or outputs, content syntax, and native-attribute behavior use that framework's
+conventions while preserving the same user-visible and accessibility outcome. Fail any tab that
+silently relies on syntax or APIs from another adapter.
+
+## Recorded acceptance result
+
+The repository run on 2026-08-12 recorded the following evidence. CI evidence confirms that package
+entry points, styles, declarations, and documented fences build; the manual column remains the
+required browser/user observation and must be rerun for a release candidate.
+
+| Task | CI evidence | Manual evidence required | Result |
+| --- | --- | --- | --- |
+| Install one component | React, Vue, and Angular package quick starts bundle JavaScript and recipe CSS. | Keyboard activation and accessible name. | CI pass; manual release check required. |
+| Customize its theme | Complete light/dark theme tokens and 20 contrast pairings are validated. | Visual focus, screenshots, RTL, zoom, and reduced motion. | CI pass; manual release check required. |
+| Build a form | Adapter contracts and documented examples compile; form documentation is required for 18 controls. | Submission values, announcements, focus, and duplicate prevention. | CI pass; manual release check required. |
+| Open an overlay | Adapter contracts, examples, and documentation browser tests cover overlay guidance. | Focus containment/restoration, scroll, zoom, and narrow viewport. | CI pass; manual release check required. |
+| Handle an event | Generated API tables and examples validate callback, emit, and output declarations. | One event per pointer/keyboard activation and live status behavior. | CI pass; manual release check required. |
+| Update copied source | CLI tests cover init, add, diff, preservation, and overwrite behavior. | Three-way review quality and retained local customization. | CI pass; manual release check required. |
+| Switch frameworks | Every component page has parity documentation and compiled adapter examples. | Reader comprehension and equivalent task outcome in all adapters. | CI pass; manual release check required. |
+
+Do not convert “manual release check required” to a pass without recording the environment and
+observations. A fully green CI run is necessary but is not evidence that focus, contrast perception,
+screen-reader announcements, or reader comprehension were manually observed.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

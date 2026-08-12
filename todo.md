@@ -286,3 +286,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       public API changes in the pull-request checklist.
 - [ ] Run a final task-based user test: install one component, customize its theme, build a form,
       open an overlay, handle an event, and update a copied component using only the published docs.
+  - [x] Publish the reproducible acceptance protocol and validate its automated package, CLI, API,
+        example-compilation, contrast, and documentation-integrity evidence.
+  - [ ] Record the manual keyboard, focus, zoom, RTL, reduced-motion, contrast, and reader-observation
+        evidence for React, Vue, and Angular release-candidate applications.

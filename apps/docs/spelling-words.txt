@@ -4,6 +4,7 @@ absent
 accent
 accept
 acceptable
+acceptance
 accepted
 accepting
 accepts
@@ -52,6 +53,7 @@ afterward
 again
 against
 aggregate
+aggregate-only
 aggregates
 ago
 al
@@ -81,6 +83,7 @@ anchored
 anchors
 and
 angular
+angular's
 animation
 announce
 announced
@@ -163,6 +166,7 @@ away
 back
 background
 backspace
+backup
 backward
 badge
 badges
@@ -264,6 +268,7 @@ callers
 can
 cancel
 cancellation
+candidate
 cannot
 canvas
 capability
@@ -300,6 +305,7 @@ checked
 checking
 checklist
 checkmarks
+checkpoint
 checks
 child
 children
@@ -352,6 +358,7 @@ collects
 collision-aware
 color
 colors
+column
 combination
 combine
 combined
@@ -374,6 +381,7 @@ compares
 compatibility
 compatible
 compilation
+compile
 compiled
 complement
 complementary
@@ -397,6 +405,7 @@ composite
 composition
 compound
 compound-component
+comprehension
 concepts
 concern
 concise
@@ -410,6 +419,7 @@ configured
 confirm
 confirmation
 confirming
+confirms
 conflict
 conflicts
 connect
@@ -457,6 +467,7 @@ controls
 convenience
 convenient
 conventions
+convert
 conveys
 cookies
 coordinate
@@ -565,12 +576,14 @@ detects
 determinate
 determined
 deterministic
+developer
 development
 development-only
 device
 dialog
 dialog's
 dialogs
+diff
 differ
 difference
 differences
@@ -660,6 +673,7 @@ elements
 elevation
 email
 embedded
+emit
 emits
 emitted
 emphasis
@@ -690,6 +704,7 @@ escape
 especially
 essential
 establish
+evaluates
 even
 evenly
 event
@@ -738,6 +753,7 @@ extend
 external
 extra
 fades
+fail
 failed
 fails
 failure
@@ -752,6 +768,7 @@ faster
 features
 feedback
 feel
+fences
 ferdowsi
 fetched
 fetching
@@ -773,6 +790,7 @@ find-in-page
 finishes
 fire
 firefox
+fires
 first
 first-day
 firuzeh
@@ -799,6 +817,7 @@ focuses
 focusing
 follow
 follow-up
+following
 follows
 for
 forced
@@ -824,8 +843,10 @@ framework-level
 framework-native
 framework-neutral
 framework-specific
+framework-switch
 framework-version
 framework's
+frameworks
 free
 from
 frozen
@@ -850,6 +871,7 @@ glaze
 glazing
 global
 graph
+green
 grid
 grounded
 group
@@ -911,6 +933,7 @@ icon-only
 icons
 id
 identical
+identifiable
 identified
 identify
 identity
@@ -936,6 +959,7 @@ imports
 impose
 imposing
 in
+inaccessible
 include
 includes
 including
@@ -955,6 +979,7 @@ inheritance
 inherited
 inherited-attributes
 inherits
+init
 initial
 initial-focus
 initialization
@@ -968,6 +993,7 @@ input
 inputs
 inside
 inspect
+inspected
 inspecting
 install
 installation
@@ -1029,9 +1055,11 @@ keeps
 key
 keyboard
 keyboard-navigable
+keyboard-only
 keyboards
 keys
 khayyam
+knowledge
 known
 label
 labeled
@@ -1075,6 +1103,7 @@ lint
 list
 listbox
 listed
+listen
 listeners
 listitem
 lists
@@ -1119,6 +1148,7 @@ manager
 managers
 manages
 manifest
+manual
 manually
 mapping
 mappings
@@ -1193,6 +1223,7 @@ motion
 mount
 mounted
 mounts
+mouse
 move
 moved
 movement
@@ -1267,6 +1298,9 @@ numeric
 object
 objects
 observable
+observation
+observations
+observed
 occur
 occurs
 ochre
@@ -1293,6 +1327,7 @@ opened
 opener
 opening
 opens
+operable
 operating
 operation
 opt-in
@@ -1313,6 +1348,7 @@ others
 otherwise
 otp
 out
+outcome
 output
 outputs
 outside
@@ -1377,6 +1413,8 @@ per
 per-component
 perceivable
 percentages
+perception
+perform
 period
 permits
 persian
@@ -1406,6 +1444,7 @@ pnpm
 poet
 pointer
 pointer-adjustable
+points
 policy
 polite
 politely
@@ -1436,6 +1475,7 @@ present
 presentation
 presenting
 presents
+preservation
 preserve
 preserved
 preserves
@@ -1443,8 +1483,10 @@ preserving
 preset
 press
 pressed
+pressing
 prevent
 preventing
+prevention
 prevents
 preview
 previewing
@@ -1520,6 +1562,7 @@ reactive
 read
 read-only
 readable
+reader
 readers
 reading
 reads
@@ -1538,6 +1581,7 @@ recommended
 reconcile
 record
 recorded
+recording
 records
 recoverable
 recovery
@@ -1567,6 +1611,7 @@ released
 releases
 relevant
 reliable
+relies
 relying
 remain
 remaining
@@ -1606,6 +1651,7 @@ repository
 represent
 represented
 represents
+reproduce
 reproduces
 reproducing
 reproduction
@@ -1618,6 +1664,7 @@ requirement
 requirements
 requires
 requiring
+rerun
 reserve
 reserves
 reserving
@@ -1626,6 +1673,7 @@ resets
 resizable
 resize
 resolve
+resolves
 resolving
 resource
 respond
@@ -1639,9 +1687,12 @@ restores
 restrained
 restyling
 result
+resulting
 results
 retain
+retained
 retaining
+retested
 retries
 return
 returns
@@ -1698,11 +1749,13 @@ saving
 scalar
 scale
 scenarios
+scheme
 scope
 score
 screen
 screen-reader
 screens
+screenshots
 script
 scroll
 scrollbar
@@ -1747,6 +1800,7 @@ set
 sets
 setting
 settings
+setup
 seven
 several
 shadow
@@ -1851,6 +1905,7 @@ still
 stop
 stops
 storage
+store
 stored
 string
 strong
@@ -1907,6 +1962,7 @@ symbol
 symbol-for-symbol
 symbols
 synchronized
+syntax
 system
 system's
 tab
@@ -2072,6 +2128,7 @@ upstream
 urgent
 url
 usability
+usable
 usage
 use
 used

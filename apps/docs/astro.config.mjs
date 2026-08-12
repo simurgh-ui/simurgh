@@ -34,6 +34,10 @@ export default defineConfig({
             },
             { label: 'Versioning and stability', slug: 'guides/versioning' },
             { label: 'Troubleshooting', slug: 'guides/troubleshooting' },
+            {
+              label: 'Documentation acceptance test',
+              slug: 'guides/documentation-acceptance-test',
+            },
           ],
         },
         {
