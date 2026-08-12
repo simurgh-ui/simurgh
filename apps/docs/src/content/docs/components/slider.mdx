@@ -260,6 +260,78 @@ These differences are intentional adapter design. Behavioral or accessibility di
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
+{/* component-form:start */}
+### Form integration
+
+Use `name="volume"` to serialize the current value under the documented field name. The examples initialize the field, keep its
+value application-owned, forward `disabled` and `required`, render an accessible error, and read
+the browser submission payload. Set `invalid` when validation fails; it communicates visual/ARIA state but does not replace an error message.
+
+#### React
+
+```tsx
+const initial = 50;
+const [value, setValue] = useState(initial);
+const [errors, setErrors] = useState<Record<string, string>>({});
+
+<form onSubmit={(event) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  // Submit data.get('volume').
+}}>
+  <Slider name="volume" value={value} onChange={(event) => setValue(event.currentTarget.valueAsNumber)}
+    required disabled={isDisabled} invalid={Boolean(errors.volume)} />
+  {errors.volume && <p role="alert">{errors.volume}</p>}
+  <button type="submit">Submit</button>
+</form>
+```
+
+#### Vue
+
+```vue
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
+const initial = 50;
+const value = ref(initial);
+const errors = reactive<Record<string, string>>({});
+function submit(event: Event) {
+  const data = new FormData(event.currentTarget as HTMLFormElement);
+  // Submit data.get('volume').
+}
+</script>
+
+<form @submit.prevent="submit">
+  <Slider v-model="value" name="volume" required :disabled="isDisabled" :invalid="Boolean(errors.volume)"></Slider>
+  <p v-if="errors.volume" role="alert">{{ errors.volume }}</p>
+  <button type="submit">Submit</button>
+</form>
+```
+
+#### Angular
+
+```ts
+initial = 50;
+value = this.initial;
+errors: Record<string, string> = {};
+submit(form: HTMLFormElement) {
+  const data = new FormData(form);
+  // Submit data.get('volume').
+}
+```
+
+```html
+<form #form (submit)="submit(form); $event.preventDefault()">
+  <simurgh-slider [(value)]="value" name="volume" required [disabled]="isDisabled" [invalid]="!!errors.volume"></simurgh-slider>
+  <p *ngIf="errors.volume" role="alert">{{ errors.volume }}</p>
+  <button type="submit">Submit</button>
+</form>
+```
+
+For Angular reactive or template-driven forms, bridge the documented `value`/`valueChange` pair
+to your form control. The component does not implement `ControlValueAccessor`; update disabled and
+validation state from the Angular form explicitly.
+{/* component-form:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

@@ -251,6 +251,78 @@ These differences are intentional adapter design. Behavioral or accessibility di
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
+{/* component-form:start */}
+### Form integration
+
+Use `name="attachments"` to serialize selected `File` objects using multipart form data. The examples initialize the field, keep its
+value application-owned, forward `disabled` and `required`, render an accessible error, and read
+the browser submission payload. This component has no public `invalid` prop; announce validation errors next to the labeled control and use native validity where available.
+
+#### React
+
+```tsx
+const initial = [];
+const [files, setFiles] = useState(initial);
+const [errors, setErrors] = useState<Record<string, string>>({});
+
+<form onSubmit={(event) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  // Submit data.get('attachments').
+}}>
+  <FileUpload name="attachments" onFilesChange={setFiles}
+    required disabled={isDisabled} />
+  {errors.attachments && <p role="alert">{errors.attachments}</p>}
+  <button type="submit">Submit</button>
+</form>
+```
+
+#### Vue
+
+```vue
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
+const initial = [];
+const value = ref(initial);
+const errors = reactive<Record<string, string>>({});
+function submit(event: Event) {
+  const data = new FormData(event.currentTarget as HTMLFormElement);
+  // Submit data.get('attachments').
+}
+</script>
+
+<form @submit.prevent="submit">
+  <FileUpload @files-change="value = $event" name="attachments" required :disabled="isDisabled"></FileUpload>
+  <p v-if="errors.attachments" role="alert">{{ errors.attachments }}</p>
+  <button type="submit">Submit</button>
+</form>
+```
+
+#### Angular
+
+```ts
+initial = [];
+files = this.initial;
+errors: Record<string, string> = {};
+submit(form: HTMLFormElement) {
+  const data = new FormData(form);
+  // Submit data.get('attachments').
+}
+```
+
+```html
+<form #form (submit)="submit(form); $event.preventDefault()">
+  <simurgh-file-upload (filesChange)="files = $event" name="attachments" required [disabled]="isDisabled"></simurgh-file-upload>
+  <p *ngIf="errors.attachments" role="alert">{{ errors.attachments }}</p>
+  <button type="submit">Submit</button>
+</form>
+```
+
+For Angular reactive or template-driven forms, bridge the documented `value`/`valueChange` pair
+to your form control. The component does not implement `ControlValueAccessor`; update disabled and
+validation state from the Angular form explicitly.
+{/* component-form:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

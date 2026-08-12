@@ -220,7 +220,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 - [x] Add controlled and uncontrolled examples for all stateful controls, including the exact
       value/change APIs in each framework and guidance for resetting state.
-- [ ] Add form examples for every form-capable component: field name, initial value, disabled,
+- [x] Add form examples for every form-capable component: field name, initial value, disabled,
       required, validation/error state, submission value, and framework form integration.
 - [ ] Document loading, empty, invalid, read-only, disabled, and error states wherever supported;
       explicitly say when a state is not supported.

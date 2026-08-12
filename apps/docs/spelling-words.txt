@@ -206,6 +206,7 @@ breadcrumb
 break
 breaking
 brick
+bridge
 brief
 brittle
 broad
@@ -280,6 +281,7 @@ characters
 check
 checkbox
 checkbox's
+checked
 checking
 checklist
 checks
@@ -423,6 +425,7 @@ contract
 contracts
 contrast
 contrasts
+contribute
 contributes
 control
 control's
@@ -698,6 +701,7 @@ extend
 external
 extra
 failed
+fails
 failures
 fall
 fallback
@@ -978,6 +982,7 @@ keys
 khayyam
 known
 label
+labeled
 labeling
 labelled
 labelling
@@ -1137,6 +1142,7 @@ movement
 moves
 moving
 multiline
+multipart
 multiple
 must
 mutually
@@ -1197,6 +1203,7 @@ number
 numbers
 numeric
 object
+objects
 observable
 occur
 occurs
@@ -1597,6 +1604,7 @@ safer
 saffron
 same
 same-looking
+same-name
 save
 saved
 saving
@@ -1819,6 +1827,7 @@ technology
 tehran
 teleport
 template
+template-driven
 template's
 temporary
 test
@@ -1917,6 +1926,7 @@ ui
 ultramarine
 unavailable
 unchanged
+unchecked
 uncontrolled
 undeclared
 under
@@ -1966,6 +1976,7 @@ valid
 validate
 validates
 validation
+validity
 valleys
 value
 values
