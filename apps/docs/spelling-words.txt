@@ -1056,6 +1056,7 @@ matching
 mathematician
 matrix
 matter
+max
 maximum
 may
 meaning
@@ -1164,6 +1165,7 @@ non-interactive
 non-modal
 non-numeric
 non-zero
+none
 nonessential
 nonmodal
 normal
@@ -1709,6 +1711,7 @@ start
 starts
 state
 state-consistency
+stated
 states
 static
 status
@@ -1720,6 +1723,7 @@ stop
 stops
 storage
 stored
+string
 strong
 stronger
 structure
@@ -1885,6 +1889,7 @@ ultramarine
 unavailable
 unchanged
 uncontrolled
+undeclared
 under
 underline
 understand
@@ -1955,6 +1960,7 @@ visual
 visually
 volume
 vue
+vue's
 want
 wants
 warrants

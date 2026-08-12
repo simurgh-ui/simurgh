@@ -119,6 +119,34 @@ Complete props type: `CheckProps`.
 | `value` | `string` | `undefined` |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Switch`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `modelValue` | `boolean` | `false` |
+| `defaultChecked` | `boolean` | `false` |
+| `name` | `string` | `undefined` |
+| `value` | `string` | `'on'` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+
+| Event | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+
+Slots: `default`.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

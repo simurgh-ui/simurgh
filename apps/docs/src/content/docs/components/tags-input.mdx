@@ -152,6 +152,38 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLInputE
 Exported type: `Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" \| "onChange"> & { value?: string[]; defaultValue?: string[]; name?: string; disabled?: boolean; readOnly?: boolean; required?: boolean; maxTags?: number; placeholder?: string; inputLabel?: string; getRemoveLabel?: (tag: string) => string; onValueChange?: (value: string[]) => void; }`.
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `TagsInput`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `modelValue` | `string[]` | `undefined` |
+| `defaultValue` | `string[]` | `() => []` |
+| `name` | `string` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `readonly` | `boolean` | `false` |
+| `required` | `boolean` | `false` |
+| `maxTags` | `number` | `20` |
+| `placeholder` | `string` | `'Add a tag'` |
+| `inputLabel` | `string` | `'Add a tag'` |
+| `getRemoveLabel` | `(tag: string) => string` | `` (tag: string) => `Remove ${tag}` `` |
+
+| Event | Payload |
+| --- | --- |
+| `update:modelValue` | `string[]` |
+
+Slots: none.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

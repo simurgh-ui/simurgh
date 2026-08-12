@@ -202,7 +202,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       React, Vue, and Angular; do not show unimported component snippets.
 - [x] Document every public React prop, callback, ref, default value, inherited native attribute,
       and controlled/uncontrolled pair from the exported TypeScript API.
-- [ ] Document every public Vue prop, emitted event, slot, exposed method, default value, and
+- [x] Document every public Vue prop, emitted event, slot, exposed method, default value, and
       inherited attribute from the exported TypeScript API.
 - [ ] Document every public Angular input, output, content slot/directive, public method, default
       value, and host/native attribute behavior from the exported TypeScript API.

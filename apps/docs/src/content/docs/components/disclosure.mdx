@@ -156,6 +156,54 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivEle
 | `ref` | `Ref<HTMLDivElement> \| undefined` | `undefined` |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Disclosure`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `modelValue` | `boolean` | `undefined` |
+| `defaultOpen` | `boolean` | `false` |
+
+| Event | Payload |
+| --- | --- |
+| `update:modelValue` | `boolean` |
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `DisclosureSummary`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `DisclosureContent`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

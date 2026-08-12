@@ -126,6 +126,35 @@ Inherited attributes: `SelectHTMLAttributes<HTMLSelectElement> & RefAttributes<H
 | `ref` | `Ref<HTMLSelectElement> \| undefined` | `undefined` |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `NativeSelect`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `modelValue` | `[String, Number]` | `''` |
+| `name` | `string` | `undefined` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `invalid` | `boolean` | `false` |
+| `multiple` | `boolean` | `false` |
+
+| Event | Payload |
+| --- | --- |
+| `update:modelValue` | `string \| string[]` |
+| `change` | `Event` |
+
+Slots: `default`.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

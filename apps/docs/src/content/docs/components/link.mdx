@@ -128,6 +128,31 @@ Inherited attributes: `AnchorHTMLAttributes<HTMLAnchorElement> & RefAttributes<H
 | `ref` | `Ref<HTMLAnchorElement> \| undefined` | `undefined` |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Link`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `href` | `string` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `external` | `boolean` | `false` |
+| `rel` | `string` | `undefined` |
+| `target` | `string` | `undefined` |
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

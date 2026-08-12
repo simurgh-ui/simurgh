@@ -149,6 +149,44 @@ Complete props type: `DatePickerProps`.
 Exported type: `CalendarProps & { placeholder?: string; required?: boolean; disabled?: boolean; }`.
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `DatePicker`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `modelValue` | `string` | `undefined` |
+| `defaultValue` | `string` | `''` |
+| `month` | `string` | `undefined` |
+| `defaultMonth` | `string` | `undefined` |
+| `locale` | `string` | `'en'` |
+| `direction` | `Direction` | `'ltr'` |
+| `firstDayOfWeek` | `number` | `0` |
+| `min` | `string` | `undefined` |
+| `max` | `string` | `undefined` |
+| `disabledDates` | `string[]` | `() => []` |
+| `name` | `string` | `undefined` |
+| `label` | `string` | `'Date picker calendar'` |
+| `placeholder` | `string` | `'Pick a date'` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+
+| Event | Payload |
+| --- | --- |
+| `update:modelValue` | `string` |
+| `update:month` | `string` |
+
+Slots: none.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

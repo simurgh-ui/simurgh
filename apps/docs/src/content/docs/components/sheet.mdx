@@ -210,6 +210,96 @@ Inherited attributes: `ButtonHTMLAttributes<HTMLButtonElement> & RefAttributes<H
 Exported type: `"top" \| "right" \| "bottom" \| "left"`.
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Sheet`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `open` | `boolean` | `undefined` |
+| `defaultOpen` | `boolean` | `false` |
+
+| Event | Payload |
+| --- | --- |
+| `update:open` | `boolean` |
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `SheetTrigger`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `SheetContent`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `side` | `SheetSide` | `'right'` |
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `SheetTitle`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `SheetDescription`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `SheetClose`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `SheetSide`
+
+Exported type: `"top" \| "right" \| "bottom" \| "left"`.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

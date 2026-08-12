@@ -180,6 +180,65 @@ Inherited attributes: `AnchorHTMLAttributes<HTMLAnchorElement> & RefAttributes<H
 | `ref` | `Ref<HTMLAnchorElement> \| undefined` | `undefined` |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Pagination`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `label` | `string` | `'Pagination'` |
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `PaginationContent`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `PaginationItem`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `PaginationLink`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `current` | `boolean` | `false` |
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

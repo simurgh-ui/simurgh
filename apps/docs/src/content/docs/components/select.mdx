@@ -124,6 +124,34 @@ Complete props type: `{ options: SelectOption[]; name?: string; value?: string; 
 | `value` | `string` | `undefined` |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Select`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `modelValue` | `string` | `''` |
+| `options` | `SelectOption[]` | Required |
+| `name` | `string` | `undefined` |
+| `required` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `placeholder` | `string` | `'Select…'` |
+
+| Event | Payload |
+| --- | --- |
+| `update:modelValue` | `string` |
+
+Slots: none.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

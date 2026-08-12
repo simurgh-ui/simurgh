@@ -128,6 +128,27 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivEle
 | `urgent` | `boolean` | `false` |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Alert`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `urgent` | `boolean` | `false` |
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

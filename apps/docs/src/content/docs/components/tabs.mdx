@@ -167,6 +167,72 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement>`.
 | `value` | `string` | Required |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Tabs`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `modelValue` | `string` | `''` |
+| `defaultValue` | `string` | `''` |
+| `orientation` | `Orientation` | `'horizontal'` |
+| `direction` | `Direction` | `'ltr'` |
+
+| Event | Payload |
+| --- | --- |
+| `update:modelValue` | `string` |
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `TabsList`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `TabsTrigger`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `string` | Required |
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `TabsContent`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `value` | `string` | Required |
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

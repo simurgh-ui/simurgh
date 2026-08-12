@@ -177,6 +177,35 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivEle
 Exported type: `Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" \| "onChange"> & { value?: number; defaultValue?: number; max?: number; name?: string; disabled?: boolean; required?: boolean; onValueChange?: (value: number) => void; getLabel?: (value: number, max: number) => string; }`.
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `Rating`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `modelValue` | `number` | `undefined` |
+| `defaultValue` | `number` | `0` |
+| `max` | `number` | `5` |
+| `name` | `string` | `undefined` |
+| `disabled` | `boolean` | `false` |
+| `required` | `boolean` | `false` |
+| `getLabel` | `(value: number, max: number) => string` | `` (value: number, max: number) => `${value} of ${max}` `` |
+
+| Event | Payload |
+| --- | --- |
+| `update:modelValue` | `number` |
+
+Slots: none.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad

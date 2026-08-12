@@ -167,6 +167,70 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement>`.
 | `onSelect` | `ReactEventHandler<HTMLDivElement> & (() => void)` | `undefined` |
 {/* react-api:end */}
 
+{/* vue-api:start */}
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `DropdownMenu`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `open` | `boolean` | `undefined` |
+| `defaultOpen` | `boolean` | `false` |
+
+| Event | Payload |
+| --- | --- |
+| `update:open` | `boolean` |
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `DropdownMenuTrigger`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `DropdownMenuContent`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `DropdownMenuItem`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `disabled` | `boolean` | `false` |
+
+| Event | Payload |
+| --- | --- |
+| `select` | `none` |
+
+Slots: `default`.
+
+Exposed methods: none.
+{/* vue-api:end */}
+
 ## Customization
 
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
