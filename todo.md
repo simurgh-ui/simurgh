@@ -244,7 +244,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       ARIA/state selectors, CSS custom properties, and stable DOM parts that consumers may target.
 - [x] Show three customization levels: semantic token overrides, recipe/class overrides, and fully
       headless styling without recipe CSS.
-- [ ] Add per-framework class/style forwarding examples and clarify which element receives
+- [x] Add per-framework class/style forwarding examples and clarify which element receives
       forwarded attributes for wrapper components.
 - [ ] Document sizing, density, variants, icons, responsive behavior, animation, reduced motion,
       dark mode, and RTL customization where relevant.

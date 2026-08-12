@@ -161,6 +161,82 @@ Use `@ViewChild(ComponentClass)` only for documented public component methods. R
 component to an undocumented internal native element creates a brittle ref contract; wrap or edit
 CLI-owned source when the application genuinely requires a new public focus method.
 
+## Class, style, and native-attribute forwarding
+
+Forwarding follows each framework's component model; the same-looking template attribute may land
+on a different DOM element.
+
+### React
+
+React primitives that extend native attributes spread them onto the element named by their API.
+Button forwards `className`, `style`, `data-*`, ARIA attributes, native events, and its ref to the
+rendered `<button>`:
+
+```tsx
+<Button
+  ref={buttonRef}
+  className="save-button"
+  style={{ minInlineSize: '10rem' }}
+  aria-describedby="save-help"
+  data-analytics="save"
+>
+  Save changes
+</Button>
+```
+
+Compound components forward attributes per part, not through the root. For example,
+`DialogContent` attributes reach the dialog content element, while `DialogOverlay` attributes reach
+the overlay. Put a class on the exact part that owns the visual surface.
+
+### Vue
+
+Button disables automatic fallthrough and deliberately spreads `$attrs` onto its internal native
+`<button>`, so class, style, ARIA, data attributes, and listeners reach that button:
+
+```vue
+<Button
+  class="save-button"
+  :style="{ minInlineSize: '10rem' }"
+  aria-describedby="save-help"
+  data-analytics="save"
+>
+  Save changes
+</Button>
+```
+
+Other Vue components may have a wrapper root. Select, for example, renders a root `<div>`, so
+fallthrough attributes passed to `<Select>` land on that container rather than its internal
+combobox trigger. Use documented props for control state and accessible naming. When writing a
+wrapper, use `inheritAttrs: false` plus `v-bind="$attrs"` only on the child or part that should own
+those attributes; do not forward one ID or accessible name to multiple elements.
+
+### Angular
+
+Normal class, style, ARIA, and data attributes on an Angular component selector belong to the custom
+element host. Button's documented `type`, `loading`, and `disabled` inputs are forwarded by its
+template to the internal native `<button>`, but an arbitrary host class or style is not:
+
+```html
+<simurgh-button
+  class="save-button-host"
+  style="display: inline-block"
+  type="submit"
+  [loading]="saving"
+>
+  Save changes
+</simurgh-button>
+```
+
+Here, class and style affect `<simurgh-button>`; `type` and `loading` affect its internal `<button>`.
+Do not assume a host `aria-label` is transferred to the internal control. Prefer visible projected
+button text and documented inputs. If an application needs arbitrary native-button attribute
+forwarding, add an explicit input/host binding to CLI-owned source or introduce a documented API;
+avoid selectors that depend on undocumented internal markup.
+
+Wrapper components add another host boundary. Bind inputs and outputs explicitly, and document
+whether application classes customize the wrapper host, the Simurgh host, or a rendered native
+element.
+
 ## Wrapper checklist
 
 - Preserve accessible labels, descriptions, IDs, and required compound-component anatomy.
