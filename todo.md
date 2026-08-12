@@ -263,7 +263,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       compatibility matrix backed by CI.
 - [ ] Add migration and update guides for CLI-copied source and package consumers, including how to
       resolve `simurgh diff` conflicts safely.
-- [ ] Add troubleshooting for missing styles, overlay clipping/z-index, portals, hydration mismatch,
+- [x] Add troubleshooting for missing styles, overlay clipping/z-index, portals, hydration mismatch,
       form submission, focus restoration, Tailwind conflicts, and RTL layout issues.
 - [ ] Add links between each component page and its relevant accessibility pattern, theming hooks,
       related components, and registry source.

@@ -1,0 +1,112 @@
+---
+title: Troubleshooting
+description: Diagnose common Simurgh installation, styling, overlay, form, hydration, focus, and RTL issues.
+---
+
+Start by confirming which installation model the component uses. A CLI-copied component must be
+imported from your application's local source path; a package component must be imported from an
+`@simurgh-ui/{framework}` package. Do not compare or update one model as though it were the other.
+
+## The component has no styles
+
+Simurgh behavior is headless; visual recipes are optional and are not injected by the component.
+For package consumption, import the matching component stylesheet from a global application entry:
+
+```css
+@import '@simurgh-ui/styles/dialog.css';
+```
+
+For CLI-copied source, add the copied `src/styles/simurgh/tokens.css` and
+`src/styles/simurgh/recipes.css` files to the application's global stylesheet entry. Check the
+browser's network and Styles panels to confirm the CSS is loaded and that another rule does not
+override it.
+
+## Theme changes do not apply
+
+Override semantic `--simurgh-*` variables after the Simurgh stylesheet is imported. A rule declared
+before the recipe may lose in the cascade. Apply `.dark` or `data-theme="dark"` to an ancestor of
+the component; setting it on an unrelated sibling does not activate dark tokens.
+
+If Tailwind utilities override recipe declarations, make the intended cascade order explicit in the
+global CSS entry. Avoid increasing specificity repeatedly; token overrides or a deliberately later
+application layer are easier to maintain.
+
+## An overlay is clipped or appears behind content
+
+Dialog, menu, popover, tooltip, and related floating content can be affected by ancestor
+`overflow`, transforms, and application stacking contexts. Use the component's documented portal
+part where available so content is mounted outside a clipping container. Inspect ancestors for
+`overflow: hidden`, `transform`, `filter`, `isolation`, or positioned elements with `z-index`.
+
+Do not solve every stacking problem with an arbitrarily large z-index. Establish an application
+layer scale for navigation, overlays, modals, and notifications, then customize the recipe within
+that scale.
+
+## A server-rendered page reports a hydration mismatch
+
+Render the same initial open state, selected value, dates, and item order on the server and client.
+Do not derive initial markup from `window`, viewport size, locale-dependent current time, random
+values, or browser storage during render. Read browser-only state after mount and update the
+component afterward.
+
+Lazy-loaded overlays must still receive stable initial props. If an application conditionally
+creates labelled parts or generated collections, ensure their first client render matches the
+server output.
+
+## A form does not submit the expected value
+
+Confirm that the control has a `name`; unnamed controls are omitted from native `FormData`. Check
+whether the component requires a hidden/native form control and whether it is inside the intended
+`<form>`. Disabled controls are intentionally omitted by native form submission.
+
+For Button, the default type is `button`. Set `type="submit"` explicitly for a submit action. For a
+controlled component, update the bound value in its change callback/event; otherwise the rendered
+selection and submitted value can appear unchanged.
+
+## Focus does not return after closing an overlay
+
+Open the overlay through its documented trigger whenever possible so the component can record the
+opener. If it is opened programmatically, keep a stable trigger reference and use the adapter's
+documented focus-restoration API. Do not remove or disable the opener before the overlay finishes
+closing.
+
+Nested overlays must close in stack order. Test the flow using only the keyboard: open, move focus,
+press Escape once, and verify focus returns to the control that opened the topmost surface.
+
+## Keyboard interaction stops working
+
+Preserve the documented parent/child anatomy, roles, IDs, and projected children. Wrapping an item
+in an extra focusable element or intercepting Arrow, Enter, Space, Home, End, Tab, or Escape can
+break the composite widget's focus model. Avoid `preventDefault()` unless the application truly
+replaces the component behavior for that key.
+
+Disabled items should use the component's disabled API rather than only visual CSS. CSS such as
+`pointer-events: none` does not communicate disabled state to keyboard or assistive-technology
+users.
+
+## RTL layout or arrow keys feel reversed
+
+Set `dir="rtl"` on the document or the component's relevant ancestor. Simurgh recipes use logical
+CSS properties; application overrides using physical `left`, `right`, `margin-left`, or
+`padding-right` may need logical equivalents such as `inset-inline-start` and
+`margin-inline-start`.
+
+Horizontal composite widgets may interpret Left and Right according to direction, while vertical
+Arrow Up and Arrow Down behavior remains unchanged. Do not reverse item data and keyboard logic at
+the same time.
+
+## A copied component differs from the registry
+
+This is expected after local customization. Inspect it with:
+
+```sh
+pnpm dlx @simurgh-ui/cli diff component-name
+```
+
+`diff` reports whether local source matches the current registry; it does not merge changes.
+Review and commit local edits before using `add component-name --overwrite`, because overwrite
+replaces that component file.
+
+If the problem remains, reduce it to one component with its required anatomy, imports, and recipe
+CSS. Record the framework and Simurgh versions, installation model, browser, keyboard steps, and a
+minimal reproduction when reporting the issue.

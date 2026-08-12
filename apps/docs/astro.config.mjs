@@ -27,6 +27,7 @@ export default defineConfig({
             { label: 'Introduction', slug: 'index' },
             { label: 'Installation', slug: 'guides/installation' },
             { label: 'Choose a component', slug: 'guides/component-chooser' },
+            { label: 'Troubleshooting', slug: 'guides/troubleshooting' },
           ],
         },
         {
