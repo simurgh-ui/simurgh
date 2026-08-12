@@ -1,10 +1,10 @@
 {
   "bundles": {
     "react-button": {
-      "minified": 462,
-      "gzip": 301,
-      "brotli": 249,
-      "budget": 320
+      "minified": 914,
+      "gzip": 473,
+      "brotli": 423,
+      "budget": 512
     },
     "vue-button": {
       "minified": 422,
@@ -337,9 +337,9 @@
       "budget": 2048
     },
     "react-rating": {
-      "minified": 1098,
-      "gzip": 648,
-      "brotli": 571,
+      "minified": 1571,
+      "gzip": 818,
+      "brotli": 738,
       "budget": 1536
     },
     "vue-rating": {
@@ -355,9 +355,9 @@
       "budget": 2048
     },
     "react-tags-input": {
-      "minified": 1718,
-      "gzip": 923,
-      "brotli": 806,
+      "minified": 2192,
+      "gzip": 1091,
+      "brotli": 981,
       "budget": 2048
     },
     "vue-tags-input": {
@@ -373,9 +373,9 @@
       "budget": 2560
     },
     "react-dialog": {
-      "minified": 2497,
-      "gzip": 1164,
-      "brotli": 1016,
+      "minified": 2936,
+      "gzip": 1318,
+      "brotli": 1146,
       "budget": 1480
     },
     "vue-dialog": {
@@ -409,9 +409,9 @@
       "budget": 512
     },
     "react-basic": {
-      "minified": 10510,
-      "gzip": 3710,
-      "brotli": 3326,
+      "minified": 11107,
+      "gzip": 3888,
+      "brotli": 3499,
       "budget": 8192
     },
     "vue-basic": {
@@ -427,9 +427,9 @@
       "budget": 6144
     },
     "react-overlays": {
-      "minified": 45964,
-      "gzip": 16206,
-      "brotli": 14636,
+      "minified": 46451,
+      "gzip": 16365,
+      "brotli": 14808,
       "budget": 18432
     },
     "vue-overlays": {
@@ -445,9 +445,9 @@
       "budget": 12288
     },
     "react-complete": {
-      "minified": 84498,
-      "gzip": 27119,
-      "brotli": 24401,
+      "minified": 85050,
+      "gzip": 27265,
+      "brotli": 24518,
       "budget": 27648
     },
     "vue-complete": {
@@ -463,9 +463,9 @@
       "budget": 27648
     },
     "react-without-floating": {
-      "minified": 47893,
-      "gzip": 14290,
-      "brotli": 12769
+      "minified": 48444,
+      "gzip": 14437,
+      "brotli": 12912
     },
     "vue-without-floating": {
       "minified": 63494,
@@ -486,7 +486,7 @@
   "featureCosts": {
     "floatingUi": {
       "react": {
-        "gzip": 12829,
+        "gzip": 12828,
         "calculation": "complete bundle minus bundle with Floating UI externalized"
       },
       "vue": {
@@ -501,10 +501,10 @@
   },
   "packages": {
     "react": {
-      "files": 139,
-      "unpacked": 135455,
-      "gzip": 21245,
-      "budget": 307200
+      "files": 141,
+      "unpacked": 370336,
+      "gzip": 45938,
+      "budget": 409600
     },
     "vue": {
       "files": 147,

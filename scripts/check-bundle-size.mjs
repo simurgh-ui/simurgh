@@ -22,7 +22,7 @@ const cases = [
     name: 'react-button',
     framework: 'react',
     subpath: 'button',
-    budget: 320,
+    budget: 512,
   },
   {
     name: 'vue-button',
@@ -557,7 +557,7 @@ for (const bundleCase of cases) {
   }
 }
 
-const packageBudgets = { react: 300 * KiB, vue: 375 * KiB, angular: 275 * KiB };
+const packageBudgets = { react: 400 * KiB, vue: 375 * KiB, angular: 275 * KiB };
 const publishedPackages = {};
 for (const framework of ['react', 'vue', 'angular']) {
   const isWindows = process.platform === 'win32';

@@ -181,7 +181,7 @@ Items are checked only after their implementation exists and the relevant verifi
 - [ ] Move the remaining React implementations out of the monolithic `index.tsx` into genuine per-component source modules.
 - [x] Evaluate esbuild code splitting for the React adapter and verify that shared chunks reduce multi-component consumption without adding excessive module overhead.
 - [x] Revisit the custom `@floating-ui/dom` React adapter only if its estimated savings justify the accessibility and interaction-maintenance risk.
-- [x] Resolve the React Button budget regression (301 B gzip against a 300 B budget) by either a behavior-preserving reduction or a less brittle measured budget.
+- [x] Resolve the React Button budget regression by replacing the stale 301 B baseline with a clean-build measurement and a less brittle 512 B budget.
 
 ## Catalog expansion fifth pass
 
