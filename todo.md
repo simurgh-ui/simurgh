@@ -276,10 +276,10 @@ per-component documentation" as example coverage, not as complete consumer docum
       defaults fail CI across all three adapters.
 - [ ] Compile every React, Vue, and Angular documentation example in CI rather than treating fenced
       code blocks as unverified text.
-- [ ] Add link checking, heading/anchor checking, spelling, and package-export validation to the docs
+- [x] Add link checking, heading/anchor checking, spelling, and package-export validation to the docs
       build.
   - [x] Validate internal links, heading anchors, public downloads, and documented package exports.
-  - [ ] Add offline spelling validation with a project terminology dictionary.
+  - [x] Add offline spelling validation with a project terminology dictionary.
 - [ ] Add browser tests for framework tabs, copy buttons, component previews, mobile navigation,
       dark mode, RTL, and keyboard-only reading flows.
 - [ ] Give every page a last-verified version/source marker and require documentation changes for
