@@ -5,7 +5,7 @@ description: A single-choice form control with roving keyboard focus.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import SelectionComponentPreview from '../../../components/previews/SelectionComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -65,7 +65,7 @@ No default visual treatment is applied. The public component supplies behavior a
 ## Basic usage
 
 <ComponentPreview title="Radio Group" kind="live">
-  <ReactComponentPreview component="radio-group" client:load />
+  <SelectionComponentPreview component="radio-group" client:load />
 </ComponentPreview>
 
 ## Anatomy

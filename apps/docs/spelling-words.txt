@@ -1523,6 +1523,7 @@ person
 photographs
 physical
 picker
+pickercomponentpreview
 pigments
 pills
 pin
@@ -1884,6 +1885,7 @@ scrolling
 search
 searchable
 searching
+searchselectioncomponentpreview
 second
 secondary
 section
@@ -1895,6 +1897,7 @@ selectable
 selected
 selecting
 selection
+selectioncomponentpreview
 selectively
 selector
 selectors

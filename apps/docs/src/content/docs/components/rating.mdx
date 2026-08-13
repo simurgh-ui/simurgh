@@ -5,7 +5,7 @@ description: An accessible star rating built from native radio controls.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import SelectionComponentPreview from '../../../components/previews/SelectionComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -59,7 +59,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Rating" kind="live">
-  <ReactComponentPreview component="rating" client:load />
+  <SelectionComponentPreview component="rating" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,7 +5,7 @@ description: Searchable action selection with keyboard navigation and disabled-i
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import SearchSelectionComponentPreview from '../../../components/previews/SearchSelectionComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -56,7 +56,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Command" kind="live">
-  <ReactComponentPreview component="command" client:load />
+  <SearchSelectionComponentPreview component="command" client:load />
 </ComponentPreview>
 
 ## Anatomy

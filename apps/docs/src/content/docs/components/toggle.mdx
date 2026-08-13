@@ -5,7 +5,7 @@ description: A two-state button with native pressed semantics.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import SelectionComponentPreview from '../../../components/previews/SelectionComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -56,7 +56,7 @@ No default visual treatment is applied. The public component supplies behavior a
 ## Basic usage
 
 <ComponentPreview title="Toggle" kind="live">
-  <ReactComponentPreview component="toggle" client:load />
+  <SelectionComponentPreview component="toggle" client:load />
 </ComponentPreview>
 
 ## Anatomy
