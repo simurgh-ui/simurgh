@@ -345,7 +345,7 @@ per-component documentation" as example coverage, not as complete consumer docum
       framework availability, native/custom behavior, and keyboard-interaction complexity.
 - [x] Preserve the interaction-based component chooser, but link gallery cards directly to the
       relevant comparison guidance for commonly confused components.
-- [ ] Reduce generated page density by consolidating shared cross-framework behavior, surfacing
+- [x] Reduce generated page density by consolidating shared cross-framework behavior, surfacing
       only meaningful adapter differences, and collapsing exhaustive API/styling tables by default.
 - [x] Simplify the component-page table of contents to major user-facing sections and remove
       repetitive generated framework/component subheadings from its default outline.

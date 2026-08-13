@@ -7,7 +7,6 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 {/* component-installation:start */}
-
 ## Installation
 
 Copy editable source into an initialized application:
@@ -138,7 +137,6 @@ Vue renders the same collection with `v-for="item in faqItems"` and `:key="item.
 {/* realistic-example:end */}
 
 {/* component-state-model:start */}
-
 ## State model
 
 This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
@@ -156,6 +154,9 @@ props, events, slots, directives, methods, defaults, and native-attribute behavi
 tables on this page; use the linked source only to verify the current implementation.
 
 {/* react-api:start */}
+<details className="reference-details">
+<summary>React API reference</summary>
+
 ### React
 
 An inherited-attributes entry means the component accepts the complete named React native interface,
@@ -196,9 +197,14 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `children` | `ReactNode` | `undefined` |
+
+</details>
 {/* react-api:end */}
 
 {/* vue-api:start */}
+<details className="reference-details">
+<summary>Vue API reference</summary>
+
 ### Vue
 
 Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
@@ -256,9 +262,14 @@ No emitted events.
 Slots: `default`.
 
 Exposed methods: none.
+
+</details>
 {/* vue-api:end */}
 
 {/* angular-api:start */}
+<details className="reference-details">
+<summary>Angular API reference</summary>
+
 ### Angular
 
 Inputs and outputs use their public template names. Public methods are callable through a template
@@ -296,10 +307,11 @@ Content projection: `[trigger]`, `default`.
 | Public method |
 | --- |
 | `toggle(): void` |
+
+</details>
 {/* angular-api:end */}
 
 {/* component-composition:start */}
-
 ### Composition contract
 
 Follow the framework example as a structural contract. Root components own shared state; parts that
@@ -307,37 +319,35 @@ consume that state must stay under the root (or be attached to projected descend
 Parts described as conditional are optional until their corresponding interaction or semantic region
 is used. Do not render a state-consuming part by itself.
 
-| Framework | Required parent/child relationship                                                                                                                  | Conditional parts                                                                                                                                                                                                               | Supporting types |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| React     | Render `Accordion` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context.                               | `AccordionItem`, `AccordionTrigger`, `AccordionContent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None.            |
-| Vue       | Render `Accordion` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context.                               | `AccordionItem`, `AccordionTrigger`, `AccordionContent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None.            |
-| Angular   | Create `AccordionComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `AccordionItemComponent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used.                                | None.            |
+| Framework | Required parent/child relationship | Conditional parts | Supporting types |
+| --- | --- | --- | --- |
+| React | Render `Accordion` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `AccordionItem`, `AccordionTrigger`, `AccordionContent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Vue | Render `Accordion` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `AccordionItem`, `AccordionTrigger`, `AccordionContent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Angular | Create `AccordionComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `AccordionItemComponent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
 {/* component-composition:end */}
 
 {/* framework-parity:start */}
-
 ### Framework parity and differences
 
 The adapters target the same user-visible behavior and accessibility contract. Their public shapes
 follow each framework's conventions and are not expected to be symbol-for-symbol identical.
 
-| Concern                 | Contract                                                                                                                                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Public composition      | React exports 4 parts, Vue 4, and Angular 2. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol.                                     |
-| State and change events | React uses controlled/default props and callbacks for `value`; Vue uses ordinary props/events; Angular uses inputs and outputs.                                                                         |
-| Children and content    | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors.                                                                                       |
-| Native attributes       | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access       | React has no forwarded ref; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild.                                                                 |
+| Concern | Contract |
+| --- | --- |
+| Public composition | React exports 4 parts, Vue 4, and Angular 2. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
+| State and change events | React uses controlled/default props and callbacks for `value`; Vue uses ordinary props/events; Angular uses inputs and outputs. |
+| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
+| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access | React has no forwarded ref; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
 {/* component-form:start */}
-
 ### Form integration
 
 This component is not a form control and does not contribute a named value to `FormData`. Use it
@@ -345,25 +355,26 @@ to structure or describe a form only when its purpose and accessibility guidance
 {/* component-form:end */}
 
 {/* component-supported-states:start */}
-
 ### Supported states
 
 The table distinguishes component behavior from application-owned presentation. “Not supported”
 means there is no public state contract for that adapter; do not invent one with an undocumented
 attribute. Keep status and error messages accessible when they are rendered outside the component.
 
-| State     | React                                                                                                                                                           | Vue                                                                                   | Angular                                                                               |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Loading   | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Empty     | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Invalid   | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Read-only | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled  | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Error     | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-
+| State | React | Vue | Angular |
+| --- | --- | --- | --- |
+| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Disabled | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}
+<details className="reference-details">
+<summary>Styling contract</summary>
+
 ### Styling contract
 
 The selectors below are used by the published component recipe or emitted consistently by an
@@ -381,6 +392,8 @@ undocumented descendants are implementation details and should not be targeted.
 Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
 component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
 even if your replacement styles use different selectors.
+
+</details>
 {/* component-styling-contract:end */}
 
 ## Customization
@@ -390,20 +403,18 @@ theme changes, or omit the recipe CSS for headless styling. See [theming and sty
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
 
 {/* component-keyboard:start */}
-
 ### Keyboard interactions
 
 These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
 applies to descendant links, buttons, and form controls unless the component overrides it.
 
-| Concern / keys                         | Behavior                                               |
-| -------------------------------------- | ------------------------------------------------------ |
+| Concern / keys | Behavior |
+| --- | --- |
 | Focus entry and exit (Tab / Shift+Tab) | Tab enters and leaves through native summary controls. |
-| Navigation and activation              | Enter or Space toggles the focused item.               |
-| Escape                                 | Not handled by the component.                          |
-| RTL differences                        | No RTL-specific key mapping.                           |
-| Typeahead                              | Not supported.                                         |
-
+| Navigation and activation | Enter or Space toggles the focused item. |
+| Escape | Not handled by the component. |
+| RTL differences | No RTL-specific key mapping. |
+| Typeahead | Not supported. |
 {/* component-keyboard:end */}
 
 ## Accessibility

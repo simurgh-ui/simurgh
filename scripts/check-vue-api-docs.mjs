@@ -202,7 +202,7 @@ function componentSection(name) {
 }
 
 function section(component) {
-  return `${start}\n### Vue\n\nBoolean props without explicit defaults use Vue's \`false\` default. Undeclared attributes follow\nthe fallthrough behavior stated for each component.\n\n${registry.symbols.vue[component].map(componentSection).join('\n\n')}\n${end}`;
+  return `${start}\n<details className="reference-details">\n<summary>Vue API reference</summary>\n\n### Vue\n\nBoolean props without explicit defaults use Vue's \`false\` default. Undeclared attributes follow\nthe fallthrough behavior stated for each component.\n\n${registry.symbols.vue[component].map(componentSection).join('\n\n')}\n\n</details>\n${end}`;
 }
 
 for (const component of registry.components) {

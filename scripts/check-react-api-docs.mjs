@@ -141,7 +141,7 @@ function componentSection(name) {
 
 function section(component) {
   const symbols = registry.symbols.react[component];
-  return `${start}\n### React\n\nAn inherited-attributes entry means the component accepts the complete named React native interface,\nincluding its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the\nrendered element unless the component behavior described on this page overrides them.\n\n${symbols.map(componentSection).join('\n\n')}\n${end}`;
+  return `${start}\n<details className="reference-details">\n<summary>React API reference</summary>\n\n### React\n\nAn inherited-attributes entry means the component accepts the complete named React native interface,\nincluding its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the\nrendered element unless the component behavior described on this page overrides them.\n\n${symbols.map(componentSection).join('\n\n')}\n\n</details>\n${end}`;
 }
 
 for (const component of registry.components) {

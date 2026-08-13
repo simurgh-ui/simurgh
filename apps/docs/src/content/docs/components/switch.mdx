@@ -7,7 +7,6 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 {/* component-installation:start */}
-
 ## Installation
 
 Copy editable source into an initialized application:
@@ -87,18 +86,17 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
-
 ## State model
 
 Controlled state remains the application’s source of truth and must be updated from every change
 event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
 the same state at once.
 
-| Framework | Exact state contract and reset behavior                                                                                                                                                    |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| React     | Controlled: `checked` + `onCheckedChange`. Uncontrolled: `defaultChecked`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.      |
-| Vue       | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular   | Controlled two-way binding: `[(checked)]` (`checked` + `checkedChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.                 |
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `checked` + `onCheckedChange`. Uncontrolled: `defaultChecked`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(checked)]` (`checked` + `checkedChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
 
 **React**
 
@@ -139,7 +137,6 @@ reset() { this.checked = this.initial; }
 <simurgh-switch [(checked)]="checked">…</simurgh-switch>
 <button type="button" (click)="reset()">Reset</button>
 ```
-
 {/* component-state-model:end */}
 
 ## API surface
@@ -153,6 +150,9 @@ props, events, slots, directives, methods, defaults, and native-attribute behavi
 tables on this page; use the linked source only to verify the current implementation.
 
 {/* react-api:start */}
+<details className="reference-details">
+<summary>React API reference</summary>
+
 ### React
 
 An inherited-attributes entry means the component accepts the complete named React native interface,
@@ -172,9 +172,14 @@ Complete props type: `CheckProps`.
 | `onCheckedChange` | `(checked: boolean) => void` | `undefined` |
 | `required` | `boolean` | `undefined` |
 | `value` | `string` | `undefined` |
+
+</details>
 {/* react-api:end */}
 
 {/* vue-api:start */}
+<details className="reference-details">
+<summary>Vue API reference</summary>
+
 ### Vue
 
 Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
@@ -200,9 +205,14 @@ Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendere
 Slots: `default`.
 
 Exposed methods: none.
+
+</details>
 {/* vue-api:end */}
 
 {/* angular-api:start */}
+<details className="reference-details">
+<summary>Angular API reference</summary>
+
 ### Angular
 
 Inputs and outputs use their public template names. Public methods are callable through a template
@@ -220,10 +230,11 @@ No outputs.
 Content projection: `default`.
 
 No public methods.
+
+</details>
 {/* angular-api:end */}
 
 {/* component-composition:start */}
-
 ### Composition contract
 
 Follow the framework example as a structural contract. Root components own shared state; parts that
@@ -231,37 +242,35 @@ consume that state must stay under the root (or be attached to projected descend
 Parts described as conditional are optional until their corresponding interaction or semantic region
 is used. Do not render a state-consuming part by itself.
 
-| Framework | Required parent/child relationship                                      | Conditional parts                                             | Supporting types |
-| --------- | ----------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------- |
-| React     | `Switch` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | None.            |
-| Vue       | `Switch` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | None.            |
-| Angular   | `SwitchComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None.            |
+| Framework | Required parent/child relationship | Conditional parts | Supporting types |
+| --- | --- | --- | --- |
+| React | `Switch` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
+| Vue | `Switch` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
+| Angular | `SwitchComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
 {/* component-composition:end */}
 
 {/* framework-parity:start */}
-
 ### Framework parity and differences
 
 The adapters target the same user-visible behavior and accessibility contract. Their public shapes
 follow each framework's conventions and are not expected to be symbol-for-symbol identical.
 
-| Concern                 | Contract                                                                                                                                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Public composition      | All adapters export 1 public symbol, with framework-idiomatic names.                                                                                                                                    |
-| State and change events | React uses controlled/default props and callbacks; Vue uses `v-model`; Angular uses inputs and outputs.                                                                                                 |
-| Children and content    | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors.                                                                                       |
-| Native attributes       | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access       | No framework exposes an imperative handle for this component.                                                                                                                                           |
+| Concern | Contract |
+| --- | --- |
+| Public composition | All adapters export 1 public symbol, with framework-idiomatic names. |
+| State and change events | React uses controlled/default props and callbacks; Vue uses `v-model`; Angular uses inputs and outputs. |
+| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
+| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access | No framework exposes an imperative handle for this component. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
 {/* component-form:start */}
-
 ### Form integration
 
 Use `name="notifications"` to serialize `value` when checked; omitted when unchecked. The examples initialize the field, keep its
@@ -275,23 +284,16 @@ const initial = true;
 const [checked, setChecked] = useState(initial);
 const [errors, setErrors] = useState<Record<string, string>>({});
 
-<form
-  onSubmit={(event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // Submit data.get('notifications').
-  }}
->
-  <Switch
-    name="notifications"
-    checked={checked}
-    onCheckedChange={setChecked}
-    required
-    disabled={isDisabled}
-  />
+<form onSubmit={(event) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  // Submit data.get('notifications').
+}}>
+  <Switch name="notifications" checked={checked} onCheckedChange={setChecked}
+    required disabled={isDisabled} />
   {errors.notifications && <p role="alert">{errors.notifications}</p>}
   <button type="submit">Submit</button>
-</form>;
+</form>
 ```
 
 #### Vue
@@ -329,12 +331,7 @@ submit(form: HTMLFormElement) {
 
 ```html
 <form #form (submit)="submit(form); $event.preventDefault()">
-  <simurgh-switch
-    [(checked)]="checked"
-    name="notifications"
-    required
-    [disabled]="isDisabled"
-  ></simurgh-switch>
+  <simurgh-switch [(checked)]="checked" name="notifications" required [disabled]="isDisabled"></simurgh-switch>
   <p *ngIf="errors.notifications" role="alert">{{ errors.notifications }}</p>
   <button type="submit">Submit</button>
 </form>
@@ -346,25 +343,26 @@ validation state from the Angular form explicitly.
 {/* component-form:end */}
 
 {/* component-supported-states:start */}
-
 ### Supported states
 
 The table distinguishes component behavior from application-owned presentation. “Not supported”
 means there is no public state contract for that adapter; do not invent one with an undocumented
 attribute. Keep status and error messages accessible when they are rendered outside the component.
 
-| State     | React                                                                                 | Vue                                                                                                                                                              | Angular                                                                               |
-| --------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Loading   | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
-| Empty     | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
-| Invalid   | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
-| Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled  | Not supported by this component API; handle this state in surrounding application UI. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Not supported by this component API; handle this state in surrounding application UI. |
-| Error     | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
-
+| State | React | Vue | Angular |
+| --- | --- | --- | --- |
+| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Disabled | Not supported by this component API; handle this state in surrounding application UI. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Not supported by this component API; handle this state in surrounding application UI. |
+| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}
+<details className="reference-details">
+<summary>Styling contract</summary>
+
 ### Styling contract
 
 The selectors below are used by the published component recipe or emitted consistently by an
@@ -382,6 +380,8 @@ undocumented descendants are implementation details and should not be targeted.
 Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
 component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
 even if your replacement styles use different selectors.
+
+</details>
 {/* component-styling-contract:end */}
 
 ## Customization

@@ -130,6 +130,9 @@ props, events, slots, directives, methods, defaults, and native-attribute behavi
 tables on this page; use the linked source only to verify the current implementation.
 
 {/* react-api:start */}
+<details className="reference-details">
+<summary>React API reference</summary>
+
 ### React
 
 An inherited-attributes entry means the component accepts the complete named React native interface,
@@ -143,9 +146,14 @@ Exported type: `any`.
 ### `ToolbarButton`
 
 Exported type: `any`.
+
+</details>
 {/* react-api:end */}
 
 {/* vue-api:start */}
+<details className="reference-details">
+<summary>Vue API reference</summary>
+
 ### Vue
 
 Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
@@ -178,9 +186,14 @@ No emitted events.
 Slots: `default`.
 
 Exposed methods: none.
+
+</details>
 {/* vue-api:end */}
 
 {/* angular-api:start */}
+<details className="reference-details">
+<summary>Angular API reference</summary>
+
 ### Angular
 
 Inputs and outputs use their public template names. Public methods are callable through a template
@@ -216,6 +229,8 @@ No outputs.
 Content projection: none.
 
 No public methods.
+
+</details>
 {/* angular-api:end */}
 
 {/* component-composition:start */}
@@ -248,7 +263,7 @@ follow each framework's conventions and are not expected to be symbol-for-symbol
 | State and change events | No controlled state contract; use native attributes, inputs, or events documented above. |
 | Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
 | Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes no public methods. |
+| Imperative access | No framework exposes an imperative handle for this component. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
@@ -274,11 +289,14 @@ attribute. Keep status and error messages accessible when they are rendered outs
 | Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 | Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 | Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Disabled | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 | Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}
+<details className="reference-details">
+<summary>Styling contract</summary>
+
 ### Styling contract
 
 The selectors below are used by the published component recipe or emitted consistently by an
@@ -287,15 +305,17 @@ undocumented descendants are implementation details and should not be targeted.
 
 | Surface | Stable hooks |
 | --- | --- |
-| Recipe classes | No component-specific recipe class; this stylesheet currently imports shared tokens only. |
-| Stable DOM parts | `[data-slot="toolbar"]`, `[data-slot="toolbar-button"]` |
-| Stable data attributes | `[data-slot]`, `[data-toolbar-item]` |
+| Recipe classes | `.simurgh-trigger` |
+| Stable DOM parts | `[data-slot="button"]`, `[data-slot="checkbox"]`, `[data-slot="input"]`, `[data-slot="input-otp"]`, `[data-slot="native-select"]`, `[data-slot="pagination-link"]`, `[data-slot="select-trigger"]`, `[data-slot="toggle-group-item"]`, `[data-slot="toolbar"]`, `[data-slot="toolbar-button"]` |
+| Stable data attributes | `[data-density]`, `[data-slot]`, `[data-toolbar-item]` |
 | ARIA/state selectors used by the recipe | `[aria-orientation]` |
-| CSS custom properties consumed | `--simurgh-foreground`, `--simurgh-muted`, `--simurgh-radius`, `--simurgh-ring` |
+| CSS custom properties consumed | `--simurgh-control-height`, `--simurgh-control-padding`, `--simurgh-foreground`, `--simurgh-muted`, `--simurgh-radius`, `--simurgh-ring` |
 
 Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
 component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
 even if your replacement styles use different selectors.
+
+</details>
 {/* component-styling-contract:end */}
 
 ## Customization

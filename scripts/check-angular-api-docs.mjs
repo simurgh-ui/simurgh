@@ -153,7 +153,7 @@ function componentSection(name) {
   return `### \`${name}\`\n\n${behavior}\n\n${inputsTable}\n\n${outputsTable}\n\nContent projection: ${slots.length ? slots.map((slot) => `\`${slot}\``).join(', ') : 'none'}.\n\n${methodsTable}`;
 }
 function section(component) {
-  return `${start}\n### Angular\n\nInputs and outputs use their public template names. Public methods are callable through a template\nreference or \`ViewChild\`. Native attributes apply to the documented template root or directive host;\nthey are not automatically forwarded through component hosts.\n\n${registry.symbols.angular[component].map(componentSection).join('\n\n')}\n${end}`;
+  return `${start}\n<details className="reference-details">\n<summary>Angular API reference</summary>\n\n### Angular\n\nInputs and outputs use their public template names. Public methods are callable through a template\nreference or \`ViewChild\`. Native attributes apply to the documented template root or directive host;\nthey are not automatically forwarded through component hosts.\n\n${registry.symbols.angular[component].map(componentSection).join('\n\n')}\n\n</details>\n${end}`;
 }
 for (const component of registry.components) {
   const path = resolve(docsRoot, `${component}.mdx`);

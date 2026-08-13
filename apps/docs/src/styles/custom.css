@@ -3,3 +3,22 @@
 :root { --sl-color-accent-low: hsl(var(--simurgh-persian-blue)); --sl-color-accent: hsl(var(--simurgh-firuzeh)); --sl-color-accent-high: hsl(var(--simurgh-saffron)); }
 .hero h1 { background: linear-gradient(90deg, hsl(var(--simurgh-persian-blue)), hsl(var(--simurgh-firuzeh))); background-clip: text; color: transparent; }
 code { border-radius: .25rem; }
+
+.reference-details {
+  margin-block: 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: .5rem;
+  background: var(--sl-color-bg-nav);
+}
+
+.reference-details > summary {
+  cursor: pointer;
+  padding: .75rem 1rem;
+  color: var(--sl-color-white);
+  font-weight: 600;
+}
+
+.reference-details > summary:hover { background: var(--sl-color-gray-6); }
+.reference-details[open] > summary { border-bottom: 1px solid var(--sl-color-gray-5); }
+.reference-details > :not(summary) { margin-inline: 1rem; }
+.reference-details > :last-child { margin-bottom: 1rem; }

@@ -7,7 +7,6 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 {/* component-installation:start */}
-
 ## Installation
 
 Copy editable source into an initialized application:
@@ -21,7 +20,10 @@ For package consumption, import from the component subpath and load its optional
 ### React
 
 ```tsx
-import { TagsInput, TagsInputProps } from '@simurgh-ui/react/tags-input';
+import {
+  TagsInput,
+  TagsInputProps,
+} from '@simurgh-ui/react/tags-input';
 import '@simurgh-ui/styles/tags-input.css';
 ```
 
@@ -105,18 +107,17 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
-
 ## State model
 
 Controlled state remains the application’s source of truth and must be updated from every change
 event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
 the same state at once.
 
-| Framework | Exact state contract and reset behavior                                                                                                                                                 |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| React     | Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.         |
-| Vue       | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular   | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.                    |
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
 
 **React**
 
@@ -159,7 +160,6 @@ reset() { this.value = this.initial; }
 <simurgh-tags-input [(value)]="value">…</simurgh-tags-input>
 <button type="button" (click)="reset()">Reset</button>
 ```
-
 {/* component-state-model:end */}
 
 Duplicate and blank values are ignored. `maxTags` defaults to 20 and is capped at 100 to keep rendering bounded. When `name` is provided, every tag produces a hidden input with that name, so `FormData.getAll(name)` returns the complete list. Use `required` when at least one tag must be supplied, and provide localized input and removal labels where needed.
@@ -175,6 +175,9 @@ props, events, slots, directives, methods, defaults, and native-attribute behavi
 tables on this page; use the linked source only to verify the current implementation.
 
 {/* react-api:start */}
+<details className="reference-details">
+<summary>React API reference</summary>
+
 ### React
 
 An inherited-attributes entry means the component accepts the complete named React native interface,
@@ -204,9 +207,14 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLInputE
 ### `TagsInputProps`
 
 Exported type: `Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" \| "onChange"> & { value?: string[]; defaultValue?: string[]; name?: string; disabled?: boolean; readOnly?: boolean; required?: boolean; maxTags?: number; placeholder?: string; inputLabel?: string; getRemoveLabel?: (tag: string) => string; onValueChange?: (value: string[]) => void; }`.
+
+</details>
 {/* react-api:end */}
 
 {/* vue-api:start */}
+<details className="reference-details">
+<summary>Vue API reference</summary>
+
 ### Vue
 
 Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
@@ -236,9 +244,14 @@ Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendere
 Slots: none.
 
 Exposed methods: none.
+
+</details>
 {/* vue-api:end */}
 
 {/* angular-api:start */}
+<details className="reference-details">
+<summary>Angular API reference</summary>
+
 ### Angular
 
 Inputs and outputs use their public template names. Public methods are callable through a template
@@ -274,10 +287,11 @@ Content projection: none.
 | `add(): void` |
 | `remove(index: number, event?: Event): void` |
 | `handleKeydown(event: KeyboardEvent): void` |
+
+</details>
 {/* angular-api:end */}
 
 {/* component-composition:start */}
-
 ### Composition contract
 
 Follow the framework example as a structural contract. Root components own shared state; parts that
@@ -285,37 +299,35 @@ consume that state must stay under the root (or be attached to projected descend
 Parts described as conditional are optional until their corresponding interaction or semantic region
 is used. Do not render a state-consuming part by itself.
 
-| Framework | Required parent/child relationship                                         | Conditional parts                                             | Supporting types  |
-| --------- | -------------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------- |
-| React     | `TagsInput` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | `TagsInputProps`. |
-| Vue       | `TagsInput` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | None.             |
-| Angular   | `TagsInputComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None.             |
+| Framework | Required parent/child relationship | Conditional parts | Supporting types |
+| --- | --- | --- | --- |
+| React | `TagsInput` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `TagsInputProps`. |
+| Vue | `TagsInput` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
+| Angular | `TagsInputComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
 {/* component-composition:end */}
 
 {/* framework-parity:start */}
-
 ### Framework parity and differences
 
 The adapters target the same user-visible behavior and accessibility contract. Their public shapes
 follow each framework's conventions and are not expected to be symbol-for-symbol identical.
 
-| Concern                 | Contract                                                                                                                                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Public composition      | React exports 2 parts, Vue 1, and Angular 1. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol.                                     |
-| State and change events | React uses controlled/default props and callbacks for `value`; Vue uses `v-model`; Angular uses `[(value)]`.                                                                                            |
-| Children and content    | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors.                                                                                       |
-| Native attributes       | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access       | React forwards native refs; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild.                                                                 |
+| Concern | Contract |
+| --- | --- |
+| Public composition | React exports 2 parts, Vue 1, and Angular 1. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
+| State and change events | React uses controlled/default props and callbacks for `value`; Vue uses `v-model`; Angular uses `[(value)]`. |
+| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
+| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
 {/* component-form:start */}
-
 ### Form integration
 
 Use `name="tags"` to serialize one same-name hidden value per tag. The examples initialize the field, keep its
@@ -329,23 +341,16 @@ const initial = ['docs'];
 const [value, setValue] = useState(initial);
 const [errors, setErrors] = useState<Record<string, string>>({});
 
-<form
-  onSubmit={(event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // Submit data.get('tags') or data.getAll('tags').
-  }}
->
-  <TagsInput
-    name="tags"
-    value={value}
-    onValueChange={setValue}
-    required
-    disabled={isDisabled}
-  />
+<form onSubmit={(event) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  // Submit data.get('tags') or data.getAll('tags').
+}}>
+  <TagsInput name="tags" value={value} onValueChange={setValue}
+    required disabled={isDisabled} />
   {errors.tags && <p role="alert">{errors.tags}</p>}
   <button type="submit">Submit</button>
-</form>;
+</form>
 ```
 
 #### Vue
@@ -383,12 +388,7 @@ submit(form: HTMLFormElement) {
 
 ```html
 <form #form (submit)="submit(form); $event.preventDefault()">
-  <simurgh-tags-input
-    [(value)]="value"
-    name="tags"
-    required
-    [disabled]="isDisabled"
-  ></simurgh-tags-input>
+  <simurgh-tags-input [(value)]="value" name="tags" required [disabled]="isDisabled"></simurgh-tags-input>
   <p *ngIf="errors.tags" role="alert">{{ errors.tags }}</p>
   <button type="submit">Submit</button>
 </form>
@@ -400,25 +400,26 @@ validation state from the Angular form explicitly.
 {/* component-form:end */}
 
 {/* component-supported-states:start */}
-
 ### Supported states
 
 The table distinguishes component behavior from application-owned presentation. “Not supported”
 means there is no public state contract for that adapter; do not invent one with an undocumented
 attribute. Keep status and error messages accessible when they are rendered outside the component.
 
-| State     | React                                                                                                                                                           | Vue                                                                                                                                                              | Angular                                                                                                                                                           |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Loading   | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
-| Empty     | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
-| Invalid   | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
-| Read-only | Supported with `readOnly={true}`; focus and value submission remain available while editing is blocked.                                                         | Supported with `:readonly="true"`; focus and value submission remain available while editing is blocked.                                                         | Supported with `[readonly]="true"`; focus and value submission remain available while editing is blocked.                                                         |
-| Disabled  | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
-| Error     | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
-
+| State | React | Vue | Angular |
+| --- | --- | --- | --- |
+| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Read-only | Supported with `readOnly={true}`; focus and value submission remain available while editing is blocked. | Supported with `:readonly="true"`; focus and value submission remain available while editing is blocked. | Supported with `[readonly]="true"`; focus and value submission remain available while editing is blocked. |
+| Disabled | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
+| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}
+<details className="reference-details">
+<summary>Styling contract</summary>
+
 ### Styling contract
 
 The selectors below are used by the published component recipe or emitted consistently by an
@@ -436,6 +437,8 @@ undocumented descendants are implementation details and should not be targeted.
 Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
 component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
 even if your replacement styles use different selectors.
+
+</details>
 {/* component-styling-contract:end */}
 
 ## Customization
@@ -445,20 +448,18 @@ theme changes, or omit the recipe CSS for headless styling. See [theming and sty
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
 
 {/* component-keyboard:start */}
-
 ### Keyboard interactions
 
 These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
 applies to descendant links, buttons, and form controls unless the component overrides it.
 
-| Concern / keys                         | Behavior                                                                           |
-| -------------------------------------- | ---------------------------------------------------------------------------------- |
+| Concern / keys | Behavior |
+| --- | --- |
 | Focus entry and exit (Tab / Shift+Tab) | Tab enters the text input and leaves normally; remove buttons remain in DOM order. |
-| Navigation and activation              | Enter commits input; Backspace removes the last tag when input is empty.           |
-| Escape                                 | Not handled by the component.                                                      |
-| RTL differences                        | No RTL-specific key mapping.                                                       |
-| Typeahead                              | Not supported.                                                                     |
-
+| Navigation and activation | Enter commits input; Backspace removes the last tag when input is empty. |
+| Escape | Not handled by the component. |
+| RTL differences | No RTL-specific key mapping. |
+| Typeahead | Not supported. |
 {/* component-keyboard:end */}
 
 ## Accessibility

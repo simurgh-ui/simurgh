@@ -7,7 +7,6 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 {/* component-installation:start */}
-
 ## Installation
 
 Copy editable source into an initialized application:
@@ -151,7 +150,6 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
-
 ## State model
 
 This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
@@ -171,6 +169,9 @@ props, events, slots, directives, methods, defaults, and native-attribute behavi
 tables on this page; use the linked source only to verify the current implementation.
 
 {/* react-api:start */}
+<details className="reference-details">
+<summary>React API reference</summary>
+
 ### React
 
 An inherited-attributes entry means the component accepts the complete named React native interface,
@@ -204,9 +205,14 @@ Exported type: `any`.
 ### `ItemActions`
 
 Exported type: `any`.
+
+</details>
 {/* react-api:end */}
 
 {/* vue-api:start */}
+<details className="reference-details">
+<summary>Vue API reference</summary>
+
 ### Vue
 
 Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
@@ -297,9 +303,14 @@ No emitted events.
 Slots: `default`.
 
 Exposed methods: none.
+
+</details>
 {/* vue-api:end */}
 
 {/* angular-api:start */}
+<details className="reference-details">
+<summary>Angular API reference</summary>
+
 ### Angular
 
 Inputs and outputs use their public template names. Public methods are callable through a template
@@ -391,10 +402,11 @@ No outputs.
 Content projection: `default`.
 
 No public methods.
+
+</details>
 {/* angular-api:end */}
 
 {/* component-composition:start */}
-
 ### Composition contract
 
 Follow the framework example as a structural contract. Root components own shared state; parts that
@@ -402,37 +414,35 @@ consume that state must stay under the root (or be attached to projected descend
 Parts described as conditional are optional until their corresponding interaction or semantic region
 is used. Do not render a state-consuming part by itself.
 
-| Framework | Required parent/child relationship                                                                                                                  | Conditional parts                                                                                                                                                                                                                                                                                               | Supporting types |
-| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| React     | Render `ItemGroup` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context.                               | `Item`, `ItemMedia`, `ItemContent`, `ItemTitle`, `ItemDescription`, `ItemActions` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used.                                                       | None.            |
-| Vue       | Render `ItemGroup` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context.                               | `Item`, `ItemMedia`, `ItemContent`, `ItemTitle`, `ItemDescription`, `ItemActions` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used.                                                       | None.            |
-| Angular   | Create `ItemGroupComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `ItemComponent`, `ItemMediaComponent`, `ItemContentComponent`, `ItemTitleComponent`, `ItemDescriptionComponent`, `ItemActionsComponent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None.            |
+| Framework | Required parent/child relationship | Conditional parts | Supporting types |
+| --- | --- | --- | --- |
+| React | Render `ItemGroup` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `Item`, `ItemMedia`, `ItemContent`, `ItemTitle`, `ItemDescription`, `ItemActions` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Vue | Render `ItemGroup` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `Item`, `ItemMedia`, `ItemContent`, `ItemTitle`, `ItemDescription`, `ItemActions` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Angular | Create `ItemGroupComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `ItemComponent`, `ItemMediaComponent`, `ItemContentComponent`, `ItemTitleComponent`, `ItemDescriptionComponent`, `ItemActionsComponent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
 {/* component-composition:end */}
 
 {/* framework-parity:start */}
-
 ### Framework parity and differences
 
 The adapters target the same user-visible behavior and accessibility contract. Their public shapes
 follow each framework's conventions and are not expected to be symbol-for-symbol identical.
 
-| Concern                 | Contract                                                                                                                                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Public composition      | All adapters export 7 public symbols, with framework-idiomatic names.                                                                                                                                   |
-| State and change events | No controlled state contract; use native attributes, inputs, or events documented above.                                                                                                                |
-| Children and content    | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors.                                                                                       |
-| Native attributes       | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access       | React forwards native refs; Vue exposes no methods; Angular exposes no public methods.                                                                                                                  |
+| Concern | Contract |
+| --- | --- |
+| Public composition | All adapters export 7 public symbols, with framework-idiomatic names. |
+| State and change events | No controlled state contract; use native attributes, inputs, or events documented above. |
+| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
+| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access | No framework exposes an imperative handle for this component. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
 {/* component-form:start */}
-
 ### Form integration
 
 This component is not a form control and does not contribute a named value to `FormData`. Use it
@@ -440,25 +450,26 @@ to structure or describe a form only when its purpose and accessibility guidance
 {/* component-form:end */}
 
 {/* component-supported-states:start */}
-
 ### Supported states
 
 The table distinguishes component behavior from application-owned presentation. “Not supported”
 means there is no public state contract for that adapter; do not invent one with an undocumented
 attribute. Keep status and error messages accessible when they are rendered outside the component.
 
-| State     | React                                                                                 | Vue                                                                                   | Angular                                                                               |
-| --------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Loading   | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Empty     | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Invalid   | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| State | React | Vue | Angular |
+| --- | --- | --- | --- |
+| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 | Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled  | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Error     | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-
+| Disabled | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}
+<details className="reference-details">
+<summary>Styling contract</summary>
+
 ### Styling contract
 
 The selectors below are used by the published component recipe or emitted consistently by an
@@ -468,14 +479,16 @@ undocumented descendants are implementation details and should not be targeted.
 | Surface | Stable hooks |
 | --- | --- |
 | Recipe classes | `.simurgh-item`, `.simurgh-trigger` |
-| Stable DOM parts | `[data-slot="item"]`, `[data-slot="item-actions"]`, `[data-slot="item-content"]`, `[data-slot="item-description"]`, `[data-slot="item-group"]`, `[data-slot="item-media"]`, `[data-slot="item-title"]` |
-| Stable data attributes | `[data-highlighted]`, `[data-slot]` |
+| Stable DOM parts | `[data-slot="item"]`, `[data-slot="item-actions"]`, `[data-slot="item-content"]`, `[data-slot="item-description"]`, `[data-slot="item-group"]`, `[data-slot="item-media"]`, `[data-slot="item-title"]`, `[data-slot="menubar-item"]`, `[data-slot="select-option"]` |
+| Stable data attributes | `[data-density]`, `[data-highlighted]`, `[data-slot]` |
 | ARIA/state selectors used by the recipe | `[aria-disabled]` |
-| CSS custom properties consumed | `--simurgh-border`, `--simurgh-muted`, `--simurgh-muted-foreground`, `--simurgh-radius`, `--simurgh-ring`, `--simurgh-surface` |
+| CSS custom properties consumed | `--simurgh-border`, `--simurgh-item-height`, `--simurgh-muted`, `--simurgh-muted-foreground`, `--simurgh-radius`, `--simurgh-ring`, `--simurgh-surface` |
 
 Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
 component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
 even if your replacement styles use different selectors.
+
+</details>
 {/* component-styling-contract:end */}
 
 ## Customization
