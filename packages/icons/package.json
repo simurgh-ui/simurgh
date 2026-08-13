@@ -1,0 +1,38 @@
+{
+  "name": "@simurgh-ui/icons",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./react": { "types": "./dist/react.d.ts", "import": "./dist/react.js" },
+    "./vue": { "types": "./dist/vue.d.ts", "import": "./dist/vue.js" },
+    "./angular": { "types": "./dist/angular.d.ts", "default": "./dist/angular.js" },
+    "./svg/*": "./svg/*.svg"
+  },
+  "files": ["dist", "svg", "README.md"],
+  "scripts": {
+    "generate": "node ../../scripts/generate-icons.mjs",
+    "build": "pnpm generate && tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "pnpm generate && tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=18",
+    "react": ">=18",
+    "vue": ">=3.4"
+  },
+  "peerDependenciesMeta": {
+    "@angular/core": { "optional": true },
+    "react": { "optional": true },
+    "vue": { "optional": true }
+  },
+  "devDependencies": {
+    "@angular/core": "^20.3.27",
+    "@types/react": "^19.2.18",
+    "react": "^19.2.8",
+    "vitest": "^3.2.7",
+    "vue": "^3.5.41"
+  }
+}
