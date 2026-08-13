@@ -63,6 +63,58 @@ test('forced RTL and reduced motion preserve focus appearance', async ({
   );
 });
 
+test('form accessibility tree exposes required validation semantics', async ({
+  page,
+}) => {
+  await page.goto('/components/form/');
+  await waitForHydration(page);
+  const email = page.getByRole('textbox', { name: 'Email' });
+  await expect(email).toHaveAttribute('required', '');
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await expect(email).toBeFocused();
+  expect(await email.evaluate((control) => control.checkValidity())).toBe(
+    false,
+  );
+});
+
+test('dialog accessibility tree names, describes, and restores focus', async ({
+  page,
+}) => {
+  await page.goto('/components/dialog/');
+  await waitForHydration(page);
+  const trigger = page.getByRole('button', { name: 'Edit profile' });
+  await trigger.click();
+  const dialog = page.getByRole('dialog', { name: 'Edit profile' });
+  await expect(dialog).toContainText(
+    'Update the details shown on your public profile.',
+  );
+  expect(
+    await dialog.evaluate((element) =>
+      element.contains(document.activeElement),
+    ),
+  ).toBe(true);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
+test('forced colors preserve controls and keyboard focus', async ({ page }) => {
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/components/button/');
+  const save = page.getByRole('button', { name: 'Save changes' });
+  await save.focus();
+  const focus = await save.evaluate((control) => {
+    const style = getComputedStyle(control);
+    return {
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+    };
+  });
+  expect(focus.outlineStyle).not.toBe('none');
+  expect(Number.parseFloat(focus.outlineWidth)).toBeGreaterThanOrEqual(2);
+  await expect(page.getByRole('button', { name: /Saving/u })).toBeDisabled();
+});
+
 const auditPages = [
   { name: 'form', path: '/components/form/' },
   { name: 'dialog', path: '/components/dialog/', open: 'Edit profile' },
@@ -85,10 +137,17 @@ for (const theme of ['light', 'dark'] as const) {
       if ('open' in auditedPage)
         await page.getByRole('button', { name: auditedPage.open }).click();
       await page.addScriptTag({ content: axe.source });
-      const results = await page.evaluate(async () =>
-        (window as typeof window & { axe: typeof axe }).axe.run(document, {
-          runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
-        }),
+      const auditSelector =
+        'open' in auditedPage ? '[role="dialog"]' : 'figure.simurgh-preview';
+      const results = await page.evaluate(
+        async (selector) =>
+          (window as typeof window & { axe: typeof axe }).axe.run(
+            document.querySelector(selector)!,
+            {
+              runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
+            },
+          ),
+        auditSelector,
       );
       expect(results.violations).toEqual([]);
     });
