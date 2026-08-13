@@ -478,9 +478,9 @@
       "brotli": 16955
     },
     "styles-complete": {
-      "minified": 38303,
-      "gzip": 5875,
-      "brotli": 5177
+      "minified": 40021,
+      "gzip": 6258,
+      "brotli": 5499
     }
   },
   "featureCosts": {

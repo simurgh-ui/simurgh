@@ -108,6 +108,22 @@ Color values are HSL channels rather than complete color functions. Use them as
 | `--simurgh-shadow`             | `0 14px 40px rgb(15 23 42 / 0.16)` | Inherits light value | Elevation shadow for floating and raised surfaces.                                                          |
 | `--simurgh-duration`           | `160ms`                            | Inherits light value | Shared transition duration; becomes `1ms` under reduced-motion preference.                                  |
 
+Additional semantic roles keep component recipes and application utilities from overloading the
+core surface colors:
+
+| Token family | Roles                                                                                                     |
+| ------------ | --------------------------------------------------------------------------------------------------------- |
+| Actions      | `secondary`, `secondary-foreground`, `danger-foreground`                                                  |
+| Status       | `success`, `success-foreground`, `warning`, `warning-foreground`, `information`, `information-foreground` |
+| Controls     | `input-surface`, `input-border`, `disabled-surface`, `disabled-foreground`, `hover`, `pressed`            |
+| Layers       | `scrim`, `shadow-sm`, `shadow`, `shadow-lg`                                                               |
+| Sizing       | `control-sm` (32px), `control-md` (40px), `control-lg` (48px), `space-1` through `space-4`                |
+| Typography   | `font-sans`, `text-sm`, `text-md`, `text-lg`, `line-height`                                               |
+
+Foreground roles are mandatory partners for their named backgrounds. Status colors communicate
+emphasis, not meaning by themselves; retain text or icon labels. Control sizes are minimum block
+sizes and may grow for wrapped or localized content.
+
 "Inherits light value" means the dark selector does not override that token; normal CSS inheritance
 keeps the `:root` value.
 
@@ -252,7 +268,7 @@ component recipe:
 @import '/examples/custom-theme.css';
 ```
 
-The documentation build validates that both theme blocks define all 14 semantic tokens. It also
+The documentation build validates the semantic token surface and its documented theme behavior. It also
 checks 20 WCAG contrast pairings: normal text pairs at a minimum of 4.5:1 and focus-ring and border
 boundaries at a minimum of 3:1. These automated checks cover the declared pairings, not every
 component state; keyboard focus, forced colors, disabled states, and application overrides still
@@ -279,7 +295,7 @@ application overrides to preserve that behavior.
 
 ## Component customization patterns
 
-Simurgh does not impose a universal `size`, `density`, or `variant` prop. Native attributes and
+Simurgh does not impose a universal `size` or `variant` prop. Native attributes and
 behavioral props belong to the adapter API; visual choices belong to application classes, stable
 parts, state attributes, and semantic tokens. This keeps copied and headless components open to an
 application's own design vocabulary without promising a variant API that a component does not
@@ -287,21 +303,24 @@ implement.
 
 ### Sizes and density
 
-Set control size with logical dimensions and spacing. Keep interactive targets at least `2.5rem`
-unless the surrounding product has an equally accessible compact-mode policy. Scope density on an
-ancestor instead of repeating overrides on every child:
+Scope density on an ancestor instead of repeating overrides on every child. The shipped modes use
+logical dimensions and affect interactive controls rather than content surfaces:
 
-```css
-.account-toolbar[data-density='compact'] {
-  --account-control-block-size: 2.25rem;
-  --account-control-padding: 0.5rem;
-}
+| Mode          | Control target | Menu/item target | Intended use                                                    |
+| ------------- | -------------- | ---------------- | --------------------------------------------------------------- |
+| `comfortable` | 44px           | 40px             | Touch-friendly forms, dialogs, and primary application flows    |
+| `compact`     | 40px           | 36px             | Default mixed-input desktop and responsive interfaces           |
+| `dense`       | 32px           | 28px             | Data-heavy expert tools with an alternative spacious/touch mode |
 
-.account-toolbar :is(button, input, select, [role='button']) {
-  min-block-size: var(--account-control-block-size, 2.5rem);
-  padding-inline: var(--account-control-padding, 0.75rem);
-}
+```html
+<form data-density="comfortable">...</form>
+<div class="data-grid-tools" data-density="dense">...</div>
 ```
+
+`compact` matches the default 40px control rhythm. Dense mode remains above WCAG's 24px minimum
+target size, but proximity and motor-access needs still matter; do not make it the only mode for a
+touch-first product. Override `--simurgh-control-height`, `--simurgh-control-padding`, and
+`--simurgh-item-height` when product research supports a different scoped policy.
 
 Content-sized surfaces such as Dialog, Popover, Sheet, Sidebar, and Tooltip already use viewport
 relative maximum sizes. Override their documented recipe class with `min()`, `max()`, `clamp()`, and
@@ -348,9 +367,21 @@ foreground styles:
 ```
 
 ```css
-.button-with-icon { display: inline-flex; gap: 0.5rem; align-items: center; }
-.button-with-icon > svg, .icon-button > svg { inline-size: 1em; block-size: 1em; flex: none; }
-.icon-button { inline-size: 2.5rem; padding-inline: 0; }
+.button-with-icon {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.button-with-icon > svg,
+.icon-button > svg {
+  inline-size: 1em;
+  block-size: 1em;
+  flex: none;
+}
+.icon-button {
+  inline-size: 2.5rem;
+  padding-inline: 0;
+}
 ```
 
 ### Responsive behavior
@@ -361,12 +392,21 @@ state across breakpoints; CSS may rearrange presentation, but it should not crea
 interactive copy.
 
 ```css
-.profile-card { container-type: inline-size; }
-.profile-card__actions { display: flex; gap: 0.75rem; }
+.profile-card {
+  container-type: inline-size;
+}
+.profile-card__actions {
+  display: flex;
+  gap: 0.75rem;
+}
 
 @container (inline-size < 24rem) {
-  .profile-card__actions { flex-direction: column; }
-  .profile-card__actions > * { inline-size: 100%; }
+  .profile-card__actions {
+    flex-direction: column;
+  }
+  .profile-card__actions > * {
+    inline-size: 100%;
+  }
 }
 ```
 
@@ -381,15 +421,23 @@ than merely making them slightly faster:
 
 ```css
 .simurgh-dialog {
-  transition: opacity var(--simurgh-duration) ease,
-              transform var(--simurgh-duration) ease;
+  transition:
+    opacity var(--simurgh-duration) ease,
+    transform var(--simurgh-duration) ease;
 }
 
-.simurgh-dialog[data-state='closed'] { opacity: 0; transform: translateY(0.5rem); }
+.simurgh-dialog[data-state='closed'] {
+  opacity: 0;
+  transform: translateY(0.5rem);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .simurgh-dialog { transition: none; }
-  .simurgh-dialog[data-state='closed'] { transform: none; }
+  .simurgh-dialog {
+    transition: none;
+  }
+  .simurgh-dialog[data-state='closed'] {
+    transform: none;
+  }
 }
 ```
 
@@ -405,21 +453,25 @@ icons. Mirror arrows that communicate previous/next or physical direction, but d
 media playback icons, checkmarks, or text-direction-independent symbols.
 
 ```css
-.next-icon { transform: rotate(0deg); }
-[dir='rtl'] .next-icon { transform: rotate(180deg); }
+.next-icon {
+  transform: rotate(0deg);
+}
+[dir='rtl'] .next-icon {
+  transform: rotate(180deg);
+}
 ```
 
 ### What applies where
 
-| Concern | Most relevant components | Recommended surface |
-| --- | --- | --- |
-| Size and density | Buttons, fields, menus, toolbars, pagination, tags | Root class plus project-owned density ancestor |
-| Visual variants | Actions, badges, alerts, cards, feedback states | Project-owned class or `data-variant` |
-| Icons | Buttons, menu items, fields, tree items, navigation | Consumer content using `currentColor` and accessible naming |
-| Responsive layout | Dialog, Sheet, Drawer, Sidebar, tables, forms, toolbars | Logical dimensions, container/media queries, stable DOM order |
-| Animation | Dialog, Drawer, Sheet, Popover, Tooltip, Toast, disclosure components | Documented `data-state` or ARIA hooks and `--simurgh-duration` |
-| Dark mode | Every visible recipe | Semantic tokens under `.dark` or `[data-theme='dark']` |
-| RTL | Every directional layout; especially Sheet, Dialog, Tree, navigation | `dir`, logical CSS properties, and selectively mirrored icons |
+| Concern           | Most relevant components                                              | Recommended surface                                            |
+| ----------------- | --------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Size and density  | Buttons, fields, menus, toolbars, pagination, tags                    | Root class plus project-owned density ancestor                 |
+| Visual variants   | Actions, badges, alerts, cards, feedback states                       | Project-owned class or `data-variant`                          |
+| Icons             | Buttons, menu items, fields, tree items, navigation                   | Consumer content using `currentColor` and accessible naming    |
+| Responsive layout | Dialog, Sheet, Drawer, Sidebar, tables, forms, toolbars               | Logical dimensions, container/media queries, stable DOM order  |
+| Animation         | Dialog, Drawer, Sheet, Popover, Tooltip, Toast, disclosure components | Documented `data-state` or ARIA hooks and `--simurgh-duration` |
+| Dark mode         | Every visible recipe                                                  | Semantic tokens under `.dark` or `[data-theme='dark']`         |
+| RTL               | Every directional layout; especially Sheet, Dialog, Tree, navigation  | `dir`, logical CSS properties, and selectively mirrored icons  |
 
 Test customized components in their default, hover, focus-visible, active, disabled, invalid,
 loading, open/closed, light/dark, LTR/RTL, reduced-motion, forced-colors, zoomed, and narrow-viewport

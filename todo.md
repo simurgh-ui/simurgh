@@ -329,25 +329,25 @@ per-component documentation" as example coverage, not as complete consumer docum
 - [x] Complete a coherent visual family for Button, Input, Checkbox, Select, and Dialog before
       expanding the catalog further; verify hover, pressed, focus-visible, disabled, loading,
       invalid, and responsive states.
-- [ ] Expand semantic tokens for secondary, success, warning, information, destructive foreground,
+- [x] Expand semantic tokens for secondary, success, warning, information, destructive foreground,
       disabled surfaces/text, input surfaces/borders, hover/pressed states, scrims, elevation,
       control heights, spacing, and typography.
-- [ ] Keep the Tailwind preset in parity with the supported semantic CSS token surface and add a
+- [x] Keep the Tailwind preset in parity with the supported semantic CSS token surface and add a
       regression check that prevents the two theming APIs from drifting.
-- [ ] Introduce explicit comfortable, compact, and dense control-density modes with documented
+- [x] Introduce explicit comfortable, compact, and dense control-density modes with documented
       target sizes and consistent application across interactive components.
-- [ ] Define a restrained Simurgh visual-language guide beyond color, covering typography,
+- [x] Define a restrained Simurgh visual-language guide beyond color, covering typography,
       geometric rhythm, separators/borders, motion, illustration, and empty-state treatment.
 
 ### P2: discovery and documentation usability
 
-- [ ] Add a visual component gallery with search and filters for category, styling status,
+- [x] Add a visual component gallery with search and filters for category, styling status,
       framework availability, native/custom behavior, and keyboard-interaction complexity.
-- [ ] Preserve the interaction-based component chooser, but link gallery cards directly to the
+- [x] Preserve the interaction-based component chooser, but link gallery cards directly to the
       relevant comparison guidance for commonly confused components.
 - [ ] Reduce generated page density by consolidating shared cross-framework behavior, surfacing
       only meaningful adapter differences, and collapsing exhaustive API/styling tables by default.
-- [ ] Simplify the component-page table of contents to major user-facing sections and remove
+- [x] Simplify the component-page table of contents to major user-facing sections and remove
       repetitive generated framework/component subheadings from its default outline.
 
 ### UI/UX acceptance gate

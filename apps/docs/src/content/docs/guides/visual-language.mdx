@@ -1,0 +1,107 @@
+---
+title: Visual language
+description: A restrained visual system for typography, rhythm, boundaries, motion, illustration, and empty states.
+---
+
+Simurgh uses references to Iranian material culture as a source of proportion and color—not as
+surface decoration applied to every component. Product content stays primary. Ornament is rare,
+purposeful, and never required to understand or operate an interface.
+
+## Principles
+
+1. **Clarity before character.** Hierarchy, state, and readable content come before brand detail.
+2. **Rhythm before boxes.** Use spacing and alignment to group content before adding another border.
+3. **One strong gesture.** A surface may use one prominent color, illustration, or geometric motif;
+   competing gestures weaken hierarchy.
+4. **Meaning is redundant.** Color and motion reinforce text, icons, structure, and ARIA semantics;
+   they never carry status alone.
+5. **Logical by default.** Layout and decoration use logical properties so RTL is native rather than
+   mirrored as an afterthought.
+
+## Typography
+
+Use the system sans stack from `--simurgh-font-sans` for application UI. It keeps scripts and
+platform rendering familiar while allowing products to provide a tested multilingual family.
+
+- Body and controls use `--simurgh-text-md` with `--simurgh-line-height`.
+- Supporting text uses `--simurgh-text-sm`; do not reduce essential instructions below it.
+- Section and dialog titles use `--simurgh-text-lg`, semibold weight, and compact line height.
+- Prefer weight and spacing over large jumps in size. Most product surfaces need three text levels.
+- Use sentence case for actions and headings. Reserve all caps for established abbreviations.
+- Test Persian/Arabic shaping, mixed-direction numbers, and translated strings before choosing a
+  custom font or fixed line height.
+
+## Geometric rhythm
+
+The base rhythm uses 4px increments exposed as `--simurgh-space-1` through `--simurgh-space-4`.
+Use 8px for related content, 16px for groups, and larger multiples to separate page regions.
+
+Controls follow the documented density scale: 44px comfortable, 40px compact, and 32px dense.
+Align controls by their visible edge and text baseline. Avoid mixing density modes inside one form
+or action group. Use asymmetry only to express hierarchy, not to compensate for inconsistent gaps.
+
+## Borders, separators, and elevation
+
+Boundaries explain containment; they are not decoration.
+
+- Start with whitespace. Add a separator when adjacent groups still read as one.
+- Use one-pixel `--simurgh-border` boundaries for controls and persistent regions.
+- Use `--simurgh-input-border` for editable and selectable fields so affordances remain consistent.
+- Prefer a border or `--simurgh-shadow-sm` for cards, not both unless the background requires it.
+- Reserve `--simurgh-shadow` for menus and dialogs and `--simurgh-shadow-lg` for exceptional layered
+  surfaces. Elevation must match focus order and stacking behavior.
+- Keep corner radii related through `--simurgh-radius`; avoid mixing pills, sharp rectangles, and
+  heavily rounded panels without a semantic reason.
+
+## Motion
+
+Motion confirms causality and spatial change. It should not delay work.
+
+- Use `--simurgh-duration` for control feedback and overlay entrances.
+- Animate opacity and small transforms; avoid layout properties that cause reflow.
+- Pressed controls may move by one pixel. Persistent bouncing, pulsing, and parallax are outside the
+  default language.
+- Loading indicators must accompany a stable accessible name or status message.
+- Under `prefers-reduced-motion: reduce`, remove nonessential animation rather than merely making it
+  faster. Never encode success, failure, or navigation direction only in motion.
+
+## Illustration and imagery
+
+Illustration is optional and subordinate to the task. Favor restrained geometric forms, generous
+negative space, and a small subset of heritage colors. Do not imitate sacred text, historical
+manuscripts, or culturally specific symbols as generic decoration.
+
+- Provide useful alternative text for informative imagery and empty alt text for decoration.
+- Avoid placing text inside raster artwork; it prevents localization and zoom reflow.
+- Verify dark-theme contrast and transparent edges on both light and dark surfaces.
+- Use one illustration style per product area. Photographs, flat vectors, and ornate motifs should
+  not compete in the same small surface.
+
+## Empty states
+
+An empty state explains what is absent and offers the most useful next step. It is not an error by
+default.
+
+1. Use a concise title that names the missing content.
+2. Add one sentence explaining why it is empty or what will appear here.
+3. Offer one primary action when the user can resolve the state; use a quiet secondary action only
+   when it is genuinely useful.
+4. Keep media decorative unless it conveys information not present in the text.
+5. Distinguish first-use, filtered-no-results, permission, offline, and failure states. They require
+   different guidance and recovery actions.
+
+Avoid oversized illustrations, celebratory language for blocked work, and dead ends that only say
+“No data.” For loading content, use Skeleton or Spinner instead of briefly flashing an empty state.
+
+## Review checklist
+
+- Can hierarchy be understood in grayscale and at 200% zoom?
+- Does the layout retain its rhythm with long localized content and RTL direction?
+- Are boundaries necessary, consistent, and tied to containment?
+- Does every animation have a causal purpose and a reduced-motion outcome?
+- Are illustration and empty-state copy appropriate to the actual user situation?
+- Do focus, disabled, invalid, loading, hover, and pressed states remain visibly distinct in both
+  themes?
+
+See [theming](/guides/theming/) for token values and density configuration, and [accessibility and
+RTL](/guides/accessibility-rtl/) for interaction and directionality requirements.

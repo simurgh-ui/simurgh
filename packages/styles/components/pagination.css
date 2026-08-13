@@ -1,5 +1,27 @@
 @import '../tokens.css';
 
+/* Density is scoped on an ancestor and intentionally affects interactive controls, not content surfaces. */
+:where(
+    [data-density='comfortable'],
+    [data-density='compact'],
+    [data-density='dense']
+  )
+  :where(
+    [data-slot='button'],
+    [data-slot='input'],
+    [data-slot='checkbox'],
+    [data-slot='select-trigger'],
+    [data-slot='native-select'],
+    [data-slot='input-otp'],
+    [data-slot='toolbar-button'],
+    [data-slot='toggle-group-item'],
+    [data-slot='pagination-link'],
+    .simurgh-trigger
+  ) {
+  min-block-size: var(--simurgh-control-height);
+  padding-inline: var(--simurgh-control-padding);
+}
+
 [data-slot='pagination-content'] {
   align-items: center;
   display: flex;

@@ -12,6 +12,7 @@ export default defineConfig({
         alt: 'Simurgh UI',
       },
       favicon: '/brand/simurgh-ui-logo.png',
+      tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 2 },
       social: [
         {
           icon: 'github',
@@ -44,6 +45,10 @@ export default defineConfig({
           label: 'Foundations',
           items: [
             { label: 'Theming', slug: 'guides/theming' },
+            {
+              label: 'Visual language',
+              slug: 'guides/visual-language',
+            },
             { label: 'Accessibility & RTL', slug: 'guides/accessibility-rtl' },
             { label: 'Overlay focus', slug: 'guides/overlay-focus' },
             { label: 'SSR and hydration', slug: 'guides/ssr-and-hydration' },

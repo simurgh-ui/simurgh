@@ -1,0 +1,116 @@
+---
+import registry from '../../../../packages/registry/registry.json';
+
+const labels = new Map([
+  ['alert-dialog', 'Alert Dialog'], ['aspect-ratio', 'Aspect Ratio'],
+  ['button-group', 'Button Group'], ['context-menu', 'Context Menu'],
+  ['date-picker', 'Date Picker'], ['description-list', 'Description List'],
+  ['dropdown-menu', 'Dropdown Menu'], ['file-upload', 'File Upload'],
+  ['hover-card', 'Hover Card'], ['input-group', 'Input Group'],
+  ['input-otp', 'Input OTP'], ['native-select', 'Native Select'],
+  ['navigation-menu', 'Navigation Menu'], ['number-input', 'Number Input'],
+  ['password-input', 'Password Input'], ['radio-group', 'Radio Group'],
+  ['scroll-area', 'Scroll Area'], ['tags-input', 'Tags Input'],
+  ['toggle-group', 'Toggle Group'], ['visually-hidden', 'Visually Hidden'],
+]);
+const groups = {
+  Actions: ['button', 'button-group', 'toggle', 'toggle-group', 'toolbar', 'rating'],
+  Forms: ['form', 'field', 'label', 'input', 'textarea', 'input-group', 'password-input', 'number-input', 'input-otp', 'checkbox', 'switch', 'radio-group', 'native-select', 'select', 'combobox', 'slider', 'tags-input', 'file-upload', 'calendar', 'date-picker'],
+  Overlays: ['dialog', 'alert-dialog', 'sheet', 'drawer', 'popover', 'tooltip', 'hover-card', 'dropdown-menu', 'context-menu', 'toast'],
+  Navigation: ['disclosure', 'collapsible', 'accordion', 'tabs', 'breadcrumb', 'pagination', 'link', 'navigation-menu', 'menubar', 'sidebar', 'tree', 'carousel', 'command'],
+  Layout: ['card', 'item', 'separator', 'aspect-ratio', 'scroll-area', 'resizable'],
+  Feedback: ['table', 'avatar', 'badge', 'kbd', 'alert', 'empty', 'progress', 'meter', 'skeleton', 'spinner', 'visually-hidden'],
+};
+const category = new Map(Object.entries(groups).flatMap(([group, names]) => names.map((name) => [name, group])));
+const native = new Set(['button', 'input', 'textarea', 'native-select', 'label', 'link', 'checkbox', 'switch', 'slider', 'meter', 'progress', 'details', 'disclosure', 'table']);
+const structural = new Set(['aspect-ratio', 'card', 'item', 'separator', 'field', 'form', 'description-list', 'visually-hidden', 'scroll-area']);
+const complex = new Set(['select', 'combobox', 'command', 'calendar', 'date-picker', 'tree', 'menubar', 'dropdown-menu', 'context-menu', 'dialog', 'alert-dialog', 'sheet', 'drawer', 'carousel', 'resizable']);
+const moderate = new Set(['tabs', 'accordion', 'radio-group', 'toolbar', 'toggle-group', 'rating', 'tags-input', 'popover', 'tooltip', 'hover-card', 'sidebar']);
+const comparisons = new Map<string, string>([
+  ...['select', 'native-select', 'combobox'].map((name) => [name, '/guides/component-chooser/#select-native-select-or-combobox'] as const),
+  ...['dialog', 'alert-dialog', 'sheet', 'drawer'].map((name) => [name, '/guides/component-chooser/#dialog-alert-dialog-sheet-or-drawer'] as const),
+  ...['tooltip', 'hover-card', 'popover'].map((name) => [name, '/guides/component-chooser/#tooltip-hover-card-or-popover'] as const),
+  ...['accordion', 'disclosure', 'collapsible'].map((name) => [name, '/guides/component-chooser/#accordion-disclosure-or-collapsible'] as const),
+]);
+const components = registry.components.map((name) => ({
+  name,
+  label: labels.get(name) ?? name.replaceAll('-', ' ').replace(/\b\w/gu, (letter) => letter.toUpperCase()),
+  category: category.get(name) ?? 'Other',
+  status: native.has(name) ? 'native' : structural.has(name) ? 'structural' : 'styled',
+  behavior: native.has(name) ? 'native' : 'custom',
+  keyboard: complex.has(name) ? 'complex' : moderate.has(name) ? 'moderate' : 'simple',
+  comparison: comparisons.get(name),
+}));
+---
+
+<div class="component-gallery" data-component-gallery>
+  <div class="gallery-controls" aria-label="Filter components">
+    <label>Search <input type="search" placeholder="Button, dialog, form…" data-gallery-search /></label>
+    <label>Category <select data-gallery-filter="category"><option value="">All categories</option>{Object.keys(groups).map((group) => <option value={group}>{group}</option>)}</select></label>
+    <label>Status <select data-gallery-filter="status"><option value="">All statuses</option><option>styled</option><option>structural</option><option>native</option></select></label>
+    <label>Behavior <select data-gallery-filter="behavior"><option value="">Native and custom</option><option>native</option><option>custom</option></select></label>
+    <label>Framework <select data-gallery-filter="frameworks"><option value="">All frameworks</option><option>React</option><option>Vue</option><option>Angular</option></select></label>
+    <label>Keyboard <select data-gallery-filter="keyboard"><option value="">Any complexity</option><option value="simple">simple</option><option value="moderate">moderate</option><option value="complex">complex</option></select></label>
+  </div>
+  <p class="gallery-count" aria-live="polite"><span data-gallery-count>{components.length}</span> components</p>
+  <div class="gallery-grid">
+    {components.map((component) => (
+      <article class="gallery-card" data-gallery-card data-search={component.label.toLowerCase()} data-category={component.category} data-status={component.status} data-behavior={component.behavior} data-keyboard={component.keyboard} data-frameworks="React Vue Angular">
+        <span class="gallery-mark" aria-hidden="true">{component.label.slice(0, 1)}</span>
+        <strong><a href={`/components/${component.name}/`}>{component.label}</a></strong>
+        <span>{component.category}</span>
+        <span class="gallery-tags"><small>{component.status}</small><small>{component.behavior}</small><small>{component.keyboard} keys</small><small>React · Vue · Angular</small></span>
+        {component.comparison && <a class="gallery-compare" href={component.comparison}>Compare alternatives <span aria-hidden="true">→</span></a>}
+      </article>
+    ))}
+  </div>
+  <p data-gallery-empty hidden>No components match these filters.</p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-component-gallery]').forEach((gallery) => {
+    const search = gallery.querySelector<HTMLInputElement>('[data-gallery-search]');
+    const filters = [...gallery.querySelectorAll<HTMLSelectElement>('[data-gallery-filter]')];
+    const cards = [...gallery.querySelectorAll<HTMLElement>('[data-gallery-card]')];
+    const update = () => {
+      const query = search?.value.trim().toLowerCase() ?? '';
+      let visible = 0;
+      cards.forEach((card) => {
+        const matchesSearch = !query || card.dataset.search?.includes(query);
+        const matchesFilters = filters.every((filter) => {
+          if (!filter.value) return true;
+          const value = card.dataset[filter.dataset.galleryFilter!] ?? '';
+          return filter.dataset.galleryFilter === 'frameworks'
+            ? value.includes(filter.value)
+            : value === filter.value;
+        });
+        card.hidden = !(matchesSearch && matchesFilters);
+        if (!card.hidden) visible += 1;
+      });
+      const count = gallery.querySelector('[data-gallery-count]');
+      if (count) count.textContent = String(visible);
+      const empty = gallery.querySelector<HTMLElement>('[data-gallery-empty]');
+      if (empty) empty.hidden = visible !== 0;
+    };
+    search?.addEventListener('input', update);
+    filters.forEach((filter) => filter.addEventListener('change', update));
+  });
+</script>
+
+<style>
+  .gallery-controls { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
+  .gallery-controls label { display: grid; font-size: .875rem; font-weight: 600; gap: .25rem; }
+  .gallery-controls :is(input, select) { background: hsl(var(--simurgh-input-surface)); border: 1px solid hsl(var(--simurgh-input-border)); border-radius: var(--simurgh-radius); color: hsl(var(--simurgh-foreground)); min-block-size: 2.5rem; padding-inline: .625rem; }
+  .gallery-controls :is(input, select):focus-visible { outline: 2px solid hsl(var(--simurgh-ring)); outline-offset: 2px; }
+  .gallery-count { color: hsl(var(--simurgh-muted-foreground)); margin-block: 1rem; }
+  .gallery-grid { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
+  .gallery-card { background: hsl(var(--simurgh-surface)); border: 1px solid hsl(var(--simurgh-border)); border-radius: var(--simurgh-radius); color: hsl(var(--simurgh-foreground)); display: grid; gap: .375rem; padding: 1rem; }
+  .gallery-card:hover { border-color: hsl(var(--simurgh-primary)); box-shadow: var(--simurgh-shadow-sm); }
+  .gallery-card a:focus-visible { border-radius: calc(var(--simurgh-radius) / 2); outline: 2px solid hsl(var(--simurgh-ring)); outline-offset: 2px; }
+  .gallery-card strong a { color: inherit; text-decoration: none; }
+  .gallery-mark { align-items: center; background: hsl(var(--simurgh-secondary)); border-radius: calc(var(--simurgh-radius) * .75); color: hsl(var(--simurgh-secondary-foreground)); display: inline-flex; font-weight: 700; block-size: 2rem; inline-size: 2rem; justify-content: center; }
+  .gallery-card > span:not(.gallery-mark, .gallery-tags) { color: hsl(var(--simurgh-muted-foreground)); }
+  .gallery-tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-block-start: .25rem; }
+  .gallery-tags small { background: hsl(var(--simurgh-muted)); border-radius: 999px; color: hsl(var(--simurgh-muted-foreground)); padding: .125rem .4rem; }
+  .gallery-compare { align-self: end; font-size: .875rem; margin-block-start: .375rem; }
+</style>
