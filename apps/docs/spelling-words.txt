@@ -91,6 +91,7 @@ angular
 angular's
 animate
 animation
+animations
 announce
 announced
 announcement
@@ -295,6 +296,7 @@ carries
 carry
 cascade
 case
+cases
 catalog
 causal
 causality
@@ -574,7 +576,9 @@ defects
 defer
 deferred
 definition
+definitions
 delay
+delays
 deleting
 deliberate
 deliberately
@@ -1033,6 +1037,7 @@ impose
 imposing
 in
 in-app
+in-view
 inaccessible
 include
 includes
@@ -1138,6 +1143,7 @@ keyboard
 keyboard-navigable
 keyboard-only
 keyboards
+keyframes
 keys
 knowledge
 known
@@ -1370,6 +1376,7 @@ non-floating
 non-interactive
 non-modal
 non-numeric
+non-spatial
 non-zero
 none
 nonessential
@@ -1890,6 +1897,7 @@ searching
 searchselectioncomponentpreview
 second
 secondary
+seconds
 section
 sections
 security
@@ -2245,6 +2253,7 @@ undeclared
 under
 understand
 understood
+undesirable
 undocumented
 unexpectedly
 unfamiliar
@@ -2332,6 +2341,7 @@ ways
 wcag
 wcag's
 weaken
+web
 webkit
 webview
 week

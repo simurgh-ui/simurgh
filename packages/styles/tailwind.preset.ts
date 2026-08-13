@@ -68,7 +68,15 @@ export default {
         simurghLg: 'var(--simurgh-text-lg)',
       },
       lineHeight: { simurgh: 'var(--simurgh-line-height)' },
-      transitionDuration: { simurgh: 'var(--simurgh-duration)' },
+      transitionDuration: {
+        simurghFast: 'var(--simurgh-duration-fast)',
+        simurgh: 'var(--simurgh-duration)',
+        simurghSlow: 'var(--simurgh-duration-slow)',
+      },
+      transitionTimingFunction: {
+        simurgh: 'var(--simurgh-ease-standard)',
+        simurghEmphasized: 'var(--simurgh-ease-emphasized)',
+      },
     },
   },
 } satisfies Partial<Config>;

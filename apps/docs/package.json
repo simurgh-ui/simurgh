@@ -15,6 +15,7 @@
     "@astrojs/starlight": "^0.36.0",
     "@simurgh-ui/angular": "workspace:*",
     "@simurgh-ui/core": "workspace:*",
+    "@simurgh-ui/motion": "workspace:*",
     "@simurgh-ui/react": "workspace:*",
     "@simurgh-ui/registry": "workspace:*",
     "@simurgh-ui/styles": "workspace:*",

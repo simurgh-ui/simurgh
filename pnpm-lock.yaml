@@ -77,6 +77,9 @@ importers:
       '@simurgh-ui/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@simurgh-ui/motion':
+        specifier: workspace:*
+        version: link:../../packages/motion
       '@simurgh-ui/react':
         specifier: workspace:*
         version: link:../../packages/react
@@ -164,6 +167,24 @@ importers:
       vitest:
         specifier: ^3.2.4
         version: 3.2.7(@types/debug@4.1.13)(@types/node@24.13.3)(jsdom@27.4.0(supports-color@7.2.0))(supports-color@7.2.0)(yaml@2.9.0)
+
+  packages/motion:
+    devDependencies:
+      '@angular/core':
+        specifier: ^20.3.2
+        version: 20.3.27(@angular/compiler@20.3.27)(rxjs@7.8.2)(zone.js@0.15.1)
+      '@types/react':
+        specifier: ^19.1.16
+        version: 19.2.18
+      react:
+        specifier: ^19.1.1
+        version: 19.2.8
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/debug@4.1.13)(@types/node@24.13.3)(jsdom@27.4.0(supports-color@7.2.0))(supports-color@7.2.0)(yaml@2.9.0)
+      vue:
+        specifier: ^3.5.22
+        version: 3.5.41(typescript@5.9.3)
 
   packages/react:
     dependencies:

@@ -27,6 +27,10 @@
   --simurgh-radius: 0.625rem;
   --simurgh-shadow: 0 14px 40px rgb(15 23 42 / 0.16);
   --simurgh-duration: 160ms;
+  --simurgh-duration-fast: 100ms;
+  --simurgh-duration-slow: 240ms;
+  --simurgh-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --simurgh-ease-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
 }
 
 .dark, [data-theme='dark'] {
@@ -44,5 +48,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root { --simurgh-duration: 1ms; }
+  :root {
+    --simurgh-duration: 1ms;
+    --simurgh-duration-fast: 1ms;
+    --simurgh-duration-slow: 1ms;
+  }
 }

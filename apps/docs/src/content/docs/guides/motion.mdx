@@ -1,0 +1,125 @@
+---
+title: Motion
+description: Lightweight opt-in animation for React, Vue, and Angular.
+---
+
+`@simurgh-ui/motion` adds purposeful animation without changing the default behavior of Simurgh
+components. Durations and delays use seconds. The engine uses the Web Animations API and imports
+safely during server rendering.
+
+```sh
+pnpm add @simurgh-ui/motion
+```
+
+## Core API
+
+```ts
+import { animate, sequence } from '@simurgh-ui/motion';
+
+const controls = animate(
+  card,
+  { opacity: [0, 1], y: [8, 0] },
+  {
+    type: 'spring',
+    stiffness: 180,
+    damping: 24,
+  },
+);
+
+await sequence([
+  [heading, { opacity: [0, 1] }],
+  [actions, { opacity: [0, 1], y: [4, 0] }, { delay: 0.04 }],
+]).finished;
+
+controls.pause();
+controls.play();
+controls.cancel();
+```
+
+## React
+
+```tsx
+import { animated, Presence } from '@simurgh-ui/motion/react';
+import { Button } from '@simurgh-ui/react/button';
+
+const itemMotion = {
+  initial: { opacity: 0, y: 6 },
+  animate: { opacity: 1, y: 0 },
+  whileHover: { scale: 1.02 },
+  whilePress: { scale: 0.98 },
+  exit: { opacity: 0, y: -4 },
+};
+
+<Presence exit={itemMotion}>
+  {open && (
+    <animated.div key="panel" motion={itemMotion}>
+      <Button>Save</Button>
+    </animated.div>
+  )}
+</Presence>;
+```
+
+`useMotion(definition)` returns an element ref and controls for cases where a wrapper is not useful.
+
+## Vue
+
+```vue
+<script setup lang="ts">
+import { Motion, Presence } from '@simurgh-ui/motion/vue';
+const panel = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+};
+</script>
+
+<Presence
+  :exit="panel"
+><Motion v-if="open" :motion="panel"><button>Save</button></Motion></Presence>
+```
+
+Use `v-motion="definition"` or `useMotion(definition)` when an extra component is undesirable.
+
+## Angular
+
+```ts
+import {
+  SimurghMotionDirective,
+  SimurghPresence,
+} from '@simurgh-ui/motion/angular';
+
+@Component({
+  imports: [SimurghMotionDirective, SimurghPresence],
+  template: `<simurgh-presence [present]="open" [motion]="panel">
+    <section [simurghMotion]="panel">Content</section>
+  </simurgh-presence>`,
+})
+export class Example {
+  open = true;
+  panel = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+  };
+}
+```
+
+## Variants, gestures, and in-view motion
+
+Definitions accept named `variants` and the states `whileHover`, `whilePress`, `whileFocus`, and
+`whileInView`. A state may contain keyframes directly or name a variant. Delays and `stagger` are
+expressed in seconds.
+
+## Reduced motion and accessibility
+
+The default `reducedMotion: "user"` follows `prefers-reduced-motion`. Use `"always"` for a product
+setting that disables motion and `"never"` only for a necessary, non-spatial state transition.
+Reduced motion removes delays and repeats. Never delay focus, dismissal, or validation feedback
+until decorative animation finishes.
+
+The CSS package exposes `--simurgh-duration-fast`, `--simurgh-duration`,
+`--simurgh-duration-slow`, `--simurgh-ease-standard`, and `--simurgh-ease-emphasized`.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

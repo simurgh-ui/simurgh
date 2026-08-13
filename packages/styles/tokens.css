@@ -60,6 +60,10 @@
   --simurgh-text-lg: 1.25rem;
   --simurgh-line-height: 1.5;
   --simurgh-duration: 160ms;
+  --simurgh-duration-fast: 100ms;
+  --simurgh-duration-slow: 240ms;
+  --simurgh-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --simurgh-ease-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
 }
 
 [data-density='comfortable'] {
@@ -115,5 +119,7 @@
 @media (prefers-reduced-motion: reduce) {
   :root {
     --simurgh-duration: 1ms;
+    --simurgh-duration-fast: 1ms;
+    --simurgh-duration-slow: 1ms;
   }
 }
