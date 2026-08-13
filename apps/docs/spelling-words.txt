@@ -103,6 +103,7 @@ announces
 announcing
 anonymous
 another
+answer
 any
 api
 apis
@@ -125,6 +126,8 @@ appropriately
 arabic
 arbitrarily
 arbitrary
+archaeology
+architecture
 archive
 archived
 are
@@ -173,6 +176,7 @@ automated
 automatic
 automatically
 automation
+availability
 available
 avatar
 avoid
@@ -381,6 +385,7 @@ codes
 codetabs
 codex
 collapse
+collapsed
 collapses
 collapsible
 collection
@@ -412,6 +417,7 @@ communicates
 compact
 compare
 compares
+comparison
 compatibility
 compatible
 compensate
@@ -427,6 +433,7 @@ complete
 completing
 completion
 complex
+complexity
 component
 component-scoped
 component-specific
@@ -501,6 +508,7 @@ contrasts
 contribute
 contributes
 control
+control-size
 control's
 controlled
 controls
@@ -522,6 +530,7 @@ copy-link
 core
 corner
 correct
+corrected
 correctly
 corresponding
 cost
@@ -545,6 +554,7 @@ current
 current-page
 currently
 custom
+custom-listbox
 custom-styled
 customization
 customizations
@@ -554,6 +564,7 @@ cycle
 cycles
 danger
 dark
+dark-mode
 dark-theme
 data
 data-heavy
@@ -620,6 +631,7 @@ detect
 detection
 detects
 determinate
+determine
 determined
 deterministic
 developer
@@ -679,6 +691,7 @@ do
 docs
 document
 documentation
+documentation-discovery
 documented
 documents
 does
@@ -712,6 +725,7 @@ edge
 edges
 edit
 editable
+editable-filtering
 editing
 edits
 effect
@@ -848,13 +862,16 @@ filtered-no-results
 filtering
 filters
 final
+find
 find-in-page
+findability
 finishes
 fire
 firefox
 fires
 first
 first-day
+first-time-reader
 first-use
 firuzeh
 fit
@@ -899,6 +916,7 @@ forward
 forwarded
 forwarding
 forwards
+found
 four
 fr
 fragments
@@ -914,6 +932,9 @@ framework-version
 framework's
 frameworks
 free
+fresh
+fresh-context
+fresh-reader
 from
 frozen
 full-height
@@ -921,6 +942,7 @@ full-screen
 fully
 functions
 future
+gallery
 gap
 gaps
 gate
@@ -979,6 +1001,7 @@ help
 helper
 here
 heritage
+hesitation
 hidden
 hide
 hierarchical
@@ -1003,6 +1026,7 @@ how
 hsl
 html
 https
+human
 hydrated
 hydrating
 hydration
@@ -1082,6 +1106,7 @@ inside
 inspect
 inspected
 inspecting
+inspection
 install
 installation
 installed
@@ -1142,6 +1167,7 @@ kbd
 keep
 keeping
 keeps
+kept
 key
 key-value
 keyboard
@@ -1213,6 +1239,7 @@ locale-dependent
 localization
 localized
 locally
+locate
 location
 locations
 lockfile
@@ -1309,6 +1336,7 @@ modals
 mode
 model
 models
+moderated
 modern
 modes
 modified
@@ -1526,6 +1554,7 @@ pdf
 peer
 peer-dependency
 pending
+people
 per
 per-component
 perceivable
@@ -1653,6 +1682,7 @@ providers
 provides
 providing
 proximity
+proxy
 public
 publish
 published
@@ -1668,6 +1698,7 @@ quality
 quantity
 queries
 query
+questions
 queue
 quick
 quick-start
@@ -1854,6 +1885,7 @@ rhythm
 richer
 right
 right-click
+ring
 role
 roles
 root
@@ -1994,6 +2026,7 @@ single
 single-date
 single-file
 single-line
+singular
 site
 situation
 six-week
@@ -2020,6 +2053,7 @@ solve
 some
 sorting
 source
+source-code
 source-copy
 space
 space-constrained
@@ -2075,11 +2109,13 @@ strings
 strong
 stronger
 structural
+structurally
 structure
 structured
 structures
 style
 style-hook
+styled
 styles
 stylesheet
 stylesheets
@@ -2159,6 +2195,7 @@ template-driven
 template's
 temporary
 term
+terminology
 test
 tested
 tester
@@ -2227,6 +2264,7 @@ total
 touch
 touch-first
 touch-friendly
+tradeoffs
 transfer
 transferred
 transfers
@@ -2278,6 +2316,7 @@ understood
 undocumented
 undone
 unexpectedly
+unfamiliar
 unified
 unique
 unit
@@ -2357,6 +2396,7 @@ vocabulary
 volume
 vue
 vue's
+walkthrough
 want
 wants
 warrants
@@ -2413,6 +2453,7 @@ wrapping
 writes
 writing
 written
+wrong
 yellow
 yet
 you

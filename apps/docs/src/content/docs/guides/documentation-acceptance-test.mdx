@@ -85,6 +85,42 @@ props or inputs, events or outputs, content syntax, and native-attribute behavio
 conventions while preserving the same user-visible and accessibility outcome. Fail any tab that
 silently relies on syntax or APIs from another adapter.
 
+## First-time-reader comprehension checkpoint
+
+Run this checkpoint from the home page in a fresh browser context without reading repository source.
+It is a documentation walkthrough, not a substitute for moderated research with new human users.
+
+1. **Identify styling status.** Open the component overview and determine whether Native Select is
+   native, structurally styled, or recipe styled. Pass when the gallery exposes the answer without
+   opening implementation source.
+2. **Select the correct primitive.** Find a fixed-option form control and distinguish Native Select,
+   Select, and Combobox. Pass when comparison guidance explains the native, custom-listbox, and
+   editable-filtering tradeoffs from the gallery journey.
+3. **Preview the real default.** Open Select and inspect its Basic usage and Examples sections. Pass
+   when the rendered result and framework-native source are available before the exhaustive API.
+4. **Install it.** Find the package and CLI installation paths. Pass when the component page exposes
+   `pnpm dlx @simurgh-ui/cli add select`, subpath imports, and optional recipe CSS without source-code
+   inspection.
+5. **Choose a density.** Follow Theming and identify comfortable, compact, and dense modes. Pass
+   when the `data-density` scope, intended use, and control-size consequences are documented.
+6. **Customize semantic tokens.** Identify the primary, foreground, ring, radius, and duration
+   controls. Pass when import order and semantic overrides are shown without requiring selector
+   archaeology or `!important`.
+7. **Verify accessibility modes.** Locate the focus, RTL, and dark-theme instructions. Pass when a
+   reader can state what to inspect and can switch the documentation theme using a labeled control.
+
+On 2026-08-13, a fresh-context browser walkthrough passed all seven documentation-discovery steps.
+Filtering the gallery to native components matching “select” returned only Native Select; its card
+exposed status, behavior, keyboard complexity, framework availability, and comparison guidance.
+The Select page exposed installation before usage and kept React, Vue, Angular, and styling
+reference tables collapsed by default. The theme control applied light mode, while Theming and
+Accessibility & RTL exposed density, semantic-token, focus, direction, and dark-mode guidance. The
+walkthrough also found and corrected singular result copy from “1 components” to “1 component.”
+
+This result validates findability and information architecture through an automated fresh-reader
+proxy. A release candidate should still include moderated observation with people unfamiliar with
+Simurgh, recording task completion, hesitation, wrong turns, and terminology questions.
+
 ## Recorded acceptance result
 
 The repository run on 2026-08-12 recorded the following evidence. CI evidence confirms that package

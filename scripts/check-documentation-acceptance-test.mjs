@@ -12,6 +12,7 @@ const required = [
   '## 5. Handle an event',
   '## 6. Update a copied component',
   '## Framework-switch checkpoint',
+  '## First-time-reader comprehension checkpoint',
   '## Recorded acceptance result',
   'React',
   'Vue',
@@ -22,6 +23,13 @@ const required = [
   '/guides/theming/',
   '/guides/overlay-focus/',
   '/guides/updates-and-migrations/',
+  'Identify styling status',
+  'Select the correct primitive',
+  'Preview the real default',
+  'Choose a density',
+  'Customize semantic tokens',
+  'Verify accessibility modes',
+  'fresh-context browser walkthrough',
 ];
 const missing = required.filter((marker) => !source.includes(marker));
 const resultRows = [...source.matchAll(/^\| (?:Install|Customize|Build|Open|Handle|Update|Switch) .+ \|$/gmu)];
@@ -31,4 +39,4 @@ if (missing.length || resultRows.length !== 7) {
   process.exit(1);
 }
 
-console.log('Documentation acceptance test coverage passed (6 tasks plus framework switching).');
+console.log('Documentation acceptance test coverage passed (6 implementation tasks, framework switching, and 7 first-time-reader checks).');

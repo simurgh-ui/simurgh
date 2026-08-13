@@ -52,7 +52,7 @@ const components = registry.components.map((name) => ({
     <label>Framework <select data-gallery-filter="frameworks"><option value="">All frameworks</option><option>React</option><option>Vue</option><option>Angular</option></select></label>
     <label>Keyboard <select data-gallery-filter="keyboard"><option value="">Any complexity</option><option value="simple">simple</option><option value="moderate">moderate</option><option value="complex">complex</option></select></label>
   </div>
-  <p class="gallery-count" aria-live="polite"><span data-gallery-count>{components.length}</span> components</p>
+  <p class="gallery-count" aria-live="polite"><span data-gallery-count>{components.length}</span> <span data-gallery-count-label>components</span></p>
   <div class="gallery-grid">
     {components.map((component) => (
       <article class="gallery-card" data-gallery-card data-search={component.label.toLowerCase()} data-category={component.category} data-status={component.status} data-behavior={component.behavior} data-keyboard={component.keyboard} data-frameworks="React Vue Angular">
@@ -88,7 +88,9 @@ const components = registry.components.map((name) => ({
         if (!card.hidden) visible += 1;
       });
       const count = gallery.querySelector('[data-gallery-count]');
+      const countLabel = gallery.querySelector('[data-gallery-count-label]');
       if (count) count.textContent = String(visible);
+      if (countLabel) countLabel.textContent = visible === 1 ? 'component' : 'components';
       const empty = gallery.querySelector<HTMLElement>('[data-gallery-empty]');
       if (empty) empty.hidden = visible !== 0;
     };

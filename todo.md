@@ -352,6 +352,6 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 ### UI/UX acceptance gate
 
-- [ ] Run a first-time-user comprehension test covering: identify whether a component is styled,
+- [x] Run a first-time-user comprehension test covering: identify whether a component is styled,
       select the correct primitive, preview its real default output, install it, choose a density,
       customize semantic tokens, and verify focus/RTL/dark behavior without reading source code.
