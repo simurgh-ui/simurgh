@@ -308,7 +308,7 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 ### P1: preview fidelity and product clarity
 
-- [ ] Replace documentation-only facsimiles with previews that mount the actual public React, Vue,
+- [x] Replace documentation-only facsimiles with previews that mount the actual public React, Vue,
       or Angular component and load the same component stylesheet consumers import.
 - [x] Clearly label any remaining static example as a semantic anatomy illustration rather than a
       live rendered-component preview.
@@ -321,6 +321,9 @@ per-component documentation" as example coverage, not as complete consumer docum
       styling contracts.
 - [ ] Add screenshot regression coverage for real adapter-powered previews in light, dark, RTL,
       narrow viewport, loading, disabled, invalid, and keyboard-focus states where applicable.
+  - [x] Establish portable Chromium baselines for the React Button and Form previews covering light,
+        dark, RTL, reduced motion, narrow viewport, loading, disabled, invalid, and focus states.
+  - [ ] Extend visual baselines to representative Vue and Angular adapter-host previews.
 
 ### P2: visual-system maturity
 
