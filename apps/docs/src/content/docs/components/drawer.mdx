@@ -5,6 +5,7 @@ description: Bottom-anchored modal content with focus containment and restoratio
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -68,17 +69,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Drawer">
-  <button type="button">Edit profile</button>
-  <div
-    class="simurgh-content simurgh-sheet"
-    data-side="bottom"
-    data-drawer
-    style="position: relative; margin-top: 1rem"
-  >
-    <h3>Edit profile</h3>
-    <p>Update your public account details.</p>
-  </div>
+<ComponentPreview title="Drawer" kind="live">
+  <ReactComponentPreview component="drawer" client:load />
 </ComponentPreview>
 
 ## Anatomy

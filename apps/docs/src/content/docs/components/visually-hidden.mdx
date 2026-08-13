@@ -5,6 +5,7 @@ description: Screen-reader-accessible content removed from visual layout.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,23 +55,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Visually Hidden">
-  <div class="preview-stack">
-    <div class="preview-row">
-      <button class="preview-button" type="button" aria-label="Close dialog">
-        ×
-      </button>
-      <button class="preview-button" type="button" aria-label="Previous page">
-        ←
-      </button>
-      <button class="preview-button" type="button" aria-label="Next page">
-        →
-      </button>
-    </div>
-    <span class="preview-muted">
-      Each icon has a hidden text label available to screen readers.
-    </span>
-  </div>
+<ComponentPreview title="Visually Hidden" kind="live">
+  <ReactComponentPreview component="visually-hidden" />
 </ComponentPreview>
 
 ## Anatomy

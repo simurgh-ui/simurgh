@@ -5,6 +5,7 @@ description: Native details and summary semantics for expandable content.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -66,14 +67,8 @@ The component preserves a familiar native element and browser behavior. The opti
 
 ## Basic usage
 
-<ComponentPreview title="Disclosure">
-  <details data-slot="disclosure">
-    <summary data-slot="disclosure-summary">Why use native disclosure?</summary>
-    <div data-slot="disclosure-content">
-      It remains interactive before hydration and follows the browser's
-      accessibility model.
-    </div>
-  </details>
+<ComponentPreview title="Disclosure" kind="live">
+  <ReactComponentPreview component="disclosure" />
 </ComponentPreview>
 
 ## Anatomy

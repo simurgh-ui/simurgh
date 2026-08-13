@@ -5,6 +5,7 @@ description: An accessible star rating built from native radio controls.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -57,62 +58,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Rating">
-  <fieldset class="preview-stack">
-    <legend>Product rating</legend>
-    <div
-      aria-label="Product rating"
-      role="radiogroup"
-      style="display:flex;gap:.25rem;font-size:1.75rem;color:hsl(var(--simurgh-primary))"
-    >
-      <label>
-        <input
-          type="radio"
-          name="rating-preview"
-          value="1"
-          style="position:absolute;opacity:0"
-        />
-        <span aria-hidden="true">&#9733;</span>
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="rating-preview"
-          value="2"
-          style="position:absolute;opacity:0"
-        />
-        <span aria-hidden="true">&#9733;</span>
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="rating-preview"
-          value="3"
-          checked
-          style="position:absolute;opacity:0"
-        />
-        <span aria-hidden="true">&#9733;</span>
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="rating-preview"
-          value="4"
-          style="position:absolute;opacity:0"
-        />
-        <span aria-hidden="true">&#9733;</span>
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="rating-preview"
-          value="5"
-          style="position:absolute;opacity:0"
-        />
-        <span aria-hidden="true">&#9733;</span>
-      </label>
-    </div>
-  </fieldset>
+<ComponentPreview title="Rating" kind="live">
+  <ReactComponentPreview component="rating" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,6 +5,7 @@ description: An accessible modal surface with focus containment and restoration.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -68,25 +69,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Dialog">
-  <section
-    class="preview-panel preview-stack"
-    role="dialog"
-    aria-labelledby="preview-dialog-title"
-  >
-    <h3 id="preview-dialog-title">Edit profile</h3>
-    <p class="preview-muted">
-      Update the details shown on your public profile.
-    </p>
-    <div class="preview-row">
-      <button class="preview-button" type="button">
-        Cancel
-      </button>
-      <button class="preview-button" data-active="true" type="button">
-        Save changes
-      </button>
-    </div>
-  </section>
+<ComponentPreview title="Dialog" kind="live">
+  <ReactComponentPreview component="dialog" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,6 +5,7 @@ description: Collision-aware non-modal content anchored to a trigger.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -62,16 +63,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Popover">
-  <div class="preview-stack">
-    <button class="preview-button" type="button">
-      Delivery details
-    </button>
-    <aside class="preview-panel">
-      <strong>Arrives Tuesday</strong>
-      <p class="preview-muted">Free delivery to Tehran.</p>
-    </aside>
-  </div>
+<ComponentPreview title="Popover" kind="live">
+  <ReactComponentPreview component="popover" client:load />
 </ComponentPreview>
 
 ## Anatomy

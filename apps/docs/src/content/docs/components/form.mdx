@@ -5,6 +5,7 @@ description: Native form validation with predictable invalid-control focus and e
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -63,20 +64,8 @@ The optional recipe supplies layout and stable structure without a strong visual
 
 ## Basic usage
 
-<ComponentPreview title="Form">
-  <form data-slot="form">
-    <label for="form-preview-email">Email</label>
-    <input id="form-preview-email" name="email" type="email" required />
-    <div
-      role="alert"
-      aria-live="assertive"
-      tabindex="-1"
-      data-slot="form-error-summary"
-    >
-      Enter a valid email address.
-    </div>
-    <button type="submit">Continue</button>
-  </form>
+<ComponentPreview title="Form" kind="live">
+  <ReactComponentPreview component="form" client:load />
 </ComponentPreview>
 
 ## Anatomy

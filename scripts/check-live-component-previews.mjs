@@ -5,7 +5,32 @@ const root = resolve(import.meta.dirname, '..');
 const docsRoot = resolve(root, 'apps/docs/src/content/docs/components');
 const previewSource = await readFile(resolve(root, 'apps/docs/src/components/ReactComponentPreview.tsx'), 'utf8');
 const components = [...previewSource.matchAll(/component === '([^']+)'/gu)].map((match) => match[1]);
-const statefulComponents = new Set(['checkbox', 'switch']);
+const statefulComponents = new Set([
+  'accordion',
+  'alert-dialog',
+  'checkbox',
+  'collapsible',
+  'context-menu',
+  'dialog',
+  'drawer',
+  'dropdown-menu',
+  'file-upload',
+  'form',
+  'input-otp',
+  'menubar',
+  'number-input',
+  'password-input',
+  'popover',
+  'radio-group',
+  'rating',
+  'select',
+  'sheet',
+  'switch',
+  'tabs',
+  'toggle',
+  'toggle-group',
+  'toolbar',
+]);
 const failures = [];
 
 for (const component of components) {

@@ -5,6 +5,7 @@ description: Native keyboard and pointer scrolling with optional named-region se
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,24 +55,8 @@ The optional recipe supplies layout and stable structure without a strong visual
 
 ## Basic usage
 
-<ComponentPreview title="Scroll Area">
-  <div
-    role="region"
-    aria-label="Poets"
-    tabindex="0"
-    data-slot="scroll-area"
-    data-orientation="vertical"
-    style="height: 10rem; border: 1px solid hsl(var(--simurgh-border)); padding: 1rem"
-  >
-    <p>Ferdowsi</p>
-    <p>Hafez</p>
-    <p>Saadi</p>
-    <p>Rumi</p>
-    <p>Khayyam</p>
-    <p>Attar</p>
-    <p>Nizami</p>
-    <p>Parvin E'tesami</p>
-  </div>
+<ComponentPreview title="Scroll Area" kind="live">
+  <ReactComponentPreview component="scroll-area" />
 </ComponentPreview>
 
 ## Anatomy

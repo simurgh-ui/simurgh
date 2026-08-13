@@ -5,6 +5,7 @@ description: An interruptive modal confirmation with safe initial focus.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -74,24 +75,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Alert Dialog">
-  <section
-    role="alertdialog"
-    aria-modal="true"
-    aria-labelledby="alert-preview-title"
-    aria-describedby="alert-preview-description"
-    class="simurgh-content simurgh-dialog"
-    data-slot="alert-dialog-content"
-  >
-    <h2 id="alert-preview-title">Delete project?</h2>
-    <p id="alert-preview-description">This action cannot be undone.</p>
-    <button type="button" data-slot="alert-dialog-cancel">
-      Cancel
-    </button>
-    <button type="button" data-slot="alert-dialog-action">
-      Delete
-    </button>
-  </section>
+<ComponentPreview title="Alert Dialog" kind="live">
+  <ReactComponentPreview component="alert-dialog" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,6 +5,7 @@ description: A side-anchored modal panel with complete focus management.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -73,22 +74,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Sheet">
-  <div>
-    <button type="button">Open filters</button>
-    <section
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="sheet-preview-title"
-      class="simurgh-content simurgh-sheet"
-      data-slot="sheet-content"
-      data-side="right"
-    >
-      <h2 id="sheet-preview-title">Filters</h2>
-      <p>Narrow the visible results.</p>
-      <button type="button">Done</button>
-    </section>
-  </div>
+<ComponentPreview title="Sheet" kind="live">
+  <ReactComponentPreview component="sheet" client:load />
 </ComponentPreview>
 
 ## Anatomy

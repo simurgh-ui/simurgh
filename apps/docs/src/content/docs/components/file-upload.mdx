@@ -5,6 +5,7 @@ description: Native-input-backed file selection with drag-and-drop and live feed
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,23 +55,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="File Upload">
-  <label for="upload-preview" data-slot="file-upload">
-    <input
-      id="upload-preview"
-      type="file"
-      accept=".pdf"
-      multiple
-      data-slot="file-upload-input"
-    />
-    <strong data-slot="file-upload-label">Upload documents</strong>
-    <span data-slot="file-upload-description">
-      Drop PDF files here or browse
-    </span>
-    <span data-slot="file-upload-status" aria-live="polite">
-      No files selected
-    </span>
-  </label>
+<ComponentPreview title="File Upload" kind="live">
+  <ReactComponentPreview component="file-upload" client:load />
 </ComponentPreview>
 
 ## Anatomy

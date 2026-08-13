@@ -5,6 +5,7 @@ description: Pointer-positioned contextual actions with complete keyboard access
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -67,30 +68,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Context Menu">
-  <div>
-    <div
-      tabindex="0"
-      aria-haspopup="menu"
-      aria-expanded="true"
-      data-slot="context-menu-trigger"
-    >
-      Right-click this canvas
-    </div>
-    <div
-      role="menu"
-      aria-label="Canvas actions"
-      class="simurgh-content"
-      data-slot="context-menu-content"
-    >
-      <div role="menuitem" tabindex="0" class="simurgh-item">
-        Copy
-      </div>
-      <div role="menuitem" tabindex="-1" class="simurgh-item">
-        Duplicate
-      </div>
-    </div>
-  </div>
+<ComponentPreview title="Context Menu" kind="live">
+  <ReactComponentPreview component="context-menu" client:load />
 </ComponentPreview>
 
 ## Anatomy

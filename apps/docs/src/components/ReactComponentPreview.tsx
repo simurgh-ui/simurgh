@@ -26,6 +26,34 @@ import { DescriptionList, DescriptionListDetails, DescriptionListGroup, Descript
 import { Field, FieldDescription, FieldLegend } from '@simurgh-ui/react/field';
 import { InputGroup, InputGroupAddon, InputGroupText } from '@simurgh-ui/react/input-group';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@simurgh-ui/react/item';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@simurgh-ui/react/pagination';
+import { ScrollArea } from '@simurgh-ui/react/scroll-area';
+import { Toolbar, ToolbarButton } from '@simurgh-ui/react/toolbar';
+import { VisuallyHidden } from '@simurgh-ui/react/visually-hidden';
+import { Form } from '@simurgh-ui/react/form';
+import { InputOtp } from '@simurgh-ui/react/input-otp';
+import { PasswordInput } from '@simurgh-ui/react/password-input';
+import { NumberInput } from '@simurgh-ui/react/number-input';
+import { FileUpload } from '@simurgh-ui/react/file-upload';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@simurgh-ui/react/collapsible';
+import { Disclosure, DisclosureContent, DisclosureSummary } from '@simurgh-ui/react/disclosure';
+import { Toggle } from '@simurgh-ui/react/toggle';
+import { RadioGroup, RadioGroupItem } from '@simurgh-ui/react/radio-group';
+import { Slider } from '@simurgh-ui/react/slider';
+import { Rating } from '@simurgh-ui/react/rating';
+import { ToggleGroup, ToggleGroupItem } from '@simurgh-ui/react/toggle-group';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@simurgh-ui/react/accordion';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@simurgh-ui/react/tabs';
+import { Select } from '@simurgh-ui/react/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@simurgh-ui/react/popover';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger } from '@simurgh-ui/react/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@simurgh-ui/react/alert-dialog';
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@simurgh-ui/react/sheet';
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from '@simurgh-ui/react/drawer';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@simurgh-ui/react/dropdown-menu';
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@simurgh-ui/react/context-menu';
+import { Menubar, MenubarItem } from '@simurgh-ui/react/menubar';
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@simurgh-ui/react/navigation-menu';
 import '@simurgh-ui/styles/button.css';
 import '@simurgh-ui/styles/checkbox.css';
 import '@simurgh-ui/styles/input.css';
@@ -53,8 +81,36 @@ import '@simurgh-ui/styles/description-list.css';
 import '@simurgh-ui/styles/field.css';
 import '@simurgh-ui/styles/input-group.css';
 import '@simurgh-ui/styles/item.css';
+import '@simurgh-ui/styles/pagination.css';
+import '@simurgh-ui/styles/scroll-area.css';
+import '@simurgh-ui/styles/toolbar.css';
+import '@simurgh-ui/styles/visually-hidden.css';
+import '@simurgh-ui/styles/form.css';
+import '@simurgh-ui/styles/input-otp.css';
+import '@simurgh-ui/styles/password-input.css';
+import '@simurgh-ui/styles/number-input.css';
+import '@simurgh-ui/styles/file-upload.css';
+import '@simurgh-ui/styles/collapsible.css';
+import '@simurgh-ui/styles/disclosure.css';
+import '@simurgh-ui/styles/toggle.css';
+import '@simurgh-ui/styles/radio-group.css';
+import '@simurgh-ui/styles/slider.css';
+import '@simurgh-ui/styles/rating.css';
+import '@simurgh-ui/styles/toggle-group.css';
+import '@simurgh-ui/styles/accordion.css';
+import '@simurgh-ui/styles/tabs.css';
+import '@simurgh-ui/styles/select.css';
+import '@simurgh-ui/styles/popover.css';
+import '@simurgh-ui/styles/dialog.css';
+import '@simurgh-ui/styles/alert-dialog.css';
+import '@simurgh-ui/styles/sheet.css';
+import '@simurgh-ui/styles/drawer.css';
+import '@simurgh-ui/styles/dropdown-menu.css';
+import '@simurgh-ui/styles/context-menu.css';
+import '@simurgh-ui/styles/menubar.css';
+import '@simurgh-ui/styles/navigation-menu.css';
 
-type Props = { component: 'alert' | 'aspect-ratio' | 'avatar' | 'badge' | 'breadcrumb' | 'button' | 'button-group' | 'card' | 'checkbox' | 'description-list' | 'empty' | 'field' | 'input' | 'input-group' | 'item' | 'kbd' | 'label' | 'link' | 'meter' | 'native-select' | 'progress' | 'separator' | 'skeleton' | 'spinner' | 'switch' | 'table' | 'textarea' };
+type Props = { component: 'accordion' | 'alert' | 'alert-dialog' | 'aspect-ratio' | 'avatar' | 'badge' | 'breadcrumb' | 'button' | 'button-group' | 'card' | 'checkbox' | 'collapsible' | 'context-menu' | 'description-list' | 'dialog' | 'disclosure' | 'drawer' | 'dropdown-menu' | 'empty' | 'field' | 'file-upload' | 'form' | 'input' | 'input-group' | 'input-otp' | 'item' | 'kbd' | 'label' | 'link' | 'menubar' | 'meter' | 'native-select' | 'navigation-menu' | 'number-input' | 'pagination' | 'password-input' | 'popover' | 'progress' | 'radio-group' | 'rating' | 'scroll-area' | 'select' | 'separator' | 'sheet' | 'skeleton' | 'slider' | 'spinner' | 'switch' | 'table' | 'tabs' | 'textarea' | 'toggle' | 'toggle-group' | 'toolbar' | 'visually-hidden' };
 
 export default function ReactComponentPreview({ component }: Props) {
   const [checked, setChecked] = useState(true);
@@ -136,6 +192,90 @@ export default function ReactComponentPreview({ component }: Props) {
 
   if (component === 'item')
     return <ItemGroup><Item><ItemMedia>D</ItemMedia><ItemContent><ItemTitle>Design system</ItemTitle><ItemDescription>Updated two minutes ago</ItemDescription></ItemContent><ItemActions><Button variant="secondary">Open</Button></ItemActions></Item></ItemGroup>;
+
+  if (component === 'pagination')
+    return <Pagination><PaginationContent><PaginationItem><PaginationLink href="?page=1" aria-label="Previous page">Previous</PaginationLink></PaginationItem><PaginationItem><PaginationLink href="?page=1">1</PaginationLink></PaginationItem><PaginationItem><PaginationLink href="?page=2" current>2</PaginationLink></PaginationItem><PaginationItem><PaginationLink href="?page=3">3</PaginationLink></PaginationItem><PaginationItem><PaginationLink href="?page=3" aria-label="Next page">Next</PaginationLink></PaginationItem></PaginationContent></Pagination>;
+
+  if (component === 'scroll-area')
+    return <ScrollArea label="Poets" style={{ blockSize: '10rem', inlineSize: 'min(100%, 24rem)' }}><p>Ferdowsi</p><p>Hafez</p><p>Saadi</p><p>Rumi</p><p>Khayyam</p><p>Attar</p><p>Nizami</p><p>Parvin Etesami</p></ScrollArea>;
+
+  if (component === 'toolbar')
+    return <Toolbar label="Text formatting"><ToolbarButton>Bold</ToolbarButton><ToolbarButton>Italic</ToolbarButton><ToolbarButton>Link</ToolbarButton></Toolbar>;
+
+  if (component === 'visually-hidden')
+    return <div className="preview-stack"><div className="preview-row"><Button iconOnly><span aria-hidden="true">X</span><VisuallyHidden>Close dialog</VisuallyHidden></Button><Button iconOnly variant="secondary"><span aria-hidden="true">&lt;</span><VisuallyHidden>Previous page</VisuallyHidden></Button><Button iconOnly variant="secondary"><span aria-hidden="true">&gt;</span><VisuallyHidden>Next page</VisuallyHidden></Button></div><span className="preview-muted">Each icon has a hidden text label available to screen readers.</span></div>;
+
+  if (component === 'form')
+    return <Form className="preview-stack" onSubmit={(event) => event.preventDefault()}><Label htmlFor="live-preview-form-email">Email</Label><Input id="live-preview-form-email" name="email" type="email" required placeholder="ada@example.com" /><Button type="submit">Continue</Button></Form>;
+
+  if (component === 'input-otp')
+    return <div className="preview-stack"><Label htmlFor="live-preview-otp">Verification code</Label><InputOtp id="live-preview-otp" name="code" length={6} aria-describedby="live-preview-otp-help" /><span id="live-preview-otp-help" className="preview-muted">Enter the six-digit code.</span></div>;
+
+  if (component === 'password-input')
+    return <div className="preview-stack"><Label htmlFor="live-preview-password">Account password</Label><PasswordInput id="live-preview-password" defaultValue="correct horse battery staple" autoComplete="current-password" /></div>;
+
+  if (component === 'number-input')
+    return <div className="preview-stack"><Label htmlFor="live-preview-quantity">Quantity</Label><NumberInput id="live-preview-quantity" defaultValue={2} min={0} max={10} step={1} /></div>;
+
+  if (component === 'file-upload')
+    return <FileUpload id="live-preview-upload" label="Upload documents" description="Drop PDF files here or browse" accept=".pdf" multiple name="documents" />;
+
+  if (component === 'collapsible')
+    return <Collapsible defaultOpen><div className="preview-stack"><CollapsibleTrigger>Project details</CollapsibleTrigger><CollapsibleContent>Three framework-native implementations.</CollapsibleContent></div></Collapsible>;
+
+  if (component === 'disclosure')
+    return <Disclosure defaultOpen><DisclosureSummary>Why use native disclosure?</DisclosureSummary><DisclosureContent>It remains interactive before hydration and follows the browser accessibility model.</DisclosureContent></Disclosure>;
+
+  if (component === 'toggle')
+    return <div className="preview-row" role="toolbar" aria-label="Text formatting"><Toggle defaultPressed aria-label="Bold"><strong aria-hidden="true">B</strong></Toggle><Toggle aria-label="Italic"><em aria-hidden="true">I</em></Toggle><Toggle aria-label="Underline"><span aria-hidden="true">U</span></Toggle></div>;
+
+  if (component === 'radio-group')
+    return <Field className="preview-stack"><FieldLegend>Choose a plan</FieldLegend><RadioGroup defaultValue="basic" name="plan" aria-label="Choose a plan"><label className="preview-row"><RadioGroupItem value="basic" aria-label="Basic" />Basic</label><label className="preview-row"><RadioGroupItem value="pro" aria-label="Pro" />Pro</label></RadioGroup></Field>;
+
+  if (component === 'slider')
+    return <div className="preview-stack"><Label htmlFor="live-preview-volume">Volume</Label><Slider id="live-preview-volume" min={0} max={100} step={10} defaultValue={40} /></div>;
+
+  if (component === 'rating')
+    return <div className="preview-stack"><Label>Product rating</Label><Rating aria-label="Product rating" defaultValue={3} name="product-rating" /></div>;
+
+  if (component === 'toggle-group')
+    return <ToggleGroup type="single" defaultValue={['start']} aria-label="Alignment"><ToggleGroupItem value="start">Start</ToggleGroupItem><ToggleGroupItem value="center">Center</ToggleGroupItem><ToggleGroupItem value="end">End</ToggleGroupItem></ToggleGroup>;
+
+  if (component === 'accordion')
+    return <Accordion defaultValue={['about']}><div className="preview-stack"><AccordionItem value="about"><AccordionTrigger>What is Simurgh UI?</AccordionTrigger><AccordionContent>Accessible source components for Angular, React, and Vue.</AccordionContent></AccordionItem><AccordionItem value="customize"><AccordionTrigger>Can I customize it?</AccordionTrigger><AccordionContent>Yes. Own the source or override its semantic tokens.</AccordionContent></AccordionItem></div></Accordion>;
+
+  if (component === 'tabs')
+    return <Tabs defaultValue="account"><div className="preview-stack"><TabsList><TabsTrigger value="account">Account</TabsTrigger><TabsTrigger value="security">Security</TabsTrigger></TabsList><TabsContent value="account">Manage your account preferences.</TabsContent><TabsContent value="security">Review password and sign-in settings.</TabsContent></div></Tabs>;
+
+  if (component === 'select')
+    return <div className="preview-stack"><Label>Framework</Label><Select name="framework" defaultValue="react" placeholder="Choose a framework" options={[{ value: 'react', label: 'React' }, { value: 'vue', label: 'Vue' }, { value: 'angular', label: 'Angular' }]} /></div>;
+
+  if (component === 'popover')
+    return <Popover><PopoverTrigger>Delivery details</PopoverTrigger><PopoverContent><div className="preview-stack"><strong>Arrives Tuesday</strong><span className="preview-muted">Free delivery to Tehran.</span></div></PopoverContent></Popover>;
+
+  if (component === 'dialog')
+    return <Dialog><DialogTrigger>Edit profile</DialogTrigger><DialogPortal><DialogOverlay /><DialogContent><DialogTitle>Edit profile</DialogTitle><DialogDescription>Update the details shown on your public profile.</DialogDescription><div className="preview-row"><DialogClose>Cancel</DialogClose><DialogClose>Save changes</DialogClose></div></DialogContent></DialogPortal></Dialog>;
+
+  if (component === 'alert-dialog')
+    return <AlertDialog><AlertDialogTrigger>Delete project</AlertDialogTrigger><AlertDialogContent><AlertDialogTitle>Delete project?</AlertDialogTitle><AlertDialogDescription>This action cannot be undone.</AlertDialogDescription><div className="preview-row"><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction>Delete</AlertDialogAction></div></AlertDialogContent></AlertDialog>;
+
+  if (component === 'sheet')
+    return <Sheet><SheetTrigger>Open filters</SheetTrigger><SheetContent side="right"><SheetTitle>Filters</SheetTitle><SheetDescription>Narrow the visible results.</SheetDescription><SheetClose>Done</SheetClose></SheetContent></Sheet>;
+
+  if (component === 'drawer')
+    return <Drawer><DrawerTrigger>Edit profile</DrawerTrigger><DrawerContent side="bottom"><DrawerTitle>Edit profile</DrawerTitle><DrawerDescription>Update your public account details.</DrawerDescription><DrawerClose>Done</DrawerClose></DrawerContent></Drawer>;
+
+  if (component === 'dropdown-menu')
+    return <DropdownMenu><DropdownMenuTrigger>Actions</DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem>Rename</DropdownMenuItem><DropdownMenuItem>Duplicate</DropdownMenuItem><DropdownMenuItem disabled>Archive</DropdownMenuItem></DropdownMenuContent></DropdownMenu>;
+
+  if (component === 'context-menu')
+    return <ContextMenu><ContextMenuTrigger className="preview-panel">Right-click this canvas</ContextMenuTrigger><ContextMenuContent aria-label="Canvas actions"><ContextMenuItem>Copy</ContextMenuItem><ContextMenuItem>Duplicate</ContextMenuItem></ContextMenuContent></ContextMenu>;
+
+  if (component === 'menubar')
+    return <Menubar label="Editor"><MenubarItem>File</MenubarItem><MenubarItem>Edit</MenubarItem><MenubarItem disabled>View</MenubarItem></Menubar>;
+
+  if (component === 'navigation-menu')
+    return <NavigationMenu label="Preview navigation"><NavigationMenuList><NavigationMenuItem><NavigationMenuLink href="#navigation-menu-examples" current>Overview</NavigationMenuLink></NavigationMenuItem><NavigationMenuItem><NavigationMenuLink href="#navigation-menu-examples">Components</NavigationMenuLink></NavigationMenuItem><NavigationMenuItem><NavigationMenuLink href="#navigation-menu-examples">Guides</NavigationMenuLink></NavigationMenuItem></NavigationMenuList></NavigationMenu>;
 
   if (component === 'input')
     return <div className="preview-stack"><label htmlFor="live-preview-email">Email address</label><Input id="live-preview-email" type="email" defaultValue="ada@example.com" /></div>;

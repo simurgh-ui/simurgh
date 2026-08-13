@@ -5,6 +5,7 @@ description: Native range input with framework-native value binding and form beh
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,19 +55,8 @@ The component preserves a familiar native element and browser behavior. The opti
 
 ## Basic usage
 
-<ComponentPreview title="Slider">
-  <div class="preview-stack" style="max-width: 28rem">
-    <label for="preview-volume">Volume</label>
-    <input
-      id="preview-volume"
-      type="range"
-      data-slot="slider"
-      min="0"
-      max="100"
-      step="10"
-      value="40"
-    />
-  </div>
+<ComponentPreview title="Slider" kind="live">
+  <ReactComponentPreview component="slider" />
 </ComponentPreview>
 
 ## Anatomy

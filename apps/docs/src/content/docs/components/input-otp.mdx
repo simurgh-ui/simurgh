@@ -5,6 +5,7 @@ description: Autofill-ready one-time code entry with paste, filtering, and form 
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,18 +55,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Input OTP">
-  <label for="otp-preview">Verification code</label>
-  <input
-    id="otp-preview"
-    name="code"
-    inputmode="numeric"
-    autocomplete="one-time-code"
-    pattern="[0-9]*"
-    maxlength="6"
-    data-slot="input-otp"
-    style="--simurgh-otp-length: 6"
-  />
+<ComponentPreview title="Input OTP" kind="live">
+  <ReactComponentPreview component="input-otp" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,6 +5,7 @@ description: Named page navigation with list structure and current-page semantic
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -69,36 +70,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Pagination">
-  <nav aria-label="Pagination" data-slot="pagination">
-    <ul data-slot="pagination-content">
-      <li data-slot="pagination-item">
-        <a href="#" data-slot="pagination-link" aria-label="Previous page">
-          Previous
-        </a>
-      </li>
-      <li data-slot="pagination-item">
-        <a href="#" data-slot="pagination-link">
-          1
-        </a>
-      </li>
-      <li data-slot="pagination-item">
-        <a href="#" data-slot="pagination-link" aria-current="page">
-          2
-        </a>
-      </li>
-      <li data-slot="pagination-item">
-        <a href="#" data-slot="pagination-link">
-          3
-        </a>
-      </li>
-      <li data-slot="pagination-item">
-        <a href="#" data-slot="pagination-link" aria-label="Next page">
-          Next
-        </a>
-      </li>
-    </ul>
-  </nav>
+<ComponentPreview title="Pagination" kind="live">
+  <ReactComponentPreview component="pagination" />
 </ComponentPreview>
 
 ## Anatomy

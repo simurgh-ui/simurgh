@@ -5,6 +5,7 @@ description: Expand and collapse a single section with linked trigger semantics.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -62,11 +63,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Collapsible">
-  <details>
-    <summary class="simurgh-trigger">Project details</summary>
-    <div class="simurgh-content">Three framework-native implementations.</div>
-  </details>
+<ComponentPreview title="Collapsible" kind="live">
+  <ReactComponentPreview component="collapsible" client:load />
 </ComponentPreview>
 
 ## Anatomy

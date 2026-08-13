@@ -5,6 +5,7 @@ description: Single or multiple pressed-state controls with logical keyboard nav
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -63,23 +64,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Toggle Group">
-  <div
-    role="group"
-    aria-label="Alignment"
-    aria-orientation="horizontal"
-    data-slot="toggle-group"
-  >
-    <button aria-pressed="true" data-state="on" data-slot="toggle-group-item">
-      Start
-    </button>
-    <button aria-pressed="false" data-state="off" data-slot="toggle-group-item">
-      Center
-    </button>
-    <button aria-pressed="false" data-state="off" data-slot="toggle-group-item">
-      End
-    </button>
-  </div>
+<ComponentPreview title="Toggle Group" kind="live">
+  <ReactComponentPreview component="toggle-group" client:load />
 </ComponentPreview>
 
 ## Anatomy

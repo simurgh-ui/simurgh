@@ -5,6 +5,7 @@ description: A named horizontal application menu with roving keyboard focus.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -63,28 +64,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Menubar">
-  <div role="menubar" aria-label="Editor" data-slot="menubar">
-    <button type="button" role="menuitem" tabindex="0" data-slot="menubar-item">
-      File
-    </button>
-    <button
-      type="button"
-      role="menuitem"
-      tabindex="-1"
-      data-slot="menubar-item"
-    >
-      Edit
-    </button>
-    <button
-      type="button"
-      role="menuitem"
-      tabindex="-1"
-      data-slot="menubar-item"
-    >
-      View
-    </button>
-  </div>
+<ComponentPreview title="Menubar" kind="live">
+  <ReactComponentPreview component="menubar" client:load />
 </ComponentPreview>
 
 ## Anatomy
