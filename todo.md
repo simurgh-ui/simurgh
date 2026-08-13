@@ -308,11 +308,13 @@ per-component documentation" as example coverage, not as complete consumer docum
         focus and alerts, overlay focus restoration, Checkbox events, and form serialization.
   - [ ] Record 200% zoom, narrow/short viewport, forced RTL/reduced-motion, light/dark contrast,
         focus-appearance, and assistive-technology observations in release-candidate applications.
-    - [x] Automate the reflow-equivalent, short viewport, RTL, reduced-motion, focus-appearance, and
-          light/dark WCAG A/AA checks against real documentation previews.
-    - [ ] Complete manual 200% browser-zoom and screen-reader observations in release candidates.
-      - Use `release-candidate-ui-observations.md` for the required browser, focus, and spoken-output
-        evidence.
+  - [x] Automate the reflow-equivalent, short viewport, RTL, reduced-motion, focus-appearance, and
+        light/dark WCAG A/AA checks against real documentation previews.
+    - [x] Reconfirm in a release browser session that the Button preview remains mounted after a
+          30-second dwell at 640 × 360 with no document-level horizontal overflow.
+  - [ ] Complete manual 200% browser-zoom and screen-reader observations in release candidates.
+    - Use `release-candidate-ui-observations.md` for the required browser, focus, and spoken-output
+      evidence.
 
 ## Senior UI/UX review follow-up
 
