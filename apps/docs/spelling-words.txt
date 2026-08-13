@@ -30,7 +30,6 @@ active
 active-item
 actual
 actually
-ada
 adapter
 adapter-host
 adapter's
@@ -40,7 +39,6 @@ adding
 additional
 addon
 addons
-address
 adds
 adjacent
 adjusted
@@ -61,8 +59,6 @@ against
 aggregate
 aggregate-only
 aggregates
-ago
-al
 alert
 alert-dialog
 alerts
@@ -128,22 +124,18 @@ arbitrarily
 arbitrary
 archaeology
 architecture
-archive
-archived
 are
 area
 aria
 around
 array
 arrive
-arrives
 arrow
 arrows
 artwork
 as
 aspect
 assertive
-assets
 assignee
 assigning
 assistive
@@ -159,14 +151,11 @@ asynchronous
 at
 attach
 attached
-attar
 attention
 attribute
 attribute-forwarding
 attributes
 audit
-aug
-august
 authentication
 author
 autocomplete
@@ -216,15 +205,12 @@ bind
 binding
 bindings
 binds
-biography
-birds
 blank
 block
 blocked
 blocks
 blue
 body
-bold
 boolean
 border
 borders
@@ -252,7 +238,6 @@ briefly
 brittle
 broad
 broader
-browse
 browser
 browser-delivered
 browser-native
@@ -318,7 +303,6 @@ causes
 celebratory
 cell
 cells
-center
 centered
 certification
 change
@@ -353,7 +337,6 @@ chromium
 chunk
 ci
 ci-validated
-city
 claims
 clamped
 clarity
@@ -457,7 +440,6 @@ concern
 concise
 conditional
 conditionally
-conference
 configuration
 configurations
 configure
@@ -487,7 +469,6 @@ consumers
 consumes
 consuming
 consumption
-contact
 contain
 contained
 container
@@ -547,7 +528,6 @@ cropping
 cross-field
 cross-framework
 css
-ctrl
 culturally
 culture
 current
@@ -594,11 +574,9 @@ defer
 deferred
 definition
 delay
-delete
 deleting
 deliberate
 deliberately
-delivery
 dense
 density
 depend
@@ -667,7 +645,6 @@ disables
 disclose
 disclosed
 disclosure
-discover
 discoverable
 dismiss
 dismissal
@@ -687,7 +664,6 @@ divides
 dividing
 division
 do
-docs
 document
 documentation
 documentation-discovery
@@ -696,11 +672,9 @@ documents
 does
 dom
 domain
-done
 down
 downloadable
 downloaded
-draft
 drag
 dragging
 drawer
@@ -716,7 +690,6 @@ durations
 during
 dynamic
 dynamically
-e'tesami
 each
 easier
 ecmascript
@@ -732,7 +705,6 @@ either
 element
 elements
 elevation
-email
 embedded
 emission
 emit
@@ -843,7 +815,6 @@ features
 feedback
 feel
 fences
-ferdowsi
 fetched
 fetching
 field
@@ -910,6 +881,7 @@ form
 form-ready
 formal
 format
+formcomponentpreview
 forms
 forward
 forwarded
@@ -917,7 +889,6 @@ forwarding
 forwards
 found
 four
-fr
 fragments
 framework
 framework-compatible
@@ -930,7 +901,6 @@ framework-switch
 framework-version
 framework's
 frameworks
-free
 fresh
 fresh-context
 fresh-reader
@@ -976,9 +946,7 @@ guaranteed
 guard
 guidance
 guide
-guides
 had
-hafez
 handle
 handled
 handler
@@ -1025,7 +993,6 @@ hover-triggered
 how
 hsl
 html
-https
 human
 hydrated
 hydrating
@@ -1046,7 +1013,6 @@ illustration
 illustrations
 image
 imagery
-images
 imitate
 immediate
 immediately
@@ -1147,13 +1113,10 @@ invoking
 iranian
 irreversible
 is
-isfahan
-isfara
 iso
 isolated
 issue
 it
-italic
 item
 items
 its
@@ -1175,7 +1138,6 @@ keyboard-navigable
 keyboard-only
 keyboards
 keys
-khayyam
 knowledge
 known
 label
@@ -1251,7 +1213,6 @@ long-running
 look
 loop
 lose
-lovelace
 low-emphasis
 lower
 ltr
@@ -1259,7 +1220,6 @@ macos
 main
 maintain
 maintained
-maintainer
 make
 makes
 making
@@ -1285,7 +1245,6 @@ match
 matches
 matching
 material
-mathematician
 matrix
 matter
 max
@@ -1317,7 +1276,6 @@ minimal
 minimum
 minimums
 minor
-minutes
 mirror
 mirrored
 mismatch
@@ -1327,7 +1285,6 @@ mixed-direction
 mixed-input
 mixed-state
 mixing
-mo
 mobile
 mobile-device
 mobile-sized
@@ -1401,7 +1358,6 @@ new
 newer
 next
 ngmodule
-nizami
 no
 no-javascript
 node
@@ -1423,7 +1379,6 @@ normally
 not
 notes
 notices
-notification
 notifications
 number
 numbers
@@ -1477,7 +1432,6 @@ or
 order
 ordered-list
 ordinary
-organize
 orientation
 orientation-aware
 original
@@ -1536,7 +1490,6 @@ participates
 particular
 partners
 parts
-parvin
 pass
 passed
 password
@@ -1550,7 +1503,6 @@ patterns
 pause
 pay
 payload
-pdf
 peer
 peer-dependency
 pending
@@ -1575,15 +1527,12 @@ pigments
 pills
 pin
 pinned
-pioneer
 pixel
 place
 placed
 placeholder
 placement
 placing
-plan
-planned
 platform
 platform-aware
 platform-native
@@ -1592,7 +1541,6 @@ playwright
 plugin
 plus
 pnpm
-poet
 pointer
 pointer-adjustable
 points
@@ -1647,7 +1595,6 @@ primary
 primitive
 primitives
 principles
-pro
 problem
 process
 processed
@@ -1666,7 +1613,6 @@ project-owned
 project's
 projected
 projection
-projects
 prominent
 promise
 promised
@@ -1691,11 +1637,9 @@ pulsing
 purely
 purpose
 purposeful
-push
 put
 px
 quality
-quantity
 queries
 query
 questions
@@ -1729,7 +1673,6 @@ read
 read-only
 readable
 reader
-readers
 reading
 reads
 real
@@ -1740,7 +1683,6 @@ reason
 receive
 receives
 receiving
-recent
 recipe
 recipes
 recommended
@@ -1792,7 +1734,6 @@ remove
 removed
 removes
 removing
-rename
 renaming
 render
 rendered
@@ -1847,7 +1788,6 @@ resize
 resolve
 resolves
 resolving
-resource
 respond
 responds
 responsibility
@@ -1907,13 +1847,10 @@ rtl-compatible
 rtl-specific
 rule
 rules
-rumi
 run
 running
 runs
 runtime
-sa
-saadi
 sacred
 safari
 safe
@@ -1926,7 +1863,6 @@ same-looking
 same-name
 sans
 save
-saved
 saving
 say
 scalar
@@ -1936,7 +1872,6 @@ scheme
 scope
 scoped
 score
-screen
 screen-reader
 screens
 screenshots
@@ -2123,7 +2058,6 @@ stylesheets
 styling
 styling-contract
 styling-hook
-su
 submission
 submit
 submitted
@@ -2187,9 +2121,7 @@ targets
 task
 task-based
 tasks
-teams
 technology
-tehran
 teleport
 template
 template-driven
@@ -2206,7 +2138,6 @@ text
 text-direction-independent
 textarea
 textual
-th
 than
 that
 the
@@ -2236,7 +2167,6 @@ tied
 tile
 time
 time-dependent
-timezone
 title
 titles
 to
@@ -2248,7 +2178,6 @@ toggled
 toggles
 token
 tokens
-tokyo
 tone
 tool
 tool-specific
@@ -2289,8 +2218,6 @@ trigger-opened
 triggers
 truly
 truth
-tu
-tuesday
 turns
 turquoise
 two
@@ -2311,11 +2238,9 @@ unchecked
 uncontrolled
 undeclared
 under
-underline
 understand
 understood
 undocumented
-undone
 unexpectedly
 unfamiliar
 unified
@@ -2339,7 +2264,6 @@ updating
 upgrades
 upgrading
 upload
-uploading
 upper
 upstream
 urgent
@@ -2355,7 +2279,6 @@ user-visible
 users
 uses
 using
-utc
 utilities
 utility
 valid
@@ -2364,7 +2287,6 @@ validated
 validates
 validation
 validity
-valleys
 value
 values
 variable
@@ -2382,7 +2304,6 @@ verify
 version
 versions
 vertical
-view
 viewchild
 viewport
 viewports
@@ -2394,7 +2315,6 @@ visibly
 visual
 visually
 vocabulary
-volume
 vue
 vue's
 walkthrough
@@ -2406,10 +2326,8 @@ watcher
 ways
 wcag
 wcag's
-we
 weaken
 webkit
-website
 webview
 week
 weight

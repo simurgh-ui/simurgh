@@ -5,7 +5,7 @@ description: A binary choice with native form serialization.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import FormComponentPreview from '../../../components/previews/FormComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -56,7 +56,7 @@ The component preserves a familiar native element and browser behavior. The opti
 ## Basic usage
 
 <ComponentPreview title="Checkbox" kind="live">
-  <ReactComponentPreview component="checkbox" client:load />
+  <FormComponentPreview component="checkbox" client:load />
 </ComponentPreview>
 
 ## Anatomy

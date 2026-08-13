@@ -5,7 +5,7 @@ description: Native form validation with predictable invalid-control focus and e
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import FormComponentPreview from '../../../components/previews/FormComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -65,7 +65,7 @@ The optional recipe supplies layout and stable structure without a strong visual
 ## Basic usage
 
 <ComponentPreview title="Form" kind="live">
-  <ReactComponentPreview component="form" client:load />
+  <FormComponentPreview component="form" client:load />
 </ComponentPreview>
 
 ## Anatomy

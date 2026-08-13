@@ -5,7 +5,7 @@ description: Native numeric entry with accessible increment and decrement contro
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import FormComponentPreview from '../../../components/previews/FormComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -56,7 +56,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Number Input" kind="live">
-  <ReactComponentPreview component="number-input" client:load />
+  <FormComponentPreview component="number-input" client:load />
 </ComponentPreview>
 
 ## Anatomy

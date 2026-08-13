@@ -5,7 +5,7 @@ description: Accessible keyboard entry for compact lists of form values.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import FormComponentPreview from '../../../components/previews/FormComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -59,7 +59,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Tags Input" kind="live">
-  <ReactComponentPreview component="tags-input" client:load />
+  <FormComponentPreview component="tags-input" client:load />
 </ComponentPreview>
 
 ## Anatomy
