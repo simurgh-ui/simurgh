@@ -179,9 +179,12 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Audit component-level CSS exports and documentation so consumers can load only the recipes they use instead of the complete stylesheet.
 - [x] Add lazy-loading guidance and fixtures for overlay-heavy entry points so Floating UI stays out of initial application bundles.
 - [ ] Move the remaining React implementations out of the monolithic `index.tsx` into genuine per-component source modules.
-  - [x] Move Alert, Button, Input, Textarea, Label, Link, Native Select, Separator, Progress,
-        Visually Hidden, Skeleton, and Spinner into genuine component modules and keep their root
-        and `basic` aggregate exports compatible.
+  - [x] Move Alert, Aspect Ratio, Badge, Breadcrumb, Button, Description List, Field, Form, Input, Textarea,
+        Kbd, Label, Link, Meter, Native Select, Pagination, Scroll Area, Separator, Slider, Progress, Table,
+        Visually Hidden, Skeleton, and Spinner into genuine component modules while preserving
+        compatible exports.
+  - [x] Bound the measured all-exports module-boundary tradeoff with a 28 KiB complete-adapter
+        budget while retaining tighter standalone subpath and published-package budgets.
   - [ ] Move the remaining React primitives and shared helpers without introducing component-to-barrel
         cycles or exceeding standalone, aggregate, complete-adapter, and published-package budgets.
 - [x] Evaluate esbuild code splitting for the React adapter and verify that shared chunks reduce multi-component consumption without adding excessive module overhead.

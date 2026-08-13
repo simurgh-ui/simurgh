@@ -33,7 +33,6 @@ import React, {
   useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
-  type FormHTMLAttributes,
   type InputHTMLAttributes,
   type PropsWithChildren,
   type ReactNode,
@@ -41,15 +40,51 @@ import React, {
 import { createPortal } from 'react-dom';
 
 export { Alert } from './components/alert.js';
+export { AspectRatio } from './components/aspect-ratio.js';
+export { Badge, type BadgeTone } from './components/badge.js';
 export { Button } from './components/button.js';
+export { Breadcrumb } from './components/breadcrumb.js';
+export {
+  DescriptionList,
+  DescriptionListDetails,
+  DescriptionListGroup,
+  DescriptionListTerm,
+} from './components/description-list.js';
 export { Input } from './components/input.js';
+export {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLegend,
+} from './components/field.js';
+export { Form, FormErrorSummary } from './components/form.js';
+export { Kbd } from './components/kbd.js';
 export { Label } from './components/label.js';
 export { Link } from './components/link.js';
 export { NativeSelect } from './components/native-select.js';
+export {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from './components/pagination.js';
+export { Meter } from './components/meter.js';
 export { Progress } from './components/progress.js';
+export { ScrollArea } from './components/scroll-area.js';
 export { Separator } from './components/separator.js';
 export { Skeleton } from './components/skeleton.js';
 export { Spinner } from './components/spinner.js';
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './components/table.js';
+export { Slider } from './components/slider.js';
 export { Textarea } from './components/textarea.js';
 export { VisuallyHidden } from './components/visually-hidden.js';
 
@@ -965,31 +1000,6 @@ export const DisclosureContent = forwardRef<
   return <div ref={ref} data-slot="disclosure-content" {...props} />;
 });
 
-export const DescriptionList = forwardRef<
-  HTMLDListElement,
-  HTMLAttributes<HTMLDListElement>
->(function DescriptionList(props, ref) {
-  return <dl ref={ref} data-slot="description-list" {...props} />;
-});
-export const DescriptionListGroup = forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function DescriptionListGroup(props, ref) {
-  return <div ref={ref} data-slot="description-list-group" {...props} />;
-});
-export const DescriptionListTerm = forwardRef<
-  HTMLElement,
-  HTMLAttributes<HTMLElement>
->(function DescriptionListTerm(props, ref) {
-  return <dt ref={ref} data-slot="description-list-term" {...props} />;
-});
-export const DescriptionListDetails = forwardRef<
-  HTMLElement,
-  HTMLAttributes<HTMLElement>
->(function DescriptionListDetails(props, ref) {
-  return <dd ref={ref} data-slot="description-list-details" {...props} />;
-});
-
 type CheckProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   'value' | 'onChange'
@@ -1213,21 +1223,6 @@ export const Avatar = /* @__PURE__ */ forwardRef<
   );
 });
 
-export const AspectRatio = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { ratio?: number }
->(function AspectRatio({ ratio = 1, style, ...props }, ref) {
-  const safeRatio = Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
-  return (
-    <div
-      ref={ref}
-      data-ratio={safeRatio}
-      style={{ aspectRatio: String(safeRatio), ...style }}
-      {...props}
-    />
-  );
-});
-
 export const ButtonGroup = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { orientation?: Orientation }
@@ -1353,53 +1348,6 @@ export const InputOtp = /* @__PURE__ */ forwardRef<
   );
 });
 
-export const Slider = /* @__PURE__ */ forwardRef<
-  HTMLInputElement,
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
-    invalid?: boolean;
-  }
->(function Slider(
-  { invalid = false, min = 0, max = 100, step = 1, ...props },
-  ref,
-) {
-  return (
-    <input
-      ref={ref}
-      type="range"
-      min={min}
-      max={max}
-      step={step}
-      aria-invalid={invalid || undefined}
-      data-slot="slider"
-      {...props}
-    />
-  );
-});
-
-export const Meter = /* @__PURE__ */ forwardRef<
-  HTMLMeterElement,
-  React.MeterHTMLAttributes<HTMLMeterElement> & { label?: string }
->(function Meter(
-  { label, min = 0, max = 100, value = 0, children, ...props },
-  ref,
-) {
-  const safeValue = Math.min(Number(max), Math.max(Number(min), Number(value)));
-  return (
-    <meter
-      ref={ref}
-      min={min}
-      max={max}
-      value={safeValue}
-      role="meter"
-      aria-label={label}
-      data-slot="meter"
-      {...props}
-    >
-      {children ?? `${safeValue}`}
-    </meter>
-  );
-});
-
 export const Toolbar = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & {
@@ -1460,52 +1408,6 @@ export const ToolbarButton = /* @__PURE__ */ forwardRef<
       {...props}
     />
   );
-});
-
-export const ScrollArea = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    orientation?: 'vertical' | 'horizontal' | 'both';
-    label?: string;
-  }
->(function ScrollArea(
-  { orientation = 'vertical', label, tabIndex = 0, ...props },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      role={label ? 'region' : undefined}
-      aria-label={label}
-      tabIndex={tabIndex}
-      data-orientation={orientation}
-      data-slot="scroll-area"
-      {...props}
-    />
-  );
-});
-
-export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
-export const Badge = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone; status?: boolean }
->(function Badge({ tone = 'neutral', status = false, ...props }, ref) {
-  return (
-    <span
-      ref={ref}
-      data-tone={tone}
-      role={status ? 'status' : undefined}
-      aria-live={status ? 'polite' : undefined}
-      {...props}
-    />
-  );
-});
-
-export const Breadcrumb = /* @__PURE__ */ forwardRef<
-  HTMLElement,
-  React.HTMLAttributes<HTMLElement> & { label?: string }
->(function Breadcrumb({ label = 'Breadcrumb', ...props }, ref) {
-  return <nav ref={ref} aria-label={label} {...props} />;
 });
 
 export const NavigationMenu = /* @__PURE__ */ forwardRef<
@@ -1748,159 +1650,6 @@ export const ItemActions = /* @__PURE__ */ forwardRef<
   HTMLAttributes<HTMLDivElement>
 >(function ItemActions(props, ref) {
   return <div ref={ref} data-slot="item-actions" {...props} />;
-});
-
-export const Kbd = /* @__PURE__ */ forwardRef<
-  HTMLElement,
-  HTMLAttributes<HTMLElement>
->(function Kbd(props, ref) {
-  return <kbd ref={ref} data-slot="kbd" {...props} />;
-});
-
-export const Field = /* @__PURE__ */ forwardRef<
-  HTMLFieldSetElement,
-  React.FieldsetHTMLAttributes<HTMLFieldSetElement>
->(function Field(props, ref) {
-  return <fieldset ref={ref} data-slot="field" {...props} />;
-});
-export const FieldLegend = /* @__PURE__ */ forwardRef<
-  HTMLLegendElement,
-  HTMLAttributes<HTMLLegendElement>
->(function FieldLegend(props, ref) {
-  return <legend ref={ref} data-slot="field-legend" {...props} />;
-});
-export const FieldDescription = /* @__PURE__ */ forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(function FieldDescription(props, ref) {
-  return <p ref={ref} data-slot="field-description" {...props} />;
-});
-export const FieldError = /* @__PURE__ */ forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(function FieldError(props, ref) {
-  return <p ref={ref} data-slot="field-error" role="alert" {...props} />;
-});
-
-export const Form = /* @__PURE__ */ forwardRef<
-  HTMLFormElement,
-  FormHTMLAttributes<HTMLFormElement> & { focusInvalid?: boolean }
->(function Form({ focusInvalid = true, onInvalid, ...props }, ref) {
-  const focusQueued = useRef(false);
-  return (
-    <form
-      {...props}
-      ref={ref}
-      data-slot="form"
-      onInvalid={(event) => {
-        onInvalid?.(event);
-        if (focusQueued.current || !focusInvalid || event.defaultPrevented)
-          return;
-        focusQueued.current = true;
-        const first = event.target as HTMLElement;
-        requestAnimationFrame(() => {
-          first.focus();
-          focusQueued.current = false;
-        });
-      }}
-    />
-  );
-});
-export const FormErrorSummary = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function FormErrorSummary(props, ref) {
-  return (
-    <div
-      {...props}
-      ref={ref}
-      role="alert"
-      aria-live="assertive"
-      tabIndex={-1}
-      data-slot="form-error-summary"
-    />
-  );
-});
-
-export const Table = /* @__PURE__ */ forwardRef<
-  HTMLTableElement,
-  React.TableHTMLAttributes<HTMLTableElement>
->(function Table(props, ref) {
-  return <table ref={ref} data-slot="table" {...props} />;
-});
-export const TableHeader = /* @__PURE__ */ forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(function TableHeader(props, ref) {
-  return <thead ref={ref} data-slot="table-header" {...props} />;
-});
-export const TableBody = /* @__PURE__ */ forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(function TableBody(props, ref) {
-  return <tbody ref={ref} data-slot="table-body" {...props} />;
-});
-export const TableFooter = /* @__PURE__ */ forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(function TableFooter(props, ref) {
-  return <tfoot ref={ref} data-slot="table-footer" {...props} />;
-});
-export const TableRow = /* @__PURE__ */ forwardRef<
-  HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(function TableRow(props, ref) {
-  return <tr ref={ref} data-slot="table-row" {...props} />;
-});
-export const TableHead = /* @__PURE__ */ forwardRef<
-  HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(function TableHead({ scope = 'col', ...props }, ref) {
-  return <th ref={ref} scope={scope} data-slot="table-head" {...props} />;
-});
-export const TableCell = /* @__PURE__ */ forwardRef<
-  HTMLTableCellElement,
-  React.TdHTMLAttributes<HTMLTableCellElement>
->(function TableCell(props, ref) {
-  return <td ref={ref} data-slot="table-cell" {...props} />;
-});
-export const TableCaption = /* @__PURE__ */ forwardRef<
-  HTMLTableCaptionElement,
-  React.HTMLAttributes<HTMLTableCaptionElement>
->(function TableCaption(props, ref) {
-  return <caption ref={ref} data-slot="table-caption" {...props} />;
-});
-
-export const Pagination = /* @__PURE__ */ forwardRef<
-  HTMLElement,
-  React.HTMLAttributes<HTMLElement> & { label?: string }
->(function Pagination({ label = 'Pagination', ...props }, ref) {
-  return <nav ref={ref} aria-label={label} data-slot="pagination" {...props} />;
-});
-export const PaginationContent = /* @__PURE__ */ forwardRef<
-  HTMLUListElement,
-  React.HTMLAttributes<HTMLUListElement>
->(function PaginationContent(props, ref) {
-  return <ul ref={ref} data-slot="pagination-content" {...props} />;
-});
-export const PaginationItem = /* @__PURE__ */ forwardRef<
-  HTMLLIElement,
-  React.LiHTMLAttributes<HTMLLIElement>
->(function PaginationItem(props, ref) {
-  return <li ref={ref} data-slot="pagination-item" {...props} />;
-});
-export const PaginationLink = /* @__PURE__ */ forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
->(function PaginationLink({ current = false, ...props }, ref) {
-  return (
-    <a
-      ref={ref}
-      aria-current={current ? 'page' : undefined}
-      data-slot="pagination-link"
-      {...props}
-    />
-  );
 });
 
 export function Checkbox(props: CheckProps) {

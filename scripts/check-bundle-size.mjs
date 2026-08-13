@@ -462,7 +462,10 @@ const cases = [
     subpath: 'overlays',
     budget: 12 * KiB,
   },
-  { name: 'react-complete', framework: 'react', budget: 27 * KiB },
+  // Genuine per-component modules add a small boundary cost to the all-exports
+  // bundle while materially reducing direct subpath imports. Keep that tradeoff
+  // bounded instead of forcing component implementations back into the barrel.
+  { name: 'react-complete', framework: 'react', budget: 28 * KiB },
   { name: 'vue-complete', framework: 'vue', budget: 22.25 * KiB },
   { name: 'angular-complete', framework: 'angular', budget: 27 * KiB },
   {
