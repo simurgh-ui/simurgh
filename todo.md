@@ -299,6 +299,7 @@ per-component documentation" as example coverage, not as complete consumer docum
   - [x] Compile a release-candidate consumer fixture with theme overrides, a form, an event, an
         overlay, and a product-specific edit to a source-owned component.
   - [ ] Complete the copied-component edit and consumer build in a fresh release-candidate app.
+    - Use `release-candidate-ui-observations.md` to record the human run and evidence.
   - [x] Publish the reproducible acceptance protocol and validate its automated package, CLI, API,
         example-compilation, contrast, and documentation-integrity evidence.
   - [x] Record the published documentation site's framework-tab, copy-feedback, keyboard-navigation,
@@ -310,6 +311,8 @@ per-component documentation" as example coverage, not as complete consumer docum
     - [x] Automate the reflow-equivalent, short viewport, RTL, reduced-motion, focus-appearance, and
           light/dark WCAG A/AA checks against real documentation previews.
     - [ ] Complete manual 200% browser-zoom and screen-reader observations in release candidates.
+      - Use `release-candidate-ui-observations.md` for the required browser, focus, and spoken-output
+        evidence.
 
 ## Senior UI/UX review follow-up
 
