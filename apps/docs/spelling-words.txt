@@ -30,6 +30,7 @@ actual
 actually
 ada
 adapter
+adapter-host
 adapter's
 adapters
 add
@@ -100,6 +101,7 @@ appear
 appearance
 appears
 application
+application-host
 application-owned
 application-specific
 application-wide
@@ -147,6 +149,7 @@ attention
 attribute
 attribute-forwarding
 attributes
+audit
 aug
 august
 authentication
@@ -387,6 +390,7 @@ compile
 compiled
 complement
 complementary
+complements
 complete
 completing
 completion
@@ -490,6 +494,7 @@ cost
 counts
 cover
 coverage
+covered
 create
 created
 creates
@@ -676,6 +681,7 @@ elements
 elevation
 email
 embedded
+emission
 emit
 emits
 emitted
@@ -1036,6 +1042,7 @@ introduce
 introducing
 invalid
 invalid-field
+invalid-form
 invasive
 invent
 inversions
@@ -1056,7 +1063,6 @@ itself
 javascript
 joins
 journey
-journeys
 jump
 kbd
 keep
@@ -1552,6 +1558,7 @@ queries
 query
 queue
 quick
+quick-start
 radio
 radius
 raised
@@ -1733,11 +1740,13 @@ routes
 routine
 routing
 roving
+roving-focus
 roving-tabindex
 row
 row-and-column
 rows
 rtl
+rtl-aware
 rtl-compatible
 rtl-specific
 rule
@@ -1956,6 +1965,7 @@ such
 suffix
 suitable
 suite
+suites
 summaries
 summary
 supplemental
@@ -2011,6 +2021,7 @@ temporary
 term
 test
 tested
+tester
 testing
 tests
 text
@@ -2033,6 +2044,7 @@ therefore
 these
 they
 third-party
+thirteen
 this
 those
 though

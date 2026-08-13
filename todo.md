@@ -291,5 +291,7 @@ per-component documentation" as example coverage, not as complete consumer docum
         example-compilation, contrast, and documentation-integrity evidence.
   - [x] Record the published documentation site's framework-tab, copy-feedback, keyboard-navigation,
         dark-theme, mobile-menu, responsive-overflow, and RTL-guidance browser observations.
-  - [ ] Record keyboard, focus, form, overlay, event, 200% zoom, forced RTL/reduced-motion, contrast,
-        and assistive-technology evidence in React, Vue, and Angular release-candidate applications.
+  - [x] Record React, Vue, and Angular adapter-host evidence for keyboard/RTL navigation, invalid-form
+        focus and alerts, overlay focus restoration, Checkbox events, and form serialization.
+  - [ ] Record 200% zoom, narrow/short viewport, forced RTL/reduced-motion, light/dark contrast,
+        focus-appearance, and assistive-technology observations in release-candidate applications.

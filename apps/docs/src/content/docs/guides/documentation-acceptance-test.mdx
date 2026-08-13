@@ -125,9 +125,26 @@ published static output.
   manually observed in this run.
 
 This observation validates the documentation reader interface, not the runtime behavior of a
-consumer application. The React, Vue, and Angular release-candidate journeys above still require
-separate application runs, including form submission, overlay focus containment, event counts,
-200% zoom, forced RTL, forced reduced motion, contrast measurement, and assistive-technology output.
+consumer application. Adapter-host evidence and the remaining visual and assistive-technology
+observations are recorded separately below.
+
+## Adapter-host acceptance evidence
+
+On 2026-08-13, focused application-host contract tests were run against the React, Vue, and Angular
+adapters. Thirteen tests passed across the three framework suites. The selected contracts covered:
+
+- a named modal or Dialog host, automated accessibility audit, Escape dismissal, contained focus,
+  and restoration to its trigger;
+- Checkbox activation, one framework-native change callback/emission/output, its checked state, and
+  native form serialization where the adapter exposes a form value;
+- invalid-form handling that focuses the first invalid control and exposes the error summary as an
+  alert; and
+- RTL-aware tabs or roving-focus navigation.
+
+This evidence runs components inside each framework's real test host and complements the package
+quick-start builds. It is not a visual browser or assistive-technology observation. Release-candidate
+applications still need 200% zoom, narrow and short viewports, forced RTL, forced reduced motion,
+light/dark contrast measurements, focus appearance, and screen-reader output recorded by a tester.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
