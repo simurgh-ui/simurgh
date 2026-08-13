@@ -34,14 +34,24 @@ import React, {
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type FormHTMLAttributes,
-  type LabelHTMLAttributes,
   type InputHTMLAttributes,
-  type SelectHTMLAttributes,
-  type TextareaHTMLAttributes,
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
+
+export { Alert } from './components/alert.js';
+export { Button } from './components/button.js';
+export { Input } from './components/input.js';
+export { Label } from './components/label.js';
+export { Link } from './components/link.js';
+export { NativeSelect } from './components/native-select.js';
+export { Progress } from './components/progress.js';
+export { Separator } from './components/separator.js';
+export { Skeleton } from './components/skeleton.js';
+export { Spinner } from './components/spinner.js';
+export { Textarea } from './components/textarea.js';
+export { VisuallyHidden } from './components/visually-hidden.js';
 
 type OpenProps = {
   open?: boolean;
@@ -1039,79 +1049,6 @@ function CheckControl({
     </>
   );
 }
-export const Label = /* @__PURE__ */ forwardRef<
-  HTMLLabelElement,
-  LabelHTMLAttributes<HTMLLabelElement>
->(function Label(props, ref) {
-  return <label ref={ref} {...props} />;
-});
-
-export const Separator = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    orientation?: Orientation;
-    decorative?: boolean;
-  }
->(function Separator(
-  { orientation = 'horizontal', decorative = false, ...props },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      role={decorative ? 'none' : 'separator'}
-      aria-hidden={decorative || undefined}
-      aria-orientation={decorative ? undefined : orientation}
-      data-orientation={orientation}
-      {...props}
-    />
-  );
-});
-
-export const Progress = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    value?: number | null;
-    max?: number;
-    getValueLabel?: (value: number, max: number) => string;
-  }
->(function Progress(
-  { value = null, max = 100, getValueLabel, children, ...props },
-  ref,
-) {
-  const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
-  const safeValue =
-    value == null || !Number.isFinite(value)
-      ? null
-      : Math.min(safeMax, Math.max(0, value));
-  const percentage = safeValue == null ? null : (safeValue / safeMax) * 100;
-  return (
-    <div
-      ref={ref}
-      role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={safeMax}
-      aria-valuenow={safeValue ?? undefined}
-      aria-valuetext={
-        safeValue == null ? undefined : getValueLabel?.(safeValue, safeMax)
-      }
-      data-state={safeValue == null ? 'indeterminate' : 'determinate'}
-      data-value={safeValue ?? undefined}
-      data-max={safeMax}
-      {...props}
-    >
-      {children ?? (
-        <span
-          data-part="indicator"
-          style={{
-            inlineSize: percentage == null ? undefined : `${percentage}%`,
-          }}
-        />
-      )}
-    </div>
-  );
-});
-
 export const Toggle = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> & {
@@ -1242,27 +1179,6 @@ export function ToggleGroupItem({
   );
 }
 
-const visuallyHiddenStyle: React.CSSProperties = {
-  position: 'absolute',
-  inlineSize: 1,
-  blockSize: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  border: 0,
-};
-
-export const VisuallyHidden = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement>
->(function VisuallyHidden({ style, ...props }, ref) {
-  return (
-    <span ref={ref} style={{ ...visuallyHiddenStyle, ...style }} {...props} />
-  );
-});
-
 export const Avatar = /* @__PURE__ */ forwardRef<
   HTMLSpanElement,
   HTMLAttributes<HTMLSpanElement> & {
@@ -1297,22 +1213,6 @@ export const Avatar = /* @__PURE__ */ forwardRef<
   );
 });
 
-export const Alert = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { urgent?: boolean }
->(function Alert({ urgent = false, ...props }, ref) {
-  return (
-    <div
-      ref={ref}
-      role={urgent ? 'alert' : 'status'}
-      aria-live={urgent ? 'assertive' : 'polite'}
-      aria-atomic="true"
-      data-urgent={urgent || undefined}
-      {...props}
-    />
-  );
-});
-
 export const AspectRatio = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { ratio?: number }
@@ -1325,65 +1225,6 @@ export const AspectRatio = /* @__PURE__ */ forwardRef<
       style={{ aspectRatio: String(safeRatio), ...style }}
       {...props}
     />
-  );
-});
-
-export const Skeleton = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { label?: string }
->(function Skeleton({ label, ...props }, ref) {
-  return (
-    <div
-      ref={ref}
-      role={label ? 'status' : undefined}
-      aria-label={label}
-      aria-busy={label ? 'true' : undefined}
-      aria-hidden={label ? undefined : 'true'}
-      data-state="loading"
-      {...props}
-    />
-  );
-});
-
-export const Spinner = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement> & { label?: string }
->(function Spinner({ label = 'Loading', children, ...props }, ref) {
-  return (
-    <span
-      ref={ref}
-      role="status"
-      aria-label={label}
-      aria-live="polite"
-      aria-busy="true"
-      data-state="loading"
-      {...props}
-    >
-      <span aria-hidden="true" data-part="indicator">
-        {children ?? '◌'}
-      </span>
-    </span>
-  );
-});
-
-export const Button = /* @__PURE__ */ forwardRef<
-  HTMLButtonElement,
-  ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean }
->(function Button(
-  { type = 'button', loading = false, disabled, children, ...props },
-  ref,
-) {
-  return (
-    <button
-      ref={ref}
-      type={type}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
-      data-state={loading ? 'loading' : 'idle'}
-      {...props}
-    >
-      {children}
-    </button>
   );
 });
 
@@ -1428,54 +1269,6 @@ export const ButtonGroupSeparator = /* @__PURE__ */ forwardRef<
       {...props}
     />
   );
-});
-
-export const Link = /* @__PURE__ */ forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-    disabled?: boolean;
-    external?: boolean;
-  }
->(function Link(
-  {
-    disabled = false,
-    external = false,
-    href,
-    onClick,
-    rel,
-    target,
-    tabIndex,
-    ...props
-  },
-  ref,
-) {
-  return (
-    <a
-      ref={ref}
-      href={disabled ? undefined : href}
-      aria-disabled={disabled || undefined}
-      data-slot="link"
-      data-external={external || undefined}
-      rel={external ? (rel ?? 'noopener noreferrer') : rel}
-      target={external ? (target ?? '_blank') : target}
-      tabIndex={disabled ? -1 : tabIndex}
-      onClick={(event) => {
-        if (disabled) {
-          event.preventDefault();
-          return;
-        }
-        onClick?.(event);
-      }}
-      {...props}
-    />
-  );
-});
-
-export const Input = /* @__PURE__ */ forwardRef<
-  HTMLInputElement,
-  InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
->(function Input({ invalid = false, ...props }, ref) {
-  return <input ref={ref} aria-invalid={invalid || undefined} {...props} />;
 });
 
 export const InputGroup = /* @__PURE__ */ forwardRef<
@@ -1555,20 +1348,6 @@ export const InputOtp = /* @__PURE__ */ forwardRef<
         }
         onInput?.(event);
       }}
-      {...props}
-    />
-  );
-});
-
-export const NativeSelect = /* @__PURE__ */ forwardRef<
-  HTMLSelectElement,
-  SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }
->(function NativeSelect({ invalid = false, ...props }, ref) {
-  return (
-    <select
-      ref={ref}
-      aria-invalid={invalid || undefined}
-      data-slot="native-select"
       {...props}
     />
   );
@@ -1704,13 +1483,6 @@ export const ScrollArea = /* @__PURE__ */ forwardRef<
       {...props}
     />
   );
-});
-
-export const Textarea = /* @__PURE__ */ forwardRef<
-  HTMLTextAreaElement,
-  TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }
->(function Textarea({ invalid = false, ...props }, ref) {
-  return <textarea ref={ref} aria-invalid={invalid || undefined} {...props} />;
 });
 
 export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';

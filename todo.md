@@ -179,6 +179,11 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Audit component-level CSS exports and documentation so consumers can load only the recipes they use instead of the complete stylesheet.
 - [x] Add lazy-loading guidance and fixtures for overlay-heavy entry points so Floating UI stays out of initial application bundles.
 - [ ] Move the remaining React implementations out of the monolithic `index.tsx` into genuine per-component source modules.
+  - [x] Move Alert, Button, Input, Textarea, Label, Link, Native Select, Separator, Progress,
+        Visually Hidden, Skeleton, and Spinner into genuine component modules and keep their root
+        and `basic` aggregate exports compatible.
+  - [ ] Move the remaining React primitives and shared helpers without introducing component-to-barrel
+        cycles or exceeding standalone, aggregate, complete-adapter, and published-package budgets.
 - [x] Evaluate esbuild code splitting for the React adapter and verify that shared chunks reduce multi-component consumption without adding excessive module overhead.
 - [x] Revisit the custom `@floating-ui/dom` React adapter only if its estimated savings justify the accessibility and interaction-maintenance risk.
 - [x] Resolve the React Button budget regression by replacing the stale 301 B baseline with a clean-build measurement and a less brittle 512 B budget.
@@ -295,3 +300,55 @@ per-component documentation" as example coverage, not as complete consumer docum
         focus and alerts, overlay focus restoration, Checkbox events, and form serialization.
   - [ ] Record 200% zoom, narrow/short viewport, forced RTL/reduced-motion, light/dark contrast,
         focus-appearance, and assistive-technology observations in release-candidate applications.
+
+## Senior UI/UX review follow-up
+
+### P1: preview fidelity and product clarity
+
+- [ ] Replace documentation-only facsimiles with previews that mount the actual public React, Vue,
+      or Angular component and load the same component stylesheet consumers import.
+- [ ] Clearly label any remaining static example as a semantic anatomy illustration rather than a
+      live rendered-component preview.
+- [ ] Add a documented status to every component: `headless`, `structural`, `styled`, or `native`,
+      including what behavior, layout, and visual treatment consumers should expect by default.
+- [ ] Validate that component status matches the published stylesheet, stable styling hooks, docs
+      preview, registry metadata, and all three framework adapters.
+- [ ] Reorder component pages around first-use comprehension: purpose and status, live preview,
+      usage guidance, variants/states, framework examples, accessibility, then exhaustive API and
+      styling contracts.
+- [ ] Add screenshot regression coverage for real adapter-powered previews in light, dark, RTL,
+      narrow viewport, loading, disabled, invalid, and keyboard-focus states where applicable.
+
+### P2: visual-system maturity
+
+- [ ] Define a canonical action hierarchy for Button and button-like controls, covering primary,
+      secondary, destructive, quiet/ghost, icon-only, loading, full-width, and size variants.
+- [ ] Complete a coherent visual family for Button, Input, Checkbox, Select, and Dialog before
+      expanding the catalog further; verify hover, pressed, focus-visible, disabled, loading,
+      invalid, and responsive states.
+- [ ] Expand semantic tokens for secondary, success, warning, information, destructive foreground,
+      disabled surfaces/text, input surfaces/borders, hover/pressed states, scrims, elevation,
+      control heights, spacing, and typography.
+- [ ] Keep the Tailwind preset in parity with the supported semantic CSS token surface and add a
+      regression check that prevents the two theming APIs from drifting.
+- [ ] Introduce explicit comfortable, compact, and dense control-density modes with documented
+      target sizes and consistent application across interactive components.
+- [ ] Define a restrained Simurgh visual-language guide beyond color, covering typography,
+      geometric rhythm, separators/borders, motion, illustration, and empty-state treatment.
+
+### P2: discovery and documentation usability
+
+- [ ] Add a visual component gallery with search and filters for category, styling status,
+      framework availability, native/custom behavior, and keyboard-interaction complexity.
+- [ ] Preserve the interaction-based component chooser, but link gallery cards directly to the
+      relevant comparison guidance for commonly confused components.
+- [ ] Reduce generated page density by consolidating shared cross-framework behavior, surfacing
+      only meaningful adapter differences, and collapsing exhaustive API/styling tables by default.
+- [ ] Simplify the component-page table of contents to major user-facing sections and remove
+      repetitive generated framework/component subheadings from its default outline.
+
+### UI/UX acceptance gate
+
+- [ ] Run a first-time-user comprehension test covering: identify whether a component is styled,
+      select the correct primitive, preview its real default output, install it, choose a density,
+      customize semantic tokens, and verify focus/RTL/dark behavior without reading source code.
