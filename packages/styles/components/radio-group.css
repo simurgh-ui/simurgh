@@ -1,1 +1,28 @@
 @import '../tokens.css';
+[role='radiogroup'] {
+  display: grid;
+  gap: 0.625rem;
+}
+[role='radiogroup'] [role='radio'] {
+  appearance: none;
+  background: hsl(var(--simurgh-input-surface));
+  border: 2px solid hsl(var(--simurgh-input-border));
+  border-radius: 999px;
+  block-size: 1.125rem;
+  flex: 0 0 auto;
+  inline-size: 1.125rem;
+  padding: 0;
+}
+[role='radiogroup'] [role='radio'][aria-checked='true'] {
+  background: hsl(var(--simurgh-primary));
+  border-color: hsl(var(--simurgh-primary));
+  box-shadow: inset 0 0 0 3px hsl(var(--simurgh-input-surface));
+}
+[role='radiogroup'] [role='radio']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+[role='radiogroup'] [role='radio'][aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
