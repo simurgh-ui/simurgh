@@ -1,3 +1,4 @@
+aa
 abbreviations
 able
 above
@@ -37,6 +38,7 @@ adapters
 add
 adding
 additional
+additionally
 addon
 addons
 adds
@@ -82,12 +84,14 @@ an
 analytics
 anatomy
 ancestor
+ancestor's
 ancestors
 anchor
 anchored
 anchors
 and
 angular
+angular-specific
 angular's
 animate
 animation
@@ -137,6 +141,9 @@ artwork
 as
 aspect
 assertive
+asset
+asset-import
+assets
 assignee
 assigning
 assistive
@@ -159,6 +166,7 @@ attributes
 audit
 authentication
 author
+authored
 autocomplete
 autofill
 autofill-ready
@@ -172,6 +180,7 @@ avatar
 avoid
 avoids
 away
+axe-core
 back
 background
 backgrounds
@@ -243,6 +252,7 @@ browser
 browser-delivered
 browser-native
 browser-only
+browser-zoom
 browser's
 browsers
 browsing
@@ -282,6 +292,7 @@ cancel
 cancellation
 candidate
 cannot
+canonical
 canvas
 capability
 capped
@@ -298,6 +309,7 @@ cascade
 case
 cases
 catalog
+catalog's
 causal
 causality
 cause
@@ -387,6 +399,7 @@ combined
 combines
 combobox
 come
+comes
 comfortable
 comma
 command
@@ -397,6 +410,7 @@ commits
 common
 commonly
 communicate
+communicated
 communicates
 compact
 compare
@@ -409,6 +423,7 @@ compete
 competing
 compilation
 compile
+compile-time
 compiled
 complement
 complementary
@@ -498,6 +513,7 @@ controlled
 controls
 convenience
 convenient
+conventional
 conventions
 convert
 conveys
@@ -518,6 +534,7 @@ corrected
 correctly
 corresponding
 cost
+count
 counts
 cover
 coverage
@@ -531,6 +548,7 @@ cropping
 cross-field
 cross-framework
 css
+css-pixel
 culturally
 culture
 current
@@ -608,6 +626,7 @@ destination
 destinations
 destructive
 detail
+detailed
 details
 detect
 detection
@@ -615,6 +634,7 @@ detects
 determinate
 determine
 determined
+determines
 deterministic
 developer
 development
@@ -651,6 +671,7 @@ disclose
 disclosed
 disclosure
 discoverable
+discovery
 dismiss
 dismissal
 dismissed
@@ -683,6 +704,7 @@ downloaded
 drag
 dragging
 drawer
+drawing
 drift
 drop
 drop-zone
@@ -710,6 +732,7 @@ either
 element
 elements
 elevation
+eligible
 embedded
 emission
 emit
@@ -759,7 +782,9 @@ example
 example's
 examples
 excellent
+exception
 exceptional
+exceptions
 excludes
 exclusive
 exercise
@@ -850,6 +875,7 @@ first-time-reader
 first-use
 firuzeh
 fit
+five
 five-percent
 fixed
 fixed-option
@@ -914,6 +940,7 @@ frozen
 full-height
 full-screen
 fully
+functional
 functions
 future
 gallery
@@ -929,9 +956,11 @@ generic
 generous
 genuinely
 geometric
+geometry
 gesture
 gestures
 give
+gives
 giving
 glaze
 glazing
@@ -943,6 +972,7 @@ green
 grid
 grounded
 group
+grouped
 grouping
 groups
 grow
@@ -1004,6 +1034,9 @@ hydrating
 hydration
 icon
 icon-only
+icon's
+icongallery
+icongallery.astro
 icons
 id
 identical
@@ -1053,6 +1086,7 @@ indexes
 indicator
 indicators
 individual
+infer
 information
 informational
 informative
@@ -1133,6 +1167,7 @@ journey
 jump
 jumps
 kbd
+kebab-case
 keep
 keeping
 keeps
@@ -1186,6 +1221,7 @@ limits
 line
 link
 linked
+linking
 links
 lint
 list
@@ -1285,6 +1321,7 @@ minimums
 minor
 mirror
 mirrored
+mirroring
 mismatch
 missing
 mix
@@ -1464,6 +1501,7 @@ overlays
 overloading
 override
 overrides
+overriding
 oversized
 overview
 overwrite
@@ -1499,6 +1537,7 @@ participates
 particular
 partners
 parts
+pascalcase
 pass
 passed
 password
@@ -1514,6 +1553,7 @@ pay
 payload
 peer
 peer-dependency
+peers
 pending
 people
 per
@@ -1531,6 +1571,7 @@ persistent
 person
 photographs
 physical
+physical-direction
 picker
 pickercomponentpreview
 pigments
@@ -1538,6 +1579,7 @@ pills
 pin
 pinned
 pixel
+pixels
 place
 placed
 placeholder
@@ -1551,6 +1593,7 @@ playwright
 plugin
 plus
 pnpm
+point
 pointer
 pointer-adjustable
 points
@@ -1608,6 +1651,7 @@ principles
 problem
 process
 processed
+produce
 produced
 produces
 product
@@ -1673,6 +1717,7 @@ ratios
 raw
 re-export
 reach
+reachable
 reaches
 reaching
 react
@@ -1695,6 +1740,7 @@ receives
 receiving
 recipe
 recipes
+recolors
 recommended
 reconcile
 record
@@ -1747,6 +1793,8 @@ removing
 renaming
 render
 rendered
+renderer
+renderers
 rendering
 renders
 reopen
@@ -1755,6 +1803,7 @@ reorder
 reordered
 reordering
 repeat
+repeatable
 repeated
 repeatedly
 repeating
@@ -1765,6 +1814,7 @@ replacement
 replaces
 replacing
 report
+reported
 reporting
 reports
 repositioning
@@ -1798,6 +1848,7 @@ resize
 resolve
 resolves
 resolving
+respects
 respond
 responds
 responsibility
@@ -1820,6 +1871,7 @@ retries
 return
 returned
 returns
+reusable
 reuse
 reveal
 revealing
@@ -1929,6 +1981,7 @@ serialization
 serialize
 server
 server-backed
+server-generated
 server-rendered
 server-side
 set
@@ -1964,6 +2017,7 @@ side-anchored
 side-panel
 sidebar
 sides
+sighted
 sign-in
 signal
 silently
@@ -2092,6 +2146,7 @@ suite
 suites
 summaries
 summary
+supplement
 supplemental
 supplementary
 supplied
@@ -2102,9 +2157,11 @@ support
 supported
 supporting
 supports
+suppressing
 surface
 surfaces
 surrounding
+svg
 swatches
 switch
 switched
@@ -2229,11 +2286,14 @@ trigger
 trigger-focus
 trigger-opened
 triggers
+true
 truly
+trusted
 truth
 turns
 turquoise
 two
+two-pixel
 two-way
 type
 typeahead
@@ -2260,16 +2320,20 @@ unfamiliar
 unified
 unique
 unit
+units
 universal
 unlayered
 unless
 unnamed
+unnecessary
 unpressed
+unrecognized
 unrelated
 unsure
 unsynchronized
 until
 untyped
+unused
 up
 update
 updated
@@ -2322,6 +2386,7 @@ viewchild
 viewport
 viewports
 views
+violations
 virtual
 visibility
 visible
@@ -2363,6 +2428,7 @@ why
 widget's
 widgets
 width
+wildcard
 will
 window
 windows

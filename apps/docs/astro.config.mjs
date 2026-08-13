@@ -58,6 +58,17 @@ export default defineConfig({
             { label: 'TypeScript patterns', slug: 'guides/typescript' },
           ],
         },
+        {
+          label: 'Icons',
+          items: [
+            { label: 'Icon catalog', slug: 'icons/overview' },
+            { label: 'Usage and API', slug: 'icons/usage' },
+            {
+              label: 'Accessibility and RTL',
+              slug: 'icons/accessibility-and-rtl',
+            },
+          ],
+        },
         { label: 'Components', autogenerate: { directory: 'components' } },
       ],
     }),

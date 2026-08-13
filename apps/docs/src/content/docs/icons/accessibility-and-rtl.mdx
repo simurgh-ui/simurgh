@@ -1,0 +1,78 @@
+---
+title: Icon accessibility and RTL
+description: Label informative and interactive icons correctly and control directional mirroring in RTL layouts.
+---
+
+The rendered SVG is decorative by default. Without `title`, it receives `aria-hidden="true"` and
+`focusable="false"`. Supplying `title` changes it to an image with `role="img"` and an accessible
+name. Choose the pattern from the icon's meaning in context, not from its appearance.
+
+## Decorative icons
+
+Hide an icon when adjacent text already provides the same meaning. Do not repeat the label through
+`title`, because that can produce duplicate announcements.
+
+```tsx
+<Button>
+  <Download aria-hidden="true" />
+  Download report
+</Button>
+```
+
+## Icon-only controls
+
+Name the interactive element, not its child SVG. The button remains the focus target and exposes a
+stable control name.
+
+```tsx
+<Button aria-label="Close dialog" iconOnly>
+  <Close aria-hidden="true" />
+</Button>
+```
+
+A tooltip may supplement this label for sighted pointer and keyboard users, but it does not replace
+the button's accessible name.
+
+## Standalone informative icons
+
+Use `title` when the SVG itself communicates information and no nearby text supplies an equivalent.
+
+```tsx
+<Verified title="Verified account" />
+```
+
+For detailed status or instructions, prefer visible text and keep the icon decorative. Icons and
+color should reinforce meaning rather than carry it alone.
+
+## RTL mirroring
+
+Icons marked as directional mirror when `direction="rtl"` and `mirrorInRtl` is true. Set direction
+explicitly from application locale state; the icon does not infer an ancestor's `dir` attribute.
+
+```tsx
+<ArrowRight direction={localeDirection} title="Next page" />
+```
+
+Mirror icons that describe reading or interface direction, including back, forward, previous, next,
+enter, and exit. Do not mirror icons whose orientation is physical or conventional, such as media
+controls, logos, checkmarks, or a real-world direction. For that exception:
+
+```tsx
+<ArrowRight direction="rtl" mirrorInRtl={false} title="East" />
+```
+
+The catalog's `direction` metadata determines which icons are eligible; neutral icons never mirror.
+
+## Review checklist
+
+- Every icon-only control has a name on the control.
+- Decorative icons are hidden from assistive technology.
+- Informative icons have nearby text or a concise `title`.
+- Meaning is not communicated by color or icon shape alone.
+- Direction is connected to locale state and verified in both LTR and RTL.
+- Physical-direction exceptions set `mirrorInRtl` to false.
+- Motion applied by consumers respects `prefers-reduced-motion`.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

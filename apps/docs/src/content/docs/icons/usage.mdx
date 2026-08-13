@@ -1,0 +1,124 @@
+---
+title: Icon usage and API
+description: Use and customize Simurgh icons in React, Vue, Angular, server rendering, and static assets.
+---
+
+Use named components for fixed interface icons and `SimurghIcon` when the name comes from typed
+application data. Both forms render the same SVG definition.
+
+## React
+
+```tsx
+import { ArrowRight, SimurghIcon } from '@simurgh-ui/icons/react';
+
+export function Actions() {
+  return <>
+    <ArrowRight size={20} title="Next page" className="next-icon" />
+    <SimurghIcon name="settings" size="1.25em" aria-hidden="true" />
+  </>;
+}
+```
+
+Named components accept standard React SVG attributes plus the shared icon props. Refs target the
+root `SVGSVGElement`.
+
+## Vue
+
+```vue
+<script setup lang="ts">
+import { ArrowRight, SimurghIcon } from '@simurgh-ui/icons/vue';
+</script>
+
+<template>
+  <ArrowRight :size="20" title="Next page" class="next-icon" />
+  <SimurghIcon name="settings" size="1.25em" aria-hidden="true" />
+</template>
+```
+
+Unrecognized attributes and listeners are forwarded to the root SVG.
+
+## Angular
+
+```ts
+import { Component } from '@angular/core';
+import { ArrowRight, SimurghIcon } from '@simurgh-ui/icons/angular';
+
+@Component({
+  standalone: true,
+  imports: [ArrowRight, SimurghIcon],
+  template: `
+    <simurgh-arrow-right-icon [size]="20" title="Next page" />
+    <simurgh-icon name="settings" size="1.25em" />
+  `,
+})
+export class Actions {}
+```
+
+Angular named components use selectors of the form `simurgh-<name>-icon`.
+
+## Shared component props
+
+| Prop/input | Type | Default | Purpose |
+| --- | --- | --- | --- |
+| `name` | `IconName` | required on `SimurghIcon` | Selects a kebab-case icon. Named components omit it. |
+| `size` | `number \| string` | `24` | Sets SVG width and height. Numbers are pixels; strings may use CSS units. |
+| `title` | `string` | none | Gives a standalone informative icon an accessible name and `role="img"`. |
+| `direction` | `'ltr' \| 'rtl'` | `'ltr'` | Selects the direction used for automatic mirroring. |
+| `mirrorInRtl` | `boolean` | `true` | Disables automatic mirroring when a directional drawing represents a physical direction. |
+
+React and Vue additionally accept root SVG attributes such as `class`, `style`, `data-*`, and
+`aria-*`. Angular's base inputs are the API listed above; wrap it or style its descendant SVG when
+you need a reusable Angular-specific presentation contract.
+
+## Styling and sizing
+
+Icons contain their authored colors and do not use `currentColor`. Use `size` for routine sizing and
+CSS on the root SVG for layout, opacity, transforms, or state transitions. Do not assume setting
+`color` recolors the paths.
+
+```css
+.toolbar-icon {
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+}
+
+.toolbar-button:disabled .toolbar-icon {
+  opacity: 0.45;
+}
+```
+
+Avoid overriding individual generated paths: their count, colors, and geometry are implementation
+details rather than stable styling hooks.
+
+## Framework-neutral API
+
+```ts
+import { getIcon, iconGroups, iconNames, renderIconSvg } from '@simurgh-ui/icons';
+
+const definition = getIcon('home');
+const navigationNames = iconGroups.landmarks;
+const markup = renderIconSvg('arrow-right', {
+  size: 20,
+  title: 'Next page',
+  direction: 'rtl',
+});
+```
+
+`IconDefinition` exposes `name`, `group`, `direction`, `viewBox`, `transform`, and `paths` for custom
+renderers. `iconNames` and `IconName` are the canonical runtime and compile-time name lists.
+
+## Static SVG files
+
+Use the wildcard export when a tool accepts an asset URL rather than a framework component:
+
+```ts
+import homeUrl from '@simurgh-ui/icons/svg/home';
+```
+
+Exact asset-import syntax depends on your bundler. When it cannot resolve package wildcard assets,
+copy the required SVG during your build rather than linking into `node_modules` at runtime.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

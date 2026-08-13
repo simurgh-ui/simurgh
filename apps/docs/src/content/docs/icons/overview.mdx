@@ -1,0 +1,44 @@
+---
+title: Icon catalog
+description: Browse all 160 Simurgh UI icons by functional group and learn which package entry point to use.
+---
+
+import IconGallery from '../../../components/IconGallery.astro';
+
+The `@simurgh-ui/icons` package contains 160 functional icons for navigation, actions, status,
+files, and layout. Every icon is available as a named React, Vue, or Angular component, as a dynamic
+`SimurghIcon`, as framework-neutral data, and as an individual SVG file.
+
+## Install
+
+```shell
+pnpm add @simurgh-ui/icons
+```
+
+Install the peer for the framework entry point you use. The framework packages are optional peers,
+so a React application does not need Vue or Angular.
+
+## Choose an import
+
+| Need | Import | Guidance |
+| --- | --- | --- |
+| Static application icon | `@simurgh-ui/icons/react`, `/vue`, or `/angular` | Prefer a named component so bundlers can remove unused icons. |
+| Icon selected from data | Framework `SimurghIcon` | Pass a typed kebab-case `name`. |
+| Server-generated markup | `renderIconSvg` from `@simurgh-ui/icons` | Returns an SVG string; only use trusted icon names and options. |
+| Custom renderer or browser | `icons`, `iconNames`, `iconGroups`, or `getIcon` | Framework-neutral definitions and discovery metadata. |
+| Static asset | `@simurgh-ui/icons/svg/<name>` | Use when a component import is unavailable or unnecessary. |
+
+See [Usage and API](/icons/usage/) for framework examples and customization, and
+[Accessibility and RTL](/icons/accessibility-and-rtl/) before placing an icon in an interactive
+control.
+
+## Complete catalog
+
+Names are grouped by purpose. Copy the kebab-case name for `SimurghIcon` or convert it to PascalCase
+for the corresponding named component, such as `arrow-left` to `ArrowLeft`.
+
+<IconGallery />
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

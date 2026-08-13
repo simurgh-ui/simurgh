@@ -1,0 +1,33 @@
+---
+import { iconGroups, renderIconSvg } from '../../../../packages/icons/src/index';
+import type { IconName } from '../../../../packages/icons/src/index';
+
+const groups = Object.entries(iconGroups);
+const groupLabel = (group: string) =>
+  group.replaceAll('-', ' ').replace(/\b\w/gu, (letter) => letter.toUpperCase());
+---
+
+<div class="icon-catalog">
+  {groups.map(([group, names]) => (
+    <section aria-labelledby={`icons-${group}`}>
+      <h2 id={`icons-${group}`}>{groupLabel(group)} <span>({names.length})</span></h2>
+      <ul>
+        {names.map((name: IconName) => (
+          <li>
+            <span class="icon" set:html={renderIconSvg(name, { size: 32 })} />
+            <code>{name}</code>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
+
+<style>
+  .icon-catalog section { margin-block: 2.5rem; }
+  .icon-catalog h2 span { color: var(--sl-color-gray-3); font-size: 0.75em; font-weight: 500; }
+  .icon-catalog ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 0.75rem; padding: 0; list-style: none; }
+  .icon-catalog li { display: grid; place-items: center; gap: 0.65rem; min-width: 0; padding: 1rem 0.5rem; border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; background: var(--sl-color-gray-6); text-align: center; }
+  .icon-catalog .icon { display: inline-flex; }
+  .icon-catalog code { max-width: 100%; overflow-wrap: anywhere; font-size: 0.75rem; }
+</style>

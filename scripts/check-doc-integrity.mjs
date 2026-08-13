@@ -10,6 +10,7 @@ const packageRoots = new Map([
   ['vue', resolve(root, 'packages/vue')],
   ['angular', resolve(root, 'packages/angular')],
   ['motion', resolve(root, 'packages/motion')],
+  ['icons', resolve(root, 'packages/icons')],
   ['styles', resolve(root, 'packages/styles')],
 ]);
 const pages = new Map();
