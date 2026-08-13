@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'simurgh-input',
   standalone: true,
   template: `<input
+    data-slot="input"
     [type]="type"
     [name]="name || ''"
     [value]="value"

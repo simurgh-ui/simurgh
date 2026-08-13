@@ -14,12 +14,18 @@ import { trapFocus } from '@simurgh-ui/core';
   standalone: true,
   imports: [CommonModule],
   template: `<ng-content select="[trigger]" />
-    <div *ngIf="open" class="simurgh-overlay" (click)="close()"></div>
+    <div
+      *ngIf="open"
+      class="simurgh-overlay"
+      data-slot="dialog-overlay"
+      (click)="close()"
+    ></div>
     <section
       #content
       *ngIf="open"
       class="simurgh-content simurgh-dialog"
       role="dialog"
+      data-slot="dialog-content"
       aria-modal="true"
       [attr.aria-labelledby]="labelledBy"
       [attr.aria-describedby]="describedBy"

@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
   template: `<button
       type="button"
       role="checkbox"
+      data-slot="checkbox"
       [attr.aria-checked]="checked"
       [disabled]="disabled"
       (click)="toggle()"

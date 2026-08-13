@@ -7,6 +7,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 {/* component-installation:start */}
+
 ## Installation
 
 Copy editable source into an initialized application:
@@ -20,10 +21,7 @@ For package consumption, import from the component subpath and load its optional
 ### React
 
 ```tsx
-import {
-  Calendar,
-  CalendarProps,
-} from '@simurgh-ui/react/calendar';
+import { Calendar, CalendarProps } from '@simurgh-ui/react/calendar';
 import '@simurgh-ui/styles/calendar.css';
 ```
 
@@ -129,17 +127,18 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
+
 ## State model
 
 Controlled state remains the application’s source of truth and must be updated from every change
 event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
 the same state at once.
 
-| Framework | Exact state contract and reset behavior |
-| --- | --- |
-| React | Controlled: `month` + `onMonthChange`. Uncontrolled: `defaultMonth`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.<br />Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
-| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`.<br />Controlled: `v-model:month` (`month` + `update:month`). Uncontrolled: `defaultMonth`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.<br />Controlled two-way binding: `[(month)]` (`month` + `monthChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+| Framework | Exact state contract and reset behavior                                                                                                                                                                                                                                                                                                                                          |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| React     | Controlled: `month` + `onMonthChange`. Uncontrolled: `defaultMonth`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.<br />Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.             |
+| Vue       | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`.<br />Controlled: `v-model:month` (`month` + `update:month`). Uncontrolled: `defaultMonth`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular   | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.<br />Controlled two-way binding: `[(month)]` (`month` + `monthChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.                                   |
 
 **React**
 
@@ -182,6 +181,7 @@ reset() { this.value = this.initial; }
 <simurgh-calendar [(value)]="value">…</simurgh-calendar>
 <button type="button" (click)="reset()">Reset</button>
 ```
+
 {/* component-state-model:end */}
 
 Arrow keys move by day or week; Home and End move within the week; Page Up and Page Down move by month. Use `min`, `max`, or `disabledDates` for unavailable dates. The component uses locale-aware spoken labels while keeping emitted and submitted values stable ISO dates.
@@ -309,6 +309,7 @@ Content projection: none.
 {/* angular-api:end */}
 
 {/* component-composition:start */}
+
 ### Composition contract
 
 Follow the framework example as a structural contract. Root components own shared state; parts that
@@ -316,35 +317,37 @@ consume that state must stay under the root (or be attached to projected descend
 Parts described as conditional are optional until their corresponding interaction or semantic region
 is used. Do not render a state-consuming part by itself.
 
-| Framework | Required parent/child relationship | Conditional parts | Supporting types |
-| --- | --- | --- | --- |
-| React | `Calendar` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `CalendarProps`. |
-| Vue | `Calendar` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
-| Angular | `CalendarComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
+| Framework | Required parent/child relationship                                        | Conditional parts                                             | Supporting types |
+| --------- | ------------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------- |
+| React     | `Calendar` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | `CalendarProps`. |
+| Vue       | `Calendar` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | None.            |
+| Angular   | `CalendarComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None.            |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
 {/* component-composition:end */}
 
 {/* framework-parity:start */}
+
 ### Framework parity and differences
 
 The adapters target the same user-visible behavior and accessibility contract. Their public shapes
 follow each framework's conventions and are not expected to be symbol-for-symbol identical.
 
-| Concern | Contract |
-| --- | --- |
-| Public composition | React exports 2 parts, Vue 1, and Angular 1. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
-| State and change events | React uses controlled/default props and callbacks for `month`, `value`; Vue uses `v-model`, `v-model:month`; Angular uses `[(value)]`, `[(month)]`. |
-| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
-| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | React has no forwarded ref; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild. |
+| Concern                 | Contract                                                                                                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Public composition      | React exports 2 parts, Vue 1, and Angular 1. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol.                                     |
+| State and change events | React uses controlled/default props and callbacks for `month`, `value`; Vue uses `v-model`, `v-model:month`; Angular uses `[(value)]`, `[(month)]`.                                                     |
+| Children and content    | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors.                                                                                       |
+| Native attributes       | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access       | React has no forwarded ref; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild.                                                                 |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
 {/* component-form:start */}
+
 ### Form integration
 
 Use `name="appointmentDate"` to serialize the current value under the documented field name. The examples initialize the field, keep its
@@ -358,16 +361,23 @@ const initial = '2026-08-12';
 const [value, setValue] = useState(initial);
 const [errors, setErrors] = useState<Record<string, string>>({});
 
-<form onSubmit={(event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  // Submit data.get('appointmentDate').
-}}>
-  <Calendar name="appointmentDate" value={value} onValueChange={setValue}
-    required disabled={isDisabled} />
+<form
+  onSubmit={(event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // Submit data.get('appointmentDate').
+  }}
+>
+  <Calendar
+    name="appointmentDate"
+    value={value}
+    onValueChange={setValue}
+    required
+    disabled={isDisabled}
+  />
   {errors.appointmentDate && <p role="alert">{errors.appointmentDate}</p>}
   <button type="submit">Submit</button>
-</form>
+</form>;
 ```
 
 #### Vue
@@ -405,8 +415,15 @@ submit(form: HTMLFormElement) {
 
 ```html
 <form #form (submit)="submit(form); $event.preventDefault()">
-  <simurgh-calendar [(value)]="value" name="appointmentDate" required [disabled]="isDisabled"></simurgh-calendar>
-  <p *ngIf="errors.appointmentDate" role="alert">{{ errors.appointmentDate }}</p>
+  <simurgh-calendar
+    [(value)]="value"
+    name="appointmentDate"
+    required
+    [disabled]="isDisabled"
+  ></simurgh-calendar>
+  <p *ngIf="errors.appointmentDate" role="alert">
+    {{ errors.appointmentDate }}
+  </p>
   <button type="submit">Submit</button>
 </form>
 ```
@@ -417,20 +434,22 @@ validation state from the Angular form explicitly.
 {/* component-form:end */}
 
 {/* component-supported-states:start */}
+
 ### Supported states
 
 The table distinguishes component behavior from application-owned presentation. “Not supported”
 means there is no public state contract for that adapter; do not invent one with an undocumented
 attribute. Keep status and error messages accessible when they are rendered outside the component.
 
-| State | React | Vue | Angular |
-| --- | --- | --- | --- |
-| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| State     | React                                                                                 | Vue                                                                                   | Angular                                                                               |
+| --------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Loading   | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Empty     | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Invalid   | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 | Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Disabled  | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Error     | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}
@@ -460,18 +479,20 @@ theme changes, or omit the recipe CSS for headless styling. See [theming and sty
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
 
 {/* component-keyboard:start */}
+
 ### Keyboard interactions
 
 These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
 applies to descendant links, buttons, and form controls unless the component overrides it.
 
-| Concern / keys | Behavior |
-| --- | --- |
-| Focus entry and exit (Tab / Shift+Tab) | Tab enters the grid at the roving-tabindex day; Tab leaves the grid. |
-| Navigation and activation | Arrow Up/Down moves one week; Home/End moves to week edges; Enter or Space selects. |
-| Escape | Not handled; focus remains in the calendar. |
-| RTL differences | Arrow Left/Right date movement reverses in RTL. |
-| Typeahead | Not supported. |
+| Concern / keys                         | Behavior                                                                            |
+| -------------------------------------- | ----------------------------------------------------------------------------------- |
+| Focus entry and exit (Tab / Shift+Tab) | Tab enters the grid at the roving-tabindex day; Tab leaves the grid.                |
+| Navigation and activation              | Arrow Up/Down moves one week; Home/End moves to week edges; Enter or Space selects. |
+| Escape                                 | Not handled; focus remains in the calendar.                                         |
+| RTL differences                        | Arrow Left/Right date movement reverses in RTL.                                     |
+| Typeahead                              | Not supported.                                                                      |
+
 {/* component-keyboard:end */}
 
 ## Accessibility

@@ -1,1 +1,86 @@
 @import '../tokens.css';
+
+[data-slot='button'] {
+  align-items: center;
+  background: hsl(var(--simurgh-primary));
+  border: 1px solid transparent;
+  border-radius: var(--simurgh-radius);
+  box-sizing: border-box;
+  color: hsl(var(--simurgh-primary-foreground));
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-weight: 600;
+  gap: 0.5rem;
+  justify-content: center;
+  min-block-size: 2.5rem;
+  padding-inline: 1rem;
+  transition:
+    background-color var(--simurgh-duration) ease,
+    border-color var(--simurgh-duration) ease,
+    color var(--simurgh-duration) ease,
+    opacity var(--simurgh-duration) ease,
+    transform var(--simurgh-duration) ease;
+}
+
+[data-slot='button']:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+[data-slot='button']:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+[data-slot='button']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+[data-slot='button']:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+[data-slot='button'][data-variant='secondary'] {
+  background: hsl(var(--simurgh-surface));
+  border-color: hsl(var(--simurgh-border));
+  color: hsl(var(--simurgh-foreground));
+}
+
+[data-slot='button'][data-variant='destructive'] {
+  background: hsl(var(--simurgh-danger));
+  color: hsl(var(--simurgh-primary-foreground));
+}
+
+[data-slot='button'][data-variant='quiet'] {
+  background: transparent;
+  color: hsl(var(--simurgh-foreground));
+}
+
+[data-slot='button'][data-variant='quiet']:hover:not(:disabled) {
+  background: hsl(var(--simurgh-muted));
+  filter: none;
+}
+
+[data-slot='button'][data-size='sm'] {
+  min-block-size: 2rem;
+  padding-inline: 0.75rem;
+}
+
+[data-slot='button'][data-size='lg'] {
+  min-block-size: 3rem;
+  padding-inline: 1.25rem;
+}
+
+[data-slot='button'][data-icon-only='true'] {
+  aspect-ratio: 1;
+  padding-inline: 0;
+}
+
+[data-slot='button'][data-full-width='true'] {
+  inline-size: 100%;
+}
+
+[data-slot='button'][data-state='loading'] {
+  cursor: wait;
+}

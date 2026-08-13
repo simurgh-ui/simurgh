@@ -19,6 +19,7 @@ export type SelectOption = { value: string; label: string; disabled?: boolean };
   template: `<button
       type="button"
       role="combobox"
+      data-slot="select-trigger"
       class="simurgh-trigger"
       [attr.aria-expanded]="open"
       [attr.aria-controls]="listId"
@@ -33,6 +34,7 @@ export type SelectOption = { value: string; label: string; disabled?: boolean };
       *ngIf="open"
       [id]="listId"
       role="listbox"
+      data-slot="select-content"
       class="simurgh-content"
       (keydown)="onListKeydown($event)"
     >
@@ -40,6 +42,7 @@ export type SelectOption = { value: string; label: string; disabled?: boolean };
         *ngFor="let option of options"
         type="button"
         role="option"
+        data-slot="select-option"
         class="simurgh-item"
         tabindex="-1"
         [attr.aria-selected]="option.value === value"

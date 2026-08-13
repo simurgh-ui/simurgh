@@ -179,8 +179,8 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Audit component-level CSS exports and documentation so consumers can load only the recipes they use instead of the complete stylesheet.
 - [x] Add lazy-loading guidance and fixtures for overlay-heavy entry points so Floating UI stays out of initial application bundles.
 - [ ] Move the remaining React implementations out of the monolithic `index.tsx` into genuine per-component source modules.
-  - [x] Move Alert, Aspect Ratio, Badge, Breadcrumb, Button, Description List, Field, Form, Input, Textarea,
-        Kbd, Label, Link, Meter, Native Select, Pagination, Scroll Area, Separator, Slider, Progress, Table,
+  - [x] Move Alert, Aspect Ratio, Avatar, Badge, Breadcrumb, Button, Button Group, Card, Description List, Empty, Field, Form, Input, Input Group, Input OTP, Item, Textarea,
+        Kbd, Label, Link, Menubar, Meter, Native Select, Navigation Menu, Pagination, Rating, Scroll Area, Separator, Slider, Progress, Table, Toolbar,
         Visually Hidden, Skeleton, and Spinner into genuine component modules while preserving
         compatible exports.
   - [x] Bound the measured all-exports module-boundary tradeoff with a 28 KiB complete-adapter
@@ -324,9 +324,9 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 ### P2: visual-system maturity
 
-- [ ] Define a canonical action hierarchy for Button and button-like controls, covering primary,
+- [x] Define a canonical action hierarchy for Button and button-like controls, covering primary,
       secondary, destructive, quiet/ghost, icon-only, loading, full-width, and size variants.
-- [ ] Complete a coherent visual family for Button, Input, Checkbox, Select, and Dialog before
+- [x] Complete a coherent visual family for Button, Input, Checkbox, Select, and Dialog before
       expanding the catalog further; verify hover, pressed, focus-visible, disabled, loading,
       invalid, and responsive states.
 - [ ] Expand semantic tokens for secondary, success, warning, information, destructive foreground,

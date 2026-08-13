@@ -1,1 +1,44 @@
 @import '../tokens.css';
+
+[data-slot='input'] {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  box-sizing: border-box;
+  color: hsl(var(--simurgh-foreground));
+  font: inherit;
+  inline-size: 100%;
+  min-block-size: 2.5rem;
+  padding-inline: 0.75rem;
+  transition:
+    background-color var(--simurgh-duration) ease,
+    border-color var(--simurgh-duration) ease,
+    box-shadow var(--simurgh-duration) ease;
+}
+
+[data-slot='input']::placeholder {
+  color: hsl(var(--simurgh-muted-foreground));
+  opacity: 1;
+}
+
+[data-slot='input']:hover:not(:disabled):not([aria-invalid='true']) {
+  border-color: hsl(var(--simurgh-foreground) / 0.5);
+}
+
+[data-slot='input']:focus-visible {
+  border-color: hsl(var(--simurgh-ring));
+  box-shadow: 0 0 0 1px hsl(var(--simurgh-ring));
+  outline: 2px solid transparent;
+}
+
+[data-slot='input'][aria-invalid='true'] {
+  border-color: hsl(var(--simurgh-danger));
+  box-shadow: 0 0 0 1px hsl(var(--simurgh-danger));
+}
+
+[data-slot='input']:disabled {
+  background: hsl(var(--simurgh-muted));
+  color: hsl(var(--simurgh-muted-foreground));
+  cursor: not-allowed;
+  opacity: 0.72;
+}

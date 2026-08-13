@@ -34,12 +34,13 @@ export const Select = /* @__PURE__ */ defineComponent({
         ?.focus();
     };
     return () =>
-      h('div', [
+      h('div', { 'data-slot': 'select' }, [
         h(
           'button',
           {
             type: 'button',
             role: 'combobox',
+            'data-slot': 'select-trigger',
             'aria-expanded': open.value,
             'aria-controls': listId,
             disabled: props.disabled,
@@ -60,6 +61,7 @@ export const Select = /* @__PURE__ */ defineComponent({
               {
                 id: listId,
                 role: 'listbox',
+                'data-slot': 'select-content',
                 class: 'simurgh-content',
                 onKeydown: (event: KeyboardEvent) =>
                   compositeKeydown(event, '[role=option]'),
@@ -69,6 +71,7 @@ export const Select = /* @__PURE__ */ defineComponent({
                   'div',
                   {
                     role: 'option',
+                    'data-slot': 'select-option',
                     tabindex: -1,
                     'aria-selected': option.value === props.modelValue,
                     'aria-disabled': option.disabled,

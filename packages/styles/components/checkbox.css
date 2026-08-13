@@ -1,1 +1,59 @@
 @import '../tokens.css';
+
+[data-slot='checkbox'] {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: calc(var(--simurgh-radius) / 2);
+  color: hsl(var(--simurgh-foreground));
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: 0.625rem;
+  min-block-size: 2.5rem;
+  padding: 0.25rem;
+  text-align: start;
+}
+
+[data-slot='checkbox']::before {
+  align-items: center;
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: calc(var(--simurgh-radius) / 2);
+  box-sizing: border-box;
+  content: '';
+  display: inline-flex;
+  flex: 0 0 auto;
+  block-size: 1.25rem;
+  inline-size: 1.25rem;
+  justify-content: center;
+  transition:
+    background-color var(--simurgh-duration) ease,
+    border-color var(--simurgh-duration) ease,
+    box-shadow var(--simurgh-duration) ease;
+}
+
+[data-slot='checkbox'][aria-checked='true']::before {
+  background: hsl(var(--simurgh-primary));
+  border-color: hsl(var(--simurgh-primary));
+  box-shadow: inset 0 0 0 0.3rem hsl(var(--simurgh-primary));
+  content: '\2713';
+  color: hsl(var(--simurgh-primary-foreground));
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+[data-slot='checkbox']:hover:not(:disabled)::before {
+  border-color: hsl(var(--simurgh-primary));
+}
+
+[data-slot='checkbox']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+[data-slot='checkbox']:disabled {
+  color: hsl(var(--simurgh-muted-foreground));
+  cursor: not-allowed;
+  opacity: 0.62;
+}

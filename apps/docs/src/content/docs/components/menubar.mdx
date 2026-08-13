@@ -7,6 +7,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 {/* component-installation:start */}
+
 ## Installation
 
 Copy editable source into an initialized application:
@@ -20,20 +21,14 @@ For package consumption, import from the component subpath and load its optional
 ### React
 
 ```tsx
-import {
-  Menubar,
-  MenubarItem,
-} from '@simurgh-ui/react/menubar';
+import { Menubar, MenubarItem } from '@simurgh-ui/react/menubar';
 import '@simurgh-ui/styles/menubar.css';
 ```
 
 ### Vue
 
 ```ts
-import {
-  Menubar,
-  MenubarItem,
-} from '@simurgh-ui/vue/menubar';
+import { Menubar, MenubarItem } from '@simurgh-ui/vue/menubar';
 import '@simurgh-ui/styles/menubar.css';
 ```
 
@@ -119,6 +114,7 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
+
 ## State model
 
 This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
@@ -146,23 +142,11 @@ rendered element unless the component behavior described on this page overrides 
 
 ### `Menubar`
 
-Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>`.
-
-| Prop | Type | Default / requirement |
-| --- | --- | --- |
-| `children` | `ReactNode` | `undefined` |
-| `direction` | `Direction` | `'ltr'` |
-| `label` | `string` | `'Application menu'` |
-| `ref` | `Ref<HTMLDivElement> \| undefined` | `undefined` |
+Exported type: `any`.
 
 ### `MenubarItem`
 
-Inherited attributes: `ButtonHTMLAttributes<HTMLButtonElement> & RefAttributes<HTMLButtonElement>`.
-
-| Prop | Type | Default / requirement |
-| --- | --- | --- |
-| `children` | `ReactNode` | `undefined` |
-| `ref` | `Ref<HTMLButtonElement> \| undefined` | `undefined` |
+Exported type: `any`.
 {/* react-api:end */}
 
 {/* vue-api:start */}
@@ -247,6 +231,7 @@ Content projection: none.
 {/* angular-api:end */}
 
 {/* component-composition:start */}
+
 ### Composition contract
 
 Follow the framework example as a structural contract. Root components own shared state; parts that
@@ -254,35 +239,37 @@ consume that state must stay under the root (or be attached to projected descend
 Parts described as conditional are optional until their corresponding interaction or semantic region
 is used. Do not render a state-consuming part by itself.
 
-| Framework | Required parent/child relationship | Conditional parts | Supporting types |
-| --- | --- | --- | --- |
-| React | Render `Menubar` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `MenubarItem` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
-| Vue | Render `Menubar` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `MenubarItem` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
-| Angular | Create `MenubarComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `MenubarItemDirective` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Framework | Required parent/child relationship                                                                                                                | Conditional parts                                                                                                                                                                              | Supporting types |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| React     | Render `Menubar` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context.                               | `MenubarItem` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used.          | None.            |
+| Vue       | Render `Menubar` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context.                               | `MenubarItem` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used.          | None.            |
+| Angular   | Create `MenubarComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `MenubarItemDirective` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None.            |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
 {/* component-composition:end */}
 
 {/* framework-parity:start */}
+
 ### Framework parity and differences
 
 The adapters target the same user-visible behavior and accessibility contract. Their public shapes
 follow each framework's conventions and are not expected to be symbol-for-symbol identical.
 
-| Concern | Contract |
-| --- | --- |
-| Public composition | All adapters export 2 public symbols, with framework-idiomatic names. |
-| State and change events | No controlled state contract; use native attributes, inputs, or events documented above. |
-| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
-| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild. |
+| Concern                 | Contract                                                                                                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Public composition      | All adapters export 2 public symbols, with framework-idiomatic names.                                                                                                                                   |
+| State and change events | No controlled state contract; use native attributes, inputs, or events documented above.                                                                                                                |
+| Children and content    | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors.                                                                                       |
+| Native attributes       | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access       | React forwards native refs; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild.                                                                 |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
 {/* component-form:start */}
+
 ### Form integration
 
 This component is not a form control and does not contribute a named value to `FormData`. Use it
@@ -290,20 +277,22 @@ to structure or describe a form only when its purpose and accessibility guidance
 {/* component-form:end */}
 
 {/* component-supported-states:start */}
+
 ### Supported states
 
 The table distinguishes component behavior from application-owned presentation. “Not supported”
 means there is no public state contract for that adapter; do not invent one with an undocumented
 attribute. Keep status and error messages accessible when they are rendered outside the component.
 
-| State | React | Vue | Angular |
-| --- | --- | --- | --- |
-| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
-| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| State     | React                                                                                                                                                           | Vue                                                                                                                                                              | Angular                                                                                                                                                           |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Loading   | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+| Empty     | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+| Invalid   | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+| Read-only | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+| Disabled  | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
+| Error     | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}
@@ -333,18 +322,20 @@ theme changes, or omit the recipe CSS for headless styling. See [theming and sty
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
 
 {/* component-keyboard:start */}
+
 ### Keyboard interactions
 
 These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
 applies to descendant links, buttons, and form controls unless the component overrides it.
 
-| Concern / keys | Behavior |
-| --- | --- |
-| Focus entry and exit (Tab / Shift+Tab) | Tab enters the menubar at its roving-tabindex item and leaves with Tab. |
-| Navigation and activation | Arrow keys move by orientation; Home/End move to first/last; Enter or Space activates. |
-| Escape | Not handled by the component. |
-| RTL differences | Horizontal previous/next arrows reverse in RTL. |
-| Typeahead | Not supported. |
+| Concern / keys                         | Behavior                                                                               |
+| -------------------------------------- | -------------------------------------------------------------------------------------- |
+| Focus entry and exit (Tab / Shift+Tab) | Tab enters the menubar at its roving-tabindex item and leaves with Tab.                |
+| Navigation and activation              | Arrow keys move by orientation; Home/End move to first/last; Enter or Space activates. |
+| Escape                                 | Not handled by the component.                                                          |
+| RTL differences                        | Horizontal previous/next arrows reverse in RTL.                                        |
+| Typeahead                              | Not supported.                                                                         |
+
 {/* component-keyboard:end */}
 
 ## Accessibility

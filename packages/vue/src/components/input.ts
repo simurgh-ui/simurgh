@@ -20,6 +20,7 @@ export const Input = /* @__PURE__ */ defineComponent({
         required: props.required,
         disabled: props.disabled,
         value: props.modelValue,
+        'data-slot': 'input',
         'aria-invalid': props.invalid || undefined,
         onInput: (event: Event) =>
           emit('update:modelValue', (event.target as HTMLInputElement).value),

@@ -7,6 +7,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 {/* component-installation:start */}
+
 ## Installation
 
 Copy editable source into an initialized application:
@@ -20,10 +21,7 @@ For package consumption, import from the component subpath and load its optional
 ### React
 
 ```tsx
-import {
-  Rating,
-  RatingProps,
-} from '@simurgh-ui/react/rating';
+import { Rating, RatingProps } from '@simurgh-ui/react/rating';
 import '@simurgh-ui/styles/rating.css';
 ```
 
@@ -135,17 +133,18 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
+
 ## State model
 
 Controlled state remains the application’s source of truth and must be updated from every change
 event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
 the same state at once.
 
-| Framework | Exact state contract and reset behavior |
-| --- | --- |
-| React | Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
-| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+| Framework | Exact state contract and reset behavior                                                                                                                                                 |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| React     | Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.         |
+| Vue       | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular   | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.                    |
 
 **React**
 
@@ -188,6 +187,7 @@ reset() { this.value = this.initial; }
 <simurgh-rating [(value)]="value">…</simurgh-rating>
 <button type="button" (click)="reset()">Reset</button>
 ```
+
 {/* component-state-model:end */}
 
 Set `max` to change the scale, up to 100 items. Provide `getLabel` in React or Vue when labels such as “Excellent” should replace the default “4 of 5” wording. Angular exposes the same default item labels and announces the group through `aria-label`.
@@ -211,20 +211,7 @@ rendered element unless the component behavior described on this page overrides 
 
 ### `Rating`
 
-Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>`.
-
-| Prop | Type | Default / requirement |
-| --- | --- | --- |
-| `children` | `ReactNode` | `undefined` |
-| `defaultValue` | `number` | `0` |
-| `disabled` | `boolean` | `undefined` |
-| `getLabel` | `(value: number, max: number) => string` | `` (item, total) => `${item} of ${total}` `` |
-| `max` | `number` | `5` |
-| `name` | `string` | `undefined` |
-| `onValueChange` | `(value: number) => void` | `undefined` |
-| `ref` | `Ref<HTMLDivElement> \| undefined` | `undefined` |
-| `required` | `boolean` | `undefined` |
-| `value` | `number` | `undefined` |
+Exported type: `any`.
 
 ### `RatingProps`
 
@@ -293,6 +280,7 @@ Content projection: none.
 {/* angular-api:end */}
 
 {/* component-composition:start */}
+
 ### Composition contract
 
 Follow the framework example as a structural contract. Root components own shared state; parts that
@@ -300,35 +288,37 @@ consume that state must stay under the root (or be attached to projected descend
 Parts described as conditional are optional until their corresponding interaction or semantic region
 is used. Do not render a state-consuming part by itself.
 
-| Framework | Required parent/child relationship | Conditional parts | Supporting types |
-| --- | --- | --- | --- |
-| React | `Rating` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | `RatingProps`. |
-| Vue | `Rating` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
-| Angular | `RatingComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
+| Framework | Required parent/child relationship                                      | Conditional parts                                             | Supporting types |
+| --------- | ----------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------- |
+| React     | `Rating` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | `RatingProps`.   |
+| Vue       | `Rating` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | None.            |
+| Angular   | `RatingComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None.            |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
 {/* component-composition:end */}
 
 {/* framework-parity:start */}
+
 ### Framework parity and differences
 
 The adapters target the same user-visible behavior and accessibility contract. Their public shapes
 follow each framework's conventions and are not expected to be symbol-for-symbol identical.
 
-| Concern | Contract |
-| --- | --- |
-| Public composition | React exports 2 parts, Vue 1, and Angular 1. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
-| State and change events | React uses controlled/default props and callbacks for `value`; Vue uses `v-model`; Angular uses `[(value)]`. |
-| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
-| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild. |
+| Concern                 | Contract                                                                                                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Public composition      | React exports 2 parts, Vue 1, and Angular 1. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol.                                     |
+| State and change events | React uses controlled/default props and callbacks for `value`; Vue uses `v-model`; Angular uses `[(value)]`.                                                                                            |
+| Children and content    | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors.                                                                                       |
+| Native attributes       | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access       | React forwards native refs; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild.                                                                 |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
 {/* component-form:start */}
+
 ### Form integration
 
 Use `name="rating"` to serialize the current value under the documented field name. The examples initialize the field, keep its
@@ -342,16 +332,23 @@ const initial = 4;
 const [value, setValue] = useState(initial);
 const [errors, setErrors] = useState<Record<string, string>>({});
 
-<form onSubmit={(event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  // Submit data.get('rating').
-}}>
-  <Rating name="rating" value={value} onValueChange={setValue}
-    required disabled={isDisabled} />
+<form
+  onSubmit={(event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // Submit data.get('rating').
+  }}
+>
+  <Rating
+    name="rating"
+    value={value}
+    onValueChange={setValue}
+    required
+    disabled={isDisabled}
+  />
   {errors.rating && <p role="alert">{errors.rating}</p>}
   <button type="submit">Submit</button>
-</form>
+</form>;
 ```
 
 #### Vue
@@ -389,7 +386,12 @@ submit(form: HTMLFormElement) {
 
 ```html
 <form #form (submit)="submit(form); $event.preventDefault()">
-  <simurgh-rating [(value)]="value" name="rating" required [disabled]="isDisabled"></simurgh-rating>
+  <simurgh-rating
+    [(value)]="value"
+    name="rating"
+    required
+    [disabled]="isDisabled"
+  ></simurgh-rating>
   <p *ngIf="errors.rating" role="alert">{{ errors.rating }}</p>
   <button type="submit">Submit</button>
 </form>
@@ -401,20 +403,22 @@ validation state from the Angular form explicitly.
 {/* component-form:end */}
 
 {/* component-supported-states:start */}
+
 ### Supported states
 
 The table distinguishes component behavior from application-owned presentation. “Not supported”
 means there is no public state contract for that adapter; do not invent one with an undocumented
 attribute. Keep status and error messages accessible when they are rendered outside the component.
 
-| State | React | Vue | Angular |
-| --- | --- | --- | --- |
-| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
-| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| State     | React                                                                                                                                                           | Vue                                                                                                                                                              | Angular                                                                                                                                                           |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Loading   | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+| Empty     | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+| Invalid   | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+| Read-only | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+| Disabled  | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
+| Error     | Not supported by this component API; handle this state in surrounding application UI.                                                                           | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI.                                                                             |
+
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}

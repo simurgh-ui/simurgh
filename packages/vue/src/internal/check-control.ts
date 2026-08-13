@@ -29,6 +29,7 @@ export function checkControl(role: 'checkbox' | 'switch', name: string) {
             ...attrs,
             type: 'button',
             role,
+            'data-slot': role,
             'aria-checked': checked.value,
             disabled: props.disabled,
             onClick: toggle,

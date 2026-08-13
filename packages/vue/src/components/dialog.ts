@@ -55,6 +55,7 @@ export const DialogTrigger = /* @__PURE__ */ defineComponent({
         {
           ...attrs,
           type: 'button',
+          'data-slot': 'dialog-trigger',
           'aria-haspopup': 'dialog',
           'aria-expanded': context.open.value,
           onClick: () => context.setOpen(true),
@@ -80,6 +81,7 @@ export const DialogContent = /* @__PURE__ */ defineComponent({
       context.open.value
         ? h(Teleport, { to: 'body' }, [
             h('div', {
+              'data-slot': 'dialog-overlay',
               class: 'simurgh-overlay',
               onMousedown: (event: MouseEvent) => {
                 if (event.target === event.currentTarget)
@@ -92,6 +94,7 @@ export const DialogContent = /* @__PURE__ */ defineComponent({
                 ...attrs,
                 ref: element,
                 role: 'dialog',
+                'data-slot': 'dialog-content',
                 'aria-modal': 'true',
                 'aria-labelledby': attrs['aria-label']
                   ? undefined
@@ -118,7 +121,11 @@ export const DialogTitle = /* @__PURE__ */ defineComponent({
     return () =>
       h(
         'h2',
-        { ...attrs, id: attrs.id ?? `${context.id}-title` },
+        {
+          ...attrs,
+          id: attrs.id ?? `${context.id}-title`,
+          'data-slot': 'dialog-title',
+        },
         slots.default?.(),
       );
   },
@@ -130,7 +137,11 @@ export const DialogDescription = /* @__PURE__ */ defineComponent({
     return () =>
       h(
         'p',
-        { ...attrs, id: attrs.id ?? `${context.id}-description` },
+        {
+          ...attrs,
+          id: attrs.id ?? `${context.id}-description`,
+          'data-slot': 'dialog-description',
+        },
         slots.default?.(),
       );
   },
@@ -142,7 +153,12 @@ export const DialogClose = /* @__PURE__ */ defineComponent({
     return () =>
       h(
         'button',
-        { ...attrs, type: 'button', onClick: () => context.setOpen(false) },
+        {
+          ...attrs,
+          type: 'button',
+          'data-slot': 'dialog-close',
+          onClick: () => context.setOpen(false),
+        },
         slots.default?.(),
       );
   },

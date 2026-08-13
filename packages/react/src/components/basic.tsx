@@ -3,17 +3,10 @@ export {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
   Checkbox,
   NumberInput,
   RadioGroup,
   RadioGroupItem,
-  Rating,
   Switch,
   Tabs,
   TabsContent,
@@ -25,6 +18,14 @@ export { Alert } from './alert.js';
 export { AspectRatio } from './aspect-ratio.js';
 export { Badge, type BadgeTone } from './badge.js';
 export { Button } from './button.js';
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './card.js';
 export { Field, FieldDescription, FieldError, FieldLegend } from './field.js';
 export { Form, FormErrorSummary } from './form.js';
 export { Input } from './input.js';
@@ -38,6 +39,7 @@ export {
   PaginationLink,
 } from './pagination.js';
 export { Progress } from './progress.js';
+export { Rating, type RatingProps } from './rating.js';
 export { Separator } from './separator.js';
 export { Skeleton } from './skeleton.js';
 export { Spinner } from './spinner.js';

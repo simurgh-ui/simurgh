@@ -7,6 +7,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 
 {/* component-installation:start */}
+
 ## Installation
 
 Copy editable source into an initialized application:
@@ -80,17 +81,18 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
+
 ## State model
 
 Controlled state remains the application’s source of truth and must be updated from every change
 event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
 the same state at once.
 
-| Framework | Exact state contract and reset behavior |
-| --- | --- |
-| React | Controlled: `checked` + `onCheckedChange`. Uncontrolled: `defaultChecked`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
-| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular | Controlled two-way binding: `[(checked)]` (`checked` + `checkedChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+| Framework | Exact state contract and reset behavior                                                                                                                                                    |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| React     | Controlled: `checked` + `onCheckedChange`. Uncontrolled: `defaultChecked`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.      |
+| Vue       | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular   | Controlled two-way binding: `[(checked)]` (`checked` + `checkedChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.                 |
 
 **React**
 
@@ -131,6 +133,7 @@ reset() { this.checked = this.initial; }
 <simurgh-checkbox [(checked)]="checked">…</simurgh-checkbox>
 <button type="button" (click)="reset()">Reset</button>
 ```
+
 {/* component-state-model:end */}
 
 ## API surface
@@ -214,6 +217,7 @@ No public methods.
 {/* angular-api:end */}
 
 {/* component-composition:start */}
+
 ### Composition contract
 
 Follow the framework example as a structural contract. Root components own shared state; parts that
@@ -221,35 +225,37 @@ consume that state must stay under the root (or be attached to projected descend
 Parts described as conditional are optional until their corresponding interaction or semantic region
 is used. Do not render a state-consuming part by itself.
 
-| Framework | Required parent/child relationship | Conditional parts | Supporting types |
-| --- | --- | --- | --- |
-| React | `Checkbox` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
-| Vue | `Checkbox` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
-| Angular | `CheckboxComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None. |
+| Framework | Required parent/child relationship                                        | Conditional parts                                             | Supporting types |
+| --------- | ------------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------- |
+| React     | `Checkbox` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | None.            |
+| Vue       | `Checkbox` is standalone and required when using this component.          | Content is optional unless the API requires a label or value. | None.            |
+| Angular   | `CheckboxComponent` is standalone and required when using this component. | Content is optional unless the API requires a label or value. | None.            |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
 {/* component-composition:end */}
 
 {/* framework-parity:start */}
+
 ### Framework parity and differences
 
 The adapters target the same user-visible behavior and accessibility contract. Their public shapes
 follow each framework's conventions and are not expected to be symbol-for-symbol identical.
 
-| Concern | Contract |
-| --- | --- |
-| Public composition | All adapters export 1 public symbol, with framework-idiomatic names. |
-| State and change events | React uses controlled/default props and callbacks; Vue uses `v-model`; Angular uses inputs and outputs. |
-| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
-| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | No framework exposes an imperative handle for this component. |
+| Concern                 | Contract                                                                                                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Public composition      | All adapters export 1 public symbol, with framework-idiomatic names.                                                                                                                                    |
+| State and change events | React uses controlled/default props and callbacks; Vue uses `v-model`; Angular uses inputs and outputs.                                                                                                 |
+| Children and content    | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors.                                                                                       |
+| Native attributes       | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access       | No framework exposes an imperative handle for this component.                                                                                                                                           |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
 {/* framework-parity:end */}
 
 {/* component-form:start */}
+
 ### Form integration
 
 Use `name="terms"` to serialize `value` when checked; omitted when unchecked. The examples initialize the field, keep its
@@ -263,16 +269,23 @@ const initial = true;
 const [checked, setChecked] = useState(initial);
 const [errors, setErrors] = useState<Record<string, string>>({});
 
-<form onSubmit={(event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  // Submit data.get('terms').
-}}>
-  <Checkbox name="terms" checked={checked} onCheckedChange={setChecked}
-    required disabled={isDisabled} />
+<form
+  onSubmit={(event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // Submit data.get('terms').
+  }}
+>
+  <Checkbox
+    name="terms"
+    checked={checked}
+    onCheckedChange={setChecked}
+    required
+    disabled={isDisabled}
+  />
   {errors.terms && <p role="alert">{errors.terms}</p>}
   <button type="submit">Submit</button>
-</form>
+</form>;
 ```
 
 #### Vue
@@ -310,7 +323,12 @@ submit(form: HTMLFormElement) {
 
 ```html
 <form #form (submit)="submit(form); $event.preventDefault()">
-  <simurgh-checkbox [(checked)]="checked" name="terms" required [disabled]="isDisabled"></simurgh-checkbox>
+  <simurgh-checkbox
+    [(checked)]="checked"
+    name="terms"
+    required
+    [disabled]="isDisabled"
+  ></simurgh-checkbox>
   <p *ngIf="errors.terms" role="alert">{{ errors.terms }}</p>
   <button type="submit">Submit</button>
 </form>
@@ -322,20 +340,22 @@ validation state from the Angular form explicitly.
 {/* component-form:end */}
 
 {/* component-supported-states:start */}
+
 ### Supported states
 
 The table distinguishes component behavior from application-owned presentation. “Not supported”
 means there is no public state contract for that adapter; do not invent one with an undocumented
 attribute. Keep status and error messages accessible when they are rendered outside the component.
 
-| State | React | Vue | Angular |
-| --- | --- | --- | --- |
-| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled | Not supported by this component API; handle this state in surrounding application UI. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Not supported by this component API; handle this state in surrounding application UI. |
-| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| State     | React                                                                                 | Vue                                                                                                                                                              | Angular                                                                               |
+| --------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Loading   | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
+| Empty     | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
+| Invalid   | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
+| Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
+| Disabled  | Not supported by this component API; handle this state in surrounding application UI. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Not supported by this component API; handle this state in surrounding application UI. |
+| Error     | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI.                                                                            | Not supported by this component API; handle this state in surrounding application UI. |
+
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}
@@ -348,10 +368,10 @@ undocumented descendants are implementation details and should not be targeted.
 | Surface | Stable hooks |
 | --- | --- |
 | Recipe classes | No component-specific recipe class; this stylesheet currently imports shared tokens only. |
-| Stable DOM parts | No named `data-slot` parts are emitted; target the forwarded root class or attributes documented in the API. |
-| Stable data attributes | No documented `data-*` hook. |
-| ARIA/state selectors used by the recipe | No ARIA state selector is used by this recipe. |
-| CSS custom properties consumed | No component-specific token consumption beyond the shared token import. |
+| Stable DOM parts | `[data-slot="checkbox"]` |
+| Stable data attributes | `[data-slot]` |
+| ARIA/state selectors used by the recipe | `[aria-checked]` |
+| CSS custom properties consumed | `--simurgh-border`, `--simurgh-duration`, `--simurgh-foreground`, `--simurgh-muted-foreground`, `--simurgh-primary`, `--simurgh-primary-foreground`, `--simurgh-radius`, `--simurgh-ring`, `--simurgh-surface` |
 
 Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
 component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
