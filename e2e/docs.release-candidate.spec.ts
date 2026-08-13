@@ -50,7 +50,7 @@ test('forced RTL and reduced motion preserve focus appearance', async ({
     const style = getComputedStyle(control);
     return {
       animationDuration: style.animationDuration,
-    documentDirection: document.documentElement.dir,
+      documentDirection: document.documentElement.dir,
       outlineStyle: style.outlineStyle,
       outlineWidth: style.outlineWidth,
     };
@@ -63,22 +63,34 @@ test('forced RTL and reduced motion preserve focus appearance', async ({
   );
 });
 
+const auditPages = [
+  { name: 'form', path: '/components/form/' },
+  { name: 'dialog', path: '/components/dialog/', open: 'Edit profile' },
+  { name: 'radio group', path: '/components/radio-group/' },
+  { name: 'accordion', path: '/components/accordion/' },
+  { name: 'carousel', path: '/components/carousel/' },
+] as const;
+
 for (const theme of ['light', 'dark'] as const) {
-  test(`${theme} component page has no automated WCAG A/AA violations`, async ({
-    page,
-  }) => {
-    await page.emulateMedia({ colorScheme: theme });
-    await page.goto('/components/form/');
-    await page.locator('html').evaluate((root, selectedTheme) => {
-      root.dataset.theme = selectedTheme;
-    }, theme);
-    await waitForHydration(page);
-    await page.addScriptTag({ content: axe.source });
-    const results = await page.evaluate(async () =>
-      (window as typeof window & { axe: typeof axe }).axe.run(document, {
-        runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
-      }),
-    );
-    expect(results.violations).toEqual([]);
-  });
+  for (const auditedPage of auditPages) {
+    test(`${theme} ${auditedPage.name} page has no automated WCAG A/AA violations`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ colorScheme: theme });
+      await page.goto(auditedPage.path);
+      await page.locator('html').evaluate((root, selectedTheme) => {
+        root.dataset.theme = selectedTheme;
+      }, theme);
+      await waitForHydration(page);
+      if ('open' in auditedPage)
+        await page.getByRole('button', { name: auditedPage.open }).click();
+      await page.addScriptTag({ content: axe.source });
+      const results = await page.evaluate(async () =>
+        (window as typeof window & { axe: typeof axe }).axe.run(document, {
+          runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
+        }),
+      );
+      expect(results.violations).toEqual([]);
+    });
+  }
 }
