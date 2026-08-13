@@ -5,7 +5,7 @@ description: Hierarchical disclosure with roving focus and native-direction nest
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import CompositeComponentPreview from '../../../components/previews/CompositeComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -65,7 +65,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Tree" kind="live">
-  <ReactComponentPreview component="tree" client:load />
+  <CompositeComponentPreview component="tree" client:load />
 </ComponentPreview>
 
 ## Anatomy

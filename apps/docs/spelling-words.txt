@@ -431,6 +431,7 @@ composed
 composes
 composing
 composite
+compositecomponentpreview
 composition
 compound
 compound-component

@@ -5,7 +5,7 @@ description: Collapsible, labelled navigation with framework-native state contro
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import CompositeComponentPreview from '../../../components/previews/CompositeComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -83,7 +83,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Sidebar" kind="live">
-  <ReactComponentPreview component="sidebar" client:load />
+  <CompositeComponentPreview component="sidebar" client:load />
 </ComponentPreview>
 
 ## Anatomy

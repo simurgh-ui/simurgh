@@ -5,7 +5,7 @@ description: Direction-aware tab navigation with roving focus.
 
 import { Tabs as CodeTabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import CompositeComponentPreview from '../../../components/previews/CompositeComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -70,7 +70,7 @@ No default visual treatment is applied. The public component supplies behavior a
 ## Basic usage
 
 <ComponentPreview title="Tabs" kind="live">
-  <ReactComponentPreview component="tabs" client:load />
+  <CompositeComponentPreview component="tabs" client:load />
 </ComponentPreview>
 
 ## Anatomy

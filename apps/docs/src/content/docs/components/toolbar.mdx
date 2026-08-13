@@ -5,7 +5,7 @@ description: A named command group with orientation- and direction-aware keyboar
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import CompositeComponentPreview from '../../../components/previews/CompositeComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -65,7 +65,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Toolbar" kind="live">
-  <ReactComponentPreview component="toolbar" client:load />
+  <CompositeComponentPreview component="toolbar" client:load />
 </ComponentPreview>
 
 ## Anatomy

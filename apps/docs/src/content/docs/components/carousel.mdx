@@ -5,7 +5,7 @@ description: Composable labelled slides with direction-aware controls and option
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import CompositeComponentPreview from '../../../components/previews/CompositeComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -74,7 +74,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Carousel" kind="live">
-  <ReactComponentPreview component="carousel" client:load />
+  <CompositeComponentPreview component="carousel" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,7 +5,7 @@ description: Single or multiple collapsible, labelled regions.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import CompositeComponentPreview from '../../../components/previews/CompositeComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -69,7 +69,7 @@ No default visual treatment is applied. The public component supplies behavior a
 ## Basic usage
 
 <ComponentPreview title="Accordion" kind="live">
-  <ReactComponentPreview component="accordion" client:load />
+  <CompositeComponentPreview component="accordion" client:load />
 </ComponentPreview>
 
 ## Anatomy
