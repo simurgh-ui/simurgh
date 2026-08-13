@@ -5,7 +5,7 @@ description: A dismissible action menu with disabled-item semantics.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import OverlayComponentPreview from '../../../components/previews/OverlayComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -69,7 +69,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Dropdown Menu" kind="live">
-  <ReactComponentPreview component="dropdown-menu" client:load />
+  <OverlayComponentPreview component="dropdown-menu" client:load />
 </ComponentPreview>
 
 ## Anatomy

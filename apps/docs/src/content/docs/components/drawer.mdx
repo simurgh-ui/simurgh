@@ -5,7 +5,7 @@ description: Bottom-anchored modal content with focus containment and restoratio
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import OverlayComponentPreview from '../../../components/previews/OverlayComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -70,7 +70,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Drawer" kind="live">
-  <ReactComponentPreview component="drawer" client:load />
+  <OverlayComponentPreview component="drawer" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,7 +5,7 @@ description: An interruptive modal confirmation with safe initial focus.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
-import ReactComponentPreview from '../../../components/ReactComponentPreview';
+import OverlayComponentPreview from '../../../components/previews/OverlayComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -76,7 +76,7 @@ The optional component stylesheet provides a complete default recipe, including 
 ## Basic usage
 
 <ComponentPreview title="Alert Dialog" kind="live">
-  <ReactComponentPreview component="alert-dialog" client:load />
+  <OverlayComponentPreview component="alert-dialog" client:load />
 </ComponentPreview>
 
 ## Anatomy
