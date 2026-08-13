@@ -5,6 +5,7 @@ description: Polite or urgent live-region feedback for meaningful changes.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,18 +55,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Alert">
-  <aside
-    class="preview-panel preview-stack"
-    role="status"
-    aria-live="polite"
-    aria-atomic="true"
-  >
-    <strong>Profile updated</strong>
-    <span class="preview-muted">
-      Your public information was saved successfully.
-    </span>
-  </aside>
+<ComponentPreview title="Alert" kind="live">
+  <ReactComponentPreview component="alert" />
 </ComponentPreview>
 
 ## Anatomy
@@ -80,12 +71,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Reserve `urgent` for errors that must interrupt the current announcement. Render static page notices without live-region semantics until their content actually changes.
-
 ## Examples
 
 <Tabs>
@@ -114,8 +100,6 @@ Reserve `urgent` for errors that must interrupt the current announcement. Render
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

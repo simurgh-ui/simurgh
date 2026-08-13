@@ -85,12 +85,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Treat `accept` as a convenience filter, not a security boundary; validate type, size, and contents on the server. Announce upload progress and errors separately after transfer begins. The component emits `File[]` and leaves transport, retries, previews, and removal policy to the application.
-
 ## Examples
 
 <Tabs>
@@ -162,8 +157,6 @@ function validateFiles(files: File[]) {
 Vue uses `@files-change="validateFiles"`; Angular uses `(filesChange)="validateFiles($event)"`.
 Announce errors and upload progress in a nearby live region.
 {/* realistic-example:end */}
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

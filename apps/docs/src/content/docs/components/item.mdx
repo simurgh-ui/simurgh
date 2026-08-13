@@ -5,6 +5,7 @@ description: Semantic list rows with media, content, description, and actions.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -78,21 +79,8 @@ The optional recipe supplies layout and stable structure without a strong visual
 
 ## Basic usage
 
-<ComponentPreview title="Item">
-  <div role="list" data-slot="item-group">
-    <div role="listitem" data-slot="item">
-      <div data-slot="item-media" aria-hidden="true">
-        D
-      </div>
-      <div data-slot="item-content">
-        <h3 data-slot="item-title">Design system</h3>
-        <p data-slot="item-description">Updated two minutes ago</p>
-      </div>
-      <div data-slot="item-actions">
-        <button type="button">Open</button>
-      </div>
-    </div>
-  </div>
+<ComponentPreview title="Item" kind="live">
+  <ReactComponentPreview component="item" />
 </ComponentPreview>
 
 ## Anatomy
@@ -107,12 +95,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Give the group an accessible name when multiple lists occur on the same page. Media is decorative by default; set `decorative` to false when its accessible content adds information not repeated by the title or description.
-
 ## Examples
 
 <Tabs>
@@ -167,8 +150,6 @@ Give the group an accessible name when multiple lists occur on the same page. Me
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

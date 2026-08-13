@@ -126,61 +126,7 @@ reset() { this.value = this.initial; }
 ```
 {/* component-state-model:end */}
 
-Controlled state remains the application’s source of truth and must be updated from every change
-event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
-the same state at once.
-
-| Framework | Exact state contract and reset behavior |
-| --- | --- |
-| React | Controlled: `month` + `onMonthChange`. Uncontrolled: `defaultMonth`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`.<br />Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
-| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). Uncontrolled: `defaultValue`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`.<br />Controlled: `v-model:month` (`month` + `update:month`). Uncontrolled: `defaultMonth`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.<br />Controlled two-way binding: `[(month)]` (`month` + `monthChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
-
-**React**
-
-```tsx
-const initialMonth = '';
-const [month, setMonth] = useState(initialMonth);
-const [resetKey, setResetKey] = useState(0);
-
-<DatePicker month={month} onMonthChange={setMonth}>…</DatePicker>
-<button onClick={() => setMonth(initialMonth)}>Reset controlled</button>
-<DatePicker key={resetKey} defaultMonth={initialMonth}>…</DatePicker>
-<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
-```
-
-**Vue**
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-const initial = '';
-const state = ref(initial);
-const resetKey = ref(0);
-</script>
-
-<DatePicker v-model="state">…</DatePicker>
-<button @click="state = initial">Reset controlled</button>
-<DatePicker :key="resetKey" :defaultValue="initial">…</DatePicker>
-<button @click="resetKey++">Reset uncontrolled</button>
-```
-
-**Angular**
-
-```ts
-initial = '';
-value = this.initial;
-reset() { this.value = this.initial; }
-```
-
-```html
-<simurgh-date-picker [(value)]="value">…</simurgh-date-picker>
-<button type="button" (click)="reset()">Reset</button>
-```
-{/* component-state-model:end */}
-
 Use `required` for native constraint validation and `disabled` to make the entire control unavailable. Calendar constraints such as `min`, `max`, and `disabledDates` pass through unchanged. Selection closes the popup and returns focus to the trigger.
-
 ## Examples
 
 <Tabs>
@@ -240,8 +186,6 @@ const disabledDates = holidays.map((holiday) => holiday.date);
 Vue uses `v-model="date"` with `:disabled-dates="disabledDates"`; Angular uses `[(value)]="date"`
 with `[disabledDates]="disabledDates"`. Keep `min`, `max`, locale, and first-day settings identical.
 {/* realistic-example:end */}
-
-{/* component-state-model:start */}
 
 {/* component-keyboard:start */}
 ### Keyboard interactions

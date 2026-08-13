@@ -123,9 +123,17 @@ for (const component of registry.components) {
   const source = await readFile(path, 'utf8');
   const generated = section(component, source);
   const marked = new RegExp(`${escapeRegExp(start)}[\\s\\S]*?${escapeRegExp(end)}`, 'u');
-  const expected = marked.test(source)
-    ? source.replace(marked, generated)
-    : source.replace('## State model', generated);
+  let expected = marked.test(source) ? source.replace(marked, generated) : source.replace('## State model', generated);
+  const generatedBody = generated
+    .replace(start, '')
+    .replace(end, '')
+    .replace(/^\s*## State model\s*/u, '')
+    .trim();
+  const duplicateAfterMarker = new RegExp(
+    `${escapeRegExp(end)}\\r?\\n(?:\\r?\\n)+${escapeRegExp(generatedBody)}`,
+    'u',
+  );
+  expected = expected.replace(duplicateAfterMarker, end).trimEnd() + '\n';
   if (process.argv.includes('--update')) await writeFile(path, expected);
   else if (source !== expected) failures.push(component);
 }

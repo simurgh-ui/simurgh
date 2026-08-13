@@ -5,6 +5,7 @@ description: Form controls composed with contextual prefixes, suffixes, and bloc
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -66,24 +67,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Input Group">
-  <label id="website-preview-label" for="website-preview">
-    Website
-  </label>
-  <div
-    role="group"
-    aria-labelledby="website-preview-label"
-    data-slot="input-group"
-  >
-    <div
-      data-slot="input-group-addon"
-      data-align="inline-start"
-      aria-hidden="true"
-    >
-      <span data-slot="input-group-text">https://</span>
-    </div>
-    <input id="website-preview" name="website" placeholder="example.com" />
-  </div>
+<ComponentPreview title="Input Group" kind="live">
+  <ReactComponentPreview component="input-group" />
 </ComponentPreview>
 
 ## Anatomy
@@ -98,12 +83,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Keep the actual input label visible or provide an equivalent accessible name. Set `decorative` only when the addon repeats visual context that should not be announced; otherwise its text remains available to assistive technology.
-
 ## Examples
 
 <Tabs>
@@ -141,8 +121,6 @@ Keep the actual input label visible or provide an equivalent accessible name. Se
 ```
 </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

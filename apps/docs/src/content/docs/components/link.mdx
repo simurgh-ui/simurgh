@@ -5,6 +5,7 @@ description: Native anchor navigation with external and disabled states.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,23 +55,8 @@ The component preserves a familiar native element and browser behavior. The opti
 
 ## Basic usage
 
-<ComponentPreview title="Link">
-  <div class="preview-row">
-    <a class="preview-button" href="#link-examples">
-      Read the guide
-    </a>
-    <a
-      class="preview-button"
-      href="https://example.com"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      External resource
-    </a>
-    <a class="preview-button" aria-disabled="true" tabindex="-1">
-      Unavailable
-    </a>
-  </div>
+<ComponentPreview title="Link" kind="live">
+  <ReactComponentPreview component="link" />
 </ComponentPreview>
 
 ## Anatomy
@@ -85,12 +71,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Use Link for navigation and Button for actions. Disabled links intentionally omit `href`, expose `aria-disabled`, and leave the tab sequence.
-
 ## Examples
 
 <Tabs>
@@ -113,8 +94,6 @@ Use Link for navigation and Button for actions. Disabled links intentionally omi
 ```
 </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

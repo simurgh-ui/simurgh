@@ -5,6 +5,7 @@ description: An identity image with deterministic accessible fallback content.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,16 +55,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Avatar">
-  <div class="preview-row">
-    <span class="preview-avatar" aria-label="Ada Lovelace">
-      AL
-    </span>
-    <div class="preview-stack">
-      <strong>Ada Lovelace</strong>
-      <span class="preview-muted">Maintainer</span>
-    </div>
-  </div>
+<ComponentPreview title="Avatar" kind="live">
+  <ReactComponentPreview component="avatar" />
 </ComponentPreview>
 
 ## Anatomy
@@ -78,12 +71,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Use meaningful alternative text when the image conveys identity. If adjacent visible text already names the person, pass an empty `alt` value to avoid repetition. Fallback initials should remain concise.
-
 ## Examples
 
 <Tabs>
@@ -103,8 +91,6 @@ Use meaningful alternative text when the image conveys identity. If adjacent vis
 ```
 </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

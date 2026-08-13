@@ -5,6 +5,7 @@ description: Native grouping, legend, help text, and validation anatomy for rela
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -69,20 +70,8 @@ The optional recipe supplies layout and stable structure without a strong visual
 
 ## Basic usage
 
-<ComponentPreview title="Field">
-  <fieldset data-slot="field" style="max-width: 24rem">
-    <legend data-slot="field-legend">Notifications</legend>
-    <p id="preview-field-help" data-slot="field-description">
-      Choose how we should contact you.
-    </p>
-    <label>
-      <input type="checkbox" aria-describedby="preview-field-help" /> Email
-    </label>
-    <label>
-      <input type="checkbox" aria-describedby="preview-field-help" /> Push
-      notification
-    </label>
-  </fieldset>
+<ComponentPreview title="Field" kind="live">
+  <ReactComponentPreview component="field" />
 </ComponentPreview>
 
 ## Anatomy
@@ -97,12 +86,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Connect descriptions and errors to controls with `aria-describedby`. Render FieldError only when a useful validation message exists.
-
 ## Examples
 
 <Tabs>
@@ -136,8 +120,6 @@ Connect descriptions and errors to controls with `aria-describedby`. Render Fiel
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

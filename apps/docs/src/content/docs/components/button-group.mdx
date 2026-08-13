@@ -5,6 +5,7 @@ description: Related actions arranged as one named horizontal or vertical contro
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -66,17 +67,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Button Group">
-  <div
-    role="group"
-    aria-label="Text alignment"
-    aria-orientation="horizontal"
-    data-slot="button-group"
-  >
-    <button type="button">Left</button>
-    <button type="button">Center</button>
-    <button type="button">Right</button>
-  </div>
+<ComponentPreview title="Button Group" kind="live">
+  <ReactComponentPreview component="button-group" />
 </ComponentPreview>
 
 ## Anatomy
@@ -91,12 +83,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Give every Button Group an accessible name with `aria-label` or `aria-labelledby`. Keep keyboard behavior native to the contained controls; use Toggle Group when the buttons represent persistent selected states.
-
 ## Examples
 
 <Tabs>
@@ -128,8 +115,6 @@ Give every Button Group an accessible name with `aria-label` or `aria-labelledby
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

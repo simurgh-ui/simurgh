@@ -5,6 +5,7 @@ description: Composable content anatomy for grouping related information and act
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -75,19 +76,8 @@ The optional recipe supplies layout and stable structure without a strong visual
 
 ## Basic usage
 
-<ComponentPreview title="Card">
-  <article data-slot="card" style="max-width: 26rem">
-    <header data-slot="card-header">
-      <h3 data-slot="card-title">The Conference of the Birds</h3>
-      <p data-slot="card-description">A journey through seven valleys.</p>
-    </header>
-    <div data-slot="card-content">
-      Discover a composable, framework-native component system.
-    </div>
-    <footer data-slot="card-footer">
-      <button class="simurgh-trigger">Read more</button>
-    </footer>
-  </article>
+<ComponentPreview title="Card" kind="live">
+  <ReactComponentPreview component="card" />
 </ComponentPreview>
 
 ## Anatomy
@@ -102,12 +92,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Card is intentionally neutral. Add `article`, `region`, or accessible naming only when the content warrants those semantics.
-
 ## Examples
 
 <Tabs>
@@ -145,8 +130,6 @@ Card is intentionally neutral. Add `article`, `region`, or accessible naming onl
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

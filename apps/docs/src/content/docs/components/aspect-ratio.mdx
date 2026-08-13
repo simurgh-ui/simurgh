@@ -5,6 +5,7 @@ description: A layout primitive that preserves media proportions.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,13 +55,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Aspect Ratio">
-  <div
-    class="preview-panel"
-    style="inline-size: min(100%, 24rem); aspect-ratio: 16 / 9; display: grid; place-items: center; background: linear-gradient(135deg, hsl(var(--simurgh-persian-blue)), hsl(var(--simurgh-firuzeh))); color: white"
-  >
-    <strong>16:9 media</strong>
-  </div>
+<ComponentPreview title="Aspect Ratio" kind="live">
+  <ReactComponentPreview component="aspect-ratio" />
 </ComponentPreview>
 
 ## Anatomy
@@ -75,12 +71,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 The primitive controls only the container ratio. Size media children to fill the container and choose `object-fit` according to whether cropping is acceptable.
-
 ## Examples
 
 <Tabs>
@@ -100,8 +91,6 @@ The primitive controls only the container ratio. Size media children to fill the
 ```
 </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

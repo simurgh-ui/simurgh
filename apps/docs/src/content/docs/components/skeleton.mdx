@@ -5,6 +5,7 @@ description: A loading placeholder with decorative and named status modes.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,16 +55,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Skeleton">
-  <div class="preview-stack" aria-label="Loading profile" aria-busy="true">
-    <div class="preview-row">
-      <span style="inline-size: 3rem; block-size: 3rem; border-radius: 50%; background: hsl(var(--simurgh-muted))"></span>
-      <div class="preview-stack">
-        <span style="block-size: .75rem; inline-size: 10rem; border-radius: 999px; background: hsl(var(--simurgh-muted))"></span>
-        <span style="block-size: .75rem; inline-size: 7rem; border-radius: 999px; background: hsl(var(--simurgh-muted))"></span>
-      </div>
-    </div>
-  </div>
+<ComponentPreview title="Skeleton" kind="live">
+  <ReactComponentPreview component="skeleton" />
 </ComponentPreview>
 
 ## Anatomy
@@ -78,12 +71,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Avoid announcing every small placeholder in a complex layout. Prefer one named loading region around a related group and leave its individual skeleton shapes decorative.
-
 ## Examples
 
 <Tabs>
@@ -103,8 +91,6 @@ Avoid announcing every small placeholder in a complex layout. Prefer one named l
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

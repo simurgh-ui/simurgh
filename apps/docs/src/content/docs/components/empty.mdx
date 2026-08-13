@@ -5,6 +5,7 @@ description: Structured zero-state content with optional live-status announcemen
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -75,21 +76,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Empty">
-  <div data-slot="empty">
-    <div data-slot="empty-media" aria-hidden="true">
-      +
-    </div>
-    <div data-slot="empty-header">
-      <h3 data-slot="empty-title">No projects yet</h3>
-      <p data-slot="empty-description">
-        Create a project to organize your work.
-      </p>
-    </div>
-    <div data-slot="empty-content">
-      <button type="button">Create project</button>
-    </div>
-  </div>
+<ComponentPreview title="Empty" kind="live">
+  <ReactComponentPreview component="empty" />
 </ComponentPreview>
 
 ## Anatomy
@@ -104,12 +92,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Use a concise heading, explain why the state is empty, and provide one primary recovery or creation action. Set `status` only for content that changes dynamically; persistent page content should remain static.
-
 ## Examples
 
 <Tabs>
@@ -162,8 +145,6 @@ Use a concise heading, explain why the state is empty, and provide one primary r
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

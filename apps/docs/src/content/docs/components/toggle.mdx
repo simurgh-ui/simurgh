@@ -135,59 +135,7 @@ reset() { this.pressed = this.initial; }
 ```
 {/* component-state-model:end */}
 
-Controlled state remains the application’s source of truth and must be updated from every change
-event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
-the same state at once.
-
-| Framework | Exact state contract and reset behavior |
-| --- | --- |
-| React | Controlled: `pressed` + `onPressedChange`. Uncontrolled: `defaultPressed`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
-| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular | Controlled two-way binding: `[(pressed)]` (`pressed` + `pressedChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
-
-**React**
-
-```tsx
-const initialPressed = false;
-const [pressed, setPressed] = useState(initialPressed);
-const [resetKey, setResetKey] = useState(0);
-
-<Toggle pressed={pressed} onPressedChange={setPressed}>…</Toggle>
-<button onClick={() => setPressed(initialPressed)}>Reset controlled</button>
-<Toggle key={resetKey} defaultPressed={initialPressed}>…</Toggle>
-<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
-```
-
-**Vue**
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-const initial = '';
-const state = ref(initial);
-const resetKey = ref(0);
-</script>
-
-<Toggle v-model="state">…</Toggle>
-<button @click="state = initial">Reset controlled</button>
-```
-
-**Angular**
-
-```ts
-initial = false;
-pressed = this.initial;
-reset() { this.pressed = this.initial; }
-```
-
-```html
-<simurgh-toggle [(pressed)]="pressed">…</simurgh-toggle>
-<button type="button" (click)="reset()">Reset</button>
-```
-{/* component-state-model:end */}
-
 Use Toggle for independent choices. When several choices are mutually exclusive or share roving focus, use a dedicated Toggle Group rather than manually coordinating individual toggles.
-
 ## Examples
 
 <Tabs>
@@ -207,8 +155,6 @@ Use Toggle for independent choices. When several choices are mutually exclusive 
 ```
 </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

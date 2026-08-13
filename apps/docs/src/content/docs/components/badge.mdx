@@ -5,6 +5,7 @@ description: Inline metadata and optional polite status feedback.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -63,14 +64,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Badge">
-  <div class="preview-row">
-    <span class="preview-button">Draft</span>
-    <span class="preview-button" data-active="true">
-      Published
-    </span>
-    <span class="preview-button">Archived</span>
-  </div>
+<ComponentPreview title="Badge" kind="live">
+  <ReactComponentPreview component="badge" />
 </ComponentPreview>
 
 ## Anatomy
@@ -85,12 +80,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Enable `status` only when badge text changes dynamically and should be announced.
-
 ## Examples
 
 <Tabs>
@@ -110,8 +100,6 @@ Enable `status` only when badge text changes dynamically and should be announced
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

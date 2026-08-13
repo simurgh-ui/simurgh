@@ -128,59 +128,7 @@ reset() { this.open = this.initial; }
 ```
 {/* component-state-model:end */}
 
-Controlled state remains the application’s source of truth and must be updated from every change
-event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
-the same state at once.
-
-| Framework | Exact state contract and reset behavior |
-| --- | --- |
-| React | Controlled: `open` + `onOpenChange`. Uncontrolled: `defaultOpen`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
-| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular | Controlled two-way binding: `[(open)]` (`open` + `openChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
-
-**React**
-
-```tsx
-const initialOpen = false;
-const [open, setOpen] = useState(initialOpen);
-const [resetKey, setResetKey] = useState(0);
-
-<Collapsible open={open} onOpenChange={setOpen}>…</Collapsible>
-<button onClick={() => setOpen(initialOpen)}>Reset controlled</button>
-<Collapsible key={resetKey} defaultOpen={initialOpen}>…</Collapsible>
-<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
-```
-
-**Vue**
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-const initial = '';
-const state = ref(initial);
-const resetKey = ref(0);
-</script>
-
-<Collapsible v-model="state">…</Collapsible>
-<button @click="state = initial">Reset controlled</button>
-```
-
-**Angular**
-
-```ts
-initial = false;
-open = this.initial;
-reset() { this.open = this.initial; }
-```
-
-```html
-<simurgh-collapsible [(open)]="open">…</simurgh-collapsible>
-<button type="button" (click)="reset()">Reset</button>
-```
-{/* component-state-model:end */}
-
 Use Accordion when multiple related sections form a coordinated set. Use Collapsible for one independent disclosure.
-
 ## Examples
 
 <Tabs>
@@ -209,8 +157,6 @@ Use Accordion when multiple related sections form a coordinated set. Use Collaps
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 {/* component-keyboard:start */}
 ### Keyboard interactions

@@ -5,6 +5,7 @@ description: Native keyboard-input semantics for shortcuts and key combinations.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,11 +55,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Kbd">
-  <div class="preview-row">
-    Press <kbd data-slot="kbd">Ctrl</kbd> + <kbd data-slot="kbd">K</kbd> to
-    search.
-  </div>
+<ComponentPreview title="Kbd" kind="live">
+  <ReactComponentPreview component="kbd" />
 </ComponentPreview>
 
 ## Anatomy
@@ -73,12 +71,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Use Kbd only for user input. Use `code` for code fragments and ordinary text for labels.
-
 ## Examples
 
 <Tabs>
@@ -105,8 +98,6 @@ Use Kbd only for user input. Use `code` for code fragments and ordinary text for
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

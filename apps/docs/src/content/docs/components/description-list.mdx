@@ -5,6 +5,7 @@ description: Native term and detail anatomy for structured metadata.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -69,17 +70,8 @@ The optional recipe supplies layout and stable structure without a strong visual
 
 ## Basic usage
 
-<ComponentPreview title="Description List">
-  <dl data-slot="description-list">
-    <div data-slot="description-list-group">
-      <dt data-slot="description-list-term">Frameworks</dt>
-      <dd data-slot="description-list-details">Angular, React, and Vue</dd>
-    </div>
-    <div data-slot="description-list-group">
-      <dt data-slot="description-list-term">Direction</dt>
-      <dd data-slot="description-list-details">LTR and RTL</dd>
-    </div>
-  </dl>
+<ComponentPreview title="Description List" kind="live">
+  <ReactComponentPreview component="description-list" />
 </ComponentPreview>
 
 ## Anatomy
@@ -94,12 +86,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Keep each term adjacent to its details. The group wrapper is optional and exists only for layout and styling.
-
 ## Examples
 
 <Tabs>
@@ -134,8 +121,6 @@ Keep each term adjacent to its details. The group wrapper is optional and exists
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

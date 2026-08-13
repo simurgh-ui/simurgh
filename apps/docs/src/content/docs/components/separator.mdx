@@ -5,6 +5,7 @@ description: A semantic or decorative divider with orientation metadata.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,14 +55,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Separator">
-  <div class="preview-stack">
-    <strong>Account</strong>
-    <span class="preview-muted">Manage profile and security preferences.</span>
-    <hr class="preview-separator" />
-    <strong>Notifications</strong>
-    <span class="preview-muted">Choose which updates you receive.</span>
-  </div>
+<ComponentPreview title="Separator" kind="live">
+  <ReactComponentPreview component="separator" />
 </ComponentPreview>
 
 ## Anatomy
@@ -76,12 +71,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Use `vertical` orientation only when the rendered divider is visually vertical. Set `decorative` when adjacent structure or spacing already conveys the grouping.
-
 ## Examples
 
 <Tabs>
@@ -101,8 +91,6 @@ Use `vertical` orientation only when the rendered divider is visually vertical. 
     ```
   </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 

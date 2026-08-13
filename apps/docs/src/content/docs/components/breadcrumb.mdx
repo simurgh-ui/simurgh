@@ -5,6 +5,7 @@ description: A named navigation landmark for hierarchical location.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,22 +55,8 @@ No default visual treatment is applied. The public component supplies behavior a
 
 ## Basic usage
 
-<ComponentPreview title="Breadcrumb">
-  <nav aria-label="Breadcrumb">
-    <ol class="preview-row" style="list-style: none; padding: 0; margin: 0">
-      <li>
-        <a href="#">Docs</a>
-      </li>
-      <li aria-hidden="true">/</li>
-      <li>
-        <a href="#">Components</a>
-      </li>
-      <li aria-hidden="true">/</li>
-      <li>
-        <span aria-current="page">Breadcrumb</span>
-      </li>
-    </ol>
-  </nav>
+<ComponentPreview title="Breadcrumb" kind="live">
+  <ReactComponentPreview component="breadcrumb" />
 </ComponentPreview>
 
 ## Anatomy
@@ -84,12 +71,7 @@ This component exposes no public controlled/uncontrolled state pair. Configure i
 events, native attributes, or parent-owned state documented in the API tables.
 {/* component-state-model:end */}
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
-
 Mark the final item with `aria-current="page"`. Separators should be decorative and hidden from assistive technology.
-
 ## Examples
 
 <Tabs>
@@ -109,8 +91,6 @@ Mark the final item with `aria-current="page"`. Separators should be decorative 
 ```
 </TabItem>
 </Tabs>
-
-{/* component-state-model:start */}
 
 ## Accessibility
 
