@@ -70,10 +70,11 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Item structures repeated rows such as files, settings, notifications, and search results. Item Group and Item provide native list/listitem roles while the remaining parts keep media, text, and actions consistently aligned.
 
-## Anatomy
+{/* component-status:start */}
+### Default presentation: structural
 
-The public component parts are listed in API surface below. Use only the parts needed by the example;
-compound components depend on their documented parent/child nesting.
+The optional recipe supplies layout and stable structure without a strong visual treatment. Product typography, color, and emphasis remain consumer-owned.
+{/* component-status:end */}
 
 ## Basic usage
 
@@ -93,6 +94,24 @@ compound components depend on their documented parent/child nesting.
     </div>
   </div>
 </ComponentPreview>
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+{/* component-state-model:start */}
+## State model
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+Give the group an accessible name when multiple lists occur on the same page. Media is decorative by default; set `decorative` to false when its accessible content adds information not repeated by the title or description.
 
 ## Examples
 
@@ -150,13 +169,12 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
-## State model
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
+## Accessibility
 
-Give the group an accessible name when multiple lists occur on the same page. Media is decorative by default; set `decorative` to false when its accessible content adds information not repeated by the title or description.
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -496,12 +514,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

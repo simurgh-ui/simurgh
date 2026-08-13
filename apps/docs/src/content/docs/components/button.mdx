@@ -5,6 +5,7 @@ description: Native button behavior with safe type and loading semantics.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -50,23 +51,35 @@ The default `primary` action is reserved for the main commitment on a surface. U
 supporting actions, `destructive` for irreversible or high-risk actions, and `quiet` for low-emphasis
 toolbar or inline actions. Prefer one primary action per dialog, card, or form section.
 
+{/* component-status:start */}
+### Default presentation: native
+
+The component preserves a familiar native element and browser behavior. The optional recipe harmonizes its appearance without replacing the platform interaction model.
+{/* component-status:end */}
+
+## Basic usage
+
+<ComponentPreview title="Button" kind="live">
+  <ReactComponentPreview component="button" client:load />
+</ComponentPreview>
+
 ## Anatomy
 
 The public component parts are listed in API surface below. Use only the parts needed by the example;
 compound components depend on their documented parent/child nesting.
 
-## Basic usage
+{/* component-state-model:start */}
+## State model
 
-<ComponentPreview title="Button">
-  <div class="preview-row">
-    <button class="preview-button" data-active="true" type="button">
-      Save changes
-    </button>
-    <button class="preview-button" type="button" disabled aria-busy="true">
-      Saving…
-    </button>
-  </div>
-</ComponentPreview>
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+Set `type="submit"` explicitly for form submission. Loading state intentionally disables the native button, preventing duplicate actions.
 
 ## Examples
 
@@ -92,13 +105,12 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
-## State model
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
+## Accessibility
 
-Set `type="submit"` explicitly for form submission. Loading state intentionally disables the native button, preventing duplicate actions.
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -287,12 +299,6 @@ Use `size="sm"` only in space-constrained toolbars, `md` for normal interfaces, 
 calls to action. `iconOnly` keeps the control square but does not create an accessible name: provide
 `aria-label` whenever visible text is absent. `fullWidth` is intended for narrow layouts and stacked
 mobile actions.
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

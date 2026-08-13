@@ -46,10 +46,11 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Command packages the library's combobox interaction contract as a persistent command surface. Users can filter actions, move through enabled results with arrow, Home, and End keys, select with Enter, and dismiss a surrounding palette with Escape.
 
-## Anatomy
+{/* component-status:start */}
+### Default presentation: styled
 
-The public component parts are listed in API surface below. Use only the parts needed by the example;
-compound components depend on their documented parent/child nesting.
+The optional component stylesheet provides a complete default recipe, including visual hierarchy and interaction states. Consumers can override semantic tokens or omit the recipe.
+{/* component-status:end */}
 
 ## Basic usage
 
@@ -74,6 +75,118 @@ compound components depend on their documented parent/child nesting.
     </div>
   </div>
 </ComponentPreview>
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+{/* component-state-model:start */}
+## State model
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**React**
+
+```tsx
+const initialValue = '';
+const [value, setValue] = useState(initialValue);
+const [resetKey, setResetKey] = useState(0);
+
+<Command value={value} onValueChange={setValue}>…</Command>
+<button onClick={() => setValue(initialValue)}>Reset controlled</button>
+<Command key={resetKey} defaultValue={initialValue}>…</Command>
+<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
+```
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Command v-model="state">…</Command>
+<button @click="state = initial">Reset controlled</button>
+```
+
+**Angular**
+
+```ts
+initial = '';
+value = this.initial;
+reset() { this.value = this.initial; }
+```
+
+```html
+<simurgh-command [(value)]="value">…</simurgh-command>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**React**
+
+```tsx
+const initialValue = '';
+const [value, setValue] = useState(initialValue);
+const [resetKey, setResetKey] = useState(0);
+
+<Command value={value} onValueChange={setValue}>…</Command>
+<button onClick={() => setValue(initialValue)}>Reset controlled</button>
+<Command key={resetKey} defaultValue={initialValue}>…</Command>
+<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
+```
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Command v-model="state">…</Command>
+<button @click="state = initial">Reset controlled</button>
+```
+
+**Angular**
+
+```ts
+initial = '';
+value = this.initial;
+reset() { this.value = this.initial; }
+```
+
+```html
+<simurgh-command [(value)]="value">…</simurgh-command>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
+
+Use concise verb-first labels and mark unavailable actions as disabled instead of removing them when their presence explains product capability. Put Command inside Dialog for a modal command palette and provide a visible trigger with its keyboard shortcut.
 
 ## Examples
 
@@ -140,60 +253,12 @@ Use Vue `v-model` or Angular `(valueChange)` for selection; debounce the query a
 {/* realistic-example:end */}
 
 {/* component-state-model:start */}
-## State model
 
-Controlled state remains the application’s source of truth and must be updated from every change
-event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
-the same state at once.
+## Accessibility
 
-| Framework | Exact state contract and reset behavior |
-| --- | --- |
-| React | Controlled: `value` + `onValueChange`. Uncontrolled: `defaultValue`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
-| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
-
-**React**
-
-```tsx
-const initialValue = '';
-const [value, setValue] = useState(initialValue);
-const [resetKey, setResetKey] = useState(0);
-
-<Command value={value} onValueChange={setValue}>…</Command>
-<button onClick={() => setValue(initialValue)}>Reset controlled</button>
-<Command key={resetKey} defaultValue={initialValue}>…</Command>
-<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
-```
-
-**Vue**
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-const initial = '';
-const state = ref(initial);
-const resetKey = ref(0);
-</script>
-
-<Command v-model="state">…</Command>
-<button @click="state = initial">Reset controlled</button>
-```
-
-**Angular**
-
-```ts
-initial = '';
-value = this.initial;
-reset() { this.value = this.initial; }
-```
-
-```html
-<simurgh-command [(value)]="value">…</simurgh-command>
-<button type="button" (click)="reset()">Reset</button>
-```
-{/* component-state-model:end */}
-
-Use concise verb-first labels and mark unavailable actions as disabled instead of removing them when their presence explains product capability. Put Command inside Dialog for a modal command palette and provide a visible trigger with its keyboard shortcut.
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -461,12 +526,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

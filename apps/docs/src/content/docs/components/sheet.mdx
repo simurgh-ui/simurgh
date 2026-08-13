@@ -65,10 +65,11 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Sheet presents modal content from a logical edge of the viewport. It shares Dialog's accessible naming, focus containment, Escape dismissal, overlay behavior, and trigger-focus restoration.
 
-## Anatomy
+{/* component-status:start */}
+### Default presentation: styled
 
-The public component parts are listed in API surface below. Use only the parts needed by the example;
-compound components depend on their documented parent/child nesting.
+The optional component stylesheet provides a complete default recipe, including visual hierarchy and interaction states. Consumers can override semantic tokens or omit the recipe.
+{/* component-status:end */}
 
 ## Basic usage
 
@@ -90,44 +91,10 @@ compound components depend on their documented parent/child nesting.
   </div>
 </ComponentPreview>
 
-## Examples
+## Anatomy
 
-<Tabs>
-<TabItem label="React">
-```tsx
-<Sheet>
-  <SheetTrigger>Open filters</SheetTrigger>
-  <SheetContent side="right">
-    <SheetTitle>Filters</SheetTitle>
-    <SheetDescription>Narrow the visible results.</SheetDescription>
-    <SheetClose>Done</SheetClose>
-  </SheetContent>
-</Sheet>
-```
-</TabItem>
-<TabItem label="Vue">
-```vue
-<Sheet>
-  <SheetTrigger>Open filters</SheetTrigger>
-  <SheetContent side="right">
-    <SheetTitle>Filters</SheetTitle>
-    <SheetDescription>Narrow the visible results.</SheetDescription>
-    <SheetClose>Done</SheetClose>
-  </SheetContent>
-</Sheet>
-```
-</TabItem>
-<TabItem label="Angular">
-```html
-<simurgh-sheet #sheet side="right" labelledBy="filters-title" describedBy="filters-description">
-  <button trigger (click)="sheet.show()">Open filters</button>
-  <h2 id="filters-title">Filters</h2>
-  <p id="filters-description">Narrow the visible results.</p>
-  <button (click)="sheet.close()">Done</button>
-</simurgh-sheet>
-```
-</TabItem>
-</Tabs>
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
 
 {/* component-state-model:start */}
 ## State model
@@ -172,7 +139,109 @@ const resetKey = ref(0);
 ```
 {/* component-state-model:end */}
 
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `open` + `onOpenChange`. Uncontrolled: `defaultOpen`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model:open` (`open` + `update:open`). Uncontrolled: `defaultOpen`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | No public two-way state binding is exposed. |
+
+**React**
+
+```tsx
+const initialOpen = false;
+const [open, setOpen] = useState(initialOpen);
+const [resetKey, setResetKey] = useState(0);
+
+<Sheet open={open} onOpenChange={setOpen}>…</Sheet>
+<button onClick={() => setOpen(initialOpen)}>Reset controlled</button>
+<Sheet key={resetKey} defaultOpen={initialOpen}>…</Sheet>
+<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
+```
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = false;
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Sheet v-model:open="state">…</Sheet>
+<button @click="state = initial">Reset controlled</button>
+<Sheet :key="resetKey" :defaultOpen="initial">…</Sheet>
+<button @click="resetKey++">Reset uncontrolled</button>
+```
+{/* component-state-model:end */}
+
 Choose `left` or `right` for narrow task panels and `top` or `bottom` for short horizontal workflows. Logical inline positioning automatically follows document direction.
+
+## Examples
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Sheet>
+  <SheetTrigger>Open filters</SheetTrigger>
+  <SheetContent side="right">
+    <SheetTitle>Filters</SheetTitle>
+    <SheetDescription>Narrow the visible results.</SheetDescription>
+    <SheetClose>Done</SheetClose>
+  </SheetContent>
+</Sheet>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Sheet>
+  <SheetTrigger>Open filters</SheetTrigger>
+  <SheetContent side="right">
+    <SheetTitle>Filters</SheetTitle>
+    <SheetDescription>Narrow the visible results.</SheetDescription>
+    <SheetClose>Done</SheetClose>
+  </SheetContent>
+</Sheet>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-sheet #sheet side="right" labelledBy="filters-title" describedBy="filters-description">
+  <button trigger (click)="sheet.show()">Open filters</button>
+  <h2 id="filters-title">Filters</h2>
+  <p id="filters-description">Narrow the visible results.</p>
+  <button (click)="sheet.close()">Done</button>
+</simurgh-sheet>
+```
+</TabItem>
+</Tabs>
+
+{/* component-state-model:start */}
+
+{/* component-keyboard:start */}
+### Keyboard interactions
+
+These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
+applies to descendant links, buttons, and form controls unless the component overrides it.
+
+| Concern / keys | Behavior |
+| --- | --- |
+| Focus entry and exit (Tab / Shift+Tab) | Tab enters the open sheet and cycles within it; closing restores the trigger. |
+| Navigation and activation | Enter or Space activates the focused control. |
+| Escape | Closes the sheet and restores trigger focus. |
+| RTL differences | No RTL-specific key mapping. |
+| Typeahead | Not supported. |
+{/* component-keyboard:end */}
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -472,27 +541,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-{/* component-keyboard:start */}
-### Keyboard interactions
-
-These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
-applies to descendant links, buttons, and form controls unless the component overrides it.
-
-| Concern / keys | Behavior |
-| --- | --- |
-| Focus entry and exit (Tab / Shift+Tab) | Tab enters the open sheet and cycles within it; closing restores the trigger. |
-| Navigation and activation | Enter or Space activates the focused control. |
-| Escape | Closes the sheet and restores trigger focus. |
-| RTL differences | No RTL-specific key mapping. |
-| Typeahead | Not supported. |
-{/* component-keyboard:end */}
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

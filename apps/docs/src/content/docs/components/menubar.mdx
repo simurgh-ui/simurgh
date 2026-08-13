@@ -55,10 +55,11 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Menubar groups persistent application commands. Arrow keys move focus according to text direction, Home and End jump to the edges, and disabled items are skipped.
 
-## Anatomy
+{/* component-status:start */}
+### Default presentation: styled
 
-The public component parts are listed in API surface below. Use only the parts needed by the example;
-compound components depend on their documented parent/child nesting.
+The optional component stylesheet provides a complete default recipe, including visual hierarchy and interaction states. Consumers can override semantic tokens or omit the recipe.
+{/* component-status:end */}
 
 ## Basic usage
 
@@ -85,6 +86,24 @@ compound components depend on their documented parent/child nesting.
     </button>
   </div>
 </ComponentPreview>
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+{/* component-state-model:start */}
+## State model
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+Use Menubar for application commands rather than ordinary site navigation. Navigation links belong in Navigation Menu.
 
 ## Examples
 
@@ -119,13 +138,27 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
-## State model
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
+{/* component-keyboard:start */}
+### Keyboard interactions
 
-Use Menubar for application commands rather than ordinary site navigation. Navigation links belong in Navigation Menu.
+These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
+applies to descendant links, buttons, and form controls unless the component overrides it.
+
+| Concern / keys | Behavior |
+| --- | --- |
+| Focus entry and exit (Tab / Shift+Tab) | Tab enters the menubar at its roving-tabindex item and leaves with Tab. |
+| Navigation and activation | Arrow keys move by orientation; Home/End move to first/last; Enter or Space activates. |
+| Escape | Not handled by the component. |
+| RTL differences | Horizontal previous/next arrows reverse in RTL. |
+| Typeahead | Not supported. |
+{/* component-keyboard:end */}
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -339,27 +372,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-{/* component-keyboard:start */}
-### Keyboard interactions
-
-These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
-applies to descendant links, buttons, and form controls unless the component overrides it.
-
-| Concern / keys | Behavior |
-| --- | --- |
-| Focus entry and exit (Tab / Shift+Tab) | Tab enters the menubar at its roving-tabindex item and leaves with Tab. |
-| Navigation and activation | Arrow keys move by orientation; Home/End move to first/last; Enter or Space activates. |
-| Escape | Not handled by the component. |
-| RTL differences | Horizontal previous/next arrows reverse in RTL. |
-| Typeahead | Not supported. |
-{/* component-keyboard:end */}
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

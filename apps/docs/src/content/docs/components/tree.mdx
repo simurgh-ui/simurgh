@@ -55,10 +55,11 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Tree presents nested data as one keyboard stop. Arrow Up and Arrow Down move through visible items, Home and End jump to boundaries, and Arrow Right and Arrow Left expand, collapse, and move between parent and child items.
 
-## Anatomy
+{/* component-status:start */}
+### Default presentation: styled
 
-The public component parts are listed in API surface below. Use only the parts needed by the example;
-compound components depend on their documented parent/child nesting.
+The optional component stylesheet provides a complete default recipe, including visual hierarchy and interaction states. Consumers can override semantic tokens or omit the recipe.
+{/* component-status:end */}
 
 ## Basic usage
 
@@ -96,43 +97,10 @@ compound components depend on their documented parent/child nesting.
   </ul>
 </ComponentPreview>
 
-## Examples
+## Anatomy
 
-<Tabs>
-<TabItem label="React">
-```tsx
-<Tree aria-label="Files">
-  <TreeItem label="Documents" defaultExpanded>
-    <TreeItem label="Guide" />
-    <TreeItem label="Locked" disabled />
-  </TreeItem>
-  <TreeItem label="Images" />
-</Tree>
-```
-</TabItem>
-<TabItem label="Vue">
-```vue
-<Tree aria-label="Files">
-  <TreeItem label="Documents" default-expanded>
-    <TreeItem label="Guide" />
-    <TreeItem label="Locked" disabled />
-  </TreeItem>
-  <TreeItem label="Images" />
-</Tree>
-```
-</TabItem>
-<TabItem label="Angular">
-```html
-<ul simurghTree aria-label="Files">
-  <simurgh-tree-item label="Documents" [expandable]="true" [expanded]="true">
-    <simurgh-tree-item label="Guide" />
-    <simurgh-tree-item label="Locked" [disabled]="true" />
-  </simurgh-tree-item>
-  <simurgh-tree-item label="Images" />
-</ul>
-```
-</TabItem>
-</Tabs>
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
 
 {/* component-state-model:start */}
 ## State model
@@ -177,7 +145,108 @@ reset() { this.expanded = this.initial; }
 ```
 {/* component-state-model:end */}
 
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | No public controlled/uncontrolled state pair is exposed. |
+| Vue | Controlled: `v-model:expanded` (`expanded` + `update:expanded`). Uncontrolled: `defaultExpanded`. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(expanded)]` (`expanded` + `expandedChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = false;
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Tree v-model:expanded="state">…</Tree>
+<button @click="state = initial">Reset controlled</button>
+<Tree :key="resetKey" :defaultExpanded="initial">…</Tree>
+<button @click="resetKey++">Reset uncontrolled</button>
+```
+
+**Angular**
+
+```ts
+initial = false;
+expanded = this.initial;
+reset() { this.expanded = this.initial; }
+```
+
+```html
+<simurgh-tree [(expanded)]="expanded">…</simurgh-tree>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
+
 Use Tree for hierarchical data, not site navigation. Supply a concise label on the root, keep item labels unique within their branch, and mark unavailable nodes disabled. Controlled `expanded` state is available when expansion must be synchronized with application state.
+
+## Examples
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Tree aria-label="Files">
+  <TreeItem label="Documents" defaultExpanded>
+    <TreeItem label="Guide" />
+    <TreeItem label="Locked" disabled />
+  </TreeItem>
+  <TreeItem label="Images" />
+</Tree>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Tree aria-label="Files">
+  <TreeItem label="Documents" default-expanded>
+    <TreeItem label="Guide" />
+    <TreeItem label="Locked" disabled />
+  </TreeItem>
+  <TreeItem label="Images" />
+</Tree>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<ul simurghTree aria-label="Files">
+  <simurgh-tree-item label="Documents" [expandable]="true" [expanded]="true">
+    <simurgh-tree-item label="Guide" />
+    <simurgh-tree-item label="Locked" [disabled]="true" />
+  </simurgh-tree-item>
+  <simurgh-tree-item label="Images" />
+</ul>
+```
+</TabItem>
+</Tabs>
+
+{/* component-state-model:start */}
+
+{/* component-keyboard:start */}
+### Keyboard interactions
+
+These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
+applies to descendant links, buttons, and form controls unless the component overrides it.
+
+| Concern / keys | Behavior |
+| --- | --- |
+| Focus entry and exit (Tab / Shift+Tab) | Tab enters at the current tree item and leaves after the tree. |
+| Navigation and activation | Arrow Up/Down moves visible items; Right expands/enters; Left collapses/returns; Home/End moves to edges. |
+| Escape | Not handled by the component. |
+| RTL differences | Tree expand/collapse arrows remain semantic Right/Left in both directions. |
+| Typeahead | Not supported. |
+{/* component-keyboard:end */}
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -406,27 +475,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-{/* component-keyboard:start */}
-### Keyboard interactions
-
-These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
-applies to descendant links, buttons, and form controls unless the component overrides it.
-
-| Concern / keys | Behavior |
-| --- | --- |
-| Focus entry and exit (Tab / Shift+Tab) | Tab enters at the current tree item and leaves after the tree. |
-| Navigation and activation | Arrow Up/Down moves visible items; Right expands/enters; Left collapses/returns; Home/End moves to edges. |
-| Escape | Not handled by the component. |
-| RTL differences | Tree expand/collapse arrows remain semantic Right/Left in both directions. |
-| Typeahead | Not supported. |
-{/* component-keyboard:end */}
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

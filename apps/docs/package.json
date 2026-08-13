@@ -5,12 +5,13 @@
   "scripts": {
     "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview",
-    "build": "node ../../scripts/check-doc-encoding.mjs && node ../../scripts/check-doc-spelling.mjs && node ../../scripts/check-doc-verification.mjs && node ../../scripts/check-component-installation.mjs && node ../../scripts/check-component-template.mjs && node ../../scripts/check-api-doc-coverage.mjs && node ../../scripts/check-react-api-docs.mjs && node ../../scripts/check-vue-api-docs.mjs && node ../../scripts/check-angular-api-docs.mjs && node ../../scripts/check-doc-examples.mjs && node ../../scripts/check-component-state-model.mjs && node ../../scripts/check-component-form-docs.mjs && node ../../scripts/check-component-supported-states.mjs && node ../../scripts/check-component-keyboard-docs.mjs && node ../../scripts/check-realistic-component-examples.mjs && node ../../scripts/check-component-styling-contracts.mjs && node ../../scripts/check-customization-guidance.mjs && node ../../scripts/check-documentation-acceptance-test.mjs && node ../../scripts/check-component-composition.mjs && node ../../scripts/check-framework-parity-docs.mjs && node ../../scripts/check-component-guidance.mjs && node ../../scripts/check-doc-integrity.mjs && node ../../scripts/check-example-theme-contrast.mjs && cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
-    "test": "vitest run --passWithNoTests",
+    "build": "node ../../scripts/check-doc-encoding.mjs && node ../../scripts/check-doc-spelling.mjs && node ../../scripts/check-doc-verification.mjs && node ../../scripts/check-component-installation.mjs && node ../../scripts/check-component-template.mjs && node ../../scripts/check-component-status-docs.mjs && node ../../scripts/check-api-doc-coverage.mjs && node ../../scripts/check-react-api-docs.mjs && node ../../scripts/check-vue-api-docs.mjs && node ../../scripts/check-angular-api-docs.mjs && node ../../scripts/check-doc-examples.mjs && node ../../scripts/check-component-state-model.mjs && node ../../scripts/check-component-form-docs.mjs && node ../../scripts/check-component-supported-states.mjs && node ../../scripts/check-component-keyboard-docs.mjs && node ../../scripts/check-realistic-component-examples.mjs && node ../../scripts/check-component-styling-contracts.mjs && node ../../scripts/check-customization-guidance.mjs && node ../../scripts/check-documentation-acceptance-test.mjs && node ../../scripts/check-component-composition.mjs && node ../../scripts/check-framework-parity-docs.mjs && node ../../scripts/check-component-guidance.mjs && node ../../scripts/check-doc-integrity.mjs && node ../../scripts/check-example-theme-contrast.mjs && cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "test": "node ../../scripts/check-live-component-previews.mjs && vitest run --passWithNoTests",
     "typecheck": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check",
     "lint": "eslint src"
   },
   "dependencies": {
+    "@astrojs/react": "4.3.0",
     "@astrojs/starlight": "^0.36.0",
     "@simurgh-ui/angular": "workspace:*",
     "@simurgh-ui/core": "workspace:*",
@@ -19,6 +20,8 @@
     "@simurgh-ui/styles": "workspace:*",
     "@simurgh-ui/vue": "workspace:*",
     "astro": "^5.13.7",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "sharp": "^0.34.4"
   },
   "devDependencies": {

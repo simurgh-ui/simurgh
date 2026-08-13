@@ -46,10 +46,11 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Label renders a native HTML `<label>`. It provides reliable accessible naming and preserves browser behavior such as activating or focusing the associated control when the label is selected.
 
-## Anatomy
+{/* component-status:start */}
+### Default presentation: native
 
-The public component parts are listed in API surface below. Use only the parts needed by the example;
-compound components depend on their documented parent/child nesting.
+The component preserves a familiar native element and browser behavior. The optional recipe harmonizes its appearance without replacing the platform interaction model.
+{/* component-status:end */}
 
 ## Basic usage
 
@@ -64,6 +65,24 @@ compound components depend on their documented parent/child nesting.
     />
   </div>
 </ComponentPreview>
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+{/* component-state-model:start */}
+## State model
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+The primitive is deliberately headless and forwards native attributes. The `for`/`htmlFor` value must match the target control ID. Wrapping a control inside the label also uses normal browser semantics.
 
 ## Examples
 
@@ -89,13 +108,12 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
-## State model
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
+## Accessibility
 
-The primitive is deliberately headless and forwards native attributes. The `for`/`htmlFor` value must match the target control ID. Wrapping a control inside the label also uses normal browser semantics.
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -265,12 +283,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

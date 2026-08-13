@@ -613,6 +613,29 @@
       "toast": ["ToastViewportComponent", "ToastMessage"]
     }
   },
+  "presentationStatus": {
+    "native": [
+      "button", "input", "textarea", "native-select", "label", "link", "checkbox",
+      "switch", "slider", "meter", "progress", "disclosure", "table"
+    ],
+    "structural": [
+      "card", "item", "field", "form", "description-list", "scroll-area"
+    ],
+    "styled": [
+      "dialog", "alert-dialog", "sheet", "drawer", "popover", "tooltip", "hover-card",
+      "dropdown-menu", "context-menu", "select", "combobox", "command", "calendar",
+      "date-picker", "carousel", "resizable", "sidebar", "tree", "file-upload",
+      "password-input", "number-input", "rating", "tags-input",
+      "button-group", "input-group",
+      "input-otp", "toggle-group", "navigation-menu", "menubar",
+      "empty", "kbd", "pagination", "toast", "toolbar"
+    ],
+    "headless": [
+      "accordion", "alert", "aspect-ratio", "avatar", "badge", "breadcrumb",
+      "collapsible", "radio-group", "separator", "skeleton", "spinner", "tabs", "toggle",
+      "visually-hidden"
+    ]
+  },
   "shared": {
     "styles": ["packages/styles/tokens.css", "packages/styles/recipes.css"],
     "tokens": [

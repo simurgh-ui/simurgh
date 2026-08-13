@@ -10,13 +10,13 @@ const registry = JSON.parse(
 const headings = [
   '## Installation',
   '## Purpose',
-  '## Anatomy',
   '## Basic usage',
-  '## Examples',
+  '## Anatomy',
   '## State model',
+  '## Examples',
+  '## Accessibility',
   '## API surface',
   '## Customization',
-  '## Accessibility',
   '## Related components',
 ];
 const failures = [];
@@ -52,7 +52,15 @@ directionality requirements.
 }
 
 function applyTemplate(source, component) {
-  if (source.includes('## Purpose')) return source;
+  if (source.includes('## Purpose')) {
+    const complete = source.includes('## Accessibility')
+      ? source
+      : source.replace(
+          '## API surface',
+          `## Accessibility\n\nPreserve the documented composition and accessible names when wrapping or restyling this component.\nSee [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and\ndirectionality requirements.\n\n## API surface`,
+        );
+    return reorderSections(complete);
+  }
   const exampleTabs = source.includes('<CodeTabs>') ? 'CodeTabs' : 'Tabs';
   let result = source.replace(
     '{/* component-installation:end */}',
@@ -74,7 +82,26 @@ function applyTemplate(source, component) {
     '{/* doc-verification:start */}',
     `${generatedSections(component)}{/* doc-verification:start */}`,
   );
-  return result.replace('## Further guidance', '## Related components');
+  return reorderSections(result.replace('## Further guidance', '## Related components'));
+}
+
+function reorderSections(source) {
+  const matches = [...source.matchAll(/(?:^\{\/\* [^\n]+:start \*\/\}\r?\n)?^## .+$/gmu)];
+  if (!matches.length) return source;
+  const preamble = source.slice(0, matches[0].index).trimEnd();
+  const sections = new Map(
+    matches.map((match, index) => {
+      const end = matches[index + 1]?.index ?? source.length;
+      const heading = match[0].match(/^## .+$/mu)?.[0];
+      return [heading, source.slice(match.index, end).trim()];
+    }),
+  );
+  if (headings.some((heading) => !sections.has(heading))) return source;
+  const ordered = headings.map((heading) => sections.get(heading));
+  const additional = [...sections.entries()]
+    .filter(([heading]) => !headings.includes(heading))
+    .map(([, section]) => section);
+  return `${preamble}\n\n${[...ordered, ...additional].join('\n\n')}\n`;
 }
 
 for (const component of registry.components) {

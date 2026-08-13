@@ -5,6 +5,7 @@ description: A binary choice with native form serialization.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -46,38 +47,22 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Checkbox exposes `aria-checked`, keyboard activation, controlled and uncontrolled state, and an optional native form value. Always provide a visible or programmatic label.
 
+{/* component-status:start */}
+### Default presentation: native
+
+The component preserves a familiar native element and browser behavior. The optional recipe harmonizes its appearance without replacing the platform interaction model.
+{/* component-status:end */}
+
+## Basic usage
+
+<ComponentPreview title="Checkbox" kind="live">
+  <ReactComponentPreview component="checkbox" client:load />
+</ComponentPreview>
+
 ## Anatomy
 
 The public component parts are listed in API surface below. Use only the parts needed by the example;
 compound components depend on their documented parent/child nesting.
-
-## Basic usage
-
-<ComponentPreview title="Checkbox">
-  <label class="preview-row">
-    <input type="checkbox" checked /> Receive product updates
-  </label>
-</ComponentPreview>
-
-## Examples
-
-<Tabs>
-<TabItem label="React">
-```tsx
-<Checkbox name="newsletter" value="yes" onCheckedChange={setSubscribed}>Newsletter</Checkbox>
-```
-</TabItem>
-<TabItem label="Vue">
-```vue
-<Checkbox v-model="subscribed" name="newsletter" value="yes">Newsletter</Checkbox>
-```
-</TabItem>
-<TabItem label="Angular">
-```html
-<simurgh-checkbox name="newsletter" value="yes" [(checked)]="subscribed">Newsletter</simurgh-checkbox>
-```
-</TabItem>
-</Tabs>
 
 {/* component-state-model:start */}
 ## State model
@@ -132,6 +117,85 @@ reset() { this.checked = this.initial; }
 <button type="button" (click)="reset()">Reset</button>
 ```
 {/* component-state-model:end */}
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | Controlled: `checked` + `onCheckedChange`. Uncontrolled: `defaultChecked`. Reset controlled state by assigning the initial value; reset uncontrolled state by changing a React `key`. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(checked)]` (`checked` + `checkedChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**React**
+
+```tsx
+const initialChecked = false;
+const [checked, setChecked] = useState(initialChecked);
+const [resetKey, setResetKey] = useState(0);
+
+<Checkbox checked={checked} onCheckedChange={setChecked}>…</Checkbox>
+<button onClick={() => setChecked(initialChecked)}>Reset controlled</button>
+<Checkbox key={resetKey} defaultChecked={initialChecked}>…</Checkbox>
+<button onClick={() => setResetKey((key) => key + 1)}>Reset uncontrolled</button>
+```
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Checkbox v-model="state">…</Checkbox>
+<button @click="state = initial">Reset controlled</button>
+```
+
+**Angular**
+
+```ts
+initial = false;
+checked = this.initial;
+reset() { this.checked = this.initial; }
+```
+
+```html
+<simurgh-checkbox [(checked)]="checked">…</simurgh-checkbox>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
+
+## Examples
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Checkbox name="newsletter" value="yes" onCheckedChange={setSubscribed}>Newsletter</Checkbox>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Checkbox v-model="subscribed" name="newsletter" value="yes">Newsletter</Checkbox>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-checkbox name="newsletter" value="yes" [(checked)]="subscribed">Newsletter</simurgh-checkbox>
+```
+</TabItem>
+</Tabs>
+
+{/* component-state-model:start */}
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -383,12 +447,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

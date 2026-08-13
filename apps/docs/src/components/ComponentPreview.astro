@@ -2,14 +2,19 @@
 interface Props {
   title?: string;
   align?: 'start' | 'center';
+  kind?: 'anatomy' | 'live';
 }
 
-const { title = 'Preview', align = 'center' } = Astro.props;
+const { title = 'Preview', align = 'center', kind = 'anatomy' } = Astro.props;
+const kindLabel = kind === 'live' ? 'Live component' : 'Semantic anatomy';
 ---
 
-<figure class="simurgh-preview" data-align={align}>
+<figure class="simurgh-preview" data-align={align} data-preview-kind={kind}>
   <figcaption>
-    <span>{title}</span>
+    <span class="simurgh-preview__identity">
+      <span class="simurgh-preview__kind">{kindLabel}</span>
+      <span>{title}</span>
+    </span>
     <span class="simurgh-preview__mark" aria-hidden="true">◆</span>
   </figcaption>
   <div class="simurgh-preview__demo">
@@ -44,6 +49,22 @@ const { title = 'Preview', align = 'center' } = Astro.props;
 
   .simurgh-preview__mark {
     color: hsl(var(--simurgh-firuzeh));
+  }
+
+  .simurgh-preview__identity {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .simurgh-preview__kind {
+    padding: 0.15rem 0.4rem;
+    border: 1px solid hsl(var(--simurgh-border));
+    border-radius: 999px;
+    background: hsl(var(--simurgh-muted));
+    color: hsl(var(--simurgh-foreground));
+    font-size: 0.68rem;
   }
 
   .simurgh-preview__demo {

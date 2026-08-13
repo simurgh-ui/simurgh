@@ -46,10 +46,11 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Input OTP uses one native input so password managers, SMS code autofill, selection, and paste continue to work. The shared recipe presents the value as evenly spaced code cells without splitting keyboard focus across multiple controls.
 
-## Anatomy
+{/* component-status:start */}
+### Default presentation: styled
 
-The public component parts are listed in API surface below. Use only the parts needed by the example;
-compound components depend on their documented parent/child nesting.
+The optional component stylesheet provides a complete default recipe, including visual hierarchy and interaction states. Consumers can override semantic tokens or omit the recipe.
+{/* component-status:end */}
 
 ## Basic usage
 
@@ -67,28 +68,10 @@ compound components depend on their documented parent/child nesting.
   />
 </ComponentPreview>
 
-## Examples
+## Anatomy
 
-<Tabs>
-<TabItem label="React">
-```tsx
-<Label htmlFor="code">Verification code</Label>
-<InputOtp id="code" name="code" length={6} required />
-```
-</TabItem>
-<TabItem label="Vue">
-```vue
-<Label for="code">Verification code</Label>
-<InputOtp id="code" name="code" :length="6" v-model="code" required />
-```
-</TabItem>
-<TabItem label="Angular">
-```html
-<simurgh-label for="code">Verification code</simurgh-label>
-<simurgh-input-otp id="code" name="code" [length]="6" [value]="code" [required]="true" (valueChange)="code = $event" />
-```
-</TabItem>
-</Tabs>
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
 
 {/* component-state-model:start */}
 ## State model
@@ -131,7 +114,76 @@ reset() { this.value = this.initial; }
 ```
 {/* component-state-model:end */}
 
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | No public controlled/uncontrolled state pair is exposed. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<InputOtp v-model="state">…</InputOtp>
+<button @click="state = initial">Reset controlled</button>
+```
+
+**Angular**
+
+```ts
+initial = '';
+value = this.initial;
+reset() { this.value = this.initial; }
+```
+
+```html
+<simurgh-input-otp [(value)]="value">…</simurgh-input-otp>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
+
 The default digit-only mode removes non-numeric pasted characters and limits the value to `length`. Disable `digitsOnly` for alphanumeric recovery codes. Always provide a visible label and avoid masking one-time codes unless the threat model specifically requires it.
+
+## Examples
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Label htmlFor="code">Verification code</Label>
+<InputOtp id="code" name="code" length={6} required />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Label for="code">Verification code</Label>
+<InputOtp id="code" name="code" :length="6" v-model="code" required />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-label for="code">Verification code</simurgh-label>
+<simurgh-input-otp id="code" name="code" [length]="6" [value]="code" [required]="true" (valueChange)="code = $event" />
+```
+</TabItem>
+</Tabs>
+
+{/* component-state-model:start */}
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -389,12 +441,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

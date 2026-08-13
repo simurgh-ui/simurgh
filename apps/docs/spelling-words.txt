@@ -409,7 +409,6 @@ commands
 commit
 commitment
 commits
-committed
 common
 commonly
 communicate
@@ -483,6 +482,7 @@ constraints
 consume
 consumed
 consumer
+consumer-owned
 consumers
 consumes
 consuming
@@ -560,7 +560,6 @@ customization
 customizations
 customize
 customized
-cycle
 cycles
 danger
 dark
@@ -989,6 +988,7 @@ handling
 happen
 harder
 hardware
+harmonizes
 has
 have
 header
@@ -1723,6 +1723,7 @@ reaches
 reaching
 react
 react's
+reactcomponentpreview
 reactive
 read
 read-only

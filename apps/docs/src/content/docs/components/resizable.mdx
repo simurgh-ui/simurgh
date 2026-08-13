@@ -58,10 +58,11 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Resizable groups coordinate adjacent panel percentages. Handles expose separator value semantics and support pointer dragging, Arrow keys in five-percent steps, and Home/End constraints.
 
-## Anatomy
+{/* component-status:start */}
+### Default presentation: styled
 
-The public component parts are listed in API surface below. Use only the parts needed by the example;
-compound components depend on their documented parent/child nesting.
+The optional component stylesheet provides a complete default recipe, including visual hierarchy and interaction states. Consumers can override semantic tokens or omit the recipe.
+{/* component-status:end */}
 
 ## Basic usage
 
@@ -89,6 +90,24 @@ compound components depend on their documented parent/child nesting.
     </section>
   </div>
 </ComponentPreview>
+
+## Anatomy
+
+The public component parts are listed in API surface below. Use only the parts needed by the example;
+compound components depend on their documented parent/child nesting.
+
+{/* component-state-model:start */}
+## State model
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
+events, native attributes, or parent-owned state documented in the API tables.
+{/* component-state-model:end */}
+
+Every handle needs an accessible label describing the panels it changes. Horizontal movement follows logical direction in RTL. Use `orientation="vertical"` for stacked panels and set meaningful minimums so important content cannot collapse.
 
 ## Examples
 
@@ -123,13 +142,27 @@ compound components depend on their documented parent/child nesting.
 </Tabs>
 
 {/* component-state-model:start */}
-## State model
 
-This component exposes no public controlled/uncontrolled state pair. Configure it through the props,
-events, native attributes, or parent-owned state documented in the API tables.
-{/* component-state-model:end */}
+{/* component-keyboard:start */}
+### Keyboard interactions
 
-Every handle needs an accessible label describing the panels it changes. Horizontal movement follows logical direction in RTL. Use `orientation="vertical"` for stacked panels and set meaningful minimums so important content cannot collapse.
+These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
+applies to descendant links, buttons, and form controls unless the component overrides it.
+
+| Concern / keys | Behavior |
+| --- | --- |
+| Focus entry and exit (Tab / Shift+Tab) | Tab focuses each separator handle; Tab leaves after the final handle. |
+| Navigation and activation | Arrows resize by step; Home/End move to minimum/maximum. |
+| Escape | Not handled by the component. |
+| RTL differences | Horizontal decrement/increment arrows reverse in RTL. |
+| Typeahead | Not supported. |
+{/* component-keyboard:end */}
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -396,27 +429,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-{/* component-keyboard:start */}
-### Keyboard interactions
-
-These keys describe behavior implemented by the adapters. Native Tab, Enter, and Space behavior still
-applies to descendant links, buttons, and form controls unless the component overrides it.
-
-| Concern / keys | Behavior |
-| --- | --- |
-| Focus entry and exit (Tab / Shift+Tab) | Tab focuses each separator handle; Tab leaves after the final handle. |
-| Navigation and activation | Arrows resize by step; Home/End move to minimum/maximum. |
-| Escape | Not handled by the component. |
-| RTL differences | Horizontal decrement/increment arrows reverse in RTL. |
-| Typeahead | Not supported. |
-{/* component-keyboard:end */}
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

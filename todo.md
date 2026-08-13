@@ -310,13 +310,13 @@ per-component documentation" as example coverage, not as complete consumer docum
 
 - [ ] Replace documentation-only facsimiles with previews that mount the actual public React, Vue,
       or Angular component and load the same component stylesheet consumers import.
-- [ ] Clearly label any remaining static example as a semantic anatomy illustration rather than a
+- [x] Clearly label any remaining static example as a semantic anatomy illustration rather than a
       live rendered-component preview.
-- [ ] Add a documented status to every component: `headless`, `structural`, `styled`, or `native`,
+- [x] Add a documented status to every component: `headless`, `structural`, `styled`, or `native`,
       including what behavior, layout, and visual treatment consumers should expect by default.
-- [ ] Validate that component status matches the published stylesheet, stable styling hooks, docs
+- [x] Validate that component status matches the published stylesheet, stable styling hooks, docs
       preview, registry metadata, and all three framework adapters.
-- [ ] Reorder component pages around first-use comprehension: purpose and status, live preview,
+- [x] Reorder component pages around first-use comprehension: purpose and status, live preview,
       usage guidance, variants/states, framework examples, accessibility, then exhaustive API and
       styling contracts.
 - [ ] Add screenshot regression coverage for real adapter-powered previews in light, dark, RTL,

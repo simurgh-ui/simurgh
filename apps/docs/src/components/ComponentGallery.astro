@@ -22,8 +22,12 @@ const groups = {
   Feedback: ['table', 'avatar', 'badge', 'kbd', 'alert', 'empty', 'progress', 'meter', 'skeleton', 'spinner', 'visually-hidden'],
 };
 const category = new Map(Object.entries(groups).flatMap(([group, names]) => names.map((name) => [name, group])));
-const native = new Set(['button', 'input', 'textarea', 'native-select', 'label', 'link', 'checkbox', 'switch', 'slider', 'meter', 'progress', 'details', 'disclosure', 'table']);
-const structural = new Set(['aspect-ratio', 'card', 'item', 'separator', 'field', 'form', 'description-list', 'visually-hidden', 'scroll-area']);
+const statusByComponent = new Map(
+  Object.entries(registry.presentationStatus).flatMap(([status, names]) =>
+    (names as string[]).map((name) => [name, status] as const),
+  ),
+);
+const native = new Set(registry.presentationStatus.native);
 const complex = new Set(['select', 'combobox', 'command', 'calendar', 'date-picker', 'tree', 'menubar', 'dropdown-menu', 'context-menu', 'dialog', 'alert-dialog', 'sheet', 'drawer', 'carousel', 'resizable']);
 const moderate = new Set(['tabs', 'accordion', 'radio-group', 'toolbar', 'toggle-group', 'rating', 'tags-input', 'popover', 'tooltip', 'hover-card', 'sidebar']);
 const comparisons = new Map<string, string>([
@@ -36,7 +40,7 @@ const components = registry.components.map((name) => ({
   name,
   label: labels.get(name) ?? name.replaceAll('-', ' ').replace(/\b\w/gu, (letter) => letter.toUpperCase()),
   category: category.get(name) ?? 'Other',
-  status: native.has(name) ? 'native' : structural.has(name) ? 'structural' : 'styled',
+  status: statusByComponent.get(name),
   behavior: native.has(name) ? 'native' : 'custom',
   keyboard: complex.has(name) ? 'complex' : moderate.has(name) ? 'moderate' : 'simple',
   comparison: comparisons.get(name),

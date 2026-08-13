@@ -5,6 +5,7 @@ description: A native multiline form control with framework-native bindings.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -46,41 +47,22 @@ written to `simurgh.json` and the copied application styles instead of these pac
 
 Textarea preserves native multiline editing, form submission, validation, required and disabled states, while exposing explicit invalid semantics.
 
+{/* component-status:start */}
+### Default presentation: native
+
+The component preserves a familiar native element and browser behavior. The optional recipe harmonizes its appearance without replacing the platform interaction model.
+{/* component-status:end */}
+
+## Basic usage
+
+<ComponentPreview title="Textarea" kind="live">
+  <ReactComponentPreview component="textarea" client:load />
+</ComponentPreview>
+
 ## Anatomy
 
 The public component parts are listed in API surface below. Use only the parts needed by the example;
 compound components depend on their documented parent/child nesting.
-
-## Basic usage
-
-<ComponentPreview title="Textarea">
-  <div class="preview-stack">
-    <label for="preview-bio">Biography</label>
-    <textarea id="preview-bio" class="preview-input" rows="4">
-      Poet, mathematician, and pioneer.
-    </textarea>
-  </div>
-</ComponentPreview>
-
-## Examples
-
-<Tabs>
-<TabItem label="React">
-```tsx
-<Textarea name="bio" required invalid={hasError} />
-```
-</TabItem>
-<TabItem label="Vue">
-```vue
-<Textarea v-model="bio" name="bio" required :invalid="hasError" />
-```
-</TabItem>
-<TabItem label="Angular">
-```html
-<simurgh-textarea [(value)]="bio" name="bio" [required]="true" [invalid]="hasError" />
-```
-</TabItem>
-</Tabs>
 
 {/* component-state-model:start */}
 ## State model
@@ -123,7 +105,73 @@ reset() { this.value = this.initial; }
 ```
 {/* component-state-model:end */}
 
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | No public controlled/uncontrolled state pair is exposed. |
+| Vue | Controlled: `v-model` (`modelValue` + `update:modelValue`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(value)]` (`value` + `valueChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<Textarea v-model="state">…</Textarea>
+<button @click="state = initial">Reset controlled</button>
+```
+
+**Angular**
+
+```ts
+initial = '';
+value = this.initial;
+reset() { this.value = this.initial; }
+```
+
+```html
+<simurgh-textarea [(value)]="value">…</simurgh-textarea>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
+
 Pair Textarea with Label and connect help or validation text through `aria-describedby`.
+
+## Examples
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Textarea name="bio" required invalid={hasError} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Textarea v-model="bio" name="bio" required :invalid="hasError" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-textarea [(value)]="bio" name="bio" [required]="true" [invalid]="hasError" />
+```
+</TabItem>
+</Tabs>
+
+{/* component-state-model:start */}
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
 
 ## API surface
 
@@ -375,12 +423,6 @@ even if your replacement styles use different selectors.
 Load the optional component stylesheet for the default recipe, override semantic tokens for broad
 theme changes, or omit the recipe CSS for headless styling. See [theming and styling
 hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
-
-## Accessibility
-
-Preserve the documented composition and accessible names when wrapping or restyling this component.
-See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
-directionality requirements.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

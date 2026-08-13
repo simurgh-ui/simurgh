@@ -1,8 +1,10 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import react from '@astrojs/react';
 
 export default defineConfig({
   integrations: [
+    react(),
     starlight({
       title: 'Simurgh UI',
       description:
