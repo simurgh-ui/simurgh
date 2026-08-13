@@ -322,11 +322,11 @@ per-component documentation" as example coverage, not as complete consumer docum
 - [x] Reorder component pages around first-use comprehension: purpose and status, live preview,
       usage guidance, variants/states, framework examples, accessibility, then exhaustive API and
       styling contracts.
-- [ ] Add screenshot regression coverage for real adapter-powered previews in light, dark, RTL,
+- [x] Add screenshot regression coverage for real adapter-powered previews in light, dark, RTL,
       narrow viewport, loading, disabled, invalid, and keyboard-focus states where applicable.
   - [x] Establish portable Chromium baselines for the React Button and Form previews covering light,
         dark, RTL, reduced motion, narrow viewport, loading, disabled, invalid, and focus states.
-  - [ ] Extend visual baselines to representative Vue and Angular adapter-host previews.
+  - [x] Extend visual baselines to representative Vue and Angular adapter-host previews.
 
 ### P2: visual-system maturity
 
