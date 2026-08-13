@@ -5,6 +5,7 @@ description: Calendar popover with locale-aware display, ISO form values, and fo
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -57,12 +58,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Date Picker">
-  <div data-slot="date-picker">
-    <button type="button" data-slot="date-picker-trigger">
-      Aug 12, 2026
-    </button>
-  </div>
+<ComponentPreview title="Date Picker" kind="live">
+  <ReactComponentPreview component="date-picker" client:load />
 </ComponentPreview>
 
 ## Anatomy

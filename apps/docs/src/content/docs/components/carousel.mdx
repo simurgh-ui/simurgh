@@ -5,6 +5,7 @@ description: Composable labelled slides with direction-aware controls and option
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -72,36 +73,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Carousel">
-  <div
-    data-slot="carousel"
-    role="region"
-    aria-roledescription="carousel"
-    aria-label="Featured projects"
-  >
-    <button
-      type="button"
-      data-slot="carousel-previous"
-      aria-label="Previous slide"
-      disabled
-    >
-      ‹
-    </button>
-    <div data-slot="carousel-content">
-      <article
-        data-slot="carousel-item"
-        role="group"
-        aria-roledescription="slide"
-        aria-label="1 of 3"
-      >
-        <strong>Design system</strong>
-        <p>Shared accessible patterns for product teams.</p>
-      </article>
-    </div>
-    <button type="button" data-slot="carousel-next" aria-label="Next slide">
-      ›
-    </button>
-  </div>
+<ComponentPreview title="Carousel" kind="live">
+  <ReactComponentPreview component="carousel" client:load />
 </ComponentPreview>
 
 ## Anatomy

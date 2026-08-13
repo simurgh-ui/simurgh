@@ -5,6 +5,7 @@ description: Hierarchical disclosure with roving focus and native-direction nest
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -63,38 +64,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Tree">
-  <ul role="tree" data-slot="tree" aria-label="Files">
-    <li role="none" data-slot="tree-node">
-      <button
-        type="button"
-        role="treeitem"
-        data-slot="tree-item"
-        aria-expanded="true"
-        aria-controls="tree-preview-documents"
-        tabindex="0"
-      >
-        Documents
-      </button>
-      <ul id="tree-preview-documents" role="group" data-slot="tree-group">
-        <li role="none" data-slot="tree-node">
-          <button
-            type="button"
-            role="treeitem"
-            data-slot="tree-item"
-            tabindex="-1"
-          >
-            Guide
-          </button>
-        </li>
-      </ul>
-    </li>
-    <li role="none" data-slot="tree-node">
-      <button type="button" role="treeitem" data-slot="tree-item" tabindex="-1">
-        Images
-      </button>
-    </li>
-  </ul>
+<ComponentPreview title="Tree" kind="live">
+  <ReactComponentPreview component="tree" client:load />
 </ComponentPreview>
 
 ## Anatomy

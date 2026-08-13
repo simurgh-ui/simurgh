@@ -5,6 +5,7 @@ description: Constrained split panels with pointer and direction-aware keyboard 
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -66,29 +67,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Resizable">
-  <div
-    data-slot="resizable-panel-group"
-    data-orientation="horizontal"
-    style="max-width: 36rem"
-  >
-    <section data-slot="resizable-panel" style="flex-basis: 35%">
-      Navigation
-    </section>
-    <button
-      type="button"
-      data-slot="resizable-handle"
-      role="separator"
-      aria-orientation="vertical"
-      aria-valuemin="20"
-      aria-valuemax="80"
-      aria-valuenow="35"
-      aria-label="Resize panels"
-    ></button>
-    <section data-slot="resizable-panel" style="flex-basis: 65%">
-      Content
-    </section>
-  </div>
+<ComponentPreview title="Resizable" kind="live">
+  <ReactComponentPreview component="resizable" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,6 +5,7 @@ description: Searchable action selection with keyboard navigation and disabled-i
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -54,26 +55,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Command">
-  <div data-slot="command">
-    <div>
-      <input
-        role="combobox"
-        aria-label="Search commands"
-        aria-expanded="true"
-        aria-controls="command-preview-list"
-        placeholder="Search commands"
-      />
-      <div id="command-preview-list" role="listbox" class="simurgh-content">
-        <div role="option" aria-selected="false" class="simurgh-item">
-          Open settings
-        </div>
-        <div role="option" aria-selected="false" class="simurgh-item">
-          Create project
-        </div>
-      </div>
-    </div>
-  </div>
+<ComponentPreview title="Command" kind="live">
+  <ReactComponentPreview component="command" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,6 +5,7 @@ description: Accessible single-date calendar with keyboard navigation and native
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -57,40 +58,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Calendar">
-  <div
-    data-slot="calendar"
-    aria-label="Appointment calendar"
-    style="max-width: 20rem"
-  >
-    <div data-slot="calendar-header">
-      <button type="button" aria-label="Previous month">
-        ‹
-      </button>
-      <strong>August 2026</strong>
-      <button type="button" aria-label="Next month">
-        ›
-      </button>
-    </div>
-    <div class="preview-calendar-grid" aria-hidden="true">
-      <span>Su</span>
-      <span>Mo</span>
-      <span>Tu</span>
-      <span>We</span>
-      <span>Th</span>
-      <span>Fr</span>
-      <span>Sa</span>
-      <span>9</span>
-      <span>10</span>
-      <span>11</span>
-      <button data-slot="calendar-day" data-state="selected">
-        12
-      </button>
-      <span>13</span>
-      <span>14</span>
-      <span>15</span>
-    </div>
-  </div>
+<ComponentPreview title="Calendar" kind="live">
+  <ReactComponentPreview component="calendar" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,6 +5,7 @@ description: Timed status announcements with explicit dismissal.
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -67,20 +68,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Toast">
-  <aside class="preview-panel preview-stack" role="status">
-    <div class="preview-row">
-      <strong>Changes saved</strong>
-      <button
-        class="preview-button"
-        type="button"
-        aria-label="Dismiss notification"
-      >
-        ×
-      </button>
-    </div>
-    <span class="preview-muted">Your profile has been updated.</span>
-  </aside>
+<ComponentPreview title="Toast" kind="live">
+  <ReactComponentPreview component="toast" client:load />
 </ComponentPreview>
 
 ## Anatomy

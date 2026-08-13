@@ -54,6 +54,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@simurgh-ui/react/context-menu';
 import { Menubar, MenubarItem } from '@simurgh-ui/react/menubar';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@simurgh-ui/react/navigation-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@simurgh-ui/react/tooltip';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@simurgh-ui/react/hover-card';
+import { Command } from '@simurgh-ui/react/command';
+import { Tree, TreeItem } from '@simurgh-ui/react/tree';
+import { Combobox } from '@simurgh-ui/react/combobox';
+import { Calendar } from '@simurgh-ui/react/calendar';
+import { DatePicker } from '@simurgh-ui/react/date-picker';
+import { TagsInput } from '@simurgh-ui/react/tags-input';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@simurgh-ui/react/carousel';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@simurgh-ui/react/resizable';
+import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarMenu, SidebarProvider, SidebarTrigger } from '@simurgh-ui/react/sidebar';
+import { ToastProvider, ToastViewport, useToast } from '@simurgh-ui/react/toast';
 import '@simurgh-ui/styles/button.css';
 import '@simurgh-ui/styles/checkbox.css';
 import '@simurgh-ui/styles/input.css';
@@ -109,8 +121,25 @@ import '@simurgh-ui/styles/dropdown-menu.css';
 import '@simurgh-ui/styles/context-menu.css';
 import '@simurgh-ui/styles/menubar.css';
 import '@simurgh-ui/styles/navigation-menu.css';
+import '@simurgh-ui/styles/tooltip.css';
+import '@simurgh-ui/styles/hover-card.css';
+import '@simurgh-ui/styles/command.css';
+import '@simurgh-ui/styles/tree.css';
+import '@simurgh-ui/styles/combobox.css';
+import '@simurgh-ui/styles/calendar.css';
+import '@simurgh-ui/styles/date-picker.css';
+import '@simurgh-ui/styles/tags-input.css';
+import '@simurgh-ui/styles/carousel.css';
+import '@simurgh-ui/styles/resizable.css';
+import '@simurgh-ui/styles/sidebar.css';
+import '@simurgh-ui/styles/toast.css';
 
-type Props = { component: 'accordion' | 'alert' | 'alert-dialog' | 'aspect-ratio' | 'avatar' | 'badge' | 'breadcrumb' | 'button' | 'button-group' | 'card' | 'checkbox' | 'collapsible' | 'context-menu' | 'description-list' | 'dialog' | 'disclosure' | 'drawer' | 'dropdown-menu' | 'empty' | 'field' | 'file-upload' | 'form' | 'input' | 'input-group' | 'input-otp' | 'item' | 'kbd' | 'label' | 'link' | 'menubar' | 'meter' | 'native-select' | 'navigation-menu' | 'number-input' | 'pagination' | 'password-input' | 'popover' | 'progress' | 'radio-group' | 'rating' | 'scroll-area' | 'select' | 'separator' | 'sheet' | 'skeleton' | 'slider' | 'spinner' | 'switch' | 'table' | 'tabs' | 'textarea' | 'toggle' | 'toggle-group' | 'toolbar' | 'visually-hidden' };
+type Props = { component: 'accordion' | 'alert' | 'alert-dialog' | 'aspect-ratio' | 'avatar' | 'badge' | 'breadcrumb' | 'button' | 'button-group' | 'calendar' | 'card' | 'carousel' | 'checkbox' | 'collapsible' | 'combobox' | 'command' | 'context-menu' | 'date-picker' | 'description-list' | 'dialog' | 'disclosure' | 'drawer' | 'dropdown-menu' | 'empty' | 'field' | 'file-upload' | 'form' | 'hover-card' | 'input' | 'input-group' | 'input-otp' | 'item' | 'kbd' | 'label' | 'link' | 'menubar' | 'meter' | 'native-select' | 'navigation-menu' | 'number-input' | 'pagination' | 'password-input' | 'popover' | 'progress' | 'radio-group' | 'rating' | 'resizable' | 'scroll-area' | 'select' | 'separator' | 'sheet' | 'sidebar' | 'skeleton' | 'slider' | 'spinner' | 'switch' | 'table' | 'tabs' | 'tags-input' | 'textarea' | 'toast' | 'toggle' | 'toggle-group' | 'toolbar' | 'tooltip' | 'tree' | 'visually-hidden' };
+
+function ToastPreview() {
+  const { toast } = useToast();
+  return <div className="preview-stack"><Button onClick={() => toast({ title: 'Changes saved', description: 'Your profile has been updated.', duration: 0 })}>Save changes</Button><ToastViewport /></div>;
+}
 
 export default function ReactComponentPreview({ component }: Props) {
   const [checked, setChecked] = useState(true);
@@ -276,6 +305,42 @@ export default function ReactComponentPreview({ component }: Props) {
 
   if (component === 'navigation-menu')
     return <NavigationMenu label="Preview navigation"><NavigationMenuList><NavigationMenuItem><NavigationMenuLink href="#navigation-menu-examples" current>Overview</NavigationMenuLink></NavigationMenuItem><NavigationMenuItem><NavigationMenuLink href="#navigation-menu-examples">Components</NavigationMenuLink></NavigationMenuItem><NavigationMenuItem><NavigationMenuLink href="#navigation-menu-examples">Guides</NavigationMenuLink></NavigationMenuItem></NavigationMenuList></NavigationMenu>;
+
+  if (component === 'tooltip')
+    return <Tooltip><TooltipTrigger>Copy link</TooltipTrigger><TooltipContent>Copy page URL</TooltipContent></Tooltip>;
+
+  if (component === 'hover-card')
+    return <HoverCard><HoverCardTrigger>Simurgh UI</HoverCardTrigger><HoverCardContent label="Simurgh UI profile">Accessible components for Angular, React, and Vue.</HoverCardContent></HoverCard>;
+
+  if (component === 'command')
+    return <Command name="command" placeholder="Search commands" options={[{ value: 'settings', label: 'Open settings' }, { value: 'project', label: 'Create project' }, { value: 'theme', label: 'Change theme' }]} />;
+
+  if (component === 'tree')
+    return <Tree aria-label="Files"><TreeItem label="Documents" defaultExpanded><TreeItem label="Guide" /></TreeItem><TreeItem label="Images" /></Tree>;
+
+  if (component === 'combobox')
+    return <div className="preview-stack"><Label>City</Label><Combobox name="city" placeholder="Search cities" defaultValue="isfahan" options={[{ value: 'isfahan', label: 'Isfahan' }, { value: 'isfara', label: 'Isfara' }, { value: 'shiraz', label: 'Shiraz' }]} /></div>;
+
+  if (component === 'calendar')
+    return <Calendar label="Appointment calendar" defaultMonth="2026-08" defaultValue="2026-08-12" name="appointment-date" />;
+
+  if (component === 'date-picker')
+    return <DatePicker label="Appointment calendar" defaultMonth="2026-08" defaultValue="2026-08-12" name="appointment-date" />;
+
+  if (component === 'tags-input')
+    return <TagsInput aria-label="Skills" inputLabel="Add skill" defaultValue={['TypeScript', 'Accessibility']} name="skills" placeholder="Add a skill" />;
+
+  if (component === 'carousel')
+    return <Carousel label="Featured projects"><CarouselPrevious /><CarouselContent><CarouselItem><strong>Design system</strong><p>Shared accessible patterns for product teams.</p></CarouselItem><CarouselItem><strong>Documentation</strong><p>Guidance for Angular, React, and Vue.</p></CarouselItem><CarouselItem><strong>Tokens</strong><p>A consistent visual language across products.</p></CarouselItem></CarouselContent><CarouselNext /></Carousel>;
+
+  if (component === 'resizable')
+    return <ResizablePanelGroup aria-label="Workspace panels" style={{ inlineSize: 'min(100%, 36rem)' }}><ResizablePanel defaultSize={35} minSize={20}>Navigation</ResizablePanel><ResizableHandle aria-label="Resize panels" /><ResizablePanel defaultSize={65} minSize={30}>Content</ResizablePanel></ResizablePanelGroup>;
+
+  if (component === 'sidebar')
+    return <SidebarProvider defaultOpen><div className="preview-row"><SidebarTrigger>Toggle navigation</SidebarTrigger><Sidebar aria-label="Workspace navigation"><SidebarHeader><strong>Simurgh</strong></SidebarHeader><SidebarContent><SidebarGroup><SidebarMenu><li><a href="#projects">Projects</a></li><li><a href="#settings">Settings</a></li></SidebarMenu></SidebarGroup></SidebarContent></Sidebar></div></SidebarProvider>;
+
+  if (component === 'toast')
+    return <ToastProvider><ToastPreview /></ToastProvider>;
 
   if (component === 'input')
     return <div className="preview-stack"><label htmlFor="live-preview-email">Email address</label><Input id="live-preview-email" type="email" defaultValue="ada@example.com" /></div>;

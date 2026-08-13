@@ -5,6 +5,7 @@ description: Collapsible, labelled navigation with framework-native state contro
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -81,40 +82,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Sidebar">
-  <div style="display:flex;gap:1rem;align-items:flex-start;min-height:14rem">
-    <button
-      type="button"
-      data-slot="sidebar-trigger"
-      aria-controls="sidebar-preview"
-      aria-expanded="true"
-    >
-      Toggle navigation
-    </button>
-    <aside
-      id="sidebar-preview"
-      data-slot="sidebar"
-      data-side="start"
-      data-state="open"
-      aria-label="Workspace navigation"
-    >
-      <div data-slot="sidebar-header">
-        <strong>Simurgh</strong>
-      </div>
-      <div data-slot="sidebar-content">
-        <div data-slot="sidebar-group">
-          <ul data-slot="sidebar-menu">
-            <li>
-              <a href="#projects">Projects</a>
-            </li>
-            <li>
-              <a href="#settings">Settings</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </aside>
-  </div>
+<ComponentPreview title="Sidebar" kind="live">
+  <ReactComponentPreview component="sidebar" client:load />
 </ComponentPreview>
 
 ## Anatomy

@@ -5,6 +5,7 @@ description: Anchored supplementary content available by pointer hover or keyboa
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -62,20 +63,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Hover Card">
-  <div>
-    <button type="button" data-slot="hover-card-trigger" aria-expanded="true">
-      Simurgh UI
-    </button>
-    <div
-      class="simurgh-content"
-      data-slot="hover-card-content"
-      role="dialog"
-      aria-label="Simurgh UI profile"
-    >
-      Accessible components for Angular, React, and Vue.
-    </div>
-  </div>
+<ComponentPreview title="Hover Card" kind="live">
+  <ReactComponentPreview component="hover-card" client:load />
 </ComponentPreview>
 
 ## Anatomy

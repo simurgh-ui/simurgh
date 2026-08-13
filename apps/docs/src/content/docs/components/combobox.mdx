@@ -5,6 +5,7 @@ description: An editable, filterable single-choice control with native form sema
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
 
 {/* component-installation:start */}
 ## Installation
@@ -64,20 +65,8 @@ The optional component stylesheet provides a complete default recipe, including 
 
 ## Basic usage
 
-<ComponentPreview title="Combobox" align="start">
-  <div class="preview-stack">
-    <label for="city-preview">City</label>
-    <input
-      id="city-preview"
-      class="preview-input"
-      value="Isf"
-      aria-controls="city-options"
-    />
-    <ul id="city-options" class="preview-list preview-panel">
-      <li class="preview-item">Isfahan</li>
-      <li class="preview-item preview-muted">Isfara</li>
-    </ul>
-  </div>
+<ComponentPreview title="Combobox" align="start" kind="live">
+  <ReactComponentPreview component="combobox" client:load />
 </ComponentPreview>
 
 ## Anatomy
