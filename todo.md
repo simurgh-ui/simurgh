@@ -296,6 +296,8 @@ per-component documentation" as example coverage, not as complete consumer docum
 - [ ] Run a final task-based user test: install one component, customize its theme, build a form,
       open an overlay, handle an event, and update a copied component using only the published docs.
   - [x] Validate the complete docs-only discovery and interaction journey in a fresh browser session.
+  - [x] Compile a release-candidate consumer fixture with theme overrides, a form, an event, an
+        overlay, and a product-specific edit to a source-owned component.
   - [ ] Complete the copied-component edit and consumer build in a fresh release-candidate app.
   - [x] Publish the reproducible acceptance protocol and validate its automated package, CLI, API,
         example-compilation, contrast, and documentation-integrity evidence.

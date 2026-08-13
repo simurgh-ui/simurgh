@@ -1,0 +1,6 @@
+@import '@simurgh-ui/styles/tokens.css';
+
+:root {
+  --simurgh-primary: 262 68% 38%;
+  --simurgh-ring: 176 68% 36%;
+}
