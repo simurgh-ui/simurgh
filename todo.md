@@ -295,6 +295,8 @@ per-component documentation" as example coverage, not as complete consumer docum
       public API changes in the pull-request checklist.
 - [ ] Run a final task-based user test: install one component, customize its theme, build a form,
       open an overlay, handle an event, and update a copied component using only the published docs.
+  - [x] Validate the complete docs-only discovery and interaction journey in a fresh browser session.
+  - [ ] Complete the copied-component edit and consumer build in a fresh release-candidate app.
   - [x] Publish the reproducible acceptance protocol and validate its automated package, CLI, API,
         example-compilation, contrast, and documentation-integrity evidence.
   - [x] Record the published documentation site's framework-tab, copy-feedback, keyboard-navigation,
