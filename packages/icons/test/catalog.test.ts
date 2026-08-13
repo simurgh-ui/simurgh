@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { getIcon, iconGroups, iconNames, icons, renderIconSvg } from '../src/index.js';
-import { ArrowLeft, Copy, Download, File, FolderOpen, Fullscreen, Home, LayoutGrid, Settings, SimurghIcon, Success, Verified } from '../src/react.js';
+import { Admin, AlarmOff, ArrowLeft, Calendar, CalendarCheck, Copy, Download, File, FolderOpen, Fullscreen, Headset, Home, LayoutGrid, MailOpen, MessageDots, MicrophoneOff, Settings, SimurghIcon, Success, User, UserCheck, UserSettings, Verified } from '../src/react.js';
 
 describe('navigation icon catalog', () => {
-  it('contains 160 unique icons grouped by functionality', () => {
-    expect(iconNames).toHaveLength(160);
-    expect(new Set(iconNames).size).toBe(160);
-    expect(Object.values(iconGroups).flat()).toHaveLength(160);
+  it('contains 250 unique icons grouped by functionality', () => {
+    expect(iconNames).toHaveLength(250);
+    expect(new Set(iconNames).size).toBe(250);
+    expect(Object.values(iconGroups).flat()).toHaveLength(250);
   });
 
   it('resolves icons and renders accessible SVG', () => {
@@ -33,5 +33,16 @@ describe('navigation icon catalog', () => {
     expect(FolderOpen.displayName).toBe('FolderOpen');
     expect(LayoutGrid.displayName).toBe('LayoutGrid');
     expect(Fullscreen.displayName).toBe('Fullscreen');
+    expect(MessageDots.displayName).toBe('MessageDots');
+    expect(MailOpen.displayName).toBe('MailOpen');
+    expect(MicrophoneOff.displayName).toBe('MicrophoneOff');
+    expect(Headset.displayName).toBe('Headset');
+    expect(User.displayName).toBe('User');
+    expect(UserCheck.displayName).toBe('UserCheck');
+    expect(UserSettings.displayName).toBe('UserSettings');
+    expect(Admin.displayName).toBe('Admin');
+    expect(Calendar.displayName).toBe('Calendar');
+    expect(CalendarCheck.displayName).toBe('CalendarCheck');
+    expect(AlarmOff.displayName).toBe('AlarmOff');
   });
 });

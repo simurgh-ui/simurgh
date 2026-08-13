@@ -37,7 +37,21 @@ export type IconGroup =
   | 'layout-grids'
   | 'layout-splits'
   | 'alignment'
-  | 'display-modes';
+  | 'display-modes'
+  | 'messaging'
+  | 'mail'
+  | 'calling'
+  | 'audio'
+  | 'broadcasting'
+  | 'people'
+  | 'user-actions'
+  | 'user-security'
+  | 'profiles'
+  | 'roles'
+  | 'calendars'
+  | 'calendar-actions'
+  | 'scheduling'
+  | 'time';
 
 export type IconDirection = 'neutral' | 'directional';
 

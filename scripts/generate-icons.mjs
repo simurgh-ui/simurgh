@@ -48,6 +48,20 @@ const groups = {
   'layout-splits': ['split-horizontal', 'split-vertical'],
   alignment: ['align-left', 'align-center', 'align-right', 'align-top', 'align-middle', 'align-bottom'],
   'display-modes': ['fullscreen', 'focus-mode'],
+  messaging: ['message', 'message-dots', 'messages', 'message-square', 'reply', 'forward'],
+  mail: ['mail', 'mail-open', 'mail-notification', 'inbox', 'outbox'],
+  calling: ['phone', 'phone-incoming', 'phone-outgoing', 'phone-missed', 'video', 'video-off'],
+  audio: ['microphone', 'microphone-off', 'headphones', 'headset'],
+  broadcasting: ['megaphone', 'announcement', 'broadcast', 'rss', 'at-sign'],
+  people: ['user', 'user-circle', 'users', 'users-group', 'contact', 'contacts', 'community'],
+  'user-actions': ['user-plus', 'user-check', 'user-minus', 'user-x', 'user-settings', 'user-search', 'user-edit'],
+  'user-security': ['user-lock', 'user-shield', 'user-star', 'user-heart'],
+  profiles: ['user-card', 'profile', 'profile-card', 'id-card', 'badge-check', 'account', 'account-circle'],
+  roles: ['admin', 'moderator', 'employee', 'customer', 'guest', 'child', 'accessibility'],
+  calendars: ['calendar', 'calendar-days', 'calendar-week', 'calendar-month'],
+  'calendar-actions': ['calendar-plus', 'calendar-minus', 'calendar-check', 'calendar-x', 'calendar-search', 'calendar-edit', 'calendar-settings', 'calendar-lock', 'calendar-star'],
+  scheduling: ['calendar-clock', 'calendar-event', 'calendar-range', 'date', 'date-today', 'day', 'week', 'month', 'schedule', 'appointment', 'reminder'],
+  time: ['clock', 'clock-plus', 'clock-check', 'alarm', 'alarm-off', 'timer', 'stopwatch', 'history-clock'],
 };
 
 const directional = new Set([
@@ -55,7 +69,7 @@ const directional = new Set([
   'chevron-left', 'chevron-right', 'chevrons-left', 'chevrons-right',
   'corner-up-left', 'corner-up-right', 'corner-down-left', 'corner-down-right',
   'external-link', 'enter', 'exit',
-  'send', 'undo', 'redo',
+  'send', 'undo', 'redo', 'reply', 'forward',
 ]);
 
 const groupByName = new Map(Object.entries(groups).flatMap(([group, names]) => names.map((name) => [name, group])));
