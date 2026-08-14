@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { getIcon, iconGroups, iconNames, icons, renderIconSvg } from '../src/index.js';
-import { Admin, AlarmOff, ArrowLeft, Calendar, CalendarCheck, Copy, Download, File, FolderOpen, Fullscreen, Headset, Home, LayoutGrid, MailOpen, MessageDots, MicrophoneOff, Settings, SimurghIcon, Success, User, UserCheck, UserSettings, Verified } from '../src/react.js';
+import { Admin, AlarmOff, Analytics, Api, ArrowLeft, BarChart, BatteryCharging, Bug, Calendar, CalendarCheck, CameraOff, CartCheck, Checkout, Code, Copy, CreditCard, DeviceDesktop, DonutChart, Download, FaceId, File, Fingerprint, FolderOpen, Fullscreen, GitBranch, Globe, Headset, Home, LayoutGrid, LocationCheck, Lock, MailOpen, Map, MessageDots, MicrophoneOff, Monitor, Pause, Play, Podcast, Router, SecurityScan, Settings, ShoppingCart, SimurghIcon, Success, TargetChart, Train, User, UserCheck, UserSettings, Verified } from '../src/react.js';
 
 describe('navigation icon catalog', () => {
-  it('contains 250 unique icons grouped by functionality', () => {
-    expect(iconNames).toHaveLength(250);
-    expect(new Set(iconNames).size).toBe(250);
-    expect(Object.values(iconGroups).flat()).toHaveLength(250);
+  it('contains 474 unique icons grouped by functionality', () => {
+    expect(iconNames).toHaveLength(474);
+    expect(new Set(iconNames).size).toBe(474);
+    expect(Object.values(iconGroups).flat()).toHaveLength(474);
   });
 
   it('resolves icons and renders accessible SVG', () => {
@@ -44,5 +44,33 @@ describe('navigation icon catalog', () => {
     expect(Calendar.displayName).toBe('Calendar');
     expect(CalendarCheck.displayName).toBe('CalendarCheck');
     expect(AlarmOff.displayName).toBe('AlarmOff');
+    expect(Play.displayName).toBe('Play');
+    expect(Pause.displayName).toBe('Pause');
+    expect(CameraOff.displayName).toBe('CameraOff');
+    expect(Podcast.displayName).toBe('Podcast');
+    expect(ShoppingCart.displayName).toBe('ShoppingCart');
+    expect(CartCheck.displayName).toBe('CartCheck');
+    expect(CreditCard.displayName).toBe('CreditCard');
+    expect(Checkout.displayName).toBe('Checkout');
+    expect(BarChart.displayName).toBe('BarChart');
+    expect(DonutChart.displayName).toBe('DonutChart');
+    expect(Analytics.displayName).toBe('Analytics');
+    expect(TargetChart.displayName).toBe('TargetChart');
+    expect(Monitor.displayName).toBe('Monitor');
+    expect(Router.displayName).toBe('Router');
+    expect(BatteryCharging.displayName).toBe('BatteryCharging');
+    expect(DeviceDesktop.displayName).toBe('DeviceDesktop');
+    expect(Lock.displayName).toBe('Lock');
+    expect(Fingerprint.displayName).toBe('Fingerprint');
+    expect(FaceId.displayName).toBe('FaceId');
+    expect(SecurityScan.displayName).toBe('SecurityScan');
+    expect(Map.displayName).toBe('Map');
+    expect(LocationCheck.displayName).toBe('LocationCheck');
+    expect(Globe.displayName).toBe('Globe');
+    expect(Train.displayName).toBe('Train');
+    expect(Code.displayName).toBe('Code');
+    expect(GitBranch.displayName).toBe('GitBranch');
+    expect(Bug.displayName).toBe('Bug');
+    expect(Api.displayName).toBe('Api');
   });
 });
