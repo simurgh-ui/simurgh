@@ -168,6 +168,24 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/debug@4.1.13)(@types/node@24.13.3)(jsdom@27.4.0(supports-color@7.2.0))(supports-color@7.2.0)(yaml@2.9.0)
 
+  packages/icons:
+    devDependencies:
+      '@angular/core':
+        specifier: ^20.3.27
+        version: 20.3.27(@angular/compiler@20.3.27)(rxjs@7.8.2)(zone.js@0.15.1)
+      '@types/react':
+        specifier: ^19.2.18
+        version: 19.2.18
+      react:
+        specifier: ^19.2.8
+        version: 19.2.8
+      vitest:
+        specifier: ^3.2.7
+        version: 3.2.7(@types/debug@4.1.13)(@types/node@24.13.3)(jsdom@27.4.0(supports-color@7.2.0))(supports-color@7.2.0)(yaml@2.9.0)
+      vue:
+        specifier: ^3.5.41
+        version: 3.5.41(typescript@5.9.3)
+
   packages/motion:
     devDependencies:
       '@angular/core':
