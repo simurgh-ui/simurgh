@@ -1,0 +1,2 @@
+import type { IconDefinition } from '../types.js';
+export const definition = {"name":"play","group":"playback","direction":"neutral","transform":"translate(0.412 0.112)","paths":[{"d":" M 44.27 43.98 C 44.71 40.01 49.72 38.13 52.87 40.43 C 67.26 49.31 81.60 58.27 96.04 67.08 C 99.81 68.94 100.11 75.31 96.14 77.13 C 81.10 86.06 66.32 95.42 51.20 104.22 C 47.97 104.91 44.04 102.64 44.21 99.07 C 44.15 80.71 44.19 62.34 44.27 43.98 Z","fill":"#051836","opacity":1}],"viewBox":"0 0 144 144"} as const satisfies IconDefinition;

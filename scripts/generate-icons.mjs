@@ -1,4 +1,4 @@
-import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { basename, resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
@@ -7,6 +7,10 @@ const output = resolve(root, 'packages/icons/src/icons.generated.ts');
 const reactOutput = resolve(root, 'packages/icons/src/react-icons.generated.ts');
 const vueOutput = resolve(root, 'packages/icons/src/vue-icons.generated.ts');
 const angularOutput = resolve(root, 'packages/icons/src/angular-icons.generated.ts');
+const definitionsRoot = resolve(root, 'packages/icons/src/definitions');
+const reactRoot = resolve(root, 'packages/icons/src/react-icons');
+const vueRoot = resolve(root, 'packages/icons/src/vue-icons');
+const angularRoot = resolve(root, 'packages/icons/src/angular-icons');
 
 const groups = {
   landmarks: ['home', 'dashboard', 'route', 'compass'],
@@ -103,8 +107,7 @@ const directional = new Set([
 const groupByName = new Map(Object.entries(groups).flatMap(([group, names]) => names.map((name) => [name, group])));
 const files = (await readdir(svgRoot)).filter((file) => file.endsWith('.svg')).sort();
 
-const definitions = [];
-for (const file of files) {
+const definitions = await Promise.all(files.map(async (file) => {
   const name = basename(file, '.svg');
   const group = groupByName.get(name);
   if (!group) throw new Error(`Missing functional group for ${name}`);
@@ -117,19 +120,68 @@ for (const file of files) {
     if (!d || !fill) throw new Error(`Invalid path in ${file}`);
     return { d, fill, ...(opacity ? { opacity: Number(opacity) } : {}) };
   });
-  definitions.push({ name, group, direction: directional.has(name) ? 'directional' : 'neutral', transform, paths });
-}
+  return { name, group, direction: directional.has(name) ? 'directional' : 'neutral', transform, paths };
+}));
 
 const q = JSON.stringify;
 const names = definitions.map(({ name }) => name);
+const pascal = (name) => name.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('');
+const definitionLiteral = (icon) => JSON.stringify({ ...icon, viewBox: '0 0 144 144' });
+
+for (const directory of [definitionsRoot, reactRoot, vueRoot, angularRoot]) {
+  await rm(directory, { recursive: true, force: true });
+  await mkdir(directory, { recursive: true });
+}
+
+await Promise.all(definitions.map(async (icon) => {
+  const className = pascal(icon.name);
+  await writeFile(resolve(definitionsRoot, `${icon.name}.ts`), [
+    "import type { IconDefinition } from '../types.js';",
+    `export const definition = ${definitionLiteral(icon)} as const satisfies IconDefinition;`,
+    '',
+  ].join('\n'));
+  await writeFile(resolve(reactRoot, `${icon.name}.tsx`), [
+    "import { createIconComponent } from '../react-base.js';",
+    `import { definition } from '../definitions/${icon.name}.js';`,
+    `export const ${className} = /* @__PURE__ */ createIconComponent(definition, '${className}');`,
+    '',
+  ].join('\n'));
+  await writeFile(resolve(vueRoot, `${icon.name}.ts`), [
+    "import { createIconComponent } from '../vue-base.js';",
+    `import { definition } from '../definitions/${icon.name}.js';`,
+    `export const ${className} = /* @__PURE__ */ createIconComponent(definition, '${className}');`,
+    '',
+  ].join('\n'));
+  await writeFile(resolve(angularRoot, `${icon.name}.ts`), [
+    "import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';",
+    `import { definition } from '../definitions/${icon.name}.js';`,
+    "import type { IconDefinition } from '../types.js';",
+    `@Component({ selector: 'simurgh-${icon.name}-icon', standalone: true, changeDetection: ChangeDetectionStrategy.OnPush,`,
+    '  template: `<svg [attr.width]="size()" [attr.height]="size()" [attr.viewBox]="icon.viewBox"',
+    "    [attr.role]=\"title() ? 'img' : null\" [attr.aria-hidden]=\"title() ? null : 'true'\"",
+    '    [attr.aria-label]="title() || null" focusable="false"><g [attr.transform]="transform()">',
+    '    @for (path of icon.paths; track $index) {<path [attr.d]="path.d" [attr.fill]="path.fill" [attr.opacity]="path.opacity ?? null" />}',
+    '    </g></svg>` })',
+    `export class ${className} {`,
+    '  readonly size = input<number | string>(24); readonly title = input<string>();',
+    "  readonly direction = input<'ltr' | 'rtl'>('ltr'); readonly mirrorInRtl = input(true);",
+    '  readonly icon: IconDefinition = definition;',
+    "  readonly transform = computed(() => this.mirrorInRtl() && this.direction() === 'rtl' && this.icon.direction === 'directional'",
+    '    ? `translate(144 0) scale(-1 1) ${this.icon.transform}` : this.icon.transform);',
+    '}',
+    '',
+  ].join('\n'));
+}));
+
 const lines = [
   "import type { IconDefinition, IconGroup, IconRenderOptions } from './types.js';",
+  ...definitions.map((icon) => `import { definition as ${pascal(icon.name)}Definition } from './definitions/${icon.name}.js';`),
   '',
   `export const iconNames = ${JSON.stringify(names)} as const;`,
   'export type IconName = (typeof iconNames)[number];',
   '',
   'export const icons = {',
-  ...definitions.map((icon) => `  ${q(icon.name)}: ${JSON.stringify({ ...icon, viewBox: '0 0 144 144' })},`),
+  ...definitions.map((icon) => `  ${q(icon.name)}: ${pascal(icon.name)}Definition,`),
   '} as const satisfies Record<IconName, IconDefinition>;',
   '',
   `export const iconGroups = ${JSON.stringify(groups, null, 2)} as const satisfies Record<IconGroup, readonly IconName[]>;`,
@@ -152,39 +204,18 @@ const lines = [
   '}',
 ];
 
-await mkdir(resolve(root, 'packages/icons/src'), { recursive: true });
 await writeFile(output, `${lines.join('\n')}\n`);
-const pascal = (name) => name.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('');
-const definitionLiteral = (icon) => JSON.stringify({ ...icon, viewBox: '0 0 144 144' });
-
 await writeFile(reactOutput, [
-  "import { createIconComponent } from './react-base.js';",
-  "import type { IconDefinition } from './types.js';",
-  '',
-  ...definitions.map((icon) => `export const ${pascal(icon.name)} = /* @__PURE__ */ createIconComponent(${definitionLiteral(icon)} satisfies IconDefinition, '${pascal(icon.name)}');`),
+  ...definitions.map((icon) => `export { ${pascal(icon.name)} } from './react-icons/${icon.name}.js';`),
   '',
 ].join('\n'));
 
 await writeFile(vueOutput, [
-  "import { createIconComponent } from './vue-base.js';",
-  "import type { IconDefinition } from './types.js';",
-  '',
-  ...definitions.map((icon) => `export const ${pascal(icon.name)} = /* @__PURE__ */ createIconComponent(${definitionLiteral(icon)} satisfies IconDefinition, '${pascal(icon.name)}');`),
+  ...definitions.map((icon) => `export { ${pascal(icon.name)} } from './vue-icons/${icon.name}.js';`),
   '',
 ].join('\n'));
 
 await writeFile(angularOutput, [
-  "import { ChangeDetectionStrategy, Component, input } from '@angular/core';",
-  "import { SimurghIcon } from './angular-base.js';",
-  '',
-  ...definitions.flatMap((icon) => {
-    const className = pascal(icon.name);
-    return [
-      `@Component({ selector: 'simurgh-${icon.name}-icon', standalone: true, imports: [SimurghIcon], changeDetection: ChangeDetectionStrategy.OnPush,`,
-      `  template: \`<simurgh-icon name="${icon.name}" [size]="size()" [title]="title()" [direction]="direction()" [mirrorInRtl]="mirrorInRtl()" />\` })`,
-      `export class ${className} { readonly size = input<number | string>(24); readonly title = input<string>(); readonly direction = input<'ltr' | 'rtl'>('ltr'); readonly mirrorInRtl = input(true); }`,
-      '',
-    ];
-  }),
+  ...definitions.map((icon) => `export { ${pascal(icon.name)} } from './angular-icons/${icon.name}.js';`),
 ].join('\n'));
 console.log(`Generated ${definitions.length} icon definitions`);

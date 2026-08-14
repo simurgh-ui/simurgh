@@ -1,12 +1,21 @@
+import { readdir } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
-import { getIcon, iconGroups, iconNames, icons, renderIconSvg } from '../src/index.js';
-import { Admin, AlarmOff, Analytics, Api, ArrowLeft, BarChart, BatteryCharging, Bug, Calendar, CalendarCheck, CameraOff, CartCheck, Checkout, Code, Copy, CreditCard, DeviceDesktop, DonutChart, Download, FaceId, File, Fingerprint, FolderOpen, Fullscreen, GitBranch, Globe, Headset, Home, LayoutGrid, LocationCheck, Lock, MailOpen, Map, MessageDots, MicrophoneOff, Monitor, Pause, Play, Podcast, Router, SecurityScan, Settings, ShoppingCart, SimurghIcon, Success, TargetChart, Train, User, UserCheck, UserSettings, Verified } from '../src/react.js';
+import { getIcon, iconGroups, iconNames, icons, renderIconSvg } from '../src/catalog.js';
+import { SimurghIcon } from '../src/react-dynamic.js';
+import { Admin, AlarmOff, Analytics, Api, ArrowLeft, BarChart, BatteryCharging, Bug, Calendar, CalendarCheck, CameraOff, CartCheck, Checkout, Code, Copy, CreditCard, DeviceDesktop, DonutChart, Download, FaceId, File, Fingerprint, FolderOpen, Fullscreen, GitBranch, Globe, Headset, Home, LayoutGrid, LocationCheck, Lock, MailOpen, Map, MessageDots, MicrophoneOff, Monitor, Pause, Play, Podcast, Router, SecurityScan, Settings, ShoppingCart, Success, TargetChart, Train, User, UserCheck, UserSettings, Verified } from '../src/react.js';
 
 describe('navigation icon catalog', () => {
   it('contains 474 unique icons grouped by functionality', () => {
     expect(iconNames).toHaveLength(474);
     expect(new Set(iconNames).size).toBe(474);
     expect(Object.values(iconGroups).flat()).toHaveLength(474);
+  });
+
+  it('generates one definition and framework module for every SVG', async () => {
+    const sourceRoot = new URL('../src/', import.meta.url);
+    const counts = await Promise.all(['definitions', 'react-icons', 'vue-icons', 'angular-icons']
+      .map(async (directory) => (await readdir(new URL(`${directory}/`, sourceRoot))).length));
+    expect(counts).toEqual([474, 474, 474, 474]);
   });
 
   it('resolves icons and renders accessible SVG', () => {

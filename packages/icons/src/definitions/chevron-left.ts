@@ -1,0 +1,2 @@
+import type { IconDefinition } from '../types.js';
+export const definition = {"name":"chevron-left","group":"chevrons","direction":"directional","transform":"translate(-3.424 -1.189)","paths":[{"d":" M 84.22 44.14 C 88.22 40.40 95.11 46.40 91.99 50.88 C 84.85 58.36 77.48 65.63 70.47 73.22 C 77.52 80.64 84.76 87.89 91.82 95.30 C 94.80 99.48 89.47 104.80 85.02 103.08 C 76.49 94.93 68.60 86.13 60.10 77.95 C 57.44 75.83 57.41 71.22 59.92 68.98 C 67.96 60.64 75.89 52.19 84.22 44.14 Z","fill":"#03173b","opacity":1}],"viewBox":"0 0 144 144"} as const satisfies IconDefinition;

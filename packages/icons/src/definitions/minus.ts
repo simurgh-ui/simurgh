@@ -1,0 +1,2 @@
+import type { IconDefinition } from '../types.js';
+export const definition = {"name":"minus","group":"action-basics","direction":"neutral","transform":"translate(0.584 0.548)","paths":[{"d":" M 36.33 64.43 C 59.24 64.15 82.16 64.44 105.07 64.34 C 108.85 63.94 112.27 67.22 112.27 70.96 C 112.69 75.00 109.11 78.92 105.01 78.58 C 82.38 78.59 59.74 78.63 37.11 78.52 C 33.59 78.61 30.60 75.37 30.56 71.93 C 30.21 68.48 32.79 64.80 36.33 64.43 Z","fill":"#031332","opacity":1}],"viewBox":"0 0 144 144"} as const satisfies IconDefinition;

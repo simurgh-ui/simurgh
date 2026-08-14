@@ -5,16 +5,24 @@
   "sideEffects": false,
   "exports": {
     ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./catalog": { "types": "./dist/catalog.d.ts", "import": "./dist/catalog.js" },
     "./react": { "types": "./dist/react.d.ts", "import": "./dist/react.js" },
+    "./react/dynamic": { "types": "./dist/react-dynamic.d.ts", "import": "./dist/react-dynamic.js" },
+    "./react/*": { "types": "./dist/react-icons/*.d.ts", "import": "./dist/react-icons/*.js" },
     "./vue": { "types": "./dist/vue.d.ts", "import": "./dist/vue.js" },
+    "./vue/dynamic": { "types": "./dist/vue-dynamic.d.ts", "import": "./dist/vue-dynamic.js" },
+    "./vue/*": { "types": "./dist/vue-icons/*.d.ts", "import": "./dist/vue-icons/*.js" },
     "./angular": { "types": "./dist/angular.d.ts", "default": "./dist/angular.js" },
+    "./angular/dynamic": { "types": "./dist/angular-dynamic.d.ts", "default": "./dist/angular-dynamic.js" },
+    "./angular/*": { "types": "./dist/angular-icons/*.d.ts", "default": "./dist/angular-icons/*.js" },
     "./svg/*": "./svg/*.svg"
   },
-  "files": ["dist", "svg", "README.md"],
+  "files": ["dist", "!dist/**/*.map", "svg", "README.md"],
   "scripts": {
     "generate": "node ../../scripts/generate-icons.mjs",
     "build": "pnpm generate && tsc -p tsconfig.json",
-    "test": "vitest run",
+    "test": "vitest run && node ../../scripts/check-icons-bundle-size.mjs",
+    "size": "node ../../scripts/check-icons-bundle-size.mjs",
     "typecheck": "pnpm generate && tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test"
   },

@@ -1,0 +1,2 @@
+import type { IconDefinition } from '../types.js';
+export const definition = {"name":"chevron-down","group":"chevrons","direction":"neutral","transform":"translate(0.865 -1.095)","paths":[{"d":" M 41.88 64.12 C 38.50 60.17 43.49 54.40 48.11 56.02 C 56.11 63.18 63.30 71.22 71.21 78.50 C 78.95 71.19 86.14 63.27 94.12 56.22 C 98.52 54.04 103.41 59.61 100.74 63.74 C 92.11 72.41 83.48 81.13 74.64 89.62 C 71.52 91.38 67.68 90.21 65.43 87.62 C 57.50 79.87 49.67 72.01 41.88 64.12 Z","fill":"#03173b","opacity":1}],"viewBox":"0 0 144 144"} as const satisfies IconDefinition;

@@ -1,0 +1,2 @@
+import type { IconDefinition } from '../types.js';
+export const definition = {"name":"online","group":"presence","direction":"neutral","transform":"translate(0.582 0.745)","paths":[{"d":" M 69.31 47.34 C 80.14 46.10 90.94 53.40 94.31 63.68 C 96.96 72.13 94.98 82.19 88.49 88.43 C 82.98 94.05 74.57 96.35 66.90 94.87 C 60.13 93.68 54.02 89.29 50.65 83.31 C 46.77 76.76 46.33 68.33 49.43 61.39 C 53.08 53.73 60.75 47.95 69.31 47.34 Z","fill":"#01ac97","opacity":1}],"viewBox":"0 0 144 144"} as const satisfies IconDefinition;

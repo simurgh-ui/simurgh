@@ -1,5 +1,4 @@
 import { forwardRef, type SVGAttributes } from 'react';
-import { getIcon, type IconName } from './icons.generated.js';
 import type { IconDefinition } from './types.js';
 
 export interface IconProps extends SVGAttributes<SVGSVGElement> {
@@ -7,10 +6,6 @@ export interface IconProps extends SVGAttributes<SVGSVGElement> {
   title?: string;
   direction?: 'ltr' | 'rtl';
   mirrorInRtl?: boolean;
-}
-
-export interface SimurghIconProps extends Omit<IconProps, 'name'> {
-  name: IconName;
 }
 
 export function createIconComponent(definition: IconDefinition, displayName: string) {
@@ -31,10 +26,3 @@ export function createIconComponent(definition: IconDefinition, displayName: str
   Component.displayName = displayName;
   return Component;
 }
-
-export const SimurghIcon = /* @__PURE__ */ forwardRef<SVGSVGElement, SimurghIconProps>(
-  function SimurghIcon({ name, ...props }, ref) {
-    const Component = createIconComponent(getIcon(name), 'SimurghIcon');
-    return <Component ref={ref} {...props} />;
-  },
-);
