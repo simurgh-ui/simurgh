@@ -450,7 +450,9 @@ budgets remain fixed.
       disabled states, and high-contrast treatments do not require path-level overrides.
 - [ ] Audit every icon at 16, 20, 24, and 32 pixels for optical centering, recognizability, detail
       loss, apparent weight, and alignment beside text; add visual regression coverage for failures.
-- [ ] Define a consistent variant policy for filled, circle, alternate, and rounded forms, including
+  - [x] Add a 1,896-render regression gate covering empty output, extreme imbalance, sparse artwork,
+        and collapsed bounds across all four target sizes.
+- [x] Define a consistent variant policy for filled, circle, alternate, and rounded forms, including
       naming rules and guidance for when each variant should exist.
 - [ ] Validate icon and adjacent-label contrast in light, dark, forced-colors, disabled, selected,
       destructive, success, and warning contexts.

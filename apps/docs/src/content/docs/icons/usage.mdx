@@ -109,6 +109,20 @@ details rather than stable styling hooks.
 
 ## Variant naming policy
 
+The unsuffixed name is the default, broadly applicable metaphor. Suffixes describe a stable visual
+or container distinction, never a temporary interaction state:
+
+- `-filled` is the solid counterpart of the default form and may indicate persistent selection.
+- `-circle` adds a meaningful circular status container; it is not merely a heavier version.
+- `-round` describes a materially rounded object rather than routine corner-radius variation.
+- `-alt` is reserved for a genuinely different conventional metaphor when a more semantic name is
+  unavailable.
+
+Use CSS color or `colorMode` for hover, pressed, disabled, selected, and destructive treatments.
+Do not create icon-name variants for transient UI states.
+
+## Variant naming policy
+
 Use the unsuffixed name for the default, broadly applicable metaphor. Suffixes describe a stable
 visual or container distinction rather than a temporary interaction state:
 
