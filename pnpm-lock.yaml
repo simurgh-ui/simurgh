@@ -77,6 +77,9 @@ importers:
       '@simurgh-ui/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@simurgh-ui/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@simurgh-ui/motion':
         specifier: workspace:*
         version: link:../../packages/motion
