@@ -1,5 +1,4 @@
 import {
-  iconGroups,
   iconNames,
   icons,
   type IconName,
