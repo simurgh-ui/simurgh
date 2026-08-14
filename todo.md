@@ -370,3 +370,105 @@ per-component documentation" as example coverage, not as complete consumer docum
 - [x] Run a first-time-user comprehension test covering: identify whether a component is styled,
       select the correct primitive, preview its real default output, install it, choose a density,
       customize semantic tokens, and verify focus/RTL/dark behavior without reading source code.
+
+## Icons bundle-size optimization
+
+Baseline was captured at 128 icons; the implemented catalog now contains 474. Budgets for complete
+catalogs and package weight therefore scale with the generated asset count, while the per-icon
+budgets remain fixed.
+
+### P0: restore component-level tree shaking
+
+- [x] Generate one definition module per icon instead of embedding the complete catalog or repeated
+      definition literals in each framework entry.
+- [x] Generate one framework component module per icon and expose stable subpaths such as
+      `@simurgh-ui/icons/react/home`, `@simurgh-ui/icons/vue/home`, and
+      `@simurgh-ui/icons/angular/home`.
+- [x] Make named Angular icon imports tree-shake to a single definition and renderer; keep a named
+      icon below 2 KiB gzip with `@angular/core` externalized.
+- [x] Make named React and Vue components import their shared per-icon definition rather than
+      embedding a second copy of the icon data.
+- [x] Preserve a single named React and Vue icon below 1.5 KiB gzip and three named icons below
+      3 KiB gzip after restructuring the generated output.
+
+### P1: separate static and dynamic catalogs
+
+- [x] Move `SimurghIcon`, `icons`, `iconNames`, `iconGroups`, `getIcon`, and `renderIconSvg` into
+      explicit dynamic/catalog entry points so static framework entries do not retain all 474
+      definitions.
+- [x] Keep default React, Vue, and Angular entries static-only, with dynamic lookup available from
+      documented subpaths such as `@simurgh-ui/icons/react/dynamic`.
+- [x] Avoid publishing two complete catalog representations in React and Vue; keep complete-entry
+      budgets proportional to the 474-icon catalog until per-icon lazy loading is introduced.
+- [x] Document that dynamic name-based lookup retains the full catalog and recommend named imports
+      for application UI.
+
+### P1: package and regression budgets
+
+- [x] Exclude `dist/**/*.map` from the published icons package, while retaining source maps in local
+      build artifacts when useful for development.
+- [x] Review whether raw SVG files should remain in the primary package or move to a separate
+      export/package so framework consumers do not install unused assets.
+- [x] Keep published package weight below 6 MiB unpacked for the 474-icon catalog and track gzip and
+      Brotli size alongside unpacked size.
+- [x] Add enforced minified, gzip, and Brotli budgets for one named icon, three named icons, dynamic
+      catalogs, complete framework entries, raw SVG imports, and published package weight.
+- [x] Add a generator integrity test ensuring every SVG has exactly one definition module and one
+      component export per supported framework without duplicated catalog data.
+
+## Icons UI/UX research follow-up
+
+### P0: catalog trust and release coherence
+
+- [ ] Derive the documented icon count from the generated catalog so the package README, docs,
+      tests, and published assets cannot disagree as the collection grows.
+- [ ] Add a release integrity check that every documented icon name exists in the published package
+      and every published icon is represented in the catalog.
+
+### P1: discovery and selection
+
+- [ ] Add persistent catalog search across names, aliases, keywords, categories, and intended uses;
+      include common synonym mappings such as `delete` to `trash` and `back` to `arrow-left`.
+- [ ] Consolidate the 81 implementation groups into approximately 10–15 user-facing categories,
+      while retaining granular groups as optional filters.
+- [ ] Add category and visual-style filters, a result count, an empty state, and keyboard-accessible
+      search and filtering behavior.
+- [ ] Make every catalog card copy the kebab-case name with visible and announced confirmation, and
+      provide actions for copying React, Vue, Angular, and SVG usage snippets.
+- [ ] Add comparison guidance for easily confused families such as message variants, user/profile
+      variants, maps/location, files/folders, and status shapes.
+- [ ] Extend icon metadata with aliases, search keywords, intended meanings, discouraged meanings,
+      and variant-family relationships; validate metadata completeness in CI.
+
+### P1: visual adaptability and consistency
+
+- [ ] Add a themeable `currentColor` rendering mode for routine interface use while preserving the
+      authored duotone treatment as an explicit visual mode.
+- [ ] Define stable CSS variables for duotone primary and secondary fills so product themes,
+      disabled states, and high-contrast treatments do not require path-level overrides.
+- [ ] Audit every icon at 16, 20, 24, and 32 pixels for optical centering, recognizability, detail
+      loss, apparent weight, and alignment beside text; add visual regression coverage for failures.
+- [ ] Define a consistent variant policy for filled, circle, alternate, and rounded forms, including
+      naming rules and guidance for when each variant should exist.
+- [ ] Validate icon and adjacent-label contrast in light, dark, forced-colors, disabled, selected,
+      destructive, success, and warning contexts.
+
+### P1: RTL, accessibility, and framework parity
+
+- [ ] Infer direction from the nearest `dir` context or CSS `:dir()` state by default, while keeping
+      the explicit direction property as an override for portals and physical-direction meanings.
+- [ ] Audit directional metadata for navigation, editing, communication, media, charts, maps, and
+      physical-direction exceptions in both LTR and RTL.
+- [ ] Give Angular consumers parity with React and Vue for root SVG classes, styles, data attributes,
+      ARIA attributes, and reusable presentation hooks.
+- [ ] Add catalog examples for decorative icons, informative icons, and named icon-only controls;
+      test accessible names, hidden decorative SVGs, focus behavior, and duplicate announcements.
+
+### P2: evidence and adoption
+
+- [ ] Publish measured examples comparing named, dynamic, category-level, and raw-SVG imports,
+      including their tree-shaking and bundle-size consequences.
+- [ ] Run a first-time-user study covering: find an icon from a concept, compare similar candidates,
+      copy the correct framework import, theme it, label an icon-only control, and verify RTL.
+- [ ] Track search success rate, time to first correct icon, zero-result queries, copy success, and
+      mistaken icon substitutions to guide taxonomy and alias improvements.
