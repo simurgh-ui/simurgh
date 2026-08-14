@@ -106,9 +106,11 @@ for (const [route, page] of pages) {
     const key = subpath ? `./${subpath}` : '.';
     let target = packageJson.exports[key];
     if (!target && subpath) {
-      const wildcard = Object.entries(packageJson.exports).find(([pattern]) =>
-        pattern.includes('*'),
-      );
+      const wildcard = Object.entries(packageJson.exports).find(([pattern]) => {
+        if (!pattern.includes('*')) return false;
+        const [prefix, suffix] = pattern.split('*');
+        return key.startsWith(prefix) && key.endsWith(suffix);
+      });
       if (wildcard) {
         const [pattern, value] = wildcard;
         const [prefix, suffix] = pattern.split('*');

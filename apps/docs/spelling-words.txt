@@ -44,6 +44,7 @@ addons
 adds
 adjacent
 adjusted
+adjustment
 adopt
 adopted
 adopting
@@ -111,6 +112,7 @@ apis
 appear
 appearance
 appears
+applicable
 application
 application-host
 application-owned
@@ -248,6 +250,7 @@ briefly
 brittle
 broad
 broader
+broadly
 browser
 browser-delivered
 browser-native
@@ -310,6 +313,7 @@ case
 cases
 catalog
 catalog's
+categories
 causal
 causality
 cause
@@ -351,6 +355,7 @@ chromium
 chunk
 ci
 ci-validated
+circular
 claims
 clamped
 clarity
@@ -515,6 +520,7 @@ convenience
 convenient
 conventional
 conventions
+conversation
 convert
 conveys
 cookies
@@ -529,12 +535,14 @@ copy
 copy-link
 core
 corner
+corner-radius
 correct
 corrected
 correctly
 corresponding
 cost
 count
+counterpart
 counts
 cover
 coverage
@@ -597,6 +605,7 @@ definition
 definitions
 delay
 delays
+delete
 deleting
 deliberate
 deliberately
@@ -629,6 +638,7 @@ detail
 detailed
 details
 detect
+detected
 detection
 detects
 determinate
@@ -683,6 +693,7 @@ displays
 disposable
 disruptive
 distinct
+distinction
 distinguish
 distinguishes
 divider
@@ -710,6 +721,7 @@ drop
 drop-zone
 dropdown
 dropped
+duotone
 duplicate
 duplicated
 duration
@@ -856,6 +868,7 @@ filename
 filenames
 files
 fill
+fills
 filter
 filtered
 filtered-no-results
@@ -905,6 +918,7 @@ follows
 font
 for
 forced
+forced-color
 forced-colors
 forcing
 foreground
@@ -972,7 +986,6 @@ green
 grid
 grounded
 group
-grouped
 grouping
 groups
 grow
@@ -998,6 +1011,7 @@ header
 heading
 headings
 headless
+heavier
 heavily
 height
 help
@@ -1033,11 +1047,15 @@ hydrated
 hydrating
 hydration
 icon
+icon-name
 icon-only
 icon's
 icongallery
 icongallery.astro
+iconnames
+iconnames.length
 icons
+icons.generated
 id
 identical
 identifiable
@@ -1076,6 +1094,7 @@ include
 includes
 including
 inconsistent
+increase
 increasing
 increment
 increments
@@ -1083,6 +1102,7 @@ independent
 independently
 indeterminate
 indexes
+indicate
 indicator
 indicators
 individual
@@ -1288,6 +1308,7 @@ match
 matches
 matching
 material
+materially
 matrix
 matter
 max
@@ -1309,6 +1330,7 @@ merge
 message
 messages
 metadata
+metaphor
 meter
 method
 methods
@@ -1489,6 +1511,7 @@ otherwise
 otp
 out
 outcome
+outlined
 output
 outputs
 outside
@@ -1537,7 +1560,6 @@ participates
 particular
 partners
 parts
-pascalcase
 pass
 passed
 password
@@ -1608,11 +1630,13 @@ portal
 portalled
 portals
 porting
+position
 positional
 positioned
 positioning
 possible
 pre-release
+precise
 predictable
 predictably
 prefer
@@ -1740,7 +1764,6 @@ receives
 receiving
 recipe
 recipes
-recolors
 recommended
 reconcile
 record
@@ -1768,6 +1791,7 @@ region
 regions
 registry
 registry's
+regression-tested
 reinforce
 related
 relationship
@@ -2024,6 +2048,7 @@ silently
 similar
 simple
 simplest
+simplify
 simurgh
 single
 single-date
@@ -2052,6 +2077,7 @@ smallest
 sms
 snippets
 so
+solid
 solve
 some
 sorting
@@ -2076,6 +2102,7 @@ spoken
 spread
 spreads
 square
+src
 ssr
 ssr-safe
 stabilization
@@ -2141,6 +2168,7 @@ successful
 successfully
 such
 suffix
+suffixes
 suitable
 suite
 suites
@@ -2269,6 +2297,7 @@ transfer
 transferred
 transfers
 transforms
+transient
 transition
 transitions
 translated
@@ -2277,9 +2306,11 @@ transparent
 transport
 trap
 trapping
+travel
 traverse
 treat
 treatment
+treatments
 tree
 tree's
 trigger
@@ -2329,6 +2360,7 @@ unnecessary
 unpressed
 unrecognized
 unrelated
+unsuffixed
 unsure
 unsynchronized
 until
@@ -2354,6 +2386,7 @@ used
 useful
 user
 user-visible
+user's
 users
 uses
 using
@@ -2371,6 +2404,7 @@ variable
 variables
 variant
 variants
+variation
 variations
 vectors
 vendor
@@ -2399,6 +2433,7 @@ vue's
 walkthrough
 want
 wants
+warning
 warrants
 was
 watcher
