@@ -82,6 +82,20 @@ export type IconGroup =
   | 'development-infrastructure';
 
 export type IconDirection = 'neutral' | 'directional';
+export type IconVisualStyle = 'single-color' | 'multicolor';
+export type IconUserCategory =
+  | 'navigation'
+  | 'actions'
+  | 'status'
+  | 'files'
+  | 'layout'
+  | 'communication'
+  | 'people'
+  | 'date-and-media'
+  | 'commerce'
+  | 'data-and-devices'
+  | 'security'
+  | 'maps-and-development';
 
 export interface IconPath {
   readonly d: string;
@@ -104,4 +118,15 @@ export interface IconRenderOptions {
   readonly class?: string;
   readonly direction?: 'ltr' | 'rtl';
   readonly mirrorInRtl?: boolean;
+  readonly colorMode?: 'duotone' | 'currentColor';
+}
+
+export interface IconMetadata {
+  readonly aliases: readonly string[];
+  readonly keywords: readonly string[];
+  readonly intendedUse: string;
+  readonly discouragedUse: string;
+  readonly userCategory: IconUserCategory;
+  readonly visualStyle: IconVisualStyle;
+  readonly variantFamily: string;
 }

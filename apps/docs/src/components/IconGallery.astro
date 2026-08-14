@@ -1,33 +1,83 @@
 ---
-import { iconGroups, renderIconSvg } from '../../../../packages/icons/src/index';
-import type { IconName } from '../../../../packages/icons/src/index';
+import { iconGroups, iconNames, renderIconSvg } from '../../../../packages/icons/src/icons.generated';
+import type { IconName } from '../../../../packages/icons/src/icons.generated';
+import { iconCategoryGroups, iconMetadata } from '../../../../packages/icons/src/metadata';
 
-const groups = Object.entries(iconGroups);
-const groupLabel = (group: string) =>
-  group.replaceAll('-', ' ').replace(/\b\w/gu, (letter) => letter.toUpperCase());
+const label = (value: string) =>
+  value.replaceAll('-', ' ').replace(/\b\w/gu, (letter) => letter.toUpperCase());
+
+const catalogIcons = (Object.entries(iconGroups) as [string, readonly IconName[]][]).flatMap(([group, names]) => names.map((name) => ({
+  name, group, category: iconMetadata[name].userCategory, style: iconMetadata[name].visualStyle,
+  search: `${name} ${iconMetadata[name].keywords.join(' ')} ${iconMetadata[name].intendedUse}`.toLowerCase(),
+})));
 ---
 
-<div class="icon-catalog">
-  {groups.map(([group, names]) => (
-    <section aria-labelledby={`icons-${group}`}>
-      <h2 id={`icons-${group}`}>{groupLabel(group)} <span>({names.length})</span></h2>
-      <ul>
-        {names.map((name: IconName) => (
-          <li>
-            <span class="icon" set:html={renderIconSvg(name, { size: 32 })} />
-            <code>{name}</code>
-          </li>
-        ))}
-      </ul>
-    </section>
-  ))}
+<div class="icon-catalog" data-icon-catalog>
+  <div class="catalog-tools" role="search" aria-label="Filter icon catalog">
+    <label><span>Search icons</span><input type="search" placeholder="Try delete, profile, back…" autocomplete="off" data-icon-search /></label>
+    <label><span>Category</span><select data-icon-category><option value="">All categories</option>{Object.keys(iconCategoryGroups).map((category) => <option value={category}>{label(category)}</option>)}</select></label>
+    <label><span>Visual style</span><select data-icon-style><option value="">All styles</option><option value="single-color">Single color</option><option value="multicolor">Multicolor</option></select></label>
+    <label><span>Copy format</span><select data-icon-format><option value="name">Icon name</option><option value="react">React import</option><option value="vue">Vue import</option><option value="angular">Angular import</option><option value="svg">SVG import</option></select></label>
+  </div>
+  <p class="catalog-status" aria-live="polite" data-icon-status>{iconNames.length} icons</p>
+  <ul class="catalog-grid">
+    {catalogIcons.map(({ name, group, category, style, search }) => (
+      <li data-icon-card data-name={name} data-category={category} data-style={style} data-search={search}>
+        <button type="button" class="icon-copy" data-copy-icon aria-label={`Copy ${name} icon name`}>
+          <span class="icon" set:html={renderIconSvg(name, { size: 32 })} />
+          <code>{name}</code><span class="group">{label(group)}</span><span class="copy-hint" aria-hidden="true">Copy</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+  <div class="catalog-empty" data-icon-empty hidden><strong>No matching icons</strong><p>Try a broader concept, another category, or the icon's visible object.</p><button type="button" data-clear-icon-filters>Clear filters</button></div>
 </div>
 
+<script>
+  const pascalCase = (name: string) => name.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+  document.querySelectorAll<HTMLElement>('[data-icon-catalog]').forEach((catalog) => {
+    const search = catalog.querySelector<HTMLInputElement>('[data-icon-search]');
+    const category = catalog.querySelector<HTMLSelectElement>('[data-icon-category]');
+    const style = catalog.querySelector<HTMLSelectElement>('[data-icon-style]');
+    const format = catalog.querySelector<HTMLSelectElement>('[data-icon-format]');
+    const status = catalog.querySelector<HTMLElement>('[data-icon-status]');
+    const empty = catalog.querySelector<HTMLElement>('[data-icon-empty]');
+    const cards = [...catalog.querySelectorAll<HTMLElement>('[data-icon-card]')];
+    if (!search || !category || !style || !format || !status || !empty) return;
+    const update = () => {
+      const query = search.value.trim().toLowerCase(); let visible = 0;
+      cards.forEach((card) => { card.hidden = !((!query || (card.dataset.search ?? '').includes(query)) && (!category.value || card.dataset.category === category.value) && (!style.value || card.dataset.style === style.value)); if (!card.hidden) visible += 1; });
+      status.textContent = `${visible} ${visible === 1 ? 'icon' : 'icons'}`; empty.hidden = visible !== 0;
+    };
+    search.addEventListener('input', update); category.addEventListener('change', update); style.addEventListener('change', update);
+    catalog.querySelector('[data-clear-icon-filters]')?.addEventListener('click', () => { search.value = ''; category.value = ''; style.value = ''; update(); search.focus(); });
+    catalog.addEventListener('click', async (event) => {
+      const button = (event.target as Element).closest<HTMLButtonElement>('[data-copy-icon]'); if (!button) return;
+      const name = button.closest<HTMLElement>('[data-icon-card]')?.dataset.name; if (!name) return;
+      const component = pascalCase(name); const snippets: Record<string, string> = { name, react: `import { ${component} } from '@simurgh-ui/icons/react';`, vue: `import { ${component} } from '@simurgh-ui/icons/vue';`, angular: `import { ${component} } from '@simurgh-ui/icons/angular';`, svg: `import ${component}Url from '@simurgh-ui/icons/svg/${name}';` };
+      try { await navigator.clipboard.writeText(snippets[format.value] ?? name); status.textContent = `Copied ${name} ${format.options[format.selectedIndex]?.text.toLowerCase() ?? ''}`; button.dataset.copied = 'true'; window.setTimeout(() => delete button.dataset.copied, 1600); }
+      catch { status.textContent = `Could not copy ${name}. Select the name and copy it manually.`; }
+    });
+  });
+</script>
+
 <style>
-  .icon-catalog section { margin-block: 2.5rem; }
-  .icon-catalog h2 span { color: var(--sl-color-gray-3); font-size: 0.75em; font-weight: 500; }
-  .icon-catalog ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 0.75rem; padding: 0; list-style: none; }
-  .icon-catalog li { display: grid; place-items: center; gap: 0.65rem; min-width: 0; padding: 1rem 0.5rem; border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem; background: var(--sl-color-gray-6); text-align: center; }
-  .icon-catalog .icon { display: inline-flex; }
-  .icon-catalog code { max-width: 100%; overflow-wrap: anywhere; font-size: 0.75rem; }
+  .catalog-tools { position: sticky; z-index: 2; top: .5rem; display: grid; grid-template-columns: minmax(12rem,2fr) repeat(3,minmax(8rem,1fr)); gap: .75rem; padding: .9rem; border: 1px solid var(--sl-color-gray-5); border-radius: .75rem; background: color-mix(in srgb,var(--sl-color-bg) 92%,transparent); box-shadow: 0 .5rem 1.5rem rgb(0 0 0/8%); backdrop-filter: blur(12px); }
+  .catalog-tools label { display: grid; gap: .35rem; color: var(--sl-color-gray-2); font-size: .75rem; font-weight: 650; }
+  .catalog-tools input, .catalog-tools select { min-width: 0; min-height: 2.75rem; padding-inline: .75rem; border: 1px solid var(--sl-color-gray-4); border-radius: .5rem; background: var(--sl-color-bg); color: var(--sl-color-text); font: inherit; font-size: .9rem; }
+  .catalog-tools :is(input,select):focus-visible, .icon-copy:focus-visible, .catalog-empty button:focus-visible { outline: 3px solid var(--sl-color-accent-high); outline-offset: 2px; }
+  .catalog-status { min-height: 1.5rem; margin-block: 1rem .75rem; color: var(--sl-color-gray-2); font-size: .9rem; }
+  .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(9rem,1fr)); gap: .75rem; padding: 0; list-style: none; }
+  .catalog-grid li[hidden] { display: none; }
+  .icon-copy { display: grid; place-items: center; gap: .5rem; width: 100%; min-height: 10rem; padding: 1rem .5rem .7rem; border: 1px solid var(--sl-color-gray-5); border-radius: .65rem; background: var(--sl-color-gray-6); color: var(--sl-color-text); text-align: center; cursor: copy; transition: border-color 120ms ease,background 120ms ease,transform 120ms ease; }
+  .icon-copy:hover { border-color: var(--sl-color-accent); background: var(--sl-color-gray-7); transform: translateY(-1px); }
+  .icon-copy[data-copied='true'] { border-color: var(--sl-color-accent-high); }
+  .icon { display: inline-flex; } .icon-copy code { max-width: 100%; overflow-wrap: anywhere; font-size: .75rem; }
+  .group, .copy-hint { color: var(--sl-color-gray-3); font-size: .68rem; } .copy-hint { opacity: 0; }
+  .icon-copy:is(:hover,:focus-visible) .copy-hint, .icon-copy[data-copied='true'] .copy-hint { opacity: 1; }
+  .icon-copy[data-copied='true'] .copy-hint { color: var(--sl-color-accent-high); } .icon-copy[data-copied='true'] .copy-hint::after { content: 'ed'; }
+  .catalog-empty { padding: 2.5rem 1rem; border: 1px dashed var(--sl-color-gray-4); border-radius: .75rem; text-align: center; } .catalog-empty p { color: var(--sl-color-gray-2); }
+  .catalog-empty button { min-height: 2.75rem; padding-inline: 1rem; border: 1px solid var(--sl-color-gray-4); border-radius: .5rem; background: var(--sl-color-gray-6); color: var(--sl-color-text); font: inherit; cursor: pointer; }
+  @media (max-width: 46rem) { .catalog-tools { position: static; grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .icon-copy { transition: none; } }
 </style>

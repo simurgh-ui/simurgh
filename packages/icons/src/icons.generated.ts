@@ -1606,6 +1606,6 @@ export function renderIconSvg(name: IconName, options: IconRenderOptions = {}): 
   const transform = mirror ? `translate(144 0) scale(-1 1) ${icon.transform}` : icon.transform;
   const accessibility = options.title ? `role="img" aria-label="${escape(options.title)}"` : 'aria-hidden="true"';
   const className = options.class ? ` class="${escape(options.class)}"` : '';
-  const paths = icon.paths.map((path) => `<path d="${path.d}" fill="${path.fill}"${path.opacity === undefined ? '' : ` opacity="${path.opacity}"`}/>`).join('');
+  const paths = icon.paths.map((path, index) => { const fill = options.colorMode === 'currentColor' ? 'currentColor' : index === 0 ? `var(--simurgh-icon-primary, ${path.fill})` : `var(--simurgh-icon-secondary, ${path.fill})`; return `<path d="${path.d}" fill="${fill}"${path.opacity === undefined ? '' : ` opacity="${path.opacity}"`}/>`; }).join('');
   return `<svg width="${escape(String(size))}" height="${escape(String(size))}" viewBox="${icon.viewBox}" ${accessibility} focusable="false"${className}><g transform="${transform}">${paths}</g></svg>`;
 }

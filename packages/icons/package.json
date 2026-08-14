@@ -21,7 +21,7 @@
   "scripts": {
     "generate": "node ../../scripts/generate-icons.mjs",
     "build": "pnpm generate && tsc -p tsconfig.json",
-    "test": "vitest run && node ../../scripts/check-icons-bundle-size.mjs",
+    "test": "node ../../scripts/check-icon-catalog-integrity.mjs && vitest run && node ../../scripts/check-icons-bundle-size.mjs",
     "size": "node ../../scripts/check-icons-bundle-size.mjs",
     "typecheck": "pnpm generate && tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test"

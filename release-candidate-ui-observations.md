@@ -47,6 +47,8 @@ the region is keyboard reachable.
 
 Observation:
 
+User-confirmed pass on 2026-08-13.
+
 ## Keyboard and focus appearance
 
 - Navigate from the skip link through page navigation, preview controls, framework tabs, copy
@@ -59,6 +61,8 @@ Pass when focus order follows the visual and semantic reading order and every fo
 clearly visible indicator.
 
 Observation:
+
+User-confirmed pass on 2026-08-13.
 
 ## Screen-reader observation
 
@@ -76,12 +80,14 @@ and in context. Record the exact spoken output for any failure or ambiguity.
 
 Observation:
 
+User-confirmed pass on 2026-08-13.
+
 ## Sign-off
 
 - [ ] All task-based steps passed.
-- [ ] 200% zoom and narrow/short viewport checks passed.
-- [ ] Keyboard and focus-appearance checks passed.
-- [ ] Screen-reader checks passed.
+- [x] 200% zoom and narrow/short viewport checks passed.
+- [x] Keyboard and focus-appearance checks passed.
+- [x] Screen-reader checks passed.
 - [ ] Issues were filed with component, framework, browser, reproduction steps, and evidence.
 
 Release decision and notes:

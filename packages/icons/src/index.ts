@@ -4,4 +4,7 @@ export type {
   IconGroup,
   IconPath,
   IconRenderOptions,
+  IconMetadata,
+  IconUserCategory,
+  IconVisualStyle,
 } from './types.js';

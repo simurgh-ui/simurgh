@@ -1,7 +1,7 @@
 # @simurgh-ui/icons
 
-Simurgh's functional icon catalog. The current release contains 474 navigation, action, status,
-file, and layout icons, organized into functional groups for browsing and dynamic selection.
+Simurgh's generated functional icon catalog for navigation, actions, status, files, and layout. The
+runtime catalog is the source of truth for the current icon count and functional groups.
 
 ```tsx
 import { SimurghIcon } from '@simurgh-ui/icons/react/dynamic';

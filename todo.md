@@ -306,15 +306,17 @@ per-component documentation" as example coverage, not as complete consumer docum
         dark-theme, mobile-menu, responsive-overflow, and RTL-guidance browser observations.
   - [x] Record React, Vue, and Angular adapter-host evidence for keyboard/RTL navigation, invalid-form
         focus and alerts, overlay focus restoration, Checkbox events, and form serialization.
-  - [ ] Record 200% zoom, narrow/short viewport, forced RTL/reduced-motion, light/dark contrast,
+  - [x] Record 200% zoom, narrow/short viewport, forced RTL/reduced-motion, light/dark contrast,
         focus-appearance, and assistive-technology observations in release-candidate applications.
   - [x] Automate the reflow-equivalent, short viewport, RTL, reduced-motion, focus-appearance, and
         light/dark WCAG A/AA checks against real documentation previews.
     - [x] Reconfirm in a release browser session that the Button preview remains mounted after a
           30-second dwell at 640 × 360 with no document-level horizontal overflow.
-  - [ ] Complete manual 200% browser-zoom and screen-reader observations in release candidates.
-    - Use `release-candidate-ui-observations.md` for the required browser, focus, and spoken-output
-      evidence.
+  - [x] Complete manual 200% browser-zoom observations in a release candidate.
+  - [x] Complete manual keyboard-navigation and focus-appearance observations in a release
+        candidate.
+  - [x] Complete manual screen-reader observations in release candidates.
+    - Use `release-candidate-ui-observations.md` for the required spoken-output evidence.
 
 ## Senior UI/UX review follow-up
 
@@ -420,31 +422,31 @@ budgets remain fixed.
 
 ### P0: catalog trust and release coherence
 
-- [ ] Derive the documented icon count from the generated catalog so the package README, docs,
+- [x] Derive the documented icon count from the generated catalog so the package README, docs,
       tests, and published assets cannot disagree as the collection grows.
-- [ ] Add a release integrity check that every documented icon name exists in the published package
+- [x] Add a release integrity check that every documented icon name exists in the published package
       and every published icon is represented in the catalog.
 
 ### P1: discovery and selection
 
-- [ ] Add persistent catalog search across names, aliases, keywords, categories, and intended uses;
+- [x] Add persistent catalog search across names, aliases, keywords, categories, and intended uses;
       include common synonym mappings such as `delete` to `trash` and `back` to `arrow-left`.
-- [ ] Consolidate the 81 implementation groups into approximately 10–15 user-facing categories,
+- [x] Consolidate the 81 implementation groups into approximately 10–15 user-facing categories,
       while retaining granular groups as optional filters.
-- [ ] Add category and visual-style filters, a result count, an empty state, and keyboard-accessible
+- [x] Add category and visual-style filters, a result count, an empty state, and keyboard-accessible
       search and filtering behavior.
-- [ ] Make every catalog card copy the kebab-case name with visible and announced confirmation, and
+- [x] Make every catalog card copy the kebab-case name with visible and announced confirmation, and
       provide actions for copying React, Vue, Angular, and SVG usage snippets.
-- [ ] Add comparison guidance for easily confused families such as message variants, user/profile
+- [x] Add comparison guidance for easily confused families such as message variants, user/profile
       variants, maps/location, files/folders, and status shapes.
-- [ ] Extend icon metadata with aliases, search keywords, intended meanings, discouraged meanings,
+- [x] Extend icon metadata with aliases, search keywords, intended meanings, discouraged meanings,
       and variant-family relationships; validate metadata completeness in CI.
 
 ### P1: visual adaptability and consistency
 
-- [ ] Add a themeable `currentColor` rendering mode for routine interface use while preserving the
+- [x] Add a themeable `currentColor` rendering mode for routine interface use while preserving the
       authored duotone treatment as an explicit visual mode.
-- [ ] Define stable CSS variables for duotone primary and secondary fills so product themes,
+- [x] Define stable CSS variables for duotone primary and secondary fills so product themes,
       disabled states, and high-contrast treatments do not require path-level overrides.
 - [ ] Audit every icon at 16, 20, 24, and 32 pixels for optical centering, recognizability, detail
       loss, apparent weight, and alignment beside text; add visual regression coverage for failures.

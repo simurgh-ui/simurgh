@@ -12,10 +12,12 @@ application data. Both forms render the same SVG definition.
 import { ArrowRight, SimurghIcon } from '@simurgh-ui/icons/react';
 
 export function Actions() {
-  return <>
-    <ArrowRight size={20} title="Next page" className="next-icon" />
-    <SimurghIcon name="settings" size="1.25em" aria-hidden="true" />
-  </>;
+  return (
+    <>
+      <ArrowRight size={20} title="Next page" className="next-icon" />
+      <SimurghIcon name="settings" size="1.25em" aria-hidden="true" />
+    </>
+  );
 }
 ```
 
@@ -58,13 +60,14 @@ Angular named components use selectors of the form `simurgh-<name>-icon`.
 
 ## Shared component props
 
-| Prop/input | Type | Default | Purpose |
-| --- | --- | --- | --- |
-| `name` | `IconName` | required on `SimurghIcon` | Selects a kebab-case icon. Named components omit it. |
-| `size` | `number \| string` | `24` | Sets SVG width and height. Numbers are pixels; strings may use CSS units. |
-| `title` | `string` | none | Gives a standalone informative icon an accessible name and `role="img"`. |
-| `direction` | `'ltr' \| 'rtl'` | `'ltr'` | Selects the direction used for automatic mirroring. |
-| `mirrorInRtl` | `boolean` | `true` | Disables automatic mirroring when a directional drawing represents a physical direction. |
+| Prop/input    | Type                          | Default                   | Purpose                                                                                  |
+| ------------- | ----------------------------- | ------------------------- | ---------------------------------------------------------------------------------------- |
+| `name`        | `IconName`                    | required on `SimurghIcon` | Selects a kebab-case icon. Named components omit it.                                     |
+| `size`        | `number \| string`            | `24`                      | Sets SVG width and height. Numbers are pixels; strings may use CSS units.                |
+| `title`       | `string`                      | none                      | Gives a standalone informative icon an accessible name and `role="img"`.                 |
+| `direction`   | `'ltr' \| 'rtl'`              | `'ltr'`                   | Selects the direction used for automatic mirroring.                                      |
+| `mirrorInRtl` | `boolean`                     | `true`                    | Disables automatic mirroring when a directional drawing represents a physical direction. |
+| `colorMode`   | `'duotone' \| 'currentColor'` | `'duotone'`               | Uses authored fills or inherits one interface color from CSS.                            |
 
 React and Vue additionally accept root SVG attributes such as `class`, `style`, `data-*`, and
 `aria-*`. Angular's base inputs are the API listed above; wrap it or style its descendant SVG when
@@ -72,29 +75,62 @@ you need a reusable Angular-specific presentation contract.
 
 ## Styling and sizing
 
-Icons contain their authored colors and do not use `currentColor`. Use `size` for routine sizing and
-CSS on the root SVG for layout, opacity, transforms, or state transitions. Do not assume setting
-`color` recolors the paths.
+Icons use their authored duotone colors by default. Set `colorMode="currentColor"` when an icon
+should inherit the foreground of a button, link, navigation item, or status treatment. Duotone mode
+also exposes `--simurgh-icon-primary` and `--simurgh-icon-secondary`, retaining each authored fill as
+the fallback. Use `size` for routine sizing and CSS on the root SVG for layout, opacity, transforms,
+or state transitions.
 
 ```css
 .toolbar-icon {
   flex: none;
   inline-size: 1.25rem;
   block-size: 1.25rem;
+  color: var(--action-foreground);
 }
 
 .toolbar-button:disabled .toolbar-icon {
   opacity: 0.45;
 }
+
+.brand-icon {
+  --simurgh-icon-primary: var(--brand-strong);
+  --simurgh-icon-secondary: var(--brand-accent);
+}
+```
+
+```tsx
+<ArrowRight colorMode="currentColor" className="toolbar-icon" aria-hidden="true" />
+<Verified className="brand-icon" title="Verified account" />
 ```
 
 Avoid overriding individual generated paths: their count, colors, and geometry are implementation
 details rather than stable styling hooks.
 
+## Variant naming policy
+
+Use the unsuffixed name for the default, broadly applicable metaphor. Suffixes describe a stable
+visual or container distinction rather than a temporary interaction state:
+
+- `-filled` is the solid counterpart of an outlined/default icon and is appropriate for persistent
+  selected states.
+- `-circle` adds a meaningful circular status container; do not use it merely to increase weight.
+- `-round` describes a materially rounded object, not ordinary corner-radius variation.
+- `-alt` is reserved for a genuinely different conventional metaphor when a more semantic name is
+  unavailable.
+
+Prefer CSS color or `colorMode` for hover, pressed, disabled, and destructive states. Do not create
+new icon-name variants for transient UI styling.
+
 ## Framework-neutral API
 
 ```ts
-import { getIcon, iconGroups, iconNames, renderIconSvg } from '@simurgh-ui/icons';
+import {
+  getIcon,
+  iconGroups,
+  iconNames,
+  renderIconSvg,
+} from '@simurgh-ui/icons';
 
 const definition = getIcon('home');
 const navigationNames = iconGroups.landmarks;

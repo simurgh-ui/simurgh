@@ -1,13 +1,34 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { getIcon, type IconName } from './icons.generated.js';
 
 @Component({
-  selector: 'simurgh-icon', standalone: true, changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<svg [attr.width]="size()" [attr.height]="size()" [attr.viewBox]="icon().viewBox"
-    [attr.role]="title() ? 'img' : null" [attr.aria-hidden]="title() ? null : 'true'"
-    [attr.aria-label]="title() || null" focusable="false"><g [attr.transform]="transform()">
-    @for (path of icon().paths; track $index) {<path [attr.d]="path.d" [attr.fill]="path.fill" [attr.opacity]="path.opacity ?? null" />}
-    </g></svg>`,
+  selector: 'simurgh-icon',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<svg
+    [attr.width]="size()"
+    [attr.height]="size()"
+    [attr.viewBox]="icon().viewBox"
+    [attr.role]="title() ? 'img' : null"
+    [attr.aria-hidden]="title() ? null : 'true'"
+    [attr.aria-label]="title() || null"
+    focusable="false"
+  >
+    <g [attr.transform]="transform()">
+      @for (path of icon().paths; track $index) {
+        <path
+          [attr.d]="path.d"
+          [attr.fill]="pathFill(path.fill, $index)"
+          [attr.opacity]="path.opacity ?? null"
+        />
+      }
+    </g>
+  </svg>`,
 })
 export class SimurghIcon {
   readonly name = input.required<IconName>();
@@ -15,7 +36,20 @@ export class SimurghIcon {
   readonly title = input<string>();
   readonly direction = input<'ltr' | 'rtl'>('ltr');
   readonly mirrorInRtl = input(true);
+  readonly colorMode = input<'duotone' | 'currentColor'>('duotone');
   readonly icon = computed(() => getIcon(this.name()));
-  readonly transform = computed(() => this.mirrorInRtl() && this.direction() === 'rtl' && this.icon().direction === 'directional'
-    ? `translate(144 0) scale(-1 1) ${this.icon().transform}` : this.icon().transform);
+  readonly transform = computed(() =>
+    this.mirrorInRtl() &&
+    this.direction() === 'rtl' &&
+    this.icon().direction === 'directional'
+      ? `translate(144 0) scale(-1 1) ${this.icon().transform}`
+      : this.icon().transform,
+  );
+  pathFill(fill: string, index: number): string {
+    return this.colorMode() === 'currentColor'
+      ? 'currentColor'
+      : index === 0
+        ? `var(--simurgh-icon-primary, ${fill})`
+        : `var(--simurgh-icon-secondary, ${fill})`;
+  }
 }
