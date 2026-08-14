@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/motion",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -49,10 +49,10 @@
     }
   },
   "devDependencies": {
-    "@angular/core": "^20.3.2",
-    "@types/react": "^19.1.16",
-    "react": "^19.1.1",
-    "vue": "^3.5.22",
-    "vitest": "^3.2.4"
+    "@angular/core": "^20.3.27",
+    "@types/react": "^19.2.18",
+    "react": "^19.2.8",
+    "vitest": "^3.2.7",
+    "vue": "^3.5.41"
   }
 }

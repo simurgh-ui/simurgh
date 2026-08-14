@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -25,7 +25,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.27.16",
+    "@floating-ui/react": "^0.27.20",
     "@simurgh-ui/core": "workspace:*"
   },
   "peerDependencies": {
@@ -33,9 +33,9 @@
     "react-dom": ">=18"
   },
   "devDependencies": {
-    "@types/react": "^19.1.16",
-    "@types/react-dom": "^19.1.9",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }

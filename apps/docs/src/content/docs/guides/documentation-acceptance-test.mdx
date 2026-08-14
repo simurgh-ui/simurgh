@@ -178,10 +178,23 @@ adapters. Thirteen tests passed across the three framework suites. The selected 
 - RTL-aware tabs or roving-focus navigation.
 
 This evidence runs components inside each framework's real test host and complements the package
-quick-start builds. It is not a visual browser or assistive-technology observation. Release-candidate
-applications still need 200% zoom, narrow and short viewports, forced RTL, forced reduced motion,
-light/dark contrast measurements, focus appearance, and screen-reader output recorded by a tester.
+quick-start builds. It is not a visual browser or assistive-technology observation.
+
+## Automated release-candidate UI evidence
+
+On 2026-08-13, five Chromium release-candidate checks passed against real documentation previews:
+
+- a 640 CSS-pixel viewport, equivalent to a 1280-pixel layout at 200% zoom, had no horizontal
+  document overflow and kept the Form preview reachable;
+- a 390 × 420 short viewport kept an open Dialog and its Save action visible and reachable;
+- forced RTL and reduced motion preserved a visible two-pixel Radio Group focus indicator while
+  suppressing animation; and
+- axe-core reported no WCAG A or AA violations on the hydrated Form page in light or dark themes.
+
+These repeatable checks complement rather than replace manual browser zoom and assistive-technology
+testing. Release-candidate applications still need 200% browser-zoom and screen-reader output
+recorded by a tester.
 
 {/* doc-verification:start */}
-_Last verified on 2026-08-12 against [Simurgh registry 0.1.0](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
 {/* doc-verification:end */}

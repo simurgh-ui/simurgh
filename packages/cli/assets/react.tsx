@@ -33,15 +33,106 @@ import React, {
   useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
-  type FormHTMLAttributes,
-  type LabelHTMLAttributes,
   type InputHTMLAttributes,
-  type SelectHTMLAttributes,
-  type TextareaHTMLAttributes,
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
+
+export { Alert } from './components/alert.js';
+export { AspectRatio } from './components/aspect-ratio.js';
+export { Avatar } from './components/avatar.js';
+export { Badge, type BadgeTone } from './components/badge.js';
+export { Button } from './components/button.js';
+export {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+} from './components/button-group.js';
+export { Breadcrumb } from './components/breadcrumb.js';
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './components/card.js';
+export {
+  DescriptionList,
+  DescriptionListDetails,
+  DescriptionListGroup,
+  DescriptionListTerm,
+} from './components/description-list.js';
+export { Input } from './components/input.js';
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+} from './components/input-group.js';
+export { InputOtp } from './components/input-otp.js';
+export {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLegend,
+} from './components/field.js';
+export { Form, FormErrorSummary } from './components/form.js';
+export {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from './components/empty.js';
+export {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from './components/item.js';
+export { Kbd } from './components/kbd.js';
+export { Label } from './components/label.js';
+export { Link } from './components/link.js';
+export { NativeSelect } from './components/native-select.js';
+export {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from './components/navigation-menu.js';
+export {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from './components/pagination.js';
+export { Meter } from './components/meter.js';
+export { Menubar, MenubarItem } from './components/menubar.js';
+export { Progress } from './components/progress.js';
+export { Rating, type RatingProps } from './components/rating.js';
+export { ScrollArea } from './components/scroll-area.js';
+export { Separator } from './components/separator.js';
+export { Skeleton } from './components/skeleton.js';
+export { Spinner } from './components/spinner.js';
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './components/table.js';
+export { Slider } from './components/slider.js';
+export { Textarea } from './components/textarea.js';
+export { Toolbar, ToolbarButton } from './components/toolbar.js';
+export { VisuallyHidden } from './components/visually-hidden.js';
 
 type OpenProps = {
   open?: boolean;
@@ -100,6 +191,7 @@ export const DialogTrigger = /* @__PURE__ */ forwardRef<
       type="button"
       {...props}
       ref={ref}
+      data-slot="dialog-trigger"
       aria-haspopup="dialog"
       aria-expanded={context.open}
       onClick={(event) => {
@@ -121,6 +213,7 @@ export const DialogOverlay = /* @__PURE__ */ forwardRef<
     <div
       {...props}
       ref={ref}
+      data-slot="dialog-overlay"
       className={props.className ?? 'simurgh-overlay'}
       onMouseDown={(event) => {
         props.onMouseDown?.(event);
@@ -154,6 +247,7 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
         else if (forwardedRef) forwardedRef.current = node;
       }}
       role="dialog"
+      data-slot="dialog-content"
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
@@ -169,11 +263,11 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
 });
 export function DialogTitle(props: HTMLAttributes<HTMLHeadingElement>) {
   const { titleId } = useDialog();
-  return <h2 {...props} id={titleId} />;
+  return <h2 {...props} id={titleId} data-slot="dialog-title" />;
 }
 export function DialogDescription(props: HTMLAttributes<HTMLParagraphElement>) {
   const { descriptionId } = useDialog();
-  return <p {...props} id={descriptionId} />;
+  return <p {...props} id={descriptionId} data-slot="dialog-description" />;
 }
 export const DialogClose = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
@@ -185,6 +279,7 @@ export const DialogClose = /* @__PURE__ */ forwardRef<
       type="button"
       {...props}
       ref={ref}
+      data-slot="dialog-close"
       onClick={(e) => {
         props.onClick?.(e);
         setOpen(false);
@@ -955,31 +1050,6 @@ export const DisclosureContent = forwardRef<
   return <div ref={ref} data-slot="disclosure-content" {...props} />;
 });
 
-export const DescriptionList = forwardRef<
-  HTMLDListElement,
-  HTMLAttributes<HTMLDListElement>
->(function DescriptionList(props, ref) {
-  return <dl ref={ref} data-slot="description-list" {...props} />;
-});
-export const DescriptionListGroup = forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function DescriptionListGroup(props, ref) {
-  return <div ref={ref} data-slot="description-list-group" {...props} />;
-});
-export const DescriptionListTerm = forwardRef<
-  HTMLElement,
-  HTMLAttributes<HTMLElement>
->(function DescriptionListTerm(props, ref) {
-  return <dt ref={ref} data-slot="description-list-term" {...props} />;
-});
-export const DescriptionListDetails = forwardRef<
-  HTMLElement,
-  HTMLAttributes<HTMLElement>
->(function DescriptionListDetails(props, ref) {
-  return <dd ref={ref} data-slot="description-list-details" {...props} />;
-});
-
 type CheckProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   'value' | 'onChange'
@@ -1014,6 +1084,7 @@ function CheckControl({
         type="button"
         {...props}
         role={role}
+        data-slot={role}
         aria-checked={active}
         onClick={(e) => {
           props.onClick?.(e);
@@ -1039,79 +1110,6 @@ function CheckControl({
     </>
   );
 }
-export const Label = /* @__PURE__ */ forwardRef<
-  HTMLLabelElement,
-  LabelHTMLAttributes<HTMLLabelElement>
->(function Label(props, ref) {
-  return <label ref={ref} {...props} />;
-});
-
-export const Separator = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    orientation?: Orientation;
-    decorative?: boolean;
-  }
->(function Separator(
-  { orientation = 'horizontal', decorative = false, ...props },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      role={decorative ? 'none' : 'separator'}
-      aria-hidden={decorative || undefined}
-      aria-orientation={decorative ? undefined : orientation}
-      data-orientation={orientation}
-      {...props}
-    />
-  );
-});
-
-export const Progress = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    value?: number | null;
-    max?: number;
-    getValueLabel?: (value: number, max: number) => string;
-  }
->(function Progress(
-  { value = null, max = 100, getValueLabel, children, ...props },
-  ref,
-) {
-  const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
-  const safeValue =
-    value == null || !Number.isFinite(value)
-      ? null
-      : Math.min(safeMax, Math.max(0, value));
-  const percentage = safeValue == null ? null : (safeValue / safeMax) * 100;
-  return (
-    <div
-      ref={ref}
-      role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={safeMax}
-      aria-valuenow={safeValue ?? undefined}
-      aria-valuetext={
-        safeValue == null ? undefined : getValueLabel?.(safeValue, safeMax)
-      }
-      data-state={safeValue == null ? 'indeterminate' : 'determinate'}
-      data-value={safeValue ?? undefined}
-      data-max={safeMax}
-      {...props}
-    >
-      {children ?? (
-        <span
-          data-part="indicator"
-          style={{
-            inlineSize: percentage == null ? undefined : `${percentage}%`,
-          }}
-        />
-      )}
-    </div>
-  );
-});
-
 export const Toggle = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> & {
@@ -1241,895 +1239,6 @@ export function ToggleGroupItem({
     />
   );
 }
-
-const visuallyHiddenStyle: React.CSSProperties = {
-  position: 'absolute',
-  inlineSize: 1,
-  blockSize: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  border: 0,
-};
-
-export const VisuallyHidden = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement>
->(function VisuallyHidden({ style, ...props }, ref) {
-  return (
-    <span ref={ref} style={{ ...visuallyHiddenStyle, ...style }} {...props} />
-  );
-});
-
-export const Avatar = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement> & {
-    src?: string;
-    alt: string;
-    fallback: ReactNode;
-    imageProps?: React.ImgHTMLAttributes<HTMLImageElement>;
-  }
->(function Avatar({ src, alt, fallback, imageProps, ...props }, ref) {
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => setLoaded(false), [src]);
-  return (
-    <span ref={ref} data-state={loaded ? 'loaded' : 'fallback'} {...props}>
-      {src ? (
-        <img
-          {...imageProps}
-          src={src}
-          alt={alt}
-          hidden={!loaded}
-          onLoad={(event) => {
-            setLoaded(true);
-            imageProps?.onLoad?.(event);
-          }}
-          onError={(event) => {
-            setLoaded(false);
-            imageProps?.onError?.(event);
-          }}
-        />
-      ) : null}
-      {!loaded ? <span data-part="fallback">{fallback}</span> : null}
-    </span>
-  );
-});
-
-export const Alert = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { urgent?: boolean }
->(function Alert({ urgent = false, ...props }, ref) {
-  return (
-    <div
-      ref={ref}
-      role={urgent ? 'alert' : 'status'}
-      aria-live={urgent ? 'assertive' : 'polite'}
-      aria-atomic="true"
-      data-urgent={urgent || undefined}
-      {...props}
-    />
-  );
-});
-
-export const AspectRatio = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { ratio?: number }
->(function AspectRatio({ ratio = 1, style, ...props }, ref) {
-  const safeRatio = Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
-  return (
-    <div
-      ref={ref}
-      data-ratio={safeRatio}
-      style={{ aspectRatio: String(safeRatio), ...style }}
-      {...props}
-    />
-  );
-});
-
-export const Skeleton = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { label?: string }
->(function Skeleton({ label, ...props }, ref) {
-  return (
-    <div
-      ref={ref}
-      role={label ? 'status' : undefined}
-      aria-label={label}
-      aria-busy={label ? 'true' : undefined}
-      aria-hidden={label ? undefined : 'true'}
-      data-state="loading"
-      {...props}
-    />
-  );
-});
-
-export const Spinner = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement> & { label?: string }
->(function Spinner({ label = 'Loading', children, ...props }, ref) {
-  return (
-    <span
-      ref={ref}
-      role="status"
-      aria-label={label}
-      aria-live="polite"
-      aria-busy="true"
-      data-state="loading"
-      {...props}
-    >
-      <span aria-hidden="true" data-part="indicator">
-        {children ?? '◌'}
-      </span>
-    </span>
-  );
-});
-
-export const Button = /* @__PURE__ */ forwardRef<
-  HTMLButtonElement,
-  ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean }
->(function Button(
-  { type = 'button', loading = false, disabled, children, ...props },
-  ref,
-) {
-  return (
-    <button
-      ref={ref}
-      type={type}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
-      data-state={loading ? 'loading' : 'idle'}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-});
-
-export const ButtonGroup = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { orientation?: Orientation }
->(function ButtonGroup(
-  { orientation = 'horizontal', role = 'group', ...props },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      role={role}
-      aria-orientation={orientation}
-      data-slot="button-group"
-      {...props}
-    />
-  );
-});
-
-export const ButtonGroupText = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement>
->(function ButtonGroupText(props, ref) {
-  return <span ref={ref} data-slot="button-group-text" {...props} />;
-});
-
-export const ButtonGroupSeparator = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement> & { orientation?: Orientation }
->(function ButtonGroupSeparator(
-  { orientation = 'vertical', role = 'separator', ...props },
-  ref,
-) {
-  return (
-    <span
-      ref={ref}
-      role={role}
-      aria-orientation={orientation}
-      data-slot="button-group-separator"
-      {...props}
-    />
-  );
-});
-
-export const Link = /* @__PURE__ */ forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-    disabled?: boolean;
-    external?: boolean;
-  }
->(function Link(
-  {
-    disabled = false,
-    external = false,
-    href,
-    onClick,
-    rel,
-    target,
-    tabIndex,
-    ...props
-  },
-  ref,
-) {
-  return (
-    <a
-      ref={ref}
-      href={disabled ? undefined : href}
-      aria-disabled={disabled || undefined}
-      data-slot="link"
-      data-external={external || undefined}
-      rel={external ? (rel ?? 'noopener noreferrer') : rel}
-      target={external ? (target ?? '_blank') : target}
-      tabIndex={disabled ? -1 : tabIndex}
-      onClick={(event) => {
-        if (disabled) {
-          event.preventDefault();
-          return;
-        }
-        onClick?.(event);
-      }}
-      {...props}
-    />
-  );
-});
-
-export const Input = /* @__PURE__ */ forwardRef<
-  HTMLInputElement,
-  InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
->(function Input({ invalid = false, ...props }, ref) {
-  return <input ref={ref} aria-invalid={invalid || undefined} {...props} />;
-});
-
-export const InputGroup = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function InputGroup({ role = 'group', ...props }, ref) {
-  return <div ref={ref} role={role} data-slot="input-group" {...props} />;
-});
-
-export const InputGroupAddon = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    align?: 'inline-start' | 'inline-end' | 'block-start' | 'block-end';
-    decorative?: boolean;
-  }
->(function InputGroupAddon(
-  { align = 'inline-start', decorative = false, ...props },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      aria-hidden={decorative || undefined}
-      data-align={align}
-      data-slot="input-group-addon"
-      {...props}
-    />
-  );
-});
-
-export const InputGroupText = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement>
->(function InputGroupText(props, ref) {
-  return <span ref={ref} data-slot="input-group-text" {...props} />;
-});
-
-export const InputOtp = /* @__PURE__ */ forwardRef<
-  HTMLInputElement,
-  Omit<InputHTMLAttributes<HTMLInputElement>, 'maxLength'> & {
-    length?: number;
-    digitsOnly?: boolean;
-    invalid?: boolean;
-  }
->(function InputOtp(
-  {
-    length = 6,
-    digitsOnly = true,
-    invalid = false,
-    autoComplete = 'one-time-code',
-    inputMode,
-    pattern,
-    style,
-    onInput,
-    ...props
-  },
-  ref,
-) {
-  return (
-    <input
-      ref={ref}
-      type="text"
-      maxLength={length}
-      autoComplete={autoComplete}
-      inputMode={inputMode ?? (digitsOnly ? 'numeric' : 'text')}
-      pattern={pattern ?? (digitsOnly ? '[0-9]*' : undefined)}
-      aria-invalid={invalid || undefined}
-      data-slot="input-otp"
-      style={
-        { '--simurgh-otp-length': length, ...style } as React.CSSProperties
-      }
-      onInput={(event) => {
-        if (digitsOnly) {
-          event.currentTarget.value = event.currentTarget.value
-            .replace(/\D/g, '')
-            .slice(0, length);
-        }
-        onInput?.(event);
-      }}
-      {...props}
-    />
-  );
-});
-
-export const NativeSelect = /* @__PURE__ */ forwardRef<
-  HTMLSelectElement,
-  SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }
->(function NativeSelect({ invalid = false, ...props }, ref) {
-  return (
-    <select
-      ref={ref}
-      aria-invalid={invalid || undefined}
-      data-slot="native-select"
-      {...props}
-    />
-  );
-});
-
-export const Slider = /* @__PURE__ */ forwardRef<
-  HTMLInputElement,
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
-    invalid?: boolean;
-  }
->(function Slider(
-  { invalid = false, min = 0, max = 100, step = 1, ...props },
-  ref,
-) {
-  return (
-    <input
-      ref={ref}
-      type="range"
-      min={min}
-      max={max}
-      step={step}
-      aria-invalid={invalid || undefined}
-      data-slot="slider"
-      {...props}
-    />
-  );
-});
-
-export const Meter = /* @__PURE__ */ forwardRef<
-  HTMLMeterElement,
-  React.MeterHTMLAttributes<HTMLMeterElement> & { label?: string }
->(function Meter(
-  { label, min = 0, max = 100, value = 0, children, ...props },
-  ref,
-) {
-  const safeValue = Math.min(Number(max), Math.max(Number(min), Number(value)));
-  return (
-    <meter
-      ref={ref}
-      min={min}
-      max={max}
-      value={safeValue}
-      role="meter"
-      aria-label={label}
-      data-slot="meter"
-      {...props}
-    >
-      {children ?? `${safeValue}`}
-    </meter>
-  );
-});
-
-export const Toolbar = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    orientation?: Orientation;
-    direction?: Direction;
-    label?: string;
-  }
->(function Toolbar(
-  {
-    orientation = 'horizontal',
-    direction = 'ltr',
-    label = 'Toolbar',
-    onKeyDown,
-    ...props
-  },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      role="toolbar"
-      aria-label={label}
-      aria-orientation={orientation}
-      dir={direction}
-      data-slot="toolbar"
-      onKeyDown={(event) => {
-        onKeyDown?.(event);
-        if (event.defaultPrevented) return;
-        const items = Array.from(
-          event.currentTarget.querySelectorAll<HTMLElement>(
-            '[data-toolbar-item]:not(:disabled)',
-          ),
-        );
-        const index = items.indexOf(document.activeElement as HTMLElement);
-        const target = nextIndex(index, items.length, event.key, {
-          orientation,
-          direction,
-        });
-        if (target !== index) {
-          event.preventDefault();
-          items[target]?.focus();
-        }
-      }}
-      {...props}
-    />
-  );
-});
-export const ToolbarButton = /* @__PURE__ */ forwardRef<
-  HTMLButtonElement,
-  ButtonHTMLAttributes<HTMLButtonElement>
->(function ToolbarButton(props, ref) {
-  return (
-    <button
-      ref={ref}
-      type="button"
-      data-toolbar-item
-      data-slot="toolbar-button"
-      {...props}
-    />
-  );
-});
-
-export const ScrollArea = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & {
-    orientation?: 'vertical' | 'horizontal' | 'both';
-    label?: string;
-  }
->(function ScrollArea(
-  { orientation = 'vertical', label, tabIndex = 0, ...props },
-  ref,
-) {
-  return (
-    <div
-      ref={ref}
-      role={label ? 'region' : undefined}
-      aria-label={label}
-      tabIndex={tabIndex}
-      data-orientation={orientation}
-      data-slot="scroll-area"
-      {...props}
-    />
-  );
-});
-
-export const Textarea = /* @__PURE__ */ forwardRef<
-  HTMLTextAreaElement,
-  TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }
->(function Textarea({ invalid = false, ...props }, ref) {
-  return <textarea ref={ref} aria-invalid={invalid || undefined} {...props} />;
-});
-
-export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
-export const Badge = /* @__PURE__ */ forwardRef<
-  HTMLSpanElement,
-  HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone; status?: boolean }
->(function Badge({ tone = 'neutral', status = false, ...props }, ref) {
-  return (
-    <span
-      ref={ref}
-      data-tone={tone}
-      role={status ? 'status' : undefined}
-      aria-live={status ? 'polite' : undefined}
-      {...props}
-    />
-  );
-});
-
-export const Breadcrumb = /* @__PURE__ */ forwardRef<
-  HTMLElement,
-  React.HTMLAttributes<HTMLElement> & { label?: string }
->(function Breadcrumb({ label = 'Breadcrumb', ...props }, ref) {
-  return <nav ref={ref} aria-label={label} {...props} />;
-});
-
-export const NavigationMenu = /* @__PURE__ */ forwardRef<
-  HTMLElement,
-  React.HTMLAttributes<HTMLElement> & { label?: string }
->(function NavigationMenu({ label = 'Main navigation', ...props }, ref) {
-  return (
-    <nav ref={ref} aria-label={label} data-slot="navigation-menu" {...props} />
-  );
-});
-export const NavigationMenuList = /* @__PURE__ */ forwardRef<
-  HTMLUListElement,
-  React.HTMLAttributes<HTMLUListElement>
->(function NavigationMenuList(props, ref) {
-  return <ul ref={ref} data-slot="navigation-menu-list" {...props} />;
-});
-export const NavigationMenuItem = /* @__PURE__ */ forwardRef<
-  HTMLLIElement,
-  React.LiHTMLAttributes<HTMLLIElement>
->(function NavigationMenuItem(props, ref) {
-  return <li ref={ref} data-slot="navigation-menu-item" {...props} />;
-});
-export const NavigationMenuLink = /* @__PURE__ */ forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
->(function NavigationMenuLink({ current = false, ...props }, ref) {
-  return (
-    <a
-      ref={ref}
-      {...props}
-      aria-current={current ? 'page' : props['aria-current']}
-      data-slot="navigation-menu-link"
-    />
-  );
-});
-
-export const Menubar = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { label?: string; direction?: Direction }
->(function Menubar(
-  { label = 'Application menu', direction = 'ltr', onKeyDown, ...props },
-  forwardedRef,
-) {
-  const localRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const items = localRef.current?.querySelectorAll<HTMLElement>(
-      '[role=menuitem]:not([aria-disabled=true])',
-    );
-    if (items?.length && !Array.from(items).some((item) => item.tabIndex === 0))
-      items[0]!.tabIndex = 0;
-  }, []);
-  return (
-    <div
-      ref={(node) => {
-        localRef.current = node;
-        if (typeof forwardedRef === 'function') forwardedRef(node);
-        else if (forwardedRef) forwardedRef.current = node;
-      }}
-      role="menubar"
-      aria-label={label}
-      dir={direction}
-      data-slot="menubar"
-      onKeyDown={(event) => {
-        onKeyDown?.(event);
-        if (event.defaultPrevented) return;
-        const items = Array.from(
-          event.currentTarget.querySelectorAll<HTMLElement>(
-            '[role=menuitem]:not([aria-disabled=true])',
-          ),
-        );
-        const current = items.indexOf(document.activeElement as HTMLElement);
-        const target = nextIndex(current, items.length, event.key, {
-          orientation: 'horizontal',
-          direction,
-        });
-        if (target !== current) {
-          event.preventDefault();
-          items.forEach(
-            (item, index) => (item.tabIndex = index === target ? 0 : -1),
-          );
-          items[target]?.focus();
-        }
-      }}
-      {...props}
-    />
-  );
-});
-export const MenubarItem = /* @__PURE__ */ forwardRef<
-  HTMLButtonElement,
-  ButtonHTMLAttributes<HTMLButtonElement>
->(function MenubarItem({ disabled, ...props }, ref) {
-  return (
-    <button
-      ref={ref}
-      type="button"
-      role="menuitem"
-      tabIndex={-1}
-      aria-disabled={disabled || undefined}
-      disabled={disabled}
-      data-slot="menubar-item"
-      {...props}
-    />
-  );
-});
-
-export const Card = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function Card(props, ref) {
-  return <div ref={ref} data-slot="card" {...props} />;
-});
-export const CardHeader = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function CardHeader(props, ref) {
-  return <div ref={ref} data-slot="card-header" {...props} />;
-});
-export const CardTitle = /* @__PURE__ */ forwardRef<
-  HTMLHeadingElement,
-  HTMLAttributes<HTMLHeadingElement>
->(function CardTitle(props, ref) {
-  return <h3 ref={ref} data-slot="card-title" {...props} />;
-});
-export const CardDescription = /* @__PURE__ */ forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(function CardDescription(props, ref) {
-  return <p ref={ref} data-slot="card-description" {...props} />;
-});
-export const CardContent = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function CardContent(props, ref) {
-  return <div ref={ref} data-slot="card-content" {...props} />;
-});
-export const CardFooter = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function CardFooter(props, ref) {
-  return <div ref={ref} data-slot="card-footer" {...props} />;
-});
-
-export const Empty = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { status?: boolean }
->(function Empty({ status = false, role, ...props }, ref) {
-  return (
-    <div
-      ref={ref}
-      {...props}
-      role={status ? 'status' : role}
-      aria-live={status ? 'polite' : props['aria-live']}
-      data-slot="empty"
-    />
-  );
-});
-export const EmptyHeader = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function EmptyHeader(props, ref) {
-  return <div ref={ref} data-slot="empty-header" {...props} />;
-});
-export const EmptyMedia = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
->(function EmptyMedia({ decorative = true, ...props }, ref) {
-  return (
-    <div
-      ref={ref}
-      aria-hidden={decorative || undefined}
-      data-slot="empty-media"
-      {...props}
-    />
-  );
-});
-export const EmptyTitle = /* @__PURE__ */ forwardRef<
-  HTMLHeadingElement,
-  HTMLAttributes<HTMLHeadingElement>
->(function EmptyTitle(props, ref) {
-  return <h3 ref={ref} data-slot="empty-title" {...props} />;
-});
-export const EmptyDescription = /* @__PURE__ */ forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(function EmptyDescription(props, ref) {
-  return <p ref={ref} data-slot="empty-description" {...props} />;
-});
-export const EmptyContent = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function EmptyContent(props, ref) {
-  return <div ref={ref} data-slot="empty-content" {...props} />;
-});
-
-export const ItemGroup = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function ItemGroup({ role = 'list', ...props }, ref) {
-  return <div ref={ref} role={role} data-slot="item-group" {...props} />;
-});
-export const Item = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function Item({ role = 'listitem', ...props }, ref) {
-  return <div ref={ref} role={role} data-slot="item" {...props} />;
-});
-export const ItemMedia = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
->(function ItemMedia({ decorative = true, ...props }, ref) {
-  return (
-    <div
-      ref={ref}
-      aria-hidden={decorative || undefined}
-      data-slot="item-media"
-      {...props}
-    />
-  );
-});
-export const ItemContent = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function ItemContent(props, ref) {
-  return <div ref={ref} data-slot="item-content" {...props} />;
-});
-export const ItemTitle = /* @__PURE__ */ forwardRef<
-  HTMLHeadingElement,
-  HTMLAttributes<HTMLHeadingElement>
->(function ItemTitle(props, ref) {
-  return <h3 ref={ref} data-slot="item-title" {...props} />;
-});
-export const ItemDescription = /* @__PURE__ */ forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(function ItemDescription(props, ref) {
-  return <p ref={ref} data-slot="item-description" {...props} />;
-});
-export const ItemActions = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function ItemActions(props, ref) {
-  return <div ref={ref} data-slot="item-actions" {...props} />;
-});
-
-export const Kbd = /* @__PURE__ */ forwardRef<
-  HTMLElement,
-  HTMLAttributes<HTMLElement>
->(function Kbd(props, ref) {
-  return <kbd ref={ref} data-slot="kbd" {...props} />;
-});
-
-export const Field = /* @__PURE__ */ forwardRef<
-  HTMLFieldSetElement,
-  React.FieldsetHTMLAttributes<HTMLFieldSetElement>
->(function Field(props, ref) {
-  return <fieldset ref={ref} data-slot="field" {...props} />;
-});
-export const FieldLegend = /* @__PURE__ */ forwardRef<
-  HTMLLegendElement,
-  HTMLAttributes<HTMLLegendElement>
->(function FieldLegend(props, ref) {
-  return <legend ref={ref} data-slot="field-legend" {...props} />;
-});
-export const FieldDescription = /* @__PURE__ */ forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(function FieldDescription(props, ref) {
-  return <p ref={ref} data-slot="field-description" {...props} />;
-});
-export const FieldError = /* @__PURE__ */ forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(function FieldError(props, ref) {
-  return <p ref={ref} data-slot="field-error" role="alert" {...props} />;
-});
-
-export const Form = /* @__PURE__ */ forwardRef<
-  HTMLFormElement,
-  FormHTMLAttributes<HTMLFormElement> & { focusInvalid?: boolean }
->(function Form({ focusInvalid = true, onInvalid, ...props }, ref) {
-  const focusQueued = useRef(false);
-  return (
-    <form
-      {...props}
-      ref={ref}
-      data-slot="form"
-      onInvalid={(event) => {
-        onInvalid?.(event);
-        if (focusQueued.current || !focusInvalid || event.defaultPrevented)
-          return;
-        focusQueued.current = true;
-        const first = event.target as HTMLElement;
-        requestAnimationFrame(() => {
-          first.focus();
-          focusQueued.current = false;
-        });
-      }}
-    />
-  );
-});
-export const FormErrorSummary = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function FormErrorSummary(props, ref) {
-  return (
-    <div
-      {...props}
-      ref={ref}
-      role="alert"
-      aria-live="assertive"
-      tabIndex={-1}
-      data-slot="form-error-summary"
-    />
-  );
-});
-
-export const Table = /* @__PURE__ */ forwardRef<
-  HTMLTableElement,
-  React.TableHTMLAttributes<HTMLTableElement>
->(function Table(props, ref) {
-  return <table ref={ref} data-slot="table" {...props} />;
-});
-export const TableHeader = /* @__PURE__ */ forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(function TableHeader(props, ref) {
-  return <thead ref={ref} data-slot="table-header" {...props} />;
-});
-export const TableBody = /* @__PURE__ */ forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(function TableBody(props, ref) {
-  return <tbody ref={ref} data-slot="table-body" {...props} />;
-});
-export const TableFooter = /* @__PURE__ */ forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(function TableFooter(props, ref) {
-  return <tfoot ref={ref} data-slot="table-footer" {...props} />;
-});
-export const TableRow = /* @__PURE__ */ forwardRef<
-  HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(function TableRow(props, ref) {
-  return <tr ref={ref} data-slot="table-row" {...props} />;
-});
-export const TableHead = /* @__PURE__ */ forwardRef<
-  HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(function TableHead({ scope = 'col', ...props }, ref) {
-  return <th ref={ref} scope={scope} data-slot="table-head" {...props} />;
-});
-export const TableCell = /* @__PURE__ */ forwardRef<
-  HTMLTableCellElement,
-  React.TdHTMLAttributes<HTMLTableCellElement>
->(function TableCell(props, ref) {
-  return <td ref={ref} data-slot="table-cell" {...props} />;
-});
-export const TableCaption = /* @__PURE__ */ forwardRef<
-  HTMLTableCaptionElement,
-  React.HTMLAttributes<HTMLTableCaptionElement>
->(function TableCaption(props, ref) {
-  return <caption ref={ref} data-slot="table-caption" {...props} />;
-});
-
-export const Pagination = /* @__PURE__ */ forwardRef<
-  HTMLElement,
-  React.HTMLAttributes<HTMLElement> & { label?: string }
->(function Pagination({ label = 'Pagination', ...props }, ref) {
-  return <nav ref={ref} aria-label={label} data-slot="pagination" {...props} />;
-});
-export const PaginationContent = /* @__PURE__ */ forwardRef<
-  HTMLUListElement,
-  React.HTMLAttributes<HTMLUListElement>
->(function PaginationContent(props, ref) {
-  return <ul ref={ref} data-slot="pagination-content" {...props} />;
-});
-export const PaginationItem = /* @__PURE__ */ forwardRef<
-  HTMLLIElement,
-  React.LiHTMLAttributes<HTMLLIElement>
->(function PaginationItem(props, ref) {
-  return <li ref={ref} data-slot="pagination-item" {...props} />;
-});
-export const PaginationLink = /* @__PURE__ */ forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
->(function PaginationLink({ current = false, ...props }, ref) {
-  return (
-    <a
-      ref={ref}
-      aria-current={current ? 'page' : undefined}
-      data-slot="pagination-link"
-      {...props}
-    />
-  );
-});
 
 export function Checkbox(props: CheckProps) {
   return <CheckControl {...props} role="checkbox" />;
@@ -2280,6 +1389,7 @@ export function Select({
   return (
     <FloatingRoot open={open} onOpenChange={setOpen} kind="listbox">
       <FloatingTrigger
+        data-slot="select-trigger"
         disabled={disabled}
         role="combobox"
         aria-controls={listId}
@@ -2294,6 +1404,7 @@ export function Select({
         {chosen?.label ?? placeholder}
       </FloatingTrigger>
       <FloatingContent
+        data-slot="select-content"
         id={listId}
         onKeyDown={(event) => onCompositeKeyDown(event, '[role=option]')}
       >
@@ -2301,6 +1412,7 @@ export function Select({
           <div
             key={option.value}
             role="option"
+            data-slot="select-option"
             tabIndex={-1}
             aria-selected={selected === option.value}
             aria-disabled={option.disabled || undefined}
@@ -3532,88 +2644,6 @@ export const NumberInput = /* @__PURE__ */ forwardRef<
   );
 });
 
-export type RatingProps = Omit<
-  HTMLAttributes<HTMLDivElement>,
-  'defaultValue' | 'onChange'
-> & {
-  value?: number;
-  defaultValue?: number;
-  max?: number;
-  name?: string;
-  disabled?: boolean;
-  required?: boolean;
-  onValueChange?: (value: number) => void;
-  getLabel?: (value: number, max: number) => string;
-};
-export const Rating = /* @__PURE__ */ forwardRef<HTMLDivElement, RatingProps>(
-  function Rating(
-    {
-      value,
-      defaultValue = 0,
-      max = 5,
-      name,
-      disabled,
-      required,
-      onValueChange,
-      getLabel = (item, total) => `${item} of ${total}`,
-      'aria-label': ariaLabel = 'Rating',
-      ...props
-    },
-    ref,
-  ) {
-    const [localValue, setLocalValue] = useState(defaultValue);
-    const count = Number.isFinite(max)
-      ? Math.min(100, Math.max(1, Math.floor(max)))
-      : 5;
-    const current = Math.min(
-      count,
-      Math.max(0, Math.round(value ?? localValue)),
-    );
-    const generatedName = `simurgh-rating-${useId().replace(/:/g, '')}`;
-    const groupName = name ?? generatedName;
-    const commit = (next: number) => {
-      if (value === undefined) setLocalValue(next);
-      onValueChange?.(next);
-    };
-    return (
-      <div
-        {...props}
-        ref={ref}
-        role="radiogroup"
-        aria-label={ariaLabel}
-        data-slot="rating"
-        data-disabled={disabled || undefined}
-      >
-        {Array.from({ length: count }, (_, index) => {
-          const item = index + 1;
-          return (
-            <label key={item} data-slot="rating-item">
-              <input
-                type="radio"
-                data-slot="rating-control"
-                name={groupName}
-                value={item}
-                checked={current === item}
-                disabled={disabled}
-                required={required}
-                aria-label={getLabel(item, count)}
-                onChange={() => commit(item)}
-              />
-              <span
-                data-slot="rating-icon"
-                data-selected={item <= current || undefined}
-                aria-hidden="true"
-              >
-                {'\u2605'}
-              </span>
-            </label>
-          );
-        })}
-      </div>
-    );
-  },
-);
-
 export type TagsInputProps = Omit<
   HTMLAttributes<HTMLDivElement>,
   'defaultValue' | 'onChange'
@@ -3807,3 +2837,1511 @@ export function ToastViewport(props: HTMLAttributes<HTMLDivElement>) {
     </div>
   );
 }
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const Alert = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { urgent?: boolean }
+>(function Alert({ urgent = false, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      role={urgent ? 'alert' : 'status'}
+      aria-live={urgent ? 'assertive' : 'polite'}
+      aria-atomic="true"
+      data-urgent={urgent || undefined}
+      {...props}
+    />
+  );
+});
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const AspectRatio = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { ratio?: number }
+>(function AspectRatio({ ratio = 1, style, ...props }, ref) {
+  const safeRatio = Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
+  return (
+    <div
+      ref={ref}
+      data-ratio={safeRatio}
+      style={{ aspectRatio: String(safeRatio), ...style }}
+      {...props}
+    />
+  );
+});
+
+import {
+  forwardRef,
+  useEffect,
+  useState,
+  type HTMLAttributes,
+  type ImgHTMLAttributes,
+  type ReactNode,
+} from 'react';
+
+export const Avatar = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement> & {
+    src?: string;
+    alt: string;
+    fallback: ReactNode;
+    imageProps?: ImgHTMLAttributes<HTMLImageElement>;
+  }
+>(function Avatar({ src, alt, fallback, imageProps, ...props }, ref) {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => setLoaded(false), [src]);
+  return (
+    <span ref={ref} data-state={loaded ? 'loaded' : 'fallback'} {...props}>
+      {src ? (
+        <img
+          {...imageProps}
+          src={src}
+          alt={alt}
+          hidden={!loaded}
+          onLoad={(event) => {
+            setLoaded(true);
+            imageProps?.onLoad?.(event);
+          }}
+          onError={(event) => {
+            setLoaded(false);
+            imageProps?.onError?.(event);
+          }}
+        />
+      ) : null}
+      {!loaded ? <span data-part="fallback">{fallback}</span> : null}
+    </span>
+  );
+});
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
+export const Badge = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement> & { tone?: BadgeTone; status?: boolean }
+>(function Badge({ tone = 'neutral', status = false, ...props }, ref) {
+  return (
+    <span
+      ref={ref}
+      data-tone={tone}
+      role={status ? 'status' : undefined}
+      aria-live={status ? 'polite' : undefined}
+      {...props}
+    />
+  );
+});
+
+export {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Checkbox,
+  NumberInput,
+  RadioGroup,
+  RadioGroupItem,
+  Switch,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  TagsInput,
+} from '../index.js';
+export { Alert } from './alert.js';
+export { AspectRatio } from './aspect-ratio.js';
+export { Badge, type BadgeTone } from './badge.js';
+export { Button } from './button.js';
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './card.js';
+export { Field, FieldDescription, FieldError, FieldLegend } from './field.js';
+export { Form, FormErrorSummary } from './form.js';
+export { Input } from './input.js';
+export { Label } from './label.js';
+export { Link } from './link.js';
+export { NativeSelect } from './native-select.js';
+export {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from './pagination.js';
+export { Progress } from './progress.js';
+export { Rating, type RatingProps } from './rating.js';
+export { Separator } from './separator.js';
+export { Skeleton } from './skeleton.js';
+export { Spinner } from './spinner.js';
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './table.js';
+export { Textarea } from './textarea.js';
+export { VisuallyHidden } from './visually-hidden.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const Breadcrumb = /* @__PURE__ */ forwardRef<
+  HTMLElement,
+  HTMLAttributes<HTMLElement> & { label?: string }
+>(function Breadcrumb({ label = 'Breadcrumb', ...props }, ref) {
+  return <nav ref={ref} aria-label={label} {...props} />;
+});
+
+import type { Orientation } from '@simurgh-ui/core';
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const ButtonGroup = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { orientation?: Orientation }
+>(function ButtonGroup(
+  { orientation = 'horizontal', role = 'group', ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role={role}
+      aria-orientation={orientation}
+      data-slot="button-group"
+      {...props}
+    />
+  );
+});
+
+export const ButtonGroupText = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement>
+>(function ButtonGroupText(props, ref) {
+  return <span ref={ref} data-slot="button-group-text" {...props} />;
+});
+
+export const ButtonGroupSeparator = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement> & { orientation?: Orientation }
+>(function ButtonGroupSeparator(
+  { orientation = 'vertical', role = 'separator', ...props },
+  ref,
+) {
+  return (
+    <span
+      ref={ref}
+      role={role}
+      aria-orientation={orientation}
+      data-slot="button-group-separator"
+      {...props}
+    />
+  );
+});
+
+import { forwardRef, type ButtonHTMLAttributes } from 'react';
+
+export const Button = /* @__PURE__ */ forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    loading?: boolean;
+    variant?: 'primary' | 'secondary' | 'destructive' | 'quiet';
+    size?: 'sm' | 'md' | 'lg';
+    fullWidth?: boolean;
+    iconOnly?: boolean;
+  }
+>(function Button(
+  {
+    type = 'button',
+    loading = false,
+    variant = 'primary',
+    size = 'md',
+    fullWidth = false,
+    iconOnly = false,
+    disabled,
+    children,
+    ...props
+  },
+  ref,
+) {
+  return (
+    <button
+      ref={ref}
+      type={type}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      data-slot="button"
+      data-state={loading ? 'loading' : 'idle'}
+      data-variant={variant}
+      data-size={size}
+      data-full-width={fullWidth || undefined}
+      data-icon-only={iconOnly || undefined}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Calendar } from '../index.js';
+export type { CalendarProps } from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const Card = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function Card(props, ref) {
+  return <div ref={ref} data-slot="card" {...props} />;
+});
+
+export const CardHeader = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function CardHeader(props, ref) {
+  return <div ref={ref} data-slot="card-header" {...props} />;
+});
+
+export const CardTitle = /* @__PURE__ */ forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(function CardTitle(props, ref) {
+  return <h3 ref={ref} data-slot="card-title" {...props} />;
+});
+
+export const CardDescription = /* @__PURE__ */ forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function CardDescription(props, ref) {
+  return <p ref={ref} data-slot="card-description" {...props} />;
+});
+
+export const CardContent = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function CardContent(props, ref) {
+  return <div ref={ref} data-slot="card-content" {...props} />;
+});
+
+export const CardFooter = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function CardFooter(props, ref) {
+  return <div ref={ref} data-slot="card-footer" {...props} />;
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Checkbox } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Combobox } from '../index.js';
+export type { SelectOption } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Command } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+} from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { DatePicker } from '../index.js';
+export type { DatePickerProps } from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const DescriptionList = /* @__PURE__ */ forwardRef<
+  HTMLDListElement,
+  HTMLAttributes<HTMLDListElement>
+>(function DescriptionList(props, ref) {
+  return <dl ref={ref} data-slot="description-list" {...props} />;
+});
+export const DescriptionListGroup = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function DescriptionListGroup(props, ref) {
+  return <div ref={ref} data-slot="description-list-group" {...props} />;
+});
+export const DescriptionListTerm = /* @__PURE__ */ forwardRef<
+  HTMLElement,
+  HTMLAttributes<HTMLElement>
+>(function DescriptionListTerm(props, ref) {
+  return <dt ref={ref} data-slot="description-list-term" {...props} />;
+});
+export const DescriptionListDetails = /* @__PURE__ */ forwardRef<
+  HTMLElement,
+  HTMLAttributes<HTMLElement>
+>(function DescriptionListDetails(props, ref) {
+  return <dd ref={ref} data-slot="description-list-details" {...props} />;
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  Dialog,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from '../index.js';
+
+export { Disclosure, DisclosureContent, DisclosureSummary } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerClose,
+} from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const Empty = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { status?: boolean }
+>(function Empty({ status = false, role, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      {...props}
+      role={status ? 'status' : role}
+      aria-live={status ? 'polite' : props['aria-live']}
+      data-slot="empty"
+    />
+  );
+});
+
+export const EmptyHeader = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function EmptyHeader(props, ref) {
+  return <div ref={ref} data-slot="empty-header" {...props} />;
+});
+
+export const EmptyMedia = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
+>(function EmptyMedia({ decorative = true, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden={decorative || undefined}
+      data-slot="empty-media"
+      {...props}
+    />
+  );
+});
+
+export const EmptyTitle = /* @__PURE__ */ forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(function EmptyTitle(props, ref) {
+  return <h3 ref={ref} data-slot="empty-title" {...props} />;
+});
+
+export const EmptyDescription = /* @__PURE__ */ forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function EmptyDescription(props, ref) {
+  return <p ref={ref} data-slot="empty-description" {...props} />;
+});
+
+export const EmptyContent = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function EmptyContent(props, ref) {
+  return <div ref={ref} data-slot="empty-content" {...props} />;
+});
+
+import {
+  forwardRef,
+  type FieldsetHTMLAttributes,
+  type HTMLAttributes,
+} from 'react';
+
+export const Field = /* @__PURE__ */ forwardRef<
+  HTMLFieldSetElement,
+  FieldsetHTMLAttributes<HTMLFieldSetElement>
+>(function Field(props, ref) {
+  return <fieldset ref={ref} data-slot="field" {...props} />;
+});
+export const FieldLegend = /* @__PURE__ */ forwardRef<
+  HTMLLegendElement,
+  HTMLAttributes<HTMLLegendElement>
+>(function FieldLegend(props, ref) {
+  return <legend ref={ref} data-slot="field-legend" {...props} />;
+});
+export const FieldDescription = /* @__PURE__ */ forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function FieldDescription(props, ref) {
+  return <p ref={ref} data-slot="field-description" {...props} />;
+});
+export const FieldError = /* @__PURE__ */ forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function FieldError(props, ref) {
+  return <p ref={ref} data-slot="field-error" role="alert" {...props} />;
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { FileUpload } from '../index.js';
+
+import {
+  forwardRef,
+  useRef,
+  type FormHTMLAttributes,
+  type HTMLAttributes,
+} from 'react';
+
+export const Form = /* @__PURE__ */ forwardRef<
+  HTMLFormElement,
+  FormHTMLAttributes<HTMLFormElement> & { focusInvalid?: boolean }
+>(function Form({ focusInvalid = true, onInvalid, ...props }, ref) {
+  const focusQueued = useRef(false);
+  return (
+    <form
+      {...props}
+      ref={ref}
+      data-slot="form"
+      onInvalid={(event) => {
+        onInvalid?.(event);
+        if (focusQueued.current || !focusInvalid || event.defaultPrevented)
+          return;
+        focusQueued.current = true;
+        const first = event.target as HTMLElement;
+        requestAnimationFrame(() => {
+          first.focus();
+          focusQueued.current = false;
+        });
+      }}
+    />
+  );
+});
+export const FormErrorSummary = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function FormErrorSummary(props, ref) {
+  return (
+    <div
+      {...props}
+      ref={ref}
+      role="alert"
+      aria-live="assertive"
+      tabIndex={-1}
+      data-slot="form-error-summary"
+    />
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { HoverCard, HoverCardTrigger, HoverCardContent } from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const InputGroup = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function InputGroup({ role = 'group', ...props }, ref) {
+  return <div ref={ref} role={role} data-slot="input-group" {...props} />;
+});
+
+export const InputGroupAddon = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    align?: 'inline-start' | 'inline-end' | 'block-start' | 'block-end';
+    decorative?: boolean;
+  }
+>(function InputGroupAddon(
+  { align = 'inline-start', decorative = false, ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden={decorative || undefined}
+      data-align={align}
+      data-slot="input-group-addon"
+      {...props}
+    />
+  );
+});
+
+export const InputGroupText = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement>
+>(function InputGroupText(props, ref) {
+  return <span ref={ref} data-slot="input-group-text" {...props} />;
+});
+
+import {
+  forwardRef,
+  type CSSProperties,
+  type InputHTMLAttributes,
+} from 'react';
+
+export const InputOtp = /* @__PURE__ */ forwardRef<
+  HTMLInputElement,
+  Omit<InputHTMLAttributes<HTMLInputElement>, 'maxLength'> & {
+    length?: number;
+    digitsOnly?: boolean;
+    invalid?: boolean;
+  }
+>(function InputOtp(
+  {
+    length = 6,
+    digitsOnly = true,
+    invalid = false,
+    autoComplete = 'one-time-code',
+    inputMode,
+    pattern,
+    style,
+    onInput,
+    ...props
+  },
+  ref,
+) {
+  return (
+    <input
+      ref={ref}
+      type="text"
+      maxLength={length}
+      autoComplete={autoComplete}
+      inputMode={inputMode ?? (digitsOnly ? 'numeric' : 'text')}
+      pattern={pattern ?? (digitsOnly ? '[0-9]*' : undefined)}
+      aria-invalid={invalid || undefined}
+      data-slot="input-otp"
+      style={{ '--simurgh-otp-length': length, ...style } as CSSProperties}
+      onInput={(event) => {
+        if (digitsOnly) {
+          event.currentTarget.value = event.currentTarget.value
+            .replace(/\D/g, '')
+            .slice(0, length);
+        }
+        onInput?.(event);
+      }}
+      {...props}
+    />
+  );
+});
+
+import { forwardRef, type InputHTMLAttributes } from 'react';
+
+export const Input = /* @__PURE__ */ forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement> & { invalid?: boolean }
+>(function Input({ invalid = false, ...props }, ref) {
+  return (
+    <input
+      ref={ref}
+      data-slot="input"
+      aria-invalid={invalid || undefined}
+      {...props}
+    />
+  );
+});
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const ItemGroup = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemGroup({ role = 'list', ...props }, ref) {
+  return <div ref={ref} role={role} data-slot="item-group" {...props} />;
+});
+
+export const Item = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function Item({ role = 'listitem', ...props }, ref) {
+  return <div ref={ref} role={role} data-slot="item" {...props} />;
+});
+
+export const ItemMedia = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { decorative?: boolean }
+>(function ItemMedia({ decorative = true, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      aria-hidden={decorative || undefined}
+      data-slot="item-media"
+      {...props}
+    />
+  );
+});
+
+export const ItemContent = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemContent(props, ref) {
+  return <div ref={ref} data-slot="item-content" {...props} />;
+});
+
+export const ItemTitle = /* @__PURE__ */ forwardRef<
+  HTMLHeadingElement,
+  HTMLAttributes<HTMLHeadingElement>
+>(function ItemTitle(props, ref) {
+  return <h3 ref={ref} data-slot="item-title" {...props} />;
+});
+
+export const ItemDescription = /* @__PURE__ */ forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(function ItemDescription(props, ref) {
+  return <p ref={ref} data-slot="item-description" {...props} />;
+});
+
+export const ItemActions = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function ItemActions(props, ref) {
+  return <div ref={ref} data-slot="item-actions" {...props} />;
+});
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const Kbd = /* @__PURE__ */ forwardRef<
+  HTMLElement,
+  HTMLAttributes<HTMLElement>
+>(function Kbd(props, ref) {
+  return <kbd ref={ref} data-slot="kbd" {...props} />;
+});
+
+import { forwardRef, type LabelHTMLAttributes } from 'react';
+
+export const Label = /* @__PURE__ */ forwardRef<
+  HTMLLabelElement,
+  LabelHTMLAttributes<HTMLLabelElement>
+>(function Label(props, ref) {
+  return <label ref={ref} {...props} />;
+});
+
+import { forwardRef, type AnchorHTMLAttributes } from 'react';
+
+export const Link = /* @__PURE__ */ forwardRef<
+  HTMLAnchorElement,
+  AnchorHTMLAttributes<HTMLAnchorElement> & {
+    disabled?: boolean;
+    external?: boolean;
+  }
+>(function Link(
+  {
+    disabled = false,
+    external = false,
+    href,
+    onClick,
+    rel,
+    target,
+    tabIndex,
+    ...props
+  },
+  ref,
+) {
+  return (
+    <a
+      ref={ref}
+      href={disabled ? undefined : href}
+      aria-disabled={disabled || undefined}
+      data-slot="link"
+      data-external={external || undefined}
+      rel={external ? (rel ?? 'noopener noreferrer') : rel}
+      target={external ? (target ?? '_blank') : target}
+      tabIndex={disabled ? -1 : tabIndex}
+      onClick={(event) => {
+        if (disabled) {
+          event.preventDefault();
+          return;
+        }
+        onClick?.(event);
+      }}
+      {...props}
+    />
+  );
+});
+
+import { nextIndex, type Direction } from '@simurgh-ui/core';
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  type ButtonHTMLAttributes,
+  type HTMLAttributes,
+} from 'react';
+
+export const Menubar = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { label?: string; direction?: Direction }
+>(function Menubar(
+  { label = 'Application menu', direction = 'ltr', onKeyDown, ...props },
+  forwardedRef,
+) {
+  const localRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const items = localRef.current?.querySelectorAll<HTMLElement>(
+      '[role=menuitem]:not([aria-disabled=true])',
+    );
+    if (items?.length && !Array.from(items).some((item) => item.tabIndex === 0))
+      items[0]!.tabIndex = 0;
+  }, []);
+  return (
+    <div
+      ref={(node) => {
+        localRef.current = node;
+        if (typeof forwardedRef === 'function') forwardedRef(node);
+        else if (forwardedRef) forwardedRef.current = node;
+      }}
+      role="menubar"
+      aria-label={label}
+      dir={direction}
+      data-slot="menubar"
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented) return;
+        const items = Array.from(
+          event.currentTarget.querySelectorAll<HTMLElement>(
+            '[role=menuitem]:not([aria-disabled=true])',
+          ),
+        );
+        const current = items.indexOf(document.activeElement as HTMLElement);
+        const target = nextIndex(current, items.length, event.key, {
+          orientation: 'horizontal',
+          direction,
+        });
+        if (target !== current) {
+          event.preventDefault();
+          items.forEach(
+            (item, index) => (item.tabIndex = index === target ? 0 : -1),
+          );
+          items[target]?.focus();
+        }
+      }}
+      {...props}
+    />
+  );
+});
+
+export const MenubarItem = /* @__PURE__ */ forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement>
+>(function MenubarItem({ disabled, ...props }, ref) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      role="menuitem"
+      tabIndex={-1}
+      aria-disabled={disabled || undefined}
+      disabled={disabled}
+      data-slot="menubar-item"
+      {...props}
+    />
+  );
+});
+
+import { forwardRef, type MeterHTMLAttributes } from 'react';
+
+export const Meter = /* @__PURE__ */ forwardRef<
+  HTMLMeterElement,
+  MeterHTMLAttributes<HTMLMeterElement> & { label?: string }
+>(function Meter(
+  { label, min = 0, max = 100, value = 0, children, ...props },
+  ref,
+) {
+  const safeValue = Math.min(Number(max), Math.max(Number(min), Number(value)));
+  return (
+    <meter
+      ref={ref}
+      min={min}
+      max={max}
+      value={safeValue}
+      role="meter"
+      aria-label={label}
+      data-slot="meter"
+      {...props}
+    >
+      {children ?? `${safeValue}`}
+    </meter>
+  );
+});
+
+import { forwardRef, type SelectHTMLAttributes } from 'react';
+
+export const NativeSelect = /* @__PURE__ */ forwardRef<
+  HTMLSelectElement,
+  SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }
+>(function NativeSelect({ invalid = false, ...props }, ref) {
+  return (
+    <select
+      ref={ref}
+      aria-invalid={invalid || undefined}
+      data-slot="native-select"
+      {...props}
+    />
+  );
+});
+
+import {
+  forwardRef,
+  type AnchorHTMLAttributes,
+  type HTMLAttributes,
+  type LiHTMLAttributes,
+} from 'react';
+
+export const NavigationMenu = /* @__PURE__ */ forwardRef<
+  HTMLElement,
+  HTMLAttributes<HTMLElement> & { label?: string }
+>(function NavigationMenu({ label = 'Main navigation', ...props }, ref) {
+  return (
+    <nav ref={ref} aria-label={label} data-slot="navigation-menu" {...props} />
+  );
+});
+
+export const NavigationMenuList = /* @__PURE__ */ forwardRef<
+  HTMLUListElement,
+  HTMLAttributes<HTMLUListElement>
+>(function NavigationMenuList(props, ref) {
+  return <ul ref={ref} data-slot="navigation-menu-list" {...props} />;
+});
+
+export const NavigationMenuItem = /* @__PURE__ */ forwardRef<
+  HTMLLIElement,
+  LiHTMLAttributes<HTMLLIElement>
+>(function NavigationMenuItem(props, ref) {
+  return <li ref={ref} data-slot="navigation-menu-item" {...props} />;
+});
+
+export const NavigationMenuLink = /* @__PURE__ */ forwardRef<
+  HTMLAnchorElement,
+  AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
+>(function NavigationMenuLink({ current = false, ...props }, ref) {
+  return (
+    <a
+      ref={ref}
+      {...props}
+      aria-current={current ? 'page' : props['aria-current']}
+      data-slot="navigation-menu-link"
+    />
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { NumberInput } from '../index.js';
+
+export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '../index.js';
+
+import {
+  forwardRef,
+  type AnchorHTMLAttributes,
+  type HTMLAttributes,
+  type LiHTMLAttributes,
+} from 'react';
+
+export const Pagination = /* @__PURE__ */ forwardRef<
+  HTMLElement,
+  HTMLAttributes<HTMLElement> & { label?: string }
+>(function Pagination({ label = 'Pagination', ...props }, ref) {
+  return <nav ref={ref} aria-label={label} data-slot="pagination" {...props} />;
+});
+export const PaginationContent = /* @__PURE__ */ forwardRef<
+  HTMLUListElement,
+  HTMLAttributes<HTMLUListElement>
+>(function PaginationContent(props, ref) {
+  return <ul ref={ref} data-slot="pagination-content" {...props} />;
+});
+export const PaginationItem = /* @__PURE__ */ forwardRef<
+  HTMLLIElement,
+  LiHTMLAttributes<HTMLLIElement>
+>(function PaginationItem(props, ref) {
+  return <li ref={ref} data-slot="pagination-item" {...props} />;
+});
+export const PaginationLink = /* @__PURE__ */ forwardRef<
+  HTMLAnchorElement,
+  AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean }
+>(function PaginationLink({ current = false, ...props }, ref) {
+  return (
+    <a
+      ref={ref}
+      aria-current={current ? 'page' : undefined}
+      data-slot="pagination-link"
+      {...props}
+    />
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { PasswordInput } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Popover, PopoverTrigger, PopoverContent } from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const Progress = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    value?: number | null;
+    max?: number;
+    getValueLabel?: (value: number, max: number) => string;
+  }
+>(function Progress(
+  { value = null, max = 100, getValueLabel, children, ...props },
+  ref,
+) {
+  const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
+  const safeValue =
+    value == null || !Number.isFinite(value)
+      ? null
+      : Math.min(safeMax, Math.max(0, value));
+  const percentage = safeValue == null ? null : (safeValue / safeMax) * 100;
+  return (
+    <div
+      ref={ref}
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={safeMax}
+      aria-valuenow={safeValue ?? undefined}
+      aria-valuetext={
+        safeValue == null ? undefined : getValueLabel?.(safeValue, safeMax)
+      }
+      data-state={safeValue == null ? 'indeterminate' : 'determinate'}
+      data-value={safeValue ?? undefined}
+      data-max={safeMax}
+      {...props}
+    >
+      {children ?? (
+        <span
+          data-part="indicator"
+          style={{
+            inlineSize: percentage == null ? undefined : `${percentage}%`,
+          }}
+        />
+      )}
+    </div>
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { RadioGroup, RadioGroupItem } from '../index.js';
+
+import { forwardRef, useId, useState, type HTMLAttributes } from 'react';
+
+export type RatingProps = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'defaultValue' | 'onChange'
+> & {
+  value?: number;
+  defaultValue?: number;
+  max?: number;
+  name?: string;
+  disabled?: boolean;
+  required?: boolean;
+  onValueChange?: (value: number) => void;
+  getLabel?: (value: number, max: number) => string;
+};
+
+export const Rating = /* @__PURE__ */ forwardRef<HTMLDivElement, RatingProps>(
+  function Rating(
+    {
+      value,
+      defaultValue = 0,
+      max = 5,
+      name,
+      disabled,
+      required,
+      onValueChange,
+      getLabel = (item, total) => `${item} of ${total}`,
+      'aria-label': ariaLabel = 'Rating',
+      ...props
+    },
+    ref,
+  ) {
+    const [localValue, setLocalValue] = useState(defaultValue);
+    const count = Number.isFinite(max)
+      ? Math.min(100, Math.max(1, Math.floor(max)))
+      : 5;
+    const current = Math.min(
+      count,
+      Math.max(0, Math.round(value ?? localValue)),
+    );
+    const generatedName = `simurgh-rating-${useId().replace(/:/g, '')}`;
+    const groupName = name ?? generatedName;
+    const commit = (next: number) => {
+      if (value === undefined) setLocalValue(next);
+      onValueChange?.(next);
+    };
+    return (
+      <div
+        {...props}
+        ref={ref}
+        role="radiogroup"
+        aria-label={ariaLabel}
+        data-slot="rating"
+        data-disabled={disabled || undefined}
+      >
+        {Array.from({ length: count }, (_, index) => {
+          const item = index + 1;
+          return (
+            <label key={item} data-slot="rating-item">
+              <input
+                type="radio"
+                data-slot="rating-control"
+                name={groupName}
+                value={item}
+                checked={current === item}
+                disabled={disabled}
+                required={required}
+                aria-label={getLabel(item, count)}
+                onChange={() => commit(item)}
+              />
+              <span
+                data-slot="rating-icon"
+                data-selected={item <= current || undefined}
+                aria-hidden="true"
+              >
+                {'\u2605'}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+    );
+  },
+);
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const ScrollArea = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    orientation?: 'vertical' | 'horizontal' | 'both';
+    label?: string;
+  }
+>(function ScrollArea(
+  { orientation = 'vertical', label, tabIndex = 0, ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role={label ? 'region' : undefined}
+      aria-label={label}
+      tabIndex={tabIndex}
+      data-orientation={orientation}
+      data-slot="scroll-area"
+      {...props}
+    />
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Select } from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+import type { Orientation } from '@simurgh-ui/core';
+
+export const Separator = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    orientation?: Orientation;
+    decorative?: boolean;
+  }
+>(function Separator(
+  { orientation = 'horizontal', decorative = false, ...props },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role={decorative ? 'none' : 'separator'}
+      aria-hidden={decorative || undefined}
+      aria-orientation={decorative ? undefined : orientation}
+      data-orientation={orientation}
+      {...props}
+    />
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetTitle,
+  SheetDescription,
+  SheetClose,
+} from '../index.js';
+export type { SheetSide } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export {
+  SidebarProvider,
+  Sidebar,
+  SidebarTrigger,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarMenu,
+} from '../index.js';
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const Skeleton = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & { label?: string }
+>(function Skeleton({ label, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      role={label ? 'status' : undefined}
+      aria-label={label}
+      aria-busy={label ? 'true' : undefined}
+      aria-hidden={label ? undefined : 'true'}
+      data-state="loading"
+      {...props}
+    />
+  );
+});
+
+import { forwardRef, type InputHTMLAttributes } from 'react';
+
+export const Slider = /* @__PURE__ */ forwardRef<
+  HTMLInputElement,
+  Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> & { invalid?: boolean }
+>(function Slider(
+  { invalid = false, min = 0, max = 100, step = 1, ...props },
+  ref,
+) {
+  return (
+    <input
+      ref={ref}
+      type="range"
+      min={min}
+      max={max}
+      step={step}
+      aria-invalid={invalid || undefined}
+      data-slot="slider"
+      {...props}
+    />
+  );
+});
+
+import { forwardRef, type HTMLAttributes } from 'react';
+
+export const Spinner = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement> & { label?: string }
+>(function Spinner({ label = 'Loading', children, ...props }, ref) {
+  return (
+    <span
+      ref={ref}
+      role="status"
+      aria-label={label}
+      aria-live="polite"
+      aria-busy="true"
+      data-state="loading"
+      {...props}
+    >
+      <span aria-hidden="true" data-part="indicator">
+        {children ?? '◌'}
+      </span>
+    </span>
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Switch } from '../index.js';
+
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type TableHTMLAttributes,
+  type TdHTMLAttributes,
+  type ThHTMLAttributes,
+} from 'react';
+
+export const Table = /* @__PURE__ */ forwardRef<
+  HTMLTableElement,
+  TableHTMLAttributes<HTMLTableElement>
+>(function Table(props, ref) {
+  return <table ref={ref} data-slot="table" {...props} />;
+});
+export const TableHeader = /* @__PURE__ */ forwardRef<
+  HTMLTableSectionElement,
+  HTMLAttributes<HTMLTableSectionElement>
+>(function TableHeader(props, ref) {
+  return <thead ref={ref} data-slot="table-header" {...props} />;
+});
+export const TableBody = /* @__PURE__ */ forwardRef<
+  HTMLTableSectionElement,
+  HTMLAttributes<HTMLTableSectionElement>
+>(function TableBody(props, ref) {
+  return <tbody ref={ref} data-slot="table-body" {...props} />;
+});
+export const TableFooter = /* @__PURE__ */ forwardRef<
+  HTMLTableSectionElement,
+  HTMLAttributes<HTMLTableSectionElement>
+>(function TableFooter(props, ref) {
+  return <tfoot ref={ref} data-slot="table-footer" {...props} />;
+});
+export const TableRow = /* @__PURE__ */ forwardRef<
+  HTMLTableRowElement,
+  HTMLAttributes<HTMLTableRowElement>
+>(function TableRow(props, ref) {
+  return <tr ref={ref} data-slot="table-row" {...props} />;
+});
+export const TableHead = /* @__PURE__ */ forwardRef<
+  HTMLTableCellElement,
+  ThHTMLAttributes<HTMLTableCellElement>
+>(function TableHead({ scope = 'col', ...props }, ref) {
+  return <th ref={ref} scope={scope} data-slot="table-head" {...props} />;
+});
+export const TableCell = /* @__PURE__ */ forwardRef<
+  HTMLTableCellElement,
+  TdHTMLAttributes<HTMLTableCellElement>
+>(function TableCell(props, ref) {
+  return <td ref={ref} data-slot="table-cell" {...props} />;
+});
+export const TableCaption = /* @__PURE__ */ forwardRef<
+  HTMLTableCaptionElement,
+  HTMLAttributes<HTMLTableCaptionElement>
+>(function TableCaption(props, ref) {
+  return <caption ref={ref} data-slot="table-caption" {...props} />;
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Tabs, TabsList, TabsTrigger, TabsContent } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { TagsInput } from '../index.js';
+export type { TagsInputProps } from '../index.js';
+
+import { forwardRef, type TextareaHTMLAttributes } from 'react';
+
+export const Textarea = /* @__PURE__ */ forwardRef<
+  HTMLTextAreaElement,
+  TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }
+>(function Textarea({ invalid = false, ...props }, ref) {
+  return <textarea ref={ref} aria-invalid={invalid || undefined} {...props} />;
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { ToastProvider, useToast, ToastViewport } from '../index.js';
+export type { ToastMessage } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { ToggleGroup, ToggleGroupItem } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Toggle } from '../index.js';
+
+import { nextIndex, type Direction, type Orientation } from '@simurgh-ui/core';
+import {
+  forwardRef,
+  type ButtonHTMLAttributes,
+  type HTMLAttributes,
+} from 'react';
+
+export const Toolbar = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement> & {
+    orientation?: Orientation;
+    direction?: Direction;
+    label?: string;
+  }
+>(function Toolbar(
+  {
+    orientation = 'horizontal',
+    direction = 'ltr',
+    label = 'Toolbar',
+    onKeyDown,
+    ...props
+  },
+  ref,
+) {
+  return (
+    <div
+      ref={ref}
+      role="toolbar"
+      aria-label={label}
+      aria-orientation={orientation}
+      dir={direction}
+      data-slot="toolbar"
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented) return;
+        const items = Array.from(
+          event.currentTarget.querySelectorAll<HTMLElement>(
+            '[data-toolbar-item]:not(:disabled)',
+          ),
+        );
+        const index = items.indexOf(document.activeElement as HTMLElement);
+        const target = nextIndex(index, items.length, event.key, {
+          orientation,
+          direction,
+        });
+        if (target !== index) {
+          event.preventDefault();
+          items[target]?.focus();
+        }
+      }}
+      {...props}
+    />
+  );
+});
+
+export const ToolbarButton = /* @__PURE__ */ forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement>
+>(function ToolbarButton(props, ref) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      data-toolbar-item
+      data-slot="toolbar-button"
+      {...props}
+    />
+  );
+});
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Tooltip, TooltipTrigger, TooltipContent } from '../index.js';
+
+// Generated by scripts/generate-entrypoints.mjs.
+export { Tree, TreeItem } from '../index.js';
+
+import { forwardRef, type CSSProperties, type HTMLAttributes } from 'react';
+
+const visuallyHiddenStyle: CSSProperties = {
+  position: 'absolute',
+  inlineSize: 1,
+  blockSize: 1,
+  padding: 0,
+  margin: -1,
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+};
+
+export const VisuallyHidden = /* @__PURE__ */ forwardRef<
+  HTMLSpanElement,
+  HTMLAttributes<HTMLSpanElement>
+>(function VisuallyHidden({ style, ...props }, ref) {
+  return (
+    <span ref={ref} style={{ ...visuallyHiddenStyle, ...style }} {...props} />
+  );
+});

@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "bin": {
     "simurgh": "dist/index.js"
@@ -21,9 +21,9 @@
     "@simurgh-ui/registry": "workspace:*",
     "cac": "^6.7.14",
     "picocolors": "^1.1.1",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "^24.5.2"
+    "@types/node": "^24.13.3"
   }
 }
