@@ -454,14 +454,14 @@ budgets remain fixed.
         and collapsed bounds across all four target sizes.
 - [x] Define a consistent variant policy for filled, circle, alternate, and rounded forms, including
       naming rules and guidance for when each variant should exist.
-- [ ] Validate icon and adjacent-label contrast in light, dark, forced-colors, disabled, selected,
+- [x] Validate icon and adjacent-label contrast in light, dark, forced-colors, disabled, selected,
       destructive, success, and warning contexts.
 
 ### P1: RTL, accessibility, and framework parity
 
 - [ ] Infer direction from the nearest `dir` context or CSS `:dir()` state by default, while keeping
       the explicit direction property as an override for portals and physical-direction meanings.
-- [ ] Audit directional metadata for navigation, editing, communication, media, charts, maps, and
+- [x] Audit directional metadata for navigation, editing, communication, media, charts, maps, and
       physical-direction exceptions in both LTR and RTL.
 - [ ] Give Angular consumers parity with React and Vue for root SVG classes, styles, data attributes,
       ARIA attributes, and reusable presentation hooks.

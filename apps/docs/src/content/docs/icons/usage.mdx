@@ -121,6 +121,17 @@ or container distinction, never a temporary interaction state:
 Use CSS color or `colorMode` for hover, pressed, disabled, selected, and destructive treatments.
 Do not create icon-name variants for transient UI states.
 
+## Contrast and forced colors
+
+Interface icons must reach at least 3:1 against their immediate background in each state. The
+Simurgh semantic foreground/background pairs are regression-tested for light and dark normal,
+selected, destructive, success, warning, and disabled contexts. Prefer `currentColor` in controls
+so icons inherit the same reviewed foreground as their label.
+
+In Windows forced-colors mode, `currentColor` follows the user's system palette. Do not replace it
+with an authored fill or disable forced-color adjustment. Keep decorative icons hidden and retain a
+visible text label or accessible name when color or shape conveys status.
+
 ## Variant naming policy
 
 Use the unsuffixed name for the default, broadly applicable metaphor. Suffixes describe a stable

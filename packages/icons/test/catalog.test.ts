@@ -121,6 +121,50 @@ describe('navigation icon catalog', () => {
     );
   });
 
+  it('keeps semantic direction separate from physical and conventional direction', () => {
+    const directional = Object.values(icons)
+      .filter((icon) => icon.direction === 'directional')
+      .map((icon) => icon.name)
+      .sort();
+    expect(directional).toEqual(
+      [
+        'arrow-down',
+        'arrow-left',
+        'arrow-right',
+        'arrow-up',
+        'chevron-left',
+        'chevron-right',
+        'chevrons-left',
+        'chevrons-right',
+        'corner-down-left',
+        'corner-down-right',
+        'corner-up-left',
+        'corner-up-right',
+        'enter',
+        'exit',
+        'external-link',
+        'forward',
+        'redo',
+        'reply',
+        'send',
+        'undo',
+      ].sort(),
+    );
+    for (const physical of [
+      'navigation-arrow',
+      'play',
+      'skip-next',
+      'skip-previous',
+      'trend-up',
+      'trend-down',
+      'map-pin',
+    ]) {
+      expect(icons[physical as keyof typeof icons].direction, physical).toBe(
+        'neutral',
+      );
+    }
+  });
+
   it('exports named components alongside the dynamic component', () => {
     expect(ArrowLeft.displayName).toBe('ArrowLeft');
     expect(Home.displayName).toBe('Home');
