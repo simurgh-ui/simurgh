@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/react",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -50,7 +50,9 @@
     "react-dom": ">=18"
   },
   "peerDependenciesMeta": {
-    "@simurgh-ui/motion": { "optional": true }
+    "@simurgh-ui/motion": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/react": "^19.2.18",

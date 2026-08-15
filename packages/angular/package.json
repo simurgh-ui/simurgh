@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/angular",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -55,7 +55,9 @@
     "@angular/core": ">=18"
   },
   "peerDependenciesMeta": {
-    "@simurgh-ui/motion": { "optional": true }
+    "@simurgh-ui/motion": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@angular/common": "^20.3.27",
