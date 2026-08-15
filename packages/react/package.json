@@ -48,7 +48,7 @@
   ],
   "scripts": {
     "build": "node ../../scripts/clean-dist.mjs react && tsc -p tsconfig.json && node ../../scripts/build-adapter.mjs react",
-    "test": "vitest run",
+    "test": "node ../../scripts/check-react-source-boundaries.mjs && vitest run",
     "coverage": "vitest run --coverage --config ../../vitest.coverage.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test"

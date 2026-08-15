@@ -16,14 +16,17 @@ type TabsContextValue = {
   orientation: Orientation;
   direction: Direction;
 };
+
 const TabsContext = /* @__PURE__ */ createContext<TabsContextValue | null>(
   null,
 );
-const useTabs = () => {
-  const c = useContext(TabsContext);
-  if (!c) throw new Error('Tabs parts require Tabs');
-  return c;
-};
+
+function useTabs() {
+  const context = useContext(TabsContext);
+  if (!context) throw new Error('Tabs parts require Tabs');
+  return context;
+}
+
 export function Tabs({
   value,
   defaultValue = '',
@@ -52,27 +55,28 @@ export function Tabs({
     </TabsContext.Provider>
   );
 }
+
 export function TabsList(props: HTMLAttributes<HTMLDivElement>) {
-  const c = useTabs();
+  const context = useTabs();
   return (
     <div
       {...props}
       role="tablist"
-      aria-orientation={c.orientation}
-      onKeyDown={(e) => {
-        props.onKeyDown?.(e);
+      aria-orientation={context.orientation}
+      onKeyDown={(event) => {
+        props.onKeyDown?.(event);
         const tabs = Array.from(
-          e.currentTarget.querySelectorAll<HTMLElement>(
+          event.currentTarget.querySelectorAll<HTMLElement>(
             '[role=tab]:not([disabled])',
           ),
         );
         const index = tabs.indexOf(document.activeElement as HTMLElement);
-        const target = nextIndex(index, tabs.length, e.key, {
-          orientation: c.orientation,
-          direction: c.direction,
+        const target = nextIndex(index, tabs.length, event.key, {
+          orientation: context.orientation,
+          direction: context.direction,
         });
         if (target !== index) {
-          e.preventDefault();
+          event.preventDefault();
           tabs[target]?.focus();
           tabs[target]?.click();
         }
@@ -84,20 +88,20 @@ export function TabsTrigger({
   value,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { value: string }) {
-  const c = useTabs();
-  const active = c.value === value;
+  const context = useTabs();
+  const active = context.value === value;
   return (
     <button
       type="button"
       {...props}
       role="tab"
-      id={`${c.id}-tab-${value}`}
+      id={`${context.id}-tab-${value}`}
       aria-selected={active}
-      aria-controls={`${c.id}-panel-${value}`}
+      aria-controls={`${context.id}-panel-${value}`}
       tabIndex={active ? 0 : -1}
-      onClick={(e) => {
-        props.onClick?.(e);
-        c.setValue(value);
+      onClick={(event) => {
+        props.onClick?.(event);
+        context.setValue(value);
       }}
     />
   );
@@ -106,13 +110,13 @@ export function TabsContent({
   value,
   ...props
 }: HTMLAttributes<HTMLDivElement> & { value: string }) {
-  const c = useTabs();
-  return c.value === value ? (
+  const context = useTabs();
+  return context.value === value ? (
     <div
       {...props}
       role="tabpanel"
-      id={`${c.id}-panel-${value}`}
-      aria-labelledby={`${c.id}-tab-${value}`}
+      id={`${context.id}-panel-${value}`}
+      aria-labelledby={`${context.id}-tab-${value}`}
       tabIndex={0}
     />
   ) : null;

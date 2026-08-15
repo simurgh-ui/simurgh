@@ -185,7 +185,9 @@ Items are checked only after their implementation exists and the relevant verifi
         compatible exports.
   - [x] Bound the measured all-exports module-boundary tradeoff with a 28 KiB complete-adapter
         budget while retaining tighter standalone subpath and published-package budgets.
-  - [x] Move the remaining React primitives and shared helpers without introducing component-to-barrel
+  - [x] Move Tabs, Accordion, Collapsible, and Disclosure into genuine component modules, extract
+        shared controlled-open helpers, and prevent component-to-barrel dependencies from increasing.
+  - [ ] Move the remaining React primitives and shared helpers without introducing component-to-barrel
         cycles or exceeding standalone, aggregate, complete-adapter, and published-package budgets.
 - [x] Evaluate esbuild code splitting for the React adapter and verify that shared chunks reduce multi-component consumption without adding excessive module overhead.
 - [x] Revisit the custom `@floating-ui/dom` React adapter only if its estimated savings justify the accessibility and interaction-maintenance risk.

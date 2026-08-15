@@ -36,31 +36,33 @@ export function Collapsible({
     </CollapsibleContext.Provider>
   );
 }
+
 export function CollapsibleTrigger(
   props: ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
-  const c = useContext(CollapsibleContext)!;
+  const context = useContext(CollapsibleContext)!;
   return (
     <button
       type="button"
       {...props}
-      aria-expanded={c.open}
-      aria-controls={`${c.id}-content`}
+      aria-expanded={context.open}
+      aria-controls={`${context.id}-content`}
       onClick={(event) => {
         props.onClick?.(event);
-        if (!event.defaultPrevented && !props.disabled) c.toggle();
+        if (!event.defaultPrevented && !props.disabled) context.toggle();
       }}
     />
   );
 }
+
 export function CollapsibleContent(props: HTMLAttributes<HTMLDivElement>) {
-  const c = useContext(CollapsibleContext)!;
+  const context = useContext(CollapsibleContext)!;
   return (
     <div
       {...props}
-      id={`${c.id}-content`}
-      hidden={!c.open}
-      data-state={c.open ? 'open' : 'closed'}
+      id={`${context.id}-content`}
+      hidden={!context.open}
+      data-state={context.open ? 'open' : 'closed'}
     />
   );
 }

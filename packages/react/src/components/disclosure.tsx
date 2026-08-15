@@ -1,5 +1,5 @@
+import { useOpen, type OpenProps } from '../internal/open.js';
 import React, { forwardRef, type HTMLAttributes } from 'react';
-import { type OpenProps, useOpen } from '../internal/open.js';
 
 export const Disclosure = forwardRef<
   HTMLDetailsElement,
