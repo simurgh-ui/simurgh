@@ -48,6 +48,8 @@ const failures = [];
 const files = await walk(docsRoot);
 for (const path of files) {
   const contents = await readFile(path, 'utf8');
+  const newline = contents.includes('\r\n') ? '\r\n' : '\n';
+  const fileMarker = marker.replaceAll('\n', newline);
   const markerPattern = new RegExp(
     `(?:${escapeRegExp(start)}|${escapeRegExp(legacyStart)})[\\s\\S]*?(?:${escapeRegExp(end)}|${escapeRegExp(legacyEnd)})\\s*`,
     'u',
@@ -58,10 +60,12 @@ for (const path of files) {
   );
   const expected =
     guidanceIndex >= 0
-      ? `${withoutMarker.slice(0, guidanceIndex).trimEnd()}\n\n${marker}\n${withoutMarker.slice(guidanceIndex)}\n`
-      : `${withoutMarker}\n\n${marker}\n`;
+      ? `${withoutMarker.slice(0, guidanceIndex).trimEnd()}${newline}${newline}${fileMarker}${newline}${withoutMarker.slice(guidanceIndex)}${newline}`
+      : `${withoutMarker}${newline}${newline}${fileMarker}${newline}`;
   if (process.argv.includes('--update')) await writeFile(path, expected);
-  else if (contents !== expected)
+  else if (
+    contents.replaceAll('\r\n', '\n') !== expected.replaceAll('\r\n', '\n')
+  )
     failures.push(path.slice(docsRoot.length + 1));
 }
 

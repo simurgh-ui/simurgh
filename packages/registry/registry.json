@@ -33,6 +33,7 @@
     "label",
     "separator",
     "progress",
+    "chart",
     "toggle",
     "visually-hidden",
     "avatar",
@@ -182,6 +183,12 @@
       "label": ["Label"],
       "separator": ["Separator"],
       "progress": ["Progress"],
+      "chart": [
+        "ChartProps", "ChartRoot", "ChartPlot", "ChartGrid", "ChartXAxis", "ChartYAxis",
+        "ChartLegend", "ChartTooltip", "ChartCrosshair", "ChartBrush", "ChartDataTable",
+        "LineChart", "AreaChart", "BarChart", "PieChart", "DonutChart", "ScatterChart",
+        "BubbleChart", "RadarChart", "HeatmapChart", "ComboChart"
+      ],
       "toggle": ["Toggle"],
       "visually-hidden": ["VisuallyHidden"],
       "avatar": ["Avatar"],
@@ -365,6 +372,12 @@
       "label": ["Label"],
       "separator": ["Separator"],
       "progress": ["Progress"],
+      "chart": [
+        "ChartRoot", "ChartPlot", "ChartGrid", "ChartXAxis", "ChartYAxis", "ChartLegend",
+        "ChartTooltip", "ChartCrosshair", "ChartBrush", "LineChart", "AreaChart", "BarChart",
+        "PieChart", "DonutChart", "ScatterChart", "BubbleChart", "RadarChart", "HeatmapChart",
+        "ComboChart"
+      ],
       "toggle": ["Toggle"],
       "visually-hidden": ["VisuallyHidden"],
       "avatar": ["Avatar"],
@@ -511,6 +524,13 @@
       "label": ["LabelComponent"],
       "separator": ["SeparatorComponent"],
       "progress": ["ProgressComponent"],
+      "chart": [
+        "ChartBaseComponent", "ChartRootComponent", "ChartPlotComponent", "ChartGridDirective",
+        "ChartXAxisDirective", "ChartYAxisDirective", "ChartLegendDirective", "ChartTooltipDirective",
+        "ChartCrosshairDirective", "ChartBrushDirective", "LineChartComponent", "AreaChartComponent",
+        "BarChartComponent", "PieChartComponent", "DonutChartComponent", "ScatterChartComponent",
+        "BubbleChartComponent", "RadarChartComponent", "HeatmapChartComponent", "ComboChartComponent"
+      ],
       "toggle": ["ToggleComponent"],
       "visually-hidden": ["VisuallyHiddenComponent"],
       "avatar": ["AvatarComponent"],
@@ -628,7 +648,7 @@
       "password-input", "number-input", "rating", "tags-input",
       "button-group", "input-group",
       "input-otp", "toggle-group", "navigation-menu", "menubar",
-      "empty", "kbd", "pagination", "toast", "toolbar"
+      "empty", "kbd", "pagination", "toast", "toolbar", "chart"
     ],
     "headless": [
       "accordion", "alert", "aspect-ratio", "avatar", "badge", "breadcrumb",

@@ -241,3 +241,4 @@ export {
   useToast,
   type ToastMessage,
 } from './components/toast.js';
+export * from './components/chart.js';

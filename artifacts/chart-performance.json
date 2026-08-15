@@ -1,0 +1,9 @@
+{
+  "capacity": 100000,
+  "finalLength": 100000,
+  "frames": 600,
+  "droppedInput": 0,
+  "medianMs": 0.8999999994412065,
+  "p95Ms": 2,
+  "passed": true
+}

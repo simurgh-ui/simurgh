@@ -25,6 +25,31 @@ const cases = [
     budget: 512,
   },
   {
+    name: 'react-chart',
+    framework: 'react',
+    subpath: 'chart',
+    source: "export { LineChart } from '@simurgh-ui/react/chart';",
+    budget: 10 * KiB,
+  },
+  {
+    name: 'react-chart-interactions',
+    framework: 'react',
+    subpath: 'chart-interactions',
+    budget: 2 * KiB,
+  },
+  {
+    name: 'react-chart-stream',
+    framework: 'react',
+    subpath: 'chart-stream',
+    budget: 3 * KiB,
+  },
+  {
+    name: 'react-chart-canvas',
+    framework: 'react',
+    subpath: 'chart-canvas',
+    budget: 3 * KiB,
+  },
+  {
     name: 'vue-button',
     framework: 'vue',
     subpath: 'button',
@@ -59,6 +84,13 @@ const cases = [
     framework: 'vue',
     subpath: 'progress',
     budget: 560,
+  },
+  {
+    name: 'vue-chart',
+    framework: 'vue',
+    subpath: 'chart',
+    source: "export { LineChart } from '@simurgh-ui/vue/chart';",
+    budget: 10 * KiB,
   },
   {
     name: 'vue-input',
@@ -331,6 +363,13 @@ const cases = [
     budget: 512,
   },
   {
+    name: 'angular-chart',
+    framework: 'angular',
+    subpath: 'chart',
+    source: "export { LineChartComponent } from '@simurgh-ui/angular/chart';",
+    budget: 10 * KiB,
+  },
+  {
     name: 'angular-checkbox',
     framework: 'angular',
     subpath: 'checkbox',
@@ -465,9 +504,9 @@ const cases = [
   // Genuine per-component modules add a small boundary cost to the all-exports
   // bundle while materially reducing direct subpath imports. Keep that tradeoff
   // bounded instead of forcing component implementations back into the barrel.
-  { name: 'react-complete', framework: 'react', budget: 28 * KiB },
-  { name: 'vue-complete', framework: 'vue', budget: 22.25 * KiB },
-  { name: 'angular-complete', framework: 'angular', budget: 27 * KiB },
+  { name: 'react-complete', framework: 'react', budget: 35 * KiB },
+  { name: 'vue-complete', framework: 'vue', budget: 29 * KiB },
+  { name: 'angular-complete', framework: 'angular', budget: 34 * KiB },
   {
     name: 'react-without-floating',
     framework: 'react',
@@ -503,7 +542,7 @@ function packageResolver() {
           return {
             path: resolve(
               root,
-              `packages/${framework}/dist/${subpath ? `components/${subpath}` : 'index'}.js`,
+              `packages/${framework}/dist/${subpath ? (/^chart-(?:interactions|stream|canvas|motion)$/.test(subpath) ? subpath : `components/${subpath}`) : 'index'}.js`,
             ),
             sideEffects: false,
           };
@@ -560,7 +599,7 @@ for (const bundleCase of cases) {
   }
 }
 
-const packageBudgets = { react: 400 * KiB, vue: 375 * KiB, angular: 275 * KiB };
+const packageBudgets = { react: 400 * KiB, vue: 375 * KiB, angular: 300 * KiB };
 const publishedPackages = {};
 for (const framework of ['react', 'vue', 'angular']) {
   const isWindows = process.platform === 'win32';

@@ -1,0 +1,265 @@
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  ChangeDetectorRef,
+} from '@angular/core';
+import type { AfterViewChecked, OnDestroy } from '@angular/core';
+import {
+  areaPath,
+  bandScale,
+  chartDomain,
+  chartLayout,
+  chartSummary,
+  chartValue,
+  linePath,
+  linearScale,
+  logScale,
+  numericValue,
+  pieArcs,
+  radarPoints,
+  stackChartValues,
+  stackedAreaPath,
+  type ChartAccessibility,
+  type ChartAccessor,
+  type ChartSeries,
+  type ChartSeriesType,
+} from '@simurgh-ui/core/charts';
+import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
+import type { ChartStream } from '@simurgh-ui/core/chart-stream';
+
+type Datum = Record<PropertyKey, unknown>;
+type Mark = {
+  id: string;
+  type: ChartSeriesType;
+  color: string;
+  path?: string;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  radius?: number;
+};
+const colors = Array.from({ length: 10 }, (_, index) => `var(--simurgh-chart-${index + 1})`);
+
+const template = `
+  <figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption>
+  <p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ model.summary }}</p>
+  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height">
+    <canvas #canvas *ngIf="model.useCanvas" [attr.width]="width" [attr.height]="height" aria-hidden="true"></canvas>
+    <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" data-part="plot" aria-hidden="true">
+      <ng-container *ngIf="!model.useCanvas">
+        <ng-container *ngFor="let mark of model.marks">
+          <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color"></path>
+          <rect *ngIf="mark.type === 'bar' || mark.type === 'heatmap'" data-part="series" [attr.x]="mark.x" [attr.y]="mark.y" [attr.width]="mark.width" [attr.height]="mark.height" [attr.fill]="mark.color"></rect>
+          <circle *ngIf="mark.type === 'scatter' || mark.type === 'bubble'" data-part="series" [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.r]="mark.radius" [attr.fill]="mark.color"></circle>
+        </ng-container>
+      </ng-container>
+    </svg>
+    <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
+    <div *ngIf="model.tooltip" role="tooltip" data-part="tooltip">{{ model.tooltip }}</div>
+  </div>
+  <div data-part="legend">
+    <button *ngFor="let item of model.legend; let index = index" type="button" [attr.aria-pressed]="!effectiveHiddenSeries.includes(item.id)" (click)="toggleSeries(item.id)">
+      <span [style.background]="item.color"></span>{{ item.label }}
+    </button>
+  </div>
+  <div *ngIf="tableEnabled" data-part="data-table">
+    <table>
+      <thead><tr><th scope="col">Category</th><th *ngFor="let item of model.legend" scope="col">{{ item.label }}</th></tr></thead>
+      <tbody><tr *ngFor="let datum of tableRows; let row = index"><td>{{ tableValue(datum, xAccessor, row) }}</td><td *ngFor="let item of activeSeries">{{ tableValue(datum, item.y, row) }}</td></tr></tbody>
+    </table>
+    <nav *ngIf="tablePages > 1" aria-label="Chart data pages"><button type="button" [disabled]="tablePage === 0" (click)="tablePage = tablePage - 1">Previous</button><span>{{ tablePage + 1 }} / {{ tablePages }}</span><button type="button" [disabled]="tablePage + 1 >= tablePages" (click)="tablePage = tablePage + 1">Next</button></nav>
+  </div>
+  <div *ngIf="!model.marks.length" data-part="empty">{{ emptyContent }}</div>
+`;
+
+@Directive()
+export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy {
+  @Input() data: readonly Datum[] = [];
+  private streamValue: ChartStream<string> | undefined;
+  private unsubscribeStream: (() => void) | undefined;
+  @Input() set stream(value: ChartStream<string> | undefined) {
+    this.unsubscribeStream?.();
+    this.streamValue = value;
+    this.unsubscribeStream = value?.subscribe(() => this.changeDetector?.markForCheck());
+  }
+  get stream() { return this.streamValue; }
+  @Input() x?: ChartAccessor<Datum>;
+  @Input() y?: ChartAccessor<Datum, number>;
+  @Input() series?: readonly ChartSeries<Datum>[];
+  @Input({ required: true }) accessibility!: ChartAccessibility;
+  @Input() width = 640;
+  @Input() height = 360;
+  @Input() xScale: 'linear' | 'time' | 'band' | 'log' = 'linear';
+  @Input() yScale: 'linear' | 'time' | 'log' = 'linear';
+  @Input() renderMode: 'auto' | 'svg' | 'canvas' = 'auto';
+  @Input() canvasThreshold = 2000;
+  @Input() hiddenSeries?: readonly string[];
+  @Input() defaultHiddenSeries: readonly string[] = [];
+  @Input() innerRadius?: number;
+  @Input() emptyContent = 'No chart data';
+  @Output() readonly hiddenSeriesChange = new EventEmitter<string[]>();
+  @ViewChild('canvas') canvas?: ElementRef<HTMLCanvasElement>;
+  abstract readonly kind: ChartSeriesType | 'combo' | 'pie' | 'donut';
+  focused = 0;
+  tablePage = 0;
+  private uncontrolledHiddenSeries?: readonly string[];
+  private drawn = '';
+  constructor(private readonly changeDetector?: ChangeDetectorRef) {}
+
+  get effectiveHiddenSeries() { return this.hiddenSeries ?? this.uncontrolledHiddenSeries ?? this.defaultHiddenSeries; }
+
+  get decorative() {
+    return 'decorative' in this.accessibility && this.accessibility.decorative;
+  }
+  get xAccessor(): ChartAccessor<Datum> { return this.x ?? ((_: Datum, index: number) => index); }
+  get activeSeries(): readonly ChartSeries<Datum>[] { return (this.series?.length ? this.series : this.y ? [{ id: 'value', y: this.y, x: this.xAccessor, type: this.kind === 'combo' ? 'line' : this.kind as ChartSeriesType }] : []).filter((item) => !this.effectiveHiddenSeries.includes(item.id)); }
+  get tableEnabled() { return !this.decorative && 'table' in this.accessibility && Boolean(this.accessibility.table); }
+  get tablePageSize() { const table = 'table' in this.accessibility ? this.accessibility.table : false; return typeof table === 'object' ? table.pageSize ?? 50 : 50; }
+  get rows(): readonly Datum[] {
+    if (!this.streamValue) return this.data;
+    if (this.data.length) throw new TypeError('Chart accepts either data or stream, not both.');
+    const snapshot = this.streamValue.snapshot();
+    const limit = Math.max(2, Math.floor(this.width * 2));
+    const step = Math.max(1, Math.ceil(snapshot.length / limit));
+    const indexes = Array.from({ length: Math.ceil(snapshot.length / step) }, (_, index) => index * step);
+    if (snapshot.length && indexes.at(-1) !== snapshot.length - 1) indexes.push(snapshot.length - 1);
+    return indexes.map((index) => Object.fromEntries(this.streamValue!.dimensions.map((key) => [key, snapshot.columns[key]![index]])) as Datum);
+  }
+  get tablePages() { return Math.max(1, Math.ceil(this.rows.length / this.tablePageSize)); }
+  get tableRows() { return this.rows.slice(this.tablePage * this.tablePageSize, this.tablePage * this.tablePageSize + this.tablePageSize); }
+  tableValue(datum: Datum, value: ChartAccessor<Datum>, row: number) { return String(chartValue(datum, value, this.tablePage * this.tablePageSize + row) ?? ''); }
+
+  get model() {
+    if (this.kind === 'pie' || this.kind === 'donut') return this.polarModel();
+    const layout = chartLayout(this.width, this.height);
+    const xAccessor = this.xAccessor;
+    const definitions: readonly ChartSeries<Datum>[] = this.series?.length
+      ? this.series
+      : this.y ? [{ id: 'value', y: this.y, x: xAccessor, type: this.kind === 'combo' ? 'line' : this.kind }] : [];
+    const active = this.activeSeries;
+    const unstacked = active.flatMap((definition) => this.rows.map((datum, index) => {
+      const xValue = chartValue(datum, definition.x ?? xAccessor, index);
+      const yValue = numericValue(chartValue(datum, definition.y, index));
+      const numericX = numericValue(xValue);
+      return xValue == null || yValue == null || (this.xScale !== 'band' && numericX == null) || (this.yScale === 'log' && yValue <= 0)
+        ? null : { index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
+    }).filter((item): item is NonNullable<typeof item> => item != null));
+    const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
+    const xDomain = chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
+    const yDomain = chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || this.kind === 'bar') }) ?? [0, 1];
+    const bands = this.xScale === 'band' ? bandScale(raw.map((item) => item.xValue), [layout.left, layout.left + layout.plotWidth]) : null;
+    const xMap = (this.xScale === 'log' ? logScale : linearScale)(xDomain, [layout.left, layout.left + layout.plotWidth]);
+    const yMap = (this.yScale === 'log' ? logScale : linearScale)(yDomain, [layout.top + layout.plotHeight, layout.top]);
+    const marks: Mark[] = [];
+    const canvasMarks: CanvasMark[] = [];
+    const points: { id: string; label: string; yValue: number }[] = [];
+    for (const [seriesIndex, definition] of active.entries()) {
+      const type = definition.type ?? (this.kind === 'combo' ? 'line' : this.kind);
+      const color = definition.color ?? colors[seriesIndex % colors.length]!;
+      const values = raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : xMap(item.numericX), y: yMap(item.end), y0: yMap(item.start) }));
+      points.push(...values.map((item) => ({ id: definition.id, label: definition.label ?? definition.id, yValue: item.yValue })));
+      if (type === 'line' || type === 'area') {
+        const path = type === 'line' ? linePath(values.map((item) => [item.x, item.y])) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
+        marks.push({ id: definition.id, type, color, path });
+        canvasMarks.push(type === 'line' ? { type: 'line', points: values.map((item) => [item.x, item.y]), color } : { type: 'area', points: values.map((item) => [item.x, item.y]), baseline: yMap(0), color, opacity: 0.3 });
+      } else for (const item of values) {
+        if (type === 'bar' || type === 'heatmap') {
+          const width = type === 'bar' ? bands?.bandwidth ?? 8 : 10;
+          const origin = definition.stack ? item.y0 : yMap(0);
+          const y = type === 'bar' ? Math.min(item.y, origin) : item.y - 5;
+          const height = type === 'bar' ? Math.abs(item.y - origin) : 10;
+          marks.push({ id: definition.id, type, color, x: item.x - width / 2, y, width, height });
+          canvasMarks.push({ type: 'rect', x: item.x - width / 2, y, width, height, color });
+        } else {
+          const radius = type === 'bubble' ? item.radius : 3;
+          marks.push({ id: definition.id, type, color, x: item.x, y: item.y, radius });
+          canvasMarks.push({ type: 'point', x: item.x, y: item.y, radius, color });
+        }
+      }
+    }
+    const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
+    const current = points[Math.min(this.focused, points.length - 1)];
+    return { marks, canvasMarks, useCanvas, summary: chartSummary(points.map((item) => item.yValue)), tooltip: current ? `${current.label}: ${current.yValue}` : '', legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+  }
+
+  ngAfterViewChecked(): void {
+    const model = this.model;
+    const signature = `${this.rows.length}:${model.marks.length}:${this.width}:${this.height}`;
+    if (!model.useCanvas || !this.canvas || signature === this.drawn) return;
+    this.drawn = signature;
+    void import('@simurgh-ui/core/chart-canvas').then(({ drawChartCanvas }) => {
+      const context = this.canvas?.nativeElement.getContext('2d');
+      if (context) drawChartCanvas(context, model.canvasMarks, this.width, this.height, globalThis.devicePixelRatio || 1);
+    });
+  }
+
+  onKeydown(event: KeyboardEvent) {
+    const size = this.model.marks.length;
+    if (event.key === 'Home') this.focused = 0;
+    else if (event.key === 'End') this.focused = Math.max(0, size - 1);
+    else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) this.focused = Math.max(0, this.focused - 1);
+    else if (['ArrowRight', 'ArrowDown'].includes(event.key)) this.focused = Math.min(Math.max(0, size - 1), this.focused + 1);
+    else return;
+    event.preventDefault();
+  }
+  toggleSeries(id: string) {
+    const hidden = this.effectiveHiddenSeries;
+    const next = hidden.includes(id) ? hidden.filter((item) => item !== id) : [...hidden, id];
+    if (this.hiddenSeries === undefined) this.uncontrolledHiddenSeries = next;
+    this.hiddenSeriesChange.emit(next);
+  }
+  ngOnDestroy(): void { this.unsubscribeStream?.(); }
+  private polarModel() {
+    const value = this.y ?? this.series?.[0]?.y;
+    const radius = Math.min(this.width, this.height) / 2 - 16;
+    const arcs = value ? pieArcs(this.rows, value, radius, this.kind === 'donut' ? this.innerRadius ?? radius * 0.55 : this.innerRadius ?? 0) : [];
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+  }
+}
+
+function chartMetadata(selector: string) {
+  return Component({ selector, standalone: true, imports: [CommonModule], template, host: { class: 'simurgh-chart', 'data-slot': 'chart', '[attr.data-state]': "model.marks.length ? null : 'empty'", '[attr.aria-hidden]': 'decorative || null' } });
+}
+
+@chartMetadata('simurgh-line-chart') export class LineChartComponent extends ChartBaseComponent { readonly kind = 'line'; }
+@chartMetadata('simurgh-area-chart') export class AreaChartComponent extends ChartBaseComponent { readonly kind = 'area'; }
+@chartMetadata('simurgh-bar-chart') export class BarChartComponent extends ChartBaseComponent { readonly kind = 'bar'; override xScale: 'linear' | 'time' | 'band' | 'log' = 'band'; }
+@chartMetadata('simurgh-scatter-chart') export class ScatterChartComponent extends ChartBaseComponent { readonly kind = 'scatter'; }
+@chartMetadata('simurgh-bubble-chart') export class BubbleChartComponent extends ChartBaseComponent { readonly kind = 'bubble'; }
+@chartMetadata('simurgh-heatmap-chart') export class HeatmapChartComponent extends ChartBaseComponent { readonly kind = 'heatmap'; }
+@chartMetadata('simurgh-combo-chart') export class ComboChartComponent extends ChartBaseComponent { readonly kind = 'combo'; }
+@chartMetadata('simurgh-pie-chart') export class PieChartComponent extends ChartBaseComponent { readonly kind = 'pie'; }
+@chartMetadata('simurgh-donut-chart') export class DonutChartComponent extends ChartBaseComponent { readonly kind = 'donut'; }
+
+@Component({ selector: 'simurgh-radar-chart', standalone: true, template: `<svg [attr.viewBox]="viewBox" data-part="plot" aria-hidden="true"><polygon data-part="series" [attr.points]="points"></polygon></svg><figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption><p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ summary }}</p>`, imports: [CommonModule], host: { class: 'simurgh-chart', 'data-slot': 'chart' } })
+export class RadarChartComponent {
+  @Input() data: readonly Datum[] = [];
+  @Input() stream?: ChartStream<string>;
+  @Input({ required: true }) y!: ChartAccessor<Datum, number>;
+  @Input({ required: true }) accessibility!: ChartAccessibility;
+  @Input() width = 360;
+  @Input() height = 360;
+  get rows(): readonly Datum[] { if (!this.stream) return this.data; const snapshot = this.stream.snapshot(); const step = Math.max(1, Math.ceil(snapshot.length / Math.max(2, this.width * 2))); return Array.from({ length: Math.ceil(snapshot.length / step) }, (_, index) => Object.fromEntries(this.stream!.dimensions.map((key) => [key, snapshot.columns[key]![index * step]])) as Datum); }
+  get values() { return this.rows.map((datum, index) => numericValue(chartValue(datum, this.y, index))).filter((item): item is number => item != null); }
+  get points() { return radarPoints(this.values, Math.min(this.width, this.height) / 2 - 24); }
+  get viewBox() { return `${-this.width / 2} ${-this.height / 2} ${this.width} ${this.height}`; }
+  get decorative() { return 'decorative' in this.accessibility && this.accessibility.decorative; }
+  get summary() { return chartSummary(this.values); }
+}
+
+@Component({ selector: 'simurgh-chart-root', standalone: true, template: '<ng-content />', host: { class: 'simurgh-chart', 'data-slot': 'chart' } }) export class ChartRootComponent {}
+@Component({ selector: 'simurgh-chart-plot', standalone: true, template: '<svg data-part="plot"><ng-content /></svg>' }) export class ChartPlotComponent {}
+@Directive({ selector: '[simurghChartGrid]', standalone: true, host: { 'data-part': 'grid' } }) export class ChartGridDirective {}
+@Directive({ selector: '[simurghChartXAxis]', standalone: true, host: { 'data-part': 'x-axis' } }) export class ChartXAxisDirective {}
+@Directive({ selector: '[simurghChartYAxis]', standalone: true, host: { 'data-part': 'y-axis' } }) export class ChartYAxisDirective {}
+@Directive({ selector: '[simurghChartLegend]', standalone: true, host: { 'data-part': 'legend' } }) export class ChartLegendDirective {}
+@Directive({ selector: '[simurghChartTooltip]', standalone: true, host: { 'data-part': 'tooltip', role: 'tooltip' } }) export class ChartTooltipDirective {}
+@Directive({ selector: '[simurghChartCrosshair]', standalone: true, host: { 'data-part': 'crosshair' } }) export class ChartCrosshairDirective {}
+@Directive({ selector: '[simurghChartBrush]', standalone: true, host: { 'data-part': 'brush' } }) export class ChartBrushDirective {}

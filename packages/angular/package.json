@@ -12,6 +12,22 @@
       "types": "./dist/all.d.ts",
       "default": "./dist/all.js"
     },
+    "./chart-interactions": {
+      "types": "./dist/chart-interactions.d.ts",
+      "default": "./dist/chart-interactions.js"
+    },
+    "./chart-stream": {
+      "types": "./dist/chart-stream.d.ts",
+      "default": "./dist/chart-stream.js"
+    },
+    "./chart-canvas": {
+      "types": "./dist/chart-canvas.d.ts",
+      "default": "./dist/chart-canvas.js"
+    },
+    "./chart-motion": {
+      "types": "./dist/chart-motion.d.ts",
+      "default": "./dist/chart-motion.js"
+    },
     "./*": {
       "types": "./dist/components/*.d.ts",
       "default": "./dist/components/*.js"
@@ -34,8 +50,12 @@
     "tslib": "^2.8.1"
   },
   "peerDependencies": {
+    "@simurgh-ui/motion": "workspace:*",
     "@angular/common": ">=18",
     "@angular/core": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "@simurgh-ui/motion": { "optional": true }
   },
   "devDependencies": {
     "@angular/common": "^20.3.27",

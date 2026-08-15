@@ -5,6 +5,7 @@ import { Input } from '@simurgh-ui/react/input';
 import { Meter } from '@simurgh-ui/react/meter';
 import { NativeSelect } from '@simurgh-ui/react/native-select';
 import { Progress } from '@simurgh-ui/react/progress';
+import { LineChart } from '@simurgh-ui/react/chart';
 import { Switch } from '@simurgh-ui/react/switch';
 import { Textarea } from '@simurgh-ui/react/textarea';
 import { Alert } from '@simurgh-ui/react/alert';
@@ -72,6 +73,7 @@ import '@simurgh-ui/styles/input.css';
 import '@simurgh-ui/styles/meter.css';
 import '@simurgh-ui/styles/native-select.css';
 import '@simurgh-ui/styles/progress.css';
+import '@simurgh-ui/styles/chart.css';
 import '@simurgh-ui/styles/switch.css';
 import '@simurgh-ui/styles/textarea.css';
 import '@simurgh-ui/styles/alert.css';
@@ -134,7 +136,7 @@ import '@simurgh-ui/styles/resizable.css';
 import '@simurgh-ui/styles/sidebar.css';
 import '@simurgh-ui/styles/toast.css';
 
-type Props = { component: 'accordion' | 'alert' | 'alert-dialog' | 'aspect-ratio' | 'avatar' | 'badge' | 'breadcrumb' | 'button' | 'button-group' | 'calendar' | 'card' | 'carousel' | 'checkbox' | 'collapsible' | 'combobox' | 'command' | 'context-menu' | 'date-picker' | 'description-list' | 'dialog' | 'disclosure' | 'drawer' | 'dropdown-menu' | 'empty' | 'field' | 'file-upload' | 'form' | 'hover-card' | 'input' | 'input-group' | 'input-otp' | 'item' | 'kbd' | 'label' | 'link' | 'menubar' | 'meter' | 'native-select' | 'navigation-menu' | 'number-input' | 'pagination' | 'password-input' | 'popover' | 'progress' | 'radio-group' | 'rating' | 'resizable' | 'scroll-area' | 'select' | 'separator' | 'sheet' | 'sidebar' | 'skeleton' | 'slider' | 'spinner' | 'switch' | 'table' | 'tabs' | 'tags-input' | 'textarea' | 'toast' | 'toggle' | 'toggle-group' | 'toolbar' | 'tooltip' | 'tree' | 'visually-hidden' };
+type Props = { component: 'accordion' | 'alert' | 'alert-dialog' | 'aspect-ratio' | 'avatar' | 'badge' | 'breadcrumb' | 'button' | 'button-group' | 'calendar' | 'card' | 'carousel' | 'chart' | 'checkbox' | 'collapsible' | 'combobox' | 'command' | 'context-menu' | 'date-picker' | 'description-list' | 'dialog' | 'disclosure' | 'drawer' | 'dropdown-menu' | 'empty' | 'field' | 'file-upload' | 'form' | 'hover-card' | 'input' | 'input-group' | 'input-otp' | 'item' | 'kbd' | 'label' | 'link' | 'menubar' | 'meter' | 'native-select' | 'navigation-menu' | 'number-input' | 'pagination' | 'password-input' | 'popover' | 'progress' | 'radio-group' | 'rating' | 'resizable' | 'scroll-area' | 'select' | 'separator' | 'sheet' | 'sidebar' | 'skeleton' | 'slider' | 'spinner' | 'switch' | 'table' | 'tabs' | 'tags-input' | 'textarea' | 'toast' | 'toggle' | 'toggle-group' | 'toolbar' | 'tooltip' | 'tree' | 'visually-hidden' };
 
 function ToastPreview() {
   const { toast } = useToast();
@@ -161,6 +163,9 @@ export default function ReactComponentPreview({ component }: Props) {
 
   if (component === 'progress')
     return <div className="preview-stack"><div className="preview-row"><strong>Uploading assets</strong><span className="preview-muted">68%</span></div><Progress value={68} aria-label="Uploading assets" /></div>;
+
+  if (component === 'chart')
+    return <LineChart data={[{ month: 'Farvardin', value: 32 }, { month: 'Ordibehesht', value: 48 }, { month: 'Khordad', value: 41 }, { month: 'Tir', value: 63 }, { month: 'Mordad', value: 72 }]} x="month" xScale="band" y="value" height={280} accessibility={{ title: 'Monthly activity', description: 'Activity rises overall across five months.' }} />;
 
   if (component === 'meter')
     return <div className="preview-stack"><label htmlFor="live-preview-storage">Storage used: 72%</label><Meter id="live-preview-storage" min={0} max={100} low={40} high={80} optimum={20} value={72}>72%</Meter></div>;

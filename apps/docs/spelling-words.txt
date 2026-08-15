@@ -14,6 +14,8 @@ access
 accessibility
 accessible
 accessible-name
+accessor
+accessors
 accidental
 accidentally
 accompany
@@ -50,6 +52,7 @@ adopted
 adopting
 adopts
 adornments
+advanced
 advancement
 affect
 affected
@@ -112,6 +115,7 @@ apis
 appear
 appearance
 appears
+append
 applicable
 application
 application-host
@@ -183,6 +187,7 @@ avoid
 avoids
 away
 axe-core
+axes
 back
 background
 backgrounds
@@ -191,6 +196,8 @@ backup
 backward
 badge
 badges
+bar
+bars
 base
 baseline
 basic
@@ -222,6 +229,7 @@ block
 blocked
 blocks
 blue
+blurry
 body
 boolean
 border
@@ -235,6 +243,7 @@ bound
 boundaries
 boundary
 bounded
+bounds
 boxes
 branch
 branches
@@ -259,6 +268,7 @@ browser-zoom
 browser's
 browsers
 browsing
+brush
 bubble
 bubbling
 bug
@@ -308,6 +318,7 @@ cards
 carousel
 carries
 carry
+cartesian
 cascade
 case
 cases
@@ -324,6 +335,7 @@ cells
 centered
 certification
 change
+change-event
 changed
 changelog
 changelogs
@@ -333,6 +345,8 @@ changing
 channels
 character
 characters
+chart
+charts
 check
 checkbox
 checkbox's
@@ -364,6 +378,8 @@ classes
 classified
 clean
 clear
+clearing
+clears
 cli
 cli-copied
 cli-owned
@@ -398,6 +414,7 @@ collision-aware
 color
 colors
 column
+columns
 combination
 combine
 combined
@@ -499,6 +516,7 @@ containers
 containment
 contains
 content
+content-security
 content-sized
 contents
 context
@@ -555,6 +573,8 @@ creation
 cropping
 cross-field
 cross-framework
+crosses
+crosshair
 css
 css-pixel
 culturally
@@ -576,8 +596,10 @@ dark-mode
 dark-theme
 data
 data-heavy
+datasets
 date
 dates
+datum
 day
 days
 dead
@@ -627,6 +649,7 @@ describing
 description
 descriptions
 design
+design-system
 designated
 desirable
 desktop
@@ -709,6 +732,8 @@ documents
 does
 dom
 domain
+domains
+donut
 down
 downloadable
 downloaded
@@ -771,6 +796,7 @@ entry
 environment
 environments
 equal
+equal-length
 equivalent
 equivalents
 error
@@ -790,6 +816,7 @@ eventual
 every
 evidence
 exact
+exact-value
 example
 example's
 examples
@@ -826,6 +853,7 @@ explicit
 explicitly
 exploration
 explore
+explorer
 export
 exported
 exports
@@ -863,6 +891,7 @@ field
 fielderror
 fields
 fights
+figure
 file
 filename
 filenames
@@ -1011,19 +1040,23 @@ header
 heading
 headings
 headless
+heatmap
 heavier
 heavily
 height
 help
 helper
+helpers
 here
 heritage
 hesitation
 hidden
+hidden-series
 hide
 hierarchical
 hierarchy
 high-contrast
+high-rate
 high-risk
 higher
 hint
@@ -1101,6 +1134,7 @@ increments
 independent
 independently
 indeterminate
+index
 indexes
 indicate
 indicator
@@ -1164,6 +1198,7 @@ into
 introduce
 introducing
 invalid
+invalid-data
 invalid-field
 invalid-form
 invasive
@@ -1222,6 +1257,7 @@ layered
 layers
 layout
 layouts
+lazily
 lazy
 lazy-load
 lazy-loaded
@@ -1231,6 +1267,7 @@ leave
 leaves
 left
 legacy
+legend
 let
 level
 levels
@@ -1268,6 +1305,7 @@ locate
 location
 locations
 lockfile
+logarithmic
 logic
 logical
 logos
@@ -1302,6 +1340,7 @@ maps
 margin
 mark
 marked
+marks
 markup
 masking
 match
@@ -1347,8 +1386,10 @@ mirroring
 mismatch
 missing
 mix
+mixed
 mixed-direction
 mixed-input
+mixed-series
 mixed-state
 mixing
 mobile
@@ -1363,6 +1404,7 @@ moderated
 modern
 modes
 modified
+modified-arrow
 modify
 module
 modules
@@ -1430,11 +1472,13 @@ node
 node.js
 nodes
 non-blocking
+non-chart
 non-essential
 non-floating
 non-interactive
 non-modal
 non-numeric
+non-positive
 non-spatial
 non-zero
 none
@@ -1464,6 +1508,7 @@ off
 offer
 offers
 offline
+offscreencanvas
 offset
 often
 old
@@ -1546,8 +1591,10 @@ pair
 pairings
 pairs
 palette
+pan
 panel
 panels
+panning
 parallax
 parameter
 parent
@@ -1580,6 +1627,7 @@ pending
 people
 per
 per-component
+per-series
 perceivable
 percentages
 perception
@@ -1587,6 +1635,7 @@ perform
 period
 permission
 permits
+permitted
 persian
 persisted
 persistent
@@ -1596,6 +1645,7 @@ physical
 physical-direction
 picker
 pickercomponentpreview
+pie
 pigments
 pills
 pin
@@ -1612,6 +1662,7 @@ platform-aware
 platform-native
 playback
 playwright
+plot
 plugin
 plus
 pnpm
@@ -1624,6 +1675,7 @@ polite
 politely
 pomegranate
 popover
+populated
 popup
 port
 portal
@@ -1634,6 +1686,7 @@ position
 positional
 positioned
 positioning
+positive
 possible
 pre-release
 precise
@@ -1725,6 +1778,7 @@ queue
 quick
 quick-start
 quiet
+radar
 radii
 radio
 radius
@@ -1953,6 +2007,8 @@ saving
 say
 scalar
 scale
+scales
+scatter
 scenarios
 scheme
 scope
@@ -2003,6 +2059,7 @@ sequence
 sequential
 serialization
 serialize
+series
 server
 server-backed
 server-generated
@@ -2091,6 +2148,7 @@ spacing
 spacious
 span
 spatial
+specialized
 specific
 specifically
 specifications
@@ -2110,8 +2168,10 @@ stable
 stack
 stacked
 stacking
+stacks
 stage
 stale
+stand
 standalone
 standard
 starlight
@@ -2134,6 +2194,9 @@ stops
 storage
 store
 stored
+strategy
+stream
+strictly
 string
 strings
 strong
@@ -2256,6 +2319,8 @@ thirteen
 this
 those
 though
+thousands
+thread
 threat
 three
 three-way
@@ -2317,10 +2382,12 @@ trigger
 trigger-focus
 trigger-opened
 triggers
+troubleshooting
 true
 truly
 trusted
 truth
+turnkey
 turns
 turquoise
 two
@@ -2416,6 +2483,7 @@ verify
 version
 versions
 vertical
+view-box
 viewchild
 viewport
 viewports
@@ -2426,6 +2494,8 @@ visibility
 visible
 visibly
 visual
+visualizations
+visualize
 visually
 vocabulary
 vue
@@ -2473,6 +2543,7 @@ within
 without
 wording
 work
+workers
 workflow
 workflows
 working

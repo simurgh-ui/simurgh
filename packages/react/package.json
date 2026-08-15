@@ -8,6 +8,22 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./chart-interactions": {
+      "types": "./dist/chart-interactions.d.ts",
+      "import": "./dist/chart-interactions.js"
+    },
+    "./chart-stream": {
+      "types": "./dist/chart-stream.d.ts",
+      "import": "./dist/chart-stream.js"
+    },
+    "./chart-canvas": {
+      "types": "./dist/chart-canvas.d.ts",
+      "import": "./dist/chart-canvas.js"
+    },
+    "./chart-motion": {
+      "types": "./dist/chart-motion.d.ts",
+      "import": "./dist/chart-motion.js"
+    },
     "./*": {
       "types": "./dist/components/*.d.ts",
       "import": "./dist/components/*.js"
@@ -29,8 +45,12 @@
     "@simurgh-ui/core": "workspace:*"
   },
   "peerDependencies": {
+    "@simurgh-ui/motion": "workspace:*",
     "react": ">=18",
     "react-dom": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "@simurgh-ui/motion": { "optional": true }
   },
   "devDependencies": {
     "@types/react": "^19.2.18",

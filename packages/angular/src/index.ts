@@ -65,3 +65,4 @@ export * from './components/description-list.js';
 export * from './components/switch.js';
 export * from './components/radio-group.js';
 export * from './components/toast.js';
+export * from './components/chart.js';

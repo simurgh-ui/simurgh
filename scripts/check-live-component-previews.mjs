@@ -10,6 +10,7 @@ const statefulComponents = new Set([
   'alert-dialog',
   'calendar',
   'carousel',
+  'chart',
   'checkbox',
   'collapsible',
   'combobox',

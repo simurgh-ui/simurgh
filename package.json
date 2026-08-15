@@ -12,6 +12,7 @@
     "generate:entries": "node scripts/generate-entrypoints.mjs && node scripts/generate-styles.mjs",
     "bundle:size": "node scripts/check-bundle-size.mjs && node scripts/check-icons-bundle-size.mjs && node scripts/check-motion-size.mjs && node scripts/check-angular-production-size.mjs && node scripts/check-lazy-overlay-size.mjs",
     "bundle:react-splitting": "node scripts/analyze-react-code-splitting.mjs",
+    "chart:performance": "node scripts/benchmark-charts.mjs",
     "format": "prettier --write .",
     "test:contracts": "vitest run packages/react/test packages/vue/test packages/angular/test packages/cli/test",
     "test:e2e": "playwright test",

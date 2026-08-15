@@ -241,6 +241,7 @@ export {
   useToast,
   type ToastMessage,
 } from './components/toast.js';
+export * from './components/chart.js';
 
 import {
   defineComponent,
@@ -1099,6 +1100,206 @@ export const CarouselNext = /* @__PURE__ */ carouselControl(
   1,
   'Next slide',
 );
+
+import {
+  areaPath,
+  bandScale,
+  chartDomain,
+  chartLayout,
+  chartSummary,
+  chartValue,
+  linePath,
+  linearScale,
+  logScale,
+  numericValue,
+  pieArcs,
+  radarPoints,
+  stackChartValues,
+  stackedAreaPath,
+  type ChartAccessibility,
+  type ChartAccessor,
+  type ChartSeries,
+  type ChartSeriesType,
+} from '@simurgh-ui/core/charts';
+import { defineComponent, h, nextTick, onBeforeUnmount, ref, watch, type PropType } from 'vue';
+import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
+import type { ChartStream } from '@simurgh-ui/core/chart-stream';
+
+type Datum = Record<PropertyKey, unknown>;
+const accessor = [String, Function] as PropType<ChartAccessor<Datum>>;
+const numericAccessor = [String, Function] as PropType<ChartAccessor<Datum, number>>;
+const colors = Array.from({ length: 10 }, (_, index) => `var(--simurgh-chart-${index + 1})`);
+const commonProps = {
+  data: { type: Array as PropType<readonly Datum[]>, default: () => [] },
+  stream: Object as PropType<ChartStream<string>>,
+  x: accessor,
+  y: numericAccessor,
+  series: Array as PropType<readonly ChartSeries<Datum>[]>,
+  accessibility: { type: Object as PropType<ChartAccessibility>, required: true as const },
+  width: { type: Number, default: 640 },
+  height: { type: Number, default: 360 },
+  xScale: { type: String as PropType<'linear' | 'time' | 'band' | 'log'>, default: 'linear' },
+  yScale: { type: String as PropType<'linear' | 'time' | 'log'>, default: 'linear' },
+  renderMode: { type: String as PropType<'auto' | 'svg' | 'canvas'>, default: 'auto' },
+  canvasThreshold: { type: Number, default: 2000 },
+  hiddenSeries: Array as PropType<readonly string[]>,
+  defaultHiddenSeries: { type: Array as PropType<readonly string[]>, default: () => [] },
+  innerRadius: Number,
+  emptyContent: { type: String, default: 'No chart data' },
+};
+
+function useRows(props: { data: readonly Datum[]; stream: ChartStream<string> | undefined; width: number }) {
+  const version = ref(0);
+  let unsubscribe: (() => void) | undefined;
+  watch(() => props.stream, (stream) => {
+    unsubscribe?.();
+    unsubscribe = stream?.subscribe(() => version.value++);
+  }, { immediate: true });
+  onBeforeUnmount(() => unsubscribe?.());
+  return () => {
+    void version.value;
+    if (!props.stream) return props.data;
+    if (props.data.length) throw new TypeError('Chart accepts either data or stream, not both.');
+    const snapshot = props.stream.snapshot();
+    const limit = Math.max(2, Math.floor(props.width * 2));
+    const step = Math.max(1, Math.ceil(snapshot.length / limit));
+    const indexes = Array.from({ length: Math.ceil(snapshot.length / step) }, (_, index) => index * step);
+    if (snapshot.length && indexes.at(-1) !== snapshot.length - 1) indexes.push(snapshot.length - 1);
+    return indexes.map((index) => Object.fromEntries(props.stream!.dimensions.map((key) => [key, snapshot.columns[key]![index]])) as Datum);
+  };
+}
+
+function cartesian(kind: ChartSeriesType | 'combo') {
+  return defineComponent({
+    name: `Simurgh${kind[0]!.toUpperCase()}${kind.slice(1)}Chart`,
+    inheritAttrs: false,
+    props: commonProps,
+    emits: ['update:hiddenSeries'],
+    setup(props, { attrs, emit }) {
+      const focused = ref(0);
+      const tablePage = ref(0);
+      const uncontrolledHiddenSeries = ref<readonly string[]>([...props.defaultHiddenSeries]);
+      const canvas = ref<HTMLCanvasElement>();
+      let drawn = '';
+      const rowsForChart = useRows(props);
+      return () => {
+        const rows = rowsForChart();
+        const layout = chartLayout(props.width, props.height);
+        const xAccessor = props.x ?? ((_: Datum, index: number) => index);
+        const definitions: readonly ChartSeries<Datum>[] = props.series?.length
+          ? props.series
+          : props.y ? [{ id: 'value', y: props.y, x: xAccessor, type: kind === 'combo' ? 'line' : kind }] : [];
+        const hiddenSeries = props.hiddenSeries ?? uncontrolledHiddenSeries.value;
+        const active = definitions.filter((item) => !hiddenSeries.includes(item.id));
+        const unstacked = active.flatMap((definition) => rows.map((datum, index) => {
+          const xValue = chartValue(datum, definition.x ?? xAccessor, index);
+          const yValue = numericValue(chartValue(datum, definition.y, index));
+          const numericX = numericValue(xValue);
+          return xValue == null || yValue == null || (props.xScale !== 'band' && numericX == null) || (props.yScale === 'log' && yValue <= 0)
+            ? null : { index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
+        }).filter((item): item is NonNullable<typeof item> => item != null));
+        const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
+        if (!raw.length) return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': 'empty' }, [
+          h('div', { 'data-part': 'empty' }, props.emptyContent),
+          h('div', { 'data-part': 'legend' }, definitions.map((item, index) => h('button', { type: 'button', 'aria-pressed': !hiddenSeries.includes(item.id), onClick: () => { const next = hiddenSeries.includes(item.id) ? hiddenSeries.filter((id) => id !== item.id) : [...hiddenSeries, item.id]; if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = next; emit('update:hiddenSeries', next); } }, [h('span', { style: { background: item.color ?? colors[index % colors.length] } }), item.label ?? item.id]))),
+        ]);
+        const xDomain = chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
+        const yDomain = chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar') }) ?? [0, 1];
+        const bands = props.xScale === 'band' ? bandScale(raw.map((item) => item.xValue), [layout.left, layout.left + layout.plotWidth]) : null;
+        const numericXMap = (props.xScale === 'log' ? logScale : linearScale)(xDomain, [layout.left, layout.left + layout.plotWidth]);
+        const yMap = (props.yScale === 'log' ? logScale : linearScale)(yDomain, [layout.top + layout.plotHeight, layout.top]);
+        const prepared = active.map((definition) => ({ ...definition, type: definition.type ?? (kind === 'combo' ? 'line' : kind), points: raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : numericXMap(item.numericX), y: yMap(item.end), y0: yMap(item.start) })) }));
+        const flat = prepared.flatMap((item) => item.points.map((point) => ({ ...point, series: item })));
+        const useCanvas = props.renderMode === 'canvas' || (props.renderMode === 'auto' && flat.length > props.canvasThreshold);
+        const decorative = 'decorative' in props.accessibility && props.accessibility.decorative;
+        const table = !decorative && props.accessibility.table;
+        const pageSize = typeof table === 'object' ? table.pageSize ?? 50 : 50;
+        const tablePages = Math.max(1, Math.ceil(rows.length / pageSize));
+        const current = flat[Math.min(focused.value, flat.length - 1)]!;
+        const baseline = yMap(0);
+        const seriesNodes = prepared.map((item, seriesIndex) => {
+          const color = item.color ?? colors[seriesIndex % colors.length];
+          const points = item.points.map((point) => [point.x, point.y] as const);
+          if (item.type === 'line') return h('path', { 'data-part': 'series', 'data-series': item.id, d: linePath(points), fill: 'none', stroke: color });
+          if (item.type === 'area') return h('path', { 'data-part': 'series', 'data-series': item.id, d: item.stack ? stackedAreaPath(item.points.map((point) => ({ x: point.x, y0: point.y0, y1: point.y }))) : areaPath(points, baseline), fill: color, stroke: color });
+          if (item.type === 'bar') return h('g', { 'data-part': 'series', 'data-series': item.id }, item.points.map((point) => { const origin = item.stack ? point.y0 : baseline; return h('rect', { x: point.x - (bands?.bandwidth ?? 8) / 2, y: Math.min(point.y, origin), width: bands?.bandwidth ?? 8, height: Math.abs(point.y - origin), fill: color }); }));
+          return h('g', { 'data-part': 'series', 'data-series': item.id }, item.points.map((point) => h('circle', { cx: point.x, cy: point.y, r: item.type === 'bubble' ? point.radius : 3, fill: color })));
+        });
+        if (useCanvas) {
+          const signature = `${rows.length}:${prepared.length}:${props.width}:${props.height}`;
+          if (signature !== drawn) {
+            drawn = signature;
+            void nextTick(async () => {
+              if (!canvas.value) return;
+              const { drawChartCanvas } = await import('@simurgh-ui/core/chart-canvas');
+              const context = canvas.value.getContext('2d');
+              if (!context) return;
+              const marks: CanvasMark[] = prepared.flatMap<CanvasMark>((item, seriesIndex) => {
+                const color = item.color ?? colors[seriesIndex % colors.length]!;
+                if (item.type === 'line') return [{ type: 'line', points: item.points.map((point) => [point.x, point.y]), color }];
+                if (item.type === 'area') return [{ type: 'area', points: item.points.map((point) => [point.x, point.y]), baseline: item.points[0]?.y0 ?? baseline, color, opacity: 0.3 }];
+                if (item.type === 'bar') return item.points.map((point) => { const origin = item.stack ? point.y0 : baseline; return { type: 'rect' as const, x: point.x - (bands?.bandwidth ?? 8) / 2, y: Math.min(point.y, origin), width: bands?.bandwidth ?? 8, height: Math.abs(point.y - origin), color }; });
+                return item.points.map((point) => ({ type: 'point' as const, x: point.x, y: point.y, radius: item.type === 'bubble' ? point.radius : 3, color }));
+              });
+              drawChartCanvas(context, marks, props.width, props.height, globalThis.devicePixelRatio || 1);
+            });
+          }
+        }
+        return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-renderer': useCanvas ? 'canvas-fallback' : 'svg', 'aria-hidden': decorative || undefined }, [
+          !decorative && h('figcaption', props.accessibility.title),
+          !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(flat.map((item) => item.yValue))}`),
+          h('div', { 'data-part': 'viewport', style: { aspectRatio: `${props.width} / ${props.height}` } }, [
+            useCanvas && h('canvas', { ref: canvas, width: props.width, height: props.height, 'aria-hidden': 'true' }),
+            h('svg', { viewBox: `0 0 ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [...(useCanvas ? [] : seriesNodes), h('g', { 'data-part': 'crosshair' }, [h('line', { x1: current.x, x2: current.x, y1: layout.top, y2: layout.top + layout.plotHeight }), h('circle', { cx: current.x, cy: current.y, r: 4 })])]),
+            h('button', { type: 'button', 'data-part': 'keyboard-target', 'aria-label': 'Explore chart data', onKeydown: (event: KeyboardEvent) => { if (event.key === 'Home') focused.value = 0; else if (event.key === 'End') focused.value = flat.length - 1; else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) focused.value = Math.max(0, focused.value - 1); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) focused.value = Math.min(flat.length - 1, focused.value + 1); else return; event.preventDefault(); } }),
+            h('div', { role: 'tooltip', 'data-part': 'tooltip' }, `${current.series.label ?? current.series.id}: ${current.yValue}`),
+          ]),
+          h('div', { 'data-part': 'legend' }, definitions.map((item, index) => h('button', { type: 'button', 'aria-pressed': !hiddenSeries.includes(item.id), onClick: () => { const next = hiddenSeries.includes(item.id) ? hiddenSeries.filter((id) => id !== item.id) : [...hiddenSeries, item.id]; if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = next; emit('update:hiddenSeries', next); } }, [h('span', { style: { background: item.color ?? colors[index % colors.length] } }), item.label ?? item.id]))),
+          table && h('div', { 'data-part': 'data-table' }, [
+            h('table', [h('thead', h('tr', [h('th', { scope: 'col' }, 'Category'), ...definitions.map((item) => h('th', { scope: 'col' }, item.label ?? item.id))])), h('tbody', rows.slice(tablePage.value * pageSize, tablePage.value * pageSize + pageSize).map((datum, row) => h('tr', [h('td', String(chartValue(datum, xAccessor, tablePage.value * pageSize + row) ?? '')), ...definitions.map((item) => h('td', String(chartValue(datum, item.y, tablePage.value * pageSize + row) ?? '')))])))]),
+            tablePages > 1 && h('nav', { 'aria-label': 'Chart data pages' }, [h('button', { type: 'button', disabled: tablePage.value === 0, onClick: () => tablePage.value-- }, 'Previous'), h('span', `${tablePage.value + 1} / ${tablePages}`), h('button', { type: 'button', disabled: tablePage.value + 1 >= tablePages, onClick: () => tablePage.value++ }, 'Next')]),
+          ]),
+        ]);
+      };
+    },
+  });
+}
+
+function polar(donut: boolean) {
+  return defineComponent({
+    name: donut ? 'SimurghDonutChart' : 'SimurghPieChart', inheritAttrs: false, props: commonProps,
+    setup(props, { attrs }) { const rowsForChart = useRows(props); return () => {
+      const rows = rowsForChart();
+      const value = props.y ?? props.series?.[0]?.y;
+      const radius = Math.min(props.width, props.height) / 2 - 16;
+      const arcs = value ? pieArcs(rows, value, radius, donut ? props.innerRadius ?? radius * 0.55 : props.innerRadius ?? 0) : [];
+      const decorative = 'decorative' in props.accessibility && props.accessibility.decorative;
+      return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': arcs.length ? undefined : 'empty', 'aria-hidden': decorative || undefined }, arcs.length ? [!decorative && h('figcaption', props.accessibility.title), h('svg', { viewBox: `${-props.width / 2} ${-props.height / 2} ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, arcs.map((arc, index) => h('path', { 'data-part': 'series', d: arc.path, fill: colors[index % colors.length] }))), !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(arcs.map((arc) => arc.value), 'Slices')}`)] : props.emptyContent);
+    }; },
+  });
+}
+
+export const LineChart = cartesian('line');
+export const AreaChart = cartesian('area');
+export const BarChart = cartesian('bar');
+export const ScatterChart = cartesian('scatter');
+export const BubbleChart = cartesian('bubble');
+export const HeatmapChart = cartesian('heatmap');
+export const ComboChart = cartesian('combo');
+export const PieChart = polar(false);
+export const DonutChart = polar(true);
+export const RadarChart = defineComponent({ name: 'SimurghRadarChart', inheritAttrs: false, props: commonProps, setup(props, { attrs }) { const rowsForChart = useRows(props); return () => { const rows = rowsForChart(); const value = props.y ?? props.series?.[0]?.y; const values = value ? rows.map((datum, index) => numericValue(chartValue(datum, value, index))).filter((item): item is number => item != null) : []; const decorative = 'decorative' in props.accessibility && props.accessibility.decorative; return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': values.length ? undefined : 'empty', 'aria-hidden': decorative || undefined }, values.length ? [h('svg', { viewBox: `${-props.width / 2} ${-props.height / 2} ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, h('polygon', { 'data-part': 'series', points: radarPoints(values, Math.min(props.width, props.height) / 2 - 24) })), !decorative && h('figcaption', props.accessibility.title), !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(values)}`)] : props.emptyContent); }; } });
+
+export const ChartRoot = defineComponent({ name: 'SimurghChartRoot', inheritAttrs: false, setup(_, { attrs, slots }) { return () => h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart' }, slots.default?.()); } });
+export const ChartPlot = defineComponent({ name: 'SimurghChartPlot', setup(_, { attrs, slots }) { return () => h('svg', { ...attrs, 'data-part': 'plot' }, slots.default?.()); } });
+export const ChartGrid = part('g', 'grid');
+export const ChartXAxis = part('g', 'x-axis');
+export const ChartYAxis = part('g', 'y-axis');
+export const ChartLegend = part('div', 'legend');
+export const ChartTooltip = part('div', 'tooltip', { role: 'tooltip' });
+export const ChartCrosshair = part('g', 'crosshair');
+export const ChartBrush = part('rect', 'brush');
+function part(tag: string, name: string, defaults: Record<string, unknown> = {}) { return defineComponent({ name: `SimurghChart${name}`, setup(_, { attrs, slots }) { return () => h(tag, { ...defaults, ...attrs, 'data-part': name }, slots.default?.()); } }); }
 
 import { checkControl } from '../internal/check-control.js';
 

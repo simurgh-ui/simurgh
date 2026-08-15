@@ -133,6 +133,7 @@ export { Slider } from './components/slider.js';
 export { Textarea } from './components/textarea.js';
 export { Toolbar, ToolbarButton } from './components/toolbar.js';
 export { VisuallyHidden } from './components/visually-hidden.js';
+export * from './components/chart.js';
 
 type OpenProps = {
   open?: boolean;

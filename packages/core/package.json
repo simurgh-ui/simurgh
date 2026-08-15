@@ -7,6 +7,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./charts": {
+      "types": "./dist/charts.d.ts",
+      "import": "./dist/charts.js"
+    },
+    "./chart-interactions": {
+      "types": "./dist/chart-interactions.d.ts",
+      "import": "./dist/chart-interactions.js"
+    },
+    "./chart-stream": {
+      "types": "./dist/chart-stream.d.ts",
+      "import": "./dist/chart-stream.js"
+    },
+    "./chart-canvas": {
+      "types": "./dist/chart-canvas.d.ts",
+      "import": "./dist/chart-canvas.js"
     }
   },
   "files": [

@@ -1,0 +1,1218 @@
+---
+title: Charts
+description: Lightweight, accessible, responsive data visualizations for product dashboards and telemetry.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../components/ReactComponentPreview';
+
+{/* component-installation:start */}
+## Installation
+
+Copy editable source into an initialized application:
+
+```sh
+pnpm dlx @simurgh-ui/cli add chart
+```
+
+For package consumption, import from the component subpath and load its optional recipe CSS:
+
+### React
+
+```tsx
+import {
+  ChartProps,
+  ChartRoot,
+  ChartPlot,
+  ChartGrid,
+  ChartXAxis,
+  ChartYAxis,
+  ChartLegend,
+  ChartTooltip,
+  ChartCrosshair,
+  ChartBrush,
+  ChartDataTable,
+  LineChart,
+  AreaChart,
+  BarChart,
+  PieChart,
+  DonutChart,
+  ScatterChart,
+  BubbleChart,
+  RadarChart,
+  HeatmapChart,
+  ComboChart,
+} from '@simurgh-ui/react/chart';
+import '@simurgh-ui/styles/chart.css';
+```
+
+### Vue
+
+```ts
+import {
+  ChartRoot,
+  ChartPlot,
+  ChartGrid,
+  ChartXAxis,
+  ChartYAxis,
+  ChartLegend,
+  ChartTooltip,
+  ChartCrosshair,
+  ChartBrush,
+  LineChart,
+  AreaChart,
+  BarChart,
+  PieChart,
+  DonutChart,
+  ScatterChart,
+  BubbleChart,
+  RadarChart,
+  HeatmapChart,
+  ComboChart,
+} from '@simurgh-ui/vue/chart';
+import '@simurgh-ui/styles/chart.css';
+```
+
+### Angular
+
+```ts
+import {
+  ChartBaseComponent,
+  ChartRootComponent,
+  ChartPlotComponent,
+  ChartGridDirective,
+  ChartXAxisDirective,
+  ChartYAxisDirective,
+  ChartLegendDirective,
+  ChartTooltipDirective,
+  ChartCrosshairDirective,
+  ChartBrushDirective,
+  LineChartComponent,
+  AreaChartComponent,
+  BarChartComponent,
+  PieChartComponent,
+  DonutChartComponent,
+  ScatterChartComponent,
+  BubbleChartComponent,
+  RadarChartComponent,
+  HeatmapChartComponent,
+  ComboChartComponent,
+} from '@simurgh-ui/angular/chart';
+import '@simurgh-ui/styles/chart.css';
+```
+
+Omit the component stylesheet for fully headless styling. CLI-copied components use the local path
+written to `simurgh.json` and the copied application styles instead of these package imports.
+{/* component-installation:end */}
+
+## Purpose
+
+## Basic usage
+
+<ComponentPreview title="Line chart" kind="live">
+  <ReactComponentPreview component="chart" client:load />
+</ComponentPreview>
+
+{/* component-status:start */}
+### Default presentation: styled
+
+The optional component stylesheet provides a complete default recipe, including visual hierarchy and interaction states. Consumers can override semantic tokens or omit the recipe.
+{/* component-status:end */}
+
+## Anatomy
+
+Turnkey charts own a `figure`, caption, accessible description, responsive viewport, SVG or Canvas
+plot, keyboard target, tooltip, legend, and optional bounded data table. The composable APIs expose
+`ChartRoot`, `ChartPlot`, grid, axes, legend, tooltip, crosshair, and brush equivalents.
+
+{/* component-state-model:start */}
+## State model
+
+Controlled state remains the application’s source of truth and must be updated from every change
+event. Uncontrolled state reads its default only when the component mounts. Do not pass both forms of
+the same state at once.
+
+| Framework | Exact state contract and reset behavior |
+| --- | --- |
+| React | No public controlled/uncontrolled state pair is exposed. |
+| Vue | Controlled: `v-model:hiddenSeries` (`hiddenSeries` + `update:hiddenSeries`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(hiddenSeries)]` (`hiddenSeries` + `hiddenSeriesChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+
+**Vue**
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+const initial = '';
+const state = ref(initial);
+const resetKey = ref(0);
+</script>
+
+<ChartRoot v-model:hiddenSeries="state">…</ChartRoot>
+<button @click="state = initial">Reset controlled</button>
+```
+
+**Angular**
+
+```ts
+initial = '';
+hiddenSeries = this.initial;
+reset() { this.hiddenSeries = this.initial; }
+```
+
+```html
+<simurgh-chart [(hiddenSeries)]="hiddenSeries">…</simurgh-chart>
+<button type="button" (click)="reset()">Reset</button>
+```
+{/* component-state-model:end */}
+
+## Examples
+
+- Add the same `stack` ID to bar or area series for positive/negative stacking.
+- Set `orientation="horizontal"` on React `BarChart` for horizontal bars.
+- Use `ComboChart` with per-series `type` values for mixed marks.
+- Create high-rate numeric input with `createChartStream({ capacity, dimensions })` from
+  `@simurgh-ui/core/chart-stream` and append equal-length typed columns.
+- Invalid numeric values become gaps; non-positive logarithmic values and negative pie values are omitted.
+- Empty valid data renders `emptyContent`.
+
+## Accessibility
+
+Preserve the documented composition and accessible names when wrapping or restyling this component.
+See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
+directionality requirements.
+
+## API surface
+
+- React exports: `ChartProps`, `ChartRoot`, `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `ChartDataTable`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`
+- Vue exports: `ChartRoot`, `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`
+- Angular exports: `ChartBaseComponent`, `ChartRootComponent`, `ChartPlotComponent`, `ChartGridDirective`, `ChartXAxisDirective`, `ChartYAxisDirective`, `ChartLegendDirective`, `ChartTooltipDirective`, `ChartCrosshairDirective`, `ChartBrushDirective`, `LineChartComponent`, `AreaChartComponent`, `BarChartComponent`, `PieChartComponent`, `DonutChartComponent`, `ScatterChartComponent`, `BubbleChartComponent`, `RadarChartComponent`, `HeatmapChartComponent`, `ComboChartComponent`
+
+Import these public symbols from the component subpath shown in Installation. Framework-specific
+props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
+tables on this page; use the linked source only to verify the current implementation.
+
+{/* react-api:start */}
+<details className="reference-details">
+<summary>React API reference</summary>
+
+### React
+
+An inherited-attributes entry means the component accepts the complete named React native interface,
+including its event handlers and ARIA and data attributes. Remaining attributes are forwarded to the
+rendered element unless the component behavior described on this page overrides them.
+
+### `ChartProps`
+
+Exported type: `Omit<HTMLAttributes<HTMLElement>, "title"> & { data?: readonly T[]; stream?: ChartStream<string>; x?: ChartAccessor<T>; y?: ChartAccessor<T, number>; series?: readonly ChartSeries<T>[]; accessibility: ChartAccessibility; width?: number; height?: number; xScale?: ChartScaleType; yScale?: Exclude<ChartScaleType, "band">; xDomain?: ChartDomain; yDomain?: ChartDomain; renderMode?: ChartRenderMode; canvasThreshold?: number; hiddenSeries?: readonly string[]; defaultHiddenSeries?: readonly string[]; onHiddenSeriesChange?: (series: string[]) => void; emptyContent?: ReactNode; orientation?: "vertical" \| "horizontal"; innerRadius?: number; }`.
+
+### `ChartRoot`
+
+Inherited attributes: `HTMLAttributes<HTMLElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `height` | `number` | Required |
+| `width` | `number` | Required |
+
+### `ChartPlot`
+
+Inherited attributes: `SVGAttributes<SVGSVGElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `ChartGrid`
+
+Inherited attributes: `SVGAttributes<SVGGElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `ChartXAxis`
+
+Inherited attributes: `SVGAttributes<SVGGElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `ChartYAxis`
+
+Inherited attributes: `SVGAttributes<SVGGElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `ChartLegend`
+
+Inherited attributes: `HTMLAttributes<HTMLDivElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `ChartTooltip`
+
+Inherited attributes: `HTMLAttributes<HTMLDivElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `ChartCrosshair`
+
+Inherited attributes: `SVGAttributes<SVGGElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `ChartBrush`
+
+Inherited attributes: `SVGAttributes<SVGRectElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+
+### `ChartDataTable`
+
+Complete props type: `{ data: readonly T[]; columns: readonly { label: string; value: ChartAccessor<T>; }[]; pageSize?: number; }`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `columns` | `readonly { label: string; value: ChartAccessor<T>; }[]` | Required |
+| `data` | `readonly T[]` | Required |
+| `pageSize` | `number` | `undefined` |
+
+### `LineChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `AreaChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `BarChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `PieChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `DonutChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `ScatterChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `BubbleChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `RadarChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `HeatmapChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `ComboChart`
+
+Complete props type: `ChartProps<T>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `accessibility` | `ChartAccessibility` | Required |
+| `canvasThreshold` | `number` | `undefined` |
+| `children` | `ReactNode` | `undefined` |
+| `data` | `readonly T[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `emptyContent` | `ReactNode` | `undefined` |
+| `height` | `number` | `undefined` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `innerRadius` | `number` | `undefined` |
+| `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `renderMode` | `ChartRenderMode` | `undefined` |
+| `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `width` | `number` | `undefined` |
+| `x` | `ChartAccessor<T>` | `undefined` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `xScale` | `ChartScaleType` | `undefined` |
+| `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+</details>
+{/* react-api:end */}
+
+{/* vue-api:start */}
+<details className="reference-details">
+<summary>Vue API reference</summary>
+
+### Vue
+
+Boolean props without explicit defaults use Vue's `false` default. Undeclared attributes follow
+the fallthrough behavior stated for each component.
+
+### `ChartRoot`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `ChartPlot`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: `default`.
+
+Exposed methods: none.
+
+### `ChartGrid`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `ChartXAxis`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `ChartYAxis`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `ChartLegend`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `ChartTooltip`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `ChartCrosshair`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `ChartBrush`
+
+Vue attribute fallthrough is enabled for the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `LineChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+| Event | Payload |
+| --- | --- |
+| `update:hiddenSeries` | `string[]` |
+
+Slots: none.
+
+Exposed methods: none.
+
+### `AreaChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+| Event | Payload |
+| --- | --- |
+| `update:hiddenSeries` | `string[]` |
+
+Slots: none.
+
+Exposed methods: none.
+
+### `BarChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+| Event | Payload |
+| --- | --- |
+| `update:hiddenSeries` | `string[]` |
+
+Slots: none.
+
+Exposed methods: none.
+
+### `PieChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `DonutChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `ScatterChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+| Event | Payload |
+| --- | --- |
+| `update:hiddenSeries` | `string[]` |
+
+Slots: none.
+
+Exposed methods: none.
+
+### `BubbleChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+| Event | Payload |
+| --- | --- |
+| `update:hiddenSeries` | `string[]` |
+
+Slots: none.
+
+Exposed methods: none.
+
+### `RadarChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+No emitted events.
+
+Slots: none.
+
+Exposed methods: none.
+
+### `HeatmapChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+| Event | Payload |
+| --- | --- |
+| `update:hiddenSeries` | `string[]` |
+
+Slots: none.
+
+Exposed methods: none.
+
+### `ComboChart`
+
+Automatic fallthrough is disabled; `attrs` are manually forwarded to the rendered root.
+
+No declared props.
+
+| Event | Payload |
+| --- | --- |
+| `update:hiddenSeries` | `string[]` |
+
+Slots: none.
+
+Exposed methods: none.
+
+</details>
+{/* vue-api:end */}
+
+{/* angular-api:start */}
+<details className="reference-details">
+<summary>Angular API reference</summary>
+
+### Angular
+
+Inputs and outputs use their public template names. Public methods are callable through a template
+reference or `ViewChild`. Native attributes apply to the documented template root or directive host;
+they are not automatically forwarded through component hosts.
+
+### `ChartBaseComponent`
+
+Attribute directive selector: `none`; behavior applies to its host element.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `data` | `readonly Datum[]` | `[]` |
+| `stream` | `ChartStream<string> \| undefined` | `undefined` |
+| `x` | `ChartAccessor<Datum>` | `undefined` |
+| `y` | `ChartAccessor<Datum, number>` | `undefined` |
+| `series` | `readonly ChartSeries<Datum>[]` | `undefined` |
+| `accessibility` | `ChartAccessibility` | Required |
+| `width` | `number` | `640` |
+| `height` | `number` | `360` |
+| `xScale` | `"linear" \| "time" \| "band" \| "log"` | `'linear'` |
+| `yScale` | `"linear" \| "time" \| "log"` | `'linear'` |
+| `renderMode` | `"auto" \| "svg" \| "canvas"` | `'auto'` |
+| `canvasThreshold` | `number` | `2000` |
+| `hiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultHiddenSeries` | `readonly string[]` | `[]` |
+| `innerRadius` | `number` | `undefined` |
+| `emptyContent` | `string` | `'No chart data'` |
+
+| Output | Payload |
+| --- | --- |
+| `hiddenSeriesChange` | `string[]` |
+
+Content projection: none.
+
+| Public method |
+| --- |
+| `tableValue(datum: Datum, value: ChartAccessor<Datum>, row: number): string` |
+| `onKeydown(event: KeyboardEvent): void` |
+| `toggleSeries(id: string): void` |
+
+### `ChartRootComponent`
+
+Component selector: `simurgh-chart-root`. The template's first native element is `ng-content`. Angular host bindings: `{ class: 'simurgh-chart', 'data-slot': 'chart' }`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `ChartPlotComponent`
+
+Component selector: `simurgh-chart-plot`. The template's first native element is `svg`.
+
+No inputs.
+
+No outputs.
+
+Content projection: `default`.
+
+No public methods.
+
+### `ChartGridDirective`
+
+Attribute directive selector: `[simurghChartGrid]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `ChartXAxisDirective`
+
+Attribute directive selector: `[simurghChartXAxis]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `ChartYAxisDirective`
+
+Attribute directive selector: `[simurghChartYAxis]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `ChartLegendDirective`
+
+Attribute directive selector: `[simurghChartLegend]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `ChartTooltipDirective`
+
+Attribute directive selector: `[simurghChartTooltip]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `ChartCrosshairDirective`
+
+Attribute directive selector: `[simurghChartCrosshair]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `ChartBrushDirective`
+
+Attribute directive selector: `[simurghChartBrush]`; behavior applies to its host element.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `LineChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `AreaChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `BarChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `PieChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `DonutChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `ScatterChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `BubbleChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `RadarChartComponent`
+
+Component selector: `simurgh-radar-chart`. The template's first native element is `svg`. Angular host bindings: `{ class: 'simurgh-chart', 'data-slot': 'chart' }`.
+
+| Input | Type | Default / requirement |
+| --- | --- | --- |
+| `data` | `readonly Datum[]` | `[]` |
+| `stream` | `ChartStream<string>` | `undefined` |
+| `y` | `ChartAccessor<Datum, number>` | Required |
+| `accessibility` | `ChartAccessibility` | Required |
+| `width` | `number` | `360` |
+| `height` | `number` | `360` |
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `HeatmapChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+### `ComboChartComponent`
+
+Component selector: `none`. The component has no single native template root.
+
+No inputs.
+
+No outputs.
+
+Content projection: none.
+
+No public methods.
+
+</details>
+{/* angular-api:end */}
+
+{/* component-form:start */}
+### Form integration
+
+This component is not a form control and does not contribute a named value to `FormData`. Use it
+to structure or describe a form only when its purpose and accessibility guidance apply.
+{/* component-form:end */}
+
+{/* component-supported-states:start */}
+### Supported states
+
+The table distinguishes component behavior from application-owned presentation. “Not supported”
+means there is no public state contract for that adapter; do not invent one with an undocumented
+attribute. Keep status and error messages accessible when they are rendered outside the component.
+
+| State | React | Vue | Angular |
+| --- | --- | --- | --- |
+| Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Disabled | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+| Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
+{/* component-supported-states:end */}
+
+{/* component-styling-contract:start */}
+<details className="reference-details">
+<summary>Styling contract</summary>
+
+### Styling contract
+
+The selectors below are used by the published component recipe or emitted consistently by an
+adapter. Treat these as the supported styling surface. Element order, anonymous wrappers, and
+undocumented descendants are implementation details and should not be targeted.
+
+| Surface | Stable hooks |
+| --- | --- |
+| Recipe classes | `.simurgh-chart` |
+| Stable DOM parts | `[data-slot="chart"]` |
+| Stable data attributes | `[data-part]`, `[data-renderer]`, `[data-series]`, `[data-slot]`, `[data-state]`, `[data-table]` |
+| ARIA/state selectors used by the recipe | `[aria-pressed]` |
+| CSS custom properties consumed | `--simurgh-border`, `--simurgh-chart-axis`, `--simurgh-chart-grid`, `--simurgh-chart-tooltip`, `--simurgh-font-sans`, `--simurgh-foreground`, `--simurgh-hover`, `--simurgh-muted-foreground`, `--simurgh-radius`, `--simurgh-ring`, `--simurgh-shadow-sm`, `--simurgh-space-1`, `--simurgh-space-2`, `--simurgh-space-3`, `--simurgh-text-lg`, `--simurgh-text-sm` |
+
+Prefer a semantic token override for theme-wide changes. Use the listed class or part selectors for a
+component-scoped override. When omitting recipe CSS, preserve state attributes and ARIA semantics
+even if your replacement styles use different selectors.
+
+</details>
+{/* component-styling-contract:end */}
+
+{/* component-composition:start */}
+### Composition contract
+
+Follow the framework example as a structural contract. Root components own shared state; parts that
+consume that state must stay under the root (or be attached to projected descendants in Angular).
+Parts described as conditional are optional until their corresponding interaction or semantic region
+is used. Do not render a state-consuming part by itself.
+
+| Framework | Required parent/child relationship | Conditional parts | Supporting types |
+| --- | --- | --- | --- |
+| React | Render `ChartRoot` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `ChartDataTable`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | `ChartProps`. |
+| Vue | Render `ChartRoot` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Angular | Create `ChartBaseComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `ChartRootComponent`, `ChartPlotComponent`, `ChartGridDirective`, `ChartXAxisDirective`, `ChartYAxisDirective`, `ChartLegendDirective`, `ChartTooltipDirective`, `ChartCrosshairDirective`, `ChartBrushDirective`, `LineChartComponent`, `AreaChartComponent`, `BarChartComponent`, `PieChartComponent`, `DonutChartComponent`, `ScatterChartComponent`, `BubbleChartComponent`, `RadarChartComponent`, `HeatmapChartComponent`, `ComboChartComponent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+
+Accessible names, descriptions, and form labels remain required whenever the component's purpose
+cannot otherwise be determined, even when the corresponding visual part is optional.
+{/* component-composition:end */}
+
+{/* framework-parity:start */}
+### Framework parity and differences
+
+The adapters target the same user-visible behavior and accessibility contract. Their public shapes
+follow each framework's conventions and are not expected to be symbol-for-symbol identical.
+
+| Concern | Contract |
+| --- | --- |
+| Public composition | React exports 21 parts, Vue 19, and Angular 20. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
+| State and change events | React uses controlled/default props and callbacks; Vue uses `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`; Angular uses `[(hiddenSeries)]`. |
+| Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
+| Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
+| Imperative access | No framework exposes an imperative handle for this component. |
+
+These differences are intentional adapter design. Behavioral or accessibility differences not stated
+on this page are parity defects rather than supported variations.
+{/* framework-parity:end */}
+
+## Customization
+
+Load the optional component stylesheet for the default recipe, override semantic tokens for broad
+theme changes, or omit the recipe CSS for headless styling. See [theming and styling
+hooks](/guides/theming/) for import order, selectors, dark mode, RTL, and reduced-motion guidance.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}
+
+## Related components
+
+- Review the shared [accessibility and RTL guidance](/guides/accessibility-rtl/) and
+  [theming and styling hooks](/guides/theming/).
+- Use the [component chooser](/guides/component-chooser/) and
+  [component overview](/components/overview/) to compare related primitives.
+- Inspect the registry [manifest](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json) and framework
+  source for [React](https://github.com/simurgh-ui/simurgh/blob/main/packages/react/src/index.tsx),
+  [Vue](https://github.com/simurgh-ui/simurgh/blob/main/packages/vue/src/components/chart.ts), or
+  [Angular](https://github.com/simurgh-ui/simurgh/blob/main/packages/angular/src/components/chart.ts).

@@ -1,0 +1,79 @@
+import type { ChartDomain } from './charts.js';
+
+export type ChartViewport = { x?: ChartDomain; y?: ChartDomain };
+export type ChartSelection = { start: readonly [number, number]; end: readonly [number, number] } | null;
+
+export function zoomDomain(domain: ChartDomain, factor: number, anchor = (domain[0] + domain[1]) / 2): ChartDomain {
+  if (!Number.isFinite(factor) || factor <= 0) return domain;
+  return [anchor + (domain[0] - anchor) / factor, anchor + (domain[1] - anchor) / factor];
+}
+
+export function panDomain(domain: ChartDomain, fraction: number): ChartDomain {
+  const amount = (domain[1] - domain[0]) * fraction;
+  return [domain[0] + amount, domain[1] + amount];
+}
+
+export function nextChartIndex(current: number, size: number, key: string, direction: 'ltr' | 'rtl' = 'ltr'): number {
+  if (size <= 0) return -1;
+  if (key === 'Home') return 0;
+  if (key === 'End') return size - 1;
+  const previous = direction === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
+  const next = direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+  if (key === previous || key === 'ArrowUp') return Math.max(0, current - 1);
+  if (key === next || key === 'ArrowDown') return Math.min(size - 1, current + 1);
+  return current;
+}
+
+export function chartInteractionKey(
+  event: Pick<KeyboardEvent, 'key' | 'shiftKey'>,
+  viewport: ChartViewport,
+): { viewport: ChartViewport; clearSelection?: true } {
+  if (event.key === 'Escape') return { viewport, clearSelection: true };
+  const factor = event.key === '+' || event.key === '=' ? 1.25 : event.key === '-' ? 0.8 : 0;
+  if (factor)
+    return {
+      viewport: {
+        ...(viewport.x ? { x: zoomDomain(viewport.x, factor) } : {}),
+        ...(viewport.y ? { y: zoomDomain(viewport.y, factor) } : {}),
+      },
+    };
+  if (event.shiftKey && viewport.x && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+    const amount = event.key === 'ArrowLeft' ? -0.1 : 0.1;
+    return { viewport: { ...viewport, x: panDomain(viewport.x, amount) } };
+  }
+  return { viewport };
+}
+
+export class SpatialGrid<T extends { x: number; y: number }> {
+  readonly #cells = new Map<string, T[]>();
+  constructor(readonly cellSize = 24) {}
+  add(item: T): void {
+    const key = this.#key(item.x, item.y);
+    const cell = this.#cells.get(key) ?? [];
+    cell.push(item);
+    this.#cells.set(key, cell);
+  }
+  nearest(x: number, y: number, radius = this.cellSize): T | null {
+    let match: T | null = null;
+    let distance = radius * radius;
+    const reach = Math.ceil(radius / this.cellSize);
+    const column = Math.floor(x / this.cellSize);
+    const row = Math.floor(y / this.cellSize);
+    for (let dx = -reach; dx <= reach; dx += 1)
+      for (let dy = -reach; dy <= reach; dy += 1)
+        for (const item of this.#cells.get(`${column + dx}:${row + dy}`) ?? []) {
+          const candidate = (item.x - x) ** 2 + (item.y - y) ** 2;
+          if (candidate < distance) {
+            distance = candidate;
+            match = item;
+          }
+        }
+    return match;
+  }
+  clear(): void {
+    this.#cells.clear();
+  }
+  #key(x: number, y: number): string {
+    return `${Math.floor(x / this.cellSize)}:${Math.floor(y / this.cellSize)}`;
+  }
+}

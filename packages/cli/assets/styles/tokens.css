@@ -40,6 +40,19 @@
   --simurgh-border: 32 28% 78%;
   --simurgh-ring: var(--simurgh-firuzeh);
   --simurgh-scrim: 217 42% 8%;
+  --simurgh-chart-1: 222 70% 42%;
+  --simurgh-chart-2: 176 68% 34%;
+  --simurgh-chart-3: 19 62% 44%;
+  --simurgh-chart-4: 350 65% 44%;
+  --simurgh-chart-5: 42 88% 42%;
+  --simurgh-chart-6: 270 48% 48%;
+  --simurgh-chart-7: 198 70% 38%;
+  --simurgh-chart-8: 330 52% 48%;
+  --simurgh-chart-9: 92 45% 34%;
+  --simurgh-chart-10: 28 70% 40%;
+  --simurgh-chart-grid: var(--simurgh-border);
+  --simurgh-chart-axis: var(--simurgh-muted-foreground);
+  --simurgh-chart-tooltip: var(--simurgh-surface);
   --simurgh-radius: 0.625rem;
   --simurgh-shadow-sm: 0 2px 8px rgb(15 23 42 / 0.1);
   --simurgh-shadow: 0 14px 40px rgb(15 23 42 / 0.16);
@@ -114,6 +127,16 @@
   --simurgh-border: 219 29% 28%;
   --simurgh-ring: 176 57% 53%;
   --simurgh-scrim: 222 55% 4%;
+  --simurgh-chart-1: 205 78% 64%;
+  --simurgh-chart-2: 176 57% 53%;
+  --simurgh-chart-3: 24 80% 62%;
+  --simurgh-chart-4: 350 72% 65%;
+  --simurgh-chart-5: 42 88% 62%;
+  --simurgh-chart-6: 270 62% 70%;
+  --simurgh-chart-7: 190 72% 58%;
+  --simurgh-chart-8: 330 65% 68%;
+  --simurgh-chart-9: 92 52% 58%;
+  --simurgh-chart-10: 28 82% 62%;
 }
 
 @media (prefers-reduced-motion: reduce) {
