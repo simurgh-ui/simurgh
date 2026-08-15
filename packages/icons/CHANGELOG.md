@@ -1,8 +1,8 @@
 # @simurgh-ui/icons
 
-## 0.1.1
+## 0.1.0
 
-### Patch Changes
+### Minor Changes
 
-- Add npm-facing package documentation with installation, quick-start, granular import, styling,
-  and package-specific usage guidance.
+- Publish the initial generated icon catalog with static, dynamic, framework, and raw SVG entry
+  points.

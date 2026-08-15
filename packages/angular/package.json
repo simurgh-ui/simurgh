@@ -1,6 +1,19 @@
 {
   "name": "@simurgh-ui/angular",
-  "version": "0.3.1",
+  "version": "0.1.1",
+  "description": "Accessible Simurgh UI components for Angular.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/angular"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -39,10 +52,10 @@
   ],
   "scripts": {
     "build": "node ../../scripts/clean-dist.mjs angular && ngc -p tsconfig.json && node ../../scripts/optimize-angular.mjs",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "coverage": "vitest run --coverage --config ../../vitest.coverage.ts",
     "typecheck": "ngc -p tsconfig.json --noEmit",
-    "lint": "eslint src"
+    "lint": "eslint src test"
   },
   "dependencies": {
     "@simurgh-ui/core": "workspace:*",

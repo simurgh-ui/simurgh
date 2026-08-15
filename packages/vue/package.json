@@ -1,6 +1,19 @@
 {
   "name": "@simurgh-ui/vue",
-  "version": "0.3.1",
+  "version": "0.1.1",
+  "description": "Accessible Simurgh UI components for Vue.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/vue"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -35,10 +48,10 @@
   ],
   "scripts": {
     "build": "node ../../scripts/clean-dist.mjs vue && tsc -p tsconfig.json && node ../../scripts/build-adapter.mjs vue",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "coverage": "vitest run --coverage --config ../../vitest.coverage.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src"
+    "lint": "eslint src test"
   },
   "dependencies": {
     "@simurgh-ui/core": "workspace:*"

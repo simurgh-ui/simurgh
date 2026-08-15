@@ -82,7 +82,6 @@ import {
   DescriptionListTerm,
   Combobox,
   Command,
-  Calendar,
   DatePicker,
   Carousel,
   CarouselContent,

@@ -1,6 +1,19 @@
 {
   "name": "@simurgh-ui/icons",
-  "version": "0.1.1",
+  "version": "0.1.0",
+  "description": "Tree-shakeable Simurgh icons for React, Vue, Angular, and raw SVG use.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/icons"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": false,
   "exports": {

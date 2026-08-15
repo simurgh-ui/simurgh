@@ -1,6 +1,19 @@
 {
   "name": "@simurgh-ui/core",
-  "version": "0.3.1",
+  "version": "0.1.1",
+  "description": "Framework-neutral state and interaction utilities for Simurgh UI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": false,
   "exports": {

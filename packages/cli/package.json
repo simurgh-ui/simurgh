@@ -1,6 +1,22 @@
 {
   "name": "@simurgh-ui/cli",
-  "version": "0.3.1",
+  "version": "0.1.2",
+  "description": "Install and update source-owned Simurgh UI components.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "type": "module",
   "bin": {
     "simurgh": "dist/index.js"

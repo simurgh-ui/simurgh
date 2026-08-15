@@ -26,137 +26,18 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec turbo build --filter='!@simurgh-ui/docs'
-      - name: Upload package build output
-        uses: actions/upload-artifact@v4
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm coverage
+      - uses: actions/upload-artifact@v4
         with:
-          name: package-build-output
-          path: |
-            .turbo
-            packages/cli/assets
-            packages/*/dist
-            packages/styles/all.css
-            packages/styles/components
-          include-hidden-files: true
-          retention-days: 1
-
-  verify:
-    name: ${{ matrix.name }}
-    needs: build
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Lint
-            command: pnpm lint
-          - name: Typecheck
-            command: pnpm typecheck
-          - name: Unit tests
-            command: pnpm test
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 11.16.0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@v4
-        with:
-          name: package-build-output
-          path: .
-      - run: ${{ matrix.command }}
-
-  package-checks:
-    name: ${{ matrix.name }}
-    needs: build
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Package quick starts
-            command: pnpm test:quick-starts
-          - name: Package bundle budgets
-            command: node scripts/check-bundle-size.mjs
-          - name: Icon bundle budgets
-            command: node scripts/check-icons-bundle-size.mjs
-          - name: Motion bundle budgets
-            command: node scripts/check-motion-size.mjs
-          - name: Angular production bundle budgets
-            command: node scripts/check-angular-production-size.mjs
-          - name: Lazy overlay bundle budgets
-            command: node scripts/check-lazy-overlay-size.mjs
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 11.16.0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@v4
-        with:
-          name: package-build-output
-          path: .
-      - run: ${{ matrix.command }}
-
-  docs:
-    name: Build docs
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 11.16.0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@v4
-        with:
-          name: package-build-output
-          path: .
-      - run: pnpm --filter @simurgh-ui/docs build
-      - name: Upload docs build output
-        uses: actions/upload-artifact@v4
-        with:
-          name: docs-build-output
-          path: apps/docs/dist
-          retention-days: 1
-
-  e2e:
-    name: E2E (${{ matrix.browser }})
-    needs: docs
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 11.16.0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@v4
-        with:
-          name: package-build-output
-          path: .
-      - uses: actions/download-artifact@v4
-        with:
-          name: docs-build-output
-          path: apps/docs/dist
-      - run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
-      - run: pnpm test:e2e --project=${{ matrix.browser }}
+          name: coverage
+          path: packages/*/coverage
+          if-no-files-found: error
+      - run: pnpm build
+      - run: pnpm test:release
+      - run: pnpm test:quick-starts
+      - run: pnpm bundle:size
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - run: pnpm test:e2e

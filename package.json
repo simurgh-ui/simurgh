@@ -13,11 +13,14 @@
     "bundle:size": "node scripts/check-floating-size.mjs && node scripts/check-bundle-size.mjs && node scripts/check-icons-bundle-size.mjs && node scripts/check-motion-size.mjs && node scripts/check-angular-production-size.mjs && node scripts/check-lazy-overlay-size.mjs",
     "bundle:react-splitting": "node scripts/analyze-react-code-splitting.mjs",
     "chart:performance": "node scripts/benchmark-charts.mjs",
+    "changeset": "changeset",
     "format": "prettier --write .",
+    "release": "changeset publish",
     "test:contracts": "vitest run packages/react/test packages/vue/test packages/angular/test packages/cli/test",
     "test:e2e": "playwright test",
     "test:quick-starts": "node scripts/check-package-quick-starts.mjs",
-    "test:release-candidate-copy": "node scripts/check-release-candidate-copied-source.mjs"
+    "test:release": "node scripts/check-release-coherence.mjs",
+    "version-packages": "changeset version"
   },
   "devDependencies": {
     "@angular/compiler-cli": "20.3.2",

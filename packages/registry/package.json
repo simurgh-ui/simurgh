@@ -1,6 +1,19 @@
 {
   "name": "@simurgh-ui/registry",
-  "version": "0.3.1",
+  "version": "0.1.1",
+  "description": "Framework-aware component registry metadata for Simurgh UI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/registry"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -15,8 +28,12 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run --passWithNoTests",
+    "test": "node ../../scripts/check-registry-parity.mjs && vitest run",
+    "coverage": "vitest run --coverage --config ../../vitest.coverage.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src"
+    "lint": "eslint src test"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
   }
 }

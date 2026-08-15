@@ -250,7 +250,11 @@ importers:
         specifier: ^19.2.8
         version: 19.2.8(react@19.2.8)
 
-  packages/registry: {}
+  packages/registry:
+    devDependencies:
+      vitest:
+        specifier: ^3.2.7
+        version: 3.2.7(@types/node@24.13.3)(jsdom@27.4.0)
 
   packages/styles: {}
 

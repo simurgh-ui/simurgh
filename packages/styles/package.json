@@ -1,6 +1,19 @@
 {
   "name": "@simurgh-ui/styles",
-  "version": "0.2.1",
+  "version": "0.1.1",
+  "description": "Design tokens and optional component recipes for Simurgh UI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/styles"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": [
     "*.css"
   ],

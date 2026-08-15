@@ -1,6 +1,19 @@
 {
   "name": "@simurgh-ui/motion",
-  "version": "0.1.2",
+  "version": "0.1.1",
+  "description": "Framework-neutral motion primitives and adapters for Simurgh UI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/motion"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": false,
   "exports": {

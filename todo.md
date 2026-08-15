@@ -523,13 +523,13 @@ roadmap and are not duplicated here.
 - [ ] Complete and sign off the release-candidate task journey, including installation, theming,
       forms, Dialog focus restoration, form serialization, copied-source customization, and issue
       filing for every failure.
-- [ ] Decide and document whether packages use fixed or independent versioning; enforce compatible
+- [x] Decide and document whether packages use fixed or independent versioning; enforce compatible
       CLI, registry, styles, adapter, icons, and motion versions with a generated release check.
 - [ ] Add LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, and CODEOWNERS policies suitable for a
       public component library.
 - [ ] Add license, repository, homepage, bugs, engines, funding where applicable, and publish
       configuration metadata to every published package.
-- [ ] Publish coverage reports in CI and establish non-blocking baselines before adopting meaningful
+- [x] Publish coverage reports in CI and establish non-blocking baselines before adopting meaningful
       per-package thresholds.
 
 ### Phase 1: remove structural and test-maintenance debt
@@ -538,13 +538,13 @@ roadmap and are not duplicated here.
       focus management, composite widgets, forms, overlays, IDs, and controlled state.
 - [ ] Assert that every framework component subpath is independent of its root barrel and retain
       existing standalone and aggregate bundle budgets during the React decomposition.
-- [ ] Remove `--passWithNoTests` from packages expected to own tests so accidental test-discovery
+- [x] Remove `--passWithNoTests` from packages expected to own tests so accidental test-discovery
       failures cannot pass CI.
 - [ ] Split monolithic framework accessibility suites into component or behavior-family suites with
       clear ownership and failure localization.
-- [ ] Generate a framework-parity matrix from the registry and fail CI when a registered component
+- [x] Generate a framework-parity matrix from the registry and fail CI when a registered component
       lacks an implementation, export, style status, documentation page, or required contract test.
-- [ ] Replace brittle hard-coded catalog-count assertions with generated registry invariants while
+- [x] Replace brittle hard-coded catalog-count assertions with generated registry invariants while
       retaining an explicit review step for intentional catalog changes.
 
 ### Phase 2: harden behavior, accessibility, and compatibility
@@ -578,13 +578,13 @@ roadmap and are not duplicated here.
 
 ### Phase 4: make releases reproducible
 
-- [ ] Add Changesets-driven release-candidate and publish workflows with human approval before
+- [x] Add Changesets-driven release-candidate and publish workflows with human approval before
       registry publication.
 - [ ] Generate package-scoped release notes and validate that every consumer-visible package change
       has an appropriate Changeset entry.
 - [ ] Pack every publishable package and run export, type-resolution, package-content, installation,
       and framework quick-start checks against tarballs rather than workspace source.
-- [ ] Add package provenance or signing supported by the target registry and document maintainer
+- [x] Add package provenance or signing supported by the target registry and document maintainer
       recovery and release-access procedures.
 - [ ] Add public API report snapshots and require explicit review for additions, removals, signature
       changes, and framework parity differences.
