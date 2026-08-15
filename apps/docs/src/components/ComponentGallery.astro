@@ -36,6 +36,8 @@ const comparisons = new Map<string, string>([
   ...['tooltip', 'hover-card', 'popover'].map((name) => [name, '/guides/component-chooser/#tooltip-hover-card-or-popover'] as const),
   ...['accordion', 'disclosure', 'collapsible'].map((name) => [name, '/guides/component-chooser/#accordion-disclosure-or-collapsible'] as const),
 ]);
+const titleCase = (value: string | undefined) =>
+  value ? value.charAt(0).toUpperCase() + value.slice(1) : '';
 const components = registry.components.map((name) => ({
   name,
   label: labels.get(name) ?? name.replaceAll('-', ' ').replace(/\b\w/gu, (letter) => letter.toUpperCase()),
@@ -49,10 +51,16 @@ const components = registry.components.map((name) => ({
 
 <div class="component-gallery" data-component-gallery>
   <div class="gallery-controls" aria-label="Filter components">
-    <label>Search <input type="search" placeholder="Button, dialog, form…" data-gallery-search /></label>
+    <label class="gallery-search">
+      <span>Search</span>
+      <span class="gallery-search-field">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" /></svg>
+        <input type="search" placeholder="Button, dialog, form…" autocomplete="off" data-gallery-search />
+      </span>
+    </label>
     <label>Category <select data-gallery-filter="category"><option value="">All categories</option>{Object.keys(groups).map((group) => <option value={group}>{group}</option>)}</select></label>
-    <label>Status <select data-gallery-filter="status"><option value="">All statuses</option><option>styled</option><option>structural</option><option>native</option></select></label>
-    <label>Behavior <select data-gallery-filter="behavior"><option value="">Native and custom</option><option>native</option><option>custom</option></select></label>
+    <label>Status <select data-gallery-filter="status"><option value="">All statuses</option><option value="styled">Styled</option><option value="structural">Structural</option><option value="native">Native</option></select></label>
+    <label>Behavior <select data-gallery-filter="behavior"><option value="">Native and custom</option><option value="native">Native</option><option value="custom">Custom</option></select></label>
     <label>Framework <select data-gallery-filter="frameworks"><option value="">All frameworks</option><option>React</option><option>Vue</option><option>Angular</option></select></label>
     <label>Keyboard <select data-gallery-filter="keyboard"><option value="">Any complexity</option><option value="simple">simple</option><option value="moderate">moderate</option><option value="complex">complex</option></select></label>
   </div>
@@ -63,7 +71,7 @@ const components = registry.components.map((name) => ({
         <span class="gallery-mark" aria-hidden="true">{component.label.slice(0, 1)}</span>
         <strong><a href={`/components/${component.name}/`}>{component.label}</a></strong>
         <span>{component.category}</span>
-        <span class="gallery-tags"><small>{component.status}</small><small>{component.behavior}</small><small>{component.keyboard} keys</small><small>React · Vue · Angular</small></span>
+        <span class="gallery-tags"><small data-status={component.status}>{titleCase(component.status)}</small><small>{titleCase(component.behavior)}</small><small>{titleCase(component.keyboard)} keys</small><small>React · Vue · Angular</small></span>
         {component.comparison && <a class="gallery-compare" href={component.comparison}>Compare alternatives <span aria-hidden="true">→</span></a>}
       </article>
     ))}
@@ -106,8 +114,13 @@ const components = registry.components.map((name) => ({
 <style>
   .gallery-controls { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
   .gallery-controls label { display: grid; font-size: .875rem; font-weight: 600; gap: .25rem; }
-  .gallery-controls :is(input, select) { background: hsl(var(--simurgh-input-surface)); border: 1px solid hsl(var(--simurgh-input-border)); border-radius: var(--simurgh-radius); color: hsl(var(--simurgh-foreground)); min-block-size: 2.5rem; padding-inline: .625rem; }
+  .gallery-controls :is(input, select) { background: hsl(var(--simurgh-input-surface)); border: 1px solid hsl(var(--simurgh-input-border)); border-radius: var(--simurgh-radius); color: hsl(var(--simurgh-foreground)); inline-size: 100%; min-block-size: 2.75rem; padding-inline: .75rem; }
+  .gallery-controls input { appearance: none; padding-inline-start: 2.35rem; }
+  .gallery-controls input::placeholder { color: hsl(var(--simurgh-muted-foreground)); opacity: .9; }
   .gallery-controls :is(input, select):focus-visible { outline: 2px solid hsl(var(--simurgh-ring)); outline-offset: 2px; }
+  .gallery-search { grid-column: span 2; }
+  .gallery-search-field { display: block; position: relative; }
+  .gallery-search-field svg { color: hsl(var(--simurgh-muted-foreground)); fill: none; inset-inline-start: .75rem; pointer-events: none; position: absolute; stroke: currentColor; stroke-linecap: round; stroke-width: 1.75; top: 50%; transform: translateY(-50%); width: 1rem; }
   .gallery-count { color: hsl(var(--simurgh-muted-foreground)); margin-block: 1rem; }
   .gallery-grid { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
   .gallery-card { background: hsl(var(--simurgh-surface)); border: 1px solid hsl(var(--simurgh-border)); border-radius: var(--simurgh-radius); color: hsl(var(--simurgh-foreground)); display: grid; gap: .375rem; padding: 1rem; }
@@ -118,5 +131,8 @@ const components = registry.components.map((name) => ({
   .gallery-card > span:not(.gallery-mark, .gallery-tags) { color: hsl(var(--simurgh-muted-foreground)); }
   .gallery-tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-block-start: .25rem; }
   .gallery-tags small { background: hsl(var(--simurgh-muted)); border-radius: 999px; color: hsl(var(--simurgh-muted-foreground)); padding: .125rem .4rem; }
+  .gallery-tags small[data-status='styled'] { background: hsl(var(--simurgh-firuzeh) / .14); color: hsl(176 70% 27%); }
+  :global([data-theme='dark']) .gallery-tags small[data-status='styled'] { color: hsl(176 62% 72%); }
   .gallery-compare { align-self: end; font-size: .875rem; margin-block-start: .375rem; }
+  @media (max-width: 30rem) { .gallery-search { grid-column: auto; } }
 </style>

@@ -101,13 +101,38 @@ header.header {
 .hero h1 {
   background: linear-gradient(
     100deg,
-    hsl(var(--simurgh-persian-blue)) 5%,
-    hsl(var(--simurgh-firuzeh)) 62%,
-    hsl(var(--simurgh-brick))
+    hsl(222 70% 27%) 5%,
+    hsl(176 72% 25%) 62%,
+    hsl(350 72% 32%)
   );
   background-clip: text;
   color: transparent;
   letter-spacing: -0.045em;
+}
+
+:root[data-theme='dark'] .hero::before {
+  background:
+    radial-gradient(
+      circle at 24% 0,
+      hsl(var(--simurgh-persian-blue) / 0.42),
+      transparent 38%
+    ),
+    var(--persian-pattern),
+    linear-gradient(135deg, hsl(222 43% 13% / 0.97), hsl(216 48% 9% / 0.94));
+  box-shadow:
+    inset 0 0 0 0.5rem hsl(var(--simurgh-firuzeh) / 0.04),
+    0 24px 70px hsl(222 60% 3% / 0.32);
+}
+
+:root[data-theme='dark'] .hero h1 {
+  background: linear-gradient(
+    100deg,
+    hsl(42 92% 68%) 5%,
+    hsl(176 62% 66%) 58%,
+    hsl(39 55% 89%)
+  );
+  background-clip: text;
+  color: transparent;
 }
 
 .hero .tagline {
