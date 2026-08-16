@@ -476,3 +476,106 @@ budgets remain fixed.
       copy the correct framework import, theme it, label an icon-only control, and verify RTL.
 - [ ] Track search success rate, time to first correct icon, zero-result queries, copy success, and
       mistaken icon substitutions to guide taxonomy and alias improvements.
+
+## Release-readiness development roadmap
+
+Freeze material catalog expansion until the structural, validation, governance, and release gates
+below are complete. Existing open React, final user-journey, and icon tasks above remain part of this
+roadmap and are not duplicated here.
+
+### Phase 0: establish the release baseline
+
+- [ ] Run lint, type checking, unit/contract tests, production builds, quick starts, bundle budgets,
+      and cross-browser E2E serially from a clean checkout; record tool and platform versions.
+- [ ] Complete and sign off the release-candidate task journey, including installation, theming,
+      forms, Dialog focus restoration, form serialization, copied-source customization, and issue
+      filing for every failure.
+- [ ] Decide and document whether packages use fixed or independent versioning; enforce compatible
+      CLI, registry, styles, adapter, icons, and motion versions with a generated release check.
+- [ ] Add LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, and CODEOWNERS policies suitable for a
+      public component library.
+- [ ] Add license, repository, homepage, bugs, engines, funding where applicable, and publish
+      configuration metadata to every published package.
+- [ ] Publish coverage reports in CI and establish non-blocking baselines before adopting meaningful
+      per-package thresholds.
+
+### Phase 1: remove structural and test-maintenance debt
+
+- [ ] Complete the open React source decomposition above, then extract focused shared internals for
+      focus management, composite widgets, forms, overlays, IDs, and controlled state.
+- [ ] Assert that every framework component subpath is independent of its root barrel and retain
+      existing standalone and aggregate bundle budgets during the React decomposition.
+- [ ] Remove `--passWithNoTests` from packages expected to own tests so accidental test-discovery
+      failures cannot pass CI.
+- [ ] Split monolithic framework accessibility suites into component or behavior-family suites with
+      clear ownership and failure localization.
+- [ ] Generate a framework-parity matrix from the registry and fail CI when a registered component
+      lacks an implementation, export, style status, documentation page, or required contract test.
+- [ ] Replace brittle hard-coded catalog-count assertions with generated registry invariants while
+      retaining an explicit review step for intentional catalog changes.
+
+### Phase 2: harden behavior, accessibility, and compatibility
+
+- [ ] Define shared, data-driven behavioral contracts and execute applicable contracts across
+      React, Vue, and Angular instead of relying only on equal test counts.
+- [ ] Expand overlay coverage for initial focus, trapping, dismissal, restoration, nesting, portals,
+      scroll locking, inert backgrounds, and interrupted unmounts.
+- [ ] Expand composite-widget coverage for LTR and RTL navigation, typeahead, disabled items,
+      selection models, orientation changes, and dynamic collection updates.
+- [ ] Test IME/composition, form reset, serialization, autofill, invalid state, native validation,
+      and browser form submission for every form-capable component.
+- [ ] Add SSR and hydration fixtures for every supported framework major, including generated IDs,
+      portals, browser-only APIs, lazy overlays, and streamed or deferred content.
+- [ ] Maintain an executable browser/framework compatibility matrix covering the oldest and newest
+      supported peer versions rather than documenting untested version ranges.
+- [ ] Add representative mobile screen-reader smoke tests and retain manual evidence for zoom,
+      forced colors, reduced motion, touch targets, and focus appearance.
+- [ ] Create small production reference applications for React, Vue, and Angular that exercise
+      installation, theming, forms, overlays, SSR where relevant, and production bundling.
+
+### Phase 3: complete the icons product
+
+- [ ] Complete the open multi-size optical audit, automatic RTL inference, Angular host parity,
+      accessibility examples, bundle comparisons, first-time-user study, and discovery metrics
+      tasks in the icon sections above before expanding the catalog.
+- [ ] Generate review sheets for all icons at 16, 20, 24, and 32 pixels and retain approved sheets
+      or targeted visual baselines as release evidence.
+- [ ] Document a privacy-preserving method for collecting icon-search evidence; use structured user
+      studies instead if product telemetry is not appropriate.
+
+### Phase 4: make releases reproducible
+
+- [ ] Add Changesets-driven release-candidate and publish workflows with human approval before
+      registry publication.
+- [ ] Generate package-scoped release notes and validate that every consumer-visible package change
+      has an appropriate Changeset entry.
+- [ ] Pack every publishable package and run export, type-resolution, package-content, installation,
+      and framework quick-start checks against tarballs rather than workspace source.
+- [ ] Add package provenance or signing supported by the target registry and document maintainer
+      recovery and release-access procedures.
+- [ ] Add public API report snapshots and require explicit review for additions, removals, signature
+      changes, and framework parity differences.
+- [ ] Define deprecation, support, and breaking-change policies, including a minimum notice period
+      and an experimental namespace or package for unstable chart and motion APIs.
+
+### Phase 5: improve developer experience and measure adoption
+
+- [ ] Add CLI dry-run and machine-readable output for `init`, `add`, `list`, and `diff`.
+- [ ] Improve `simurgh diff` guidance for customized generated source, conflict resolution, registry
+      upgrades, and safe adoption of upstream fixes.
+- [ ] Version the registry schema and provide migrations or actionable compatibility errors for
+      older `simurgh.json` files and generated-source metadata.
+- [ ] Publish maintained starter applications for React, Vue, and Angular using packed or released
+      artifacts and production-representative configuration.
+- [ ] Add component/version/framework-aware documentation feedback and issue links that prefill the
+      diagnostic context needed to reproduce a problem.
+- [ ] Measure time to first component, first theme customization, accessible form completion, and
+      first production build through structured release-candidate studies.
+- [ ] Publish and maintain a v1-readiness scorecard covering architecture, parity, accessibility,
+      compatibility, documentation, package integrity, governance, and release automation.
+
+### V1 exit gate
+
+- [ ] Confirm a clean, reproducible release run; complete manual accessibility and first-time-user
+      sign-off; close or explicitly defer every P0/P1 item; publish a beta; and collect beta evidence
+      before declaring the public API stable at 1.0.

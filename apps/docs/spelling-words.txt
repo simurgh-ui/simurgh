@@ -431,6 +431,7 @@ commitment
 commits
 common
 commonly
+commons
 communicate
 communicated
 communicates
@@ -1208,6 +1209,7 @@ invoking
 iranian
 irreversible
 is
+isfahan
 iso
 isolated
 issue
@@ -1216,6 +1218,7 @@ item
 items
 its
 itself
+jameh
 javascript
 joins
 journey
@@ -1411,6 +1414,7 @@ modules
 monorepo
 month
 more
+mosque
 most
 motif
 motifs
@@ -1640,6 +1644,7 @@ persian
 persisted
 persistent
 person
+photograph
 photographs
 physical
 physical-direction
@@ -2483,6 +2488,7 @@ verify
 version
 versions
 vertical
+via
 view-box
 viewchild
 viewport
@@ -2533,6 +2539,7 @@ why
 widget's
 widgets
 width
+wikimedia
 wildcard
 will
 window
