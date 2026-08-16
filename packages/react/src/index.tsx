@@ -18,7 +18,6 @@ import {
   createId,
   moveCalendarDate,
   nextIndex,
-  trapFocus,
   type Direction,
   type Orientation,
 } from '@simurgh-ui/core';
@@ -158,252 +157,42 @@ export {
 } from './components/disclosure.js';
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './components/tabs.js';
 
-const DialogContext = /* @__PURE__ */ createContext<OverlayContextValue | null>(
-  null,
-);
-const useDialog = () => {
-  const value = useContext(DialogContext);
-  if (!value) throw new Error('Dialog parts must be inside Dialog');
-  return value;
-};
-
-export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
-  const [open, setOpen] = useOpen(props);
-  const uid = useId();
-  return (
-    <DialogContext.Provider
-      value={{
-        open,
-        setOpen,
-        titleId: `${uid}-title`,
-        descriptionId: `${uid}-description`,
-      }}
-    >
-      {children}
-    </DialogContext.Provider>
-  );
-}
-export const DialogTrigger = /* @__PURE__ */ forwardRef<
-  HTMLButtonElement,
-  ButtonHTMLAttributes<HTMLButtonElement>
->((props, ref) => {
-  const context = useDialog();
-  return (
-    <button
-      type="button"
-      {...props}
-      ref={ref}
-      data-slot="dialog-trigger"
-      aria-haspopup="dialog"
-      aria-expanded={context.open}
-      onClick={(event) => {
-        props.onClick?.(event);
-        context.setOpen(true);
-      }}
-    />
-  );
-});
-export function DialogPortal({ children }: PropsWithChildren) {
-  return useBrowser() ? createPortal(children, document.body) : null;
-}
-export const DialogOverlay = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->((props, ref) => {
-  const { open, setOpen } = useDialog();
-  return open ? (
-    <div
-      {...props}
-      ref={ref}
-      data-slot="dialog-overlay"
-      className={props.className ?? 'simurgh-overlay'}
-      onMouseDown={(event) => {
-        props.onMouseDown?.(event);
-        if (event.target === event.currentTarget) setOpen(false);
-      }}
-    />
-  ) : null;
-});
-export const DialogContent = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->((props, forwardedRef) => {
-  const { open, setOpen, titleId, descriptionId } = useDialog();
-  const localRef = useRef<HTMLDivElement>(null);
-  const previous = useRef<Element | null>(null);
-  useEffect(() => {
-    if (!open) return;
-    previous.current = document.activeElement;
-    requestAnimationFrame(() => localRef.current?.focus());
-    return () => {
-      if (previous.current instanceof HTMLElement) previous.current.focus();
-    };
-  }, [open]);
-  if (!open) return null;
-  return (
-    <div
-      {...props}
-      ref={(node) => {
-        localRef.current = node;
-        if (typeof forwardedRef === 'function') forwardedRef(node);
-        else if (forwardedRef) forwardedRef.current = node;
-      }}
-      role="dialog"
-      data-slot="dialog-content"
-      aria-modal="true"
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
-      tabIndex={-1}
-      className={props.className ?? 'simurgh-content simurgh-dialog'}
-      onKeyDown={(event) => {
-        props.onKeyDown?.(event);
-        if (event.key === 'Escape') setOpen(false);
-        trapFocus(event.nativeEvent, event.currentTarget);
-      }}
-    />
-  );
-});
-export function DialogTitle(props: HTMLAttributes<HTMLHeadingElement>) {
-  const { titleId } = useDialog();
-  return <h2 {...props} id={titleId} data-slot="dialog-title" />;
-}
-export function DialogDescription(props: HTMLAttributes<HTMLParagraphElement>) {
-  const { descriptionId } = useDialog();
-  return <p {...props} id={descriptionId} data-slot="dialog-description" />;
-}
-export const DialogClose = /* @__PURE__ */ forwardRef<
-  HTMLButtonElement,
-  ButtonHTMLAttributes<HTMLButtonElement>
->((props, ref) => {
-  const { setOpen } = useDialog();
-  return (
-    <button
-      type="button"
-      {...props}
-      ref={ref}
-      data-slot="dialog-close"
-      onClick={(e) => {
-        props.onClick?.(e);
-        setOpen(false);
-      }}
-    />
-  );
-});
-
-export type SheetSide = 'top' | 'right' | 'bottom' | 'left';
-export const Sheet = Dialog;
-export const SheetTrigger = DialogTrigger;
-export const SheetTitle = DialogTitle;
-export const SheetDescription = DialogDescription;
-export const SheetClose = DialogClose;
-export const SheetContent = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { side?: SheetSide }
->(function SheetContent({ side = 'right', className, ...props }, ref) {
-  return (
-    <DialogPortal>
-      <DialogOverlay />
-      <DialogContent
-        {...props}
-        ref={ref}
-        data-slot="sheet-content"
-        data-side={side}
-        className={className ?? 'simurgh-content simurgh-sheet'}
-      />
-    </DialogPortal>
-  );
-});
-
-export const Drawer = Dialog;
-export const DrawerTrigger = DialogTrigger;
-export const DrawerTitle = DialogTitle;
-export const DrawerDescription = DialogDescription;
-export const DrawerClose = DialogClose;
-export const DrawerContent = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement> & { side?: 'top' | 'bottom' }
->(function DrawerContent({ side = 'bottom', ...props }, ref) {
-  return <SheetContent {...props} ref={ref} side={side} data-drawer="" />;
-});
-
-export const AlertDialog = Dialog;
-export const AlertDialogTrigger = DialogTrigger;
-export const AlertDialogTitle = DialogTitle;
-export const AlertDialogDescription = DialogDescription;
-export const AlertDialogContent = /* @__PURE__ */ forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(function AlertDialogContent(props, forwardedRef) {
-  const { open, setOpen, titleId, descriptionId } = useDialog();
-  const localRef = useRef<HTMLDivElement>(null);
-  const previous = useRef<Element | null>(null);
-  useEffect(() => {
-    if (!open) return;
-    previous.current = document.activeElement;
-    requestAnimationFrame(() =>
-      localRef.current
-        ?.querySelector<HTMLElement>('[data-slot=alert-dialog-cancel]')
-        ?.focus(),
-    );
-    return () => {
-      if (previous.current instanceof HTMLElement) previous.current.focus();
-    };
-  }, [open]);
-  if (!open) return null;
-  return (
-    <DialogPortal>
-      <DialogOverlay />
-      <div
-        {...props}
-        ref={(node) => {
-          localRef.current = node;
-          if (typeof forwardedRef === 'function') forwardedRef(node);
-          else if (forwardedRef) forwardedRef.current = node;
-        }}
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
-        tabIndex={-1}
-        data-slot="alert-dialog-content"
-        className={props.className ?? 'simurgh-content simurgh-dialog'}
-        onKeyDown={(event) => {
-          props.onKeyDown?.(event);
-          if (event.key === 'Escape') setOpen(false);
-          trapFocus(event.nativeEvent, event.currentTarget);
-        }}
-      />
-    </DialogPortal>
-  );
-});
-function AlertDialogButton({
-  slot,
-  ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { slot: string }) {
-  const { setOpen } = useDialog();
-  return (
-    <button
-      type="button"
-      {...props}
-      data-slot={slot}
-      onClick={(event) => {
-        props.onClick?.(event);
-        if (!event.defaultPrevented) setOpen(false);
-      }}
-    />
-  );
-}
-export function AlertDialogAction(
-  props: ButtonHTMLAttributes<HTMLButtonElement>,
-) {
-  return <AlertDialogButton {...props} slot="alert-dialog-action" />;
-}
-export function AlertDialogCancel(
-  props: ButtonHTMLAttributes<HTMLButtonElement>,
-) {
-  return <AlertDialogButton {...props} slot="alert-dialog-cancel" />;
-}
-
+export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from './components/alert-dialog.js';
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from './components/dialog.js';
+export {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
+} from './components/drawer.js';
+export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  type SheetSide,
+  SheetTitle,
+  SheetTrigger,
+} from './components/sheet.js';
 type FloatingKind = 'popover' | 'tooltip' | 'hovercard' | 'menu' | 'listbox';
 type FloatingContextValue = OverlayContextValue &
   ReturnType<typeof useFloating> & {

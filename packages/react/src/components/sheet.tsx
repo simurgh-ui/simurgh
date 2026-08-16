@@ -1,4 +1,3 @@
-import { forwardRef, type HTMLAttributes } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -9,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './dialog.js';
+import { forwardRef, type HTMLAttributes } from 'react';
 
 export type SheetSide = 'top' | 'right' | 'bottom' | 'left';
 export const Sheet = Dialog;

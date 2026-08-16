@@ -1,4 +1,3 @@
-import { forwardRef, type HTMLAttributes } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -7,6 +6,7 @@ import {
   DialogTrigger,
 } from './dialog.js';
 import { SheetContent } from './sheet.js';
+import { forwardRef, type HTMLAttributes } from 'react';
 
 export const Drawer = Dialog;
 export const DrawerTrigger = DialogTrigger;

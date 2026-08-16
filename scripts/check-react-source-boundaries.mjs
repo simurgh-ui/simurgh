@@ -4,8 +4,17 @@ import process from 'node:process';
 
 const root = resolve(import.meta.dirname, '..');
 const componentsRoot = resolve(root, 'packages/react/src/components');
-const migrated = ['accordion', 'collapsible', 'disclosure', 'tabs'];
-const maximumBarrelWrappers = 30;
+const migrated = [
+  'accordion',
+  'alert-dialog',
+  'collapsible',
+  'dialog',
+  'disclosure',
+  'drawer',
+  'sheet',
+  'tabs',
+];
+const maximumBarrelWrappers = 26;
 const failures = [];
 
 const files = (await readdir(componentsRoot)).filter((file) =>

@@ -187,6 +187,8 @@ Items are checked only after their implementation exists and the relevant verifi
         budget while retaining tighter standalone subpath and published-package budgets.
   - [x] Move Tabs, Accordion, Collapsible, and Disclosure into genuine component modules, extract
         shared controlled-open helpers, and prevent component-to-barrel dependencies from increasing.
+  - [x] Move Dialog, Sheet, Drawer, and Alert Dialog into genuine component modules backed by a
+        shared internal Dialog context without introducing root-barrel cycles.
   - [ ] Move the remaining React primitives and shared helpers without introducing component-to-barrel
         cycles or exceeding standalone, aggregate, complete-adapter, and published-package budgets.
 - [x] Evaluate esbuild code splitting for the React adapter and verify that shared chunks reduce multi-component consumption without adding excessive module overhead.

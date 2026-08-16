@@ -1,49 +1,28 @@
 import { trapFocus } from '@simurgh-ui/core';
+import { Dialog, useDialogContext } from '../internal/dialog-context.js';
+import { useBrowser } from '../internal/open.js';
 import {
   forwardRef,
   useEffect,
-  useId,
   useRef,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { DialogContext, useDialog } from '../internal/dialog-context.js';
-import { useBrowser, useOpen, type OpenProps } from '../internal/open.js';
 
-export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
-  const [open, setOpen] = useOpen(props);
-  const uid = useId();
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  return (
-    <DialogContext.Provider
-      value={{
-        open,
-        setOpen,
-        titleId: `${uid}-title`,
-        descriptionId: `${uid}-description`,
-        triggerRef,
-      }}
-    >
-      {children}
-    </DialogContext.Provider>
-  );
-}
+export { Dialog };
+
 export const DialogTrigger = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
-  const context = useDialog();
+  const context = useDialogContext();
   return (
     <button
       type="button"
       {...props}
-      ref={(node) => {
-        context.triggerRef.current = node;
-        if (typeof ref === 'function') ref(node);
-        else if (ref) ref.current = node;
-      }}
+      ref={ref}
       data-slot="dialog-trigger"
       aria-haspopup="dialog"
       aria-expanded={context.open}
@@ -54,14 +33,16 @@ export const DialogTrigger = /* @__PURE__ */ forwardRef<
     />
   );
 });
+
 export function DialogPortal({ children }: PropsWithChildren) {
   return useBrowser() ? createPortal(children, document.body) : null;
 }
+
 export const DialogOverlay = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, ref) => {
-  const { open, setOpen } = useDialog();
+  const { open, setOpen } = useDialogContext();
   return open ? (
     <div
       {...props}
@@ -79,7 +60,7 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, forwardedRef) => {
-  const { open, setOpen, titleId, descriptionId, triggerRef } = useDialog();
+  const { open, setOpen, titleId, descriptionId } = useDialogContext();
   const localRef = useRef<HTMLDivElement>(null);
   const previous = useRef<Element | null>(null);
   useEffect(() => {
@@ -87,8 +68,7 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
     previous.current = document.activeElement;
     requestAnimationFrame(() => localRef.current?.focus());
     return () => {
-      const returnTarget = triggerRef.current ?? previous.current;
-      if (returnTarget instanceof HTMLElement) returnTarget.focus();
+      if (previous.current instanceof HTMLElement) previous.current.focus();
     };
   }, [open]);
   if (!open) return null;
@@ -115,27 +95,30 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
     />
   );
 });
+
 export function DialogTitle(props: HTMLAttributes<HTMLHeadingElement>) {
-  const { titleId } = useDialog();
+  const { titleId } = useDialogContext();
   return <h2 {...props} id={titleId} data-slot="dialog-title" />;
 }
+
 export function DialogDescription(props: HTMLAttributes<HTMLParagraphElement>) {
-  const { descriptionId } = useDialog();
+  const { descriptionId } = useDialogContext();
   return <p {...props} id={descriptionId} data-slot="dialog-description" />;
 }
+
 export const DialogClose = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
-  const { setOpen } = useDialog();
+  const { setOpen } = useDialogContext();
   return (
     <button
       type="button"
       {...props}
       ref={ref}
       data-slot="dialog-close"
-      onClick={(e) => {
-        props.onClick?.(e);
+      onClick={(event) => {
+        props.onClick?.(event);
         setOpen(false);
       }}
     />

@@ -1,12 +1,5 @@
 import { trapFocus } from '@simurgh-ui/core';
-import {
-  forwardRef,
-  useEffect,
-  useRef,
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
-} from 'react';
-import { useDialog } from '../internal/dialog-context.js';
+import { useDialogContext } from '../internal/dialog-context.js';
 import {
   Dialog,
   DialogDescription,
@@ -15,6 +8,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './dialog.js';
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  type ButtonHTMLAttributes,
+  type HTMLAttributes,
+} from 'react';
 
 export const AlertDialog = Dialog;
 export const AlertDialogTrigger = DialogTrigger;
@@ -24,7 +24,7 @@ export const AlertDialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function AlertDialogContent(props, forwardedRef) {
-  const { open, setOpen, titleId, descriptionId, triggerRef } = useDialog();
+  const { open, setOpen, titleId, descriptionId } = useDialogContext();
   const localRef = useRef<HTMLDivElement>(null);
   const previous = useRef<Element | null>(null);
   useEffect(() => {
@@ -36,8 +36,7 @@ export const AlertDialogContent = /* @__PURE__ */ forwardRef<
         ?.focus(),
     );
     return () => {
-      const returnTarget = triggerRef.current ?? previous.current;
-      if (returnTarget instanceof HTMLElement) returnTarget.focus();
+      if (previous.current instanceof HTMLElement) previous.current.focus();
     };
   }, [open]);
   if (!open) return null;
@@ -71,7 +70,7 @@ function AlertDialogButton({
   slot,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { slot: string }) {
-  const { setOpen } = useDialog();
+  const { setOpen } = useDialogContext();
   return (
     <button
       type="button"
