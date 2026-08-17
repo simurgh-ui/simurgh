@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { manifest, registryEntry } from '@simurgh-ui/registry';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -73,6 +79,7 @@ describe('CLI application fixture', () => {
       const fixture = mkdtempSync(join(tmpdir(), `simurgh-${framework}-`));
       const cli = fileURLToPath(new URL('../dist/index.js', import.meta.url));
       try {
+        mkdirSync(join(fixture, 'src'));
         writeFileSync(
           join(fixture, 'package.json'),
           JSON.stringify({
@@ -121,6 +128,7 @@ describe('CLI application fixture', () => {
           dependencies: { react: '^19.0.0' },
         }),
       );
+      mkdirSync(join(fixture, 'src'));
       execFileSync(
         process.execPath,
         [cli, 'init', '--framework', 'react', '--skip-install'],
@@ -132,6 +140,15 @@ describe('CLI application fixture', () => {
       const original = readFileSync(generated, 'utf8');
       expect(original).toContain('export function Dialog');
       expect(original).not.toContain('export function Tabs');
+      expect(original).not.toContain("'./floating.js'");
+      expect(original.match(/from 'react'/g)).toHaveLength(1);
+      execFileSync(process.execPath, [cli, 'add', 'popover'], { cwd: fixture });
+      const popoverSource = readFileSync(
+        join(fixture, 'src/components/ui/popover.tsx'),
+        'utf8',
+      );
+      expect(popoverSource).toContain("from '@floating-ui/react'");
+      expect(popoverSource).not.toContain("from './floating.js'");
       execFileSync(process.execPath, [cli, 'add', 'dialog'], { cwd: fixture });
       expect(readFileSync(generated, 'utf8')).toBe(original);
       execFileSync(process.execPath, [cli, 'add', 'tabs'], { cwd: fixture });
@@ -196,7 +213,14 @@ describe('CLI application fixture', () => {
       expect(readFileSync(spinner, 'utf8')).toContain('export const Spinner');
       execFileSync(process.execPath, [cli, 'add', 'button'], { cwd: fixture });
       const button = join(fixture, 'src/components/ui/button.tsx');
-      expect(readFileSync(button, 'utf8')).toContain('export const Button');
+      const buttonSource = readFileSync(button, 'utf8');
+      expect(buttonSource).toContain('export const Button');
+      expect(buttonSource).toContain('ButtonHTMLAttributes');
+      expect(buttonSource).not.toContain('@simurgh-ui/core');
+      expect(buttonSource).not.toContain('@floating-ui/react');
+      expect(buttonSource).not.toContain('createPortal');
+      expect(buttonSource.match(/\bforwardRef\b/g)).toHaveLength(2);
+      expect(buttonSource.match(/from 'react'/g)).toHaveLength(1);
       execFileSync(process.execPath, [cli, 'add', 'link'], { cwd: fixture });
       const link = join(fixture, 'src/components/ui/link.tsx');
       expect(readFileSync(link, 'utf8')).toContain('export const Link');
@@ -307,4 +331,47 @@ describe('CLI application fixture', () => {
       rmSync(fixture, { recursive: true, force: true });
     }
   }, 90_000);
+
+  it.each([
+    [true, 'src/components/ui', 'src/styles/simurgh'],
+    [false, 'components/ui', 'styles/simurgh'],
+  ] as const)(
+    'respects a Next.js project with src directory: %s',
+    (withSrc, components, styles) => {
+      const fixture = mkdtempSync(join(tmpdir(), 'simurgh-next-layout-'));
+      const cli = fileURLToPath(new URL('../dist/index.js', import.meta.url));
+      try {
+        writeFileSync(
+          join(fixture, 'package.json'),
+          JSON.stringify({
+            name: 'next-layout',
+            private: true,
+            dependencies: { next: '^15.0.0', react: '^19.0.0' },
+          }),
+        );
+        if (withSrc) mkdirSync(join(fixture, 'src'));
+
+        execFileSync(
+          process.execPath,
+          [cli, 'init', '--skip-install'],
+          { cwd: fixture },
+        );
+        execFileSync(process.execPath, [cli, 'add', 'button'], {
+          cwd: fixture,
+        });
+
+        const config = JSON.parse(
+          readFileSync(join(fixture, 'simurgh.json'), 'utf8'),
+        ) as { components: string; styles: string };
+        expect(config.components).toBe(components);
+        expect(config.styles).toBe(styles);
+        expect(existsSync(join(fixture, components, 'button.tsx'))).toBe(true);
+        expect(existsSync(join(fixture, styles, 'tokens.css'))).toBe(true);
+        expect(existsSync(join(fixture, styles, 'recipes.css'))).toBe(true);
+        expect(existsSync(join(fixture, 'src'))).toBe(withSrc);
+      } finally {
+        rmSync(fixture, { recursive: true, force: true });
+      }
+    },
+  );
 });

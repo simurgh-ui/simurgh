@@ -60,6 +60,19 @@ function componentTarget(config: Config, component: string) {
   );
 }
 
+function projectPaths(framework: Framework) {
+  if (framework === 'angular')
+    return {
+      components: 'src/app/components/ui',
+      styles: 'src/styles/simurgh',
+    };
+  const sourcePrefix = existsSync(join(cwd(), 'src')) ? 'src/' : '';
+  return {
+    components: `${sourcePrefix}components/ui`,
+    styles: `${sourcePrefix}styles/simurgh`,
+  };
+}
+
 function declarationNames(statement: ts.Statement): string[] {
   if (
     (ts.isFunctionDeclaration(statement) ||
@@ -114,14 +127,152 @@ export function extractComponentSource(
     };
     visit(statement);
   }
-  const statements = sourceFile.statements.filter(
-    (statement) => ts.isImportDeclaration(statement) || selected.has(statement),
-  );
-  const body = statements
-    .map((statement) =>
-      source.slice(statement.getFullStart(), statement.getEnd()).trim(),
-    )
-    .join('\n\n');
+  const referenced = new Set<string>();
+  for (const statement of selected) {
+    const visit = (node: ts.Node) => {
+      if (ts.isIdentifier(node)) referenced.add(node.text);
+      ts.forEachChild(node, visit);
+    };
+    visit(statement);
+  }
+  for (const name of declarations.keys()) referenced.delete(name);
+
+  // The bundled fallback source contains every framework component. Many of
+  // those files import the same React/Vue/Angular bindings, so retaining every
+  // import produces duplicate declarations in the generated component. Walk
+  // backwards to keep one provider for each referenced imported binding.
+  const claimedImports = new Set<string>();
+  const imports: ts.ImportDeclaration[] = [];
+  for (const statement of [...sourceFile.statements].reverse()) {
+    if (!ts.isImportDeclaration(statement) || !statement.importClause) continue;
+    const clause = statement.importClause;
+    const defaultImport =
+      clause.name &&
+      referenced.has(clause.name.text) &&
+      !claimedImports.has(clause.name.text)
+        ? clause.name
+        : undefined;
+    if (defaultImport) claimedImports.add(defaultImport.text);
+
+    let namedBindings: ts.NamedImportBindings | undefined;
+    if (clause.namedBindings && ts.isNamespaceImport(clause.namedBindings)) {
+      const name = clause.namedBindings.name.text;
+      if (referenced.has(name) && !claimedImports.has(name)) {
+        namedBindings = clause.namedBindings;
+        claimedImports.add(name);
+      }
+    } else if (clause.namedBindings) {
+      const elements = clause.namedBindings.elements.filter((element) => {
+        const name = element.name.text;
+        if (!referenced.has(name) || claimedImports.has(name)) return false;
+        claimedImports.add(name);
+        return true;
+      });
+      if (elements.length)
+        namedBindings = ts.factory.updateNamedImports(
+          clause.namedBindings,
+          elements,
+        );
+    }
+    if (!defaultImport && !namedBindings) continue;
+    imports.unshift(
+      ts.factory.updateImportDeclaration(
+        statement,
+        statement.modifiers,
+        ts.factory.updateImportClause(
+          clause,
+          clause.isTypeOnly,
+          defaultImport,
+          namedBindings,
+        ),
+        statement.moduleSpecifier,
+        statement.attributes,
+      ),
+    );
+  }
+
+  const mergedImports: ts.ImportDeclaration[] = [];
+  const namedImportGroups = new Map<
+    string,
+    { index: number; elements: ts.ImportSpecifier[] }
+  >();
+  for (const statement of imports) {
+    const clause = statement.importClause!;
+    if (
+      clause.name ||
+      !clause.namedBindings ||
+      !ts.isNamedImports(clause.namedBindings)
+    ) {
+      mergedImports.push(statement);
+      continue;
+    }
+    const moduleName = ts.isStringLiteral(statement.moduleSpecifier)
+      ? statement.moduleSpecifier.text
+      : statement.moduleSpecifier.getText(sourceFile);
+    const normalizedElements = clause.namedBindings.elements.map((element) =>
+      clause.isTypeOnly && !element.isTypeOnly
+        ? ts.factory.updateImportSpecifier(
+            element,
+            true,
+            element.propertyName,
+            element.name,
+          )
+        : element,
+    );
+    const group = namedImportGroups.get(moduleName);
+    if (group) {
+      group.elements.push(...normalizedElements);
+      continue;
+    }
+    const index = mergedImports.length;
+    namedImportGroups.set(moduleName, { index, elements: normalizedElements });
+    mergedImports.push(
+      ts.factory.updateImportDeclaration(
+        statement,
+        statement.modifiers,
+        ts.factory.updateImportClause(
+          clause,
+          false,
+          undefined,
+          ts.factory.updateNamedImports(
+            clause.namedBindings,
+            normalizedElements,
+          ),
+        ),
+        statement.moduleSpecifier,
+        statement.attributes,
+      ),
+    );
+  }
+  for (const { index, elements } of namedImportGroups.values()) {
+    const statement = mergedImports[index]!;
+    const clause = statement.importClause!;
+    const bindings = clause.namedBindings as ts.NamedImports;
+    mergedImports[index] = ts.factory.updateImportDeclaration(
+      statement,
+      statement.modifiers,
+      ts.factory.updateImportClause(
+        clause,
+        false,
+        undefined,
+        ts.factory.updateNamedImports(bindings, elements),
+      ),
+      statement.moduleSpecifier,
+      statement.attributes,
+    );
+  }
+
+  const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
+  const body = [
+    ...mergedImports.map((statement) =>
+      printer.printNode(ts.EmitHint.Unspecified, statement, sourceFile).trim(),
+    ),
+    ...sourceFile.statements
+      .filter((statement) => selected.has(statement))
+      .map((statement) =>
+        source.slice(statement.getFullStart(), statement.getEnd()).trim(),
+      ),
+  ].join('\n\n');
   return `// Generated from Simurgh registry ${manifest.version}. This source is yours to edit.\n${body}\n`;
 }
 
@@ -139,6 +290,11 @@ function expectedSource(config: Config, component: string): string {
     readFileSync(sourcePath, 'utf8'),
     entry.symbols,
     sourcePath,
+  ).replace(
+    /(['"])\.\/floating\.js\1/g,
+    config.framework === 'react'
+      ? "'@floating-ui/react'"
+      : "'@floating-ui/dom'",
   );
 }
 
@@ -154,11 +310,10 @@ cli
     if (!(framework in manifest.frameworks))
       throw new Error(`Unsupported framework: ${framework}`);
     const root = assetRoot();
+    const paths = projectPaths(framework);
     const config: Config = {
       framework,
-      components:
-        framework === 'angular' ? 'src/app/components/ui' : 'src/components/ui',
-      styles: 'src/styles/simurgh',
+      ...paths,
       registryVersion: manifest.version,
     };
     writeFileSync(configPath(), `${JSON.stringify(config, null, 2)}\n`);

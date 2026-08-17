@@ -31,11 +31,15 @@ separately.
 
 Generated files default to these locations:
 
-| Framework | Component source | Styles |
-| --- | --- | --- |
-| React | `src/components/ui/<component>.tsx` | `src/styles/simurgh/` |
-| Vue | `src/components/ui/<component>.ts` | `src/styles/simurgh/` |
-| Angular | `src/app/components/ui/<component>.ts` | `src/styles/simurgh/` |
+| Framework | Component source                       | Styles                  |
+| --------- | -------------------------------------- | ----------------------- |
+| React     | `[src/]components/ui/<component>.tsx`  | `[src/]styles/simurgh/` |
+| Vue       | `[src/]components/ui/<component>.ts`   | `[src/]styles/simurgh/` |
+| Angular   | `src/app/components/ui/<component>.ts` | `src/styles/simurgh/`   |
+
+For React and Vue, the `src/` prefix is used when the application already has a `src` directory.
+Projects using a root layout, including Next.js applications created without the `src` option, stay
+root-based; `init` does not create a new `src` directory.
 
 `add` writes one framework-native source file per component. Existing files are preserved unless
 `--overwrite` is supplied. With no component names, `add` copies the complete catalog.

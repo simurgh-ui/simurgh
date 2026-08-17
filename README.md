@@ -29,7 +29,7 @@ Import the generated styles from the location configured in `simurgh.json`:
 @import "./styles/simurgh/recipes.css";
 ```
 
-The generated component source lives in `src/components/ui` for React and Vue, or `src/app/components/ui` for Angular. It belongs to your application and can be customized directly.
+For React and Vue, the CLI follows the existing project layout: it writes to `src/components/ui` when a `src` directory exists, or `components/ui` otherwise. Angular components live in `src/app/components/ui`. The generated source belongs to your application and can be customized directly.
 
 To select a framework explicitly or avoid installing dependencies during initialization:
 
