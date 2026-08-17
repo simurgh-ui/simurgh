@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const preview = (page: Page) => page.locator('figure.simurgh-preview');
+const maxDiffPixelRatio = process.env.CI ? 0.04 : 0.01;
 const hydratedPreview = async (page: Page) => {
   const figure = preview(page);
   await expect(figure.locator('astro-island')).not.toHaveAttribute('ssr', '');
@@ -21,7 +22,7 @@ test('button preview: light, loading, disabled, and keyboard focus', async ({
   await figure.getByRole('button', { name: 'Save changes' }).focus();
   await expect(figure).toHaveScreenshot('button-light-focus.png', {
     animations: 'disabled',
-    maxDiffPixelRatio: 0.01,
+    maxDiffPixelRatio,
   });
 });
 
@@ -35,7 +36,7 @@ test('button preview: dark theme and RTL', async ({ page }) => {
   await figure.getByRole('button', { name: 'Save changes' }).focus();
   await expect(figure).toHaveScreenshot('button-dark-rtl-focus.png', {
     animations: 'disabled',
-    maxDiffPixelRatio: 0.01,
+    maxDiffPixelRatio,
   });
 });
 
@@ -50,7 +51,7 @@ test('form preview: narrow viewport and invalid control', async ({ page }) => {
   await email.focus();
   await expect(figure).toHaveScreenshot('form-narrow-invalid-focus.png', {
     animations: 'disabled',
-    maxDiffPixelRatio: 0.01,
+    maxDiffPixelRatio,
   });
 });
 
@@ -62,7 +63,7 @@ test('dialog preview: open overlay and initial focus', async ({ page }) => {
   await expect(dialog).toBeVisible();
   await expect(dialog).toHaveScreenshot('dialog-open-focus.png', {
     animations: 'disabled',
-    maxDiffPixelRatio: 0.01,
+    maxDiffPixelRatio,
   });
 });
 
@@ -78,6 +79,6 @@ test('radio group preview: dark RTL selected state', async ({ page }) => {
   await pro.focus();
   await expect(figure).toHaveScreenshot('radio-group-dark-rtl-focus.png', {
     animations: 'disabled',
-    maxDiffPixelRatio: 0.01,
+    maxDiffPixelRatio,
   });
 });

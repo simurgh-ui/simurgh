@@ -1,8 +1,14 @@
 import { expect, test } from '@playwright/test';
 
 test('icon catalog supports concept search, categories, empty states, and copy feedback', async ({
+  browserName,
+  context,
   page,
 }) => {
+  if (browserName === 'chromium') {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  }
+
   await page.goto('/icons/overview/');
   const search = page.getByRole('searchbox', { name: 'Search icons' });
   const status = page.locator('[data-icon-status]');
