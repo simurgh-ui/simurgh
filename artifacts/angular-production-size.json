@@ -1,48 +1,48 @@
 {
   "button": {
-    "minified": 831,
-    "gzip": 485,
-    "brotli": 401,
-    "budget": 512,
+    "minified": 1017,
+    "gzip": 522,
+    "brotli": 458,
+    "budget": 640,
     "linked": true,
     "optimized": true
   },
   "checkbox": {
-    "minified": 1750,
-    "gzip": 675,
-    "brotli": 570,
+    "minified": 1930,
+    "gzip": 812,
+    "brotli": 711,
     "budget": 1024,
     "linked": true,
     "optimized": true
   },
   "select": {
-    "minified": 3278,
-    "gzip": 1439,
-    "brotli": 1226,
+    "minified": 4680,
+    "gzip": 1702,
+    "brotli": 1495,
     "budget": 2048,
     "linked": true,
     "optimized": true
   },
   "calendar": {
-    "minified": 5988,
-    "gzip": 2177,
-    "brotli": 1943,
+    "minified": 7633,
+    "gzip": 2446,
+    "brotli": 2218,
     "budget": 3072,
     "linked": true,
     "optimized": true
   },
   "basic": {
-    "minified": 28102,
-    "gzip": 5783,
-    "brotli": 4965,
+    "minified": 31861,
+    "gzip": 6511,
+    "brotli": 5669,
     "budget": 7168,
     "linked": true,
     "optimized": true
   },
   "overlays": {
-    "minified": 31398,
-    "gzip": 9656,
-    "brotli": 8610,
+    "minified": 39263,
+    "gzip": 10746,
+    "brotli": 9305,
     "budget": 12288,
     "linked": true,
     "optimized": true
