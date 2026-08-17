@@ -54,6 +54,7 @@
     }
   },
   "devDependencies": {
+    "@simurgh-ui/motion": "workspace:*",
     "vue": "^3.5.41"
   }
 }
