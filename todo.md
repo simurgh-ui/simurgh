@@ -191,6 +191,39 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Revisit the custom `@floating-ui/dom` React adapter only if its estimated savings justify the accessibility and interaction-maintenance risk.
 - [x] Resolve the React Button budget regression by replacing the stale 301 B baseline with a clean-build measurement and a less brittle 512 B budget.
 
+## Replace Floating UI with a sub-5 KiB internal layer
+
+- [ ] Define and document the supported positioning contract before implementation: placements,
+      8 px offset, viewport flip, boundary shift, RTL behavior, nested scrolling, transformed
+      ancestors, portals, and explicitly unsupported Floating UI features.
+- [ ] Capture reproducible pre-migration behavior and bundle baselines for Popover, Tooltip, Hover
+      Card, Dropdown Menu, Context Menu, Select, and other positioned overlays in every framework.
+- [ ] Implement a framework-neutral positioning engine in `@simurgh-ui/core` using
+      `getBoundingClientRect`, offset, flip, and shift/clamping without accessing browser globals
+      during module evaluation or server rendering.
+- [ ] Implement leak-free automatic updates for window and scroll-container scrolling, viewport
+      resizing, element resizing, layout changes, and teardown; use observers only when available.
+- [ ] Implement the shared interaction behavior currently supplied by `@floating-ui/react`: click,
+      hover, focus, role assignment, Escape dismissal, outside-press dismissal, composed events, and
+      safe focus restoration.
+- [ ] Replace the React hooks and the Vue and Angular DOM adapters with thin framework-specific
+      wrappers around the shared internal positioning and interaction layer.
+- [ ] Run shared overlay contracts across React, Vue, and Angular for collision handling, RTL,
+      keyboard and pointer input, nested overlays, portals, focus management, dismissal, interrupted
+      unmounts, and cleanup.
+- [ ] Add SSR and hydration tests proving that importing and initially rendering every positioned
+      overlay does not access `window` or `document` and produces deterministic initial markup.
+- [ ] Add cross-browser visual fixtures for viewport edges, nested scroll containers, zoom,
+      transformed ancestors, mobile viewports, and live anchor/content resizing.
+- [ ] Enforce a maximum incremental contribution of 5 KiB gzip for the complete internal
+      positioning and interaction layer in each framework consumer bundle, with minified and Brotli
+      measurements reported alongside gzip.
+- [ ] Remove `@floating-ui/react` and `@floating-ui/dom` from package manifests, registry runtime
+      dependencies, CLI-generated source, lockfiles, bundle tooling, and documentation only after
+      behavior, accessibility, SSR, and size gates pass.
+- [ ] Publish migration notes describing the supported positioning subset, any intentional behavior
+      differences, and the per-framework bundle-size reduction.
+
 ## Catalog expansion fifth pass
 
 - [x] Add native Disclosure across Angular, React, Vue, the registry, documentation, and contract tests.
