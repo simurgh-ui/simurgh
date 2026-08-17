@@ -1,0 +1,285 @@
+---
+title: Chart gallery
+description: Live examples and copy-ready React code for every chart type in Simurgh UI.
+---
+
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+import ChartGalleryPreview from '../../../components/ChartGalleryPreview';
+
+This gallery shows every turnkey chart currently included in Simurgh UI. Each result is a live,
+keyboard-accessible React component followed by the code that produces it. See the
+[Charts component reference](/components/chart/) for installation, framework-specific APIs,
+streaming data, Canvas rendering, and accessibility guidance.
+
+## Imports
+
+```tsx
+import {
+  AreaChart,
+  BarChart,
+  BubbleChart,
+  ComboChart,
+  DonutChart,
+  HeatmapChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  ScatterChart,
+} from '@simurgh-ui/react/chart';
+import '@simurgh-ui/styles/chart.css';
+```
+
+## Shared data
+
+The Cartesian examples use the same six rows so their visual differences are easy to compare.
+Pie, donut, and radar charts use the categorical `channelData` set.
+
+```tsx
+const salesData = [
+  { month: 'Jan', revenue: 28, cost: 18, radius: 6 },
+  { month: 'Feb', revenue: 44, cost: 25, radius: 11 },
+  { month: 'Mar', revenue: 36, cost: 30, radius: 8 },
+  { month: 'Apr', revenue: 62, cost: 38, radius: 15 },
+  { month: 'May', revenue: 53, cost: 42, radius: 12 },
+  { month: 'Jun', revenue: 76, cost: 49, radius: 18 },
+];
+
+const channelData = [
+  { channel: 'Product', value: 42 },
+  { channel: 'Services', value: 28 },
+  { channel: 'Support', value: 18 },
+  { channel: 'Other', value: 12 },
+];
+```
+
+## Line chart
+
+Use a line chart to emphasize change and trends across an ordered dimension.
+
+<ComponentPreview title="Line chart" kind="live">
+  <ChartGalleryPreview kind="line" client:load />
+</ComponentPreview>
+
+```tsx
+<LineChart
+  data={salesData}
+  x="month"
+  xScale="band"
+  height={280}
+  series={[
+    { id: 'Revenue', y: 'revenue' },
+    { id: 'Cost', y: 'cost' },
+  ]}
+  accessibility={{
+    title: 'Line chart',
+    description: 'Monthly revenue and cost.',
+  }}
+/>
+```
+
+## Area chart
+
+Use an area chart when the magnitude beneath a trend is part of the story.
+
+<ComponentPreview title="Area chart" kind="live">
+  <ChartGalleryPreview kind="area" client:load />
+</ComponentPreview>
+
+```tsx
+<AreaChart
+  data={salesData}
+  x="month"
+  xScale="band"
+  height={280}
+  series={[
+    { id: 'Revenue', y: 'revenue' },
+    { id: 'Cost', y: 'cost' },
+  ]}
+  accessibility={{
+    title: 'Area chart',
+    description: 'Monthly revenue and cost.',
+  }}
+/>
+```
+
+## Bar chart
+
+Use bars for direct comparison between discrete categories or periods.
+
+<ComponentPreview title="Bar chart" kind="live">
+  <ChartGalleryPreview kind="bar" client:load />
+</ComponentPreview>
+
+```tsx
+<BarChart
+  data={salesData}
+  x="month"
+  height={280}
+  series={[
+    { id: 'Revenue', y: 'revenue' },
+    { id: 'Cost', y: 'cost' },
+  ]}
+  accessibility={{
+    title: 'Bar chart',
+    description: 'Monthly revenue and cost.',
+  }}
+/>
+```
+
+## Pie chart
+
+Use a pie chart for a small number of non-negative parts that form a whole.
+
+<ComponentPreview title="Pie chart" kind="live">
+  <ChartGalleryPreview kind="pie" client:load />
+</ComponentPreview>
+
+```tsx
+<PieChart
+  data={channelData}
+  y="value"
+  width={640}
+  height={300}
+  accessibility={{
+    title: 'Pie chart',
+    description: 'Revenue share by channel.',
+  }}
+/>
+```
+
+## Donut chart
+
+The donut variant reserves the center for a compact total or surrounding UI.
+
+<ComponentPreview title="Donut chart" kind="live">
+  <ChartGalleryPreview kind="donut" client:load />
+</ComponentPreview>
+
+```tsx
+<DonutChart
+  data={channelData}
+  y="value"
+  width={640}
+  height={300}
+  accessibility={{
+    title: 'Donut chart',
+    description: 'Revenue share by channel.',
+  }}
+/>
+```
+
+## Scatter chart
+
+Use a scatter chart to inspect the distribution of individual observations.
+
+<ComponentPreview title="Scatter chart" kind="live">
+  <ChartGalleryPreview kind="scatter" client:load />
+</ComponentPreview>
+
+```tsx
+<ScatterChart
+  data={salesData}
+  x="month"
+  xScale="band"
+  y="revenue"
+  height={280}
+  accessibility={{
+    title: 'Scatter chart',
+    description: 'Monthly revenue observations.',
+  }}
+/>
+```
+
+## Bubble chart
+
+Bubble charts add a radius accessor to encode a third numeric dimension.
+
+<ComponentPreview title="Bubble chart" kind="live">
+  <ChartGalleryPreview kind="bubble" client:load />
+</ComponentPreview>
+
+```tsx
+<BubbleChart
+  data={salesData}
+  x="month"
+  xScale="band"
+  height={280}
+  series={[{ id: 'Revenue', y: 'revenue', radius: 'radius' }]}
+  accessibility={{
+    title: 'Bubble chart',
+    description: 'Revenue with relative volume.',
+  }}
+/>
+```
+
+## Radar chart
+
+Use radar charts for a compact profile across a small set of comparable dimensions.
+
+<ComponentPreview title="Radar chart" kind="live">
+  <ChartGalleryPreview kind="radar" client:load />
+</ComponentPreview>
+
+```tsx
+<RadarChart
+  data={channelData}
+  y="value"
+  width={640}
+  height={300}
+  accessibility={{
+    title: 'Radar chart',
+    description: 'Channel performance profile.',
+  }}
+/>
+```
+
+## Heatmap chart
+
+Heatmap marks vary their opacity according to the configured radius accessor.
+
+<ComponentPreview title="Heatmap chart" kind="live">
+  <ChartGalleryPreview kind="heatmap" client:load />
+</ComponentPreview>
+
+```tsx
+<HeatmapChart
+  data={salesData}
+  x="month"
+  xScale="band"
+  height={280}
+  series={[{ id: 'Intensity', y: 'revenue', radius: 'radius' }]}
+  accessibility={{
+    title: 'Heatmap chart',
+    description: 'Monthly revenue intensity.',
+  }}
+/>
+```
+
+## Combo chart
+
+Use per-series `type` values to combine bars, lines, or areas in one plot.
+
+<ComponentPreview title="Combo chart" kind="live">
+  <ChartGalleryPreview kind="combo" client:load />
+</ComponentPreview>
+
+```tsx
+<ComboChart
+  data={salesData}
+  x="month"
+  xScale="band"
+  height={280}
+  series={[
+    { id: 'Revenue', y: 'revenue', type: 'bar' },
+    { id: 'Cost', y: 'cost', type: 'line' },
+  ]}
+  accessibility={{
+    title: 'Combo chart',
+    description: 'Revenue bars with a cost trend.',
+  }}
+/>
+```
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

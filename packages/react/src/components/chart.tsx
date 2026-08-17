@@ -75,7 +75,8 @@ type PreparedSeries<T> = ChartSeries<T> & { points: PreparedPoint<T>[]; type: Ch
 type ChartContextValue = { width: number; height: number };
 const ChartContext = createContext<ChartContextValue | null>(null);
 
-const colors = Array.from({ length: 10 }, (_, index) => `var(--simurgh-chart-${index + 1})`);
+const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart-${index + 1}))`);
+const axisNumberFormatter = new Intl.NumberFormat('en-US');
 
 function useChartRows<T>(data: readonly T[] | undefined, stream: ChartStream<string> | undefined, width: number): readonly T[] {
   const [version, setVersion] = useState(0);
@@ -218,7 +219,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
           <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>
-          <g data-part="y-axis">{ticks.map((tick) => <text key={tick} x={layout.left - 8} y={yMap(tick)}>{Intl.NumberFormat().format(tick)}</text>)}</g>
+          <g data-part="y-axis">{ticks.map((tick) => <text key={tick} x={layout.left - 8} y={yMap(tick)}>{axisNumberFormatter.format(tick)}</text>)}</g>
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><circle cx={focused.x} cy={focused.y} r="4" /></g>}
         </svg>
@@ -278,5 +279,5 @@ export function RadarChart<T>(props: ChartProps<T>) {
   const value = y ?? series?.[0]?.y;
   const values = value ? data.map((datum, index) => numericValue(chartValue(datum, value, index))).filter((item): item is number => item != null) : [];
   const decorative = 'decorative' in accessibility && accessibility.decorative;
-  return <figure className="simurgh-chart" data-slot="chart" data-state={values.length ? undefined : 'empty'} aria-hidden={decorative || undefined} {...native}>{values.length ? <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true"><polygon data-part="series" points={radarPoints(values, Math.min(width, height) / 2 - 24)} /></svg> : emptyContent}{!decorative && <><figcaption>{accessibility.title}</figcaption><p data-part="description">{accessibility.description} {chartSummary(values)}</p></>}</figure>;
+  return <figure className="simurgh-chart" data-slot="chart" data-state={values.length ? undefined : 'empty'} aria-hidden={decorative || undefined} {...native}>{values.length ? <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true"><polygon data-part="series" points={radarPoints(values, Math.min(width, height) / 2 - 24)} fill={colors[0]} stroke={colors[0]} /></svg> : emptyContent}{!decorative && <><figcaption>{accessibility.title}</figcaption><p data-part="description">{accessibility.description} {chartSummary(values)}</p></>}</figure>;
 }

@@ -66,6 +66,7 @@ header.header {
     hsl(var(--simurgh-firuzeh) / 0.14),
     transparent
   );
+  color: hsl(var(--simurgh-foreground));
 }
 
 .hero {

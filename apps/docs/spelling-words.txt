@@ -137,6 +137,7 @@ archaeology
 architecture
 are
 area
+areas
 aria
 around
 array
@@ -217,6 +218,7 @@ being
 belong
 belongs
 below
+beneath
 beside
 between
 beyond
@@ -260,6 +262,7 @@ brittle
 broad
 broader
 broadly
+browse
 browser
 browser-delivered
 browser-native
@@ -324,6 +327,7 @@ case
 cases
 catalog
 catalog's
+categorical
 categories
 causal
 causality
@@ -332,6 +336,7 @@ causes
 celebratory
 cell
 cells
+center
 centered
 certification
 change
@@ -346,6 +351,7 @@ channels
 character
 characters
 chart
+chartgallerypreview
 charts
 check
 checkbox
@@ -419,6 +425,7 @@ combination
 combine
 combined
 combines
+combo
 combobox
 come
 comes
@@ -436,6 +443,7 @@ communicate
 communicated
 communicates
 compact
+comparable
 compare
 compares
 comparison
@@ -552,6 +560,7 @@ copied-source
 copies
 copy
 copy-link
+copy-ready
 core
 corner
 corner-radius
@@ -686,6 +695,7 @@ different
 differs
 diffs
 digit-only
+dimension
 dimensions
 direct
 directed
@@ -706,6 +716,7 @@ disclosed
 disclosure
 discoverable
 discovery
+discrete
 dismiss
 dismissal
 dismissed
@@ -720,6 +731,7 @@ distinct
 distinction
 distinguish
 distinguishes
+distribution
 divider
 divides
 dividing
@@ -757,6 +769,7 @@ dynamic
 dynamically
 each
 easier
+easy
 ecmascript
 edge
 edges
@@ -777,6 +790,7 @@ emit
 emits
 emitted
 emphasis
+emphasize
 emphasized
 empty
 empty-state
@@ -943,6 +957,7 @@ focuses
 focusing
 follow
 follow-up
+followed
 following
 follows
 font
@@ -1125,6 +1140,7 @@ in-app
 in-view
 inaccessible
 include
+included
 includes
 including
 inconsistent
@@ -1233,6 +1249,7 @@ kept
 key
 key-value
 keyboard
+keyboard-accessible
 keyboard-navigable
 keyboard-only
 keyboards
@@ -1279,6 +1296,7 @@ lifecycle
 light
 limits
 line
+lines
 link
 linked
 linking
@@ -1321,6 +1339,7 @@ low-emphasis
 lower
 ltr
 macos
+magnitude
 main
 maintain
 maintained
@@ -1481,6 +1500,7 @@ non-essential
 non-floating
 non-interactive
 non-modal
+non-negative
 non-numeric
 non-positive
 non-spatial
@@ -1546,6 +1566,7 @@ optional
 options
 or
 order
+ordered
 ordered-list
 ordinary
 orientation
@@ -1637,6 +1658,7 @@ percentages
 perception
 perform
 period
+periods
 permission
 permits
 permitted
@@ -2119,6 +2141,7 @@ single-line
 singular
 site
 situation
+six
 six-week
 size
 sizes
@@ -2199,8 +2222,10 @@ stops
 storage
 store
 stored
+story
 strategy
 stream
+streaming
 strictly
 string
 strings
@@ -2319,6 +2344,7 @@ there
 therefore
 these
 they
+third
 third-party
 thirteen
 this
@@ -2383,6 +2409,8 @@ treatment
 treatments
 tree
 tree's
+trend
+trends
 trigger
 trigger-focus
 trigger-opened
@@ -2478,6 +2506,7 @@ variant
 variants
 variation
 variations
+vary
 vectors
 vendor
 verb-first

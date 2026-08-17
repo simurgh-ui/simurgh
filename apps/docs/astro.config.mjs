@@ -51,6 +51,7 @@ export default defineConfig({
               label: 'Visual language',
               slug: 'guides/visual-language',
             },
+            { label: 'Chart gallery', slug: 'guides/chart-gallery' },
             { label: 'Motion', slug: 'guides/motion' },
             { label: 'Accessibility & RTL', slug: 'guides/accessibility-rtl' },
             { label: 'Overlay focus', slug: 'guides/overlay-focus' },

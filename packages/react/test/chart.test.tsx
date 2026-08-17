@@ -22,7 +22,10 @@ describe('React charts', () => {
     expect(screen.getByRole('button', { name: 'Explore chart data' })).toBeTruthy();
     expect(screen.getByText('1 / 2')).toBeTruthy();
     expect((await axe.run(container)).violations).toEqual([]);
-    expect(renderToString(<LineChart data={data} x="month" xScale="band" y="revenue" accessibility={accessibility} />)).toContain('data-renderer="svg"');
+    const serverMarkup = renderToString(<LineChart data={data} x="month" xScale="band" y="revenue" accessibility={accessibility} />);
+    expect(serverMarkup).toContain('data-renderer="svg"');
+    expect(serverMarkup).toContain('>0<');
+    expect(serverMarkup).not.toMatch(/[۰-۹]/u);
   });
   it('supports keyboard exploration and controlled legend state', () => {
     const change = vi.fn();

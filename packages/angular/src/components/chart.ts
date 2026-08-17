@@ -45,7 +45,7 @@ type Mark = {
   height?: number;
   radius?: number;
 };
-const colors = Array.from({ length: 10 }, (_, index) => `var(--simurgh-chart-${index + 1})`);
+const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart-${index + 1}))`);
 
 const template = `
   <figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption>
@@ -238,7 +238,7 @@ function chartMetadata(selector: string) {
 @chartMetadata('simurgh-pie-chart') export class PieChartComponent extends ChartBaseComponent { readonly kind = 'pie'; }
 @chartMetadata('simurgh-donut-chart') export class DonutChartComponent extends ChartBaseComponent { readonly kind = 'donut'; }
 
-@Component({ selector: 'simurgh-radar-chart', standalone: true, template: `<svg [attr.viewBox]="viewBox" data-part="plot" aria-hidden="true"><polygon data-part="series" [attr.points]="points"></polygon></svg><figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption><p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ summary }}</p>`, imports: [CommonModule], host: { class: 'simurgh-chart', 'data-slot': 'chart' } })
+@Component({ selector: 'simurgh-radar-chart', standalone: true, template: `<svg [attr.viewBox]="viewBox" data-part="plot" aria-hidden="true"><polygon data-part="series" [attr.points]="points" fill="hsl(var(--simurgh-chart-1))" stroke="hsl(var(--simurgh-chart-1))"></polygon></svg><figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption><p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ summary }}</p>`, imports: [CommonModule], host: { class: 'simurgh-chart', 'data-slot': 'chart' } })
 export class RadarChartComponent {
   @Input() data: readonly Datum[] = [];
   @Input() stream?: ChartStream<string>;
