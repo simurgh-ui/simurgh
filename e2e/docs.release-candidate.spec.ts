@@ -128,14 +128,27 @@ for (const theme of ['light', 'dark'] as const) {
     test(`${theme} ${auditedPage.name} page has no automated WCAG A/AA violations`, async ({
       page,
     }) => {
-      await page.emulateMedia({ colorScheme: theme });
+      await page.emulateMedia({
+        colorScheme: theme,
+        reducedMotion: 'reduce',
+      });
       await page.goto(auditedPage.path);
       await page.locator('html').evaluate((root, selectedTheme) => {
         root.dataset.theme = selectedTheme;
       }, theme);
       await waitForHydration(page);
-      if ('open' in auditedPage)
+      if ('open' in auditedPage) {
         await page.getByRole('button', { name: auditedPage.open }).click();
+        const dialog = page.getByRole('dialog');
+        await expect(dialog).toBeVisible();
+        await dialog.evaluate(async (element) => {
+          await Promise.all(
+            element
+              .getAnimations({ subtree: true })
+              .map((animation) => animation.finished.catch(() => undefined)),
+          );
+        });
+      }
       await page.addScriptTag({ content: axe.source });
       const auditSelector =
         'open' in auditedPage ? '[role="dialog"]' : 'figure.simurgh-preview';

@@ -46,7 +46,7 @@ test('active code samples expose a working copy control', async ({ page }) => {
   await expect(copy).toBeVisible();
   await expect(copy).toHaveAttribute(
     'data-code',
-    '<Button loading={saving}>Save changes</Button>',
+    /<Button variant="primary" loading=\{saving\}>Save changes<\/Button>/u,
   );
   await copy.click();
   await expect(panel.locator('[aria-live="polite"]')).toContainText('Copied!');

@@ -93,7 +93,22 @@
 }
 
 [data-slot='dialog-close'] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-block-size: 2.5rem;
+  padding-inline: 0.875rem;
+  color: hsl(var(--simurgh-foreground));
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  cursor: pointer;
+  font: inherit;
+}
+
+[data-slot='dialog-close']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
 }
 
 /* Density is scoped on an ancestor and intentionally affects interactive controls, not content surfaces. */
