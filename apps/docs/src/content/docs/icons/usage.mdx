@@ -65,7 +65,7 @@ Angular named components use selectors of the form `simurgh-<name>-icon`.
 | `name`        | `IconName`                    | required on `SimurghIcon` | Selects a kebab-case icon. Named components omit it.                                     |
 | `size`        | `number \| string`            | `24`                      | Sets SVG width and height. Numbers are pixels; strings may use CSS units.                |
 | `title`       | `string`                      | none                      | Gives a standalone informative icon an accessible name and `role="img"`.                 |
-| `direction`   | `'ltr' \| 'rtl'`              | `'ltr'`                   | Selects the direction used for automatic mirroring.                                      |
+| `direction`   | `'ltr' \| 'rtl'`              | nearest `dir` / `:dir()`  | Overrides the direction used for automatic mirroring, including across portals.          |
 | `mirrorInRtl` | `boolean`                     | `true`                    | Disables automatic mirroring when a directional drawing represents a physical direction. |
 | `colorMode`   | `'duotone' \| 'currentColor'` | `'duotone'`               | Uses authored fills or inherits one interface color from CSS.                            |
 

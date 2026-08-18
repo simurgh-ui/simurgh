@@ -1,3 +1,4 @@
+import console from 'node:console';
 import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { basename, resolve } from 'node:path';
 
@@ -608,20 +609,22 @@ await Promise.all(
       resolve(angularRoot, `${icon.name}.ts`),
       [
         "import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';",
+        "import { explicitMirrorTransform, iconDirectionMode, iconDirectionStyles } from '../direction.js';",
         `import { definition } from '../definitions/${icon.name}.js';`,
         "import type { IconDefinition } from '../types.js';",
         `@Component({ selector: 'simurgh-${icon.name}-icon', standalone: true, changeDetection: ChangeDetectionStrategy.OnPush,`,
         '  template: `<svg [attr.width]="size()" [attr.height]="size()" [attr.viewBox]="icon.viewBox"',
         '    [attr.role]="title() ? \'img\' : null" [attr.aria-hidden]="title() ? null : \'true\'"',
-        '    [attr.aria-label]="title() || null" focusable="false"><g [attr.transform]="transform()">',
-        '    @for (path of icon.paths; track $index) {<path [attr.d]="path.d" [attr.fill]="pathFill(path.fill, $index)" [attr.opacity]="path.opacity ?? null" />}',
-        '    </g></svg>` })',
+        '    [attr.aria-label]="title() || null" [attr.data-simurgh-direction]="directionMode()" focusable="false">',
+        '    <g class="simurgh-icon-directional" [attr.transform]="mirrorTransform()"><g [attr.transform]="icon.transform">',
+        '      @for (path of icon.paths; track $index) {<path [attr.d]="path.d" [attr.fill]="pathFill(path.fill, $index)" [attr.opacity]="path.opacity ?? null" />}',
+        '    </g></g></svg>`, styles: [iconDirectionStyles] })',
         `export class ${className} {`,
         "  readonly size = input<number | string>(24); readonly title = input<string>(); readonly colorMode = input<'duotone' | 'currentColor'>('duotone');",
-        "  readonly direction = input<'ltr' | 'rtl'>('ltr'); readonly mirrorInRtl = input(true);",
+        "  readonly direction = input<'ltr' | 'rtl'>(); readonly mirrorInRtl = input(true);",
         '  readonly icon: IconDefinition = definition;',
-        "  readonly transform = computed(() => this.mirrorInRtl() && this.direction() === 'rtl' && this.icon.direction === 'directional'",
-        '    ? `translate(144 0) scale(-1 1) ${this.icon.transform}` : this.icon.transform);',
+        "  readonly directionMode = computed(() => iconDirectionMode(this.direction(), this.mirrorInRtl(), this.icon.direction === 'directional'));",
+        '  readonly mirrorTransform = computed(() => explicitMirrorTransform(this.directionMode()));',
         "  pathFill(fill: string, index: number): string { return this.colorMode() === 'currentColor' ? 'currentColor' : index === 0 ? `var(--simurgh-icon-primary, ${fill})` : `var(--simurgh-icon-secondary, ${fill})`; }",
         '}',
         '',
@@ -632,6 +635,7 @@ await Promise.all(
 
 const lines = [
   "import type { IconDefinition, IconGroup, IconRenderOptions } from './types.js';",
+  "import { explicitMirrorTransform, iconDirectionMode, iconDirectionStyles } from './direction.js';",
   ...definitions.map(
     (icon) =>
       `import { definition as ${pascal(icon.name)}Definition } from './definitions/${icon.name}.js';`,
@@ -657,12 +661,15 @@ const lines = [
   'export function renderIconSvg(name: IconName, options: IconRenderOptions = {}): string {',
   '  const icon = getIcon(name);',
   '  const size = options.size ?? 24;',
-  "  const mirror = options.mirrorInRtl !== false && options.direction === 'rtl' && icon.direction === 'directional';",
-  '  const transform = mirror ? `translate(144 0) scale(-1 1) ${icon.transform}` : icon.transform;',
+  "  const directionMode = iconDirectionMode(options.direction, options.mirrorInRtl !== false, icon.direction === 'directional');",
+  '  const mirrorTransform = explicitMirrorTransform(directionMode);',
   '  const accessibility = options.title ? `role="img" aria-label="${escape(options.title)}"` : \'aria-hidden="true"\';',
   '  const className = options.class ? ` class="${escape(options.class)}"` : \'\';',
   "  const paths = icon.paths.map((path, index) => { const fill = options.colorMode === 'currentColor' ? 'currentColor' : index === 0 ? `var(--simurgh-icon-primary, ${path.fill})` : `var(--simurgh-icon-secondary, ${path.fill})`; return `<path d=\"${path.d}\" fill=\"${fill}\"${path.opacity === undefined ? '' : ` opacity=\"${path.opacity}\"`}/>`; }).join('');",
-  '  return `<svg width="${escape(String(size))}" height="${escape(String(size))}" viewBox="${icon.viewBox}" ${accessibility} focusable="false"${className}><g transform="${transform}">${paths}</g></svg>`;',
+  '  const directionAttribute = directionMode ? ` data-simurgh-direction="${directionMode}"` : \'\';',
+  "  const directionStyle = directionMode === 'auto' ? `<style>${iconDirectionStyles}</style>` : '';",
+  '  const mirrorAttribute = mirrorTransform ? ` transform="${mirrorTransform}"` : \'\';',
+  '  return `<svg width="${escape(String(size))}" height="${escape(String(size))}" viewBox="${icon.viewBox}" ${accessibility} focusable="false"${directionAttribute}${className}>${directionStyle}<g class="simurgh-icon-directional"${mirrorAttribute}><g transform="${icon.transform}">${paths}</g></g></svg>`;',
   '}',
 ];
 

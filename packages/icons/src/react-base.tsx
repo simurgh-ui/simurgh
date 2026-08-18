@@ -1,4 +1,9 @@
 import { forwardRef, type SVGAttributes } from 'react';
+import {
+  explicitMirrorTransform,
+  iconDirectionMode,
+  iconDirectionStyles,
+} from './direction.js';
 import type { IconDefinition } from './types.js';
 
 export interface IconProps extends SVGAttributes<SVGSVGElement> {
@@ -18,17 +23,18 @@ export function createIconComponent(
       {
         size = 24,
         title,
-        direction = 'ltr',
+        direction,
         mirrorInRtl = true,
         colorMode = 'duotone',
         ...props
       },
       ref,
     ) {
-      const mirror =
-        mirrorInRtl &&
-        direction === 'rtl' &&
-        definition.direction === 'directional';
+      const directionMode = iconDirectionMode(
+        direction,
+        mirrorInRtl,
+        definition.direction === 'directional',
+      );
       return (
         <svg
           ref={ref}
@@ -39,29 +45,32 @@ export function createIconComponent(
           aria-hidden={title ? undefined : true}
           aria-label={title}
           focusable="false"
+          data-simurgh-direction={directionMode}
           {...props}
         >
+          {directionMode === 'auto' ? (
+            <style>{iconDirectionStyles}</style>
+          ) : null}
           <g
-            transform={
-              mirror
-                ? `translate(144 0) scale(-1 1) ${definition.transform}`
-                : definition.transform
-            }
+            className="simurgh-icon-directional"
+            transform={explicitMirrorTransform(directionMode)}
           >
-            {definition.paths.map((path, index) => (
-              <path
-                key={index}
-                d={path.d}
-                fill={
-                  colorMode === 'currentColor'
-                    ? 'currentColor'
-                    : index === 0
-                      ? `var(--simurgh-icon-primary, ${path.fill})`
-                      : `var(--simurgh-icon-secondary, ${path.fill})`
-                }
-                opacity={path.opacity}
-              />
-            ))}
+            <g transform={definition.transform}>
+              {definition.paths.map((path, index) => (
+                <path
+                  key={index}
+                  d={path.d}
+                  fill={
+                    colorMode === 'currentColor'
+                      ? 'currentColor'
+                      : index === 0
+                        ? `var(--simurgh-icon-primary, ${path.fill})`
+                        : `var(--simurgh-icon-secondary, ${path.fill})`
+                  }
+                  opacity={path.opacity}
+                />
+              ))}
+            </g>
           </g>
         </svg>
       );

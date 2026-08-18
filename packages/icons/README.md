@@ -46,8 +46,9 @@ complete catalog and are much larger than static imports.
 
 Use the explicit `@simurgh-ui/icons/catalog` entry point for `iconGroups`, grouped icon browsers and
 menus, `getIcon` for framework-neutral definitions,
-or `renderIconSvg` for server-generated markup. Directional icons mirror automatically when
-`direction="rtl"`; pass `mirrorInRtl={false}` when direction describes a physical orientation.
+or `renderIconSvg` for server-generated markup. Directional icons follow the nearest `dir` context
+by default. Pass `direction="ltr"` or `direction="rtl"` to override that context (for example, in a
+portal), or pass `mirrorInRtl={false}` when direction describes a physical orientation.
 
 Icons without a title are decorative and render with `aria-hidden="true"`. Provide `title` when an
 icon conveys information without an adjacent accessible label.

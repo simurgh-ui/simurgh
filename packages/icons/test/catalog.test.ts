@@ -1,4 +1,8 @@
-import { readdir } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { createSSRApp, h } from 'vue';
+import { renderToString } from 'vue/server-renderer';
 import { describe, expect, it } from 'vitest';
 import {
   getIcon,
@@ -9,6 +13,7 @@ import {
 } from '../src/catalog.js';
 import { iconCategoryGroups, iconMetadata } from '../src/metadata.js';
 import { SimurghIcon } from '../src/react-dynamic.js';
+import { ArrowRight as VueArrowRight } from '../src/vue-icons/arrow-right.js';
 import {
   Admin,
   AlarmOff,
@@ -113,11 +118,49 @@ describe('navigation icon catalog', () => {
   });
 
   it('mirrors directional icons in RTL', () => {
+    expect(renderIconSvg('arrow-right')).toContain(
+      'data-simurgh-direction="auto"',
+    );
+    expect(renderIconSvg('arrow-right')).toContain(':dir(rtl)');
     expect(renderIconSvg('arrow-right', { direction: 'rtl' })).toContain(
       'scale(-1 1)',
     );
+    expect(renderIconSvg('arrow-right', { direction: 'ltr' })).not.toContain(
+      ':dir(rtl)',
+    );
+    expect(
+      renderIconSvg('arrow-right', {
+        direction: 'rtl',
+        mirrorInRtl: false,
+      }),
+    ).not.toContain('scale(-1 1)');
     expect(renderIconSvg('home', { direction: 'rtl' })).not.toContain(
       'scale(-1 1)',
+    );
+    expect(renderIconSvg('home')).not.toContain(':dir(rtl)');
+  });
+
+  it('emits the shared automatic-direction contract in every framework', async () => {
+    const reactMarkup = renderToStaticMarkup(createElement(ArrowLeft));
+    const vueMarkup = await renderToString(
+      createSSRApp({ render: () => h(VueArrowRight) }),
+    );
+    const angularSource = await readFile(
+      new URL('../src/angular-icons/arrow-right.ts', import.meta.url),
+      'utf8',
+    );
+
+    for (const markup of [reactMarkup, vueMarkup]) {
+      expect(markup).toContain('data-simurgh-direction="auto"');
+      expect(markup).toContain(':dir(rtl)');
+      expect(markup).toContain('simurgh-icon-directional');
+    }
+    expect(angularSource).toContain('styles: [iconDirectionStyles]');
+    expect(angularSource).toContain(
+      '[attr.data-simurgh-direction]="directionMode()"',
+    );
+    expect(angularSource).toContain(
+      'explicitMirrorTransform(this.directionMode())',
     );
   });
 

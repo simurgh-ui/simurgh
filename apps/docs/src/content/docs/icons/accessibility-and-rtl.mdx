@@ -46,11 +46,14 @@ color should reinforce meaning rather than carry it alone.
 
 ## RTL mirroring
 
-Icons marked as directional mirror when `direction="rtl"` and `mirrorInRtl` is true. Set direction
-explicitly from application locale state; the icon does not infer an ancestor's `dir` attribute.
+Icons marked as directional mirror from the nearest `dir` context or CSS `:dir()` state by default.
+This updates automatically when an ancestor's direction changes. Set direction explicitly when an
+icon renders through a portal or its logical context differs from its DOM context.
 
 ```tsx
-<ArrowRight direction={localeDirection} title="Next page" />
+<section dir={localeDirection}>
+  <ArrowRight title="Next page" />
+</section>
 ```
 
 Mirror icons that describe reading or interface direction, including back, forward, previous, next,

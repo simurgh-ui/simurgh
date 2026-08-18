@@ -1,4 +1,5 @@
 import type { IconDefinition, IconGroup, IconRenderOptions } from './types.js';
+import { explicitMirrorTransform, iconDirectionMode, iconDirectionStyles } from './direction.js';
 import { definition as AccessKeyDefinition } from './definitions/access-key.js';
 import { definition as AccessibilityDefinition } from './definitions/accessibility.js';
 import { definition as AccountCircleDefinition } from './definitions/account-circle.js';
@@ -1602,10 +1603,13 @@ function escape(value: string): string {
 export function renderIconSvg(name: IconName, options: IconRenderOptions = {}): string {
   const icon = getIcon(name);
   const size = options.size ?? 24;
-  const mirror = options.mirrorInRtl !== false && options.direction === 'rtl' && icon.direction === 'directional';
-  const transform = mirror ? `translate(144 0) scale(-1 1) ${icon.transform}` : icon.transform;
+  const directionMode = iconDirectionMode(options.direction, options.mirrorInRtl !== false, icon.direction === 'directional');
+  const mirrorTransform = explicitMirrorTransform(directionMode);
   const accessibility = options.title ? `role="img" aria-label="${escape(options.title)}"` : 'aria-hidden="true"';
   const className = options.class ? ` class="${escape(options.class)}"` : '';
   const paths = icon.paths.map((path, index) => { const fill = options.colorMode === 'currentColor' ? 'currentColor' : index === 0 ? `var(--simurgh-icon-primary, ${path.fill})` : `var(--simurgh-icon-secondary, ${path.fill})`; return `<path d="${path.d}" fill="${fill}"${path.opacity === undefined ? '' : ` opacity="${path.opacity}"`}/>`; }).join('');
-  return `<svg width="${escape(String(size))}" height="${escape(String(size))}" viewBox="${icon.viewBox}" ${accessibility} focusable="false"${className}><g transform="${transform}">${paths}</g></svg>`;
+  const directionAttribute = directionMode ? ` data-simurgh-direction="${directionMode}"` : '';
+  const directionStyle = directionMode === 'auto' ? `<style>${iconDirectionStyles}</style>` : '';
+  const mirrorAttribute = mirrorTransform ? ` transform="${mirrorTransform}"` : '';
+  return `<svg width="${escape(String(size))}" height="${escape(String(size))}" viewBox="${icon.viewBox}" ${accessibility} focusable="false"${directionAttribute}${className}>${directionStyle}<g class="simurgh-icon-directional"${mirrorAttribute}><g transform="${icon.transform}">${paths}</g></g></svg>`;
 }

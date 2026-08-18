@@ -1,69 +1,69 @@
 {
   "bundles": {
     "react-one": {
-      "minified": 2723,
-      "gzip": 1322,
-      "brotli": 1130,
+      "minified": 3094,
+      "gzip": 1490,
+      "brotli": 1275,
       "budget": 1536
     },
     "react-three": {
-      "minified": 5606,
-      "gzip": 2495,
-      "brotli": 2101,
+      "minified": 5977,
+      "gzip": 2673,
+      "brotli": 2280,
       "budget": 3072
     },
     "vue-one": {
-      "minified": 2830,
-      "gzip": 1357,
-      "brotli": 1161,
+      "minified": 3155,
+      "gzip": 1505,
+      "brotli": 1278,
       "budget": 1536
     },
     "vue-three": {
-      "minified": 5713,
-      "gzip": 2529,
-      "brotli": 2137,
+      "minified": 6038,
+      "gzip": 2684,
+      "brotli": 2264,
       "budget": 3072
     },
     "angular-one": {
-      "minified": 3251,
-      "gzip": 1602,
-      "brotli": 1367,
+      "minified": 3645,
+      "gzip": 1765,
+      "brotli": 1502,
       "budget": 2048
     },
     "react-dynamic": {
-      "minified": 779563,
-      "gzip": 263451,
-      "brotli": 223632,
+      "minified": 779942,
+      "gzip": 263727,
+      "brotli": 223679,
       "budget": 276480
     },
     "vue-dynamic": {
-      "minified": 779522,
-      "gzip": 263426,
-      "brotli": 223289,
+      "minified": 779853,
+      "gzip": 263694,
+      "brotli": 223724,
       "budget": 276480
     },
     "angular-dynamic": {
-      "minified": 780066,
-      "gzip": 263844,
-      "brotli": 223590,
+      "minified": 780488,
+      "gzip": 264061,
+      "brotli": 223776,
       "budget": 276480
     },
     "react-complete": {
-      "minified": 791707,
-      "gzip": 269036,
-      "brotli": 228008,
+      "minified": 792086,
+      "gzip": 269180,
+      "brotli": 227515,
       "budget": 281600
     },
     "vue-complete": {
-      "minified": 791802,
-      "gzip": 269057,
-      "brotli": 227758,
+      "minified": 792133,
+      "gzip": 269192,
+      "brotli": 228004,
       "budget": 281600
     },
     "angular-complete": {
-      "minified": 1282827,
-      "gzip": 309738,
-      "brotli": 243186,
+      "minified": 1336214,
+      "gzip": 312984,
+      "brotli": 243585,
       "budget": 317440
     }
   },
@@ -75,9 +75,9 @@
   },
   "package": {
     "files": 4302,
-    "unpacked": 6206508,
-    "gzip": 932034,
-    "brotli": 343012,
+    "unpacked": 6206608,
+    "gzip": 932094,
+    "brotli": 343248,
     "budget": 6291456
   }
 }

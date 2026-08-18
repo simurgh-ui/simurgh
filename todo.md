@@ -492,7 +492,7 @@ budgets remain fixed.
 
 ### P1: RTL, accessibility, and framework parity
 
-- [ ] Infer direction from the nearest `dir` context or CSS `:dir()` state by default, while keeping
+- [x] Infer direction from the nearest `dir` context or CSS `:dir()` state by default, while keeping
       the explicit direction property as an override for portals and physical-direction meanings.
 - [x] Audit directional metadata for navigation, editing, communication, media, charts, maps, and
       physical-direction exceptions in both LTR and RTL.

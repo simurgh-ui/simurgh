@@ -1,4 +1,9 @@
 import { defineComponent, h, type PropType } from 'vue';
+import {
+  explicitMirrorTransform,
+  iconDirectionMode,
+  iconDirectionStyles,
+} from './direction.js';
 import type { IconDefinition } from './types.js';
 
 export function createIconComponent(
@@ -11,7 +16,7 @@ export function createIconComponent(
     props: {
       size: { type: [Number, String], default: 24 },
       title: String,
-      direction: { type: String as PropType<'ltr' | 'rtl'>, default: 'ltr' },
+      direction: String as PropType<'ltr' | 'rtl'>,
       mirrorInRtl: { type: Boolean, default: true },
       colorMode: {
         type: String as PropType<'duotone' | 'currentColor'>,
@@ -20,10 +25,11 @@ export function createIconComponent(
     },
     setup(props, { attrs }) {
       return () => {
-        const mirror =
-          props.mirrorInRtl &&
-          props.direction === 'rtl' &&
-          definition.direction === 'directional';
+        const directionMode = iconDirectionMode(
+          props.direction,
+          props.mirrorInRtl,
+          definition.direction === 'directional',
+        );
         return h(
           'svg',
           {
@@ -35,25 +41,32 @@ export function createIconComponent(
             'aria-hidden': props.title ? undefined : 'true',
             'aria-label': props.title,
             focusable: 'false',
+            'data-simurgh-direction': directionMode,
           },
           [
+            directionMode === 'auto'
+              ? h('style', null, iconDirectionStyles)
+              : null,
             h(
               'g',
               {
-                transform: mirror
-                  ? `translate(144 0) scale(-1 1) ${definition.transform}`
-                  : definition.transform,
+                class: 'simurgh-icon-directional',
+                transform: explicitMirrorTransform(directionMode),
               },
-              definition.paths.map((path, index) =>
-                h('path', {
-                  ...path,
-                  fill:
-                    props.colorMode === 'currentColor'
-                      ? 'currentColor'
-                      : index === 0
-                        ? `var(--simurgh-icon-primary, ${path.fill})`
-                        : `var(--simurgh-icon-secondary, ${path.fill})`,
-                }),
+              h(
+                'g',
+                { transform: definition.transform },
+                definition.paths.map((path, index) =>
+                  h('path', {
+                    ...path,
+                    fill:
+                      props.colorMode === 'currentColor'
+                        ? 'currentColor'
+                        : index === 0
+                          ? `var(--simurgh-icon-primary, ${path.fill})`
+                          : `var(--simurgh-icon-secondary, ${path.fill})`,
+                  }),
+                ),
               ),
             ),
           ],
