@@ -131,7 +131,7 @@ const components = registry.components.map((name) => ({
   .gallery-card > span:not(.gallery-mark, .gallery-tags) { color: hsl(var(--simurgh-muted-foreground)); }
   .gallery-tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-block-start: .25rem; }
   .gallery-tags small { background: hsl(var(--simurgh-muted)); border-radius: 999px; color: hsl(var(--simurgh-muted-foreground)); padding: .125rem .4rem; }
-  .gallery-tags small[data-status='styled'] { background: hsl(var(--simurgh-firuzeh) / .14); color: hsl(176 70% 27%); }
+  .gallery-tags small[data-status='styled'] { background: hsl(var(--simurgh-firuzeh) / .14); color: hsl(176 70% 27%); font-weight: 600; min-inline-size: 4.5rem; text-align: center; }
   :global([data-theme='dark']) .gallery-tags small[data-status='styled'] { color: hsl(176 62% 72%); }
   .gallery-compare { align-self: end; font-size: .875rem; margin-block-start: .375rem; }
   @media (max-width: 30rem) { .gallery-search { grid-column: auto; } }
