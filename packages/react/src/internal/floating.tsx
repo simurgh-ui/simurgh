@@ -1,0 +1,265 @@
+import {
+  autoUpdateFloating,
+  computeFloatingPosition,
+  nextIndex,
+} from '@simurgh-ui/core';
+import React, {
+  createContext,
+  forwardRef,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type ButtonHTMLAttributes,
+  type CSSProperties,
+  type HTMLAttributes,
+  type PropsWithChildren,
+} from 'react';
+import { createPortal } from 'react-dom';
+import type { OverlayContextValue } from './dialog-context.js';
+import { useBrowser, useOpen, type OpenProps } from './open.js';
+
+export type FloatingKind =
+  'popover' | 'tooltip' | 'hovercard' | 'menu' | 'listbox';
+type FloatingContextValue = OverlayContextValue & {
+  kind: FloatingKind;
+  refs: {
+    reference: React.RefObject<HTMLElement | null>;
+    floating: React.RefObject<HTMLElement | null>;
+    setReference(node: HTMLElement | null): void;
+    setFloating(node: HTMLElement | null): void;
+  };
+  floatingStyles: CSSProperties;
+  getReferenceProps(props?: Record<string, unknown>): Record<string, unknown>;
+  getFloatingProps(props?: Record<string, unknown>): Record<string, unknown>;
+};
+const FloatingContext =
+  /* @__PURE__ */ createContext<FloatingContextValue | null>(null);
+
+function invoke(
+  props: Record<string, unknown>,
+  name: string,
+  event: React.SyntheticEvent,
+) {
+  const handler = props[name];
+  if (typeof handler === 'function') handler(event);
+}
+
+export function FloatingRoot({
+  children,
+  kind,
+  ...props
+}: PropsWithChildren<OpenProps & { kind: FloatingKind }>) {
+  const [open, setOpen] = useOpen(props);
+  const uid = useId();
+  const reference = useRef<HTMLElement | null>(null);
+  const floating = useRef<HTMLElement | null>(null);
+  const [floatingStyles, setFloatingStyles] = useState<CSSProperties>({
+    position: 'fixed',
+    left: 0,
+    top: 0,
+  });
+  useEffect(() => {
+    if (!open || !reference.current || !floating.current) return;
+    return autoUpdateFloating(reference.current, floating.current, () => {
+      if (!reference.current || !floating.current) return;
+      const result = computeFloatingPosition(
+        reference.current,
+        floating.current,
+        {
+          offset: kind === 'tooltip' ? 6 : 8,
+        },
+      );
+      setFloatingStyles({ position: 'fixed', left: result.x, top: result.y });
+    });
+  }, [kind, open]);
+  useEffect(() => {
+    if (!open || typeof document === 'undefined') return;
+    const dismiss = (event: PointerEvent) => {
+      const path = event.composedPath();
+      if (
+        !path.includes(reference.current!) &&
+        !path.includes(floating.current!)
+      ) {
+        setOpen(false);
+        reference.current?.focus();
+      }
+    };
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
+  }, [open, setOpen]);
+  const role =
+    kind === 'menu'
+      ? 'menu'
+      : kind === 'listbox'
+        ? 'listbox'
+        : kind === 'tooltip'
+          ? 'tooltip'
+          : 'dialog';
+  const getReferenceProps = (given: Record<string, unknown> = {}) => {
+    const interactive = kind === 'tooltip' || kind === 'hovercard';
+    return {
+      ...given,
+      'aria-haspopup':
+        kind === 'menu'
+          ? 'menu'
+          : kind === 'listbox'
+            ? 'listbox'
+            : interactive
+              ? undefined
+              : 'dialog',
+      'aria-describedby': kind === 'tooltip' ? uid : undefined,
+      onClick: interactive
+        ? given.onClick
+        : (event: React.MouseEvent) => {
+            invoke(given, 'onClick', event);
+            if (!event.defaultPrevented) setOpen(!open);
+          },
+      onMouseEnter: interactive
+        ? (event: React.MouseEvent) => {
+            invoke(given, 'onMouseEnter', event);
+            if (!event.defaultPrevented) setOpen(true);
+          }
+        : given.onMouseEnter,
+      onMouseLeave: interactive
+        ? (event: React.MouseEvent) => {
+            invoke(given, 'onMouseLeave', event);
+            if (!event.defaultPrevented) setOpen(false);
+          }
+        : given.onMouseLeave,
+      onFocus: interactive
+        ? (event: React.FocusEvent) => {
+            invoke(given, 'onFocus', event);
+            if (!event.defaultPrevented) setOpen(true);
+          }
+        : given.onFocus,
+      onBlur: interactive
+        ? (event: React.FocusEvent) => {
+            invoke(given, 'onBlur', event);
+            if (!event.defaultPrevented) setOpen(false);
+          }
+        : given.onBlur,
+    };
+  };
+  const getFloatingProps = (given: Record<string, unknown> = {}) => ({
+    ...given,
+    id: given.id ?? (kind === 'tooltip' ? uid : undefined),
+    role: given.role ?? role,
+    onKeyDown: (event: React.KeyboardEvent) => {
+      invoke(given, 'onKeyDown', event);
+      if (!event.defaultPrevented && event.key === 'Escape') {
+        setOpen(false);
+        reference.current?.focus();
+      }
+    },
+  });
+  const refs = {
+    reference,
+    floating,
+    setReference: (node: HTMLElement | null) => (reference.current = node),
+    setFloating: (node: HTMLElement | null) => (floating.current = node),
+  };
+  const value = useMemo(
+    () => ({
+      refs,
+      floatingStyles,
+      getReferenceProps,
+      getFloatingProps,
+      kind,
+      open,
+      setOpen,
+      titleId: `${uid}-title`,
+      descriptionId: `${uid}-description`,
+    }),
+    [floatingStyles, kind, open, uid],
+  );
+  return (
+    <FloatingContext.Provider value={value}>
+      {children}
+    </FloatingContext.Provider>
+  );
+}
+export const useFloatingRoot = () => {
+  const c = useContext(FloatingContext);
+  if (!c) throw new Error('Floating parts require a root');
+  return c;
+};
+export const FloatingTrigger = /* @__PURE__ */ forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement>
+>((props, ref) => {
+  const c = useFloatingRoot();
+  const interactionProps = c.getReferenceProps(
+    props as unknown as Record<string, unknown>,
+  );
+  return (
+    <button
+      type="button"
+      {...(interactionProps as ButtonHTMLAttributes<HTMLButtonElement>)}
+      ref={(node) => {
+        c.refs.setReference(node);
+        if (typeof ref === 'function') ref(node);
+        else if (ref) ref.current = node;
+      }}
+      aria-expanded={c.open}
+    />
+  );
+});
+export function FloatingContent({
+  children,
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  const c = useFloatingRoot();
+  useEffect(() => {
+    if (!c.open || (c.kind !== 'menu' && c.kind !== 'listbox')) return;
+    requestAnimationFrame(() =>
+      c.refs.floating.current
+        ?.querySelector<HTMLElement>(
+          c.kind === 'menu'
+            ? '[role=menuitem]:not([aria-disabled=true])'
+            : '[role=option]:not([aria-disabled=true])',
+        )
+        ?.focus(),
+    );
+  }, [c.kind, c.open, c.refs.floating]);
+  if (!c.open || !useBrowser()) return null;
+  return createPortal(
+    <div
+      {...(c.getFloatingProps(
+        props as Record<string, unknown>,
+      ) as HTMLAttributes<HTMLDivElement>)}
+      ref={c.refs.setFloating}
+      style={{ ...c.floatingStyles, ...props.style }}
+      className={className ?? 'simurgh-content'}
+    >
+      {children}
+    </div>,
+    document.body,
+  );
+}
+
+export function onCompositeKeyDown(
+  event: React.KeyboardEvent<HTMLDivElement>,
+  selector: string,
+) {
+  const items = Array.from(
+    event.currentTarget.querySelectorAll<HTMLElement>(selector),
+  ).filter((item) => item.getAttribute('aria-disabled') !== 'true');
+  const current = items.indexOf(document.activeElement as HTMLElement);
+  const target = nextIndex(current < 0 ? 0 : current, items.length, event.key, {
+    orientation: 'vertical',
+  });
+  if (
+    target !== current &&
+    ['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)
+  ) {
+    event.preventDefault();
+    items[target]?.focus();
+  } else if ((event.key === 'Enter' || event.key === ' ') && current >= 0) {
+    event.preventDefault();
+    items[current]?.click();
+  }
+}

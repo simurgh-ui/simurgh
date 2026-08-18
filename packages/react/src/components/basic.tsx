@@ -3,17 +3,13 @@ export {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Checkbox,
-  NumberInput,
-  RadioGroup,
-  RadioGroupItem,
-  Switch,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  TagsInput,
-} from '../index.js';
+} from './accordion.js';
+export { Checkbox } from './checkbox.js';
+export { NumberInput } from './number-input.js';
+export { RadioGroup, RadioGroupItem } from './radio-group.js';
+export { Switch } from './switch.js';
+export { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs.js';
+export { TagsInput } from './tags-input.js';
 export { Alert } from './alert.js';
 export { AspectRatio } from './aspect-ratio.js';
 export { Badge, type BadgeTone } from './badge.js';

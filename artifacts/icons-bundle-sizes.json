@@ -75,9 +75,9 @@
   },
   "package": {
     "files": 4302,
-    "unpacked": 6206451,
-    "gzip": 931925,
-    "brotli": 343021,
+    "unpacked": 6206445,
+    "gzip": 932019,
+    "brotli": 343197,
     "budget": 6291456
   }
 }

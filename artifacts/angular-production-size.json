@@ -40,9 +40,9 @@
     "optimized": true
   },
   "overlays": {
-    "minified": 39263,
-    "gzip": 10746,
-    "brotli": 9305,
+    "minified": 25389,
+    "gzip": 5079,
+    "brotli": 4236,
     "budget": 12288,
     "linked": true,
     "optimized": true
