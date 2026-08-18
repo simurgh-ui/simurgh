@@ -481,7 +481,7 @@ budgets remain fixed.
       authored duotone treatment as an explicit visual mode.
 - [x] Define stable CSS variables for duotone primary and secondary fills so product themes,
       disabled states, and high-contrast treatments do not require path-level overrides.
-- [ ] Audit every icon at 16, 20, 24, and 32 pixels for optical centering, recognizability, detail
+- [x] Audit every icon at 16, 20, 24, and 32 pixels for optical centering, recognizability, detail
       loss, apparent weight, and alignment beside text; add visual regression coverage for failures.
   - [x] Add a 1,896-render regression gate covering empty output, extreme imbalance, sparse artwork,
         and collapsed bounds across all four target sizes.
