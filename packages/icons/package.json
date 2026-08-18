@@ -88,6 +88,7 @@
     "@angular/platform-browser-dynamic": "^20.3.27",
     "@types/react": "^19.2.18",
     "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "vitest": "^3.2.7",
     "vue": "^3.5.41",
     "zone.js": "^0.15.1"
