@@ -196,7 +196,7 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Define and document the supported positioning contract before implementation: placements,
       8 px offset, viewport flip, boundary shift, RTL behavior, nested scrolling, transformed
       ancestors, portals, and explicitly unsupported Floating UI features.
-- [ ] Capture reproducible pre-migration behavior and bundle baselines for Popover, Tooltip, Hover
+- [x] Capture reproducible pre-migration behavior and bundle baselines for Popover, Tooltip, Hover
       Card, Dropdown Menu, Context Menu, Select, and other positioned overlays in every framework.
 - [ ] Implement a framework-neutral positioning engine in `@simurgh-ui/core` using
       `getBoundingClientRect`, offset, flip, and shift/clamping without accessing browser globals

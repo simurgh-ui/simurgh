@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "revision": "16da350273847c66d715ee48c31dea6639f9137b",
+  "capturedAt": "2026-08-18",
+  "environment": {
+    "node": "26.1.0",
+    "pnpm": "11.16.0",
+    "platform": "win32-x64"
+  },
+  "behavior": {
+    "command": "pnpm exec vitest run packages/react/test/accessibility.test.tsx packages/vue/test/accessibility.test.ts packages/angular/test/accessibility.test.ts",
+    "testFilesPassed": 3,
+    "testsPassed": 188,
+    "contracts": [
+      "hover and focus disclosure for Tooltip and Hover Card",
+      "pointer placement and keyboard selection for Context Menu",
+      "keyboard navigation and selection for Dropdown Menu",
+      "listbox selection and form serialization for Select",
+      "input focus, filtering, active option, selection, and form serialization for Combobox",
+      "Escape dismissal, date selection, form serialization, and trigger focus restoration for Date Picker",
+      "modal dismissal and focus restoration used by related overlay primitives"
+    ],
+    "sourceFiles": [
+      "packages/react/test/accessibility.test.tsx",
+      "packages/vue/test/accessibility.test.ts",
+      "packages/angular/test/accessibility.test.ts"
+    ]
+  },
+  "bundle": {
+    "reproduction": [
+      "git worktree add --detach <baseline-worktree> 16da350273847c66d715ee48c31dea6639f9137b",
+      "pnpm install --offline --frozen-lockfile",
+      "pnpm exec turbo build --filter=@simurgh-ui/react --filter=@simurgh-ui/vue --filter=@simurgh-ui/angular",
+      "SIMURGH_BASELINE_REVISION=16da350273847c66d715ee48c31dea6639f9137b node scripts/capture-floating-ui-baseline.mjs --root <baseline-worktree>"
+    ],
+    "calculation": "ESM browser bundle with only framework peer dependencies externalized",
+    "measurements": [
+      {
+        "framework": "react",
+        "component": "popover",
+        "minified": 39058,
+        "gzip": 14318,
+        "brotli": 12974
+      },
+      {
+        "framework": "react",
+        "component": "tooltip",
+        "minified": 39058,
+        "gzip": 14315,
+        "brotli": 12927
+      },
+      {
+        "framework": "react",
+        "component": "hover-card",
+        "minified": 39276,
+        "gzip": 14382,
+        "brotli": 12994
+      },
+      {
+        "framework": "react",
+        "component": "dropdown-menu",
+        "minified": 40166,
+        "gzip": 14724,
+        "brotli": 13298
+      },
+      {
+        "framework": "react",
+        "component": "context-menu",
+        "minified": 3352,
+        "gzip": 1557,
+        "brotli": 1375
+      },
+      {
+        "framework": "react",
+        "component": "select",
+        "minified": 40766,
+        "gzip": 14961,
+        "brotli": 13530
+      },
+      {
+        "framework": "react",
+        "component": "combobox",
+        "minified": 2415,
+        "gzip": 1211,
+        "brotli": 1071
+      },
+      {
+        "framework": "react",
+        "component": "date-picker",
+        "minified": 43728,
+        "gzip": 15924,
+        "brotli": 14374
+      },
+      {
+        "framework": "vue",
+        "component": "popover",
+        "minified": 17878,
+        "gzip": 7245,
+        "brotli": 6538
+      },
+      {
+        "framework": "vue",
+        "component": "tooltip",
+        "minified": 17878,
+        "gzip": 7241,
+        "brotli": 6534
+      },
+      {
+        "framework": "vue",
+        "component": "hover-card",
+        "minified": 18273,
+        "gzip": 7358,
+        "brotli": 6632
+      },
+      {
+        "framework": "vue",
+        "component": "dropdown-menu",
+        "minified": 19199,
+        "gzip": 7758,
+        "brotli": 6947
+      },
+      {
+        "framework": "vue",
+        "component": "context-menu",
+        "minified": 2683,
+        "gzip": 1250,
+        "brotli": 1120
+      },
+      {
+        "framework": "vue",
+        "component": "select",
+        "minified": 2142,
+        "gzip": 1058,
+        "brotli": 902
+      },
+      {
+        "framework": "vue",
+        "component": "combobox",
+        "minified": 2430,
+        "gzip": 1084,
+        "brotli": 934
+      },
+      {
+        "framework": "vue",
+        "component": "date-picker",
+        "minified": 23025,
+        "gzip": 8943,
+        "brotli": 8044
+      },
+      {
+        "framework": "angular",
+        "component": "popover",
+        "minified": 18020,
+        "gzip": 7312,
+        "brotli": 6568
+      },
+      {
+        "framework": "angular",
+        "component": "tooltip",
+        "minified": 18063,
+        "gzip": 7295,
+        "brotli": 6555
+      },
+      {
+        "framework": "angular",
+        "component": "hover-card",
+        "minified": 18261,
+        "gzip": 7371,
+        "brotli": 6616
+      },
+      {
+        "framework": "angular",
+        "component": "dropdown-menu",
+        "minified": 19835,
+        "gzip": 7918,
+        "brotli": 7106
+      },
+      {
+        "framework": "angular",
+        "component": "context-menu",
+        "minified": 3539,
+        "gzip": 1523,
+        "brotli": 1329
+      },
+      {
+        "framework": "angular",
+        "component": "select",
+        "minified": 3482,
+        "gzip": 1514,
+        "brotli": 1308
+      },
+      {
+        "framework": "angular",
+        "component": "combobox",
+        "minified": 3849,
+        "gzip": 1488,
+        "brotli": 1294
+      },
+      {
+        "framework": "angular",
+        "component": "date-picker",
+        "minified": 26906,
+        "gzip": 9680,
+        "brotli": 8690
+      }
+    ],
+    "aggregateFloatingUiContributionGzip": {
+      "react": 13000,
+      "vue": 6341,
+      "angular": 6364,
+      "calculation": "complete adapter minus the same adapter with Floating UI externalized"
+    }
+  }
+}
