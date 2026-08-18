@@ -49,14 +49,21 @@ import { ArrowRight, SimurghIcon } from '@simurgh-ui/icons/angular';
   standalone: true,
   imports: [ArrowRight, SimurghIcon],
   template: `
-    <simurgh-arrow-right-icon [size]="20" title="Next page" />
+    <simurgh-arrow-right-icon
+      [size]="20"
+      title="Next page"
+      class="next-icon"
+      data-state="ready"
+    />
     <simurgh-icon name="settings" size="1.25em" />
   `,
 })
 export class Actions {}
 ```
 
-Angular named components use selectors of the form `simurgh-<name>-icon`.
+Angular named components use selectors of the form `simurgh-<name>-icon`. Classes, inline styles,
+`data-*`, `aria-*`, `role`, and `tabindex` placed on an Angular icon host are mirrored to its root
+SVG and stay synchronized when bindings change.
 
 ## Shared component props
 
@@ -69,9 +76,9 @@ Angular named components use selectors of the form `simurgh-<name>-icon`.
 | `mirrorInRtl` | `boolean`                     | `true`                    | Disables automatic mirroring when a directional drawing represents a physical direction. |
 | `colorMode`   | `'duotone' \| 'currentColor'` | `'duotone'`               | Uses authored fills or inherits one interface color from CSS.                            |
 
-React and Vue additionally accept root SVG attributes such as `class`, `style`, `data-*`, and
-`aria-*`. Angular's base inputs are the API listed above; wrap it or style its descendant SVG when
-you need a reusable Angular-specific presentation contract.
+All adapters support root SVG classes, styles, data attributes, and ARIA attributes. React refs
+target the root SVG; Vue forwards fallthrough attributes; Angular mirrors presentation attributes
+from its component host to the root SVG.
 
 ## Styling and sizing
 

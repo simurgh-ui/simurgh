@@ -44,6 +44,10 @@ import { SimurghIcon } from '@simurgh-ui/icons/react/dynamic';
 The `/react/dynamic`, `/vue/dynamic`, and `/angular/dynamic` entry points intentionally retain the
 complete catalog and are much larger than static imports.
 
+React and Vue forward ordinary SVG attributes to the root SVG. Angular mirrors host `class`,
+`style`, `data-*`, `aria-*`, `role`, and `tabindex` attributes to the root SVG and keeps bound
+attribute changes synchronized.
+
 Use the explicit `@simurgh-ui/icons/catalog` entry point for `iconGroups`, grouped icon browsers and
 menus, `getIcon` for framework-neutral definitions,
 or `renderIconSvg` for server-generated markup. Directional icons follow the nearest `dir` context

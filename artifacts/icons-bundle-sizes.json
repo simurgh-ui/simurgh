@@ -25,10 +25,10 @@
       "budget": 3072
     },
     "angular-one": {
-      "minified": 3645,
-      "gzip": 1765,
-      "brotli": 1502,
-      "budget": 2048
+      "minified": 4763,
+      "gzip": 2246,
+      "brotli": 1920,
+      "budget": 2560
     },
     "react-dynamic": {
       "minified": 779942,
@@ -43,9 +43,9 @@
       "budget": 276480
     },
     "angular-dynamic": {
-      "minified": 780488,
-      "gzip": 264061,
-      "brotli": 223776,
+      "minified": 781626,
+      "gzip": 264654,
+      "brotli": 224353,
       "budget": 276480
     },
     "react-complete": {
@@ -61,9 +61,9 @@
       "budget": 281600
     },
     "angular-complete": {
-      "minified": 1336214,
-      "gzip": 312984,
-      "brotli": 243585,
+      "minified": 1362414,
+      "gzip": 314137,
+      "brotli": 243936,
       "budget": 317440
     }
   },
@@ -75,9 +75,9 @@
   },
   "package": {
     "files": 4302,
-    "unpacked": 6206608,
-    "gzip": 932094,
-    "brotli": 343248,
+    "unpacked": 6207025,
+    "gzip": 932255,
+    "brotli": 343216,
     "budget": 6291456
   }
 }

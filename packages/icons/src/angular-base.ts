@@ -5,6 +5,7 @@ import {
   input,
 } from '@angular/core';
 import { getIcon, type IconName } from './icons.generated.js';
+import { IconSvgHost } from './angular-svg-host.js';
 import {
   explicitMirrorTransform,
   iconDirectionMode,
@@ -16,6 +17,9 @@ import {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<svg
+    #svg
+    class="simurgh-icon"
+    data-slot="icon"
     [attr.width]="size()"
     [attr.height]="size()"
     [attr.viewBox]="icon().viewBox"
@@ -39,7 +43,7 @@ import {
   </svg>`,
   styles: [iconDirectionStyles],
 })
-export class SimurghIcon {
+export class SimurghIcon extends IconSvgHost {
   readonly name = input.required<IconName>();
   readonly size = input<number | string>(24);
   readonly title = input<string>();

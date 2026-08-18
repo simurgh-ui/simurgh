@@ -496,7 +496,7 @@ budgets remain fixed.
       the explicit direction property as an override for portals and physical-direction meanings.
 - [x] Audit directional metadata for navigation, editing, communication, media, charts, maps, and
       physical-direction exceptions in both LTR and RTL.
-- [ ] Give Angular consumers parity with React and Vue for root SVG classes, styles, data attributes,
+- [x] Give Angular consumers parity with React and Vue for root SVG classes, styles, data attributes,
       ARIA attributes, and reusable presentation hooks.
 - [ ] Add catalog examples for decorative icons, informative icons, and named icon-only controls;
       test accessible names, hidden decorative SVGs, focus behavior, and duplicate announcements.

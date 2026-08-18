@@ -1422,6 +1422,7 @@ minor
 mirror
 mirrored
 mirroring
+mirrors
 mismatch
 missing
 mix
