@@ -1,5 +1,16 @@
 # @simurgh-ui/vue
 
+## 0.3.0
+
+### Minor Changes
+
+- 8f9b16f: Replace Floating UI with a shared sub-5 KiB internal positioning engine. Positioned overlays retain offset, viewport flip and shift, RTL alignment, automatic updates, dismissal, and focus restoration without an additional runtime dependency.
+
+### Patch Changes
+
+- Updated dependencies [8f9b16f]
+  - @simurgh-ui/core@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes

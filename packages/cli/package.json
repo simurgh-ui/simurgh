@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/cli",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "bin": {
     "simurgh": "dist/index.js"
@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "node scripts/build-assets.mjs && tsc -p tsconfig.json",
-    "prepack": "pnpm build",
+    "prepack": "npm run build",
     "test": "pnpm build && vitest run",
     "coverage": "vitest run --coverage --config ../../vitest.coverage.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
