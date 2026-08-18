@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "test:contracts": "vitest run packages/react/test packages/vue/test packages/angular/test packages/cli/test",
     "test:e2e": "playwright test",
-    "test:quick-starts": "node scripts/check-package-quick-starts.mjs"
+    "test:quick-starts": "node scripts/check-package-quick-starts.mjs",
+    "test:release-candidate-copy": "node scripts/check-release-candidate-copied-source.mjs"
   },
   "devDependencies": {
     "@angular/compiler-cli": "20.3.2",

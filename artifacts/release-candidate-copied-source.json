@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "journey": "fresh React copied-source release-candidate build",
+  "commands": [
+    "simurgh init --framework react --skip-install",
+    "simurgh add button checkbox dialog form input label",
+    "esbuild src/app.tsx --bundle --format=esm"
+  ],
+  "checks": {
+    "cleanTemporaryApplication": true,
+    "cliInitialization": true,
+    "documentedComponentsAdded": [
+      "button",
+      "checkbox",
+      "dialog",
+      "form",
+      "input",
+      "label"
+    ],
+    "themeOverrideBundled": true,
+    "requiredEmailFormBundled": true,
+    "checkboxEventAndFormValueBundled": true,
+    "dialogBundled": true,
+    "copiedButtonEdited": true,
+    "copiedEditPresentInProductionBundle": true
+  },
+  "outputs": {
+    "javascriptBytes": 9766,
+    "cssBytes": 14367
+  }
+}

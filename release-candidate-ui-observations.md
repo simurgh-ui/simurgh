@@ -6,12 +6,12 @@ during the tasks.
 
 ## Session details
 
-- Tester:
-- Date:
-- Release candidate:
-- Framework and version:
-- Browser and version:
-- Operating system:
+- Tester: Codex agent-run technical session (human sign-off still required)
+- Date: 2026-08-18
+- Release candidate: local workspace at `9a09e95`
+- Framework and version: React 19.2.8
+- Browser and version: Not applicable to the agent-run production-build step
+- Operating system: Windows, Node.js 26.1.0, pnpm 11.16.0
 - Screen reader and version:
 
 ## Task-based journey
@@ -34,6 +34,14 @@ dead ends, commands that need correction, and the time required for each task.
 | Dialog                       |           |      |                   |
 | Event and serialization      |           |      |                   |
 | Copied-source edit and build |           |      |                   |
+
+Agent-run technical evidence on 2026-08-18: a new temporary application was initialized through
+the public CLI, the documented React components were added, theme tokens were overridden, the
+copied Button source gained `data-product-component="release-candidate"`, and the complete form,
+Checkbox event, Dialog, JavaScript, and CSS production bundle compiled successfully. Reproduce with
+`pnpm test:release-candidate-copy`; machine-readable evidence is retained in
+`artifacts/release-candidate-copied-source.json`. This evidence does not replace the remaining human
+task-journey sign-off.
 
 ## 200% zoom and viewport
 

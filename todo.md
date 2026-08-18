@@ -331,7 +331,7 @@ per-component documentation" as example coverage, not as complete consumer docum
   - [x] Validate the complete docs-only discovery and interaction journey in a fresh browser session.
   - [x] Compile a release-candidate consumer fixture with theme overrides, a form, an event, an
         overlay, and a product-specific edit to a source-owned component.
-  - [ ] Complete the copied-component edit and consumer build in a fresh release-candidate app.
+  - [x] Complete the copied-component edit and consumer build in a fresh release-candidate app.
     - Use `release-candidate-ui-observations.md` to record the human run and evidence.
   - [x] Publish the reproducible acceptance protocol and validate its automated package, CLI, API,
         example-compilation, contrast, and documentation-integrity evidence.
