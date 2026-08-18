@@ -2,6 +2,9 @@ packages:
   - packages/*
   - apps/*
 
+minimumReleaseAgeExclude:
+  - '@simurgh-ui/registry@0.3.1'
+
 allowBuilds:
   esbuild: true
   sharp: true
