@@ -7,4 +7,7 @@ coverage
 playwright-report
 test-results
 artifacts/npm-cache
+packages/cli/assets/react/*.tsx
+packages/cli/assets/vue/*.ts
+packages/cli/assets/angular/*.ts
 .DS_Store

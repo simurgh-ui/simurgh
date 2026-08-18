@@ -105,6 +105,14 @@ describe('CLI application fixture', () => {
         expect(readFileSync(join(fixture, componentPath), 'utf8')).toContain(
           expectedExport,
         );
+        const generatedSource = readFileSync(
+          join(fixture, componentPath),
+          'utf8',
+        );
+        const importedModules = [
+          ...generatedSource.matchAll(/\bfrom\s+['"]([^'"]+)['"]/gu),
+        ].map((match) => match[1]);
+        expect(new Set(importedModules).size).toBe(importedModules.length);
         expect(existsSync(join(fixture, 'src/styles/simurgh/tokens.css'))).toBe(
           true,
         );

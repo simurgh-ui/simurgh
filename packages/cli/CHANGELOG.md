@@ -1,5 +1,12 @@
 # @simurgh-ui/cli
 
+## 0.3.2
+
+### Patch Changes
+
+- Bundle original per-component registry modules so generated source no longer contains repeated
+  imports collected from the concatenated fallback registry.
+
 ## 0.3.1
 
 ### Patch Changes
