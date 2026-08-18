@@ -1,0 +1,166 @@
+[data-slot='chart'],
+.simurgh-chart {
+  position: relative;
+  box-sizing: border-box;
+  inline-size: 100%;
+  margin: 0;
+  color: hsl(var(--simurgh-foreground));
+  font-family: var(--simurgh-font-sans);
+  font-size: var(--simurgh-text-sm);
+}
+
+[data-slot='chart'] figcaption,
+.simurgh-chart figcaption {
+  margin-block-end: var(--simurgh-space-2);
+  font-size: var(--simurgh-text-lg);
+  font-weight: 600;
+}
+
+[data-slot='chart'] [data-part='description'],
+.simurgh-chart [data-part='description'] {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+[data-slot='chart'] [data-part='viewport'],
+.simurgh-chart [data-part='viewport'] {
+  position: relative;
+  inline-size: 100%;
+  min-block-size: 12rem;
+}
+
+[data-slot='chart'] svg,
+[data-slot='chart'] canvas,
+.simurgh-chart svg,
+.simurgh-chart canvas {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+
+[data-slot='chart'] [data-part='grid'] line,
+.simurgh-chart [data-part='grid'] line {
+  stroke: hsl(var(--simurgh-chart-grid));
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+[data-slot='chart'] [data-part$='axis'] text,
+.simurgh-chart [data-part$='axis'] text {
+  fill: hsl(var(--simurgh-chart-axis));
+  font-size: 0.75rem;
+  text-anchor: end;
+  dominant-baseline: central;
+}
+
+[data-slot='chart'] [data-part='series'],
+.simurgh-chart [data-part='series'] {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+[data-slot='chart'] path[data-part='series'][fill]:not([fill='none']),
+.simurgh-chart path[data-part='series'][fill]:not([fill='none']) {
+  fill-opacity: 0.28;
+}
+
+[data-slot='chart'] [data-part='crosshair'],
+.simurgh-chart [data-part='crosshair'] {
+  color: hsl(var(--simurgh-foreground));
+  pointer-events: none;
+  stroke: currentColor;
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+}
+
+[data-slot='chart'] [data-part='keyboard-target'],
+.simurgh-chart [data-part='keyboard-target'] {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  cursor: crosshair;
+  background: transparent;
+  border: 0;
+}
+
+[data-slot='chart'] [data-part='keyboard-target']:focus-visible,
+.simurgh-chart [data-part='keyboard-target']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+[data-slot='chart'] [data-part='tooltip'],
+.simurgh-chart [data-part='tooltip'] {
+  position: absolute;
+  inset-block-start: var(--simurgh-space-2);
+  inset-inline-end: var(--simurgh-space-2);
+  padding: var(--simurgh-space-2);
+  color: hsl(var(--simurgh-foreground));
+  pointer-events: none;
+  background: hsl(var(--simurgh-chart-tooltip));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: calc(var(--simurgh-radius) * 0.75);
+  box-shadow: var(--simurgh-shadow-sm);
+}
+
+[data-slot='chart'] [data-part='legend'],
+.simurgh-chart [data-part='legend'] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--simurgh-space-2);
+  margin-block-start: var(--simurgh-space-2);
+}
+
+[data-slot='chart'] [data-part='legend'] button,
+.simurgh-chart [data-part='legend'] button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--simurgh-space-1);
+  padding: var(--simurgh-space-1) var(--simurgh-space-2);
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: var(--simurgh-radius);
+}
+
+[data-slot='chart'] [data-part='legend'] button:hover,
+.simurgh-chart [data-part='legend'] button:hover {
+  background: hsl(var(--simurgh-hover));
+}
+
+[data-slot='chart'] [data-part='legend'] button[aria-pressed='false'],
+.simurgh-chart [data-part='legend'] button[aria-pressed='false'] {
+  opacity: 0.5;
+}
+
+[data-slot='chart'] [data-part='legend'] span,
+.simurgh-chart [data-part='legend'] span {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  border-radius: 999px;
+}
+
+[data-slot='chart'] [data-part='data-table'],
+.simurgh-chart [data-part='data-table'] {
+  margin-block-start: var(--simurgh-space-3);
+  overflow-x: auto;
+}
+
+[data-slot='chart'][data-state='empty'],
+.simurgh-chart[data-state='empty'] {
+  display: grid;
+  min-block-size: 12rem;
+  place-items: center;
+  color: hsl(var(--simurgh-muted-foreground));
+  border: 1px dashed hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+}

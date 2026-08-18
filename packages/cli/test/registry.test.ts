@@ -110,6 +110,15 @@ describe('CLI application fixture', () => {
         expect(
           existsSync(join(fixture, 'src/styles/simurgh/recipes.css')),
         ).toBe(true);
+        expect(
+          existsSync(join(fixture, 'src/styles/simurgh/components/button.css')),
+        ).toBe(true);
+        const recipes = readFileSync(
+          join(fixture, 'src/styles/simurgh/recipes.css'),
+          'utf8',
+        );
+        expect(recipes).toContain("@import './components/button.css';");
+        expect(recipes).not.toContain('./components/dialog.css');
       } finally {
         rmSync(fixture, { recursive: true, force: true });
       }
@@ -136,7 +145,12 @@ describe('CLI application fixture', () => {
       );
       execFileSync(process.execPath, [cli, 'add', 'dialog'], { cwd: fixture });
       const generated = join(fixture, 'src/components/ui/dialog.tsx');
+      const dialogStyle = join(
+        fixture,
+        'src/styles/simurgh/components/dialog.css',
+      );
       expect(existsSync(generated)).toBe(true);
+      expect(existsSync(dialogStyle)).toBe(true);
       const original = readFileSync(generated, 'utf8');
       expect(original).toContain('export function Dialog');
       expect(original).not.toContain('export function Tabs');
@@ -150,7 +164,25 @@ describe('CLI application fixture', () => {
       expect(popoverSource).toContain("from '@simurgh-ui/core'");
       expect(popoverSource).not.toContain('@floating-ui');
       expect(popoverSource).not.toContain("from './floating.js'");
+      const recipeIndex = readFileSync(
+        join(fixture, 'src/styles/simurgh/recipes.css'),
+        'utf8',
+      );
+      expect(recipeIndex).toContain("@import './components/dialog.css';");
+      expect(recipeIndex).toContain("@import './components/popover.css';");
+      expect(recipeIndex).not.toContain('./components/button.css');
+      writeFileSync(dialogStyle, '/* application recipe customization */\n');
       execFileSync(process.execPath, [cli, 'add', 'dialog'], { cwd: fixture });
+      expect(readFileSync(generated, 'utf8')).toBe(original);
+      expect(readFileSync(dialogStyle, 'utf8')).toBe(
+        '/* application recipe customization */\n',
+      );
+      execFileSync(process.execPath, [cli, 'add', 'dialog', '--overwrite'], {
+        cwd: fixture,
+      });
+      expect(readFileSync(dialogStyle, 'utf8')).toContain(
+        "[data-slot='dialog-content']",
+      );
       expect(readFileSync(generated, 'utf8')).toBe(original);
       execFileSync(process.execPath, [cli, 'add', 'tabs'], { cwd: fixture });
       const tabs = join(fixture, 'src/components/ui/tabs.tsx');
@@ -367,6 +399,9 @@ describe('CLI application fixture', () => {
         expect(existsSync(join(fixture, components, 'button.tsx'))).toBe(true);
         expect(existsSync(join(fixture, styles, 'tokens.css'))).toBe(true);
         expect(existsSync(join(fixture, styles, 'recipes.css'))).toBe(true);
+        expect(existsSync(join(fixture, styles, 'components/button.css'))).toBe(
+          true,
+        );
         expect(existsSync(join(fixture, 'src'))).toBe(withSrc);
       } finally {
         rmSync(fixture, { recursive: true, force: true });

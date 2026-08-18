@@ -1,0 +1,132 @@
+.simurgh-trigger,
+.simurgh-item {
+  align-items: center;
+  border-radius: var(--simurgh-radius);
+  display: inline-flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.simurgh-trigger {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  color: hsl(var(--simurgh-foreground));
+  min-block-size: 2.5rem;
+  padding-inline: 0.875rem;
+}
+
+.simurgh-trigger:focus-visible,
+.simurgh-item:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+.simurgh-content {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  box-shadow: var(--simurgh-shadow);
+  color: hsl(var(--simurgh-foreground));
+  padding: 0.5rem;
+  z-index: 50;
+}
+
+.simurgh-item {
+  cursor: default;
+  justify-content: flex-start;
+  min-block-size: 2rem;
+  padding-inline: 0.625rem;
+}
+
+.simurgh-item[data-highlighted],
+.simurgh-item:hover {
+  background: hsl(var(--simurgh-muted));
+}
+
+.simurgh-item[aria-disabled='true'],
+.simurgh-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.simurgh-indicator {
+  color: hsl(var(--simurgh-primary));
+}
+
+[data-slot='select-trigger'] {
+  inline-size: 100%;
+  justify-content: space-between;
+  text-align: start;
+  transition:
+    background-color var(--simurgh-duration) ease,
+    border-color var(--simurgh-duration) ease,
+    box-shadow var(--simurgh-duration) ease;
+}
+
+[data-slot='select-trigger']::after {
+  content: '\2304';
+  flex: 0 0 auto;
+  margin-inline-start: 0.75rem;
+}
+
+[data-slot='select-trigger']:hover:not(:disabled) {
+  border-color: hsl(var(--simurgh-foreground) / 0.5);
+}
+
+[data-slot='select-trigger'][aria-expanded='true'] {
+  border-color: hsl(var(--simurgh-ring));
+  box-shadow: 0 0 0 1px hsl(var(--simurgh-ring));
+}
+
+[data-slot='select-content'] {
+  max-block-size: min(18rem, calc(100vh - 2rem));
+  min-inline-size: var(--simurgh-reference-width, 12rem);
+  overflow: auto;
+  padding: 0.375rem;
+}
+
+[data-slot='select-option'] {
+  border-radius: calc(var(--simurgh-radius) * 0.75);
+  min-block-size: 2.25rem;
+}
+
+[data-slot='select-option'][aria-selected='true'] {
+  background: hsl(var(--simurgh-muted));
+  color: hsl(var(--simurgh-foreground));
+  font-weight: 600;
+}
+
+/* Density is scoped on an ancestor and intentionally affects interactive controls, not content surfaces. */
+:where(
+    [data-density='comfortable'],
+    [data-density='compact'],
+    [data-density='dense']
+  )
+  :where(
+    [data-slot='button'],
+    [data-slot='input'],
+    [data-slot='checkbox'],
+    [data-slot='select-trigger'],
+    [data-slot='native-select'],
+    [data-slot='input-otp'],
+    [data-slot='toolbar-button'],
+    [data-slot='toggle-group-item'],
+    [data-slot='pagination-link'],
+    .simurgh-trigger
+  ) {
+  min-block-size: var(--simurgh-control-height);
+  padding-inline: var(--simurgh-control-padding);
+}
+
+:where(
+    [data-density='comfortable'],
+    [data-density='compact'],
+    [data-density='dense']
+  )
+  :where(
+    [data-slot='select-option'],
+    [data-slot='menubar-item'],
+    .simurgh-item
+  ) {
+  min-block-size: var(--simurgh-item-height);
+}

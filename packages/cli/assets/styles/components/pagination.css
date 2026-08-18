@@ -1,0 +1,61 @@
+/* Density is scoped on an ancestor and intentionally affects interactive controls, not content surfaces. */
+:where(
+    [data-density='comfortable'],
+    [data-density='compact'],
+    [data-density='dense']
+  )
+  :where(
+    [data-slot='button'],
+    [data-slot='input'],
+    [data-slot='checkbox'],
+    [data-slot='select-trigger'],
+    [data-slot='native-select'],
+    [data-slot='input-otp'],
+    [data-slot='toolbar-button'],
+    [data-slot='toggle-group-item'],
+    [data-slot='pagination-link'],
+    .simurgh-trigger
+  ) {
+  min-block-size: var(--simurgh-control-height);
+  padding-inline: var(--simurgh-control-padding);
+}
+
+[data-slot='pagination-content'] {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+[data-slot='pagination-link'] {
+  align-items: center;
+  border-radius: var(--simurgh-radius);
+  color: hsl(var(--simurgh-foreground));
+  display: inline-flex;
+  justify-content: center;
+  min-block-size: 2.25rem;
+  min-inline-size: 2.25rem;
+  padding-inline: 0.625rem;
+  text-decoration: none;
+}
+
+[data-slot='pagination-link']:hover {
+  background: hsl(var(--simurgh-muted));
+}
+
+[data-slot='pagination-link'][aria-current='page'] {
+  background: hsl(var(--simurgh-primary));
+  color: hsl(var(--simurgh-primary-foreground));
+}
+
+[data-slot='pagination-link']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+[data-slot='pagination-link'][aria-disabled='true'] {
+  opacity: 0.5;
+  pointer-events: none;
+}

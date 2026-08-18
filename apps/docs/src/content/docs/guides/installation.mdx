@@ -23,8 +23,9 @@ pnpm dlx @simurgh-ui/cli init
 pnpm dlx @simurgh-ui/cli add dialog tabs checkbox
 ```
 
-`init` detects the framework from `package.json`, writes `simurgh.json`, copies the token and recipe
-stylesheets, and installs that adapter's runtime dependencies. Pass `--framework react`,
+`init` detects the framework from `package.json`, writes `simurgh.json`, copies the token stylesheet
+and recipe index, and installs that adapter's runtime dependencies. Each `add` command copies the
+matching component recipes and adds them to the index. Pass `--framework react`,
 `--framework vue`, or `--framework angular` only when detection cannot choose correctly. Use
 `--skip-install` when your package manager or workspace policy requires installing dependencies
 separately.
@@ -41,8 +42,10 @@ For React and Vue, the `src/` prefix is used when the application already has a 
 Projects using a root layout, including Next.js applications created without the `src` option, stay
 root-based; `init` does not create a new `src` directory.
 
-`add` writes one framework-native source file per component. Existing files are preserved unless
-`--overwrite` is supplied. With no component names, `add` copies the complete catalog.
+`add` writes one framework-native source file and one CSS recipe per component. Existing source and
+recipe files are preserved unless `--overwrite` is supplied. The generated `recipes.css` file
+imports only installed component recipes. With no component names, `add` copies the complete
+catalog.
 
 ```sh
 # Inspect available registry components
@@ -58,7 +61,8 @@ the local component and is not a merge operation. Commit or otherwise back up lo
 
 Import copied components from their local path, not from `@simurgh-ui/react`,
 `@simurgh-ui/vue`, or `@simurgh-ui/angular`. Add the copied `tokens.css` and `recipes.css` to the
-application's global stylesheet entry according to the framework build tool.
+application's global stylesheet entry according to the framework build tool. Component styles live
+under `styles/simurgh/components/` and can be customized independently.
 
 ## Install as packages
 

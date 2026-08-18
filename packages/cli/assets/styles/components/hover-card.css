@@ -1,0 +1,71 @@
+.simurgh-trigger,
+.simurgh-item {
+  align-items: center;
+  border-radius: var(--simurgh-radius);
+  display: inline-flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.simurgh-trigger {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  color: hsl(var(--simurgh-foreground));
+  min-block-size: 2.5rem;
+  padding-inline: 0.875rem;
+}
+
+.simurgh-trigger:focus-visible,
+.simurgh-item:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+.simurgh-content {
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  box-shadow: var(--simurgh-shadow);
+  color: hsl(var(--simurgh-foreground));
+  padding: 0.5rem;
+  z-index: 50;
+}
+
+[data-slot='hover-card-content'] {
+  max-inline-size: min(22rem, calc(100vw - 2rem));
+  padding: 1rem;
+}
+
+[data-slot='hover-card-trigger']:focus-visible {
+  border-radius: calc(var(--simurgh-radius) / 2);
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+.simurgh-item[aria-disabled='true'],
+.simurgh-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Density is scoped on an ancestor and intentionally affects interactive controls, not content surfaces. */
+:where(
+    [data-density='comfortable'],
+    [data-density='compact'],
+    [data-density='dense']
+  )
+  :where(
+    [data-slot='button'],
+    [data-slot='input'],
+    [data-slot='checkbox'],
+    [data-slot='select-trigger'],
+    [data-slot='native-select'],
+    [data-slot='input-otp'],
+    [data-slot='toolbar-button'],
+    [data-slot='toggle-group-item'],
+    [data-slot='pagination-link'],
+    .simurgh-trigger
+  ) {
+  min-block-size: var(--simurgh-control-height);
+  padding-inline: var(--simurgh-control-padding);
+}

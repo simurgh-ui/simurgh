@@ -1,5 +1,12 @@
 # @simurgh-ui/registry
 
+## 0.3.1
+
+### Patch Changes
+
+- Add npm-facing package documentation with installation, quick-start, granular import, styling,
+  and package-specific usage guidance.
+
 ## 0.3.0
 
 ### Minor Changes

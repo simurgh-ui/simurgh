@@ -1,0 +1,100 @@
+.simurgh-trigger,
+.simurgh-item {
+  align-items: center;
+  border-radius: var(--simurgh-radius);
+  display: inline-flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.simurgh-trigger:focus-visible,
+.simurgh-item:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+.simurgh-item {
+  cursor: default;
+  justify-content: flex-start;
+  min-block-size: 2rem;
+  padding-inline: 0.625rem;
+}
+
+.simurgh-item[data-highlighted],
+.simurgh-item:hover {
+  background: hsl(var(--simurgh-muted));
+}
+
+.simurgh-item[aria-disabled='true'],
+.simurgh-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+:where(
+    [data-density='comfortable'],
+    [data-density='compact'],
+    [data-density='dense']
+  )
+  :where(
+    [data-slot='select-option'],
+    [data-slot='menubar-item'],
+    .simurgh-item
+  ) {
+  min-block-size: var(--simurgh-item-height);
+}
+
+[data-slot='item-group'] {
+  display: grid;
+  gap: 0.5rem;
+}
+
+[data-slot='item'] {
+  align-items: center;
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 0.75rem;
+}
+
+[data-slot='item-media'] {
+  align-items: center;
+  background: hsl(var(--simurgh-muted));
+  border-radius: calc(var(--simurgh-radius) * 0.75);
+  color: hsl(var(--simurgh-muted-foreground));
+  display: inline-flex;
+  justify-content: center;
+  min-block-size: 2.5rem;
+  min-inline-size: 2.5rem;
+}
+
+[data-slot='item-content'] {
+  display: grid;
+  gap: 0.25rem;
+  min-inline-size: 0;
+}
+
+[data-slot='item-title'],
+[data-slot='item-description'] {
+  margin: 0;
+}
+
+[data-slot='item-title'] {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+[data-slot='item-description'] {
+  color: hsl(var(--simurgh-muted-foreground));
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+[data-slot='item-actions'] {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}

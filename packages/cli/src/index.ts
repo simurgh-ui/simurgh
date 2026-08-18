@@ -52,6 +52,36 @@ function copy(path: string, target: string) {
   ensureParent(target);
   writeFileSync(target, readFileSync(path));
 }
+function recipeStyleTarget(config: Config, component: string) {
+  return join(cwd(), config.styles, 'components', `${component}.css`);
+}
+function addRecipeImport(config: Config, component: string) {
+  const path = join(cwd(), config.styles, 'recipes.css');
+  const source = existsSync(path) ? readFileSync(path, 'utf8') : '';
+  const importPattern =
+    /^@import ['"]\.\/components\/([^'"]+)\.css['"];\r?\n?/gmu;
+  const components = new Set<string>([component]);
+  for (const match of source.matchAll(importPattern)) {
+    if (match[1]) components.add(match[1]);
+  }
+  const body = source.replace(importPattern, '').trimStart();
+  const imports = [...components]
+    .sort()
+    .map((name) => `@import './components/${name}.css';`)
+    .join('\n');
+  writeFileSync(path, `${imports}\n\n${body}`.trimEnd() + '\n');
+}
+function installRecipeStyle(
+  config: Config,
+  component: string,
+  overwrite = false,
+) {
+  const target = recipeStyleTarget(config, component);
+  if (!existsSync(target) || overwrite) {
+    copy(join(assetRoot(), 'styles/components', `${component}.css`), target);
+  }
+  addRecipeImport(config, component);
+}
 function componentTarget(config: Config, component: string) {
   return join(
     cwd(),
@@ -348,11 +378,12 @@ cli
             `${relative(cwd(), target)} already exists; preserved local source.`,
           ),
         );
-        continue;
+      } else {
+        ensureParent(target);
+        writeFileSync(target, expectedSource(config, name));
+        console.log(pc.green(`Added ${name} to ${relative(cwd(), target)}.`));
       }
-      ensureParent(target);
-      writeFileSync(target, expectedSource(config, name));
-      console.log(pc.green(`Added ${name} to ${relative(cwd(), target)}.`));
+      installRecipeStyle(config, name, options.overwrite);
     }
   });
 cli

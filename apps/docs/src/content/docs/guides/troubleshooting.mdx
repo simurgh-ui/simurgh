@@ -17,7 +17,8 @@ For package consumption, import the matching component stylesheet from a global 
 ```
 
 For CLI-copied source, add the copied `src/styles/simurgh/tokens.css` and
-`src/styles/simurgh/recipes.css` files to the application's global stylesheet entry. Check the
+`src/styles/simurgh/recipes.css` files to the application's global stylesheet entry. The recipe
+index imports the matching files under `src/styles/simurgh/components/`; check the
 browser's network and Styles panels to confirm the CSS is loaded and that another rule does not
 override it.
 

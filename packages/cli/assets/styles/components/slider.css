@@ -1,0 +1,16 @@
+[data-slot='slider'] {
+  accent-color: hsl(var(--simurgh-primary));
+  block-size: 1.5rem;
+  cursor: pointer;
+  inline-size: 100%;
+}
+
+[data-slot='slider']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 2px;
+}
+
+[data-slot='slider']:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

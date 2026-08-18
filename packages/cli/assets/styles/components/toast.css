@@ -1,0 +1,12 @@
+.simurgh-toast-region {
+  inset-block-end: 1rem;
+  inset-inline-end: 1rem;
+  position: fixed;
+  z-index: 100;
+}
+
+.simurgh-toast {
+  animation: simurgh-in var(--simurgh-duration) ease-out;
+  margin-block-start: 0.5rem;
+  min-inline-size: 18rem;
+}

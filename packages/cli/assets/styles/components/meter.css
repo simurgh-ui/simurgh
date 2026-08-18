@@ -1,0 +1,26 @@
+[data-slot='meter'] {
+  accent-color: hsl(var(--simurgh-primary));
+  block-size: 0.75rem;
+  inline-size: 100%;
+}
+
+[data-slot='meter']::-webkit-meter-bar {
+  background: hsl(var(--simurgh-muted));
+  border: 0;
+  border-radius: 999px;
+}
+
+[data-slot='meter']::-webkit-meter-optimum-value {
+  background: hsl(var(--simurgh-primary));
+  border-radius: 999px;
+}
+
+[data-slot='meter']::-webkit-meter-suboptimum-value {
+  background: hsl(var(--simurgh-accent));
+  border-radius: 999px;
+}
+
+[data-slot='meter']::-webkit-meter-even-less-good-value {
+  background: hsl(var(--simurgh-danger));
+  border-radius: 999px;
+}

@@ -1,0 +1,8 @@
+[data-slot='toggle-group'] {
+  display: inline-flex;
+  gap: 1px;
+}
+
+[data-slot='toggle-group'][aria-orientation='vertical'] {
+  flex-direction: column;
+}

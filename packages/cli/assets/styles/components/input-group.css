@@ -1,0 +1,35 @@
+[data-slot='input-group'] {
+  align-items: stretch;
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  display: flex;
+  flex-wrap: wrap;
+  min-block-size: 2.5rem;
+  overflow: hidden;
+}
+
+[data-slot='input-group']:focus-within {
+  border-color: hsl(var(--simurgh-ring));
+  box-shadow: 0 0 0 2px hsl(var(--simurgh-ring) / 0.25);
+}
+
+[data-slot='input-group'] > :where(input, textarea, select),
+[data-slot='input-group'] > simurgh-input,
+[data-slot='input-group'] > simurgh-textarea,
+[data-slot='input-group'] > simurgh-native-select {
+  flex: 1 1 8rem;
+  min-inline-size: 0;
+}
+
+[data-slot='input-group'] :where(input, textarea, select) {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: hsl(var(--simurgh-foreground));
+  font: inherit;
+  inline-size: 100%;
+  min-block-size: 100%;
+  outline: 0;
+  padding-inline: 0.75rem;
+}

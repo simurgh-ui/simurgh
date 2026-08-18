@@ -1,0 +1,48 @@
+:where(
+    [data-density='comfortable'],
+    [data-density='compact'],
+    [data-density='dense']
+  )
+  :where(
+    [data-slot='select-option'],
+    [data-slot='menubar-item'],
+    .simurgh-item
+  ) {
+  min-block-size: var(--simurgh-item-height);
+}
+
+[data-slot='menubar'] {
+  align-items: center;
+  background: hsl(var(--simurgh-surface));
+  border: 1px solid hsl(var(--simurgh-border));
+  border-radius: var(--simurgh-radius);
+  display: flex;
+  gap: 0.125rem;
+  padding: 0.25rem;
+}
+
+[data-slot='menubar-item'] {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: calc(var(--simurgh-radius) / 2);
+  color: hsl(var(--simurgh-foreground));
+  cursor: pointer;
+  font: inherit;
+  padding-block: 0.375rem;
+  padding-inline: 0.625rem;
+}
+
+[data-slot='menubar-item']:hover {
+  background: hsl(var(--simurgh-muted));
+}
+
+[data-slot='menubar-item']:focus-visible {
+  outline: 2px solid hsl(var(--simurgh-ring));
+  outline-offset: 1px;
+}
+
+[data-slot='menubar-item'][aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
