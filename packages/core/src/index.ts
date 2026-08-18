@@ -6,6 +6,12 @@ export {
   type FloatingPlacement,
   type FloatingPosition,
 } from './floating.js';
+export {
+  createFloatingInteractions,
+  type FloatingInteractionEvent,
+  type FloatingInteractionKind,
+  type FloatingInteractionOptions,
+} from './floating-interactions.js';
 export type Orientation = 'horizontal' | 'vertical';
 export type MaybeGetter<T> = T | (() => T);
 

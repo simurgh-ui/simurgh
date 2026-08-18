@@ -203,7 +203,7 @@ Items are checked only after their implementation exists and the relevant verifi
       during module evaluation or server rendering.
 - [x] Implement leak-free automatic updates for window and scroll-container scrolling, viewport
       resizing, element resizing, layout changes, and teardown; use observers only when available.
-- [ ] Implement the shared interaction behavior currently supplied by `@floating-ui/react`: click,
+- [x] Implement the shared interaction behavior currently supplied by `@floating-ui/react`: click,
       hover, focus, role assignment, Escape dismissal, outside-press dismissal, composed events, and
       safe focus restoration.
 - [ ] Replace the React hooks and the Vue and Angular DOM adapters with thin framework-specific

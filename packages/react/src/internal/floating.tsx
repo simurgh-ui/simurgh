@@ -1,6 +1,7 @@
 import {
   autoUpdateFloating,
   computeFloatingPosition,
+  createFloatingInteractions,
   nextIndex,
 } from '@simurgh-ui/core';
 import React, {
@@ -61,6 +62,14 @@ export function FloatingRoot({
     left: 0,
     top: 0,
   });
+  const interactions = createFloatingInteractions({
+    kind,
+    id: uid,
+    getOpen: () => open,
+    setOpen,
+    getReference: () => reference.current,
+    getFloating: () => floating.current,
+  });
   useEffect(() => {
     if (!open || !reference.current || !floating.current) return;
     return autoUpdateFloating(reference.current, floating.current, () => {
@@ -77,82 +86,52 @@ export function FloatingRoot({
   }, [kind, open]);
   useEffect(() => {
     if (!open || typeof document === 'undefined') return;
-    const dismiss = (event: PointerEvent) => {
-      const path = event.composedPath();
-      if (
-        !path.includes(reference.current!) &&
-        !path.includes(floating.current!)
-      ) {
-        setOpen(false);
-        reference.current?.focus();
-      }
-    };
-    document.addEventListener('pointerdown', dismiss);
-    return () => document.removeEventListener('pointerdown', dismiss);
+    return interactions.listenForOutsidePress(document);
   }, [open, setOpen]);
-  const role =
-    kind === 'menu'
-      ? 'menu'
-      : kind === 'listbox'
-        ? 'listbox'
-        : kind === 'tooltip'
-          ? 'tooltip'
-          : 'dialog';
   const getReferenceProps = (given: Record<string, unknown> = {}) => {
     const interactive = kind === 'tooltip' || kind === 'hovercard';
     return {
       ...given,
-      'aria-haspopup':
-        kind === 'menu'
-          ? 'menu'
-          : kind === 'listbox'
-            ? 'listbox'
-            : interactive
-              ? undefined
-              : 'dialog',
-      'aria-describedby': kind === 'tooltip' ? uid : undefined,
+      ...interactions.referenceAttributes,
       onClick: interactive
         ? given.onClick
         : (event: React.MouseEvent) => {
             invoke(given, 'onClick', event);
-            if (!event.defaultPrevented) setOpen(!open);
+            interactions.onReferenceClick(event);
           },
       onMouseEnter: interactive
         ? (event: React.MouseEvent) => {
             invoke(given, 'onMouseEnter', event);
-            if (!event.defaultPrevented) setOpen(true);
+            interactions.onReferenceMouseEnter?.(event);
           }
         : given.onMouseEnter,
       onMouseLeave: interactive
         ? (event: React.MouseEvent) => {
             invoke(given, 'onMouseLeave', event);
-            if (!event.defaultPrevented) setOpen(false);
+            interactions.onReferenceMouseLeave?.(event);
           }
         : given.onMouseLeave,
       onFocus: interactive
         ? (event: React.FocusEvent) => {
             invoke(given, 'onFocus', event);
-            if (!event.defaultPrevented) setOpen(true);
+            interactions.onReferenceFocus?.(event);
           }
         : given.onFocus,
       onBlur: interactive
         ? (event: React.FocusEvent) => {
             invoke(given, 'onBlur', event);
-            if (!event.defaultPrevented) setOpen(false);
+            interactions.onReferenceBlur?.(event);
           }
         : given.onBlur,
     };
   };
   const getFloatingProps = (given: Record<string, unknown> = {}) => ({
     ...given,
-    id: given.id ?? (kind === 'tooltip' ? uid : undefined),
-    role: given.role ?? role,
+    id: given.id ?? interactions.floatingAttributes.id,
+    role: given.role ?? interactions.floatingAttributes.role,
     onKeyDown: (event: React.KeyboardEvent) => {
       invoke(given, 'onKeyDown', event);
-      if (!event.defaultPrevented && event.key === 'Escape') {
-        setOpen(false);
-        reference.current?.focus();
-      }
+      interactions.onFloatingKeyDown(event);
     },
   });
   const refs = {
