@@ -58,19 +58,19 @@ for (const framework of ['react', 'vue', 'angular']) {
   });
   const entryOutput = Object.entries(result.metafile.outputs).find(
     ([, output]) =>
-      output.entryPoint?.replaceAll('\\', '/').endsWith(
-        `fixtures/lazy-overlays/${framework}.ts`,
-      ),
+      output.entryPoint
+        ?.replaceAll('\\', '/')
+        .endsWith(`fixtures/lazy-overlays/${framework}.ts`),
   );
   if (!entryOutput) throw new Error(`Missing ${framework} lazy entry chunk.`);
   const [entryPath, entryMetadata] = entryOutput;
-  const entryFile = result.outputFiles.find(
-    (file) => file.path.replaceAll('\\', '/').endsWith(entryPath),
+  const entryFile = result.outputFiles.find((file) =>
+    file.path.replaceAll('\\', '/').endsWith(entryPath),
   );
   if (!entryFile) throw new Error(`Missing ${framework} lazy entry output.`);
   const inputs = Object.keys(entryMetadata.inputs);
-  if (inputs.some((input) => input.includes('@floating-ui'))) {
-    throw new Error(`${framework} initial chunk includes Floating UI.`);
+  if (inputs.some((input) => input.includes('/core/src/floating'))) {
+    throw new Error(`${framework} initial chunk includes overlay positioning.`);
   }
   const gzip = gzipSync(entryFile.contents, { level: 9 }).byteLength;
   const budget = 0.5 * KiB;

@@ -1,4 +1,11 @@
 export type Direction = 'ltr' | 'rtl';
+export {
+  autoUpdateFloating,
+  computeFloatingPosition,
+  type FloatingOptions,
+  type FloatingPlacement,
+  type FloatingPosition,
+} from './floating.js';
 export type Orientation = 'horizontal' | 'vertical';
 export type MaybeGetter<T> = T | (() => T);
 

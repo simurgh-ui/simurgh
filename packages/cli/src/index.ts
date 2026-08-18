@@ -290,11 +290,6 @@ function expectedSource(config: Config, component: string): string {
     readFileSync(sourcePath, 'utf8'),
     entry.symbols,
     sourcePath,
-  ).replace(
-    /(['"])\.\/floating\.js\1/g,
-    config.framework === 'react'
-      ? "'@floating-ui/react'"
-      : "'@floating-ui/dom'",
   );
 }
 

@@ -26,8 +26,6 @@ const common = {
   target: 'es2022',
   sourcemap: false,
   external: [
-    '@floating-ui/react',
-    '@floating-ui/react/*',
     '@simurgh-ui/core',
     '@simurgh-ui/core/*',
     'react',
@@ -70,15 +68,17 @@ function summarize(result) {
   }
   return {
     outputFiles: outputs.length,
-    totalMinified: outputs.reduce((total, [, output]) => total + output.bytes, 0),
+    totalMinified: outputs.reduce(
+      (total, [, output]) => total + output.bytes,
+      0,
+    ),
     buttonFiles: buttonFiles.length,
     buttonMinified: buttonFiles.reduce(
       (total, contents) => total + contents.byteLength,
       0,
     ),
     buttonGzip: buttonFiles.reduce(
-      (total, contents) =>
-        total + gzipSync(contents, { level: 9 }).byteLength,
+      (total, contents) => total + gzipSync(contents, { level: 9 }).byteLength,
       0,
     ),
   };

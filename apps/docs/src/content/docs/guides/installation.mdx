@@ -149,13 +149,13 @@ import '@simurgh-ui/styles/button.css';
 
 Each component stylesheet includes the shared tokens, so applications can import only `button.css` in this example. Import `tokens.css` separately when an application consumes tokens without a component recipe.
 
-The same pattern applies to Vue (`@simurgh-ui/vue/button`) and Angular (`@simurgh-ui/angular/button`). When several primitives are needed together, `@simurgh-ui/{framework}/basic` provides common non-floating controls, while `@simurgh-ui/{framework}/overlays` provides dialogs, menus, tooltips, and related positioned UI. The `basic` boundary intentionally excludes Floating UI.
+The same pattern applies to Vue (`@simurgh-ui/vue/button`) and Angular (`@simurgh-ui/angular/button`). When several primitives are needed together, `@simurgh-ui/{framework}/basic` provides common non-floating controls, while `@simurgh-ui/{framework}/overlays` provides dialogs, menus, tooltips, and related positioned UI. The `basic` boundary intentionally excludes overlay positioning code.
 
 Root adapter imports and `@simurgh-ui/styles/all.css` remain convenient opt-in aggregates. Use them when the complete catalog is genuinely required; component JavaScript and CSS subpaths are the recommended production default.
 
 ## Lazy-load overlays
 
-Dialogs, menus, tooltips, and other positioned components include Floating UI. Keep that positioning code out of the initial application bundle by loading an overlay at its route or interaction boundary.
+Dialogs, menus, tooltips, and other positioned components include Simurgh's small internal positioning layer. Keep that positioning code out of the initial application bundle by loading an overlay at its route or interaction boundary.
 
 ```tsx
 // React
@@ -188,7 +188,7 @@ const Dialog = defineAsyncComponent(() =>
 }
 ```
 
-Lazy loading moves the overlay and Floating UI into an asynchronous chunk. It does not reduce the total downloaded code when the overlay is opened, but it keeps that cost off the initial path.
+Lazy loading moves the overlay and positioning layer into an asynchronous chunk. It does not reduce the total downloaded code when the overlay is opened, but it keeps that cost off the initial path.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._

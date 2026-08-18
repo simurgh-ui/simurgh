@@ -41,7 +41,6 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.27.20",
     "@simurgh-ui/core": "workspace:*"
   },
   "peerDependencies": {

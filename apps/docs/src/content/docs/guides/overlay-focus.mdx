@@ -76,9 +76,26 @@ Non-modal overlays must not trap Tab. Their focus model depends on purpose:
 - Select, Combobox, and Command manage an active option or action while retaining their documented
   form or input behavior.
 
-Some adapters use Floating UI dismissal behavior while others implement Escape and pointer handling
-directly. Test outside pointer interaction, Escape, Tab, and focus return in the consuming framework;
-do not assume modal trapping applies to a non-modal surface.
+React's positioned primitives implement Escape and outside-pointer dismissal in the adapter. Vue
+and Angular retain their component-specific Escape and pointer behavior. Test outside pointer
+interaction, Escape, Tab, and focus return in the consuming framework; do not assume modal trapping
+applies to a non-modal surface.
+
+### Positioning contract
+
+Positioned adapters use an 8 px gap (6 px for React Tooltip), prefer `bottom`, flip to the opposite
+side when that reduces viewport overflow, and shift inside an 8 px viewport boundary. The shared
+engine also supports `top`, `right`, `bottom`, and `left`, each with optional `-start` and `-end`
+alignment; start and end follow the anchor's computed text direction. It updates on ancestor scroll,
+window or visual-viewport resize, element resize, and observed layout shifts, then removes every
+listener and observer during teardown. It reads browser globals only when positioning mounted DOM,
+so server rendering remains deterministic.
+
+React and Vue position body-portalled content in visual-viewport coordinates. Angular renders in
+the component host, so a transformed ancestor can establish a different fixed-position containing
+block; portal the host or avoid that transform when exact viewport alignment is required. The
+internal layer intentionally does not implement arrows, virtual anchors, custom collision
+boundaries, size matching, or hide middleware.
 
 ## Nested overlays
 

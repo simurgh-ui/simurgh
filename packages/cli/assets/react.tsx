@@ -1,20 +1,9 @@
 import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useFocus,
-  useHover,
-  useInteractions,
-  useRole,
-} from './floating.js';
-import {
   addCalendarMonths,
+  autoUpdateFloating,
   calendarMonthDays,
   calendarToday,
+  computeFloatingPosition,
   createId,
   moveCalendarDate,
   nextIndex,
@@ -32,6 +21,7 @@ import React, {
   useRef,
   useState,
   type ButtonHTMLAttributes,
+  type CSSProperties,
   type HTMLAttributes,
   type InputHTMLAttributes,
   type PropsWithChildren,
@@ -404,18 +394,30 @@ export function AlertDialogCancel(
 }
 
 type FloatingKind = 'popover' | 'tooltip' | 'hovercard' | 'menu' | 'listbox';
-type FloatingContextValue = OverlayContextValue &
-  ReturnType<typeof useFloating> & {
-    kind: FloatingKind;
-    getReferenceProps: (
-      props?: Record<string, unknown>,
-    ) => Record<string, unknown>;
-    getFloatingProps: (
-      props?: Record<string, unknown>,
-    ) => Record<string, unknown>;
+type FloatingContextValue = OverlayContextValue & {
+  kind: FloatingKind;
+  refs: {
+    reference: React.RefObject<HTMLElement | null>;
+    floating: React.RefObject<HTMLElement | null>;
+    setReference(node: HTMLElement | null): void;
+    setFloating(node: HTMLElement | null): void;
   };
+  floatingStyles: CSSProperties;
+  getReferenceProps(props?: Record<string, unknown>): Record<string, unknown>;
+  getFloatingProps(props?: Record<string, unknown>): Record<string, unknown>;
+};
 const FloatingContext =
   /* @__PURE__ */ createContext<FloatingContextValue | null>(null);
+
+function invoke(
+  props: Record<string, unknown>,
+  name: string,
+  event: React.SyntheticEvent,
+) {
+  const handler = props[name];
+  if (typeof handler === 'function') handler(event);
+}
+
 function FloatingRoot({
   children,
   kind,
@@ -423,49 +425,126 @@ function FloatingRoot({
 }: PropsWithChildren<OpenProps & { kind: FloatingKind }>) {
   const [open, setOpen] = useOpen(props);
   const uid = useId();
-  const floating = useFloating({
-    open,
-    onOpenChange: setOpen,
-    whileElementsMounted: autoUpdate,
-    middleware: [
-      offset(kind === 'tooltip' ? 6 : 8),
-      flip(),
-      shift({ padding: 8 }),
-    ],
+  const reference = useRef<HTMLElement | null>(null);
+  const floating = useRef<HTMLElement | null>(null);
+  const [floatingStyles, setFloatingStyles] = useState<CSSProperties>({
+    position: 'fixed',
+    left: 0,
+    top: 0,
   });
-  const click = useClick(floating.context, {
-    enabled: kind !== 'tooltip' && kind !== 'hovercard',
+  useEffect(() => {
+    if (!open || !reference.current || !floating.current) return;
+    return autoUpdateFloating(reference.current, floating.current, () => {
+      if (!reference.current || !floating.current) return;
+      const result = computeFloatingPosition(
+        reference.current,
+        floating.current,
+        {
+          offset: kind === 'tooltip' ? 6 : 8,
+        },
+      );
+      setFloatingStyles({ position: 'fixed', left: result.x, top: result.y });
+    });
+  }, [kind, open]);
+  useEffect(() => {
+    if (!open || typeof document === 'undefined') return;
+    const dismiss = (event: PointerEvent) => {
+      const path = event.composedPath();
+      if (
+        !path.includes(reference.current!) &&
+        !path.includes(floating.current!)
+      ) {
+        setOpen(false);
+        reference.current?.focus();
+      }
+    };
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
+  }, [open, setOpen]);
+  const role =
+    kind === 'menu'
+      ? 'menu'
+      : kind === 'listbox'
+        ? 'listbox'
+        : kind === 'tooltip'
+          ? 'tooltip'
+          : 'dialog';
+  const getReferenceProps = (given: Record<string, unknown> = {}) => {
+    const interactive = kind === 'tooltip' || kind === 'hovercard';
+    return {
+      ...given,
+      'aria-haspopup':
+        kind === 'menu'
+          ? 'menu'
+          : kind === 'listbox'
+            ? 'listbox'
+            : interactive
+              ? undefined
+              : 'dialog',
+      'aria-describedby': kind === 'tooltip' ? uid : undefined,
+      onClick: interactive
+        ? given.onClick
+        : (event: React.MouseEvent) => {
+            invoke(given, 'onClick', event);
+            if (!event.defaultPrevented) setOpen(!open);
+          },
+      onMouseEnter: interactive
+        ? (event: React.MouseEvent) => {
+            invoke(given, 'onMouseEnter', event);
+            if (!event.defaultPrevented) setOpen(true);
+          }
+        : given.onMouseEnter,
+      onMouseLeave: interactive
+        ? (event: React.MouseEvent) => {
+            invoke(given, 'onMouseLeave', event);
+            if (!event.defaultPrevented) setOpen(false);
+          }
+        : given.onMouseLeave,
+      onFocus: interactive
+        ? (event: React.FocusEvent) => {
+            invoke(given, 'onFocus', event);
+            if (!event.defaultPrevented) setOpen(true);
+          }
+        : given.onFocus,
+      onBlur: interactive
+        ? (event: React.FocusEvent) => {
+            invoke(given, 'onBlur', event);
+            if (!event.defaultPrevented) setOpen(false);
+          }
+        : given.onBlur,
+    };
+  };
+  const getFloatingProps = (given: Record<string, unknown> = {}) => ({
+    ...given,
+    id: given.id ?? (kind === 'tooltip' ? uid : undefined),
+    role: given.role ?? role,
+    onKeyDown: (event: React.KeyboardEvent) => {
+      invoke(given, 'onKeyDown', event);
+      if (!event.defaultPrevented && event.key === 'Escape') {
+        setOpen(false);
+        reference.current?.focus();
+      }
+    },
   });
-  const hover = useHover(floating.context, {
-    enabled: kind === 'tooltip' || kind === 'hovercard',
-    move: false,
-  });
-  const focus = useFocus(floating.context, {
-    enabled: kind === 'tooltip' || kind === 'hovercard',
-  });
-  const dismiss = useDismiss(floating.context);
-  const role = useRole(floating.context, {
-    role:
-      kind === 'menu'
-        ? 'menu'
-        : kind === 'listbox'
-          ? 'listbox'
-          : kind === 'tooltip'
-            ? 'tooltip'
-            : 'dialog',
-  });
-  const interactions = useInteractions([click, hover, focus, dismiss, role]);
+  const refs = {
+    reference,
+    floating,
+    setReference: (node: HTMLElement | null) => (reference.current = node),
+    setFloating: (node: HTMLElement | null) => (floating.current = node),
+  };
   const value = useMemo(
     () => ({
-      ...floating,
-      ...interactions,
+      refs,
+      floatingStyles,
+      getReferenceProps,
+      getFloatingProps,
       kind,
       open,
       setOpen,
       titleId: `${uid}-title`,
       descriptionId: `${uid}-description`,
     }),
-    [floating, interactions, kind, open, uid],
+    [floatingStyles, kind, open, uid],
   );
   return (
     <FloatingContext.Provider value={value}>
@@ -3245,7 +3324,8 @@ type PreparedSeries<T> = ChartSeries<T> & { points: PreparedPoint<T>[]; type: Ch
 type ChartContextValue = { width: number; height: number };
 const ChartContext = createContext<ChartContextValue | null>(null);
 
-const colors = Array.from({ length: 10 }, (_, index) => `var(--simurgh-chart-${index + 1})`);
+const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart-${index + 1}))`);
+const axisNumberFormatter = new Intl.NumberFormat('en-US');
 
 function useChartRows<T>(data: readonly T[] | undefined, stream: ChartStream<string> | undefined, width: number): readonly T[] {
   const [version, setVersion] = useState(0);
@@ -3388,7 +3468,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
           <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>
-          <g data-part="y-axis">{ticks.map((tick) => <text key={tick} x={layout.left - 8} y={yMap(tick)}>{Intl.NumberFormat().format(tick)}</text>)}</g>
+          <g data-part="y-axis">{ticks.map((tick) => <text key={tick} x={layout.left - 8} y={yMap(tick)}>{axisNumberFormatter.format(tick)}</text>)}</g>
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><circle cx={focused.x} cy={focused.y} r="4" /></g>}
         </svg>
@@ -3448,7 +3528,7 @@ export function RadarChart<T>(props: ChartProps<T>) {
   const value = y ?? series?.[0]?.y;
   const values = value ? data.map((datum, index) => numericValue(chartValue(datum, value, index))).filter((item): item is number => item != null) : [];
   const decorative = 'decorative' in accessibility && accessibility.decorative;
-  return <figure className="simurgh-chart" data-slot="chart" data-state={values.length ? undefined : 'empty'} aria-hidden={decorative || undefined} {...native}>{values.length ? <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true"><polygon data-part="series" points={radarPoints(values, Math.min(width, height) / 2 - 24)} /></svg> : emptyContent}{!decorative && <><figcaption>{accessibility.title}</figcaption><p data-part="description">{accessibility.description} {chartSummary(values)}</p></>}</figure>;
+  return <figure className="simurgh-chart" data-slot="chart" data-state={values.length ? undefined : 'empty'} aria-hidden={decorative || undefined} {...native}>{values.length ? <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true"><polygon data-part="series" points={radarPoints(values, Math.min(width, height) / 2 - 24)} fill={colors[0]} stroke={colors[0]} /></svg> : emptyContent}{!decorative && <><figcaption>{accessibility.title}</figcaption><p data-part="description">{accessibility.description} {chartSummary(values)}</p></>}</figure>;
 }
 
 // Generated by scripts/generate-entrypoints.mjs.

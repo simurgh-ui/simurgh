@@ -508,19 +508,10 @@ const cases = [
   { name: 'vue-complete', framework: 'vue', budget: 29 * KiB },
   { name: 'angular-complete', framework: 'angular', budget: 34 * KiB },
   {
-    name: 'react-without-floating',
-    framework: 'react',
-    external: ['@floating-ui/react', '@floating-ui/react/*'],
-  },
-  {
-    name: 'vue-without-floating',
-    framework: 'vue',
-    external: ['@floating-ui/dom', '@floating-ui/dom/*'],
-  },
-  {
-    name: 'angular-without-floating',
-    framework: 'angular',
-    external: ['@floating-ui/dom', '@floating-ui/dom/*'],
+    name: 'internal-floating',
+    source:
+      "export { autoUpdateFloating, computeFloatingPosition } from './packages/core/dist/floating.js';",
+    budget: 5 * KiB,
   },
   {
     name: 'styles-complete',
@@ -576,7 +567,7 @@ for (const bundleCase of cases) {
           },
           format: 'esm',
           external: [
-            ...peerDependencies[bundleCase.framework],
+            ...(peerDependencies[bundleCase.framework] ?? []),
             ...(bundleCase.external ?? []),
           ],
           plugins: [packageResolver()],
@@ -640,20 +631,13 @@ for (const framework of ['react', 'vue', 'angular']) {
   }
 }
 
-const floatingUi = Object.fromEntries(
-  ['react', 'vue', 'angular'].map((framework) => [
-    framework,
-    {
-      gzip:
-        measurements[`${framework}-complete`].gzip -
-        measurements[`${framework}-without-floating`].gzip,
-      calculation: 'complete bundle minus bundle with Floating UI externalized',
-    },
-  ]),
-);
+const positioningLayer = {
+  ...measurements['internal-floating'],
+  calculation: 'standalone shared positioning engine',
+};
 const report = {
   bundles: measurements,
-  featureCosts: { floatingUi },
+  featureCosts: { positioningLayer },
   packages: publishedPackages,
 };
 await mkdir(resolve(root, 'artifacts'), { recursive: true });
@@ -662,6 +646,6 @@ await writeFile(
   `${JSON.stringify(report, null, 2)}\n`,
 );
 console.table(measurements);
-console.table(floatingUi);
+console.table(positioningLayer);
 console.table(publishedPackages);
 if (failures.length) throw new Error(failures.join('\n'));

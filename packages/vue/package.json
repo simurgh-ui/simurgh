@@ -41,7 +41,6 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.8.0",
     "@simurgh-ui/core": "workspace:*"
   },
   "peerDependencies": {

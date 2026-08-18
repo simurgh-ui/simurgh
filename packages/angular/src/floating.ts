@@ -1,7 +1,6 @@
 export {
-  autoUpdate,
-  computePosition,
-  flip,
-  offset,
-  shift,
-} from '@floating-ui/dom';
+  autoUpdateFloating,
+  computeFloatingPosition,
+  type FloatingOptions,
+  type FloatingPlacement,
+} from '@simurgh-ui/core';

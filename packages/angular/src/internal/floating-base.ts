@@ -7,13 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  autoUpdate,
-  computePosition,
-  flip,
-  offset,
-  shift,
-} from '../floating.js';
+import { autoUpdateFloating, computeFloatingPosition } from '../floating.js';
 
 @Directive()
 export abstract class FloatingBase implements OnDestroy {
@@ -44,10 +38,8 @@ export abstract class FloatingBase implements OnDestroy {
       floating = this.floating?.nativeElement;
     if (!reference || !floating) return;
     this.cleanup?.();
-    this.cleanup = autoUpdate(reference, floating, async () => {
-      const result = await computePosition(reference, floating, {
-        middleware: [offset(8), flip(), shift({ padding: 8 })],
-      });
+    this.cleanup = autoUpdateFloating(reference, floating, () => {
+      const result = computeFloatingPosition(reference, floating);
       Object.assign(floating.style, {
         left: `${result.x}px`,
         top: `${result.y}px`,

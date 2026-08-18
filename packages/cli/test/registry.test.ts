@@ -147,7 +147,8 @@ describe('CLI application fixture', () => {
         join(fixture, 'src/components/ui/popover.tsx'),
         'utf8',
       );
-      expect(popoverSource).toContain("from '@floating-ui/react'");
+      expect(popoverSource).toContain("from '@simurgh-ui/core'");
+      expect(popoverSource).not.toContain('@floating-ui');
       expect(popoverSource).not.toContain("from './floating.js'");
       execFileSync(process.execPath, [cli, 'add', 'dialog'], { cwd: fixture });
       expect(readFileSync(generated, 'utf8')).toBe(original);
@@ -351,11 +352,9 @@ describe('CLI application fixture', () => {
         );
         if (withSrc) mkdirSync(join(fixture, 'src'));
 
-        execFileSync(
-          process.execPath,
-          [cli, 'init', '--skip-install'],
-          { cwd: fixture },
-        );
+        execFileSync(process.execPath, [cli, 'init', '--skip-install'], {
+          cwd: fixture,
+        });
         execFileSync(process.execPath, [cli, 'add', 'button'], {
           cwd: fixture,
         });

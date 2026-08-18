@@ -12,13 +12,7 @@ import {
   type InjectionKey,
   type Ref,
 } from 'vue';
-import {
-  autoUpdate,
-  computePosition,
-  flip,
-  offset,
-  shift,
-} from '../floating.js';
+import { autoUpdateFloating, computeFloatingPosition } from '../floating.js';
 
 type FloatingKind = 'popover' | 'tooltip' | 'hovercard' | 'menu';
 
@@ -57,11 +51,10 @@ export function floatingRoot(name: string, kind: FloatingKind) {
       watch([current, trigger, content], ([open, reference, floating]) => {
         cleanup?.();
         if (open && reference && floating)
-          cleanup = autoUpdate(reference, floating, async () => {
-            const position = await computePosition(reference, floating, {
-              middleware: [offset(8), flip(), shift({ padding: 8 })],
-            });
+          cleanup = autoUpdateFloating(reference, floating, () => {
+            const position = computeFloatingPosition(reference, floating);
             Object.assign(floating.style, {
+              position: 'fixed',
               left: `${position.x}px`,
               top: `${position.y}px`,
             });
