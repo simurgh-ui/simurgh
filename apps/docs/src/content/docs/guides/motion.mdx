@@ -5,6 +5,8 @@ description: Lightweight opt-in animation for React, Vue, and Angular.
 
 import ComponentPreview from '../../../components/ComponentPreview.astro';
 import MotionExamples from '../../../components/MotionExamples';
+import MotionPatternExamples from '../../../components/MotionPatternExamples';
+import MotionChoreographyExamples from '../../../components/MotionChoreographyExamples';
 
 `@simurgh-ui/motion` adds purposeful animation without changing the default behavior of Simurgh
 components. Durations and delays use seconds. The engine uses the Web Animations API and imports
@@ -46,6 +48,35 @@ animate(element, celebration, {
   easing: 'ease-in-out',
 });
 ```
+
+## Interface patterns
+
+The same primitives can produce application-level effects without a special component for every
+pattern. These examples adapt common animation ideas—typewriter text, staggered character reveal,
+accordion reveal, loading shimmer, a timeline sequence, and SVG path drawing—to Simurgh's smaller
+API.
+
+<ComponentPreview title="Interface motion patterns" kind="live">
+  <MotionPatternExamples client:load />
+</ComponentPreview>
+
+The accordion preserves `aria-expanded` and its controlled-region relationship. The loading bars
+are hidden from assistive technology, while the SVG retains an accessible name. Treat those
+semantics as part of the example rather than decoration to remove when copying it.
+
+## Choreographed keyframes
+
+These GSAP-inspired examples synchronize several property tracks to create an orbital path, a
+repeating marquee, and a shape-and-color transformation. They use ordinary keyframe arrays, so no
+plugin or browser-global setup is required.
+
+<ComponentPreview title="Choreographed motion" kind="live">
+  <MotionChoreographyExamples client:load />
+</ComponentPreview>
+
+An `x` array and a `y` array with matching lengths approximate a path through a series of points.
+This is useful for small decorative routes; use a dedicated path engine when an object must follow
+an arbitrary SVG curve precisely. Repeated motion still follows the configured reduced-motion mode.
 
 ## Core API
 
@@ -152,10 +183,11 @@ Bind a motion definition to both the parent and its children. The parent adds it
 each child in document order.
 
 ```tsx
-const list = { animate: { opacity: 1 }, stagger: 0.08 };
+const list = { animate: { opacity: 1 }, stagger: 0.3 };
 const item = {
   initial: { opacity: 0, x: -12 },
-  animate: { opacity: 1, x: 0 },
+  animate: { opacity: [0, 1], x: [-18, 0] },
+  transition: { duration: 0.45 },
 };
 
 <animated.ul motion={list}>

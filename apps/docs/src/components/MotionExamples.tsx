@@ -34,13 +34,13 @@ const keyframeMotion: MotionDefinition = {
 const listMotion: MotionDefinition = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  stagger: 0.08,
+  stagger: 0.3,
 };
 
 const listItemMotion: MotionDefinition = {
   initial: { opacity: 0, x: -12 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.2 },
+  animate: { opacity: [0, 1], x: [-18, 0] },
+  transition: { duration: 0.45, easing: 'ease-out' },
 };
 
 const inViewMotion: MotionDefinition = {

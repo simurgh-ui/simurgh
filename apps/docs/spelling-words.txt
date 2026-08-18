@@ -32,6 +32,7 @@ active
 active-item
 actual
 actually
+adapt
 adapter
 adapter-host
 adapter's
@@ -39,7 +40,6 @@ adapters
 add
 adding
 additional
-additionally
 addon
 addons
 adds
@@ -94,7 +94,6 @@ anchored
 anchors
 and
 angular
-angular-specific
 angular's
 animate
 animation
@@ -131,6 +130,7 @@ apply
 appointment
 appropriate
 appropriately
+approximate
 arabic
 arbitrarily
 arbitrary
@@ -267,6 +267,7 @@ broadly
 browse
 browser
 browser-delivered
+browser-global
 browser-native
 browser-only
 browser-zoom
@@ -373,6 +374,7 @@ choices
 choose
 chooser
 choosing
+choreographed
 chosen
 chrome
 chromium
@@ -551,6 +553,7 @@ control
 control-size
 control's
 controlled
+controlled-region
 controls
 convenience
 convenient
@@ -570,6 +573,7 @@ copies
 copy
 copy-link
 copy-ready
+copying
 core
 corner
 corner-radius
@@ -601,6 +605,7 @@ culture
 current
 current-page
 currently
+curve
 custom
 custom-listbox
 custom-styled
@@ -787,6 +792,7 @@ editable-filtering
 editing
 edits
 effect
+effects
 eight
 either
 element
@@ -1052,6 +1058,7 @@ group
 grouping
 groups
 grow
+gsap-inspired
 guarantee
 guaranteed
 guard
@@ -1105,7 +1112,6 @@ hosts
 hover
 hover-card
 hover-triggered
-hovering
 how
 hsl
 html
@@ -1129,6 +1135,7 @@ iconnames.length
 icons
 icons.generated
 id
+ideas
 identical
 identifiable
 identified
@@ -1180,7 +1187,6 @@ indicate
 indicator
 indicators
 individual
-infer
 information
 informational
 informative
@@ -1277,6 +1283,7 @@ keyboard-accessible
 keyboard-navigable
 keyboard-only
 keyboards
+keyframe
 keyframes
 keys
 kib
@@ -1393,6 +1400,7 @@ mark
 marked
 marks
 markup
+marquee
 masking
 match
 matches
@@ -1469,7 +1477,9 @@ most
 motif
 motifs
 motion
+motionchoreographyexamples
 motionexamples
+motionpatternexamples
 motor-access
 mount
 mounted
@@ -1601,6 +1611,7 @@ option
 optional
 options
 or
+orbital
 order
 ordered
 ordered-list
@@ -1753,6 +1764,7 @@ positive
 possible
 pre-release
 precise
+precisely
 predictable
 predictably
 prefer
@@ -1815,6 +1827,7 @@ promised
 promising
 prop
 properties
+property
 proportion
 props
 prove
@@ -1960,7 +1973,6 @@ replace
 replacement
 replaces
 replacing
-replaying
 report
 reported
 reporting
@@ -2016,12 +2028,12 @@ results
 retain
 retained
 retaining
+retains
 retested
 retries
 return
 returned
 returns
-reusable
 reuse
 reveal
 revealing
@@ -2149,6 +2161,7 @@ seven
 several
 shadow
 shape
+shape-and-color
 shapes
 shaping
 share
@@ -2159,6 +2172,7 @@ sheet
 shift
 shifting
 shifts
+shimmer
 ship
 shipped
 shipping
@@ -2227,6 +2241,7 @@ spacing
 spacious
 span
 spatial
+special
 specific
 specifically
 specifications
@@ -2341,6 +2356,7 @@ switching
 symbol
 symbol-for-symbol
 symbols
+synchronize
 synchronized
 syntax
 system
@@ -2420,7 +2436,6 @@ together
 toggle
 toggled
 toggles
-toggling
 token
 tokens
 tone
@@ -2439,11 +2454,13 @@ total
 touch
 touch-first
 touch-friendly
+tracks
 tradeoffs
 transfer
 transferred
 transfers
 transform
+transformation
 transformed
 transforms
 transient
@@ -2469,11 +2486,9 @@ trigger
 trigger-focus
 trigger-opened
 triggers
-true
 truly
 trusted
 truth
-try
 turnkey
 turns
 turquoise
@@ -2485,6 +2500,7 @@ typeahead
 typed
 types
 typescript
+typewriter
 typing
 typography
 ubuntu
