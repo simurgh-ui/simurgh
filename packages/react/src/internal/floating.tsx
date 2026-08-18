@@ -19,8 +19,12 @@ import React, {
   type PropsWithChildren,
 } from 'react';
 import { createPortal } from 'react-dom';
-import type { OverlayContextValue } from './dialog-context.js';
-import { useBrowser, useOpen, type OpenProps } from './open.js';
+import {
+  useBrowser,
+  useOpen,
+  type OpenProps,
+  type OverlayContextValue,
+} from './open.js';
 
 export type FloatingKind =
   'popover' | 'tooltip' | 'hovercard' | 'menu' | 'listbox';
