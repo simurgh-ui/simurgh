@@ -6,9 +6,10 @@ import {
   Input,
   Output,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { compositeKeydown } from '../internal/composite-keydown.js';
-import { createId } from '@simurgh-ui/core';
+import { InternalIdService } from '../internal/id.js';
 
 export type SelectOption = { value: string; label: string; disabled?: boolean };
 
@@ -70,7 +71,7 @@ export class SelectComponent {
   @Input() disabled = false;
   @Output() valueChange = new EventEmitter<string>();
   @ViewChild('list') list?: ElementRef<HTMLElement>;
-  readonly listId = createId('select-list');
+  readonly listId = inject(InternalIdService).next('select-list');
   open = false;
   get label() {
     return (

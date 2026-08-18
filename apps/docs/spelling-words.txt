@@ -15,7 +15,6 @@ accessibility
 accessible
 accessible-name
 accessor
-accessors
 accidental
 accidentally
 accompany
@@ -52,7 +51,6 @@ adopted
 adopting
 adopts
 adornments
-advanced
 advancement
 affect
 affected
@@ -91,6 +89,7 @@ ancestor
 ancestor's
 ancestors
 anchor
+anchor's
 anchored
 anchors
 and
@@ -231,8 +230,8 @@ block
 blocked
 blocks
 blue
-blurry
 body
+body-portalled
 boolean
 border
 borders
@@ -245,7 +244,6 @@ bound
 boundaries
 boundary
 bounded
-bounds
 boxes
 branch
 branches
@@ -340,7 +338,6 @@ center
 centered
 certification
 change
-change-event
 changed
 changelog
 changelogs
@@ -384,8 +381,6 @@ classes
 classified
 clean
 clear
-clearing
-clears
 cli
 cli-copied
 cli-owned
@@ -416,6 +411,7 @@ collection
 collection-level
 collections
 collects
+collision
 collision-aware
 color
 colors
@@ -484,6 +480,7 @@ composition
 compound
 compound-component
 comprehension
+computed
 concepts
 concern
 concise
@@ -522,10 +519,10 @@ contain
 contained
 container
 containers
+containing
 containment
 contains
 content
-content-security
 content-sized
 contents
 context
@@ -583,7 +580,6 @@ creation
 cropping
 cross-field
 cross-framework
-crosses
 crosshair
 css
 css-pixel
@@ -606,10 +602,8 @@ dark-mode
 dark-theme
 data
 data-heavy
-datasets
 date
 dates
-datum
 day
 days
 dead
@@ -659,7 +653,6 @@ describing
 description
 descriptions
 design
-design-system
 designated
 desirable
 desktop
@@ -707,6 +700,7 @@ directions
 directive
 directives
 directly
+directory
 disable
 disabled
 disabled-state
@@ -745,7 +739,6 @@ documents
 does
 dom
 domain
-domains
 donut
 down
 downloadable
@@ -831,7 +824,6 @@ eventual
 every
 evidence
 exact
-exact-value
 example
 example's
 examples
@@ -868,7 +860,6 @@ explicit
 explicitly
 exploration
 explore
-explorer
 export
 exported
 exports
@@ -906,7 +897,6 @@ field
 fielderror
 fields
 fights
-figure
 file
 filename
 filenames
@@ -936,6 +926,7 @@ five
 five-percent
 fixed
 fixed-option
+fixed-position
 fixes
 fixture
 fixtures
@@ -1024,6 +1015,7 @@ giving
 glaze
 glazing
 global
+globals
 glossaries
 graph
 grayscale
@@ -1062,12 +1054,10 @@ heavily
 height
 help
 helper
-helpers
 here
 heritage
 hesitation
 hidden
-hidden-series
 hide
 hierarchical
 hierarchy
@@ -1215,7 +1205,6 @@ into
 introduce
 introducing
 invalid
-invalid-data
 invalid-field
 invalid-form
 invasive
@@ -1277,7 +1266,6 @@ layered
 layers
 layout
 layouts
-lazily
 lazy
 lazy-load
 lazy-loaded
@@ -1294,6 +1282,7 @@ levels
 library's
 lifecycle
 light
+lightweight
 limits
 line
 lines
@@ -1306,6 +1295,7 @@ list
 listbox
 listed
 listen
+listener
 listeners
 listitem
 lists
@@ -1395,6 +1385,7 @@ metaphor
 meter
 method
 methods
+middleware
 migrating
 migration
 migrations
@@ -1411,7 +1402,6 @@ mix
 mixed
 mixed-direction
 mixed-input
-mixed-series
 mixed-state
 mixing
 mobile
@@ -1426,7 +1416,6 @@ moderated
 modern
 modes
 modified
-modified-arrow
 modify
 module
 modules
@@ -1488,6 +1477,7 @@ never
 new
 newer
 next
+next.js
 ngmodule
 no
 no-javascript
@@ -1495,7 +1485,6 @@ node
 node.js
 nodes
 non-blocking
-non-chart
 non-essential
 non-floating
 non-interactive
@@ -1524,6 +1513,7 @@ observable
 observation
 observations
 observed
+observer
 occur
 occurs
 ochre
@@ -1532,7 +1522,6 @@ off
 offer
 offers
 offline
-offscreencanvas
 offset
 often
 old
@@ -1560,6 +1549,7 @@ operable
 operate
 operating
 operation
+opposite
 opt-in
 option
 optional
@@ -1576,7 +1566,6 @@ ornament
 ornate
 os
 other
-others
 otherwise
 otp
 out
@@ -1585,6 +1574,7 @@ outlined
 output
 outputs
 outside
+outside-pointer
 over
 overflow
 overlay
@@ -1616,10 +1606,8 @@ pair
 pairings
 pairs
 palette
-pan
 panel
 panels
-panning
 parallax
 parameter
 parent
@@ -1661,7 +1649,6 @@ period
 periods
 permission
 permits
-permitted
 persian
 persisted
 persistent
@@ -1702,7 +1689,6 @@ polite
 politely
 pomegranate
 popover
-populated
 popup
 port
 portal
@@ -1771,6 +1757,7 @@ project-owned
 project's
 projected
 projection
+projects
 prominent
 promise
 promised
@@ -1997,6 +1984,7 @@ ring
 role
 roles
 root
+root-based
 rounded
 route
 routes
@@ -2034,7 +2022,6 @@ saving
 say
 scalar
 scale
-scales
 scatter
 scenarios
 scheme
@@ -2109,6 +2096,7 @@ shares
 sharp
 sheet
 shift
+shifts
 ship
 shipped
 shipping
@@ -2134,6 +2122,7 @@ simple
 simplest
 simplify
 simurgh
+simurgh's
 single
 single-date
 single-file
@@ -2164,7 +2153,6 @@ snippets
 so
 solid
 solve
-some
 sorting
 source
 source-code
@@ -2176,7 +2164,6 @@ spacing
 spacious
 span
 spatial
-specialized
 specific
 specifically
 specifications
@@ -2196,10 +2183,8 @@ stable
 stack
 stacked
 stacking
-stacks
 stage
 stale
-stand
 standalone
 standard
 starlight
@@ -2223,10 +2208,7 @@ storage
 store
 stored
 story
-strategy
-stream
 streaming
-strictly
 string
 strings
 strong
@@ -2312,6 +2294,7 @@ targets
 task
 task-based
 tasks
+teardown
 technology
 teleport
 template
@@ -2350,8 +2333,6 @@ thirteen
 this
 those
 though
-thousands
-thread
 threat
 three
 three-way
@@ -2392,6 +2373,8 @@ tradeoffs
 transfer
 transferred
 transfers
+transform
+transformed
 transforms
 transient
 transition
@@ -2415,7 +2398,6 @@ trigger
 trigger-focus
 trigger-opened
 triggers
-troubleshooting
 true
 truly
 trusted
@@ -2518,7 +2500,6 @@ version
 versions
 vertical
 via
-view-box
 viewchild
 viewport
 viewports
@@ -2529,8 +2510,7 @@ visibility
 visible
 visibly
 visual
-visualizations
-visualize
+visual-viewport
 visually
 vocabulary
 vue
@@ -2579,7 +2559,6 @@ within
 without
 wording
 work
-workers
 workflow
 workflows
 working

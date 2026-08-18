@@ -211,7 +211,7 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Run shared overlay contracts across React, Vue, and Angular for collision handling, RTL,
       keyboard and pointer input, nested overlays, portals, focus management, dismissal, interrupted
       unmounts, and cleanup.
-- [ ] Add SSR and hydration tests proving that importing and initially rendering every positioned
+- [x] Add SSR and hydration tests proving that importing and initially rendering every positioned
       overlay does not access `window` or `document` and produces deterministic initial markup.
 - [ ] Add cross-browser visual fixtures for viewport edges, nested scroll containers, zoom,
       transformed ancestors, mobile viewports, and live anchor/content resizing.

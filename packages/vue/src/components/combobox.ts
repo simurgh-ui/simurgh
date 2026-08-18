@@ -1,5 +1,12 @@
-import { createId } from '@simurgh-ui/core';
-import { computed, defineComponent, h, ref, watch, type PropType } from 'vue';
+import {
+  computed,
+  defineComponent,
+  h,
+  ref,
+  useId,
+  watch,
+  type PropType,
+} from 'vue';
 
 export type ComboboxOption = {
   value: string;
@@ -23,7 +30,7 @@ export const Combobox = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit, attrs }) {
-    const listId = createId('combobox-list');
+    const listId = `combobox-list-${useId().replace(/:/g, '')}`;
     const query = ref('');
     const open = ref(false);
     const activeIndex = ref(-1);

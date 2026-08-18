@@ -1,8 +1,8 @@
 export type { SelectOption } from './select.js';
 import type { SelectOption } from './select.js';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { createId } from '@simurgh-ui/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { InternalIdService } from '../internal/id.js';
 
 @Component({
   selector: 'simurgh-combobox',
@@ -66,7 +66,7 @@ export class ComboboxComponent {
   @Input() noResults = 'No results';
   @Input() ariaLabel: string | undefined;
   @Output() valueChange = new EventEmitter<string>();
-  readonly listId = createId('combobox-list');
+  readonly listId = inject(InternalIdService).next('combobox-list');
   query = '';
   open = false;
   activeIndex = -1;

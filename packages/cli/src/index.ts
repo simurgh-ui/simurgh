@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { manifest, registryEntry, type Framework } from '@simurgh-ui/registry';
@@ -81,6 +87,29 @@ function installRecipeStyle(
     copy(join(assetRoot(), 'styles/components', `${component}.css`), target);
   }
   addRecipeImport(config, component);
+}
+function installComponentSupport(
+  config: Config,
+  source: string,
+  overwrite = false,
+) {
+  if (!source.includes('../internal/')) return;
+  const extension = manifest.frameworks[config.framework].extension;
+  const supportAssets = join(assetRoot(), config.framework);
+  const supportTarget = resolve(cwd(), config.components, '..');
+  for (const file of readdirSync(join(supportAssets, 'internal'))) {
+    const target = join(supportTarget, 'internal', file);
+    if (!existsSync(target) || overwrite) {
+      copy(join(supportAssets, 'internal', file), target);
+    }
+  }
+  const floating = `floating.${extension}`;
+  if (
+    existsSync(join(supportAssets, floating)) &&
+    (!existsSync(join(supportTarget, floating)) || overwrite)
+  ) {
+    copy(join(supportAssets, floating), join(supportTarget, floating));
+  }
 }
 function componentTarget(config: Config, component: string) {
   return join(
@@ -372,6 +401,7 @@ cli
     for (const name of selected) {
       registryEntry(name, config.framework);
       const target = componentTarget(config, name);
+      const source = expectedSource(config, name);
       if (existsSync(target) && !options.overwrite) {
         console.log(
           pc.yellow(
@@ -380,9 +410,10 @@ cli
         );
       } else {
         ensureParent(target);
-        writeFileSync(target, expectedSource(config, name));
+        writeFileSync(target, source);
         console.log(pc.green(`Added ${name} to ${relative(cwd(), target)}.`));
       }
+      installComponentSupport(config, source, options.overwrite);
       installRecipeStyle(config, name, options.overwrite);
     }
   });

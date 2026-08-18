@@ -1,5 +1,4 @@
-import { createId } from '@simurgh-ui/core';
-import { defineComponent, h, nextTick, ref, type PropType } from 'vue';
+import { defineComponent, h, nextTick, ref, useId, type PropType } from 'vue';
 import { compositeKeydown } from '../internal/composite-keydown.js';
 
 export type SelectOption = {
@@ -24,7 +23,7 @@ export const Select = /* @__PURE__ */ defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const open = ref(false);
-    const listId = createId('select-list');
+    const listId = `select-list-${useId().replace(/:/g, '')}`;
     const show = async () => {
       open.value = true;
       await nextTick();

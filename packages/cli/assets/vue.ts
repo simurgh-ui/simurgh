@@ -1386,8 +1386,15 @@ export const CollapsibleContent = /* @__PURE__ */ defineComponent({
   },
 });
 
-import { createId } from '@simurgh-ui/core';
-import { computed, defineComponent, h, ref, watch, type PropType } from 'vue';
+import {
+  computed,
+  defineComponent,
+  h,
+  ref,
+  useId,
+  watch,
+  type PropType,
+} from 'vue';
 
 export type ComboboxOption = {
   value: string;
@@ -1411,7 +1418,7 @@ export const Combobox = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit, attrs }) {
-    const listId = createId('combobox-list');
+    const listId = `combobox-list-${useId().replace(/:/g, '')}`;
     const query = ref('');
     const open = ref(false);
     const activeIndex = ref(-1);
@@ -3723,8 +3730,7 @@ export const ScrollArea = /* @__PURE__ */ defineComponent({
   },
 });
 
-import { createId } from '@simurgh-ui/core';
-import { defineComponent, h, nextTick, ref, type PropType } from 'vue';
+import { defineComponent, h, nextTick, ref, useId, type PropType } from 'vue';
 import { compositeKeydown } from '../internal/composite-keydown.js';
 
 export type SelectOption = {
@@ -3749,7 +3755,7 @@ export const Select = /* @__PURE__ */ defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const open = ref(false);
-    const listId = createId('select-list');
+    const listId = `select-list-${useId().replace(/:/g, '')}`;
     const show = async () => {
       open.value = true;
       await nextTick();

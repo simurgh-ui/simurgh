@@ -1,5 +1,7 @@
 import {
   copyFileSync,
+  cpSync,
+  existsSync,
   mkdirSync,
   readFileSync,
   readdirSync,
@@ -24,6 +26,7 @@ for (const framework of ['react', 'vue', 'angular']) {
   const extension = framework === 'react' ? 'tsx' : 'ts';
   const sourceRoot = resolve(workspaceRoot, `packages/${framework}/src`);
   const componentRoot = resolve(sourceRoot, 'components');
+  const internalRoot = resolve(sourceRoot, 'internal');
   const sources = [
     resolve(sourceRoot, `index.${extension}`),
     ...readdirSync(componentRoot)
@@ -38,6 +41,20 @@ for (const framework of ['react', 'vue', 'angular']) {
     resolve(assetsRoot, `${framework}.${extension}`),
     `${registrySource}\n`,
   );
+  rmSync(resolve(frameworkAssets, 'internal'), {
+    recursive: true,
+    force: true,
+  });
+  cpSync(internalRoot, resolve(frameworkAssets, 'internal'), {
+    recursive: true,
+  });
+  const floatingSource = resolve(sourceRoot, `floating.${extension}`);
+  if (existsSync(floatingSource)) {
+    copyFileSync(
+      floatingSource,
+      resolve(frameworkAssets, `floating.${extension}`),
+    );
+  }
 }
 
 copyFileSync(

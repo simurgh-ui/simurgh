@@ -161,9 +161,15 @@ describe('CLI application fixture', () => {
         join(fixture, 'src/components/ui/popover.tsx'),
         'utf8',
       );
-      expect(popoverSource).toContain("from '@simurgh-ui/core'");
+      expect(popoverSource).toContain("from '../internal/floating.js'");
       expect(popoverSource).not.toContain('@floating-ui');
       expect(popoverSource).not.toContain("from './floating.js'");
+      const floatingSource = readFileSync(
+        join(fixture, 'src/components/internal/floating.tsx'),
+        'utf8',
+      );
+      expect(floatingSource).toContain("from '@simurgh-ui/core'");
+      expect(floatingSource).not.toContain('@floating-ui');
       const recipeIndex = readFileSync(
         join(fixture, 'src/styles/simurgh/recipes.css'),
         'utf8',

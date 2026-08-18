@@ -1079,8 +1079,8 @@ export class CollapsibleComponent {
 export type { SelectOption } from './select.js';
 import type { SelectOption } from './select.js';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { createId } from '@simurgh-ui/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { InternalIdService } from '../internal/id.js';
 
 @Component({
   selector: 'simurgh-combobox',
@@ -1144,7 +1144,7 @@ export class ComboboxComponent {
   @Input() noResults = 'No results';
   @Input() ariaLabel: string | undefined;
   @Output() valueChange = new EventEmitter<string>();
-  readonly listId = createId('combobox-list');
+  readonly listId = inject(InternalIdService).next('combobox-list');
   query = '';
   open = false;
   activeIndex = -1;
@@ -1649,16 +1649,18 @@ import { FloatingBase } from '../internal/floating-base.js';
   imports: [CommonModule],
   template: `<button
       #reference
+      [attr.data-simurgh-floating-reference]="floatingId"
       type="button"
       class="simurgh-trigger"
       aria-haspopup="menu"
       [attr.aria-expanded]="open"
-      (click)="toggle()"
+      (click)="toggle($event)"
     >
       <ng-content select="[trigger]" />
     </button>
     <div
       #floating
+      [attr.data-simurgh-floating-content]="floatingId"
       *ngIf="open"
       role="menu"
       class="simurgh-content"
@@ -1669,8 +1671,9 @@ import { FloatingBase } from '../internal/floating-base.js';
     </div>`,
 })
 export class DropdownMenuComponent extends FloatingBase {
-  override toggle() {
-    super.toggle();
+  protected override interactionKind = 'menu' as const;
+  override toggle(event?: Event) {
+    super.toggle(event);
     if (this.open)
       setTimeout(() =>
         this.floating?.nativeElement
@@ -1681,6 +1684,7 @@ export class DropdownMenuComponent extends FloatingBase {
       );
   }
   onKeydown(event: KeyboardEvent) {
+    this.onFloatingKeydown(event);
     compositeKeydown(event, '[role=menuitem]');
   }
 }
@@ -1952,16 +1956,19 @@ import { FloatingBase } from '../internal/floating-base.js';
   imports: [CommonModule],
   template: `<span
       #reference
+      [attr.data-simurgh-floating-reference]="floatingId"
       data-slot="hover-card-trigger"
       [attr.aria-expanded]="open"
-      (mouseenter)="setOpen(true)"
-      (mouseleave)="setOpen(false)"
-      (focusin)="setOpen(true)"
-      (focusout)="setOpen(false)"
+      (mouseenter)="openFromHover($event)"
+      (mouseleave)="closeFromHover($event)"
+      (focusin)="openFromFocus($event)"
+      (focusout)="closeFromFocus($event)"
+      (keydown)="onReferenceKeydown($event)"
       ><ng-content select="[trigger]"
     /></span>
     <div
       #floating
+      [attr.data-simurgh-floating-content]="floatingId"
       *ngIf="open"
       role="dialog"
       data-slot="hover-card-content"
@@ -1973,6 +1980,7 @@ import { FloatingBase } from '../internal/floating-base.js';
     </div>`,
 })
 export class HoverCardComponent extends FloatingBase {
+  protected override interactionKind = 'hovercard' as const;
   @Input() label = 'Additional information';
   override setOpen(value: boolean) {
     super.setOpen(value);
@@ -2575,7 +2583,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FloatingBase } from '../internal/floating-base.js';
 
-const floatingTemplate = `<button #reference type="button" class="simurgh-trigger" aria-haspopup="dialog" [attr.aria-expanded]="open" [disabled]="disabled" (click)="toggle()"><ng-content select="[trigger]"/></button><div #floating *ngIf="open" role="dialog" [attr.aria-label]="contentLabel" class="simurgh-content" style="position:fixed" (keydown.escape)="close()"><ng-content/></div>`;
+const floatingTemplate = `<button #reference type="button" class="simurgh-trigger" aria-haspopup="dialog" [attr.aria-expanded]="open" [attr.data-simurgh-floating-reference]="floatingId" [disabled]="disabled" (click)="toggle($event)" (keydown)="onReferenceKeydown($event)"><ng-content select="[trigger]"/></button><div #floating *ngIf="open" role="dialog" [attr.aria-label]="contentLabel" [attr.data-simurgh-floating-content]="floatingId" class="simurgh-content" style="position:fixed" (keydown)="onFloatingKeydown($event)"><ng-content/></div>`;
 
 @Component({
   selector: 'simurgh-popover',
@@ -3022,9 +3030,10 @@ import {
   Input,
   Output,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { compositeKeydown } from '../internal/composite-keydown.js';
-import { createId } from '@simurgh-ui/core';
+import { InternalIdService } from '../internal/id.js';
 
 export type SelectOption = { value: string; label: string; disabled?: boolean };
 
@@ -3086,7 +3095,7 @@ export class SelectComponent {
   @Input() disabled = false;
   @Output() valueChange = new EventEmitter<string>();
   @ViewChild('list') list?: ElementRef<HTMLElement>;
-  readonly listId = createId('select-list');
+  readonly listId = inject(InternalIdService).next('select-list');
   open = false;
   get label() {
     return (
@@ -3884,14 +3893,17 @@ import { FloatingBase } from '../internal/floating-base.js';
   imports: [CommonModule],
   template: `<span
       #reference
-      (mouseenter)="setOpen(true)"
-      (mouseleave)="setOpen(false)"
-      (focusin)="setOpen(true)"
-      (focusout)="setOpen(false)"
+      [attr.data-simurgh-floating-reference]="floatingId"
+      (mouseenter)="openFromHover($event)"
+      (mouseleave)="closeFromHover($event)"
+      (focusin)="openFromFocus($event)"
+      (focusout)="closeFromFocus($event)"
+      (keydown)="onReferenceKeydown($event)"
       ><ng-content select="[trigger]"
     /></span>
     <div
       #floating
+      [attr.data-simurgh-floating-content]="floatingId"
       *ngIf="open"
       role="tooltip"
       class="simurgh-content"
@@ -3901,6 +3913,7 @@ import { FloatingBase } from '../internal/floating-base.js';
     </div>`,
 })
 export class TooltipComponent extends FloatingBase {
+  protected override interactionKind = 'tooltip' as const;
   override setOpen(value: boolean) {
     super.setOpen(value);
   }
