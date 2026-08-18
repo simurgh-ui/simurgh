@@ -1,0 +1,93 @@
+---
+title: Overlay positioning migration
+description: Migrate positioned overlays to Simurgh's internal positioning and interaction layer.
+---
+
+Simurgh's Popover, Tooltip, Hover Card, Dropdown Menu, Context Menu, Select, Combobox, and Date
+Picker no longer depend on Floating UI. Package consumers keep the same component imports and
+standard public APIs. CLI consumers receive the shared framework support files beside copied
+components.
+
+This migration intentionally supports the positioning and interaction behavior used by Simurgh's
+catalog rather than reproducing every middleware and extension point of a general-purpose engine.
+
+## Supported positioning subset
+
+The internal layer supports:
+
+- `top`, `right`, `bottom`, and `left` placement, with optional `-start` and `-end` alignment;
+- direction-aware start and end alignment from the anchor's computed LTR or RTL direction;
+- an 8 px default offset, with the React Tooltip retaining its 6 px gap;
+- flipping to the opposite side when it reduces viewport overflow;
+- shifting and clamping inside an 8 px visual-viewport boundary;
+- anchor and content measurement through `getBoundingClientRect`;
+- automatic updates for ancestor scroll, window and visual-viewport scroll or resize, element
+  resize, and observed layout shifts; and
+- complete listener, animation-frame, and observer teardown when content closes or unmounts.
+
+The interaction layer covers click, hover, focus, accessible role assignment, Escape dismissal,
+outside-pointer dismissal, composed event handlers, logical ownership for nested portalled
+overlays, and safe focus restoration.
+
+## Intentional differences
+
+| Area               | Migration behavior                                                                                                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Collision boundary | The visual viewport is the collision boundary. Custom element boundaries are not supported.                                                                                |
+| Middleware         | Arrow positioning, virtual anchors, hide middleware, size matching, and arbitrary middleware pipelines are not included.                                                   |
+| Placement fallback | A placement can flip only to its opposite side; there is no configurable fallback sequence.                                                                                |
+| Portals            | React and Vue position body-portalled content. Angular content remains in the component host, so a transformed ancestor can establish its fixed-position containing block. |
+| Initial render     | Positioned content remains closed and deterministic during server rendering and the first hydration render. Measurement starts only after mounted content opens.           |
+| Nested dismissal   | A child portalled overlay is treated as logically owned by its parent. Escape closes the child without also closing the parent.                                            |
+
+Applications that used Floating UI directly for custom arrows, selection-aware virtual anchors,
+custom boundaries, or middleware should keep that application-owned implementation. Simurgh does
+not expose its internal layer as a replacement for those general-purpose APIs.
+
+## Dependency cleanup
+
+Applications that installed `@floating-ui/react` or `@floating-ui/dom` only because a Simurgh
+adapter required it can remove that direct dependency and refresh the lockfile. Keep either package
+when application code imports it independently.
+
+CLI-copied overlays now import files under the sibling `internal` directory. Run the current CLI
+`add` command in a temporary branch or disposable application, then copy the generated internal
+support files when reconciling an older locally owned overlay. Preserve local changes unless an
+intentional overwrite has been reviewed.
+
+## Measured bundle change
+
+The comparison bundles each of eight positioned component subpaths independently as minified ESM,
+with only the active framework's peer dependencies externalized. The values below are the mean gzip
+size per component; the percentage is calculated from the sum of those eight reproducible bundles.
+
+| Adapter | Before mean gzip | After mean gzip | Reduction |
+| ------- | ---------------: | --------------: | --------: |
+| React   |         11,424 B |         2,548 B |     77.7% |
+| Vue     |          5,242 B |         2,140 B |     59.2% |
+| Angular |          5,513 B |         2,591 B |     53.0% |
+
+Context Menu, Select, and Combobox did not previously include the complete third-party layer in
+every adapter, so their individual change is small and Angular's deterministic ID and interaction
+glue adds a few bytes to Select and Combobox. The table reports the complete representative set so
+those cases are not hidden.
+
+The source measurements are stored in
+`artifacts/floating-ui-pre-migration-baseline.json` and
+`artifacts/floating-ui-post-migration.json`. The complete current positioning-plus-interaction
+adapter entries are also enforced independently: 2,813 B gzip for React, 2,277 B for Vue, and
+2,253 B for Angular, each below the 5 KiB gate.
+
+## Verification after upgrading
+
+1. Open each positioned overlay near every viewport edge and confirm flip and shift behavior.
+2. Repeat inside nested scroll containers, transformed ancestors, mobile viewports, and browser
+   zoom.
+3. Resize both the anchor and content while open and confirm alignment updates.
+4. Test pointer, keyboard, Escape, outside dismissal, nested overlays, focus restoration, and RTL.
+5. Render the initially closed component on the server and hydrate it without markup recovery.
+6. Recheck application bundle reports after removing any now-unused direct dependency.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

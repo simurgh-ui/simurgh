@@ -221,7 +221,7 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Remove `@floating-ui/react` and `@floating-ui/dom` from package manifests, registry runtime
       dependencies, CLI-generated source, lockfiles, bundle tooling, and documentation only after
       behavior, accessibility, SSR, and size gates pass.
-- [ ] Publish migration notes describing the supported positioning subset, any intentional behavior
+- [x] Publish migration notes describing the supported positioning subset, any intentional behavior
       differences, and the per-framework bundle-size reduction.
 
 ## Catalog expansion fifth pass

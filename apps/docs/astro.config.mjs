@@ -35,6 +35,10 @@ export default defineConfig({
               label: 'Updates and migrations',
               slug: 'guides/updates-and-migrations',
             },
+            {
+              label: 'Overlay positioning migration',
+              slug: 'guides/overlay-positioning-migration',
+            },
             { label: 'Versioning and stability', slug: 'guides/versioning' },
             { label: 'Troubleshooting', slug: 'guides/troubleshooting' },
             {

@@ -98,6 +98,7 @@ angular-specific
 angular's
 animate
 animation
+animation-frame
 animations
 announce
 announced
@@ -152,6 +153,7 @@ asset-import
 assets
 assignee
 assigning
+assignment
 assistive
 assistive-technology
 associate
@@ -282,6 +284,7 @@ bundle
 bundle-size
 bundler
 bundlers
+bundles
 business
 busy
 but
@@ -292,6 +295,7 @@ by
 bypass
 bypassed
 bypasses
+bytes
 calculate
 calculated
 calendar
@@ -375,11 +379,13 @@ ci-validated
 circular
 claims
 clamped
+clamping
 clarity
 class
 classes
 classified
 clean
+cleanup
 clear
 cli
 cli-copied
@@ -486,6 +492,7 @@ concern
 concise
 conditional
 conditionally
+configurable
 configuration
 configurations
 configure
@@ -572,6 +579,7 @@ counts
 cover
 coverage
 covered
+covers
 create
 created
 creates
@@ -772,6 +780,7 @@ editable-filtering
 editing
 edits
 effect
+eight
 either
 element
 elements
@@ -793,6 +802,7 @@ encode
 end
 ends
 enforce
+enforced
 engine
 engine-level
 ensure
@@ -800,6 +810,7 @@ enter
 enters
 entire
 entrances
+entries
 entry
 environment
 environments
@@ -811,6 +822,7 @@ error
 errors
 escalating
 escape
+esm
 especially
 essential
 establish
@@ -870,7 +882,9 @@ exposing
 express
 expressed
 extend
+extension
 external
+externalized
 extra
 fades
 fail
@@ -893,6 +907,7 @@ feel
 fences
 fetched
 fetching
+few
 field
 fielderror
 fields
@@ -935,6 +950,7 @@ flashing
 flat
 flex
 flip
+flipping
 floating
 flow
 flows
@@ -999,6 +1015,7 @@ gaps
 gate
 gecko
 general
+general-purpose
 generally
 generate
 generated
@@ -1017,6 +1034,7 @@ glazing
 global
 globals
 glossaries
+glue
 graph
 grayscale
 green
@@ -1031,6 +1049,7 @@ guaranteed
 guard
 guidance
 guide
+gzip
 had
 handle
 handled
@@ -1082,6 +1101,7 @@ how
 hsl
 html
 human
+hydrate
 hydrated
 hydrating
 hydration
@@ -1164,6 +1184,7 @@ initialization
 initialize
 initialized
 initializer
+initially
 initials
 injected
 inline
@@ -1244,6 +1265,7 @@ keyboard-only
 keyboards
 keyframes
 keys
+kib
 knowledge
 known
 label
@@ -1319,9 +1341,11 @@ lockfile
 logarithmic
 logic
 logical
+logically
 logos
 long
 long-running
+longer
 look
 loop
 lose
@@ -1365,6 +1389,7 @@ matter
 max
 maximum
 may
+mean
 meaning
 meaningful
 means
@@ -1389,6 +1414,7 @@ middleware
 migrating
 migration
 migrations
+minified
 minimal
 minimum
 minimums
@@ -1459,6 +1485,7 @@ naturally
 navigate
 navigating
 navigation
+near
 nearby
 nearest
 necessarily
@@ -1504,6 +1531,8 @@ not
 notes
 notices
 notifications
+now
+now-unused
 number
 numbers
 numeric
@@ -1592,6 +1621,7 @@ overwrites
 overwriting
 own
 owned
+ownership
 owns
 package
 package-consumer
@@ -1642,6 +1672,7 @@ per
 per-component
 per-series
 perceivable
+percentage
 percentages
 perception
 perform
@@ -1664,6 +1695,7 @@ pigments
 pills
 pin
 pinned
+pipelines
 pixel
 pixels
 place
@@ -1699,6 +1731,7 @@ position
 positional
 positioned
 positioning
+positioning-plus-interaction
 positive
 possible
 pre-release
@@ -1734,6 +1767,7 @@ preview
 previewing
 previews
 previous
+previously
 primary
 primitive
 primitives
@@ -1830,10 +1864,12 @@ reason
 receive
 receives
 receiving
+recheck
 recipe
 recipes
 recommended
 reconcile
+reconciling
 record
 recorded
 recording
@@ -1847,12 +1883,14 @@ reduce
 reduced
 reduced-motion
 reduces
+reduction
 redundant
 ref
 refactor
 reference
 references
 reflow
+refresh
 refreshes
 refs
 region
@@ -1912,10 +1950,12 @@ reports
 repositioning
 repository
 represent
+representative
 represented
 represents
 reproduce
 reproduces
+reproducible
 reproducing
 reproduction
 request
@@ -2053,6 +2093,7 @@ selectable
 selected
 selecting
 selection
+selection-aware
 selectioncomponentpreview
 selectively
 selector
@@ -2096,6 +2137,7 @@ shares
 sharp
 sheet
 shift
+shifting
 shifts
 ship
 shipped
@@ -2247,6 +2289,7 @@ suffixes
 suitable
 suite
 suites
+sum
 summaries
 summary
 supplement
@@ -2388,6 +2431,7 @@ trapping
 travel
 traverse
 treat
+treated
 treatment
 treatments
 tree
@@ -2437,6 +2481,7 @@ units
 universal
 unlayered
 unless
+unmounts
 unnamed
 unnecessary
 unpressed

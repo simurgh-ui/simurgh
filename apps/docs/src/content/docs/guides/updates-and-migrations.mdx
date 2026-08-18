@@ -7,6 +7,10 @@ The update process depends on the installation model. Package consumers update d
 CLI consumers own copied source and decide how to reconcile it with the current registry. Check the
 component's import path when you are unsure which model it uses.
 
+Applications upgrading positioned overlays should also read the
+[overlay positioning migration](/guides/overlay-positioning-migration/). It records the supported
+positioning subset, interaction differences, dependency cleanup, and measured bundle change.
+
 ## Before updating
 
 1. Commit or otherwise back up application code, `simurgh.json`, copied components, and local theme

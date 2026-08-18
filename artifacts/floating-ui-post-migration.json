@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "revision": "e78565184f6b18408e5b2a05fdf1952fc4d09315",
+  "calculation": "ESM browser bundle with only framework peer dependencies externalized",
+  "measurements": [
+    {
+      "framework": "react",
+      "component": "popover",
+      "minified": 6525,
+      "gzip": 2507,
+      "brotli": 2251
+    },
+    {
+      "framework": "react",
+      "component": "tooltip",
+      "minified": 6525,
+      "gzip": 2504,
+      "brotli": 2245
+    },
+    {
+      "framework": "react",
+      "component": "hover-card",
+      "minified": 6757,
+      "gzip": 2584,
+      "brotli": 2318
+    },
+    {
+      "framework": "react",
+      "component": "dropdown-menu",
+      "minified": 7622,
+      "gzip": 2941,
+      "brotli": 2633
+    },
+    {
+      "framework": "react",
+      "component": "context-menu",
+      "minified": 2964,
+      "gzip": 1408,
+      "brotli": 1254
+    },
+    {
+      "framework": "react",
+      "component": "select",
+      "minified": 8248,
+      "gzip": 3229,
+      "brotli": 2903
+    },
+    {
+      "framework": "react",
+      "component": "combobox",
+      "minified": 1789,
+      "gzip": 956,
+      "brotli": 818
+    },
+    {
+      "framework": "react",
+      "component": "date-picker",
+      "minified": 11398,
+      "gzip": 4256,
+      "brotli": 3848
+    },
+    {
+      "framework": "vue",
+      "component": "popover",
+      "minified": 6002,
+      "gzip": 2294,
+      "brotli": 2057
+    },
+    {
+      "framework": "vue",
+      "component": "tooltip",
+      "minified": 6002,
+      "gzip": 2291,
+      "brotli": 2057
+    },
+    {
+      "framework": "vue",
+      "component": "hover-card",
+      "minified": 6391,
+      "gzip": 2407,
+      "brotli": 2155
+    },
+    {
+      "framework": "vue",
+      "component": "dropdown-menu",
+      "minified": 7308,
+      "gzip": 2789,
+      "brotli": 2492
+    },
+    {
+      "framework": "vue",
+      "component": "context-menu",
+      "minified": 2683,
+      "gzip": 1250,
+      "brotli": 1120
+    },
+    {
+      "framework": "vue",
+      "component": "select",
+      "minified": 2118,
+      "gzip": 1051,
+      "brotli": 895
+    },
+    {
+      "framework": "vue",
+      "component": "combobox",
+      "minified": 2406,
+      "gzip": 1070,
+      "brotli": 927
+    },
+    {
+      "framework": "vue",
+      "component": "date-picker",
+      "minified": 11115,
+      "gzip": 3967,
+      "brotli": 3566
+    },
+    {
+      "framework": "angular",
+      "component": "popover",
+      "minified": 7339,
+      "gzip": 2618,
+      "brotli": 2315
+    },
+    {
+      "framework": "angular",
+      "component": "tooltip",
+      "minified": 7441,
+      "gzip": 2626,
+      "brotli": 2335
+    },
+    {
+      "framework": "angular",
+      "component": "hover-card",
+      "minified": 7641,
+      "gzip": 2699,
+      "brotli": 2390
+    },
+    {
+      "framework": "angular",
+      "component": "dropdown-menu",
+      "minified": 9159,
+      "gzip": 3209,
+      "brotli": 2852
+    },
+    {
+      "framework": "angular",
+      "component": "context-menu",
+      "minified": 3539,
+      "gzip": 1522,
+      "brotli": 1328
+    },
+    {
+      "framework": "angular",
+      "component": "select",
+      "minified": 3864,
+      "gzip": 1583,
+      "brotli": 1367
+    },
+    {
+      "framework": "angular",
+      "component": "combobox",
+      "minified": 4231,
+      "gzip": 1547,
+      "brotli": 1345
+    },
+    {
+      "framework": "angular",
+      "component": "date-picker",
+      "minified": 16176,
+      "gzip": 4924,
+      "brotli": 4379
+    }
+  ]
+}
