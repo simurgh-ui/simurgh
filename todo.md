@@ -198,7 +198,7 @@ Items are checked only after their implementation exists and the relevant verifi
       ancestors, portals, and explicitly unsupported Floating UI features.
 - [x] Capture reproducible pre-migration behavior and bundle baselines for Popover, Tooltip, Hover
       Card, Dropdown Menu, Context Menu, Select, and other positioned overlays in every framework.
-- [ ] Implement a framework-neutral positioning engine in `@simurgh-ui/core` using
+- [x] Implement a framework-neutral positioning engine in `@simurgh-ui/core` using
       `getBoundingClientRect`, offset, flip, and shift/clamping without accessing browser globals
       during module evaluation or server rendering.
 - [ ] Implement leak-free automatic updates for window and scroll-container scrolling, viewport
