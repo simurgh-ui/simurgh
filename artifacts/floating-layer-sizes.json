@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "calculation": "Complete shared positioning and interaction adapter entry bundled as ESM with only framework peers externalized",
+  "measurements": {
+    "engine": {
+      "minified": 2111,
+      "gzip": 906,
+      "brotli": 804,
+      "budget": 5120
+    },
+    "react": {
+      "minified": 7218,
+      "gzip": 2813,
+      "brotli": 2524,
+      "budget": 5120
+    },
+    "vue": {
+      "minified": 5982,
+      "gzip": 2277,
+      "brotli": 2044,
+      "budget": 5120
+    },
+    "angular": {
+      "minified": 6177,
+      "gzip": 2253,
+      "brotli": 2012,
+      "budget": 5120
+    }
+  }
+}

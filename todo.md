@@ -215,7 +215,7 @@ Items are checked only after their implementation exists and the relevant verifi
       overlay does not access `window` or `document` and produces deterministic initial markup.
 - [x] Add cross-browser visual fixtures for viewport edges, nested scroll containers, zoom,
       transformed ancestors, mobile viewports, and live anchor/content resizing.
-- [ ] Enforce a maximum incremental contribution of 5 KiB gzip for the complete internal
+- [x] Enforce a maximum incremental contribution of 5 KiB gzip for the complete internal
       positioning and interaction layer in each framework consumer bundle, with minified and Brotli
       measurements reported alongside gzip.
 - [ ] Remove `@floating-ui/react` and `@floating-ui/dom` from package manifests, registry runtime
