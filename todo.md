@@ -208,7 +208,7 @@ Items are checked only after their implementation exists and the relevant verifi
       safe focus restoration.
 - [x] Replace the React hooks and the Vue and Angular DOM adapters with thin framework-specific
       wrappers around the shared internal positioning and interaction layer.
-- [ ] Run shared overlay contracts across React, Vue, and Angular for collision handling, RTL,
+- [x] Run shared overlay contracts across React, Vue, and Angular for collision handling, RTL,
       keyboard and pointer input, nested overlays, portals, focus management, dismissal, interrupted
       unmounts, and cleanup.
 - [ ] Add SSR and hydration tests proving that importing and initially rendering every positioned

@@ -178,6 +178,7 @@ export const FloatingContent = /* @__PURE__ */ defineComponent({
               'div',
               {
                 ...attrs,
+                ...context.interactions.floatingAttributes,
                 id: attrs.id ?? context.interactions.floatingAttributes.id,
                 role:
                   attrs.role ?? context.interactions.floatingAttributes.role,

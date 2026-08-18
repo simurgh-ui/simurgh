@@ -57,6 +57,7 @@ describe('floating interactions', () => {
 
   it('dismisses on Escape or outside press and restores connected focus', () => {
     const { interactions, reference, floating, setOpen } = setup('popover');
+    const stopPropagation = vi.fn();
     const cleanup = interactions.listenForOutsidePress(document);
     floating.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     expect(setOpen).not.toHaveBeenCalled();
@@ -68,9 +69,15 @@ describe('floating interactions', () => {
     interactions.onReferenceKeyDown({
       defaultPrevented: false,
       key: 'Escape',
+      stopPropagation,
     });
     expect(setOpen).toHaveBeenCalledWith(false);
-    interactions.onFloatingKeyDown({ defaultPrevented: false, key: 'Escape' });
+    interactions.onFloatingKeyDown({
+      defaultPrevented: false,
+      key: 'Escape',
+      stopPropagation,
+    });
+    expect(stopPropagation).toHaveBeenCalledTimes(2);
     expect(document.activeElement).toBe(reference);
     cleanup();
   });

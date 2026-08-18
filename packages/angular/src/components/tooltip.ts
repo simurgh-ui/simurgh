@@ -8,6 +8,7 @@ import { FloatingBase } from '../internal/floating-base.js';
   imports: [CommonModule],
   template: `<span
       #reference
+      [attr.data-simurgh-floating-reference]="floatingId"
       (mouseenter)="openFromHover($event)"
       (mouseleave)="closeFromHover($event)"
       (focusin)="openFromFocus($event)"
@@ -17,6 +18,7 @@ import { FloatingBase } from '../internal/floating-base.js';
     /></span>
     <div
       #floating
+      [attr.data-simurgh-floating-content]="floatingId"
       *ngIf="open"
       role="tooltip"
       class="simurgh-content"

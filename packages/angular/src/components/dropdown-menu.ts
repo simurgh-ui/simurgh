@@ -17,6 +17,7 @@ import { FloatingBase } from '../internal/floating-base.js';
   imports: [CommonModule],
   template: `<button
       #reference
+      [attr.data-simurgh-floating-reference]="floatingId"
       type="button"
       class="simurgh-trigger"
       aria-haspopup="menu"
@@ -27,6 +28,7 @@ import { FloatingBase } from '../internal/floating-base.js';
     </button>
     <div
       #floating
+      [attr.data-simurgh-floating-content]="floatingId"
       *ngIf="open"
       role="menu"
       class="simurgh-content"

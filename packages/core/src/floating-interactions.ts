@@ -4,6 +4,7 @@ export type FloatingInteractionKind =
 export type FloatingInteractionEvent = {
   defaultPrevented: boolean;
   key?: string;
+  stopPropagation?(): void;
 };
 
 export type FloatingInteractionOptions = {
@@ -33,6 +34,7 @@ export function createFloatingInteractions(
           ? 'tooltip'
           : 'dialog';
   const referenceAttributes = {
+    'data-simurgh-floating-reference': options.id,
     'aria-haspopup':
       options.kind === 'menu'
         ? ('menu' as const)
@@ -44,6 +46,7 @@ export function createFloatingInteractions(
     'aria-describedby': options.kind === 'tooltip' ? options.id : undefined,
   };
   const floatingAttributes = {
+    'data-simurgh-floating-content': options.id,
     id: options.kind === 'tooltip' ? options.id : undefined,
     role,
   };
@@ -66,11 +69,14 @@ export function createFloatingInteractions(
     onReferenceFocus: interactive ? open : undefined,
     onReferenceBlur: interactive ? close : undefined,
     onReferenceKeyDown(event: FloatingInteractionEvent) {
-      if (!event.defaultPrevented && event.key === 'Escape')
+      if (!event.defaultPrevented && event.key === 'Escape') {
+        event.stopPropagation?.();
         options.setOpen(false);
+      }
     },
     onFloatingKeyDown(event: FloatingInteractionEvent) {
       if (!event.defaultPrevented && event.key === 'Escape') {
+        event.stopPropagation?.();
         options.setOpen(false);
         restoreReference(options.getReference());
       }
@@ -78,9 +84,26 @@ export function createFloatingInteractions(
     listenForOutsidePress(document: Document) {
       const dismiss = (event: PointerEvent) => {
         const path = event.composedPath();
+        const currentFloating = options.getFloating();
+        const insideNestedFloating = path.some((node) => {
+          const element = node as Element;
+          if (typeof element?.getAttribute !== 'function') return false;
+          const owner = element.getAttribute('data-simurgh-floating-content');
+          if (!owner || !currentFloating) return false;
+          return Array.from(
+            document.querySelectorAll<HTMLElement>(
+              '[data-simurgh-floating-reference]',
+            ),
+          ).some(
+            (reference) =>
+              reference.dataset.simurghFloatingReference === owner &&
+              currentFloating.contains(reference),
+          );
+        });
         if (
           !path.includes(options.getReference()!) &&
-          !path.includes(options.getFloating()!)
+          !path.includes(currentFloating!) &&
+          !insideNestedFloating
         ) {
           options.setOpen(false);
           restoreReference(options.getReference());

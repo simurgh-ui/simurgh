@@ -8,6 +8,7 @@ import { FloatingBase } from '../internal/floating-base.js';
   imports: [CommonModule],
   template: `<span
       #reference
+      [attr.data-simurgh-floating-reference]="floatingId"
       data-slot="hover-card-trigger"
       [attr.aria-expanded]="open"
       (mouseenter)="openFromHover($event)"
@@ -19,6 +20,7 @@ import { FloatingBase } from '../internal/floating-base.js';
     /></span>
     <div
       #floating
+      [attr.data-simurgh-floating-content]="floatingId"
       *ngIf="open"
       role="dialog"
       data-slot="hover-card-content"

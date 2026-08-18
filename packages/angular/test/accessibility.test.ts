@@ -10,6 +10,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import axe from 'axe-core';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { runSharedOverlayContract } from '../../core/test-utils/overlay-contract.js';
 import {
   CheckboxComponent,
   AvatarComponent,
@@ -114,6 +115,7 @@ import {
   AlertDialogActionDirective,
   AlertDialogCancelDirective,
   AlertDialogComponent,
+  PopoverComponent,
   DropdownMenuComponent,
   DropdownMenuItemDirective,
   ContextMenuComponent,
@@ -228,6 +230,19 @@ class AlertDialogHost {
   </simurgh-hover-card>`,
 })
 class HoverCardHost {}
+
+@Component({
+  standalone: true,
+  imports: [PopoverComponent],
+  template: `<simurgh-popover contentLabel="Parent overlay">
+    <span trigger>Parent trigger</span>
+    <simurgh-popover contentLabel="Child overlay">
+      <span trigger>Child trigger</span>
+      Child content
+    </simurgh-popover>
+  </simurgh-popover>`,
+})
+class NestedPopoverHost {}
 
 @Component({
   standalone: true,
@@ -1143,6 +1158,60 @@ describe('Angular accessibility contract', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('[role=dialog]')).toBeTruthy();
     fixture.destroy();
+  });
+
+  it('runs the shared collision, RTL, input, nesting, portal, focus, dismissal, and cleanup contract', async () => {
+    const fixture = TestBed.createComponent(NestedPopoverHost);
+    fixture.detectChanges();
+    const flush = async () => {
+      fixture.detectChanges();
+      await Promise.resolve();
+      fixture.detectChanges();
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => resolve()),
+      );
+    };
+    const button = (label: string) =>
+      Array.from(
+        fixture.nativeElement.querySelectorAll<HTMLButtonElement>('button'),
+      ).find((candidate) => candidate.textContent?.trim() === label)!;
+
+    await runSharedOverlayContract({
+      document,
+      host: fixture.nativeElement,
+      portal: 'host',
+      getParentTrigger: () => button('Parent trigger'),
+      getChildTrigger: () => button('Child trigger'),
+      getParentContent: () =>
+        fixture.nativeElement.querySelector<HTMLElement>(
+          '[aria-label="Parent overlay"]',
+        ),
+      getChildContent: () =>
+        fixture.nativeElement.querySelector<HTMLElement>(
+          '[aria-label="Child overlay"]',
+        ),
+      activate: async (element) => {
+        element.dispatchEvent(
+          new PointerEvent('pointerdown', { bubbles: true }),
+        );
+        element.click();
+        await flush();
+      },
+      pressEscape: async (element) => {
+        element.dispatchEvent(
+          new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
+        );
+        await flush();
+      },
+      pointerDown: async (element) => {
+        element.dispatchEvent(
+          new PointerEvent('pointerdown', { bubbles: true }),
+        );
+        await flush();
+      },
+      flush,
+      unmount: () => fixture.destroy(),
+    });
   });
 
   it('opens a context menu at the pointer and supports keyboard selection', async () => {

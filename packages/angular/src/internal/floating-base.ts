@@ -1,4 +1,4 @@
-import type { OnDestroy } from '@angular/core';
+import type { AfterViewChecked, OnDestroy } from '@angular/core';
 import {
   Directive,
   ElementRef,
@@ -15,7 +15,7 @@ import {
 import { autoUpdateFloating, computeFloatingPosition } from '../floating.js';
 
 @Directive()
-export abstract class FloatingBase implements OnDestroy {
+export abstract class FloatingBase implements AfterViewChecked, OnDestroy {
   @Input() open = false;
   @Input() disabled = false;
   @Input() contentLabel = 'Popover';
@@ -23,13 +23,13 @@ export abstract class FloatingBase implements OnDestroy {
   @ViewChild('reference') reference?: ElementRef<HTMLElement>;
   @ViewChild('floating') floating?: ElementRef<HTMLElement>;
   protected interactionKind: FloatingInteractionKind = 'popover';
-  private readonly interactionId = createId('floating');
+  readonly floatingId = createId('floating');
   private cleanupPosition: (() => void) | undefined;
   private cleanupDismiss: (() => void) | undefined;
   private get interactions() {
     return createFloatingInteractions({
       kind: this.interactionKind,
-      id: this.interactionId,
+      id: this.floatingId,
       getOpen: () => this.open,
       setOpen: (value) => this.setOpen(value),
       getReference: () => this.reference?.nativeElement ?? null,
@@ -88,6 +88,9 @@ export abstract class FloatingBase implements OnDestroy {
     this.cleanupDismiss = this.interactions.listenForOutsidePress(
       reference.ownerDocument,
     );
+  }
+  ngAfterViewChecked() {
+    if (this.open && !this.cleanupPosition) this.position();
   }
   ngOnDestroy() {
     this.cleanupPosition?.();

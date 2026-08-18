@@ -131,6 +131,8 @@ export function FloatingRoot({
   };
   const getFloatingProps = (given: Record<string, unknown> = {}) => ({
     ...given,
+    'data-simurgh-floating-content':
+      interactions.floatingAttributes['data-simurgh-floating-content'],
     id: given.id ?? interactions.floatingAttributes.id,
     role: given.role ?? interactions.floatingAttributes.role,
     onKeyDown: (event: React.KeyboardEvent) => {
