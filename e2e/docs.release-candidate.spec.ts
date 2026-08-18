@@ -88,11 +88,13 @@ test('dialog accessibility tree names, describes, and restores focus', async ({
   await expect(dialog).toContainText(
     'Update the details shown on your public profile.',
   );
-  expect(
-    await dialog.evaluate((element) =>
-      element.contains(document.activeElement),
-    ),
-  ).toBe(true);
+  await expect
+    .poll(() =>
+      dialog.evaluate((element) =>
+        element.contains(document.activeElement),
+      ),
+    )
+    .toBe(true);
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
   await expect(trigger).toBeFocused();

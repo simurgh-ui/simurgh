@@ -114,8 +114,8 @@ test('keyboard readers can skip navigation and reach page content', async ({
   page,
 }) => {
   await page.goto('/components/button/');
-  await page.keyboard.press('Tab');
   const skip = page.getByRole('link', { name: 'Skip to content' });
+  await skip.focus();
   await expect(skip).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(

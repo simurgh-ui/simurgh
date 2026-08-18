@@ -24,7 +24,7 @@ export const AlertDialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function AlertDialogContent(props, forwardedRef) {
-  const { open, setOpen, titleId, descriptionId } = useDialog();
+  const { open, setOpen, titleId, descriptionId, triggerRef } = useDialog();
   const localRef = useRef<HTMLDivElement>(null);
   const previous = useRef<Element | null>(null);
   useEffect(() => {
@@ -36,7 +36,8 @@ export const AlertDialogContent = /* @__PURE__ */ forwardRef<
         ?.focus(),
     );
     return () => {
-      if (previous.current instanceof HTMLElement) previous.current.focus();
+      const returnTarget = triggerRef.current ?? previous.current;
+      if (returnTarget instanceof HTMLElement) returnTarget.focus();
     };
   }, [open]);
   if (!open) return null;

@@ -15,6 +15,7 @@ import { useBrowser, useOpen, type OpenProps } from '../internal/open.js';
 export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
   const [open, setOpen] = useOpen(props);
   const uid = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
   return (
     <DialogContext.Provider
       value={{
@@ -22,6 +23,7 @@ export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
         setOpen,
         titleId: `${uid}-title`,
         descriptionId: `${uid}-description`,
+        triggerRef,
       }}
     >
       {children}
@@ -37,7 +39,11 @@ export const DialogTrigger = /* @__PURE__ */ forwardRef<
     <button
       type="button"
       {...props}
-      ref={ref}
+      ref={(node) => {
+        context.triggerRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref) ref.current = node;
+      }}
       data-slot="dialog-trigger"
       aria-haspopup="dialog"
       aria-expanded={context.open}
@@ -73,7 +79,7 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, forwardedRef) => {
-  const { open, setOpen, titleId, descriptionId } = useDialog();
+  const { open, setOpen, titleId, descriptionId, triggerRef } = useDialog();
   const localRef = useRef<HTMLDivElement>(null);
   const previous = useRef<Element | null>(null);
   useEffect(() => {
@@ -81,7 +87,8 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
     previous.current = document.activeElement;
     requestAnimationFrame(() => localRef.current?.focus());
     return () => {
-      if (previous.current instanceof HTMLElement) previous.current.focus();
+      const returnTarget = triggerRef.current ?? previous.current;
+      if (returnTarget instanceof HTMLElement) returnTarget.focus();
     };
   }, [open]);
   if (!open) return null;
