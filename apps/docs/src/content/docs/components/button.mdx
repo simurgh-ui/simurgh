@@ -127,7 +127,17 @@ rendered element unless the component behavior described on this page overrides 
 
 ### `Button`
 
-Exported type: `any`.
+Inherited attributes: `ButtonHTMLAttributes<HTMLButtonElement> & RefAttributes<HTMLButtonElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `fullWidth` | `boolean` | `false` |
+| `iconOnly` | `boolean` | `false` |
+| `loading` | `boolean` | `false` |
+| `ref` | `Ref<HTMLButtonElement> \| undefined` | `undefined` |
+| `size` | `"sm" \| "md" \| "lg"` | `'md'` |
+| `variant` | `"primary" \| "secondary" \| "destructive" \| "quiet"` | `'primary'` |
 
 </details>
 {/* react-api:end */}
@@ -227,7 +237,7 @@ follow each framework's conventions and are not expected to be symbol-for-symbol
 | State and change events | No controlled state contract; use native attributes, inputs, or events documented above. |
 | Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
 | Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | No framework exposes an imperative handle for this component. |
+| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes no public methods. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
@@ -249,11 +259,11 @@ attribute. Keep status and error messages accessible when they are rendered outs
 
 | State | React | Vue | Angular |
 | --- | --- | --- | --- |
-| Loading | Not supported by this component API; handle this state in surrounding application UI. | Supported with `:loading="true"`; the component exposes its busy state and blocks duplicate interaction. | Supported with `[loading]="true"`; the component exposes its busy state and blocks duplicate interaction. |
+| Loading | Supported with `loading={true}`; the component exposes its busy state and blocks duplicate interaction. | Supported with `:loading="true"`; the component exposes its busy state and blocks duplicate interaction. | Supported with `[loading]="true"`; the component exposes its busy state and blocks duplicate interaction. |
 | Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 | Invalid | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 | Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled | Not supported by this component API; handle this state in surrounding application UI. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
+| Disabled | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
 | Error | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 {/* component-supported-states:end */}
 

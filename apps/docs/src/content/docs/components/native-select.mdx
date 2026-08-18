@@ -166,7 +166,13 @@ rendered element unless the component behavior described on this page overrides 
 
 ### `NativeSelect`
 
-Exported type: `any`.
+Inherited attributes: `SelectHTMLAttributes<HTMLSelectElement> & RefAttributes<HTMLSelectElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `invalid` | `boolean` | `false` |
+| `ref` | `Ref<HTMLSelectElement> \| undefined` | `undefined` |
 
 </details>
 {/* react-api:end */}
@@ -272,7 +278,7 @@ follow each framework's conventions and are not expected to be symbol-for-symbol
 | State and change events | React uses controlled/default props and callbacks; Vue uses `v-model`; Angular uses `[(value)]`. |
 | Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
 | Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | React has no forwarded ref; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild. |
+| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes the listed class methods through a template reference or ViewChild. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
@@ -361,10 +367,10 @@ attribute. Keep status and error messages accessible when they are rendered outs
 | --- | --- | --- | --- |
 | Loading | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
 | Empty | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Invalid | Not supported by this component API; handle this state in surrounding application UI. | Supported with `:invalid="true"`; also associate visible error text. | Supported with `[invalid]="true"`; also associate visible error text. |
+| Invalid | Supported with `invalid={true}`; also associate visible error text. | Supported with `:invalid="true"`; also associate visible error text. | Supported with `[invalid]="true"`; also associate visible error text. |
 | Read-only | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. | Not supported by this component API; handle this state in surrounding application UI. |
-| Disabled | Not supported by this component API; handle this state in surrounding application UI. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
-| Error | Not supported by this component API; handle this state in surrounding application UI. | Set the invalid state and render a separate labeled error message; invalid styling alone is not an error description. | Set the invalid state and render a separate labeled error message; invalid styling alone is not an error description. |
+| Disabled | Supported with `disabled={true}` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `:disabled="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. | Supported with `[disabled]="true"` on the documented control or interactive part; its interaction is blocked. Disabled form controls are omitted from submission. |
+| Error | Set the invalid state and render a separate labeled error message; invalid styling alone is not an error description. | Set the invalid state and render a separate labeled error message; invalid styling alone is not an error description. | Set the invalid state and render a separate labeled error message; invalid styling alone is not an error description. |
 {/* component-supported-states:end */}
 
 {/* component-styling-contract:start */}

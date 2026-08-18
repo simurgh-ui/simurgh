@@ -183,35 +183,75 @@ rendered element unless the component behavior described on this page overrides 
 
 ### `Table`
 
-Exported type: `any`.
+Inherited attributes: `TableHTMLAttributes<HTMLTableElement> & RefAttributes<HTMLTableElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableElement> \| undefined` | `undefined` |
 
 ### `TableHeader`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLTableSectionElement> & RefAttributes<HTMLTableSectionElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableSectionElement> \| undefined` | `undefined` |
 
 ### `TableBody`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLTableSectionElement> & RefAttributes<HTMLTableSectionElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableSectionElement> \| undefined` | `undefined` |
 
 ### `TableFooter`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLTableSectionElement> & RefAttributes<HTMLTableSectionElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableSectionElement> \| undefined` | `undefined` |
 
 ### `TableRow`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLTableRowElement> & RefAttributes<HTMLTableRowElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableRowElement> \| undefined` | `undefined` |
 
 ### `TableHead`
 
-Exported type: `any`.
+Inherited attributes: `ThHTMLAttributes<HTMLTableCellElement> & RefAttributes<HTMLTableCellElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableCellElement> \| undefined` | `undefined` |
 
 ### `TableCell`
 
-Exported type: `any`.
+Inherited attributes: `TdHTMLAttributes<HTMLTableCellElement> & RefAttributes<HTMLTableCellElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableCellElement> \| undefined` | `undefined` |
 
 ### `TableCaption`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLTableCaptionElement> & RefAttributes<HTMLTableCaptionElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLTableCaptionElement> \| undefined` | `undefined` |
 
 </details>
 {/* react-api:end */}
@@ -463,7 +503,7 @@ follow each framework's conventions and are not expected to be symbol-for-symbol
 | State and change events | No controlled state contract; use native attributes, inputs, or events documented above. |
 | Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
 | Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | No framework exposes an imperative handle for this component. |
+| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes no public methods. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.

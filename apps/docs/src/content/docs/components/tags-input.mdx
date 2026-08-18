@@ -144,6 +144,8 @@ Duplicate and blank values are ignored. `maxTags` defaults to 20 and is capped a
 </TabItem>
 </Tabs>
 
+
+
 {/* component-keyboard:start */}
 ### Keyboard interactions
 
@@ -207,7 +209,7 @@ Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLInputE
 
 ### `TagsInputProps`
 
-Exported type: `Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue" \| "onChange"> & { value?: string[]; defaultValue?: string[]; name?: string; disabled?: boolean; readOnly?: boolean; required?: boolean; maxTags?: number; placeholder?: string; inputLabel?: string; getRemoveLabel?: (tag: string) => string; onValueChange?: (value: string[]) => void; }`.
+Exported type: `Omit<HTMLAttributes<HTMLDivElement>, "defaultValue" \| "onChange"> & { value?: string[]; defaultValue?: string[]; name?: string; disabled?: boolean; readOnly?: boolean; required?: boolean; maxTags?: number; placeholder?: string; inputLabel?: string; getRemoveLabel?: (tag: string) => string; onValueChange?: (value: string[]) => void; }`.
 
 </details>
 {/* react-api:end */}

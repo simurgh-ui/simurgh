@@ -58,8 +58,10 @@ function angularModels(api) {
 }
 
 const booleanModels = new Set(['checked', 'expanded', 'open', 'pressed']);
+let currentComponent;
 
 function initialValue(name) {
+  if (currentComponent === 'rating' && name === 'value') return '0';
   return booleanModels.has(name) ? 'false' : "''";
 }
 
@@ -89,6 +91,7 @@ function rows(component, source) {
 }
 
 function examples(component, source) {
+  currentComponent = component;
   const react = reactModels(apiBlock(source, 'react'))[0];
   const vue = vueModels(apiBlock(source, 'vue'))[0];
   const angularStates = angularModels(apiBlock(source, 'angular'));

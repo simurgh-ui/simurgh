@@ -139,6 +139,8 @@ const resetKey = ref(0);
 </TabItem>
 </Tabs>
 
+
+
 {/* component-keyboard:start */}
 ### Keyboard interactions
 
@@ -312,7 +314,7 @@ Content projection: `[trigger]`, `default`.
 
 | Public method |
 | --- |
-| `toggle(): void` |
+| `toggle(event?: Event): void` |
 | `onKeydown(event: KeyboardEvent): void` |
 
 ### `DropdownMenuItemDirective`
@@ -410,7 +412,7 @@ undocumented descendants are implementation details and should not be targeted.
 | --- | --- |
 | Recipe classes | `.simurgh-content`, `.simurgh-indicator`, `.simurgh-item`, `.simurgh-trigger` |
 | Stable DOM parts | `[data-slot="button"]`, `[data-slot="checkbox"]`, `[data-slot="input"]`, `[data-slot="input-otp"]`, `[data-slot="menubar-item"]`, `[data-slot="native-select"]`, `[data-slot="pagination-link"]`, `[data-slot="select-option"]`, `[data-slot="select-trigger"]`, `[data-slot="toggle-group-item"]`, `[data-slot="toolbar-button"]` |
-| Stable data attributes | `[data-density]`, `[data-highlighted]`, `[data-slot]` |
+| Stable data attributes | `[data-density]`, `[data-highlighted]`, `[data-simurgh-floating-content]`, `[data-simurgh-floating-reference]`, `[data-slot]` |
 | ARIA/state selectors used by the recipe | `[aria-disabled]` |
 | CSS custom properties consumed | `--simurgh-border`, `--simurgh-control-height`, `--simurgh-control-padding`, `--simurgh-foreground`, `--simurgh-item-height`, `--simurgh-muted`, `--simurgh-primary`, `--simurgh-radius`, `--simurgh-ring`, `--simurgh-shadow`, `--simurgh-surface` |
 

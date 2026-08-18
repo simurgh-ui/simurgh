@@ -73,7 +73,7 @@ for (const component of registry.components) {
 
 for (const [component, hints] of Object.entries(sourceHints)) {
   const frameworkSources = await Promise.all([
-    readFile(resolve(root, 'packages/react/src/index.tsx'), 'utf8'),
+    readFile(resolve(root, `packages/react/src/components/${component}.tsx`), 'utf8'),
     readFile(resolve(root, `packages/vue/src/components/${component}.ts`), 'utf8'),
     readFile(resolve(root, `packages/angular/src/components/${component}.ts`), 'utf8'),
   ]);

@@ -71,7 +71,7 @@ function defaultsFor(symbol) {
       .filter((element) => element.initializer && ts.isIdentifier(element.name))
       .map((element) => [
         element.name.text,
-        clean(element.initializer.getText(index)),
+        clean(element.initializer.getText()),
       ]),
   );
 }
@@ -91,8 +91,11 @@ function componentReference(propsType) {
 }
 
 function componentSection(name) {
-  const symbol = exportsByName.get(name);
-  if (!symbol) return `### \`${name}\`\n\nExported value.`;
+  const exported = exportsByName.get(name);
+  if (!exported) return `### \`${name}\`\n\nExported value.`;
+  const symbol = exported.flags & ts.SymbolFlags.Alias
+    ? checker.getAliasedSymbol(exported)
+    : exported;
   if (!symbol.valueDeclaration) {
     const declared = checker.getDeclaredTypeOfSymbol(symbol);
     const type = checker.typeToString(

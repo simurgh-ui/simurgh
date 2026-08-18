@@ -150,19 +150,39 @@ rendered element unless the component behavior described on this page overrides 
 
 ### `DescriptionList`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLDListElement> & RefAttributes<HTMLDListElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLDListElement> \| undefined` | `undefined` |
 
 ### `DescriptionListGroup`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLDivElement> \| undefined` | `undefined` |
 
 ### `DescriptionListTerm`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLElement> & RefAttributes<HTMLElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLElement> \| undefined` | `undefined` |
 
 ### `DescriptionListDetails`
 
-Exported type: `any`.
+Inherited attributes: `HTMLAttributes<HTMLElement> & RefAttributes<HTMLElement>`.
+
+| Prop | Type | Default / requirement |
+| --- | --- | --- |
+| `children` | `ReactNode` | `undefined` |
+| `ref` | `Ref<HTMLElement> \| undefined` | `undefined` |
 
 </details>
 {/* react-api:end */}
@@ -367,7 +387,7 @@ follow each framework's conventions and are not expected to be symbol-for-symbol
 | State and change events | No controlled state contract; use native attributes, inputs, or events documented above. |
 | Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
 | Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
-| Imperative access | No framework exposes an imperative handle for this component. |
+| Imperative access | React forwards native refs; Vue exposes no methods; Angular exposes no public methods. |
 
 These differences are intentional adapter design. Behavioral or accessibility differences not stated
 on this page are parity defects rather than supported variations.
