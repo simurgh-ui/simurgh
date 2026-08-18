@@ -218,7 +218,7 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Enforce a maximum incremental contribution of 5 KiB gzip for the complete internal
       positioning and interaction layer in each framework consumer bundle, with minified and Brotli
       measurements reported alongside gzip.
-- [ ] Remove `@floating-ui/react` and `@floating-ui/dom` from package manifests, registry runtime
+- [x] Remove `@floating-ui/react` and `@floating-ui/dom` from package manifests, registry runtime
       dependencies, CLI-generated source, lockfiles, bundle tooling, and documentation only after
       behavior, accessibility, SSR, and size gates pass.
 - [ ] Publish migration notes describing the supported positioning subset, any intentional behavior
