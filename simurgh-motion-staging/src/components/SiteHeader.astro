@@ -1,0 +1,31 @@
+---
+import Logo from './Logo.astro';
+---
+<header class="site-header">
+  <nav class="nav shell" aria-label="Primary navigation">
+    <Logo />
+    <div class="nav-links" data-nav-links>
+      <a href="/">Home</a>
+      <a href="/#components">Components</a>
+      <a href="/docs">Docs</a>
+      <a href="/#features">Features</a>
+    </div>
+    <div class="nav-actions">
+      <div class="theme-switcher" aria-label="Color theme">
+        <button type="button" data-theme-value="light" aria-label="Use light theme">☀</button>
+        <button type="button" data-theme-value="dark" aria-label="Use dark theme">☾</button>
+        <button type="button" data-theme-value="system" aria-label="Use system theme">◐</button>
+      </div>
+      <a class="github-link" href="https://github.com/simurgh-ui/simurgh" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-button><span></span><span></span><span></span><span class="sr-only">Toggle navigation</span></button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+      <a href="/">Home</a><a href="/#components">Components</a><a href="/docs">Docs</a><a href="/#features">Features</a><a href="https://github.com/simurgh-ui/simurgh">GitHub ↗</a>
+    </div>
+  </nav>
+</header>
+<script>
+  import { initNavigation, initTheme } from '../lib/interactions';
+  initNavigation(document);
+  initTheme(document, window);
+</script>

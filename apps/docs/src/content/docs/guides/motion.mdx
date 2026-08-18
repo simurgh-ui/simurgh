@@ -3,12 +3,48 @@ title: Motion
 description: Lightweight opt-in animation for React, Vue, and Angular.
 ---
 
+import ComponentPreview from '../../../components/ComponentPreview.astro';
+import MotionExamples from '../../../components/MotionExamples';
+
 `@simurgh-ui/motion` adds purposeful animation without changing the default behavior of Simurgh
 components. Durations and delays use seconds. The engine uses the Web Animations API and imports
 safely during server rendering.
 
 ```sh
 pnpm add @simurgh-ui/motion
+```
+
+## Live examples
+
+These examples use the React adapter, but the motion definitions are shared by every adapter. They
+cover transform keyframes, spring gestures, enter and exit presence, staggered children, viewport
+intersection, and an explicit reduced-motion setting. The default `reducedMotion: "user"` setting
+automatically removes duration when the operating system requests reduced motion.
+
+<ComponentPreview title="Motion patterns" kind="live">
+  <MotionExamples client:load />
+</ComponentPreview>
+
+Use gesture states for immediate feedback, `Presence` when removed content needs an exit animation,
+and `stagger` on a parent definition to sequence bound children. Motion should reinforce a state
+change; it should not delay focus, validation, or access to content.
+
+### Transform keyframes
+
+Transform shorthands accept a single value or an array. Arrays with different lengths are sampled
+across the same timeline, and numeric `x`, `y`, and `rotate` values receive pixel and degree units.
+
+```ts
+const celebration = {
+  opacity: [0, 1, 1, 1],
+  scale: [0.8, 1.08, 0.96, 1],
+  rotate: [0, 8, -5, 0],
+};
+
+animate(element, celebration, {
+  duration: 0.65,
+  easing: 'ease-in-out',
+});
 ```
 
 ## Core API
@@ -109,6 +145,49 @@ export class Example {
 Definitions accept named `variants` and the states `whileHover`, `whilePress`, `whileFocus`, and
 `whileInView`. A state may contain keyframes directly or name a variant. Delays and `stagger` are
 expressed in seconds.
+
+### Stagger a group
+
+Bind a motion definition to both the parent and its children. The parent adds its `stagger` delay to
+each child in document order.
+
+```tsx
+const list = { animate: { opacity: 1 }, stagger: 0.08 };
+const item = {
+  initial: { opacity: 0, x: -12 },
+  animate: { opacity: 1, x: 0 },
+};
+
+<animated.ul motion={list}>
+  {items.map((label) => (
+    <animated.li key={label} motion={item}>{label}</animated.li>
+  ))}
+</animated.ul>
+```
+
+### Animate an existing element
+
+Use `useMotion` when adding an `animated.*` wrapper would change markup or component semantics.
+
+```tsx
+import { useMotion } from '@simurgh-ui/motion/react';
+
+function StatusMessage() {
+  const { ref, controls } = useMotion<HTMLParagraphElement>({
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+  });
+
+  return (
+    <p ref={ref}>
+      Saved
+      <button type="button" onClick={() => controls.current?.play()}>
+        Replay
+      </button>
+    </p>
+  );
+}
+```
 
 ## Reduced motion and accessibility
 

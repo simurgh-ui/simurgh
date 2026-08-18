@@ -142,6 +142,7 @@ areas
 aria
 around
 array
+arrays
 arrive
 arrow
 arrows
@@ -641,6 +642,7 @@ defer
 deferred
 definition
 definitions
+degree
 delay
 delays
 delete
@@ -1103,6 +1105,7 @@ hosts
 hover
 hover-card
 hover-triggered
+hovering
 how
 hsl
 html
@@ -1232,6 +1235,7 @@ interrupt
 interruption
 interruptive
 interrupts
+intersection
 into
 introduce
 introducing
@@ -1308,6 +1312,7 @@ leaves
 left
 legacy
 legend
+lengths
 let
 level
 levels
@@ -1464,6 +1469,7 @@ most
 motif
 motifs
 motion
+motionexamples
 motor-access
 mount
 mounted
@@ -1954,6 +1960,7 @@ replace
 replacement
 replaces
 replacing
+replaying
 report
 reported
 reporting
@@ -2068,6 +2075,7 @@ saffron
 same
 same-looking
 same-name
+sampled
 sans
 save
 saving
@@ -2156,6 +2164,7 @@ shipped
 shipping
 short
 shortcut
+shorthands
 should
 show
 showing
@@ -2228,6 +2237,7 @@ splitting
 spoken
 spread
 spreads
+spring
 square
 src
 ssr
@@ -2238,6 +2248,8 @@ stack
 stacked
 stacking
 stage
+stagger
+staggered
 stale
 standalone
 standard
@@ -2398,6 +2410,7 @@ tied
 tile
 time
 time-dependent
+timeline
 title
 titles
 to
@@ -2407,6 +2420,7 @@ together
 toggle
 toggled
 toggles
+toggling
 token
 tokens
 tone
@@ -2459,6 +2473,7 @@ true
 truly
 trusted
 truth
+try
 turnkey
 turns
 turquoise

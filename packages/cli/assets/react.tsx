@@ -257,9 +257,11 @@ type AccordionContextValue = {
   multiple: boolean;
   id: string;
 };
+
 const AccordionContext =
   /* @__PURE__ */ createContext<AccordionContextValue | null>(null);
 const AccordionItemContext = /* @__PURE__ */ createContext<string>('');
+
 export function Accordion({
   children,
   type = 'single',
@@ -273,7 +275,7 @@ export function Accordion({
   const toggle = (value: string) =>
     setOpen((items) =>
       items.includes(value)
-        ? items.filter((x) => x !== value)
+        ? items.filter((item) => item !== value)
         : multiple
           ? [...items, value]
           : [value],
@@ -294,50 +296,45 @@ export function AccordionItem({
     </AccordionItemContext.Provider>
   );
 }
+
 export function AccordionTrigger(
   props: ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
-  const c = useContext(AccordionContext)!;
+  const context = useContext(AccordionContext)!;
   const value = useContext(AccordionItemContext);
-  const open = c.open.includes(value);
+  const open = context.open.includes(value);
   return (
     <h3>
       <button
         type="button"
         {...props}
-        id={`${c.id}-trigger-${value}`}
+        id={`${context.id}-trigger-${value}`}
         aria-expanded={open}
-        aria-controls={`${c.id}-content-${value}`}
-        onClick={(e) => {
-          props.onClick?.(e);
-          c.toggle(value);
+        aria-controls={`${context.id}-content-${value}`}
+        onClick={(event) => {
+          props.onClick?.(event);
+          context.toggle(value);
         }}
       />
     </h3>
   );
 }
+
 export function AccordionContent(props: HTMLAttributes<HTMLDivElement>) {
-  const c = useContext(AccordionContext)!;
+  const context = useContext(AccordionContext)!;
   const value = useContext(AccordionItemContext);
-  return c.open.includes(value) ? (
+  return context.open.includes(value) ? (
     <div
       {...props}
       role="region"
-      id={`${c.id}-content-${value}`}
-      aria-labelledby={`${c.id}-trigger-${value}`}
+      id={`${context.id}-content-${value}`}
+      aria-labelledby={`${context.id}-trigger-${value}`}
     />
   ) : null;
 }
 
 import { trapFocus } from '@simurgh-ui/core';
-import {
-  forwardRef,
-  useEffect,
-  useRef,
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
-} from 'react';
-import { useDialog } from '../internal/dialog-context.js';
+import { useDialogContext } from '../internal/dialog-context.js';
 import {
   Dialog,
   DialogDescription,
@@ -346,6 +343,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './dialog.js';
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  type ButtonHTMLAttributes,
+  type HTMLAttributes,
+} from 'react';
 
 export const AlertDialog = Dialog;
 export const AlertDialogTrigger = DialogTrigger;
@@ -355,7 +359,7 @@ export const AlertDialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(function AlertDialogContent(props, forwardedRef) {
-  const { open, setOpen, titleId, descriptionId } = useDialog();
+  const { open, setOpen, titleId, descriptionId } = useDialogContext();
   const localRef = useRef<HTMLDivElement>(null);
   const previous = useRef<Element | null>(null);
   useEffect(() => {
@@ -401,7 +405,7 @@ function AlertDialogButton({
   slot,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { slot: string }) {
-  const { setOpen } = useDialog();
+  const { setOpen } = useDialogContext();
   return (
     <button
       type="button"
@@ -1394,31 +1398,33 @@ export function Collapsible({
     </CollapsibleContext.Provider>
   );
 }
+
 export function CollapsibleTrigger(
   props: ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
-  const c = useContext(CollapsibleContext)!;
+  const context = useContext(CollapsibleContext)!;
   return (
     <button
       type="button"
       {...props}
-      aria-expanded={c.open}
-      aria-controls={`${c.id}-content`}
+      aria-expanded={context.open}
+      aria-controls={`${context.id}-content`}
       onClick={(event) => {
         props.onClick?.(event);
-        if (!event.defaultPrevented && !props.disabled) c.toggle();
+        if (!event.defaultPrevented && !props.disabled) context.toggle();
       }}
     />
   );
 }
+
 export function CollapsibleContent(props: HTMLAttributes<HTMLDivElement>) {
-  const c = useContext(CollapsibleContext)!;
+  const context = useContext(CollapsibleContext)!;
   return (
     <div
       {...props}
-      id={`${c.id}-content`}
-      hidden={!c.open}
-      data-state={c.open ? 'open' : 'closed'}
+      id={`${context.id}-content`}
+      hidden={!context.open}
+      data-state={context.open ? 'open' : 'closed'}
     />
   );
 }
@@ -1824,40 +1830,25 @@ export const DescriptionListDetails = /* @__PURE__ */ forwardRef<
 });
 
 import { trapFocus } from '@simurgh-ui/core';
+import { Dialog, useDialogContext } from '../internal/dialog-context.js';
+import { useBrowser } from '../internal/open.js';
 import {
   forwardRef,
   useEffect,
-  useId,
   useRef,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { DialogContext, useDialog } from '../internal/dialog-context.js';
-import { useBrowser, useOpen, type OpenProps } from '../internal/open.js';
 
-export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
-  const [open, setOpen] = useOpen(props);
-  const uid = useId();
-  return (
-    <DialogContext.Provider
-      value={{
-        open,
-        setOpen,
-        titleId: `${uid}-title`,
-        descriptionId: `${uid}-description`,
-      }}
-    >
-      {children}
-    </DialogContext.Provider>
-  );
-}
+export { Dialog };
+
 export const DialogTrigger = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
-  const context = useDialog();
+  const context = useDialogContext();
   return (
     <button
       type="button"
@@ -1873,14 +1864,16 @@ export const DialogTrigger = /* @__PURE__ */ forwardRef<
     />
   );
 });
+
 export function DialogPortal({ children }: PropsWithChildren) {
   return useBrowser() ? createPortal(children, document.body) : null;
 }
+
 export const DialogOverlay = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, ref) => {
-  const { open, setOpen } = useDialog();
+  const { open, setOpen } = useDialogContext();
   return open ? (
     <div
       {...props}
@@ -1898,7 +1891,7 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, forwardedRef) => {
-  const { open, setOpen, titleId, descriptionId } = useDialog();
+  const { open, setOpen, titleId, descriptionId } = useDialogContext();
   const localRef = useRef<HTMLDivElement>(null);
   const previous = useRef<Element | null>(null);
   useEffect(() => {
@@ -1933,35 +1926,38 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
     />
   );
 });
+
 export function DialogTitle(props: HTMLAttributes<HTMLHeadingElement>) {
-  const { titleId } = useDialog();
+  const { titleId } = useDialogContext();
   return <h2 {...props} id={titleId} data-slot="dialog-title" />;
 }
+
 export function DialogDescription(props: HTMLAttributes<HTMLParagraphElement>) {
-  const { descriptionId } = useDialog();
+  const { descriptionId } = useDialogContext();
   return <p {...props} id={descriptionId} data-slot="dialog-description" />;
 }
+
 export const DialogClose = /* @__PURE__ */ forwardRef<
   HTMLButtonElement,
   ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
-  const { setOpen } = useDialog();
+  const { setOpen } = useDialogContext();
   return (
     <button
       type="button"
       {...props}
       ref={ref}
       data-slot="dialog-close"
-      onClick={(e) => {
-        props.onClick?.(e);
+      onClick={(event) => {
+        props.onClick?.(event);
         setOpen(false);
       }}
     />
   );
 });
 
+import { useOpen, type OpenProps } from '../internal/open.js';
 import React, { forwardRef, type HTMLAttributes } from 'react';
-import { type OpenProps, useOpen } from '../internal/open.js';
 
 export const Disclosure = forwardRef<
   HTMLDetailsElement,
@@ -2002,7 +1998,6 @@ export const DisclosureContent = forwardRef<
   return <div ref={ref} data-slot="disclosure-content" {...props} />;
 });
 
-import { forwardRef, type HTMLAttributes } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -2011,6 +2006,7 @@ import {
   DialogTrigger,
 } from './dialog.js';
 import { SheetContent } from './sheet.js';
+import { forwardRef, type HTMLAttributes } from 'react';
 
 export const Drawer = Dialog;
 export const DrawerTrigger = DialogTrigger;
@@ -3613,7 +3609,6 @@ export const Separator = /* @__PURE__ */ forwardRef<
   );
 });
 
-import { forwardRef, type HTMLAttributes } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -3624,6 +3619,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './dialog.js';
+import { forwardRef, type HTMLAttributes } from 'react';
 
 export type SheetSide = 'top' | 'right' | 'bottom' | 'left';
 export const Sheet = Dialog;
@@ -3894,14 +3890,17 @@ type TabsContextValue = {
   orientation: Orientation;
   direction: Direction;
 };
+
 const TabsContext = /* @__PURE__ */ createContext<TabsContextValue | null>(
   null,
 );
-const useTabs = () => {
-  const c = useContext(TabsContext);
-  if (!c) throw new Error('Tabs parts require Tabs');
-  return c;
-};
+
+function useTabs() {
+  const context = useContext(TabsContext);
+  if (!context) throw new Error('Tabs parts require Tabs');
+  return context;
+}
+
 export function Tabs({
   value,
   defaultValue = '',
@@ -3930,27 +3929,28 @@ export function Tabs({
     </TabsContext.Provider>
   );
 }
+
 export function TabsList(props: HTMLAttributes<HTMLDivElement>) {
-  const c = useTabs();
+  const context = useTabs();
   return (
     <div
       {...props}
       role="tablist"
-      aria-orientation={c.orientation}
-      onKeyDown={(e) => {
-        props.onKeyDown?.(e);
+      aria-orientation={context.orientation}
+      onKeyDown={(event) => {
+        props.onKeyDown?.(event);
         const tabs = Array.from(
-          e.currentTarget.querySelectorAll<HTMLElement>(
+          event.currentTarget.querySelectorAll<HTMLElement>(
             '[role=tab]:not([disabled])',
           ),
         );
         const index = tabs.indexOf(document.activeElement as HTMLElement);
-        const target = nextIndex(index, tabs.length, e.key, {
-          orientation: c.orientation,
-          direction: c.direction,
+        const target = nextIndex(index, tabs.length, event.key, {
+          orientation: context.orientation,
+          direction: context.direction,
         });
         if (target !== index) {
-          e.preventDefault();
+          event.preventDefault();
           tabs[target]?.focus();
           tabs[target]?.click();
         }
@@ -3962,20 +3962,20 @@ export function TabsTrigger({
   value,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { value: string }) {
-  const c = useTabs();
-  const active = c.value === value;
+  const context = useTabs();
+  const active = context.value === value;
   return (
     <button
       type="button"
       {...props}
       role="tab"
-      id={`${c.id}-tab-${value}`}
+      id={`${context.id}-tab-${value}`}
       aria-selected={active}
-      aria-controls={`${c.id}-panel-${value}`}
+      aria-controls={`${context.id}-panel-${value}`}
       tabIndex={active ? 0 : -1}
-      onClick={(e) => {
-        props.onClick?.(e);
-        c.setValue(value);
+      onClick={(event) => {
+        props.onClick?.(event);
+        context.setValue(value);
       }}
     />
   );
@@ -3984,13 +3984,13 @@ export function TabsContent({
   value,
   ...props
 }: HTMLAttributes<HTMLDivElement> & { value: string }) {
-  const c = useTabs();
-  return c.value === value ? (
+  const context = useTabs();
+  return context.value === value ? (
     <div
       {...props}
       role="tabpanel"
-      id={`${c.id}-panel-${value}`}
-      aria-labelledby={`${c.id}-tab-${value}`}
+      id={`${context.id}-panel-${value}`}
+      aria-labelledby={`${context.id}-tab-${value}`}
       tabIndex={0}
     />
   ) : null;

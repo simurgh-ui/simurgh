@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Logo from '../components/Logo.astro';
+import { MotionLayer } from '../components/MotionLayer';
+---
+<BaseLayout title="Documentation coming soon — Simurgh UI" description="Simurgh UI documentation is being prepared for React, Vue, and Angular." path="/docs">
+  <MotionLayer client:load />
+  <SiteHeader />
+  <main id="main-content" class="docs-main shell" data-motion="hero">
+    <div class="docs-mark" aria-hidden="true">S</div><span class="eyebrow">Documentation</span><h1>Detailed guides are<br /><span>taking flight.</span></h1><p>The new Simurgh documentation experience is being prepared. You can start building today with the CLI and the guides in the repository.</p>
+    <div class="hero-actions"><a class="button primary large" href="https://github.com/simurgh-ui/simurgh#quick-start">Read the quick start ↗</a><a class="button secondary large" href="https://github.com/simurgh-ui/simurgh">Explore GitHub ↗</a></div>
+    <div class="docs-command"><code>pnpm dlx @simurgh-ui/cli init</code></div><a class="back-link" href="/">← Back to the homepage</a>
+  </main>
+  <footer class="footer simple"><div class="shell footer-bottom"><Logo /><span>© 2026 Simurgh UI.</span></div></footer>
+</BaseLayout>

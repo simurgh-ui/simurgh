@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Logo from '../components/Logo.astro';
+import { InstallCommand } from '../components/InstallCommand';
+import { ComponentShowcase } from '../components/ComponentShowcase';
+import { PalettePicker } from '../components/PalettePicker';
+import { MotionLayer } from '../components/MotionLayer';
+
+const components = ['Accordion', 'Alert dialog', 'Avatar', 'Badge', 'Button', 'Calendar', 'Card', 'Carousel', 'Chart', 'Checkbox', 'Combobox', 'Command', 'Date picker', 'Dialog', 'Drawer', 'Dropdown menu', 'File upload', 'Form', 'Input', 'Navigation menu', 'Pagination', 'Popover', 'Select', 'Sidebar', 'Table', 'Tabs', 'Toast', 'Tooltip'];
+const features = [
+  ['01', 'Source-owned', 'Copy readable component source into your app. Adapt it freely and keep control of every line.'],
+  ['02', 'Accessible by default', 'Keyboard behavior, focus management, supported states, and accessibility contracts are built in.'],
+  ['03', 'Framework-native', 'One shared interaction model with idiomatic APIs for React, Vue, and Angular.'],
+  ['04', 'Style-flexible', 'Use the supplied recipes and tokens, import only what you need, or replace the visual layer entirely.'],
+  ['05', 'RTL-ready', 'Logical properties and direction-aware interactions make bidirectional interfaces a first-class concern.'],
+  ['06', 'Tree-shakeable', 'Granular component, icon, and motion entry points keep production bundles focused.'],
+];
+---
+<BaseLayout title="Simurgh UI — Accessible primitives for every framework" description="Source-owned, accessible UI primitives for React, Vue, and Angular.">
+  <MotionLayer client:load />
+  <SiteHeader />
+  <main id="main-content">
+    <section class="hero-section shell" data-motion="hero">
+      <a class="announcement" href="/docs"><span>Pre-release</span> Simurgh UI 0.1 is taking flight <span aria-hidden="true">→</span></a>
+      <h1>Craft interfaces with <span>clarity and character.</span></h1>
+      <p class="hero-copy">Accessible, source-owned UI primitives for React, Vue, and Angular. Built to stay consistent—and become entirely yours.</p>
+      <div class="hero-actions"><a class="button primary large" href="/docs">Get started <span aria-hidden="true">→</span></a><a class="button secondary large" href="#components">View components</a></div>
+      <div id="installation" class="install-wrap"><InstallCommand client:load /></div>
+      <p class="framework-line"><span>One interaction model.</span><b>React</b><b>Vue</b><b>Angular</b></p>
+      <div class="hero-orbit" aria-hidden="true" data-motion="orbit"><span class="orbit one"></span><span class="orbit two"></span><span class="bird-mark">S</span></div>
+    </section>
+
+    <section id="components" class="section shell showcase-section" data-motion="reveal">
+      <div class="section-heading"><div><span class="eyebrow">Live components</span><h2>Beautiful by default.<br />Customizable by design.</h2></div><p>Explore a small cross-section of Simurgh’s component system. Every interaction is designed for real products, real input methods, and real customization.</p></div>
+      <ComponentShowcase client:load />
+    </section>
+
+    <section class="section shell" data-motion="reveal"><PalettePicker client:load /></section>
+
+    <section id="features" class="section shell" data-motion="reveal">
+      <div class="section-heading compact"><div><span class="eyebrow">Why Simurgh</span><h2>A foundation that gets out of your way.</h2></div><p>Own your interface without rebuilding the difficult parts of accessible interaction.</p></div>
+      <div class="feature-grid">{features.map(([number, title, body]) => <article data-motion="lift"><span>{number}</span><h3>{title}</h3><p>{body}</p></article>)}</div>
+    </section>
+
+    <section class="section framework-section shell" data-motion="reveal">
+      <div class="framework-visual" aria-hidden="true"><div class="framework-ring"><span>React</span><span>Vue</span><span>Angular</span><b>Simurgh</b></div></div>
+      <div><span class="eyebrow">Framework parity</span><h2>Native where it matters. Shared where it counts.</h2><p>Simurgh keeps interaction logic framework-neutral while each adapter follows the conventions developers expect. Ship the same behavior without forcing the same API.</p><a class="text-link" href="/docs">Read the architecture guide <span aria-hidden="true">→</span></a></div>
+    </section>
+
+    <section class="section shell catalog-section" data-motion="reveal">
+      <div class="section-heading compact"><div><span class="eyebrow">Component library</span><h2>From first click to complex workflow.</h2></div><a class="text-link" href="/docs">Browse all documentation <span aria-hidden="true">→</span></a></div>
+      <div class="component-cloud">{components.map((component) => <span data-motion="lift">{component}</span>)}</div>
+      <p class="catalog-note"><strong>68 components</strong> across overlays, forms, navigation, data display, feedback, charts, and layout.</p>
+    </section>
+
+    <section class="section shell cli-section" data-motion="reveal">
+      <div><span class="eyebrow">The Simurgh CLI</span><h2>Your components.<br />Your source.</h2><p>Initialize a project, add only what you need, and compare upstream changes without overwriting your work.</p></div>
+      <div class="terminal" aria-label="Terminal demonstrating the Simurgh CLI"><div class="terminal-bar"><i></i><i></i><i></i><span>simurgh — terminal</span></div><pre><span>$</span> pnpm dlx @simurgh-ui/cli init
+<em>✓</em> Detected React
+<em>✓</em> Added tokens and recipes
+
+<span>$</span> pnpm dlx @simurgh-ui/cli add button dialog
+<em>✓</em> Added 2 source-owned components
+
+<span>$</span> pnpm dlx @simurgh-ui/cli diff dialog
+<b>→</b> Your component is up to date</pre></div>
+    </section>
+
+    <section class="cta-section shell" data-motion="reveal"><div><span class="eyebrow">Ready to build?</span><h2>Give your next interface wings.</h2><p>Start with accessible primitives. Make every detail your own.</p><div class="hero-actions"><a class="button primary large" href="/docs">Get started</a><a class="button secondary large" href="https://github.com/simurgh-ui/simurgh">View on GitHub ↗</a></div></div></section>
+  </main>
+  <footer class="footer"><div class="shell footer-main"><div><Logo /><p>Accessible, source-owned UI primitives for React, Vue, and Angular.</p></div><div><h3>Explore</h3><a href="#components">Components</a><a href="/docs">Documentation</a><a href="#features">Features</a></div><div><h3>Community</h3><a href="https://github.com/simurgh-ui/simurgh">GitHub</a><a href="https://github.com/simurgh-ui/simurgh/issues">Issues</a><a href="https://github.com/simurgh-ui/simurgh/blob/main/README.md">Contributing</a></div></div><div class="shell footer-bottom"><span>© 2026 Simurgh UI.</span><span>Built in the open.</span></div></footer>
+</BaseLayout>
