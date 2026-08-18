@@ -119,6 +119,7 @@ append
 applicable
 application
 application-host
+application-level
 application-owned
 application-specific
 application-wide
@@ -331,6 +332,7 @@ catalog
 catalog's
 categorical
 categories
+category-level
 causal
 causality
 cause
@@ -374,6 +376,7 @@ chosen
 chrome
 chromium
 chunk
+chunks
 ci
 ci-validated
 circular
@@ -486,6 +489,7 @@ composition
 compound
 compound-component
 comprehension
+compression
 computed
 concepts
 concern
@@ -687,6 +691,7 @@ device
 dialog
 dialog's
 dialogs
+dictionaries
 did
 diff
 differ
@@ -1003,6 +1008,7 @@ fresh-context
 fresh-reader
 from
 frozen
+full
 full-height
 full-screen
 fully
@@ -1113,6 +1119,8 @@ iconaccessibilityexamples
 iconaccessibilityexamples.astro
 icongallery
 icongallery.astro
+iconimportstrategies
+iconimportstrategies.astro
 iconnames
 iconnames.length
 icons
@@ -2049,6 +2057,7 @@ run
 running
 runs
 runtime
+runtimes
 sacred
 safari
 safe
@@ -2253,6 +2262,7 @@ storage
 store
 stored
 story
+strategy
 streaming
 string
 strings

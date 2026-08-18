@@ -503,7 +503,7 @@ budgets remain fixed.
 
 ### P2: evidence and adoption
 
-- [ ] Publish measured examples comparing named, dynamic, category-level, and raw-SVG imports,
+- [x] Publish measured examples comparing named, dynamic, category-level, and raw-SVG imports,
       including their tree-shaking and bundle-size consequences.
 - [ ] Run a first-time-user study covering: find an icon from a concept, compare similar candidates,
       copy the correct framework import, theme it, label an icon-only control, and verify RTL.

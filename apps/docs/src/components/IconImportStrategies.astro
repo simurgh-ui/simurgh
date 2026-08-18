@@ -1,0 +1,56 @@
+---
+import report from '../../../../artifacts/icon-import-strategies.json';
+
+const formatBytes = (bytes: number) =>
+  bytes < 1024 ? `${bytes} B` : `${(bytes / 1024).toFixed(1)} KiB`;
+---
+
+<div class="strategy-table">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Strategy</th>
+        <th scope="col">Gzip</th>
+        <th scope="col">Brotli</th>
+        <th scope="col">Definitions retained</th>
+        <th scope="col">Consequence</th>
+      </tr>
+    </thead>
+    <tbody>
+      {report.strategies.map((strategy) => (
+        <tr>
+          <th scope="row">{strategy.label}</th>
+          <td>{formatBytes(strategy.gzip)}</td>
+          <td>{formatBytes(strategy.brotli)}</td>
+          <td>{strategy.retainedIconDefinitions}</td>
+          <td>{strategy.consequence}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<p class="measurement-note">
+  Measured {report.generatedAt} with {report.toolchain}. Scenario: {report.scenario}. Values cover
+  generated output only, not the external React runtime or HTTP framing.
+</p>
+
+<style>
+  .strategy-table {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 48rem;
+  }
+
+  th,
+  td {
+    vertical-align: top;
+  }
+
+  .measurement-note {
+    color: var(--sl-color-gray-2);
+    font-size: 0.82rem;
+  }
+</style>

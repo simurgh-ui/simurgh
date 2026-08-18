@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-18",
+  "toolchain": "esbuild, gzip level 9, Brotli defaults",
+  "scenario": "One Arrow Right icon; React is external for component cases",
+  "strategies": [
+    {
+      "id": "named",
+      "label": "Named component",
+      "example": "import { ArrowRight } from '@simurgh-ui/icons/react/arrow-right';",
+      "delivery": "JavaScript bundle",
+      "minified": 1752,
+      "gzip": 1002,
+      "brotli": 862,
+      "retainedIconDefinitions": 1,
+      "consequence": "Best component tree-shaking: only the selected definition and shared React adapter remain."
+    },
+    {
+      "id": "dynamic",
+      "label": "Dynamic component",
+      "example": "import { SimurghIcon } from '@simurgh-ui/icons/react/dynamic';",
+      "delivery": "JavaScript bundle",
+      "minified": 779942,
+      "gzip": 263726,
+      "brotli": 223607,
+      "retainedIconDefinitions": 474,
+      "consequence": "Runtime name selection retains the complete definition catalog."
+    },
+    {
+      "id": "category",
+      "label": "Category lookup",
+      "example": "import { getIcon, iconGroups } from '@simurgh-ui/icons/catalog';",
+      "delivery": "JavaScript bundle",
+      "minified": 785656,
+      "gzip": 265054,
+      "brotli": 224961,
+      "retainedIconDefinitions": 474,
+      "consequence": "Runtime category traversal retains the complete catalog even when one group is selected."
+    },
+    {
+      "id": "raw-svg",
+      "label": "Raw SVG asset",
+      "example": "import arrowRightUrl from '@simurgh-ui/icons/svg/arrow-right';",
+      "delivery": "Standalone SVG asset",
+      "minified": 762,
+      "gzip": 474,
+      "brotli": 401,
+      "retainedIconDefinitions": 1,
+      "consequence": "Ships one authored asset and no framework adapter; behavior and accessibility are consumer-owned."
+    }
+  ]
+}
