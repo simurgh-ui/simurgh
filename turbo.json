@@ -6,9 +6,12 @@
       "outputs": ["dist/**", "assets/**", "all.css", "components/**"]
     },
     "dev": { "cache": false, "persistent": true },
-    "test": { "dependsOn": ["^build"] },
-    "coverage": { "dependsOn": ["^build"], "outputs": ["coverage/**"] },
-    "typecheck": { "dependsOn": ["^build"] },
+    "test": { "dependsOn": ["^build", "build"] },
+    "coverage": {
+      "dependsOn": ["^build", "build"],
+      "outputs": ["coverage/**"]
+    },
+    "typecheck": { "dependsOn": ["^build", "build"] },
     "lint": { "dependsOn": ["^build", "build"] }
   }
 }
