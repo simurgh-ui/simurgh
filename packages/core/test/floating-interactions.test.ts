@@ -65,6 +65,11 @@ describe('floating interactions', () => {
     );
     expect(setOpen).toHaveBeenCalledWith(false);
     expect(document.activeElement).toBe(reference);
+    interactions.onReferenceKeyDown({
+      defaultPrevented: false,
+      key: 'Escape',
+    });
+    expect(setOpen).toHaveBeenCalledWith(false);
     interactions.onFloatingKeyDown({ defaultPrevented: false, key: 'Escape' });
     expect(document.activeElement).toBe(reference);
     cleanup();

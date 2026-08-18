@@ -21,7 +21,7 @@ import { FloatingBase } from '../internal/floating-base.js';
       class="simurgh-trigger"
       aria-haspopup="menu"
       [attr.aria-expanded]="open"
-      (click)="toggle()"
+      (click)="toggle($event)"
     >
       <ng-content select="[trigger]" />
     </button>
@@ -37,8 +37,9 @@ import { FloatingBase } from '../internal/floating-base.js';
     </div>`,
 })
 export class DropdownMenuComponent extends FloatingBase {
-  override toggle() {
-    super.toggle();
+  protected override interactionKind = 'menu' as const;
+  override toggle(event?: Event) {
+    super.toggle(event);
     if (this.open)
       setTimeout(() =>
         this.floating?.nativeElement
@@ -49,6 +50,7 @@ export class DropdownMenuComponent extends FloatingBase {
       );
   }
   onKeydown(event: KeyboardEvent) {
+    this.onFloatingKeydown(event);
     compositeKeydown(event, '[role=menuitem]');
   }
 }

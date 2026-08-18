@@ -7,6 +7,11 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import {
+  createFloatingInteractions,
+  createId,
+  type FloatingInteractionKind,
+} from '@simurgh-ui/core';
 import { autoUpdateFloating, computeFloatingPosition } from '../floating.js';
 
 @Directive()
@@ -17,36 +22,75 @@ export abstract class FloatingBase implements OnDestroy {
   @Output() openChange = new EventEmitter<boolean>();
   @ViewChild('reference') reference?: ElementRef<HTMLElement>;
   @ViewChild('floating') floating?: ElementRef<HTMLElement>;
-  private cleanup: (() => void) | undefined;
-  toggle() {
-    if (!this.disabled) this.setOpen(!this.open);
+  protected interactionKind: FloatingInteractionKind = 'popover';
+  private readonly interactionId = createId('floating');
+  private cleanupPosition: (() => void) | undefined;
+  private cleanupDismiss: (() => void) | undefined;
+  private get interactions() {
+    return createFloatingInteractions({
+      kind: this.interactionKind,
+      id: this.interactionId,
+      getOpen: () => this.open,
+      setOpen: (value) => this.setOpen(value),
+      getReference: () => this.reference?.nativeElement ?? null,
+      getFloating: () => this.floating?.nativeElement ?? null,
+    });
+  }
+  toggle(event?: Event) {
+    if (!this.disabled)
+      this.interactions.onReferenceClick(event ?? { defaultPrevented: false });
   }
   close() {
     this.setOpen(false);
+  }
+  openFromHover(event: Event) {
+    this.interactions.onReferenceMouseEnter?.(event);
+  }
+  closeFromHover(event: Event) {
+    this.interactions.onReferenceMouseLeave?.(event);
+  }
+  openFromFocus(event: Event) {
+    this.interactions.onReferenceFocus?.(event);
+  }
+  closeFromFocus(event: Event) {
+    this.interactions.onReferenceBlur?.(event);
+  }
+  onFloatingKeydown(event: KeyboardEvent) {
+    this.interactions.onFloatingKeyDown(event);
+  }
+  onReferenceKeydown(event: KeyboardEvent) {
+    this.interactions.onReferenceKeyDown(event);
   }
   protected setOpen(value: boolean) {
     this.open = value;
     this.openChange.emit(value);
     if (value) queueMicrotask(() => this.position());
     else {
-      this.cleanup?.();
-      this.cleanup = undefined;
+      this.cleanupPosition?.();
+      this.cleanupDismiss?.();
+      this.cleanupPosition = undefined;
+      this.cleanupDismiss = undefined;
     }
   }
   private position() {
     const reference = this.reference?.nativeElement,
       floating = this.floating?.nativeElement;
     if (!reference || !floating) return;
-    this.cleanup?.();
-    this.cleanup = autoUpdateFloating(reference, floating, () => {
+    this.cleanupPosition?.();
+    this.cleanupDismiss?.();
+    this.cleanupPosition = autoUpdateFloating(reference, floating, () => {
       const result = computeFloatingPosition(reference, floating);
       Object.assign(floating.style, {
         left: `${result.x}px`,
         top: `${result.y}px`,
       });
     });
+    this.cleanupDismiss = this.interactions.listenForOutsidePress(
+      reference.ownerDocument,
+    );
   }
   ngOnDestroy() {
-    this.cleanup?.();
+    this.cleanupPosition?.();
+    this.cleanupDismiss?.();
   }
 }

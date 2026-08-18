@@ -65,6 +65,10 @@ export function createFloatingInteractions(
     onReferenceMouseLeave: interactive ? close : undefined,
     onReferenceFocus: interactive ? open : undefined,
     onReferenceBlur: interactive ? close : undefined,
+    onReferenceKeyDown(event: FloatingInteractionEvent) {
+      if (!event.defaultPrevented && event.key === 'Escape')
+        options.setOpen(false);
+    },
     onFloatingKeyDown(event: FloatingInteractionEvent) {
       if (!event.defaultPrevented && event.key === 'Escape') {
         options.setOpen(false);

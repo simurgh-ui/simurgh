@@ -206,7 +206,7 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Implement the shared interaction behavior currently supplied by `@floating-ui/react`: click,
       hover, focus, role assignment, Escape dismissal, outside-press dismissal, composed events, and
       safe focus restoration.
-- [ ] Replace the React hooks and the Vue and Angular DOM adapters with thin framework-specific
+- [x] Replace the React hooks and the Vue and Angular DOM adapters with thin framework-specific
       wrappers around the shared internal positioning and interaction layer.
 - [ ] Run shared overlay contracts across React, Vue, and Angular for collision handling, RTL,
       keyboard and pointer input, nested overlays, portals, focus management, dismissal, interrupted

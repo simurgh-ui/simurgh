@@ -1,4 +1,8 @@
-import { createId } from '@simurgh-ui/core';
+import {
+  createFloatingInteractions,
+  createId,
+  type FloatingInteractionEvent,
+} from '@simurgh-ui/core';
 import {
   Teleport,
   computed,
@@ -23,7 +27,13 @@ type FloatingContext = {
   trigger: Ref<HTMLElement | null>;
   content: Ref<HTMLElement | null>;
   kind: FloatingKind;
+  interactions: ReturnType<typeof createFloatingInteractions>;
 };
+
+function invoke(handler: unknown, event: FloatingInteractionEvent) {
+  if (Array.isArray(handler)) handler.forEach((entry) => invoke(entry, event));
+  else if (typeof handler === 'function') handler(event);
+}
 
 export const floatingKey: InjectionKey<FloatingContext> =
   /* @__PURE__ */ Symbol('floating');
@@ -47,11 +57,23 @@ export function floatingRoot(name: string, kind: FloatingKind) {
       });
       const trigger = ref<HTMLElement | null>(null);
       const content = ref<HTMLElement | null>(null);
-      let cleanup: (() => void) | undefined;
+      const id = createId('floating');
+      const setOpen = (value: boolean) => (current.value = value);
+      const interactions = createFloatingInteractions({
+        kind,
+        id,
+        getOpen: () => current.value,
+        setOpen,
+        getReference: () => trigger.value,
+        getFloating: () => content.value,
+      });
+      let cleanupPosition: (() => void) | undefined;
+      let cleanupDismiss: (() => void) | undefined;
       watch([current, trigger, content], ([open, reference, floating]) => {
-        cleanup?.();
-        if (open && reference && floating)
-          cleanup = autoUpdateFloating(reference, floating, () => {
+        cleanupPosition?.();
+        cleanupDismiss?.();
+        if (open && reference && floating) {
+          cleanupPosition = autoUpdateFloating(reference, floating, () => {
             const position = computeFloatingPosition(reference, floating);
             Object.assign(floating.style, {
               position: 'fixed',
@@ -59,15 +81,23 @@ export function floatingRoot(name: string, kind: FloatingKind) {
               top: `${position.y}px`,
             });
           });
+          cleanupDismiss = interactions.listenForOutsidePress(
+            reference.ownerDocument,
+          );
+        }
       });
-      onBeforeUnmount(() => cleanup?.());
+      onBeforeUnmount(() => {
+        cleanupPosition?.();
+        cleanupDismiss?.();
+      });
       provide(floatingKey, {
         open: current,
-        setOpen: (value) => (current.value = value),
-        id: createId('floating'),
+        setOpen,
+        id,
         trigger,
         content,
         kind,
+        interactions,
       });
       return () => slots.default?.();
     },
@@ -78,46 +108,60 @@ export const FloatingTrigger = /* @__PURE__ */ defineComponent({
   name: 'SimurghFloatingTrigger',
   setup(_, { slots, attrs }) {
     const context = inject(floatingKey)!;
-    return () =>
-      h(
+    return () => {
+      const compose = (
+        handler: unknown,
+        internal?: (event: FloatingInteractionEvent) => void,
+      ) =>
+        internal
+          ? (event: FloatingInteractionEvent) => {
+              invoke(handler, event);
+              internal(event);
+            }
+          : handler;
+      return h(
         'button',
         {
           ...attrs,
+          ...context.interactions.referenceAttributes,
           ref: context.trigger,
           type: 'button',
           'aria-expanded':
             context.kind === 'tooltip' ? undefined : context.open.value,
-          'aria-haspopup':
-            context.kind === 'tooltip'
-              ? undefined
-              : context.kind === 'menu'
-                ? 'menu'
-                : 'dialog',
-          'aria-describedby':
-            context.kind === 'tooltip' ? context.id : undefined,
           onClick:
             context.kind === 'tooltip' || context.kind === 'hovercard'
-              ? undefined
-              : () => context.setOpen(!context.open.value),
+              ? attrs.onClick
+              : compose(attrs.onClick, context.interactions.onReferenceClick),
           onMouseenter:
             context.kind === 'tooltip' || context.kind === 'hovercard'
-              ? () => context.setOpen(true)
+              ? compose(
+                  attrs.onMouseenter,
+                  context.interactions.onReferenceMouseEnter,
+                )
               : undefined,
           onMouseleave:
             context.kind === 'tooltip' || context.kind === 'hovercard'
-              ? () => context.setOpen(false)
+              ? compose(
+                  attrs.onMouseleave,
+                  context.interactions.onReferenceMouseLeave,
+                )
               : undefined,
           onFocus:
             context.kind === 'tooltip' || context.kind === 'hovercard'
-              ? () => context.setOpen(true)
+              ? compose(attrs.onFocus, context.interactions.onReferenceFocus)
               : undefined,
           onBlur:
             context.kind === 'tooltip' || context.kind === 'hovercard'
-              ? () => context.setOpen(false)
+              ? compose(attrs.onBlur, context.interactions.onReferenceBlur)
               : undefined,
+          onKeydown: compose(
+            attrs.onKeydown,
+            context.interactions.onReferenceKeyDown,
+          ),
         },
         slots.default?.(),
       );
+    };
   },
 });
 
@@ -134,24 +178,16 @@ export const FloatingContent = /* @__PURE__ */ defineComponent({
               'div',
               {
                 ...attrs,
-                id:
-                  attrs.id ??
-                  (context.kind === 'tooltip' ? context.id : undefined),
+                id: attrs.id ?? context.interactions.floatingAttributes.id,
                 role:
-                  attrs.role ??
-                  (context.kind === 'tooltip'
-                    ? 'tooltip'
-                    : context.kind === 'menu'
-                      ? 'menu'
-                      : 'dialog'),
+                  attrs.role ?? context.interactions.floatingAttributes.role,
                 ref: context.content,
                 class: ['simurgh-content', attrs.class],
                 style: [{ position: 'absolute' }, attrs.style],
                 onKeydown: (event: KeyboardEvent) => {
                   if (typeof attrs.onKeydown === 'function')
                     attrs.onKeydown(event);
-                  if (!event.defaultPrevented && event.key === 'Escape')
-                    context.setOpen(false);
+                  context.interactions.onFloatingKeyDown(event);
                 },
               },
               slots.default?.(),

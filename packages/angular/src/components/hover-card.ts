@@ -10,10 +10,11 @@ import { FloatingBase } from '../internal/floating-base.js';
       #reference
       data-slot="hover-card-trigger"
       [attr.aria-expanded]="open"
-      (mouseenter)="setOpen(true)"
-      (mouseleave)="setOpen(false)"
-      (focusin)="setOpen(true)"
-      (focusout)="setOpen(false)"
+      (mouseenter)="openFromHover($event)"
+      (mouseleave)="closeFromHover($event)"
+      (focusin)="openFromFocus($event)"
+      (focusout)="closeFromFocus($event)"
+      (keydown)="onReferenceKeydown($event)"
       ><ng-content select="[trigger]"
     /></span>
     <div
@@ -29,6 +30,7 @@ import { FloatingBase } from '../internal/floating-base.js';
     </div>`,
 })
 export class HoverCardComponent extends FloatingBase {
+  protected override interactionKind = 'hovercard' as const;
   @Input() label = 'Additional information';
   override setOpen(value: boolean) {
     super.setOpen(value);

@@ -8,10 +8,11 @@ import { FloatingBase } from '../internal/floating-base.js';
   imports: [CommonModule],
   template: `<span
       #reference
-      (mouseenter)="setOpen(true)"
-      (mouseleave)="setOpen(false)"
-      (focusin)="setOpen(true)"
-      (focusout)="setOpen(false)"
+      (mouseenter)="openFromHover($event)"
+      (mouseleave)="closeFromHover($event)"
+      (focusin)="openFromFocus($event)"
+      (focusout)="closeFromFocus($event)"
+      (keydown)="onReferenceKeydown($event)"
       ><ng-content select="[trigger]"
     /></span>
     <div
@@ -25,6 +26,7 @@ import { FloatingBase } from '../internal/floating-base.js';
     </div>`,
 })
 export class TooltipComponent extends FloatingBase {
+  protected override interactionKind = 'tooltip' as const;
   override setOpen(value: boolean) {
     super.setOpen(value);
   }

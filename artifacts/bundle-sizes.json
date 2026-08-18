@@ -301,33 +301,33 @@
       "budget": 1500
     },
     "vue-popover": {
-      "minified": 4085,
-      "gzip": 1689,
-      "brotli": 1520,
+      "minified": 5588,
+      "gzip": 2151,
+      "brotli": 1932,
       "budget": 9300
     },
     "vue-tooltip": {
-      "minified": 4085,
-      "gzip": 1686,
-      "brotli": 1516,
+      "minified": 5588,
+      "gzip": 2148,
+      "brotli": 1933,
       "budget": 9300
     },
     "vue-hover-card": {
-      "minified": 4474,
-      "gzip": 1801,
-      "brotli": 1612,
+      "minified": 5977,
+      "gzip": 2264,
+      "brotli": 2029,
       "budget": 9450
     },
     "vue-dropdown-menu": {
-      "minified": 5391,
-      "gzip": 2204,
-      "brotli": 1968,
+      "minified": 6894,
+      "gzip": 2659,
+      "brotli": 2384,
       "budget": 9800
     },
     "vue-date-picker": {
-      "minified": 9194,
-      "gzip": 3375,
-      "brotli": 3046,
+      "minified": 10703,
+      "gzip": 3824,
+      "brotli": 3452,
       "budget": 11000
     },
     "vue-resizable": {
@@ -463,39 +463,39 @@
       "budget": 6144
     },
     "react-overlays": {
-      "minified": 28556,
-      "gzip": 5905,
-      "brotli": 5018,
+      "minified": 28864,
+      "gzip": 5936,
+      "brotli": 5035,
       "budget": 18432
     },
     "vue-overlays": {
-      "minified": 12576,
-      "gzip": 3902,
-      "brotli": 3493,
+      "minified": 14088,
+      "gzip": 4373,
+      "brotli": 3906,
       "budget": 10752
     },
     "angular-overlays": {
-      "minified": 19170,
-      "gzip": 4085,
-      "brotli": 3578,
+      "minified": 21596,
+      "gzip": 4677,
+      "brotli": 4110,
       "budget": 12288
     },
     "react-complete": {
-      "minified": 101415,
-      "gzip": 25741,
-      "brotli": 22030,
+      "minified": 101845,
+      "gzip": 25781,
+      "brotli": 22059,
       "budget": 35840
     },
     "vue-complete": {
-      "minified": 81583,
-      "gzip": 22328,
-      "brotli": 19669,
+      "minified": 83094,
+      "gzip": 22883,
+      "brotli": 20106,
       "budget": 29696
     },
     "angular-complete": {
-      "minified": 146940,
-      "gzip": 27176,
-      "brotli": 22920,
+      "minified": 149307,
+      "gzip": 27729,
+      "brotli": 23424,
       "budget": 34816
     },
     "internal-floating": {
@@ -522,20 +522,20 @@
   "packages": {
     "react": {
       "files": 160,
-      "unpacked": 256737,
-      "gzip": 40106,
+      "unpacked": 257675,
+      "gzip": 40153,
       "budget": 409600
     },
     "vue": {
       "files": 234,
-      "unpacked": 345605,
-      "gzip": 40534,
+      "unpacked": 347847,
+      "gzip": 41048,
       "budget": 384000
     },
     "angular": {
       "files": 164,
-      "unpacked": 299219,
-      "gzip": 42886,
+      "unpacked": 301546,
+      "gzip": 43302,
       "budget": 307200
     }
   }

@@ -123,6 +123,10 @@ export function FloatingRoot({
             interactions.onReferenceBlur?.(event);
           }
         : given.onBlur,
+      onKeyDown: (event: React.KeyboardEvent) => {
+        invoke(given, 'onKeyDown', event);
+        interactions.onReferenceKeyDown(event);
+      },
     };
   };
   const getFloatingProps = (given: Record<string, unknown> = {}) => ({
