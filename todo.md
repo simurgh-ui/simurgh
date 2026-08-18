@@ -498,7 +498,7 @@ budgets remain fixed.
       physical-direction exceptions in both LTR and RTL.
 - [x] Give Angular consumers parity with React and Vue for root SVG classes, styles, data attributes,
       ARIA attributes, and reusable presentation hooks.
-- [ ] Add catalog examples for decorative icons, informative icons, and named icon-only controls;
+- [x] Add catalog examples for decorative icons, informative icons, and named icon-only controls;
       test accessible names, hidden decorative SVGs, focus behavior, and duplicate announcements.
 
 ### P2: evidence and adoption

@@ -1,5 +1,46 @@
 import { expect, test } from '@playwright/test';
 
+test('icon catalog examples expose one clear accessible owner', async ({
+  page,
+}) => {
+  await page.goto('/icons/overview/');
+  const examples = page.locator('[data-icon-accessibility-examples]');
+  const decorative = examples.locator('[data-icon-example="decorative"]');
+  const informative = examples.locator('[data-icon-example="informative"]');
+  const control = examples.locator('[data-icon-example="icon-only-control"]');
+
+  await expect(
+    decorative.getByText('Download report', { exact: true }),
+  ).toBeVisible();
+  await expect(decorative.locator('svg')).toHaveAttribute(
+    'aria-hidden',
+    'true',
+  );
+  await expect(decorative.locator('svg')).toHaveAttribute('focusable', 'false');
+  await expect(decorative.getByRole('img')).toHaveCount(0);
+
+  await expect(
+    informative.getByRole('img', { name: 'Verified account' }),
+  ).toBeVisible();
+  await expect(informative.locator('svg')).not.toHaveAttribute(
+    'aria-hidden',
+    'true',
+  );
+  await expect(informative.locator('svg')).toHaveAttribute(
+    'focusable',
+    'false',
+  );
+
+  const button = control.getByRole('button', { name: 'Close preview' });
+  await expect(button).toHaveAccessibleName('Close preview');
+  await expect(button.locator('svg')).toHaveAttribute('aria-hidden', 'true');
+  await expect(button.locator('svg')).toHaveAttribute('focusable', 'false');
+  await expect(control.getByRole('img')).toHaveCount(0);
+  await button.focus();
+  await expect(button).toBeFocused();
+  await expect(button.locator('svg')).not.toBeFocused();
+});
+
 test('icon catalog supports concept search, categories, empty states, and copy feedback', async ({
   browserName,
   context,

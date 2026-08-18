@@ -4,6 +4,7 @@ description: Search the complete Simurgh UI icon catalog and copy the right fram
 ---
 
 import IconGallery from '../../../components/IconGallery.astro';
+import IconAccessibilityExamples from '../../../components/IconAccessibilityExamples.astro';
 import { iconNames } from '../../../../../../packages/icons/src/icons.generated';
 
 The `@simurgh-ui/icons` package contains **{iconNames.length} functional icons** for navigation, actions, status,
@@ -32,6 +33,13 @@ so a React application does not need Vue or Angular.
 See [Usage and API](/icons/usage/) for framework examples and customization, and
 [Accessibility and RTL](/icons/accessibility-and-rtl/) before placing an icon in an interactive
 control.
+
+## Accessible patterns
+
+These live catalog examples distinguish a decorative icon, a standalone informative image, and a
+named icon-only control. Inspect the rendered semantics as well as the visible treatment.
+
+<IconAccessibilityExamples />
 
 ## Complete catalog
 

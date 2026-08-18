@@ -1,0 +1,91 @@
+---
+import { renderIconSvg } from '../../../../packages/icons/src/icons.generated';
+---
+
+<div class="icon-accessibility-examples" data-icon-accessibility-examples>
+  <article data-icon-example="decorative">
+    <h3>Decorative beside text</h3>
+    <p class="example-output">
+      <span class="example-icon" set:html={renderIconSvg('download', { size: 24 })} />
+      <span>Download report</span>
+    </p>
+    <p>The visible label carries the meaning, so the SVG stays hidden from assistive technology.</p>
+  </article>
+
+  <article data-icon-example="informative">
+    <h3>Standalone informative icon</h3>
+    <p class="example-output">
+      <span
+        class="example-icon"
+        set:html={renderIconSvg('verified', { size: 24, title: 'Verified account' })}
+      />
+    </p>
+    <p>The SVG is an image with a concise accessible name because no equivalent text is present.</p>
+  </article>
+
+  <article data-icon-example="icon-only-control">
+    <h3>Named icon-only control</h3>
+    <p class="example-output">
+      <button type="button" aria-label="Close preview">
+        <span class="example-icon" set:html={renderIconSvg('close', { size: 20 })} />
+      </button>
+    </p>
+    <p>The button owns the name and focus; its child SVG remains decorative and unfocusable.</p>
+  </article>
+</div>
+
+<style>
+  .icon-accessibility-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.75rem;
+    margin-block: 1rem 2rem;
+  }
+
+  article {
+    padding: 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    background: var(--sl-color-gray-6);
+  }
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  article > p:last-child {
+    margin-block-start: 0.75rem;
+    color: var(--sl-color-gray-2);
+    font-size: 0.82rem;
+  }
+
+  .example-output {
+    display: flex;
+    align-items: center;
+    min-height: 3rem;
+    gap: 0.5rem;
+    margin-block-start: 0.75rem;
+  }
+
+  .example-icon {
+    display: inline-flex;
+  }
+
+  button {
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 0.5rem;
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    cursor: pointer;
+  }
+
+  button:focus-visible {
+    outline: 3px solid var(--sl-color-accent-high);
+    outline-offset: 2px;
+  }
+</style>

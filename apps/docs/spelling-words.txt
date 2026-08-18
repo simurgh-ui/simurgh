@@ -1109,6 +1109,8 @@ icon
 icon-name
 icon-only
 icon's
+iconaccessibilityexamples
+iconaccessibilityexamples.astro
 icongallery
 icongallery.astro
 iconnames
@@ -2577,6 +2579,7 @@ webkit
 webview
 week
 weight
+well
 were
 what
 wheel
