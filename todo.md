@@ -193,7 +193,7 @@ Items are checked only after their implementation exists and the relevant verifi
 
 ## Replace Floating UI with a sub-5 KiB internal layer
 
-- [ ] Define and document the supported positioning contract before implementation: placements,
+- [x] Define and document the supported positioning contract before implementation: placements,
       8 px offset, viewport flip, boundary shift, RTL behavior, nested scrolling, transformed
       ancestors, portals, and explicitly unsupported Floating UI features.
 - [ ] Capture reproducible pre-migration behavior and bundle baselines for Popover, Tooltip, Hover
