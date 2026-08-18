@@ -88,4 +88,53 @@ describe('floating positioning', () => {
     cleanup();
     expect(remove).toHaveBeenCalledWith('scroll', expect.any(Function), true);
   });
+
+  it('observes element, layout, and visual viewport changes and disconnects everything', () => {
+    const { reference, floating } = elements(
+      rect(100, 40, 40, 20),
+      rect(0, 0, 80, 30),
+    );
+    const resizeObserve = vi.fn();
+    const resizeDisconnect = vi.fn();
+    const intersectionObserve = vi.fn();
+    const intersectionDisconnect = vi.fn();
+    const viewportAdd = vi.fn();
+    const viewportRemove = vi.fn();
+    Object.defineProperties(window, {
+      ResizeObserver: {
+        configurable: true,
+        value: class {
+          observe = resizeObserve;
+          disconnect = resizeDisconnect;
+        },
+      },
+      IntersectionObserver: {
+        configurable: true,
+        value: class {
+          observe = intersectionObserve;
+          disconnect = intersectionDisconnect;
+        },
+      },
+      visualViewport: {
+        configurable: true,
+        value: {
+          addEventListener: viewportAdd,
+          removeEventListener: viewportRemove,
+        },
+      },
+    });
+
+    const cleanup = autoUpdateFloating(reference, floating, vi.fn());
+    expect(resizeObserve).toHaveBeenCalledWith(reference);
+    expect(resizeObserve).toHaveBeenCalledWith(floating);
+    expect(intersectionObserve).toHaveBeenCalledWith(reference);
+    expect(viewportAdd).toHaveBeenCalledWith('resize', expect.any(Function));
+    expect(viewportAdd).toHaveBeenCalledWith('scroll', expect.any(Function));
+
+    cleanup();
+    expect(resizeDisconnect).toHaveBeenCalledOnce();
+    expect(intersectionDisconnect).toHaveBeenCalledOnce();
+    expect(viewportRemove).toHaveBeenCalledWith('resize', expect.any(Function));
+    expect(viewportRemove).toHaveBeenCalledWith('scroll', expect.any(Function));
+  });
 });

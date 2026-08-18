@@ -201,7 +201,7 @@ Items are checked only after their implementation exists and the relevant verifi
 - [x] Implement a framework-neutral positioning engine in `@simurgh-ui/core` using
       `getBoundingClientRect`, offset, flip, and shift/clamping without accessing browser globals
       during module evaluation or server rendering.
-- [ ] Implement leak-free automatic updates for window and scroll-container scrolling, viewport
+- [x] Implement leak-free automatic updates for window and scroll-container scrolling, viewport
       resizing, element resizing, layout changes, and teardown; use observers only when available.
 - [ ] Implement the shared interaction behavior currently supplied by `@floating-ui/react`: click,
       hover, focus, role assignment, Escape dismissal, outside-press dismissal, composed events, and
