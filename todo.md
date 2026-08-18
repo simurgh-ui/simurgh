@@ -213,7 +213,7 @@ Items are checked only after their implementation exists and the relevant verifi
       unmounts, and cleanup.
 - [x] Add SSR and hydration tests proving that importing and initially rendering every positioned
       overlay does not access `window` or `document` and produces deterministic initial markup.
-- [ ] Add cross-browser visual fixtures for viewport edges, nested scroll containers, zoom,
+- [x] Add cross-browser visual fixtures for viewport edges, nested scroll containers, zoom,
       transformed ancestors, mobile viewports, and live anchor/content resizing.
 - [ ] Enforce a maximum incremental contribution of 5 KiB gzip for the complete internal
       positioning and interaction layer in each framework consumer bundle, with minified and Brotli
