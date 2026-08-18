@@ -9,6 +9,6 @@
     "test": { "dependsOn": ["^build"] },
     "coverage": { "dependsOn": ["^build"], "outputs": ["coverage/**"] },
     "typecheck": { "dependsOn": ["^build"] },
-    "lint": { "dependsOn": ["^build"] }
+    "lint": { "dependsOn": ["^build", "build"] }
   }
 }
