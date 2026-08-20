@@ -383,6 +383,7 @@ import {
   createId,
   moveCalendarDate,
 } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-calendar',
@@ -441,7 +442,7 @@ import {
     <input *ngIf="name" type="hidden" [name]="name" [value]="value" />
   </div>`,
 })
-export class CalendarComponent {
+export class CalendarComponent extends FormResetBase {
   @Input() value = '';
   @Input() month = calendarToday().slice(0, 7);
   @Input() locale = 'en';
@@ -459,6 +460,15 @@ export class CalendarComponent {
   readonly titleId = createId('calendar-title');
   readonly weeks = [0, 1, 2, 3, 4, 5];
   readonly weekdayIndexes = [0, 1, 2, 3, 4, 5, 6];
+
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      if (initial) this.month = initial.slice(0, 7);
+      this.valueChange.emit(initial);
+    };
+  }
 
   get days() {
     return calendarMonthDays(this.month, this.firstDayOfWeek);
@@ -1081,6 +1091,7 @@ import type { SelectOption } from './select.js';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { InternalIdService } from '../internal/id.js';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-combobox',
@@ -1134,7 +1145,7 @@ import { InternalIdService } from '../internal/id.js';
     />
   </div>`,
 })
-export class ComboboxComponent {
+export class ComboboxComponent extends FormResetBase {
   @Input() options: SelectOption[] = [];
   @Input() value = '';
   @Input() name: string | undefined;
@@ -1148,6 +1159,18 @@ export class ComboboxComponent {
   query = '';
   open = false;
   activeIndex = -1;
+
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.query =
+        this.options.find((option) => option.value === initial)?.label ?? '';
+      this.open = false;
+      this.activeIndex = -1;
+      this.valueChange.emit(initial);
+    };
+  }
 
   get filteredOptions() {
     const needle = this.query.trim().toLocaleLowerCase();
@@ -1195,7 +1218,11 @@ export class ComboboxComponent {
       event.preventDefault();
       this.activeIndex = 0;
       this.move(-1);
-    } else if (event.key === 'Enter' && this.activeIndex >= 0) {
+    } else if (
+      event.key === 'Enter' &&
+      !event.isComposing &&
+      this.activeIndex >= 0
+    ) {
       event.preventDefault();
       const option = this.filteredOptions[this.activeIndex];
       if (option) this.choose(option);
@@ -1382,6 +1409,7 @@ import {
 } from '@angular/core';
 import { PopoverComponent } from './popover.js';
 import { calendarToday } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-date-picker',
@@ -1424,7 +1452,7 @@ import { calendarToday } from '@simurgh-ui/core';
     />
   </div>`,
 })
-export class DatePickerComponent {
+export class DatePickerComponent extends FormResetBase {
   @Input() value = '';
   @Input() month = calendarToday().slice(0, 7);
   @Input() locale = 'en';
@@ -1441,6 +1469,16 @@ export class DatePickerComponent {
   @Output() valueChange = new EventEmitter<string>();
   @Output() monthChange = new EventEmitter<string>();
   @ViewChild(PopoverComponent) popover?: PopoverComponent;
+
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      if (initial) this.month = initial.slice(0, 7);
+      this.valueChange.emit(initial);
+      this.popover?.close();
+    };
+  }
 
   get displayValue() {
     return this.value
@@ -1501,7 +1539,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { trapFocus } from '@simurgh-ui/core';
+import type { OnDestroy } from '@angular/core';
+import { isolateModal, trapFocus } from '@simurgh-ui/core';
 
 @Component({
   selector: 'simurgh-dialog',
@@ -1529,27 +1568,38 @@ import { trapFocus } from '@simurgh-ui/core';
       <ng-content />
     </section>`,
 })
-export class DialogComponent {
+export class DialogComponent implements OnDestroy {
   @Input() open = false;
   @Input() labelledBy?: string;
   @Input() describedBy?: string;
   @Output() openChange = new EventEmitter<boolean>();
   @ViewChild('content') content?: ElementRef<HTMLElement>;
   private previous: HTMLElement | null = null;
+  private restoreIsolation: (() => void) | undefined;
   show() {
     this.previous = document.activeElement as HTMLElement | null;
     this.open = true;
     this.openChange.emit(true);
-    setTimeout(() => this.content?.nativeElement.focus());
+    setTimeout(() => {
+      if (this.content) {
+        this.restoreIsolation = isolateModal(this.content.nativeElement);
+        this.content.nativeElement.focus();
+      }
+    });
   }
   close() {
     this.open = false;
     this.openChange.emit(false);
+    this.restoreIsolation?.();
+    this.restoreIsolation = undefined;
     setTimeout(() => this.previous?.isConnected && this.previous.focus());
   }
   onKeydown(event: KeyboardEvent) {
     if (event.key === 'Escape') this.close();
     else if (this.content) trapFocus(event, this.content.nativeElement);
+  }
+  ngOnDestroy() {
+    this.restoreIsolation?.();
   }
 }
 
@@ -1804,6 +1854,7 @@ export class FieldErrorComponent {}
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { createId } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-file-upload',
@@ -1836,7 +1887,7 @@ import { createId } from '@simurgh-ui/core';
     }}</span>
   </label>`,
 })
-export class FileUploadComponent {
+export class FileUploadComponent extends FormResetBase {
   @Input() inputId = createId('file');
   @Input({ required: true }) label = '';
   @Input() description = 'Drop files here or browse';
@@ -1847,6 +1898,12 @@ export class FileUploadComponent {
   @Input() required = false;
   @Output() filesChange = new EventEmitter<File[]>();
   selectedNames = '';
+  protected createFormReset() {
+    return () => {
+      this.selectedNames = '';
+      this.filesChange.emit([]);
+    };
+  }
   private accepted(files: File[]) {
     if (!this.accept) return files;
     const rules = this.accept
@@ -2022,6 +2079,7 @@ export class InputGroupAddonComponent {
 export class InputGroupTextComponent {}
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-input-otp',
@@ -2042,7 +2100,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     (input)="update($event)"
   />`,
 })
-export class InputOtpComponent {
+export class InputOtpComponent extends FormResetBase {
   @Input() name?: string;
   @Input() value = '';
   @Input() length = 6;
@@ -2052,6 +2110,13 @@ export class InputOtpComponent {
   @Input() invalid = false;
   @Input() autocomplete = 'one-time-code';
   @Output() valueChange = new EventEmitter<string>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   update(event: Event) {
     const input = event.target as HTMLInputElement;
     this.value = (
@@ -2062,12 +2127,23 @@ export class InputOtpComponent {
   }
 }
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { listenFormReset } from '@simurgh-ui/core';
+import {
+  Component,
+  booleanAttribute,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import type { AfterViewInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'simurgh-input',
   standalone: true,
   template: `<input
+    #control
     data-slot="input"
     [type]="type"
     [name]="name || ''"
@@ -2078,17 +2154,36 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     (input)="onInput($event)"
   />`,
 })
-export class InputComponent {
+export class InputComponent implements AfterViewInit, OnDestroy {
   @Input() type = 'text';
   @Input() name?: string;
   @Input() value = '';
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() invalid = false;
+  @Input({ transform: booleanAttribute }) required = false;
+  @Input({ transform: booleanAttribute }) disabled = false;
+  @Input({ transform: booleanAttribute }) invalid = false;
   @Output() valueChange = new EventEmitter<string>();
+  @ViewChild('control', { static: true })
+  control!: ElementRef<HTMLInputElement>;
+  private initialValue = '';
+  private removeResetListener?: () => void;
+  ngAfterViewInit() {
+    this.initialValue = this.value;
+    this.control.nativeElement.defaultValue = this.initialValue;
+    this.removeResetListener = listenFormReset(
+      this.control.nativeElement,
+      () => {
+        this.value = this.initialValue;
+        this.valueChange.emit(this.initialValue);
+        this.control.nativeElement.value = this.initialValue;
+      },
+    );
+  }
   onInput(event: Event) {
     this.value = (event.target as HTMLInputElement).value;
     this.valueChange.emit(this.value);
+  }
+  ngOnDestroy() {
+    this.removeResetListener?.();
   }
 }
 
@@ -2314,6 +2409,7 @@ export class MeterComponent {
 }
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-native-select',
@@ -2331,7 +2427,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     <ng-content />
   </select>`,
 })
-export class NativeSelectComponent {
+export class NativeSelectComponent extends FormResetBase {
   @Input() name?: string;
   @Input() value = '';
   @Input() required = false;
@@ -2340,6 +2436,13 @@ export class NativeSelectComponent {
   @Input() multiple = false;
   @Output() valueChange = new EventEmitter<string | string[]>();
   @Output() change = new EventEmitter<Event>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   onChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     this.value = select.value;
@@ -2393,6 +2496,7 @@ export class NavigationMenuLinkDirective {
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { createId } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-number-input',
@@ -2440,7 +2544,7 @@ import { createId } from '@simurgh-ui/core';
     </button>
   </div>`,
 })
-export class NumberInputComponent {
+export class NumberInputComponent extends FormResetBase {
   @Input() inputId = createId('number');
   @Input('aria-label') ariaLabel = 'Number';
   @Input() value = 0;
@@ -2454,6 +2558,13 @@ export class NumberInputComponent {
   @Input() incrementLabel = 'Increase value';
   @Input() decrementLabel = 'Decrease value';
   @Output() valueChange = new EventEmitter<number>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   get safeStep() {
     return Number.isFinite(this.step) && this.step > 0 ? this.step : 1;
   }
@@ -2524,6 +2635,7 @@ export class PaginationLinkDirective {
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { createId } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-password-input',
@@ -2559,7 +2671,7 @@ import { createId } from '@simurgh-ui/core';
     </button>
   </div>`,
 })
-export class PasswordInputComponent {
+export class PasswordInputComponent extends FormResetBase {
   @Input() inputId = createId('password');
   @Input('aria-label') ariaLabel = 'Password';
   @Input() value = '';
@@ -2573,6 +2685,14 @@ export class PasswordInputComponent {
   @Input() concealLabel = 'Hide password';
   @Output() valueChange = new EventEmitter<string>();
   revealed = false;
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.revealed = false;
+      this.valueChange.emit(initial);
+    };
+  }
   onInput(event: Event) {
     this.value = (event.currentTarget as HTMLInputElement).value;
     this.valueChange.emit(this.value);
@@ -2651,6 +2771,7 @@ import {
   Output,
 } from '@angular/core';
 import { nextIndex } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-radio-group',
@@ -2672,7 +2793,7 @@ import { nextIndex } from '@simurgh-ui/core';
     />
   </div>`,
 })
-export class RadioGroupComponent {
+export class RadioGroupComponent extends FormResetBase {
   @Input() value = '';
   @Input() name?: string;
   @Input() required = false;
@@ -2680,6 +2801,13 @@ export class RadioGroupComponent {
   @Input() direction: Direction = 'ltr';
   @Output() valueChange = new EventEmitter<string>();
   private element = inject<ElementRef<HTMLElement>>(ElementRef);
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   select(value: string) {
     if (!this.disabled) {
       this.value = value;
@@ -2729,6 +2857,7 @@ export class RadioGroupItemDirective {
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { createId } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-rating',
@@ -2762,7 +2891,7 @@ import { createId } from '@simurgh-ui/core';
     }
   </div>`,
 })
-export class RatingComponent {
+export class RatingComponent extends FormResetBase {
   private count = 5;
   readonly generatedName = createId('rating');
   items = [1, 2, 3, 4, 5];
@@ -2778,6 +2907,13 @@ export class RatingComponent {
     this.items = Array.from({ length: this.count }, (_, index) => index + 1);
   }
   @Output() valueChange = new EventEmitter<number>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   get groupName() {
     return this.name ?? this.generatedName;
   }
@@ -3034,6 +3170,7 @@ import {
 } from '@angular/core';
 import { compositeKeydown } from '../internal/composite-keydown.js';
 import { InternalIdService } from '../internal/id.js';
+import { FormResetBase } from '../internal/form-reset.js';
 
 export type SelectOption = { value: string; label: string; disabled?: boolean };
 
@@ -3086,7 +3223,7 @@ export type SelectOption = { value: string; label: string; disabled?: boolean };
       [disabled]="disabled"
     />`,
 })
-export class SelectComponent {
+export class SelectComponent extends FormResetBase {
   @Input() options: SelectOption[] = [];
   @Input() value = '';
   @Input() placeholder = 'Select…';
@@ -3097,6 +3234,14 @@ export class SelectComponent {
   @ViewChild('list') list?: ElementRef<HTMLElement>;
   readonly listId = inject(InternalIdService).next('select-list');
   open = false;
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.open = false;
+      this.valueChange.emit(initial);
+    };
+  }
   get label() {
     return (
       this.options.find((o) => o.value === this.value)?.label ??
@@ -3307,6 +3452,7 @@ export class SkeletonComponent {
 }
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-slider',
@@ -3326,7 +3472,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     (input)="update($event)"
   />`,
 })
-export class SliderComponent {
+export class SliderComponent extends FormResetBase {
   @Input() value = 0;
   @Input() min = 0;
   @Input() max = 100;
@@ -3337,6 +3483,13 @@ export class SliderComponent {
   @Input() required = false;
   @Input() invalid = false;
   @Output() valueChange = new EventEmitter<number>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   update(event: Event) {
     this.value = (event.target as HTMLInputElement).valueAsNumber;
     this.valueChange.emit(this.value);
@@ -3462,7 +3615,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { nextIndex } from '@simurgh-ui/core';
+import { nextIndex, typeaheadIndex } from '@simurgh-ui/core';
 
 @Component({
   selector: 'simurgh-tabs',
@@ -3488,13 +3641,23 @@ export class TabsComponent {
   }
   navigate(event: KeyboardEvent) {
     const tabs = Array.from(
-      this.element.nativeElement.querySelectorAll<HTMLElement>('[role=tab]'),
+      this.element.nativeElement.querySelectorAll<HTMLElement>(
+        '[role=tab]:not([disabled])',
+      ),
     );
     const i = tabs.indexOf(document.activeElement as HTMLElement);
-    const n = nextIndex(i, tabs.length, event.key, {
+    const directional = nextIndex(i, tabs.length, event.key, {
       orientation: this.orientation,
       direction: this.direction,
     });
+    const n =
+      directional === i
+        ? typeaheadIndex(
+            tabs.map((tab) => tab.textContent ?? ''),
+            i,
+            event.key,
+          )
+        : directional;
     if (n !== i) {
       event.preventDefault();
       tabs[n]?.focus();
@@ -3544,6 +3707,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-tags-input',
@@ -3590,7 +3754,7 @@ import {
     />
   </div>`,
 })
-export class TagsInputComponent {
+export class TagsInputComponent extends FormResetBase {
   @ViewChild('control') control?: ElementRef<HTMLInputElement>;
   private tags: string[] = [];
   @Input() set value(value: string[]) {
@@ -3609,6 +3773,14 @@ export class TagsInputComponent {
   @Input('aria-label') ariaLabel = 'Tags';
   @Output() valueChange = new EventEmitter<string[]>();
   draft = '';
+  protected createFormReset() {
+    const initial = [...this.value];
+    return () => {
+      this.value = initial;
+      this.draft = '';
+      this.valueChange.emit([...initial]);
+    };
+  }
   get safeLimit() {
     return Number.isFinite(this.maxTags)
       ? Math.min(100, Math.max(1, Math.floor(this.maxTags)))
@@ -3641,7 +3813,7 @@ export class TagsInputComponent {
     this.control?.nativeElement.focus();
   }
   handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === ',') {
+    if (!event.isComposing && (event.key === 'Enter' || event.key === ',')) {
       event.preventDefault();
       this.add();
     } else if (event.key === 'Backspace' && !this.draft && this.value.length) {
@@ -3652,6 +3824,7 @@ export class TagsInputComponent {
 }
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-textarea',
@@ -3665,13 +3838,20 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     (input)="onInput($event)"
   ></textarea>`,
 })
-export class TextareaComponent {
+export class TextareaComponent extends FormResetBase {
   @Input() name?: string;
   @Input() value = '';
   @Input() required = false;
   @Input() disabled = false;
   @Input() invalid = false;
   @Output() valueChange = new EventEmitter<string>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   onInput(event: Event) {
     this.value = (event.target as HTMLTextAreaElement).value;
     this.valueChange.emit(this.value);

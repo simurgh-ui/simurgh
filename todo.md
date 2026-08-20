@@ -586,7 +586,7 @@ roadmap and are not duplicated here.
       registry publication.
 - [x] Generate package-scoped release notes and validate that every consumer-visible package change
       has an appropriate Changeset entry.
-- [ ] Pack every publishable package and run export, type-resolution, package-content, installation,
+- [x] Pack every publishable package and run export, type-resolution, package-content, installation,
       and framework quick-start checks against tarballs rather than workspace source.
 - [x] Add package provenance or signing supported by the target registry and document maintainer
       recovery and release-access procedures.

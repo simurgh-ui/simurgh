@@ -35,6 +35,7 @@ jobs:
       - run: pnpm test:release
       - run: pnpm test:release-notes
       - run: pnpm test:quick-starts
+      - run: pnpm test:tarballs
       - run: pnpm bundle:size
       - run: pnpm release
         env:

@@ -1,4 +1,5 @@
 import { computed, defineComponent, h, ref } from 'vue';
+import { useFormReset } from './forms.js';
 
 export function checkControl(role: 'checkbox' | 'switch', name: string) {
   return defineComponent({
@@ -15,6 +16,8 @@ export function checkControl(role: 'checkbox' | 'switch', name: string) {
     emits: ['update:modelValue'],
     setup(props, { slots, attrs, emit }) {
       const local = ref(props.defaultChecked);
+      const control = ref<HTMLInputElement | null>(null);
+      const initial = props.modelValue || props.defaultChecked;
       const checked = computed(() => props.modelValue || local.value);
       const toggle = () => {
         if (!props.disabled) {
@@ -22,6 +25,10 @@ export function checkControl(role: 'checkbox' | 'switch', name: string) {
           emit('update:modelValue', local.value);
         }
       };
+      useFormReset(control, () => {
+        local.value = initial;
+        emit('update:modelValue', initial);
+      });
       return () => [
         h(
           'button',
@@ -38,6 +45,7 @@ export function checkControl(role: 'checkbox' | 'switch', name: string) {
         ),
         props.name
           ? h('input', {
+              ref: control,
               type: 'checkbox',
               hidden: true,
               name: props.name,

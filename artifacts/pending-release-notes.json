@@ -28,6 +28,11 @@
         "changeset": "clean-package-metadata",
         "level": "patch",
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "lean-tarballs",
+        "level": "patch",
+        "summary": "Exclude source maps from published tarballs, synchronize CLI-owned adapter templates, and enforce packed-package installation checks."
       }
     ],
     "@simurgh-ui/core": [
@@ -35,6 +40,11 @@
         "changeset": "clean-package-metadata",
         "level": "patch",
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "lean-tarballs",
+        "level": "patch",
+        "summary": "Exclude source maps from published tarballs, synchronize CLI-owned adapter templates, and enforce packed-package installation checks."
       },
       {
         "changeset": "quiet-modals-isolate",
@@ -64,6 +74,11 @@
         "changeset": "clean-package-metadata",
         "level": "patch",
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "lean-tarballs",
+        "level": "patch",
+        "summary": "Exclude source maps from published tarballs, synchronize CLI-owned adapter templates, and enforce packed-package installation checks."
       }
     ],
     "@simurgh-ui/react": [
@@ -93,6 +108,11 @@
         "changeset": "clean-package-metadata",
         "level": "patch",
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "lean-tarballs",
+        "level": "patch",
+        "summary": "Exclude source maps from published tarballs, synchronize CLI-owned adapter templates, and enforce packed-package installation checks."
       }
     ],
     "@simurgh-ui/styles": [

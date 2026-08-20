@@ -673,6 +673,7 @@ export const Button = /* @__PURE__ */ defineComponent({
 
 import type { Direction } from '@simurgh-ui/core';
 import { defineComponent, h, ref, type PropType } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 const dateValue = (date: Date) => date.toJSON().slice(0, 10);
 const addDays = (value: string, amount: number) => {
@@ -740,6 +741,10 @@ export const Calendar = /* @__PURE__ */ defineComponent({
       props.defaultMonth ?? (props.defaultValue || today).slice(0, 7),
     );
     const root = ref<HTMLElement | null>(null);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue ?? props.defaultValue;
+    const initialMonth =
+      props.month ?? props.defaultMonth ?? (initialValue || today).slice(0, 7);
     const displayedMonth = () => props.month ?? localMonth.value;
     const isDisabled = (date: string) =>
       (props.min !== undefined && date < props.min) ||
@@ -755,6 +760,12 @@ export const Calendar = /* @__PURE__ */ defineComponent({
       if (date.slice(0, 7) !== displayedMonth()) setMonth(date.slice(0, 7));
       emit('update:modelValue', date);
     };
+    useFormReset(control, () => {
+      localValue.value = initialValue;
+      localMonth.value = initialMonth;
+      emit('update:modelValue', initialValue);
+      emit('update:month', initialMonth);
+    });
     const focusDate = (date: string) => {
       if (date.slice(0, 7) !== displayedMonth()) setMonth(date.slice(0, 7));
       requestAnimationFrame(() =>
@@ -896,6 +907,7 @@ export const Calendar = /* @__PURE__ */ defineComponent({
           ]),
           props.name
             ? h('input', {
+                ref: control,
                 type: 'hidden',
                 name: props.name,
                 value: selectedValue,
@@ -1395,6 +1407,7 @@ import {
   watch,
   type PropType,
 } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export type ComboboxOption = {
   value: string;
@@ -1422,6 +1435,8 @@ export const Combobox = /* @__PURE__ */ defineComponent({
     const query = ref('');
     const open = ref(false);
     const activeIndex = ref(-1);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue;
     const selected = computed(() =>
       props.options.find((option) => option.value === props.modelValue),
     );
@@ -1456,9 +1471,18 @@ export const Combobox = /* @__PURE__ */ defineComponent({
       },
       { immediate: true },
     );
+    useFormReset(control, () => {
+      emit('update:modelValue', initialValue);
+      query.value =
+        props.options.find((option) => option.value === initialValue)?.label ??
+        '';
+      open.value = false;
+      activeIndex.value = -1;
+    });
     return () =>
       h('div', { class: 'simurgh-combobox' }, [
         h('input', {
+          ref: control,
           ...attrs,
           role: 'combobox',
           'aria-label': attrs['aria-label'] ?? props.placeholder,
@@ -1493,7 +1517,11 @@ export const Combobox = /* @__PURE__ */ defineComponent({
               event.preventDefault();
               activeIndex.value = 0;
               move(-1);
-            } else if (event.key === 'Enter' && activeIndex.value >= 0) {
+            } else if (
+              event.key === 'Enter' &&
+              activeIndex.value >= 0 &&
+              !event.isComposing
+            ) {
               event.preventDefault();
               const option = filtered.value[activeIndex.value];
               if (option) choose(option);
@@ -1757,6 +1785,7 @@ import { type Direction } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref, type PropType } from 'vue';
 import { Calendar } from './calendar.js';
 import { Popover, PopoverContent, PopoverTrigger } from './popover.js';
+import { useFormReset } from '../internal/forms.js';
 
 export const DatePicker = /* @__PURE__ */ defineComponent({
   name: 'SimurghDatePicker',
@@ -1782,6 +1811,8 @@ export const DatePicker = /* @__PURE__ */ defineComponent({
     const localValue = ref(props.defaultValue);
     const open = ref(false);
     const root = ref<HTMLElement | null>(null);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue ?? props.defaultValue;
     const selected = computed(() => props.modelValue ?? localValue.value);
     const displayValue = computed(() =>
       selected.value
@@ -1801,6 +1832,11 @@ export const DatePicker = /* @__PURE__ */ defineComponent({
           ?.focus(),
       );
     };
+    useFormReset(control, () => {
+      localValue.value = initialValue;
+      emit('update:modelValue', initialValue);
+      open.value = false;
+    });
     return () =>
       h('div', { ref: root, 'data-slot': 'date-picker' }, [
         h(
@@ -1851,6 +1887,7 @@ export const DatePicker = /* @__PURE__ */ defineComponent({
         ),
         props.name
           ? h('input', {
+              ref: control,
               type: 'hidden',
               name: props.name,
               value: selected.value,
@@ -1859,6 +1896,7 @@ export const DatePicker = /* @__PURE__ */ defineComponent({
           : null,
         props.required
           ? h('input', {
+              ref: control,
               tabindex: -1,
               'aria-hidden': 'true',
               required: true,
@@ -1904,7 +1942,7 @@ export const DescriptionListDetails = /* @__PURE__ */ part(
   'description-list-details',
 );
 
-import { createId, trapFocus } from '@simurgh-ui/core';
+import { createId, isolateModal, trapFocus } from '@simurgh-ui/core';
 import {
   Teleport,
   computed,
@@ -1912,6 +1950,7 @@ import {
   h,
   inject,
   nextTick,
+  onBeforeUnmount,
   provide,
   ref,
   watch,
@@ -1976,13 +2015,20 @@ export const DialogContent = /* @__PURE__ */ defineComponent({
     const context = inject(dialogKey)!;
     const element = ref<HTMLElement | null>(null);
     let previous: HTMLElement | null = null;
+    let restoreIsolation: (() => void) | undefined;
     watch(context.open, async (open) => {
       if (open) {
         previous = document.activeElement as HTMLElement;
         await nextTick();
+        if (element.value) restoreIsolation = isolateModal(element.value);
         element.value?.focus();
-      } else if (previous?.isConnected) previous.focus();
+      } else {
+        restoreIsolation?.();
+        restoreIsolation = undefined;
+        if (previous?.isConnected) previous.focus();
+      }
     });
+    onBeforeUnmount(() => restoreIsolation?.());
     return () =>
       context.open.value
         ? h(Teleport, { to: 'body' }, [
@@ -2305,6 +2351,7 @@ export const FieldError = /* @__PURE__ */ defineComponent({
 
 import { createId } from '@simurgh-ui/core';
 import { defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 function acceptedUploadFiles(files: File[], accept?: string) {
   if (!accept) return files;
@@ -2341,6 +2388,7 @@ export const FileUpload = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, emit }) {
     const id = (attrs.id as string | undefined) ?? createId('file');
     const names = ref<string[]>([]);
+    const control = ref<HTMLInputElement | null>(null);
     const update = (files: File[]) => {
       if (props.disabled) return;
       const accepted = acceptedUploadFiles(files, props.accept);
@@ -2348,6 +2396,10 @@ export const FileUpload = /* @__PURE__ */ defineComponent({
       names.value = next.map((file) => file.name);
       emit('files-change', next);
     };
+    useFormReset(control, () => {
+      names.value = [];
+      emit('files-change', []);
+    });
     return () =>
       h(
         'label',
@@ -2366,6 +2418,7 @@ export const FileUpload = /* @__PURE__ */ defineComponent({
         },
         [
           h('input', {
+            ref: control,
             ...attrs,
             id,
             type: 'file',
@@ -2545,7 +2598,8 @@ export const InputGroupText = /* @__PURE__ */ defineComponent({
   },
 });
 
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const InputOtp = /* @__PURE__ */ defineComponent({
   name: 'SimurghInputOtp',
@@ -2561,8 +2615,12 @@ export const InputOtp = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, emit }) {
+    const control = ref<HTMLInputElement | null>(null);
+    const initial = props.modelValue;
+    useFormReset(control, () => emit('update:modelValue', initial));
     return () =>
       h('input', {
+        ref: control,
         ...attrs,
         type: 'text',
         name: props.name,
@@ -2589,7 +2647,15 @@ export const InputOtp = /* @__PURE__ */ defineComponent({
   },
 });
 
-import { defineComponent, h } from 'vue';
+import { listenFormReset } from '@simurgh-ui/core';
+import {
+  defineComponent,
+  h,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+} from 'vue';
 
 export const Input = /* @__PURE__ */ defineComponent({
   name: 'SimurghInput',
@@ -2603,9 +2669,24 @@ export const Input = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, emit }) {
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue;
+    let removeResetListener: (() => void) | undefined;
+    onMounted(() => {
+      if (!control.value) return;
+      control.value.defaultValue = String(initialValue);
+      removeResetListener = listenFormReset(control.value, () => {
+        emit('update:modelValue', initialValue);
+        void nextTick(() => {
+          if (control.value) control.value.value = String(initialValue);
+        });
+      });
+    });
+    onBeforeUnmount(() => removeResetListener?.());
     return () =>
       h('input', {
         ...attrs,
+        ref: control,
         type: props.type,
         name: props.name,
         required: props.required,
@@ -2853,7 +2934,8 @@ export const Meter = /* @__PURE__ */ defineComponent({
   },
 });
 
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const NativeSelect = /* @__PURE__ */ defineComponent({
   name: 'SimurghNativeSelect',
@@ -2867,10 +2949,14 @@ export const NativeSelect = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, slots, emit }) {
+    const control = ref<HTMLSelectElement | null>(null);
+    const initial = props.modelValue;
+    useFormReset(control, () => emit('update:modelValue', initial));
     return () =>
       h(
         'select',
         {
+          ref: control,
           ...attrs,
           name: props.name,
           required: props.required,
@@ -2941,6 +3027,7 @@ export const NavigationMenuLink = /* @__PURE__ */ defineComponent({
 
 import { createId } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const NumberInput = /* @__PURE__ */ defineComponent({
   name: 'SimurghNumberInput',
@@ -2960,6 +3047,8 @@ export const NumberInput = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, emit }) {
     const localValue = ref(props.defaultValue);
     const id = (attrs.id as string | undefined) ?? createId('number');
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue ?? props.defaultValue;
     const current = computed(() => props.modelValue ?? localValue.value);
     const safeStep = computed(() =>
       Number.isFinite(props.step) && props.step > 0 ? props.step : 1,
@@ -2972,6 +3061,10 @@ export const NumberInput = /* @__PURE__ */ defineComponent({
       if (props.modelValue === undefined) localValue.value = normalized;
       emit('update:modelValue', normalized);
     };
+    useFormReset(control, () => {
+      localValue.value = initialValue;
+      emit('update:modelValue', initialValue);
+    });
     return () =>
       h(
         'div',
@@ -2997,6 +3090,7 @@ export const NumberInput = /* @__PURE__ */ defineComponent({
             '−',
           ),
           h('input', {
+            ref: control,
             ...attrs,
             id,
             type: 'number',
@@ -3127,6 +3221,7 @@ export const PaginationLink = /* @__PURE__ */ defineComponent({
 
 import { createId } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const PasswordInput = /* @__PURE__ */ defineComponent({
   name: 'SimurghPasswordInput',
@@ -3143,8 +3238,15 @@ export const PasswordInput = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, emit }) {
     const revealed = ref(false);
     const localValue = ref(props.defaultValue);
+    const control = ref<HTMLInputElement | null>(null);
     const id = (attrs.id as string | undefined) ?? createId('password');
     const value = computed(() => props.modelValue ?? localValue.value);
+    const initial = value.value;
+    useFormReset(control, () => {
+      localValue.value = initial;
+      revealed.value = false;
+      emit('update:modelValue', initial);
+    });
     return () =>
       h(
         'div',
@@ -3154,6 +3256,7 @@ export const PasswordInput = /* @__PURE__ */ defineComponent({
         },
         [
           h('input', {
+            ref: control,
             ...attrs,
             id,
             type: revealed.value ? 'text' : 'password',
@@ -3261,6 +3364,7 @@ import {
   type PropType,
   type Ref,
 } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 const radioKey: InjectionKey<{
   value: Ref<string>;
@@ -3282,6 +3386,8 @@ export const RadioGroup = /* @__PURE__ */ defineComponent({
   emits: ['update:modelValue'],
   setup(props, { slots, attrs, emit }) {
     const local = ref(props.defaultValue);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue || props.defaultValue;
     const value = computed({
       get: () => props.modelValue || local.value,
       set: (next) => {
@@ -3294,6 +3400,10 @@ export const RadioGroup = /* @__PURE__ */ defineComponent({
       setValue: (next) => (value.value = next),
       disabled: props.disabled,
       direction: props.direction,
+    });
+    useFormReset(control, () => {
+      local.value = initialValue;
+      emit('update:modelValue', initialValue);
     });
     return () =>
       h(
@@ -3327,6 +3437,7 @@ export const RadioGroup = /* @__PURE__ */ defineComponent({
           slots.default?.(),
           props.name
             ? h('input', {
+                ref: control,
                 type: 'hidden',
                 name: props.name,
                 value: value.value,
@@ -3334,6 +3445,7 @@ export const RadioGroup = /* @__PURE__ */ defineComponent({
             : null,
           props.required
             ? h('input', {
+                ref: control,
                 'aria-hidden': 'true',
                 tabindex: -1,
                 required: true,
@@ -3375,6 +3487,7 @@ export const RadioGroupItem = /* @__PURE__ */ defineComponent({
 
 import { createId } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref, type PropType } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const Rating = /* @__PURE__ */ defineComponent({
   name: 'SimurghRating',
@@ -3395,6 +3508,8 @@ export const Rating = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, emit }) {
     const localValue = ref(props.defaultValue);
     const generatedName = createId('rating');
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue ?? props.defaultValue;
     const count = computed(() =>
       Number.isFinite(props.max)
         ? Math.min(100, Math.max(1, Math.floor(props.max)))
@@ -3410,6 +3525,10 @@ export const Rating = /* @__PURE__ */ defineComponent({
       if (props.modelValue === undefined) localValue.value = value;
       emit('update:modelValue', value);
     };
+    useFormReset(control, () => {
+      localValue.value = initialValue;
+      emit('update:modelValue', initialValue);
+    });
     return () =>
       h(
         'div',
@@ -3423,6 +3542,7 @@ export const Rating = /* @__PURE__ */ defineComponent({
           const item = index + 1;
           return h('label', { 'data-slot': 'rating-item' }, [
             h('input', {
+              ...(index === 0 ? { ref: control } : {}),
               type: 'radio',
               'data-slot': 'rating-control',
               name: props.name ?? generatedName,
@@ -3732,6 +3852,7 @@ export const ScrollArea = /* @__PURE__ */ defineComponent({
 
 import { defineComponent, h, nextTick, ref, useId, type PropType } from 'vue';
 import { compositeKeydown } from '../internal/composite-keydown.js';
+import { useFormReset } from '../internal/forms.js';
 
 export type SelectOption = {
   value: string;
@@ -3755,6 +3876,8 @@ export const Select = /* @__PURE__ */ defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const open = ref(false);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue;
     const listId = `select-list-${useId().replace(/:/g, '')}`;
     const show = async () => {
       open.value = true;
@@ -3764,6 +3887,10 @@ export const Select = /* @__PURE__ */ defineComponent({
         ?.querySelector<HTMLElement>('[role=option]:not([aria-disabled=true])')
         ?.focus();
     };
+    useFormReset(control, () => {
+      emit('update:modelValue', initialValue);
+      open.value = false;
+    });
     return () =>
       h('div', { 'data-slot': 'select' }, [
         h(
@@ -3821,6 +3948,7 @@ export const Select = /* @__PURE__ */ defineComponent({
           : null,
         props.name
           ? h('input', {
+              ref: control,
               type: 'hidden',
               name: props.name,
               value: props.modelValue,
@@ -4049,6 +4177,7 @@ export const Skeleton = /* @__PURE__ */ defineComponent({
 });
 
 import { computed, defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const Slider = /* @__PURE__ */ defineComponent({
   name: 'SimurghSlider',
@@ -4064,9 +4193,16 @@ export const Slider = /* @__PURE__ */ defineComponent({
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, emit }) {
     const local = ref(props.defaultValue);
+    const control = ref<HTMLInputElement | null>(null);
     const value = computed(() => props.modelValue ?? local.value);
+    const initial = value.value;
+    useFormReset(control, () => {
+      local.value = initial;
+      emit('update:modelValue', initial);
+    });
     return () =>
       h('input', {
+        ref: control,
         ...attrs,
         type: 'range',
         value: value.value,
@@ -4165,6 +4301,7 @@ export const TableCaption = /* @__PURE__ */ cardPart(
 import {
   createId,
   nextIndex,
+  typeaheadIndex,
   type Direction,
   type Orientation,
 } from '@simurgh-ui/core';
@@ -4184,8 +4321,8 @@ type TabsContext = {
   value: Ref<string>;
   setValue(value: string): void;
   id: string;
-  orientation: Orientation;
-  direction: Direction;
+  orientation: Ref<Orientation>;
+  direction: Ref<Direction>;
 };
 const tabsKey: InjectionKey<TabsContext> = Symbol('tabs');
 
@@ -4214,8 +4351,8 @@ export const Tabs = /* @__PURE__ */ defineComponent({
       value,
       setValue: (next) => (value.value = next),
       id: createId('tabs'),
-      orientation: props.orientation,
-      direction: props.direction,
+      orientation: computed(() => props.orientation),
+      direction: computed(() => props.direction),
     });
     return () => slots.default?.();
   },
@@ -4231,15 +4368,26 @@ export const TabsList = /* @__PURE__ */ defineComponent({
         {
           ...attrs,
           role: 'tablist',
-          'aria-orientation': context.orientation,
+          'aria-orientation': context.orientation.value,
           onKeydown: (event: KeyboardEvent) => {
             const nodes = Array.from(
               (
                 event.currentTarget as HTMLElement
-              ).querySelectorAll<HTMLElement>('[role=tab]'),
+              ).querySelectorAll<HTMLElement>('[role=tab]:not([disabled])'),
             );
             const index = nodes.indexOf(document.activeElement as HTMLElement);
-            const next = nextIndex(index, nodes.length, event.key, context);
+            const directional = nextIndex(index, nodes.length, event.key, {
+              orientation: context.orientation.value,
+              direction: context.direction.value,
+            });
+            const next =
+              directional === index
+                ? typeaheadIndex(
+                    nodes.map((node) => node.textContent ?? ''),
+                    index,
+                    event.key,
+                  )
+                : directional;
             if (next !== index) {
               event.preventDefault();
               nodes[next]?.focus();
@@ -4290,6 +4438,7 @@ export const TabsContent = /* @__PURE__ */ defineComponent({
 });
 
 import { computed, defineComponent, h, ref, type PropType } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const TagsInput = /* @__PURE__ */ defineComponent({
   name: 'SimurghTagsInput',
@@ -4314,6 +4463,7 @@ export const TagsInput = /* @__PURE__ */ defineComponent({
     const localValue = ref([...props.defaultValue]);
     const draft = ref('');
     const input = ref<HTMLInputElement | null>(null);
+    const initial = [...(props.modelValue ?? props.defaultValue)];
     const tags = computed(() =>
       (props.modelValue ?? localValue.value).slice(0, 100),
     );
@@ -4344,6 +4494,11 @@ export const TagsInput = /* @__PURE__ */ defineComponent({
       commit(tags.value.filter((_, itemIndex) => itemIndex !== index));
       input.value?.focus();
     };
+    useFormReset(input, () => {
+      localValue.value = [...initial];
+      draft.value = '';
+      emit('update:modelValue', [...initial]);
+    });
     return () =>
       h(
         'div',
@@ -4395,7 +4550,10 @@ export const TagsInput = /* @__PURE__ */ defineComponent({
             onInput: (event: Event) =>
               (draft.value = (event.currentTarget as HTMLInputElement).value),
             onKeydown: (event: KeyboardEvent) => {
-              if (event.key === 'Enter' || event.key === ',') {
+              if (
+                (event.key === 'Enter' || event.key === ',') &&
+                !event.isComposing
+              ) {
                 event.preventDefault();
                 add();
               } else if (
@@ -4413,7 +4571,8 @@ export const TagsInput = /* @__PURE__ */ defineComponent({
   },
 });
 
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const Textarea = /* @__PURE__ */ defineComponent({
   name: 'SimurghTextarea',
@@ -4426,8 +4585,12 @@ export const Textarea = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, emit }) {
+    const control = ref<HTMLTextAreaElement | null>(null);
+    const initial = props.modelValue;
+    useFormReset(control, () => emit('update:modelValue', initial));
     return () =>
       h('textarea', {
+        ref: control,
         ...attrs,
         name: props.name,
         required: props.required,

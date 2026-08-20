@@ -25,6 +25,7 @@
   },
   "files": [
     "dist",
+    "!dist/**/*.map",
     "registry.json"
   ],
   "scripts": {

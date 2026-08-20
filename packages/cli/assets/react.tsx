@@ -686,6 +686,7 @@ import {
   type Direction,
 } from '@simurgh-ui/core';
 import { useId, useMemo, useRef, useState } from 'react';
+import { useFormReset } from '../internal/forms.js';
 
 export type CalendarProps = {
   value?: string;
@@ -730,6 +731,11 @@ export function Calendar({
   const days = calendarMonthDays(displayedMonth, firstDayOfWeek);
   const root = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocalValue(defaultValue);
+    if (month === undefined)
+      setLocalMonth(defaultMonth ?? (defaultValue || today).slice(0, 7));
+  });
   const disabled = new Set(disabledDates);
   const isDisabled = (date: string) =>
     (min !== undefined && date < min) ||
@@ -866,7 +872,9 @@ export function Calendar({
           ))}
         </tbody>
       </table>
-      {name && <input type="hidden" name={name} value={selected} />}
+      {name && (
+        <input ref={resetRef} type="hidden" name={name} value={selected} />
+      )}
     </div>
   );
 }
@@ -1430,6 +1438,7 @@ export function CollapsibleContent(props: HTMLAttributes<HTMLDivElement>) {
 }
 
 import { useId, useState, type ReactNode } from 'react';
+import { useFormReset } from '../internal/forms.js';
 import type { SelectOption } from './select.js';
 export type { SelectOption } from './select.js';
 
@@ -1462,6 +1471,14 @@ export function Combobox({
   const [query, setQuery] = useState(selectedOption?.label ?? '');
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
+  const control = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocal(defaultValue);
+    setQuery(
+      options.find((option) => option.value === defaultValue)?.label ?? '',
+    );
+    setOpen(false);
+    setActive(-1);
+  });
   const listId = `${useId()}-combobox`;
   const filtered = options.filter((option) =>
     option.label.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
@@ -1493,6 +1510,7 @@ export function Combobox({
   return (
     <div>
       <input
+        ref={control}
         role="combobox"
         aria-label={placeholder}
         aria-autocomplete="list"
@@ -1515,7 +1533,11 @@ export function Combobox({
             event.preventDefault();
             setOpen(true);
             move(event.key);
-          } else if (event.key === 'Enter' && active >= 0) {
+          } else if (
+            event.key === 'Enter' &&
+            active >= 0 &&
+            !event.nativeEvent.isComposing
+          ) {
             event.preventDefault();
             const option = filtered[active];
             if (option) choose(option);
@@ -1729,6 +1751,7 @@ export const ContextMenuItem = /* @__PURE__ */ forwardRef<
 import { useRef, useState } from 'react';
 import { Calendar, type CalendarProps } from './calendar.js';
 import { Popover, PopoverContent, PopoverTrigger } from './popover.js';
+import { useFormReset } from '../internal/forms.js';
 
 export type DatePickerProps = CalendarProps & {
   placeholder?: string;
@@ -1752,6 +1775,10 @@ export function DatePicker({
   const selected = value ?? localValue;
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocalValue(defaultValue);
+    setOpen(false);
+  });
   const displayValue = selected
     ? new Intl.DateTimeFormat(locale, {
         dateStyle: 'medium',
@@ -1785,10 +1812,17 @@ export function DatePicker({
         </PopoverContent>
       </Popover>
       {name && (
-        <input type="hidden" name={name} value={selected} disabled={disabled} />
+        <input
+          ref={resetRef}
+          type="hidden"
+          name={name}
+          value={selected}
+          disabled={disabled}
+        />
       )}
       {required && (
         <input
+          ref={resetRef}
           tabIndex={-1}
           aria-hidden="true"
           required
@@ -1829,7 +1863,7 @@ export const DescriptionListDetails = /* @__PURE__ */ forwardRef<
   return <dd ref={ref} data-slot="description-list-details" {...props} />;
 });
 
-import { trapFocus } from '@simurgh-ui/core';
+import { isolateModal, trapFocus } from '@simurgh-ui/core';
 import { Dialog, useDialogContext } from '../internal/dialog-context.js';
 import { useBrowser } from '../internal/open.js';
 import {
@@ -1897,8 +1931,12 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
   useEffect(() => {
     if (!open) return;
     previous.current = document.activeElement;
+    const restoreIsolation = localRef.current
+      ? isolateModal(localRef.current)
+      : undefined;
     requestAnimationFrame(() => localRef.current?.focus());
     return () => {
+      restoreIsolation?.();
       if (previous.current instanceof HTMLElement) previous.current.focus();
     };
   }, [open]);
@@ -2168,6 +2206,7 @@ import {
   type InputHTMLAttributes,
   type ReactNode,
 } from 'react';
+import { useFormReset } from '../internal/forms.js';
 
 function acceptedFiles(files: File[], accept?: string) {
   if (!accept) return files;
@@ -2206,6 +2245,7 @@ export function FileUpload({
 }: FileUploadProps) {
   const id = props.id ?? `simurgh-file-${useId().replace(/:/g, '')}`;
   const [names, setNames] = useState<string[]>([]);
+  const control = useFormReset<HTMLInputElement>(() => setNames([]));
   const update = (files: File[]) => {
     if (disabled) return;
     const accepted = acceptedFiles(files, accept);
@@ -2228,6 +2268,7 @@ export function FileUpload({
       }}
     >
       <input
+        ref={control}
         {...props}
         id={id}
         type="file"
@@ -2256,6 +2297,7 @@ import {
   type FormHTMLAttributes,
   type HTMLAttributes,
 } from 'react';
+import { queueInvalidFocus } from '../internal/forms.js';
 
 export const Form = /* @__PURE__ */ forwardRef<
   HTMLFormElement,
@@ -2271,12 +2313,7 @@ export const Form = /* @__PURE__ */ forwardRef<
         onInvalid?.(event);
         if (focusQueued.current || !focusInvalid || event.defaultPrevented)
           return;
-        focusQueued.current = true;
-        const first = event.target as HTMLElement;
-        requestAnimationFrame(() => {
-          first.focus();
-          focusQueued.current = false;
-        });
+        queueInvalidFocus(event.target, focusQueued);
       }}
     />
   );
@@ -2723,7 +2760,10 @@ export const NavigationMenuLink = /* @__PURE__ */ forwardRef<
   );
 });
 
-import { forwardRef, useId, useState, type InputHTMLAttributes } from 'react';
+import { forwardRef, type InputHTMLAttributes } from 'react';
+import { useControlledState } from '../internal/controlled-state.js';
+import { useComponentId } from '../internal/ids.js';
+import { useFormReset } from '../internal/forms.js';
 
 type NumberInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -2758,16 +2798,21 @@ export const NumberInput = /* @__PURE__ */ forwardRef<
   },
   ref,
 ) {
-  const [localValue, setLocalValue] = useState(defaultValue);
-  const current = value ?? localValue;
+  const [current, setValue] = useControlledState<number>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   const safeStep = Number.isFinite(step) && step > 0 ? step : 1;
-  const inputId = props.id ?? `simurgh-number-${useId().replace(/:/g, '')}`;
+  const inputId = useComponentId('number', props.id);
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setValue(defaultValue);
+  });
   const normalize = (next: number) =>
     Math.min(max ?? Infinity, Math.max(min ?? -Infinity, next));
   const commit = (next: number) => {
     const normalized = normalize(next);
-    if (value === undefined) setLocalValue(normalized);
-    onValueChange?.(normalized);
+    setValue(normalized);
   };
   return (
     <div
@@ -2787,7 +2832,11 @@ export const NumberInput = /* @__PURE__ */ forwardRef<
       </button>
       <input
         {...props}
-        ref={ref}
+        ref={(node) => {
+          resetRef.current = node;
+          if (typeof ref === 'function') ref(node);
+          else if (ref) ref.current = node;
+        }}
         id={inputId}
         type="number"
         data-slot="number-input-control"
@@ -2917,7 +2966,8 @@ export const PaginationLink = /* @__PURE__ */ forwardRef<
   );
 });
 
-import { forwardRef, useId, useState, type InputHTMLAttributes } from 'react';
+import { forwardRef, useState, type InputHTMLAttributes } from 'react';
+import { useComponentId } from '../internal/ids.js';
 
 type PasswordInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -2939,7 +2989,7 @@ export const PasswordInput = /* @__PURE__ */ forwardRef<
   ref,
 ) {
   const [revealed, setRevealed] = useState(false);
-  const id = props.id ?? `simurgh-password-${useId().replace(/:/g, '')}`;
+  const id = useComponentId('password', props.id);
   return (
     <div data-slot="password-input" data-disabled={disabled || undefined}>
       <input
@@ -3025,15 +3075,17 @@ export const Progress = /* @__PURE__ */ forwardRef<
   );
 });
 
-import { nextIndex, type Direction } from '@simurgh-ui/core';
+import { type Direction } from '@simurgh-ui/core';
 import {
   createContext,
   useContext,
-  useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
 } from 'react';
+import { moveCompositeFocus } from '../internal/composite.js';
+import { useControlledState } from '../internal/controlled-state.js';
+import { useFormReset } from '../internal/forms.js';
 
 type RadioContextValue = {
   value: string;
@@ -3067,12 +3119,12 @@ export function RadioGroup({
     direction?: Direction;
   }
 >) {
-  const [local, setLocal] = useState(defaultValue);
-  const selected = value ?? local;
-  const setValue = (next: string) => {
-    if (value === undefined) setLocal(next);
-    onValueChange?.(next);
-  };
+  const [selected, setValue] = useControlledState<string>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
+  const resetRef = useFormReset<HTMLInputElement>(() => setValue(defaultValue));
   return (
     <RadioContext.Provider
       value={{ value: selected, setValue, name, required, disabled, direction }}
@@ -3082,26 +3134,19 @@ export function RadioGroup({
         role="radiogroup"
         onKeyDown={(event) => {
           props.onKeyDown?.(event);
-          const items = Array.from(
-            event.currentTarget.querySelectorAll<HTMLElement>(
-              '[role=radio]:not([aria-disabled=true])',
-            ),
-          );
-          const current = items.indexOf(document.activeElement as HTMLElement);
-          const target = nextIndex(current, items.length, event.key, {
+          moveCompositeFocus(event, '[role=radio]:not([aria-disabled=true])', {
             direction,
+            activate: true,
           });
-          if (target !== current) {
-            event.preventDefault();
-            items[target]?.focus();
-            items[target]?.click();
-          }
         }}
       >
         {children}
-        {name && <input type="hidden" name={name} value={selected} />}
+        {name && (
+          <input ref={resetRef} type="hidden" name={name} value={selected} />
+        )}
         {required && (
           <input
+            ref={resetRef}
             tabIndex={-1}
             aria-hidden="true"
             required
@@ -3140,6 +3185,7 @@ export function RadioGroupItem({
 }
 
 import { forwardRef, useId, useState, type HTMLAttributes } from 'react';
+import { useFormReset } from '../internal/forms.js';
 
 export type RatingProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -3180,6 +3226,9 @@ export const Rating = /* @__PURE__ */ forwardRef<HTMLDivElement, RatingProps>(
       Math.max(0, Math.round(value ?? localValue)),
     );
     const generatedName = `simurgh-rating-${useId().replace(/:/g, '')}`;
+    const resetRef = useFormReset<HTMLInputElement>(() => {
+      if (value === undefined) setLocalValue(defaultValue);
+    });
     const groupName = name ?? generatedName;
     const commit = (next: number) => {
       if (value === undefined) setLocalValue(next);
@@ -3199,6 +3248,7 @@ export const Rating = /* @__PURE__ */ forwardRef<HTMLDivElement, RatingProps>(
           return (
             <label key={item} data-slot="rating-item">
               <input
+                ref={index === 0 ? resetRef : undefined}
                 type="radio"
                 data-slot="rating-control"
                 name={groupName}
@@ -3494,6 +3544,7 @@ import {
   onCompositeKeyDown,
 } from '../internal/floating.js';
 import { useOpen } from '../internal/open.js';
+import { useFormReset } from '../internal/forms.js';
 
 export type SelectOption = {
   value: string;
@@ -3523,6 +3574,10 @@ export function Select({
   const selected = value ?? local;
   const root = useOpen({});
   const [open, setOpen] = root;
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocal(defaultValue);
+    setOpen(false);
+  });
   const listId = `${useId()}-listbox`;
   const set = (next: string) => {
     if (value === undefined) setLocal(next);
@@ -3568,10 +3623,17 @@ export function Select({
         ))}
       </FloatingContent>
       {name && (
-        <input type="hidden" name={name} value={selected} disabled={disabled} />
+        <input
+          ref={resetRef}
+          type="hidden"
+          name={name}
+          value={selected}
+          disabled={disabled}
+        />
       )}
       {required && (
         <input
+          ref={resetRef}
           tabIndex={-1}
           aria-hidden="true"
           required
@@ -3872,16 +3934,17 @@ export const TableCaption = /* @__PURE__ */ forwardRef<
   return <caption ref={ref} data-slot="table-caption" {...props} />;
 });
 
-import { nextIndex, type Direction, type Orientation } from '@simurgh-ui/core';
+import { type Direction, type Orientation } from '@simurgh-ui/core';
 import {
   createContext,
   useContext,
   useId,
-  useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
 } from 'react';
+import { moveCompositeFocus } from '../internal/composite.js';
+import { useControlledState } from '../internal/controlled-state.js';
 
 type TabsContextValue = {
   value: string;
@@ -3915,12 +3978,11 @@ export function Tabs({
   orientation?: Orientation;
   direction?: Direction;
 }>) {
-  const [local, setLocal] = useState(defaultValue);
-  const current = value ?? local;
-  const setValue = (next: string) => {
-    if (value === undefined) setLocal(next);
-    onValueChange?.(next);
-  };
+  const [current, setValue] = useControlledState<string>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   return (
     <TabsContext.Provider
       value={{ value: current, setValue, id: useId(), orientation, direction }}
@@ -3939,21 +4001,11 @@ export function TabsList(props: HTMLAttributes<HTMLDivElement>) {
       aria-orientation={context.orientation}
       onKeyDown={(event) => {
         props.onKeyDown?.(event);
-        const tabs = Array.from(
-          event.currentTarget.querySelectorAll<HTMLElement>(
-            '[role=tab]:not([disabled])',
-          ),
-        );
-        const index = tabs.indexOf(document.activeElement as HTMLElement);
-        const target = nextIndex(index, tabs.length, event.key, {
+        moveCompositeFocus(event, '[role=tab]:not([disabled])', {
           orientation: context.orientation,
           direction: context.direction,
+          activate: true,
         });
-        if (target !== index) {
-          event.preventDefault();
-          tabs[target]?.focus();
-          tabs[target]?.click();
-        }
       }}
     />
   );
@@ -3997,6 +4049,7 @@ export function TabsContent({
 }
 
 import { forwardRef, useRef, useState, type HTMLAttributes } from 'react';
+import { useFormReset } from '../internal/forms.js';
 
 export type TagsInputProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -4039,6 +4092,10 @@ export const TagsInput = /* @__PURE__ */ forwardRef<
   const [localValue, setLocalValue] = useState(defaultValue);
   const [draft, setDraft] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocalValue(defaultValue);
+    setDraft('');
+  });
   const tags = (value ?? localValue).slice(0, 100);
   const limit = Number.isFinite(maxTags)
     ? Math.min(100, Math.max(1, Math.floor(maxTags)))
@@ -4101,6 +4158,7 @@ export const TagsInput = /* @__PURE__ */ forwardRef<
       <input
         ref={(node) => {
           inputRef.current = node;
+          resetRef.current = node;
           if (typeof forwardedRef === 'function') forwardedRef(node);
           else if (forwardedRef) forwardedRef.current = node;
         }}
@@ -4114,7 +4172,10 @@ export const TagsInput = /* @__PURE__ */ forwardRef<
         required={required && tags.length === 0}
         onChange={(event) => setDraft(event.currentTarget.value)}
         onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ',') {
+          if (
+            (event.key === 'Enter' || event.key === ',') &&
+            !event.nativeEvent.isComposing
+          ) {
             event.preventDefault();
             add();
           } else if (event.key === 'Backspace' && !draft && tags.length) {
@@ -4211,15 +4272,16 @@ export function ToastViewport(props: HTMLAttributes<HTMLDivElement>) {
   );
 }
 
-import { nextIndex, type Direction, type Orientation } from '@simurgh-ui/core';
+import { type Direction, type Orientation } from '@simurgh-ui/core';
 import {
   createContext,
   useContext,
-  useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
 } from 'react';
+import { moveCompositeFocus } from '../internal/composite.js';
+import { useControlledState } from '../internal/controlled-state.js';
 
 type ToggleGroupContextValue = {
   values: string[];
@@ -4246,16 +4308,18 @@ export function ToggleGroup({
     direction?: Direction;
   }
 >) {
-  const [local, setLocal] = useState(defaultValue);
-  const values = value ?? local;
+  const [values, setValues] = useControlledState<string[]>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   const toggle = (item: string) => {
     const next = values.includes(item)
       ? values.filter((entry) => entry !== item)
       : type === 'single'
         ? [item]
         : [...values, item];
-    if (value === undefined) setLocal(next);
-    onValueChange?.(next);
+    setValues(next);
   };
   return (
     <ToggleGroupContext.Provider value={{ values, toggle }}>
@@ -4267,20 +4331,10 @@ export function ToggleGroup({
         data-slot="toggle-group"
         onKeyDown={(event) => {
           props.onKeyDown?.(event);
-          const items = Array.from(
-            event.currentTarget.querySelectorAll<HTMLElement>(
-              '[data-toggle-group-item]:not(:disabled)',
-            ),
-          );
-          const index = items.indexOf(document.activeElement as HTMLElement);
-          const target = nextIndex(index, items.length, event.key, {
+          moveCompositeFocus(event, '[data-toggle-group-item]:not(:disabled)', {
             orientation,
             direction,
           });
-          if (target !== index) {
-            event.preventDefault();
-            items[target]?.focus();
-          }
         }}
       >
         {children}
