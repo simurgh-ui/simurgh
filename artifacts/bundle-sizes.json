@@ -521,21 +521,21 @@
   },
   "packages": {
     "react": {
-      "files": 170,
-      "unpacked": 277613,
-      "gzip": 42551,
+      "files": 171,
+      "unpacked": 278637,
+      "gzip": 43260,
       "budget": 409600
     },
     "vue": {
-      "files": 237,
-      "unpacked": 356272,
-      "gzip": 42455,
+      "files": 238,
+      "unpacked": 357299,
+      "gzip": 43119,
       "budget": 384000
     },
     "angular": {
-      "files": 168,
-      "unpacked": 312949,
-      "gzip": 44751,
+      "files": 169,
+      "unpacked": 313964,
+      "gzip": 45468,
       "budget": 317440
     }
   }

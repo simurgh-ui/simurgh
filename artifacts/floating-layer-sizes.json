@@ -9,9 +9,9 @@
       "budget": 5120
     },
     "react": {
-      "minified": 7218,
-      "gzip": 2813,
-      "brotli": 2524,
+      "minified": 7317,
+      "gzip": 2844,
+      "brotli": 2553,
       "budget": 5120
     },
     "vue": {
@@ -22,7 +22,7 @@
     },
     "angular": {
       "minified": 6177,
-      "gzip": 2253,
+      "gzip": 2254,
       "brotli": 2012,
       "budget": 5120
     }

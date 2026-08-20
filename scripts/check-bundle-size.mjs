@@ -609,9 +609,17 @@ for (const framework of ['react', 'vue', 'angular']) {
   });
   const manifest = JSON.parse(stdout.slice(stdout.indexOf('{')));
   const files = await Promise.all(
-    manifest.files.map(({ path }) =>
-      readFile(resolve(root, `packages/${framework}`, path)),
-    ),
+    manifest.files.map(async ({ path }) => {
+      try {
+        return await readFile(resolve(root, `packages/${framework}`, path));
+      } catch (error) {
+        // pnpm includes the repository license in package previews even though the
+        // inherited file is not materialized inside each workspace directory.
+        if (path === 'LICENSE' && error?.code === 'ENOENT')
+          return readFile(resolve(root, 'LICENSE'));
+        throw error;
+      }
+    }),
   );
   const bytes = Buffer.concat(files);
   const result = {

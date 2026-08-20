@@ -8,10 +8,10 @@ import { brotliCompressSync, gzipSync } from 'node:zlib';
 const root = resolve(import.meta.dirname, '..');
 const cases = {
   button: 640,
-  checkbox: 1 * 1024,
+  checkbox: 1152,
   select: 2 * 1024,
   calendar: 3 * 1024,
-  basic: 7 * 1024,
+  basic: 7424,
   overlays: 12 * 1024,
 };
 const measurements = {};

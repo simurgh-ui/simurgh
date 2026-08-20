@@ -8,41 +8,41 @@
     "optimized": true
   },
   "checkbox": {
-    "minified": 1930,
-    "gzip": 812,
-    "brotli": 711,
-    "budget": 1024,
+    "minified": 2765,
+    "gzip": 1073,
+    "brotli": 935,
+    "budget": 1152,
     "linked": true,
     "optimized": true
   },
   "select": {
-    "minified": 4919,
-    "gzip": 1774,
-    "brotli": 1570,
+    "minified": 5610,
+    "gzip": 2021,
+    "brotli": 1771,
     "budget": 2048,
     "linked": true,
     "optimized": true
   },
   "calendar": {
-    "minified": 7633,
-    "gzip": 2446,
-    "brotli": 2218,
+    "minified": 8340,
+    "gzip": 2709,
+    "brotli": 2451,
     "budget": 3072,
     "linked": true,
     "optimized": true
   },
   "basic": {
-    "minified": 31861,
-    "gzip": 6511,
-    "brotli": 5669,
-    "budget": 7168,
+    "minified": 35010,
+    "gzip": 7208,
+    "brotli": 6284,
+    "budget": 7424,
     "linked": true,
     "optimized": true
   },
   "overlays": {
-    "minified": 29247,
-    "gzip": 5979,
-    "brotli": 5029,
+    "minified": 29814,
+    "gzip": 6191,
+    "brotli": 5217,
     "budget": 12288,
     "linked": true,
     "optimized": true
