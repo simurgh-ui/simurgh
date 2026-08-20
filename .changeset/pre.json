@@ -15,6 +15,7 @@
   "changesets": [
     "calm-react-modules",
     "clean-package-metadata",
+    "fast-calendars-focus",
     "kind-toast-regions",
     "lean-tarballs",
     "quiet-modals-isolate",
