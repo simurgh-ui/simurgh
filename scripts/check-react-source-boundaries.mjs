@@ -4,17 +4,7 @@ import process from 'node:process';
 
 const root = resolve(import.meta.dirname, '..');
 const componentsRoot = resolve(root, 'packages/react/src/components');
-const migrated = [
-  'accordion',
-  'alert-dialog',
-  'collapsible',
-  'dialog',
-  'disclosure',
-  'drawer',
-  'sheet',
-  'tabs',
-];
-const maximumBarrelWrappers = 26;
+const internalsRoot = resolve(root, 'packages/react/src/internal');
 const failures = [];
 
 const files = (await readdir(componentsRoot)).filter((file) =>
@@ -32,20 +22,24 @@ const barrelWrappers = [...sources.entries()]
   .filter(([, source]) => source.includes("from '../index.js'"))
   .map(([file]) => file);
 
-if (barrelWrappers.length > maximumBarrelWrappers) {
+if (barrelWrappers.length > 0) {
   failures.push(
-    `React component-to-barrel dependencies increased from ${maximumBarrelWrappers} to ${barrelWrappers.length}`,
+    `React component modules must not depend on the root barrel: ${barrelWrappers.join(', ')}`,
   );
 }
 
-for (const component of migrated) {
-  const source = sources.get(`${component}.tsx`);
-  if (!source) failures.push(`${component}: missing component source module`);
-  else if (source.includes("from '../index.js'")) {
+const internalFiles = (await readdir(internalsRoot)).filter((file) =>
+  /\.tsx?$/.test(file),
+);
+const internalStems = new Set();
+for (const file of internalFiles) {
+  const stem = file.replace(/\.tsx?$/, '');
+  if (internalStems.has(stem)) {
     failures.push(
-      `${component}: migrated component must not depend on the root barrel`,
+      `duplicate React internal module: ${stem}.ts and ${stem}.tsx`,
     );
   }
+  internalStems.add(stem);
 }
 
 if (failures.length > 0) {
@@ -55,6 +49,6 @@ if (failures.length > 0) {
   process.exitCode = 1;
 } else {
   process.stdout.write(
-    `Validated ${migrated.length} migrated React modules; ${barrelWrappers.length} component-to-barrel dependencies remain.\n`,
+    `Validated ${files.length} independent React component modules and ${internalFiles.length} shared internals.\n`,
   );
 }

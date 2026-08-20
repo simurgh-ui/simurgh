@@ -189,7 +189,7 @@ Items are checked only after their implementation exists and the relevant verifi
         shared controlled-open helpers, and prevent component-to-barrel dependencies from increasing.
   - [x] Move Dialog, Sheet, Drawer, and Alert Dialog into genuine component modules backed by a
         shared internal Dialog context without introducing root-barrel cycles.
-  - [ ] Move the remaining React primitives and shared helpers without introducing component-to-barrel
+  - [x] Move the remaining React primitives and shared helpers without introducing component-to-barrel
         cycles or exceeding standalone, aggregate, complete-adapter, and published-package budgets.
 - [x] Evaluate esbuild code splitting for the React adapter and verify that shared chunks reduce multi-component consumption without adding excessive module overhead.
 - [x] Revisit the custom `@floating-ui/dom` React adapter only if its estimated savings justify the accessibility and interaction-maintenance risk.
