@@ -1,4 +1,4 @@
-import { trapFocus } from '@simurgh-ui/core';
+import { isolateModal, trapFocus } from '@simurgh-ui/core';
 import { Dialog, useDialogContext } from '../internal/dialog-context.js';
 import { useBrowser } from '../internal/open.js';
 import {
@@ -66,8 +66,12 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
   useEffect(() => {
     if (!open) return;
     previous.current = document.activeElement;
+    const restoreIsolation = localRef.current
+      ? isolateModal(localRef.current)
+      : undefined;
     requestAnimationFrame(() => localRef.current?.focus());
     return () => {
+      restoreIsolation?.();
       if (previous.current instanceof HTMLElement) previous.current.focus();
     };
   }, [open]);

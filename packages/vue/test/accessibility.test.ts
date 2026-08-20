@@ -403,16 +403,28 @@ describe('Vue accessibility contract', () => {
     it('opens a modal and passes an axe audit', async () => {
     render({
       components: { Dialog, DialogTrigger, DialogContent },
-      template: `<Dialog><DialogTrigger>Open settings</DialogTrigger><DialogContent aria-label="Settings"><button>Save</button></DialogContent></Dialog>`,
+      template: `<main><button data-testid="background-action">Background</button><Dialog><DialogTrigger>Open settings</DialogTrigger><DialogContent aria-label="Settings"><button>Save</button></DialogContent></Dialog></main>`,
     });
     const opener = screen.getByRole('button', { name: 'Open settings' });
     opener.focus();
     await fireEvent.click(opener);
     const dialog = screen.getByRole('dialog', { name: 'Settings' });
     expect(document.activeElement).toBe(dialog);
+    expect(document.body.style.overflow).toBe('hidden');
+    expect(
+      Array.from(document.body.children).some(
+        (element) => (element as HTMLElement).inert,
+      ),
+    ).toBe(true);
     expect((await axe.run(document.body)).violations).toEqual([]);
     await fireEvent.keyDown(dialog, { key: 'Escape' });
     expect(document.activeElement).toBe(opener);
+    expect(document.body.style.overflow).toBe('');
+    expect(
+      Array.from(document.body.children).some(
+        (element) => (element as HTMLElement).inert,
+      ),
+    ).toBe(false);
   });
 
   it('supports checkbox model and native form state', async () => {

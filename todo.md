@@ -555,7 +555,7 @@ roadmap and are not duplicated here.
 
 - [x] Define shared, data-driven behavioral contracts and execute applicable contracts across
       React, Vue, and Angular instead of relying only on equal test counts.
-- [ ] Expand overlay coverage for initial focus, trapping, dismissal, restoration, nesting, portals,
+- [x] Expand overlay coverage for initial focus, trapping, dismissal, restoration, nesting, portals,
       scroll locking, inert backgrounds, and interrupted unmounts.
 - [ ] Expand composite-widget coverage for LTR and RTL navigation, typeahead, disabled items,
       selection models, orientation changes, and dynamic collection updates.

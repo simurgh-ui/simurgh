@@ -166,18 +166,26 @@ describe('React accessibility contract', () => {
   describe('overlays and dialogs', () => {
   it('opens a named modal and passes an axe audit', async () => {
     render(
-      <Dialog>
-        <DialogTrigger>Open profile</DialogTrigger>
-        <DialogContent>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>Update your public details.</DialogDescription>
-          <button>Save</button>
-        </DialogContent>
-      </Dialog>,
+      <>
+        <button data-testid="background-action">Background</button>
+        <Dialog>
+          <DialogTrigger>Open profile</DialogTrigger>
+          <DialogContent>
+            <DialogTitle>Edit profile</DialogTitle>
+            <DialogDescription>Update your public details.</DialogDescription>
+            <button>Save</button>
+          </DialogContent>
+        </Dialog>
+      </>,
     );
     fireEvent.click(screen.getByRole('button', { name: 'Open profile' }));
     expect(screen.getByRole('dialog', { name: 'Edit profile' })).toBeTruthy();
+    expect(document.body.style.overflow).toBe('hidden');
+    expect(screen.getByTestId('background-action').inert).toBe(true);
     expect((await axe.run(document.body)).violations).toEqual([]);
+    fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' });
+    expect(document.body.style.overflow).toBe('');
+    expect(screen.getByTestId('background-action').inert).not.toBe(true);
   });
 
   it('opens a side-anchored sheet and restores trigger focus', async () => {

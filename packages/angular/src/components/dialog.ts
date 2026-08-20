@@ -7,7 +7,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { trapFocus } from '@simurgh-ui/core';
+import type { OnDestroy } from '@angular/core';
+import { isolateModal, trapFocus } from '@simurgh-ui/core';
 
 @Component({
   selector: 'simurgh-dialog',
@@ -35,26 +36,37 @@ import { trapFocus } from '@simurgh-ui/core';
       <ng-content />
     </section>`,
 })
-export class DialogComponent {
+export class DialogComponent implements OnDestroy {
   @Input() open = false;
   @Input() labelledBy?: string;
   @Input() describedBy?: string;
   @Output() openChange = new EventEmitter<boolean>();
   @ViewChild('content') content?: ElementRef<HTMLElement>;
   private previous: HTMLElement | null = null;
+  private restoreIsolation: (() => void) | undefined;
   show() {
     this.previous = document.activeElement as HTMLElement | null;
     this.open = true;
     this.openChange.emit(true);
-    setTimeout(() => this.content?.nativeElement.focus());
+    setTimeout(() => {
+      if (this.content) {
+        this.restoreIsolation = isolateModal(this.content.nativeElement);
+        this.content.nativeElement.focus();
+      }
+    });
   }
   close() {
     this.open = false;
     this.openChange.emit(false);
+    this.restoreIsolation?.();
+    this.restoreIsolation = undefined;
     setTimeout(() => this.previous?.isConnected && this.previous.focus());
   }
   onKeydown(event: KeyboardEvent) {
     if (event.key === 'Escape') this.close();
     else if (this.content) trapFocus(event, this.content.nativeElement);
+  }
+  ngOnDestroy() {
+    this.restoreIsolation?.();
   }
 }

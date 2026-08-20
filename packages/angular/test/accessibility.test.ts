@@ -160,7 +160,8 @@ class CheckboxHost {
 @Component({
   standalone: true,
   imports: [DialogComponent],
-  template: `<simurgh-dialog #dialog labelledBy="dialog-title"
+  template: `<button data-testid="background-action">Background</button
+    ><simurgh-dialog #dialog labelledBy="dialog-title"
     ><button trigger (click)="dialog.show()">Open</button>
     <h2 id="dialog-title">Settings</h2>
     <button>Save</button></simurgh-dialog
@@ -1345,12 +1346,24 @@ describe('Angular accessibility contract', () => {
       '[role=dialog]',
     ) as HTMLElement;
     expect(document.activeElement).toBe(dialog);
+    expect(document.body.style.overflow).toBe('hidden');
+    expect(
+      (fixture.nativeElement.querySelector(
+        '[data-testid=background-action]',
+      ) as HTMLElement).inert,
+    ).toBe(true);
     dialog.dispatchEvent(
       new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
     );
     fixture.detectChanges();
     await new Promise((resolve) => setTimeout(resolve));
     expect(document.activeElement).toBe(trigger);
+    expect(document.body.style.overflow).toBe('');
+    expect(
+      (fixture.nativeElement.querySelector(
+        '[data-testid=background-action]',
+      ) as HTMLElement).inert,
+    ).not.toBe(true);
     fixture.destroy();
   });
 

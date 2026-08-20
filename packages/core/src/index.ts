@@ -94,6 +94,35 @@ export function trapFocus(event: KeyboardEvent, container: ParentNode): void {
   }
 }
 
+export function isolateModal(content: HTMLElement): () => void {
+  const body = content.ownerDocument.body;
+  const previousOverflow = body.style.overflow;
+  const isolated: Array<{ element: HTMLElement; inert: boolean }> = [];
+  let current: HTMLElement = content;
+
+  while (current.parentElement) {
+    const parent = current.parentElement;
+    for (const sibling of parent.children) {
+      if (
+        sibling === current ||
+        !(sibling instanceof HTMLElement) ||
+        sibling.dataset['slot'] === 'dialog-overlay'
+      )
+        continue;
+      isolated.push({ element: sibling, inert: sibling.inert });
+      sibling.inert = true;
+    }
+    if (parent === body) break;
+    current = parent;
+  }
+
+  body.style.overflow = 'hidden';
+  return () => {
+    body.style.overflow = previousOverflow;
+    for (const { element, inert } of isolated.reverse()) element.inert = inert;
+  };
+}
+
 export function createControllableState<T>(
   initial: T,
   onChange?: (value: T) => void,

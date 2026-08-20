@@ -1,4 +1,4 @@
-import { createId, trapFocus } from '@simurgh-ui/core';
+import { createId, isolateModal, trapFocus } from '@simurgh-ui/core';
 import {
   Teleport,
   computed,
@@ -6,6 +6,7 @@ import {
   h,
   inject,
   nextTick,
+  onBeforeUnmount,
   provide,
   ref,
   watch,
@@ -70,13 +71,20 @@ export const DialogContent = /* @__PURE__ */ defineComponent({
     const context = inject(dialogKey)!;
     const element = ref<HTMLElement | null>(null);
     let previous: HTMLElement | null = null;
+    let restoreIsolation: (() => void) | undefined;
     watch(context.open, async (open) => {
       if (open) {
         previous = document.activeElement as HTMLElement;
         await nextTick();
+        if (element.value) restoreIsolation = isolateModal(element.value);
         element.value?.focus();
-      } else if (previous?.isConnected) previous.focus();
+      } else {
+        restoreIsolation?.();
+        restoreIsolation = undefined;
+        if (previous?.isConnected) previous.focus();
+      }
     });
+    onBeforeUnmount(() => restoreIsolation?.());
     return () =>
       context.open.value
         ? h(Teleport, { to: 'body' }, [

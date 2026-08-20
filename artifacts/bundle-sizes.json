@@ -128,14 +128,14 @@
     },
     "vue-toggle-group": {
       "minified": 1822,
-      "gzip": 886,
-      "brotli": 776,
+      "gzip": 887,
+      "brotli": 775,
       "budget": 1150
     },
     "vue-tabs": {
       "minified": 1934,
-      "gzip": 864,
-      "brotli": 760,
+      "gzip": 865,
+      "brotli": 757,
       "budget": 1125
     },
     "vue-accordion": {
@@ -151,21 +151,21 @@
       "budget": 665
     },
     "vue-card": {
-      "minified": 414,
-      "gzip": 187,
-      "brotli": 165,
+      "minified": 532,
+      "gzip": 283,
+      "brotli": 239,
       "budget": 370
     },
     "vue-empty": {
-      "minified": 800,
-      "gzip": 377,
-      "brotli": 323,
+      "minified": 932,
+      "gzip": 421,
+      "brotli": 362,
       "budget": 550
     },
     "vue-item": {
-      "minified": 870,
-      "gzip": 369,
-      "brotli": 326,
+      "minified": 1002,
+      "gzip": 415,
+      "brotli": 361,
       "budget": 540
     },
     "vue-badge": {
@@ -175,21 +175,21 @@
       "budget": 300
     },
     "vue-field": {
-      "minified": 426,
-      "gzip": 252,
-      "brotli": 217,
+      "minified": 565,
+      "gzip": 293,
+      "brotli": 248,
       "budget": 375
     },
     "vue-table": {
-      "minified": 678,
-      "gzip": 320,
-      "brotli": 277,
+      "minified": 789,
+      "gzip": 363,
+      "brotli": 315,
       "budget": 465
     },
     "vue-pagination": {
-      "minified": 651,
-      "gzip": 315,
-      "brotli": 271,
+      "minified": 797,
+      "gzip": 361,
+      "brotli": 309,
       "budget": 465
     },
     "vue-form": {
@@ -199,20 +199,20 @@
       "budget": 480
     },
     "vue-navigation-menu": {
-      "minified": 710,
-      "gzip": 329,
-      "brotli": 282,
+      "minified": 856,
+      "gzip": 373,
+      "brotli": 321,
       "budget": 480
     },
     "vue-menubar": {
       "minified": 1502,
-      "gzip": 779,
-      "brotli": 671,
+      "gzip": 778,
+      "brotli": 670,
       "budget": 1000
     },
     "vue-radio-group": {
       "minified": 1892,
-      "gzip": 940,
+      "gzip": 939,
       "brotli": 814,
       "budget": 1200
     },
@@ -231,7 +231,7 @@
     "vue-select": {
       "minified": 2118,
       "gzip": 1051,
-      "brotli": 895,
+      "brotli": 894,
       "budget": 1320
     },
     "vue-combobox": {
@@ -247,33 +247,33 @@
       "budget": 1560
     },
     "vue-file-upload": {
-      "minified": 70,
-      "gzip": 62,
-      "brotli": 70,
+      "minified": 1529,
+      "gzip": 772,
+      "brotli": 661,
       "budget": 990
     },
     "vue-toast": {
       "minified": 920,
-      "gzip": 533,
-      "brotli": 454,
+      "gzip": 532,
+      "brotli": 450,
       "budget": 685
     },
     "vue-sheet": {
-      "minified": 2700,
-      "gzip": 1155,
-      "brotli": 1016,
+      "minified": 3161,
+      "gzip": 1371,
+      "brotli": 1213,
       "budget": 1440
     },
     "vue-drawer": {
-      "minified": 2915,
-      "gzip": 1202,
-      "brotli": 1065,
+      "minified": 3376,
+      "gzip": 1419,
+      "brotli": 1257,
       "budget": 1500
     },
     "vue-alert-dialog": {
-      "minified": 2842,
-      "gzip": 1212,
-      "brotli": 1071,
+      "minified": 2863,
+      "gzip": 1224,
+      "brotli": 1077,
       "budget": 1540
     },
     "vue-carousel": {
@@ -283,27 +283,27 @@
       "budget": 1250
     },
     "vue-sidebar": {
-      "minified": 554,
-      "gzip": 165,
-      "brotli": 136,
+      "minified": 1971,
+      "gzip": 831,
+      "brotli": 749,
       "budget": 1070
     },
     "vue-tree": {
-      "minified": 107,
-      "gzip": 72,
-      "brotli": 79,
+      "minified": 2342,
+      "gzip": 1046,
+      "brotli": 926,
       "budget": 1340
     },
     "vue-context-menu": {
       "minified": 2683,
-      "gzip": 1250,
+      "gzip": 1249,
       "brotli": 1120,
       "budget": 1500
     },
     "vue-popover": {
       "minified": 6002,
-      "gzip": 2294,
-      "brotli": 2057,
+      "gzip": 2293,
+      "brotli": 2060,
       "budget": 9300
     },
     "vue-tooltip": {
@@ -315,7 +315,7 @@
     "vue-hover-card": {
       "minified": 6391,
       "gzip": 2407,
-      "brotli": 2155,
+      "brotli": 2157,
       "budget": 9450
     },
     "vue-dropdown-menu": {
@@ -327,13 +327,13 @@
     "vue-date-picker": {
       "minified": 11115,
       "gzip": 3967,
-      "brotli": 3566,
+      "brotli": 3564,
       "budget": 11000
     },
     "vue-resizable": {
-      "minified": 246,
-      "gzip": 100,
-      "brotli": 83,
+      "minified": 3163,
+      "gzip": 1234,
+      "brotli": 1121,
       "budget": 1536
     },
     "angular-button": {
@@ -369,7 +369,7 @@
     "angular-select": {
       "minified": 3864,
       "gzip": 1582,
-      "brotli": 1367,
+      "brotli": 1369,
       "budget": 2048
     },
     "react-rating": {
@@ -381,13 +381,13 @@
     "vue-rating": {
       "minified": 1230,
       "gzip": 654,
-      "brotli": 580,
+      "brotli": 582,
       "budget": 819.2
     },
     "angular-rating": {
       "minified": 1924,
       "gzip": 893,
-      "brotli": 775,
+      "brotli": 776,
       "budget": 2048
     },
     "react-tags-input": {
@@ -409,15 +409,15 @@
       "budget": 2560
     },
     "react-dialog": {
-      "minified": 2817,
-      "gzip": 1215,
-      "brotli": 1058,
+      "minified": 3251,
+      "gzip": 1397,
+      "brotli": 1227,
       "budget": 1480
     },
     "vue-dialog": {
-      "minified": 2444,
-      "gzip": 1047,
-      "brotli": 910,
+      "minified": 2905,
+      "gzip": 1266,
+      "brotli": 1110,
       "budget": 1280
     },
     "vue-calendar": {
@@ -427,15 +427,15 @@
       "budget": 1792
     },
     "angular-dialog": {
-      "minified": 2241,
-      "gzip": 1032,
-      "brotli": 871,
+      "minified": 2806,
+      "gzip": 1264,
+      "brotli": 1073,
       "budget": 2048
     },
     "angular-calendar": {
       "minified": 5992,
-      "gzip": 2232,
-      "brotli": 2007,
+      "gzip": 2231,
+      "brotli": 2009,
       "budget": 3072
     },
     "angular-root-button": {
@@ -446,56 +446,56 @@
     },
     "react-basic": {
       "minified": 17381,
-      "gzip": 5159,
-      "brotli": 4617,
+      "gzip": 5157,
+      "brotli": 4613,
       "budget": 8192
     },
     "vue-basic": {
-      "minified": 15353,
-      "gzip": 4299,
-      "brotli": 3834,
+      "minified": 15475,
+      "gzip": 4331,
+      "brotli": 3876,
       "budget": 8192
     },
     "angular-basic": {
       "minified": 28562,
-      "gzip": 5642,
-      "brotli": 4906,
+      "gzip": 5644,
+      "brotli": 4910,
       "budget": 6144
     },
     "react-overlays": {
-      "minified": 30712,
-      "gzip": 6205,
-      "brotli": 5242,
+      "minified": 31249,
+      "gzip": 6377,
+      "brotli": 5406,
       "budget": 18432
     },
     "vue-overlays": {
-      "minified": 14559,
-      "gzip": 4532,
-      "brotli": 4063,
+      "minified": 15024,
+      "gzip": 4763,
+      "brotli": 4250,
       "budget": 10752
     },
     "angular-overlays": {
-      "minified": 22890,
-      "gzip": 4929,
-      "brotli": 4338,
+      "minified": 23457,
+      "gzip": 5142,
+      "brotli": 4527,
       "budget": 12288
     },
     "react-complete": {
-      "minified": 105396,
-      "gzip": 26108,
-      "brotli": 22301,
+      "minified": 105934,
+      "gzip": 26279,
+      "brotli": 22400,
       "budget": 35840
     },
     "vue-complete": {
-      "minified": 75882,
-      "gzip": 20946,
-      "brotli": 18409,
+      "minified": 84099,
+      "gzip": 23281,
+      "brotli": 20372,
       "budget": 29696
     },
     "angular-complete": {
-      "minified": 150716,
-      "gzip": 28038,
-      "brotli": 23697,
+      "minified": 151283,
+      "gzip": 28250,
+      "brotli": 23837,
       "budget": 34816
     },
     "internal-floating": {
@@ -522,20 +522,20 @@
   "packages": {
     "react": {
       "files": 170,
-      "unpacked": 271351,
-      "gzip": 41445,
+      "unpacked": 269478,
+      "gzip": 41481,
       "budget": 409600
     },
     "vue": {
       "files": 234,
-      "unpacked": 331201,
-      "gzip": 37751,
+      "unpacked": 348765,
+      "gzip": 40963,
       "budget": 384000
     },
     "angular": {
       "files": 166,
-      "unpacked": 303821,
-      "gzip": 43764,
+      "unpacked": 304189,
+      "gzip": 43843,
       "budget": 307200
     }
   }
