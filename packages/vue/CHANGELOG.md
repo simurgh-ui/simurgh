@@ -1,5 +1,15 @@
 # @simurgh-ui/vue
 
+## 0.1.2
+
+### Patch Changes
+
+- bf73705: Add repository, issue, homepage, and public-publish metadata to package manifests, declare the CLI's
+  verified Node.js runtime, and strengthen registry and adapter test discovery before publication.
+- Updated dependencies [bf73705]
+  - @simurgh-ui/core@0.1.2
+  - @simurgh-ui/motion@0.1.2
+
 ## 0.3.1
 
 ### Patch Changes
