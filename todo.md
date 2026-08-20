@@ -540,7 +540,7 @@ roadmap and are not duplicated here.
 
 - [x] Complete the open React source decomposition above, then extract focused shared internals for
       focus management, composite widgets, forms, overlays, IDs, and controlled state.
-- [ ] Assert that every framework component subpath is independent of its root barrel and retain
+- [x] Assert that every framework component subpath is independent of its root barrel and retain
       existing standalone and aggregate bundle budgets during the React decomposition.
 - [x] Remove `--passWithNoTests` from packages expected to own tests so accidental test-discovery
       failures cannot pass CI.
