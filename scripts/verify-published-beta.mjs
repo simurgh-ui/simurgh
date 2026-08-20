@@ -14,7 +14,11 @@ const packageDirectories = [
   'vue',
 ];
 
-export async function verifyPublishedBeta({ fetchRegistry = fetch } = {}) {
+export async function verifyPublishedBeta({
+  fetchRegistry = fetch,
+  requireProvenance = true,
+  publicationChannel = 'ci',
+} = {}) {
   const packages = [];
   const failures = [];
   for (const directory of packageDirectories) {
@@ -57,7 +61,7 @@ export async function verifyPublishedBeta({ fetchRegistry = fetch } = {}) {
       failures.push(
         `${manifest.name}@${manifest.version}: registry integrity is missing`,
       );
-    if (!published.dist?.attestations?.url)
+    if (requireProvenance && !published.dist?.attestations?.url)
       failures.push(
         `${manifest.name}@${manifest.version}: provenance attestation is missing`,
       );
@@ -74,7 +78,13 @@ export async function verifyPublishedBeta({ fetchRegistry = fetch } = {}) {
     throw new Error(
       `Published beta verification failed:\n${failures.join('\n')}`,
     );
-  return { schemaVersion: 1, packageCount: packages.length, packages };
+  return {
+    schemaVersion: 1,
+    publicationChannel,
+    provenanceRequired: requireProvenance,
+    packageCount: packages.length,
+    packages,
+  };
 }
 
 if (
@@ -88,10 +98,14 @@ if (
       ? process.argv[outputIndex + 1]
       : 'artifacts/published-beta-evidence.json',
   );
-  const evidence = await verifyPublishedBeta();
+  const directPublication = process.argv.includes('--direct-publication');
+  const evidence = await verifyPublishedBeta({
+    requireProvenance: !directPublication,
+    publicationChannel: directPublication ? 'direct' : 'ci',
+  });
   await mkdir(dirname(outputFile), { recursive: true });
   await writeFile(outputFile, `${JSON.stringify(evidence, null, 2)}\n`);
   process.stdout.write(
-    `Verified ${evidence.packageCount} published beta packages with integrity and provenance.\n`,
+    `Verified ${evidence.packageCount} published beta packages with integrity${evidence.provenanceRequired ? ' and provenance' : '; provenance was not required for direct publication'}.\n`,
   );
 }

@@ -85,3 +85,17 @@ test('rejects packages without provenance', async () => {
     /provenance attestation is missing/,
   );
 });
+
+test('records direct publication without claiming provenance', async () => {
+  const evidence = await verifyPublishedBeta({
+    fetchRegistry: registryFetch({ missingProvenance: true }),
+    requireProvenance: false,
+    publicationChannel: 'direct',
+  });
+  assert.equal(evidence.publicationChannel, 'direct');
+  assert.equal(evidence.provenanceRequired, false);
+  assert.equal(
+    evidence.packages.every((entry) => entry.provenanceAttestation == null),
+    true,
+  );
+});
