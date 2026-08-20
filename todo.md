@@ -559,7 +559,7 @@ roadmap and are not duplicated here.
       scroll locking, inert backgrounds, and interrupted unmounts.
 - [x] Expand composite-widget coverage for LTR and RTL navigation, typeahead, disabled items,
       selection models, orientation changes, and dynamic collection updates.
-- [ ] Test IME/composition, form reset, serialization, autofill, invalid state, native validation,
+- [x] Test IME/composition, form reset, serialization, autofill, invalid state, native validation,
       and browser form submission for every form-capable component.
 - [ ] Add SSR and hydration fixtures for every supported framework major, including generated IDs,
       portals, browser-only APIs, lazy overlays, and streamed or deferred content.

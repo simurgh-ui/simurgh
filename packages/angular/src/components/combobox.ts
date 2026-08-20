@@ -3,6 +3,7 @@ import type { SelectOption } from './select.js';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { InternalIdService } from '../internal/id.js';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-combobox',
@@ -56,7 +57,7 @@ import { InternalIdService } from '../internal/id.js';
     />
   </div>`,
 })
-export class ComboboxComponent {
+export class ComboboxComponent extends FormResetBase {
   @Input() options: SelectOption[] = [];
   @Input() value = '';
   @Input() name: string | undefined;
@@ -70,6 +71,18 @@ export class ComboboxComponent {
   query = '';
   open = false;
   activeIndex = -1;
+
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.query =
+        this.options.find((option) => option.value === initial)?.label ?? '';
+      this.open = false;
+      this.activeIndex = -1;
+      this.valueChange.emit(initial);
+    };
+  }
 
   get filteredOptions() {
     const needle = this.query.trim().toLocaleLowerCase();
@@ -117,7 +130,11 @@ export class ComboboxComponent {
       event.preventDefault();
       this.activeIndex = 0;
       this.move(-1);
-    } else if (event.key === 'Enter' && this.activeIndex >= 0) {
+    } else if (
+      event.key === 'Enter' &&
+      !event.isComposing &&
+      this.activeIndex >= 0
+    ) {
       event.preventDefault();
       const option = this.filteredOptions[this.activeIndex];
       if (option) this.choose(option);

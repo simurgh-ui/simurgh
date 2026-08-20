@@ -15,6 +15,7 @@ import {
   createId,
   moveCalendarDate,
 } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-calendar',
@@ -73,7 +74,7 @@ import {
     <input *ngIf="name" type="hidden" [name]="name" [value]="value" />
   </div>`,
 })
-export class CalendarComponent {
+export class CalendarComponent extends FormResetBase {
   @Input() value = '';
   @Input() month = calendarToday().slice(0, 7);
   @Input() locale = 'en';
@@ -91,6 +92,15 @@ export class CalendarComponent {
   readonly titleId = createId('calendar-title');
   readonly weeks = [0, 1, 2, 3, 4, 5];
   readonly weekdayIndexes = [0, 1, 2, 3, 4, 5, 6];
+
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      if (initial) this.month = initial.slice(0, 7);
+      this.valueChange.emit(initial);
+    };
+  }
 
   get days() {
     return calendarMonthDays(this.month, this.firstDayOfWeek);

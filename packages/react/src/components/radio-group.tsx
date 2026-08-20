@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { moveCompositeFocus } from '../internal/composite.js';
 import { useControlledState } from '../internal/controlled-state.js';
+import { useFormReset } from '../internal/forms.js';
 
 type RadioContextValue = {
   value: string;
@@ -46,6 +47,7 @@ export function RadioGroup({
     defaultValue,
     onChange: onValueChange,
   });
+  const resetRef = useFormReset<HTMLInputElement>(() => setValue(defaultValue));
   return (
     <RadioContext.Provider
       value={{ value: selected, setValue, name, required, disabled, direction }}
@@ -62,9 +64,12 @@ export function RadioGroup({
         }}
       >
         {children}
-        {name && <input type="hidden" name={name} value={selected} />}
+        {name && (
+          <input ref={resetRef} type="hidden" name={name} value={selected} />
+        )}
         {required && (
           <input
+            ref={resetRef}
             tabIndex={-1}
             aria-hidden="true"
             required

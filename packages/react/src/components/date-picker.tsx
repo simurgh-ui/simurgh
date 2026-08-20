@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Calendar, type CalendarProps } from './calendar.js';
 import { Popover, PopoverContent, PopoverTrigger } from './popover.js';
+import { useFormReset } from '../internal/forms.js';
 
 export type DatePickerProps = CalendarProps & {
   placeholder?: string;
@@ -24,6 +25,10 @@ export function DatePicker({
   const selected = value ?? localValue;
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocalValue(defaultValue);
+    setOpen(false);
+  });
   const displayValue = selected
     ? new Intl.DateTimeFormat(locale, {
         dateStyle: 'medium',
@@ -57,10 +62,17 @@ export function DatePicker({
         </PopoverContent>
       </Popover>
       {name && (
-        <input type="hidden" name={name} value={selected} disabled={disabled} />
+        <input
+          ref={resetRef}
+          type="hidden"
+          name={name}
+          value={selected}
+          disabled={disabled}
+        />
       )}
       {required && (
         <input
+          ref={resetRef}
           tabIndex={-1}
           aria-hidden="true"
           required

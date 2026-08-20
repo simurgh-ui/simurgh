@@ -1,4 +1,5 @@
 import { computed, defineComponent, h, ref, type PropType } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const TagsInput = /* @__PURE__ */ defineComponent({
   name: 'SimurghTagsInput',
@@ -23,6 +24,7 @@ export const TagsInput = /* @__PURE__ */ defineComponent({
     const localValue = ref([...props.defaultValue]);
     const draft = ref('');
     const input = ref<HTMLInputElement | null>(null);
+    const initial = [...(props.modelValue ?? props.defaultValue)];
     const tags = computed(() =>
       (props.modelValue ?? localValue.value).slice(0, 100),
     );
@@ -53,6 +55,11 @@ export const TagsInput = /* @__PURE__ */ defineComponent({
       commit(tags.value.filter((_, itemIndex) => itemIndex !== index));
       input.value?.focus();
     };
+    useFormReset(input, () => {
+      localValue.value = [...initial];
+      draft.value = '';
+      emit('update:modelValue', [...initial]);
+    });
     return () =>
       h(
         'div',
@@ -104,7 +111,10 @@ export const TagsInput = /* @__PURE__ */ defineComponent({
             onInput: (event: Event) =>
               (draft.value = (event.currentTarget as HTMLInputElement).value),
             onKeydown: (event: KeyboardEvent) => {
-              if (event.key === 'Enter' || event.key === ',') {
+              if (
+                (event.key === 'Enter' || event.key === ',') &&
+                !event.isComposing
+              ) {
                 event.preventDefault();
                 add();
               } else if (

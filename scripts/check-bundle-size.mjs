@@ -59,13 +59,13 @@ const cases = [
     name: 'vue-checkbox',
     framework: 'vue',
     subpath: 'checkbox',
-    budget: 520,
+    budget: 600,
   },
   {
     name: 'vue-switch',
     framework: 'vue',
     subpath: 'switch',
-    budget: 540,
+    budget: 600,
   },
   {
     name: 'vue-label',
@@ -96,19 +96,19 @@ const cases = [
     name: 'vue-input',
     framework: 'vue',
     subpath: 'input',
-    budget: 415,
+    budget: 550,
   },
   {
     name: 'vue-native-select',
     framework: 'vue',
     subpath: 'native-select',
-    budget: 490,
+    budget: 560,
   },
   {
     name: 'vue-slider',
     framework: 'vue',
     subpath: 'slider',
-    budget: 520,
+    budget: 580,
   },
   {
     name: 'vue-link',
@@ -132,7 +132,7 @@ const cases = [
     name: 'vue-input-otp',
     framework: 'vue',
     subpath: 'input-otp',
-    budget: 630,
+    budget: 680,
   },
   {
     name: 'vue-toolbar',
@@ -481,7 +481,7 @@ const cases = [
     name: 'angular-basic',
     framework: 'angular',
     subpath: 'basic',
-    budget: 6 * KiB,
+    budget: 6.25 * KiB,
   },
   {
     name: 'react-overlays',
@@ -590,7 +590,7 @@ for (const bundleCase of cases) {
   }
 }
 
-const packageBudgets = { react: 400 * KiB, vue: 375 * KiB, angular: 300 * KiB };
+const packageBudgets = { react: 400 * KiB, vue: 375 * KiB, angular: 310 * KiB };
 const publishedPackages = {};
 for (const framework of ['react', 'vue', 'angular']) {
   const isWindows = process.platform === 'win32';

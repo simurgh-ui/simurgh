@@ -1,5 +1,6 @@
 import { type ButtonHTMLAttributes, type PropsWithChildren } from 'react';
 import { useControlledState } from './controlled-state.js';
+import { useFormReset } from './forms.js';
 
 export type CheckProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -28,6 +29,9 @@ export function CheckControl({
     defaultValue: defaultChecked ?? false,
     onChange: onCheckedChange,
   });
+  const resetRef = useFormReset<HTMLInputElement>(() =>
+    set(defaultChecked ?? false),
+  );
   return (
     <>
       <button
@@ -45,6 +49,7 @@ export function CheckControl({
       </button>
       {name && (
         <input
+          ref={resetRef}
           tabIndex={-1}
           aria-hidden="true"
           style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}

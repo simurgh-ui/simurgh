@@ -1,4 +1,5 @@
 import { forwardRef, useRef, useState, type HTMLAttributes } from 'react';
+import { useFormReset } from '../internal/forms.js';
 
 export type TagsInputProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -41,6 +42,10 @@ export const TagsInput = /* @__PURE__ */ forwardRef<
   const [localValue, setLocalValue] = useState(defaultValue);
   const [draft, setDraft] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocalValue(defaultValue);
+    setDraft('');
+  });
   const tags = (value ?? localValue).slice(0, 100);
   const limit = Number.isFinite(maxTags)
     ? Math.min(100, Math.max(1, Math.floor(maxTags)))
@@ -103,6 +108,7 @@ export const TagsInput = /* @__PURE__ */ forwardRef<
       <input
         ref={(node) => {
           inputRef.current = node;
+          resetRef.current = node;
           if (typeof forwardedRef === 'function') forwardedRef(node);
           else if (forwardedRef) forwardedRef.current = node;
         }}
@@ -116,7 +122,10 @@ export const TagsInput = /* @__PURE__ */ forwardRef<
         required={required && tags.length === 0}
         onChange={(event) => setDraft(event.currentTarget.value)}
         onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ',') {
+          if (
+            (event.key === 'Enter' || event.key === ',') &&
+            !event.nativeEvent.isComposing
+          ) {
             event.preventDefault();
             add();
           } else if (event.key === 'Backspace' && !draft && tags.length) {

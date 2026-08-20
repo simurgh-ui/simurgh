@@ -1,5 +1,6 @@
 import { createId } from '@simurgh-ui/core';
 import { defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 function acceptedUploadFiles(files: File[], accept?: string) {
   if (!accept) return files;
@@ -36,6 +37,7 @@ export const FileUpload = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, emit }) {
     const id = (attrs.id as string | undefined) ?? createId('file');
     const names = ref<string[]>([]);
+    const control = ref<HTMLInputElement | null>(null);
     const update = (files: File[]) => {
       if (props.disabled) return;
       const accepted = acceptedUploadFiles(files, props.accept);
@@ -43,6 +45,10 @@ export const FileUpload = /* @__PURE__ */ defineComponent({
       names.value = next.map((file) => file.name);
       emit('files-change', next);
     };
+    useFormReset(control, () => {
+      names.value = [];
+      emit('files-change', []);
+    });
     return () =>
       h(
         'label',
@@ -61,6 +67,7 @@ export const FileUpload = /* @__PURE__ */ defineComponent({
         },
         [
           h('input', {
+            ref: control,
             ...attrs,
             id,
             type: 'file',

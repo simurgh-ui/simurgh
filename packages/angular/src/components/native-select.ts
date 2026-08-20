@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-native-select',
@@ -16,7 +17,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     <ng-content />
   </select>`,
 })
-export class NativeSelectComponent {
+export class NativeSelectComponent extends FormResetBase {
   @Input() name?: string;
   @Input() value = '';
   @Input() required = false;
@@ -25,6 +26,13 @@ export class NativeSelectComponent {
   @Input() multiple = false;
   @Output() valueChange = new EventEmitter<string | string[]>();
   @Output() change = new EventEmitter<Event>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   onChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     this.value = select.value;

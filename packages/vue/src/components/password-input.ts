@@ -1,5 +1,6 @@
 import { createId } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const PasswordInput = /* @__PURE__ */ defineComponent({
   name: 'SimurghPasswordInput',
@@ -16,8 +17,15 @@ export const PasswordInput = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, emit }) {
     const revealed = ref(false);
     const localValue = ref(props.defaultValue);
+    const control = ref<HTMLInputElement | null>(null);
     const id = (attrs.id as string | undefined) ?? createId('password');
     const value = computed(() => props.modelValue ?? localValue.value);
+    const initial = value.value;
+    useFormReset(control, () => {
+      localValue.value = initial;
+      revealed.value = false;
+      emit('update:modelValue', initial);
+    });
     return () =>
       h(
         'div',
@@ -27,6 +35,7 @@ export const PasswordInput = /* @__PURE__ */ defineComponent({
         },
         [
           h('input', {
+            ref: control,
             ...attrs,
             id,
             type: revealed.value ? 'text' : 'password',

@@ -6,6 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-tags-input',
@@ -52,7 +53,7 @@ import {
     />
   </div>`,
 })
-export class TagsInputComponent {
+export class TagsInputComponent extends FormResetBase {
   @ViewChild('control') control?: ElementRef<HTMLInputElement>;
   private tags: string[] = [];
   @Input() set value(value: string[]) {
@@ -71,6 +72,14 @@ export class TagsInputComponent {
   @Input('aria-label') ariaLabel = 'Tags';
   @Output() valueChange = new EventEmitter<string[]>();
   draft = '';
+  protected createFormReset() {
+    const initial = [...this.value];
+    return () => {
+      this.value = initial;
+      this.draft = '';
+      this.valueChange.emit([...initial]);
+    };
+  }
   get safeLimit() {
     return Number.isFinite(this.maxTags)
       ? Math.min(100, Math.max(1, Math.floor(this.maxTags)))
@@ -103,7 +112,7 @@ export class TagsInputComponent {
     this.control?.nativeElement.focus();
   }
   handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === ',') {
+    if (!event.isComposing && (event.key === 'Enter' || event.key === ',')) {
       event.preventDefault();
       this.add();
     } else if (event.key === 'Backspace' && !this.draft && this.value.length) {

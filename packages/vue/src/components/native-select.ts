@@ -1,4 +1,5 @@
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const NativeSelect = /* @__PURE__ */ defineComponent({
   name: 'SimurghNativeSelect',
@@ -12,10 +13,14 @@ export const NativeSelect = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, slots, emit }) {
+    const control = ref<HTMLSelectElement | null>(null);
+    const initial = props.modelValue;
+    useFormReset(control, () => emit('update:modelValue', initial));
     return () =>
       h(
         'select',
         {
+          ref: control,
           ...attrs,
           name: props.name,
           required: props.required,

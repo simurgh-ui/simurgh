@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { createId } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-number-input',
@@ -47,7 +48,7 @@ import { createId } from '@simurgh-ui/core';
     </button>
   </div>`,
 })
-export class NumberInputComponent {
+export class NumberInputComponent extends FormResetBase {
   @Input() inputId = createId('number');
   @Input('aria-label') ariaLabel = 'Number';
   @Input() value = 0;
@@ -61,6 +62,13 @@ export class NumberInputComponent {
   @Input() incrementLabel = 'Increase value';
   @Input() decrementLabel = 'Decrease value';
   @Output() valueChange = new EventEmitter<number>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   get safeStep() {
     return Number.isFinite(this.step) && this.step > 0 ? this.step : 1;
   }

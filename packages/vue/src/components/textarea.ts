@@ -1,4 +1,5 @@
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const Textarea = /* @__PURE__ */ defineComponent({
   name: 'SimurghTextarea',
@@ -11,8 +12,12 @@ export const Textarea = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, emit }) {
+    const control = ref<HTMLTextAreaElement | null>(null);
+    const initial = props.modelValue;
+    useFormReset(control, () => emit('update:modelValue', initial));
     return () =>
       h('textarea', {
+        ref: control,
         ...attrs,
         name: props.name,
         required: props.required,

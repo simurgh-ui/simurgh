@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { createId } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-file-upload',
@@ -33,7 +34,7 @@ import { createId } from '@simurgh-ui/core';
     }}</span>
   </label>`,
 })
-export class FileUploadComponent {
+export class FileUploadComponent extends FormResetBase {
   @Input() inputId = createId('file');
   @Input({ required: true }) label = '';
   @Input() description = 'Drop files here or browse';
@@ -44,6 +45,12 @@ export class FileUploadComponent {
   @Input() required = false;
   @Output() filesChange = new EventEmitter<File[]>();
   selectedNames = '';
+  protected createFormReset() {
+    return () => {
+      this.selectedNames = '';
+      this.filesChange.emit([]);
+    };
+  }
   private accepted(files: File[]) {
     if (!this.accept) return files;
     const rules = this.accept

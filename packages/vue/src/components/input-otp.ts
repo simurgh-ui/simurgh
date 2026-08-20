@@ -1,4 +1,5 @@
-import { defineComponent, h } from 'vue';
+import { defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const InputOtp = /* @__PURE__ */ defineComponent({
   name: 'SimurghInputOtp',
@@ -14,8 +15,12 @@ export const InputOtp = /* @__PURE__ */ defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, emit }) {
+    const control = ref<HTMLInputElement | null>(null);
+    const initial = props.modelValue;
+    useFormReset(control, () => emit('update:modelValue', initial));
     return () =>
       h('input', {
+        ref: control,
         ...attrs,
         type: 'text',
         name: props.name,

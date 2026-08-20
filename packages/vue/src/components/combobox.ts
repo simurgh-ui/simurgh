@@ -7,6 +7,7 @@ import {
   watch,
   type PropType,
 } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export type ComboboxOption = {
   value: string;
@@ -34,6 +35,8 @@ export const Combobox = /* @__PURE__ */ defineComponent({
     const query = ref('');
     const open = ref(false);
     const activeIndex = ref(-1);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue;
     const selected = computed(() =>
       props.options.find((option) => option.value === props.modelValue),
     );
@@ -68,9 +71,18 @@ export const Combobox = /* @__PURE__ */ defineComponent({
       },
       { immediate: true },
     );
+    useFormReset(control, () => {
+      emit('update:modelValue', initialValue);
+      query.value =
+        props.options.find((option) => option.value === initialValue)?.label ??
+        '';
+      open.value = false;
+      activeIndex.value = -1;
+    });
     return () =>
       h('div', { class: 'simurgh-combobox' }, [
         h('input', {
+          ref: control,
           ...attrs,
           role: 'combobox',
           'aria-label': attrs['aria-label'] ?? props.placeholder,
@@ -105,7 +117,11 @@ export const Combobox = /* @__PURE__ */ defineComponent({
               event.preventDefault();
               activeIndex.value = 0;
               move(-1);
-            } else if (event.key === 'Enter' && activeIndex.value >= 0) {
+            } else if (
+              event.key === 'Enter' &&
+              activeIndex.value >= 0 &&
+              !event.isComposing
+            ) {
               event.preventDefault();
               const option = filtered.value[activeIndex.value];
               if (option) choose(option);

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-input-otp',
@@ -19,7 +20,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     (input)="update($event)"
   />`,
 })
-export class InputOtpComponent {
+export class InputOtpComponent extends FormResetBase {
   @Input() name?: string;
   @Input() value = '';
   @Input() length = 6;
@@ -29,6 +30,13 @@ export class InputOtpComponent {
   @Input() invalid = false;
   @Input() autocomplete = 'one-time-code';
   @Output() valueChange = new EventEmitter<string>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   update(event: Event) {
     const input = event.target as HTMLInputElement;
     this.value = (

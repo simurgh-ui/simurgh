@@ -12,6 +12,7 @@ import {
   Output,
 } from '@angular/core';
 import { nextIndex } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-radio-group',
@@ -33,7 +34,7 @@ import { nextIndex } from '@simurgh-ui/core';
     />
   </div>`,
 })
-export class RadioGroupComponent {
+export class RadioGroupComponent extends FormResetBase {
   @Input() value = '';
   @Input() name?: string;
   @Input() required = false;
@@ -41,6 +42,13 @@ export class RadioGroupComponent {
   @Input() direction: Direction = 'ltr';
   @Output() valueChange = new EventEmitter<string>();
   private element = inject<ElementRef<HTMLElement>>(ElementRef);
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   select(value: string) {
     if (!this.disabled) {
       this.value = value;

@@ -1,5 +1,6 @@
 import type { Direction } from '@simurgh-ui/core';
 import { defineComponent, h, ref, type PropType } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 const dateValue = (date: Date) => date.toJSON().slice(0, 10);
 const addDays = (value: string, amount: number) => {
@@ -67,6 +68,10 @@ export const Calendar = /* @__PURE__ */ defineComponent({
       props.defaultMonth ?? (props.defaultValue || today).slice(0, 7),
     );
     const root = ref<HTMLElement | null>(null);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue ?? props.defaultValue;
+    const initialMonth =
+      props.month ?? props.defaultMonth ?? (initialValue || today).slice(0, 7);
     const displayedMonth = () => props.month ?? localMonth.value;
     const isDisabled = (date: string) =>
       (props.min !== undefined && date < props.min) ||
@@ -82,6 +87,12 @@ export const Calendar = /* @__PURE__ */ defineComponent({
       if (date.slice(0, 7) !== displayedMonth()) setMonth(date.slice(0, 7));
       emit('update:modelValue', date);
     };
+    useFormReset(control, () => {
+      localValue.value = initialValue;
+      localMonth.value = initialMonth;
+      emit('update:modelValue', initialValue);
+      emit('update:month', initialMonth);
+    });
     const focusDate = (date: string) => {
       if (date.slice(0, 7) !== displayedMonth()) setMonth(date.slice(0, 7));
       requestAnimationFrame(() =>
@@ -223,6 +234,7 @@ export const Calendar = /* @__PURE__ */ defineComponent({
           ]),
           props.name
             ? h('input', {
+                ref: control,
                 type: 'hidden',
                 name: props.name,
                 value: selectedValue,

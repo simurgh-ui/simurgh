@@ -1,6 +1,7 @@
 import { forwardRef, type InputHTMLAttributes } from 'react';
 import { useControlledState } from '../internal/controlled-state.js';
 import { useComponentId } from '../internal/ids.js';
+import { useFormReset } from '../internal/forms.js';
 
 type NumberInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -42,6 +43,9 @@ export const NumberInput = /* @__PURE__ */ forwardRef<
   });
   const safeStep = Number.isFinite(step) && step > 0 ? step : 1;
   const inputId = useComponentId('number', props.id);
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setValue(defaultValue);
+  });
   const normalize = (next: number) =>
     Math.min(max ?? Infinity, Math.max(min ?? -Infinity, next));
   const commit = (next: number) => {
@@ -66,7 +70,11 @@ export const NumberInput = /* @__PURE__ */ forwardRef<
       </button>
       <input
         {...props}
-        ref={ref}
+        ref={(node) => {
+          resetRef.current = node;
+          if (typeof ref === 'function') ref(node);
+          else if (ref) ref.current = node;
+        }}
         id={inputId}
         type="number"
         data-slot="number-input-control"

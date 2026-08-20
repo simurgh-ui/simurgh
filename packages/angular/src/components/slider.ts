@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-slider',
@@ -18,7 +19,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     (input)="update($event)"
   />`,
 })
-export class SliderComponent {
+export class SliderComponent extends FormResetBase {
   @Input() value = 0;
   @Input() min = 0;
   @Input() max = 100;
@@ -29,6 +30,13 @@ export class SliderComponent {
   @Input() required = false;
   @Input() invalid = false;
   @Output() valueChange = new EventEmitter<number>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   update(event: Event) {
     this.value = (event.target as HTMLInputElement).valueAsNumber;
     this.valueChange.emit(this.value);

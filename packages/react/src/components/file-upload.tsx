@@ -4,6 +4,7 @@ import {
   type InputHTMLAttributes,
   type ReactNode,
 } from 'react';
+import { useFormReset } from '../internal/forms.js';
 
 function acceptedFiles(files: File[], accept?: string) {
   if (!accept) return files;
@@ -42,6 +43,7 @@ export function FileUpload({
 }: FileUploadProps) {
   const id = props.id ?? `simurgh-file-${useId().replace(/:/g, '')}`;
   const [names, setNames] = useState<string[]>([]);
+  const control = useFormReset<HTMLInputElement>(() => setNames([]));
   const update = (files: File[]) => {
     if (disabled) return;
     const accepted = acceptedFiles(files, accept);
@@ -64,6 +66,7 @@ export function FileUpload({
       }}
     >
       <input
+        ref={control}
         {...props}
         id={id}
         type="file"

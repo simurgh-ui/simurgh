@@ -2,6 +2,7 @@ import { type Direction } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref, type PropType } from 'vue';
 import { Calendar } from './calendar.js';
 import { Popover, PopoverContent, PopoverTrigger } from './popover.js';
+import { useFormReset } from '../internal/forms.js';
 
 export const DatePicker = /* @__PURE__ */ defineComponent({
   name: 'SimurghDatePicker',
@@ -27,6 +28,8 @@ export const DatePicker = /* @__PURE__ */ defineComponent({
     const localValue = ref(props.defaultValue);
     const open = ref(false);
     const root = ref<HTMLElement | null>(null);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue ?? props.defaultValue;
     const selected = computed(() => props.modelValue ?? localValue.value);
     const displayValue = computed(() =>
       selected.value
@@ -46,6 +49,11 @@ export const DatePicker = /* @__PURE__ */ defineComponent({
           ?.focus(),
       );
     };
+    useFormReset(control, () => {
+      localValue.value = initialValue;
+      emit('update:modelValue', initialValue);
+      open.value = false;
+    });
     return () =>
       h('div', { ref: root, 'data-slot': 'date-picker' }, [
         h(
@@ -96,6 +104,7 @@ export const DatePicker = /* @__PURE__ */ defineComponent({
         ),
         props.name
           ? h('input', {
+              ref: control,
               type: 'hidden',
               name: props.name,
               value: selected.value,
@@ -104,6 +113,7 @@ export const DatePicker = /* @__PURE__ */ defineComponent({
           : null,
         props.required
           ? h('input', {
+              ref: control,
               tabindex: -1,
               'aria-hidden': 'true',
               required: true,

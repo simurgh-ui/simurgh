@@ -1,4 +1,5 @@
 import { forwardRef, useId, useState, type HTMLAttributes } from 'react';
+import { useFormReset } from '../internal/forms.js';
 
 export type RatingProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -39,6 +40,9 @@ export const Rating = /* @__PURE__ */ forwardRef<HTMLDivElement, RatingProps>(
       Math.max(0, Math.round(value ?? localValue)),
     );
     const generatedName = `simurgh-rating-${useId().replace(/:/g, '')}`;
+    const resetRef = useFormReset<HTMLInputElement>(() => {
+      if (value === undefined) setLocalValue(defaultValue);
+    });
     const groupName = name ?? generatedName;
     const commit = (next: number) => {
       if (value === undefined) setLocalValue(next);
@@ -58,6 +62,7 @@ export const Rating = /* @__PURE__ */ forwardRef<HTMLDivElement, RatingProps>(
           return (
             <label key={item} data-slot="rating-item">
               <input
+                ref={index === 0 ? resetRef : undefined}
                 type="radio"
                 data-slot="rating-control"
                 name={groupName}

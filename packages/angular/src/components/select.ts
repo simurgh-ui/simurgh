@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { compositeKeydown } from '../internal/composite-keydown.js';
 import { InternalIdService } from '../internal/id.js';
+import { FormResetBase } from '../internal/form-reset.js';
 
 export type SelectOption = { value: string; label: string; disabled?: boolean };
 
@@ -62,7 +63,7 @@ export type SelectOption = { value: string; label: string; disabled?: boolean };
       [disabled]="disabled"
     />`,
 })
-export class SelectComponent {
+export class SelectComponent extends FormResetBase {
   @Input() options: SelectOption[] = [];
   @Input() value = '';
   @Input() placeholder = 'Select…';
@@ -73,6 +74,14 @@ export class SelectComponent {
   @ViewChild('list') list?: ElementRef<HTMLElement>;
   readonly listId = inject(InternalIdService).next('select-list');
   open = false;
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.open = false;
+      this.valueChange.emit(initial);
+    };
+  }
   get label() {
     return (
       this.options.find((o) => o.value === this.value)?.label ??

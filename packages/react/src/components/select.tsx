@@ -6,6 +6,7 @@ import {
   onCompositeKeyDown,
 } from '../internal/floating.js';
 import { useOpen } from '../internal/open.js';
+import { useFormReset } from '../internal/forms.js';
 
 export type SelectOption = {
   value: string;
@@ -35,6 +36,10 @@ export function Select({
   const selected = value ?? local;
   const root = useOpen({});
   const [open, setOpen] = root;
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocal(defaultValue);
+    setOpen(false);
+  });
   const listId = `${useId()}-listbox`;
   const set = (next: string) => {
     if (value === undefined) setLocal(next);
@@ -80,10 +85,17 @@ export function Select({
         ))}
       </FloatingContent>
       {name && (
-        <input type="hidden" name={name} value={selected} disabled={disabled} />
+        <input
+          ref={resetRef}
+          type="hidden"
+          name={name}
+          value={selected}
+          disabled={disabled}
+        />
       )}
       {required && (
         <input
+          ref={resetRef}
           tabIndex={-1}
           aria-hidden="true"
           required

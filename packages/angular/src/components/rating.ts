@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { createId } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-rating',
@@ -33,7 +34,7 @@ import { createId } from '@simurgh-ui/core';
     }
   </div>`,
 })
-export class RatingComponent {
+export class RatingComponent extends FormResetBase {
   private count = 5;
   readonly generatedName = createId('rating');
   items = [1, 2, 3, 4, 5];
@@ -49,6 +50,13 @@ export class RatingComponent {
     this.items = Array.from({ length: this.count }, (_, index) => index + 1);
   }
   @Output() valueChange = new EventEmitter<number>();
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.valueChange.emit(initial);
+    };
+  }
   get groupName() {
     return this.name ?? this.generatedName;
   }

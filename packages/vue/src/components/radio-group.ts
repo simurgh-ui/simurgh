@@ -10,6 +10,7 @@ import {
   type PropType,
   type Ref,
 } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 const radioKey: InjectionKey<{
   value: Ref<string>;
@@ -31,6 +32,8 @@ export const RadioGroup = /* @__PURE__ */ defineComponent({
   emits: ['update:modelValue'],
   setup(props, { slots, attrs, emit }) {
     const local = ref(props.defaultValue);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue || props.defaultValue;
     const value = computed({
       get: () => props.modelValue || local.value,
       set: (next) => {
@@ -43,6 +46,10 @@ export const RadioGroup = /* @__PURE__ */ defineComponent({
       setValue: (next) => (value.value = next),
       disabled: props.disabled,
       direction: props.direction,
+    });
+    useFormReset(control, () => {
+      local.value = initialValue;
+      emit('update:modelValue', initialValue);
     });
     return () =>
       h(
@@ -76,6 +83,7 @@ export const RadioGroup = /* @__PURE__ */ defineComponent({
           slots.default?.(),
           props.name
             ? h('input', {
+                ref: control,
                 type: 'hidden',
                 name: props.name,
                 value: value.value,
@@ -83,6 +91,7 @@ export const RadioGroup = /* @__PURE__ */ defineComponent({
             : null,
           props.required
             ? h('input', {
+                ref: control,
                 'aria-hidden': 'true',
                 tabindex: -1,
                 required: true,

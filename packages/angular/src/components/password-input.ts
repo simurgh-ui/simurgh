@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { createId } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-password-input',
@@ -35,7 +36,7 @@ import { createId } from '@simurgh-ui/core';
     </button>
   </div>`,
 })
-export class PasswordInputComponent {
+export class PasswordInputComponent extends FormResetBase {
   @Input() inputId = createId('password');
   @Input('aria-label') ariaLabel = 'Password';
   @Input() value = '';
@@ -49,6 +50,14 @@ export class PasswordInputComponent {
   @Input() concealLabel = 'Hide password';
   @Output() valueChange = new EventEmitter<string>();
   revealed = false;
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      this.revealed = false;
+      this.valueChange.emit(initial);
+    };
+  }
   onInput(event: Event) {
     this.value = (event.currentTarget as HTMLInputElement).value;
     this.valueChange.emit(this.value);

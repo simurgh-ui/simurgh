@@ -1,4 +1,5 @@
 import { computed, defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const Slider = /* @__PURE__ */ defineComponent({
   name: 'SimurghSlider',
@@ -14,9 +15,16 @@ export const Slider = /* @__PURE__ */ defineComponent({
   emits: ['update:modelValue', 'change'],
   setup(props, { attrs, emit }) {
     const local = ref(props.defaultValue);
+    const control = ref<HTMLInputElement | null>(null);
     const value = computed(() => props.modelValue ?? local.value);
+    const initial = value.value;
+    useFormReset(control, () => {
+      local.value = initial;
+      emit('update:modelValue', initial);
+    });
     return () =>
       h('input', {
+        ref: control,
         ...attrs,
         type: 'range',
         value: value.value,

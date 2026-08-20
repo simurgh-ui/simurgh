@@ -1,5 +1,6 @@
 import { defineComponent, h, nextTick, ref, useId, type PropType } from 'vue';
 import { compositeKeydown } from '../internal/composite-keydown.js';
+import { useFormReset } from '../internal/forms.js';
 
 export type SelectOption = {
   value: string;
@@ -23,6 +24,8 @@ export const Select = /* @__PURE__ */ defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const open = ref(false);
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue;
     const listId = `select-list-${useId().replace(/:/g, '')}`;
     const show = async () => {
       open.value = true;
@@ -32,6 +35,10 @@ export const Select = /* @__PURE__ */ defineComponent({
         ?.querySelector<HTMLElement>('[role=option]:not([aria-disabled=true])')
         ?.focus();
     };
+    useFormReset(control, () => {
+      emit('update:modelValue', initialValue);
+      open.value = false;
+    });
     return () =>
       h('div', { 'data-slot': 'select' }, [
         h(
@@ -89,6 +96,7 @@ export const Select = /* @__PURE__ */ defineComponent({
           : null,
         props.name
           ? h('input', {
+              ref: control,
               type: 'hidden',
               name: props.name,
               value: props.modelValue,

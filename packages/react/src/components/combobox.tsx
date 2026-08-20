@@ -1,4 +1,5 @@
 import { useId, useState, type ReactNode } from 'react';
+import { useFormReset } from '../internal/forms.js';
 import type { SelectOption } from './select.js';
 export type { SelectOption } from './select.js';
 
@@ -31,6 +32,14 @@ export function Combobox({
   const [query, setQuery] = useState(selectedOption?.label ?? '');
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
+  const control = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocal(defaultValue);
+    setQuery(
+      options.find((option) => option.value === defaultValue)?.label ?? '',
+    );
+    setOpen(false);
+    setActive(-1);
+  });
   const listId = `${useId()}-combobox`;
   const filtered = options.filter((option) =>
     option.label.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
@@ -62,6 +71,7 @@ export function Combobox({
   return (
     <div>
       <input
+        ref={control}
         role="combobox"
         aria-label={placeholder}
         aria-autocomplete="list"
@@ -84,7 +94,11 @@ export function Combobox({
             event.preventDefault();
             setOpen(true);
             move(event.key);
-          } else if (event.key === 'Enter' && active >= 0) {
+          } else if (
+            event.key === 'Enter' &&
+            active >= 0 &&
+            !event.nativeEvent.isComposing
+          ) {
             event.preventDefault();
             const option = filtered[active];
             if (option) choose(option);

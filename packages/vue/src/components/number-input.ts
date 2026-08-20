@@ -1,5 +1,6 @@
 import { createId } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const NumberInput = /* @__PURE__ */ defineComponent({
   name: 'SimurghNumberInput',
@@ -19,6 +20,8 @@ export const NumberInput = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, emit }) {
     const localValue = ref(props.defaultValue);
     const id = (attrs.id as string | undefined) ?? createId('number');
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue ?? props.defaultValue;
     const current = computed(() => props.modelValue ?? localValue.value);
     const safeStep = computed(() =>
       Number.isFinite(props.step) && props.step > 0 ? props.step : 1,
@@ -31,6 +34,10 @@ export const NumberInput = /* @__PURE__ */ defineComponent({
       if (props.modelValue === undefined) localValue.value = normalized;
       emit('update:modelValue', normalized);
     };
+    useFormReset(control, () => {
+      localValue.value = initialValue;
+      emit('update:modelValue', initialValue);
+    });
     return () =>
       h(
         'div',
@@ -56,6 +63,7 @@ export const NumberInput = /* @__PURE__ */ defineComponent({
             '−',
           ),
           h('input', {
+            ref: control,
             ...attrs,
             id,
             type: 'number',

@@ -167,6 +167,18 @@ export function formValue(value: string, checked = true): string | null {
   return checked ? value : null;
 }
 
+export function listenFormReset(
+  control: Element,
+  reset: () => void,
+): () => void {
+  const form =
+    (control as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)
+      .form ?? control.closest('form');
+  if (!form) return () => undefined;
+  form.addEventListener('reset', reset);
+  return () => form.removeEventListener('reset', reset);
+}
+
 export const isBrowser = typeof document !== 'undefined';
 
 export type CalendarDay = {

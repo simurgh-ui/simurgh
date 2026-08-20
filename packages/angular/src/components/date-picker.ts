@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { PopoverComponent } from './popover.js';
 import { calendarToday } from '@simurgh-ui/core';
+import { FormResetBase } from '../internal/form-reset.js';
 
 @Component({
   selector: 'simurgh-date-picker',
@@ -52,7 +53,7 @@ import { calendarToday } from '@simurgh-ui/core';
     />
   </div>`,
 })
-export class DatePickerComponent {
+export class DatePickerComponent extends FormResetBase {
   @Input() value = '';
   @Input() month = calendarToday().slice(0, 7);
   @Input() locale = 'en';
@@ -69,6 +70,16 @@ export class DatePickerComponent {
   @Output() valueChange = new EventEmitter<string>();
   @Output() monthChange = new EventEmitter<string>();
   @ViewChild(PopoverComponent) popover?: PopoverComponent;
+
+  protected createFormReset() {
+    const initial = this.value;
+    return () => {
+      this.value = initial;
+      if (initial) this.month = initial.slice(0, 7);
+      this.valueChange.emit(initial);
+      this.popover?.close();
+    };
+  }
 
   get displayValue() {
     return this.value

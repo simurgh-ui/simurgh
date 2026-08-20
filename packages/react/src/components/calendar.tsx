@@ -6,6 +6,7 @@ import {
   type Direction,
 } from '@simurgh-ui/core';
 import { useId, useMemo, useRef, useState } from 'react';
+import { useFormReset } from '../internal/forms.js';
 
 export type CalendarProps = {
   value?: string;
@@ -50,6 +51,11 @@ export function Calendar({
   const days = calendarMonthDays(displayedMonth, firstDayOfWeek);
   const root = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  const resetRef = useFormReset<HTMLInputElement>(() => {
+    if (value === undefined) setLocalValue(defaultValue);
+    if (month === undefined)
+      setLocalMonth(defaultMonth ?? (defaultValue || today).slice(0, 7));
+  });
   const disabled = new Set(disabledDates);
   const isDisabled = (date: string) =>
     (min !== undefined && date < min) ||
@@ -186,7 +192,9 @@ export function Calendar({
           ))}
         </tbody>
       </table>
-      {name && <input type="hidden" name={name} value={selected} />}
+      {name && (
+        <input ref={resetRef} type="hidden" name={name} value={selected} />
+      )}
     </div>
   );
 }

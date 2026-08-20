@@ -1,5 +1,6 @@
 import { createId } from '@simurgh-ui/core';
 import { computed, defineComponent, h, ref, type PropType } from 'vue';
+import { useFormReset } from '../internal/forms.js';
 
 export const Rating = /* @__PURE__ */ defineComponent({
   name: 'SimurghRating',
@@ -20,6 +21,8 @@ export const Rating = /* @__PURE__ */ defineComponent({
   setup(props, { attrs, emit }) {
     const localValue = ref(props.defaultValue);
     const generatedName = createId('rating');
+    const control = ref<HTMLInputElement | null>(null);
+    const initialValue = props.modelValue ?? props.defaultValue;
     const count = computed(() =>
       Number.isFinite(props.max)
         ? Math.min(100, Math.max(1, Math.floor(props.max)))
@@ -35,6 +38,10 @@ export const Rating = /* @__PURE__ */ defineComponent({
       if (props.modelValue === undefined) localValue.value = value;
       emit('update:modelValue', value);
     };
+    useFormReset(control, () => {
+      localValue.value = initialValue;
+      emit('update:modelValue', initialValue);
+    });
     return () =>
       h(
         'div',
@@ -48,6 +55,7 @@ export const Rating = /* @__PURE__ */ defineComponent({
           const item = index + 1;
           return h('label', { 'data-slot': 'rating-item' }, [
             h('input', {
+              ...(index === 0 ? { ref: control } : {}),
               type: 'radio',
               'data-slot': 'rating-control',
               name: props.name ?? generatedName,
