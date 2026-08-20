@@ -553,7 +553,7 @@ roadmap and are not duplicated here.
 
 ### Phase 2: harden behavior, accessibility, and compatibility
 
-- [ ] Define shared, data-driven behavioral contracts and execute applicable contracts across
+- [x] Define shared, data-driven behavioral contracts and execute applicable contracts across
       React, Vue, and Angular instead of relying only on equal test counts.
 - [ ] Expand overlay coverage for initial focus, trapping, dismissal, restoration, nesting, portals,
       scroll locking, inert backgrounds, and interrupted unmounts.
