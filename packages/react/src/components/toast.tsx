@@ -50,6 +50,7 @@ export function ToastViewport(props: HTMLAttributes<HTMLDivElement>) {
     <div
       {...props}
       className={props.className ?? 'simurgh-toast-region'}
+      role="region"
       aria-label="Notifications"
     >
       {toasts.map((toast) => (

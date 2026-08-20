@@ -25,6 +25,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      testIgnore: /mobile-accessibility/,
       use: {
         ...devices['Desktop Chrome'],
         launchOptions:
@@ -33,7 +34,32 @@ export default defineConfig({
             : {},
       },
     },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    {
+      name: 'firefox',
+      testIgnore: /mobile-accessibility/,
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      testIgnore: /mobile-accessibility/,
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'mobile-android',
+      testMatch: /mobile-accessibility/,
+      use: {
+        ...devices['Pixel 7'],
+        reducedMotion: 'reduce',
+        launchOptions:
+          localChrome && existsSync(localChrome)
+            ? { executablePath: localChrome }
+            : {},
+      },
+    },
+    {
+      name: 'mobile-ios',
+      testMatch: /mobile-accessibility/,
+      use: { ...devices['iPhone 15'], reducedMotion: 'reduce' },
+    },
   ],
 });

@@ -8,6 +8,11 @@
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."
       },
       {
+        "changeset": "kind-toast-regions",
+        "level": "patch",
+        "summary": "Give Toast viewports a named region role so their accessible label is valid while individual Toast\nstatus messages continue to announce without moving focus."
+      },
+      {
         "changeset": "quiet-modals-isolate",
         "level": "patch",
         "summary": "Lock document scrolling and make background content inert while a Dialog is open, with nesting-safe\ncleanup when dialogs close or are interrupted by adapter unmounts."
@@ -28,6 +33,11 @@
         "changeset": "clean-package-metadata",
         "level": "patch",
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "kind-toast-regions",
+        "level": "patch",
+        "summary": "Give Toast viewports a named region role so their accessible label is valid while individual Toast\nstatus messages continue to announce without moving focus."
       },
       {
         "changeset": "lean-tarballs",
@@ -93,6 +103,11 @@
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."
       },
       {
+        "changeset": "kind-toast-regions",
+        "level": "patch",
+        "summary": "Give Toast viewports a named region role so their accessible label is valid while individual Toast\nstatus messages continue to announce without moving focus."
+      },
+      {
         "changeset": "quiet-modals-isolate",
         "level": "patch",
         "summary": "Lock document scrolling and make background content inert while a Dialog is open, with nesting-safe\ncleanup when dialogs close or are interrupted by adapter unmounts."
@@ -132,6 +147,11 @@
         "changeset": "clean-package-metadata",
         "level": "patch",
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "kind-toast-regions",
+        "level": "patch",
+        "summary": "Give Toast viewports a named region role so their accessible label is valid while individual Toast\nstatus messages continue to announce without moving focus."
       },
       {
         "changeset": "quiet-modals-isolate",

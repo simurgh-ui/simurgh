@@ -56,7 +56,11 @@ export const ToastViewport = /* @__PURE__ */ defineComponent({
     return () =>
       h(
         'div',
-        { class: 'simurgh-toast-region', 'aria-label': 'Notifications' },
+        {
+          class: 'simurgh-toast-region',
+          role: 'region',
+          'aria-label': 'Notifications',
+        },
         context.messages.value.map((message) =>
           h('div', { role: 'status', class: 'simurgh-content simurgh-toast' }, [
             h('strong', message.title),

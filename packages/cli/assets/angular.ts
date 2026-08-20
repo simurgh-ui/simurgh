@@ -3868,7 +3868,11 @@ export type ToastMessage = { id: string; title: string; description?: string };
   selector: 'simurgh-toast-viewport',
   standalone: true,
   imports: [CommonModule],
-  template: `<div class="simurgh-toast-region" aria-label="Notifications">
+  template: `<div
+    class="simurgh-toast-region"
+    role="region"
+    aria-label="Notifications"
+  >
     <article
       *ngFor="let item of messages()"
       role="status"

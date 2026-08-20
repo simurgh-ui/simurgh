@@ -1,18 +1,39 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import test from 'node:test';
 import { verifyPublishedBeta } from './verify-published-beta.mjs';
 
-const versions = {
-  angular: '0.3.2-beta.0',
-  cli: '0.4.1-beta.0',
-  core: '0.3.2-beta.0',
-  icons: '0.1.2-beta.0',
-  motion: '0.1.3-beta.0',
-  react: '0.3.2-beta.0',
-  registry: '0.3.2-beta.0',
-  styles: '0.2.2-beta.0',
-  vue: '0.3.2-beta.0',
-};
+const packageDirectories = [
+  'angular',
+  'cli',
+  'core',
+  'icons',
+  'motion',
+  'react',
+  'registry',
+  'styles',
+  'vue',
+];
+const versions = Object.fromEntries(
+  await Promise.all(
+    packageDirectories.map(async (directory) => [
+      directory,
+      JSON.parse(
+        await readFile(
+          resolve(
+            import.meta.dirname,
+            '..',
+            'packages',
+            directory,
+            'package.json',
+          ),
+          'utf8',
+        ),
+      ).version,
+    ]),
+  ),
+);
 
 function registryFetch({ missingProvenance = false } = {}) {
   return async (url) => {

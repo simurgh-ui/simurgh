@@ -442,6 +442,7 @@ codetabs
 codex
 coherence
 cohort
+cohorts
 collapse
 collapsed
 collapses
@@ -472,6 +473,7 @@ commands
 commit
 commitment
 commits
+committing
 common
 commonly
 commons
@@ -1197,6 +1199,7 @@ ideas
 identical
 identifiable
 identified
+identifiers
 identify
 identity
 ids
@@ -1234,6 +1237,7 @@ included
 includes
 including
 incompatible
+incomplete
 inconsistent
 increase
 increasing
@@ -1331,6 +1335,7 @@ javascript
 join
 joins
 journey
+json
 jump
 jumps
 kbd
@@ -1939,6 +1944,7 @@ proxy
 public
 public-api
 publish
+publishable
 published
 pull
 pulsing
@@ -1965,6 +1971,7 @@ range
 ranges
 rare
 raster
+rates
 rather
 rating
 ratio
@@ -2033,6 +2040,7 @@ registry's
 regression-tested
 regressions
 reinforce
+rejects
 related
 relationship
 relationships

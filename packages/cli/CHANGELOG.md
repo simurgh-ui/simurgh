@@ -1,5 +1,12 @@
 # @simurgh-ui/cli
 
+## 0.4.1-beta.1
+
+### Patch Changes
+
+- Give Toast viewports a named region role so their accessible label is valid while individual Toast
+  status messages continue to announce without moving focus.
+
 ## 0.4.1-beta.0
 
 ### Patch Changes

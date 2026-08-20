@@ -1,5 +1,12 @@
 # @simurgh-ui/angular
 
+## 0.3.2-beta.1
+
+### Patch Changes
+
+- Give Toast viewports a named region role so their accessible label is valid while individual Toast
+  status messages continue to announce without moving focus.
+
 ## 0.3.2-beta.0
 
 ### Patch Changes
