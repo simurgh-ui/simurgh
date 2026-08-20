@@ -1,5 +1,23 @@
 # @simurgh-ui/vue
 
+## 0.3.2-beta.0
+
+### Patch Changes
+
+- df95f0a: Declare the MIT license and complete the public repository metadata in every published package.
+- 81b0d91: Lock document scrolling and make background content inert while a Dialog is open, with nesting-safe
+  cleanup when dialogs close or are interrupted by adapter unmounts.
+- 3c9b7f5: Add typeahead navigation to composite widgets, skip disabled Tabs triggers consistently, and keep
+  Vue Tabs navigation reactive when orientation or direction changes.
+- ffa7b93: Restore each form-capable component's initial value when its owning form resets, preserve native serialization and validation behavior, and avoid committing IME composition keystrokes in composite inputs.
+- Updated dependencies [df95f0a]
+- Updated dependencies [7b4848d]
+- Updated dependencies [81b0d91]
+- Updated dependencies [3c9b7f5]
+- Updated dependencies [ffa7b93]
+  - @simurgh-ui/core@0.3.2-beta.0
+  - @simurgh-ui/motion@0.1.3-beta.0
+
 ## 0.3.1
 
 ### Patch Changes

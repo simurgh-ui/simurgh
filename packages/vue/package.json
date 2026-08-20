@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/vue",
-  "version": "0.3.1",
+  "version": "0.3.2-beta.0",
   "description": "Accessible Simurgh UI components for Vue.",
   "license": "MIT",
   "repository": {

@@ -1,6 +1,6 @@
 # @simurgh-ui/motion public API
 
-Version snapshot: 0.1.2
+Version snapshot: 0.1.3-beta.0
 
 ## Export map
 

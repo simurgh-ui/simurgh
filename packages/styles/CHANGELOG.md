@@ -1,5 +1,11 @@
 # @simurgh-ui/styles
 
+## 0.2.2-beta.0
+
+### Patch Changes
+
+- df95f0a: Declare the MIT license and complete the public repository metadata in every published package.
+
 ## 0.2.1
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @simurgh-ui/cli
 
+## 0.4.1-beta.0
+
+### Patch Changes
+
+- df95f0a: Declare the MIT license and complete the public repository metadata in every published package.
+- 7b4848d: Exclude source maps from published tarballs, synchronize CLI-owned adapter templates, and enforce packed-package installation checks.
+- Updated dependencies [df95f0a]
+- Updated dependencies [7b4848d]
+  - @simurgh-ui/registry@0.3.2-beta.0
+
 ## 0.4.0
 
 ### Minor Changes

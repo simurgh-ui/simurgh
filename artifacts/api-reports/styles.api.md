@@ -3,7 +3,7 @@
 ```json
 {
   "name": "@simurgh-ui/styles",
-  "version": "0.2.1",
+  "version": "0.2.2-beta.0",
   "exports": {
     "./tokens.css": "./tokens.css",
     "./recipes.css": "./recipes.css",

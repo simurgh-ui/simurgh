@@ -1,5 +1,17 @@
 # @simurgh-ui/core
 
+## 0.3.2-beta.0
+
+### Patch Changes
+
+- df95f0a: Declare the MIT license and complete the public repository metadata in every published package.
+- 7b4848d: Exclude source maps from published tarballs, synchronize CLI-owned adapter templates, and enforce packed-package installation checks.
+- 81b0d91: Lock document scrolling and make background content inert while a Dialog is open, with nesting-safe
+  cleanup when dialogs close or are interrupted by adapter unmounts.
+- 3c9b7f5: Add typeahead navigation to composite widgets, skip disabled Tabs triggers consistently, and keep
+  Vue Tabs navigation reactive when orientation or direction changes.
+- ffa7b93: Restore each form-capable component's initial value when its owning form resets, preserve native serialization and validation behavior, and avoid committing IME composition keystrokes in composite inputs.
+
 ## 0.3.1
 
 ### Patch Changes

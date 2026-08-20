@@ -1,0 +1,23 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@simurgh-ui/angular": "0.3.1",
+    "@simurgh-ui/cli": "0.4.0",
+    "@simurgh-ui/core": "0.3.1",
+    "@simurgh-ui/icons": "0.1.1",
+    "@simurgh-ui/motion": "0.1.2",
+    "@simurgh-ui/react": "0.3.1",
+    "@simurgh-ui/registry": "0.3.1",
+    "@simurgh-ui/styles": "0.2.1",
+    "@simurgh-ui/vue": "0.3.1"
+  },
+  "changesets": [
+    "calm-react-modules",
+    "clean-package-metadata",
+    "lean-tarballs",
+    "quiet-modals-isolate",
+    "smart-composites-navigate",
+    "smart-forms-reset"
+  ]
+}
