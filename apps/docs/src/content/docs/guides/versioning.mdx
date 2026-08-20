@@ -45,6 +45,50 @@ or usage to preserve behavior. This includes:
 Bug fixes that restore an already documented accessibility contract may alter observable behavior.
 Release notes should still call out that change even when it is not classified as a breaking API.
 
+## Deprecation and breaking-change policy
+
+After `1.0.0`, a documented public API must be deprecated before removal. The deprecation remains
+available for at least **90 calendar days** and **one published minor release**, whichever is
+longer. Deprecation notices identify the replacement and removal target in types, documentation,
+and release notes. Removal or another incompatible stable-API change requires a major release.
+
+Before `1.0.0`, an incompatible public-API change requires a minor release, a Changeset marked as
+breaking, release-note migration instructions, and an API-report review. Patch releases must remain
+compatible. The notice window does not apply to experimental surfaces. A confirmed security issue,
+legal requirement, or severe accessibility defect may shorten a window when the release notes name
+the exception, impact, and safest available migration.
+
+## Support policy
+
+During pre-release development, only the latest `0.x` minor line receives fixes. After `1.0.0`, the
+latest two minor lines receive correctness and accessibility fixes. Security fixes cover those lines
+and any stable minor released in the previous six months. Browser and framework support follows the
+tested [compatibility matrix](/guides/compatibility/); removing a supported major is a breaking
+change. Older releases remain available but are unsupported.
+
+The machine-readable source for these windows is
+[`stability-policy.json`](https://github.com/simurgh-ui/simurgh/blob/main/stability-policy.json),
+which release checks validate against this guide.
+
+## Experimental chart and motion surfaces
+
+Experimental APIs may change or be removed in a minor release without the stable deprecation
+window. They must still receive a Changeset and migration note; a patch release cannot break them.
+The explicit experimental package and import namespaces are:
+
+- `@simurgh-ui/motion`
+- `@simurgh-ui/motion/*`
+- `@simurgh-ui/core/charts`
+- `@simurgh-ui/core/chart-*`
+- `@simurgh-ui/react/chart*`
+- `@simurgh-ui/vue/chart*`
+- `@simurgh-ui/angular/chart*`
+
+The wildcard notation describes all published subpaths beginning with that prefix, including
+framework chart components, interactions, streaming, Canvas, and chart-motion adapters. A chart or
+motion API becomes stable only when release notes explicitly graduate it and move it to a stable
+surface; documentation quality or long availability alone does not imply graduation.
+
 ## Package-consumer policy
 
 Package consumers adopt changes when they update their lockfile. Breaking release notes must include

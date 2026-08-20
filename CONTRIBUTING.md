@@ -38,6 +38,10 @@ documentation-only changes, and repository maintenance do not require a package 
 they alter published files. After Changesets are merged to `main`, automation collects them into a
 release pull request and generates each affected package's `CHANGELOG.md` entry.
 
+Public API changes must follow the deprecation, support, breaking-change, and experimental-surface
+rules in the [versioning guide](apps/docs/src/content/docs/guides/versioning.mdx). Do not bypass its
+minimum notice window or place an unstable chart or motion API on a stable surface.
+
 Keep pull requests scoped, describe the consumer-visible result, and complete the repository pull
 request checklist. By contributing, you agree that your contribution is provided under the MIT
 License in `LICENSE`.

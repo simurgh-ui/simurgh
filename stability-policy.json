@@ -1,0 +1,23 @@
+{
+  "$schema": "./schemas/stability-policy.schema.json",
+  "version": 1,
+  "publicApi": {
+    "minimumDeprecationNoticeDays": 90,
+    "minimumDeprecationMinorReleases": 1,
+    "supportedStableMinorLines": 2,
+    "securitySupportMonths": 6
+  },
+  "prerelease": {
+    "supportedMinorLines": 1,
+    "breakingReleaseLevel": "minor"
+  },
+  "experimentalSurfaces": [
+    "@simurgh-ui/motion",
+    "@simurgh-ui/motion/*",
+    "@simurgh-ui/core/charts",
+    "@simurgh-ui/core/chart-*",
+    "@simurgh-ui/react/chart*",
+    "@simurgh-ui/vue/chart*",
+    "@simurgh-ui/angular/chart*"
+  ]
+}
