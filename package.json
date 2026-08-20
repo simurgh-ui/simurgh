@@ -23,13 +23,14 @@
     "test:e2e": "playwright test",
     "test:quick-starts": "node scripts/check-package-quick-starts.mjs",
     "test:references": "node scripts/check-reference-apps.mjs",
+    "sync:starter-versions": "node scripts/sync-reference-app-versions.mjs --write",
     "test:release-notes": "node scripts/check-release-notes.mjs",
     "test:tarballs": "node scripts/check-packed-packages.mjs",
     "test:api-reports": "node scripts/check-api-reports.mjs",
     "test:registry-versions": "node scripts/check-registry-versions.mjs",
     "test:published-beta": "node scripts/verify-published-beta.mjs",
-    "test:release": "node scripts/check-governance.mjs && node scripts/check-package-metadata.mjs && node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs && node scripts/check-api-reports.mjs && node scripts/check-stability-policy.mjs && node scripts/check-icon-evidence-policy.mjs && node --test scripts/aggregate-icon-study.test.mjs scripts/aggregate-release-candidate-study.test.mjs scripts/check-manual-accessibility-evidence.test.mjs scripts/check-registry-versions.test.mjs scripts/verify-published-beta.test.mjs",
-    "version-packages": "changeset version"
+    "test:release": "node scripts/check-governance.mjs && node scripts/check-package-metadata.mjs && node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs && node scripts/check-api-reports.mjs && node scripts/check-stability-policy.mjs && node scripts/check-icon-evidence-policy.mjs && node scripts/sync-reference-app-versions.mjs && node --test scripts/aggregate-icon-study.test.mjs scripts/aggregate-release-candidate-study.test.mjs scripts/check-manual-accessibility-evidence.test.mjs scripts/check-registry-versions.test.mjs scripts/verify-published-beta.test.mjs",
+    "version-packages": "changeset version && node scripts/sync-reference-app-versions.mjs --write && node scripts/check-api-reports.mjs --update"
   },
   "devDependencies": {
     "@angular/compiler-cli": "20.3.2",
