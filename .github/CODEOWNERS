@@ -1,0 +1,8 @@
+# Default review owner for repository changes.
+* @alighafoorzade
+
+# Require the maintainer on release, security, workflow, and package-boundary changes.
+/.github/ @alighafoorzade
+/.changeset/ @alighafoorzade
+/packages/ @alighafoorzade
+/SECURITY.md @alighafoorzade

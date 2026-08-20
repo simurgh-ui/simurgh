@@ -529,7 +529,7 @@ roadmap and are not duplicated here.
       filing for every failure.
 - [x] Decide and document whether packages use fixed or independent versioning; enforce compatible
       CLI, registry, styles, adapter, icons, and motion versions with a generated release check.
-- [ ] Add LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, and CODEOWNERS policies suitable for a
+- [x] Add LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, and CODEOWNERS policies suitable for a
       public component library.
 - [ ] Add license, repository, homepage, bugs, engines, funding where applicable, and publish
       configuration metadata to every published package.

@@ -39,5 +39,5 @@ they alter published files. After Changesets are merged to `main`, automation co
 release pull request and generates each affected package's `CHANGELOG.md` entry.
 
 Keep pull requests scoped, describe the consumer-visible result, and complete the repository pull
-request checklist. By contributing, you agree that your contribution is provided under the
-repository's license once that license is adopted.
+request checklist. By contributing, you agree that your contribution is provided under the MIT
+License in `LICENSE`.
