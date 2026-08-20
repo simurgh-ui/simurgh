@@ -1,18 +1,5 @@
 # @simurgh-ui/react
 
-## 0.1.2
-
-### Patch Changes
-
-- 02833ca: Move Tabs, Accordion, Collapsible, Disclosure, Dialog, Sheet, Drawer, and Alert Dialog into genuine
-  component source modules, and extract shared controlled-open and Dialog context utilities while
-  preserving root and subpath exports, behavior, and public types.
-- bf73705: Add repository, issue, homepage, and public-publish metadata to package manifests, declare the CLI's
-  verified Node.js runtime, and strengthen registry and adapter test discovery before publication.
-- Updated dependencies [bf73705]
-  - @simurgh-ui/core@0.1.2
-  - @simurgh-ui/motion@0.1.2
-
 ## 0.3.1
 
 ### Patch Changes

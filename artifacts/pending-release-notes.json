@@ -83,6 +83,11 @@
     ],
     "@simurgh-ui/react": [
       {
+        "changeset": "calm-react-modules",
+        "level": "patch",
+        "summary": "Move composite and overlay components into focused source modules and extract shared controlled-open\nand Dialog context utilities while preserving public exports, behavior, and types."
+      },
+      {
         "changeset": "clean-package-metadata",
         "level": "patch",
         "summary": "Declare the MIT license and complete the public repository metadata in every published package."

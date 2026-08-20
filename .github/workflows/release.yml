@@ -38,6 +38,7 @@ jobs:
       - run: pnpm test:quick-starts
       - run: pnpm test:tarballs
       - run: pnpm bundle:size
+      - run: node scripts/check-registry-versions.mjs --publish
       - run: pnpm release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

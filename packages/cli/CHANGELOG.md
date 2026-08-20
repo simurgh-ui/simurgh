@@ -8,13 +8,6 @@
   index containing only the installed component imports. Preserve customized recipe files unless
   `--overwrite` is used.
 
-### Patch Changes
-
-- bf73705: Add repository, issue, homepage, and public-publish metadata to package manifests, declare the CLI's
-  verified Node.js runtime, and strengthen registry and adapter test discovery before publication.
-- Updated dependencies [bf73705]
-  - @simurgh-ui/registry@0.1.2
-
 ## 0.3.2
 
 ### Patch Changes

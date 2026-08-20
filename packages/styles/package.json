@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/styles",
-  "version": "0.1.2",
+  "version": "0.2.1",
   "description": "Design tokens and optional component recipes for Simurgh UI.",
   "license": "MIT",
   "repository": {

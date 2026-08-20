@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/core",
-  "version": "0.1.2",
+  "version": "0.3.1",
   "description": "Framework-neutral state and interaction utilities for Simurgh UI.",
   "license": "MIT",
   "repository": {
