@@ -1,8 +1,5 @@
-import {
-  useState,
-  type ButtonHTMLAttributes,
-  type PropsWithChildren,
-} from 'react';
+import { type ButtonHTMLAttributes, type PropsWithChildren } from 'react';
+import { useControlledState } from './controlled-state.js';
 
 export type CheckProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -26,12 +23,11 @@ export function CheckControl({
   children,
   ...props
 }: PropsWithChildren<CheckProps & { role: 'checkbox' | 'switch' }>) {
-  const [local, setLocal] = useState(defaultChecked ?? false);
-  const active = checked ?? local;
-  const set = (next: boolean) => {
-    if (checked === undefined) setLocal(next);
-    onCheckedChange?.(next);
-  };
+  const [active, set] = useControlledState({
+    value: checked,
+    defaultValue: defaultChecked ?? false,
+    onChange: onCheckedChange,
+  });
   return (
     <>
       <button

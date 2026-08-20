@@ -1,12 +1,13 @@
-import { nextIndex, type Direction } from '@simurgh-ui/core';
+import { type Direction } from '@simurgh-ui/core';
 import {
   createContext,
   useContext,
-  useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
 } from 'react';
+import { moveCompositeFocus } from '../internal/composite.js';
+import { useControlledState } from '../internal/controlled-state.js';
 
 type RadioContextValue = {
   value: string;
@@ -40,12 +41,11 @@ export function RadioGroup({
     direction?: Direction;
   }
 >) {
-  const [local, setLocal] = useState(defaultValue);
-  const selected = value ?? local;
-  const setValue = (next: string) => {
-    if (value === undefined) setLocal(next);
-    onValueChange?.(next);
-  };
+  const [selected, setValue] = useControlledState<string>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   return (
     <RadioContext.Provider
       value={{ value: selected, setValue, name, required, disabled, direction }}
@@ -55,20 +55,10 @@ export function RadioGroup({
         role="radiogroup"
         onKeyDown={(event) => {
           props.onKeyDown?.(event);
-          const items = Array.from(
-            event.currentTarget.querySelectorAll<HTMLElement>(
-              '[role=radio]:not([aria-disabled=true])',
-            ),
-          );
-          const current = items.indexOf(document.activeElement as HTMLElement);
-          const target = nextIndex(current, items.length, event.key, {
+          moveCompositeFocus(event, '[role=radio]:not([aria-disabled=true])', {
             direction,
+            activate: true,
           });
-          if (target !== current) {
-            event.preventDefault();
-            items[target]?.focus();
-            items[target]?.click();
-          }
         }}
       >
         {children}

@@ -1,4 +1,6 @@
-import { forwardRef, useId, useState, type InputHTMLAttributes } from 'react';
+import { forwardRef, type InputHTMLAttributes } from 'react';
+import { useControlledState } from '../internal/controlled-state.js';
+import { useComponentId } from '../internal/ids.js';
 
 type NumberInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -33,16 +35,18 @@ export const NumberInput = /* @__PURE__ */ forwardRef<
   },
   ref,
 ) {
-  const [localValue, setLocalValue] = useState(defaultValue);
-  const current = value ?? localValue;
+  const [current, setValue] = useControlledState<number>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   const safeStep = Number.isFinite(step) && step > 0 ? step : 1;
-  const inputId = props.id ?? `simurgh-number-${useId().replace(/:/g, '')}`;
+  const inputId = useComponentId('number', props.id);
   const normalize = (next: number) =>
     Math.min(max ?? Infinity, Math.max(min ?? -Infinity, next));
   const commit = (next: number) => {
     const normalized = normalize(next);
-    if (value === undefined) setLocalValue(normalized);
-    onValueChange?.(normalized);
+    setValue(normalized);
   };
   return (
     <div

@@ -4,6 +4,7 @@ import {
   type FormHTMLAttributes,
   type HTMLAttributes,
 } from 'react';
+import { queueInvalidFocus } from '../internal/forms.js';
 
 export const Form = /* @__PURE__ */ forwardRef<
   HTMLFormElement,
@@ -19,12 +20,7 @@ export const Form = /* @__PURE__ */ forwardRef<
         onInvalid?.(event);
         if (focusQueued.current || !focusInvalid || event.defaultPrevented)
           return;
-        focusQueued.current = true;
-        const first = event.target as HTMLElement;
-        requestAnimationFrame(() => {
-          first.focus();
-          focusQueued.current = false;
-        });
+        queueInvalidFocus(event.target, focusQueued);
       }}
     />
   );

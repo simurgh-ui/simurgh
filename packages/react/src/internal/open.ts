@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useControlledState } from './controlled-state.js';
 
 export type OpenProps = {
   open?: boolean;
@@ -14,13 +14,11 @@ export type OverlayContextValue = {
 };
 
 export function useOpen(props: OpenProps) {
-  const [local, setLocal] = useState(props.defaultOpen ?? false);
-  const open = props.open ?? local;
-  const setOpen = (next: boolean) => {
-    if (props.open === undefined) setLocal(next);
-    props.onOpenChange?.(next);
-  };
-  return [open, setOpen] as const;
+  return useControlledState({
+    value: props.open,
+    defaultValue: props.defaultOpen ?? false,
+    onChange: props.onOpenChange,
+  });
 }
 
 export function useBrowser() {

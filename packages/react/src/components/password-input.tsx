@@ -1,4 +1,5 @@
-import { forwardRef, useId, useState, type InputHTMLAttributes } from 'react';
+import { forwardRef, useState, type InputHTMLAttributes } from 'react';
+import { useComponentId } from '../internal/ids.js';
 
 type PasswordInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -20,7 +21,7 @@ export const PasswordInput = /* @__PURE__ */ forwardRef<
   ref,
 ) {
   const [revealed, setRevealed] = useState(false);
-  const id = props.id ?? `simurgh-password-${useId().replace(/:/g, '')}`;
+  const id = useComponentId('password', props.id);
   return (
     <div data-slot="password-input" data-disabled={disabled || undefined}>
       <input

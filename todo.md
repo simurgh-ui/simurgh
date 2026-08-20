@@ -538,7 +538,7 @@ roadmap and are not duplicated here.
 
 ### Phase 1: remove structural and test-maintenance debt
 
-- [ ] Complete the open React source decomposition above, then extract focused shared internals for
+- [x] Complete the open React source decomposition above, then extract focused shared internals for
       focus management, composite widgets, forms, overlays, IDs, and controlled state.
 - [ ] Assert that every framework component subpath is independent of its root barrel and retain
       existing standalone and aggregate bundle budgets during the React decomposition.

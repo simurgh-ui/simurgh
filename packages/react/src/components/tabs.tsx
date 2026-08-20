@@ -1,13 +1,14 @@
-import { nextIndex, type Direction, type Orientation } from '@simurgh-ui/core';
+import { type Direction, type Orientation } from '@simurgh-ui/core';
 import {
   createContext,
   useContext,
   useId,
-  useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
 } from 'react';
+import { moveCompositeFocus } from '../internal/composite.js';
+import { useControlledState } from '../internal/controlled-state.js';
 
 type TabsContextValue = {
   value: string;
@@ -41,12 +42,11 @@ export function Tabs({
   orientation?: Orientation;
   direction?: Direction;
 }>) {
-  const [local, setLocal] = useState(defaultValue);
-  const current = value ?? local;
-  const setValue = (next: string) => {
-    if (value === undefined) setLocal(next);
-    onValueChange?.(next);
-  };
+  const [current, setValue] = useControlledState<string>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   return (
     <TabsContext.Provider
       value={{ value: current, setValue, id: useId(), orientation, direction }}
@@ -65,21 +65,11 @@ export function TabsList(props: HTMLAttributes<HTMLDivElement>) {
       aria-orientation={context.orientation}
       onKeyDown={(event) => {
         props.onKeyDown?.(event);
-        const tabs = Array.from(
-          event.currentTarget.querySelectorAll<HTMLElement>(
-            '[role=tab]:not([disabled])',
-          ),
-        );
-        const index = tabs.indexOf(document.activeElement as HTMLElement);
-        const target = nextIndex(index, tabs.length, event.key, {
+        moveCompositeFocus(event, '[role=tab]:not([disabled])', {
           orientation: context.orientation,
           direction: context.direction,
+          activate: true,
         });
-        if (target !== index) {
-          event.preventDefault();
-          tabs[target]?.focus();
-          tabs[target]?.click();
-        }
       }}
     />
   );

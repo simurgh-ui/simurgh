@@ -31,6 +31,15 @@ if (barrelWrappers.length > 0) {
 const internalFiles = (await readdir(internalsRoot)).filter((file) =>
   /\.tsx?$/.test(file),
 );
+const requiredInternals = [
+  'composite',
+  'controlled-state',
+  'dialog-context',
+  'floating',
+  'focus',
+  'forms',
+  'ids',
+];
 const internalStems = new Set();
 for (const file of internalFiles) {
   const stem = file.replace(/\.tsx?$/, '');
@@ -40,6 +49,11 @@ for (const file of internalFiles) {
     );
   }
   internalStems.add(stem);
+}
+for (const required of requiredInternals) {
+  if (!internalStems.has(required)) {
+    failures.push(`missing focused React internal module: ${required}`);
+  }
 }
 
 if (failures.length > 0) {

@@ -1,12 +1,13 @@
-import { nextIndex, type Direction, type Orientation } from '@simurgh-ui/core';
+import { type Direction, type Orientation } from '@simurgh-ui/core';
 import {
   createContext,
   useContext,
-  useState,
   type ButtonHTMLAttributes,
   type HTMLAttributes,
   type PropsWithChildren,
 } from 'react';
+import { moveCompositeFocus } from '../internal/composite.js';
+import { useControlledState } from '../internal/controlled-state.js';
 
 type ToggleGroupContextValue = {
   values: string[];
@@ -33,16 +34,18 @@ export function ToggleGroup({
     direction?: Direction;
   }
 >) {
-  const [local, setLocal] = useState(defaultValue);
-  const values = value ?? local;
+  const [values, setValues] = useControlledState<string[]>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
   const toggle = (item: string) => {
     const next = values.includes(item)
       ? values.filter((entry) => entry !== item)
       : type === 'single'
         ? [item]
         : [...values, item];
-    if (value === undefined) setLocal(next);
-    onValueChange?.(next);
+    setValues(next);
   };
   return (
     <ToggleGroupContext.Provider value={{ values, toggle }}>
@@ -54,20 +57,10 @@ export function ToggleGroup({
         data-slot="toggle-group"
         onKeyDown={(event) => {
           props.onKeyDown?.(event);
-          const items = Array.from(
-            event.currentTarget.querySelectorAll<HTMLElement>(
-              '[data-toggle-group-item]:not(:disabled)',
-            ),
-          );
-          const index = items.indexOf(document.activeElement as HTMLElement);
-          const target = nextIndex(index, items.length, event.key, {
+          moveCompositeFocus(event, '[data-toggle-group-item]:not(:disabled)', {
             orientation,
             direction,
           });
-          if (target !== index) {
-            event.preventDefault();
-            items[target]?.focus();
-          }
         }}
       >
         {children}
