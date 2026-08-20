@@ -23,6 +23,7 @@ type Config = {
 };
 const CONFIG_SCHEMA_VERSION = 1 as const;
 const GENERATED_SOURCE_SCHEMA_VERSION = 1 as const;
+type OutputOptions = { dryRun?: boolean; json?: boolean };
 const cwd = () => process.cwd();
 const configPath = () => join(cwd(), 'simurgh.json');
 function readJson<T>(path: string): T {
@@ -42,7 +43,7 @@ function detectFramework(): Framework {
   if (deps.react) return 'react';
   throw new Error('Could not detect Angular, React, or Vue. Pass --framework.');
 }
-function loadConfig(): Config {
+function loadConfig(options: OutputOptions = {}): Config {
   if (!existsSync(configPath()))
     throw new Error('simurgh.json not found. Run `simurgh init` first.');
   const config = readJson<Partial<Config> & { schemaVersion?: unknown }>(
@@ -50,8 +51,14 @@ function loadConfig(): Config {
   );
   if (config.schemaVersion === undefined) {
     const migrated = { schemaVersion: CONFIG_SCHEMA_VERSION, ...config };
-    writeFileSync(configPath(), `${JSON.stringify(migrated, null, 2)}\n`);
-    console.log(pc.green('Migrated simurgh.json from schema 0 to schema 1.'));
+    if (!options.dryRun)
+      writeFileSync(configPath(), `${JSON.stringify(migrated, null, 2)}\n`);
+    if (!options.json)
+      console.log(
+        pc.green(
+          `${options.dryRun ? 'Would migrate' : 'Migrated'} simurgh.json from schema 0 to schema 1.`,
+        ),
+      );
     return migrated as Config;
   }
   if (config.schemaVersion !== CONFIG_SCHEMA_VERSION) {
@@ -421,7 +428,9 @@ cli
   .command('init', 'Initialize Simurgh in the current application')
   .option('--framework <framework>', 'react, vue, or angular')
   .option('--skip-install', 'Do not install runtime dependencies')
-  .action((options: { framework?: Framework; skipInstall?: boolean }) => {
+  .option('--dry-run', 'Show planned changes without writing or installing')
+  .option('--json', 'Print one machine-readable JSON result')
+  .action((options: { framework?: Framework; skipInstall?: boolean } & OutputOptions) => {
     if (existsSync(configPath()))
       throw new Error('simurgh.json already exists.');
     const framework = options.framework ?? detectFramework();
@@ -435,57 +444,106 @@ cli
       ...paths,
       registryVersion: manifest.version,
     };
-    writeFileSync(configPath(), `${JSON.stringify(config, null, 2)}\n`);
-    mkdirSync(join(cwd(), config.styles), { recursive: true });
-    copy(
-      join(root, 'styles/tokens.css'),
-      join(cwd(), config.styles, 'tokens.css'),
-    );
-    copy(
-      join(root, 'styles/recipes.css'),
-      join(cwd(), config.styles, 'recipes.css'),
-    );
-    if (!options.skipInstall)
+    if (!options.dryRun) {
+      writeFileSync(configPath(), `${JSON.stringify(config, null, 2)}\n`);
+      mkdirSync(join(cwd(), config.styles), { recursive: true });
+      copy(
+        join(root, 'styles/tokens.css'),
+        join(cwd(), config.styles, 'tokens.css'),
+      );
+      copy(
+        join(root, 'styles/recipes.css'),
+        join(cwd(), config.styles, 'recipes.css'),
+      );
+    }
+    if (!options.skipInstall && !options.dryRun)
       execFileSync(
         'pnpm',
         ['add', ...manifest.frameworks[framework].dependencies],
-        { cwd: cwd(), stdio: 'inherit', shell: process.platform === 'win32' },
+        {
+          cwd: cwd(),
+          stdio: options.json ? 'ignore' : 'inherit',
+          shell: process.platform === 'win32',
+        },
       );
-    console.log(pc.green(`Initialized Simurgh for ${framework}.`));
+    if (options.json)
+      console.log(
+        JSON.stringify({
+          command: 'init',
+          dryRun: Boolean(options.dryRun),
+          framework,
+          config,
+          installDependencies: !options.skipInstall,
+        }),
+      );
+    else
+      console.log(
+        pc.green(
+          `${options.dryRun ? 'Would initialize' : 'Initialized'} Simurgh for ${framework}.`,
+        ),
+      );
   });
-cli.command('list', 'List registry components').action(() => {
-  for (const name of manifest.components)
-    console.log(`${name.padEnd(16)} ${manifest.version}`);
-});
+cli
+  .command('list', 'List registry components')
+  .option('--dry-run', 'Do not make changes (list is always read-only)')
+  .option('--json', 'Print one machine-readable JSON result')
+  .action((options: OutputOptions) => {
+    if (options.json)
+      console.log(
+        JSON.stringify({
+          command: 'list',
+          dryRun: Boolean(options.dryRun),
+          registryVersion: manifest.version,
+          components: manifest.components,
+        }),
+      );
+    else
+      for (const name of manifest.components)
+        console.log(`${name.padEnd(16)} ${manifest.version}`);
+  });
 cli
   .command('add [...components]', 'Copy component source into the application')
   .option('--overwrite', 'Replace an existing generated catalog')
-  .action((components: string[], options: { overwrite?: boolean }) => {
-    const config = loadConfig();
+  .option('--dry-run', 'Show planned changes without writing files')
+  .option('--json', 'Print one machine-readable JSON result')
+  .action((components: string[], options: { overwrite?: boolean } & OutputOptions) => {
+    const config = loadConfig(options);
     const selected = components.length ? components : manifest.components;
+    const results = [];
     for (const name of selected) {
       registryEntry(name, config.framework);
       const target = componentTarget(config, name);
       const source = expectedSource(config, name);
-      if (existsSync(target) && !options.overwrite) {
-        console.log(
+      const exists = existsSync(target);
+      const status = exists && !options.overwrite ? 'preserved' : exists ? 'overwritten' : 'added';
+      results.push({ name, target: relative(cwd(), target), status });
+      if (exists && !options.overwrite) {
+        if (!options.json) console.log(
           pc.yellow(
             `${relative(cwd(), target)} already exists; preserved local source.`,
           ),
         );
       } else {
-        ensureParent(target);
-        writeFileSync(target, source);
-        console.log(pc.green(`Added ${name} to ${relative(cwd(), target)}.`));
+        if (!options.dryRun) {
+          ensureParent(target);
+          writeFileSync(target, source);
+        }
+        if (!options.json) console.log(pc.green(`${options.dryRun ? 'Would add' : 'Added'} ${name} to ${relative(cwd(), target)}.`));
       }
-      installComponentSupport(config, source, options.overwrite);
-      installRecipeStyle(config, name, options.overwrite);
+      if (!options.dryRun) {
+        installComponentSupport(config, source, options.overwrite);
+        installRecipeStyle(config, name, options.overwrite);
+      }
     }
+    if (options.json)
+      console.log(JSON.stringify({ command: 'add', dryRun: Boolean(options.dryRun), framework: config.framework, registryVersion: manifest.version, components: results }));
   });
 cli
   .command('diff [component]', 'Compare local source with the registry')
-  .action((component?: string) => {
-    const config = loadConfig();
+  .option('--dry-run', 'Do not migrate configuration while comparing')
+  .option('--json', 'Print one machine-readable JSON result')
+  .action((component: string | undefined, options: OutputOptions) => {
+    const config = loadConfig(options);
     const selected = component
       ? [component]
       : manifest.components.filter((name) =>
@@ -497,26 +555,31 @@ cli
       );
     let differs = false;
     const changed: string[] = [];
+    const results = [];
     for (const name of selected) {
       registryEntry(name, config.framework);
       const target = componentTarget(config, name);
       if (!existsSync(target)) {
-        console.log(pc.yellow(`${name}: not installed`));
+        if (!options.json) console.log(pc.yellow(`${name}: not installed`));
         differs = true;
         changed.push(name);
+        results.push({ name, status: 'not-installed' });
         continue;
       }
       const same =
         readFileSync(target, 'utf8') === expectedSource(config, name);
       differs ||= !same;
       if (!same) changed.push(name);
-      console.log(
+      results.push({ name, status: same ? 'matches' : 'differs' });
+      if (!options.json) console.log(
         same
           ? pc.green(`${name}: matches the registry`)
           : pc.yellow(`${name}: differs; local customizations are preserved`),
       );
     }
-    if (changed.length) printDiffGuidance(config, changed);
+    if (options.json)
+      console.log(JSON.stringify({ command: 'diff', dryRun: Boolean(options.dryRun), framework: config.framework, registryVersion: manifest.version, differs, components: results }));
+    else if (changed.length) printDiffGuidance(config, changed);
     process.exitCode = differs ? 1 : 0;
   });
 cli.help();
@@ -524,6 +587,11 @@ cli.version('0.1.0');
 try {
   cli.parse();
 } catch (error) {
-  console.error(pc.red(error instanceof Error ? error.message : String(error)));
+  const message = error instanceof Error ? error.message : String(error);
+  console.error(
+    process.argv.includes('--json')
+      ? JSON.stringify({ command: process.argv[2] ?? null, error: message })
+      : pc.red(message),
+  );
   process.exitCode = 1;
 }

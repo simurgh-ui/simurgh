@@ -65,6 +65,72 @@ describe('registry', () => {
 });
 
 describe('CLI application fixture', () => {
+  it('supports dry-run and machine-readable output for every command', () => {
+    const fixture = mkdtempSync(join(tmpdir(), 'simurgh-output-'));
+    const cli = fileURLToPath(new URL('../dist/index.js', import.meta.url));
+    const run = (...arguments_: string[]) =>
+      spawnSync(process.execPath, [cli, ...arguments_], {
+        cwd: fixture,
+        encoding: 'utf8',
+      });
+    try {
+      mkdirSync(join(fixture, 'src'));
+      writeFileSync(
+        join(fixture, 'package.json'),
+        JSON.stringify({ name: 'output-fixture', dependencies: { react: '*' } }),
+      );
+
+      const initPreview = run(
+        'init',
+        '--framework',
+        'react',
+        '--skip-install',
+        '--dry-run',
+        '--json',
+      );
+      expect(JSON.parse(initPreview.stdout)).toMatchObject({
+        command: 'init',
+        dryRun: true,
+        framework: 'react',
+      });
+      expect(existsSync(join(fixture, 'simurgh.json'))).toBe(false);
+
+      expect(
+        JSON.parse(run('init', '--skip-install', '--json').stdout),
+      ).toMatchObject({ command: 'init', dryRun: false });
+      const list = JSON.parse(run('list', '--dry-run', '--json').stdout);
+      expect(list.command).toBe('list');
+      expect(list.components).toContain('button');
+
+      const addPreview = JSON.parse(
+        run('add', 'button', '--dry-run', '--json').stdout,
+      );
+      expect(addPreview).toMatchObject({ command: 'add', dryRun: true });
+      expect(existsSync(join(fixture, 'src/components/ui/button.tsx'))).toBe(
+        false,
+      );
+
+      expect(JSON.parse(run('add', 'button', '--json').stdout)).toMatchObject({
+        command: 'add',
+        dryRun: false,
+      });
+      const diff = JSON.parse(run('diff', 'button', '--dry-run', '--json').stdout);
+      expect(diff).toMatchObject({
+        command: 'diff',
+        dryRun: true,
+        differs: false,
+      });
+      const failure = run('add', 'not-a-component', '--json');
+      expect(failure.status).toBe(1);
+      expect(JSON.parse(failure.stderr)).toMatchObject({
+        command: 'add',
+        error: 'Unknown component: not-a-component',
+      });
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
+  }, 30_000);
+
   it('migrates legacy configs and rejects newer schemas with upgrade guidance', () => {
     const fixture = mkdtempSync(join(tmpdir(), 'simurgh-schema-'));
     const cli = fileURLToPath(new URL('../dist/index.js', import.meta.url));
@@ -116,7 +182,7 @@ describe('CLI application fixture', () => {
     } finally {
       rmSync(fixture, { recursive: true, force: true });
     }
-  });
+  }, 30_000);
 
   it.each([
     ['react', 'react', 'src/components/ui/button.tsx', 'export const Button'],

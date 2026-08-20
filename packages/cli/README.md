@@ -38,6 +38,14 @@ pnpm dlx @simurgh-ui/cli init --framework angular
 | `simurgh add dialog --overwrite` | Replace an existing generated component.                        |
 | `simurgh diff [component]`       | Compare local source with the bundled registry.                 |
 
+Every command accepts `--json` for one machine-readable result object and `--dry-run` for a
+mutation-free preview. `list --dry-run` remains read-only; `diff --dry-run` also prevents automatic
+configuration migration. Combine the flags for CI, editor integrations, and scripted adoption:
+
+```sh
+pnpm dlx @simurgh-ui/cli add button dialog --dry-run --json
+```
+
 When `diff` finds customized or outdated generated source, it exits with status
 1 and prints a safe update workflow. Commit or stash local work, overwrite only
 on a temporary branch, review the resulting diff, and selectively merge upstream
