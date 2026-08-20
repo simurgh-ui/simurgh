@@ -32,6 +32,13 @@ describe('Angular positioned overlay hydration', () => {
       expect(
         document.querySelector('simurgh-overlay-ssr-host main'),
       ).not.toBeNull();
+      expect(
+        document
+          .querySelector('[aria-controls]')
+          ?.getAttribute('aria-controls'),
+      ).toMatch(/\S/);
+      const lazyOverlay = await import('../src/components/dialog.js');
+      expect(lazyOverlay.DialogComponent).toBeTypeOf('function');
       application.destroy();
     } finally {
       error.mockRestore();

@@ -1,0 +1,61 @@
+name: SSR and hydration matrix
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  framework-major:
+    name: ${{ matrix.framework }} ${{ matrix.major }} SSR/hydration
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - framework: react
+            major: 18
+            install: react@18 react-dom@18 @types/react@18 @types/react-dom@18
+            tests: packages/react/test/overlay-ssr.test.tsx packages/react/test/overlay-hydration.test.tsx
+          - framework: react
+            major: 19
+            install: react@19 react-dom@19 @types/react@19 @types/react-dom@19
+            tests: packages/react/test/overlay-ssr.test.tsx packages/react/test/overlay-hydration.test.tsx
+          - framework: vue
+            major: 3.4
+            install: vue@3.4 @vue/server-renderer@3.4
+            tests: packages/vue/test/overlay-ssr.test.ts packages/vue/test/overlay-hydration.test.ts
+          - framework: vue
+            major: 3.5
+            install: vue@3.5 @vue/server-renderer@3.5
+            tests: packages/vue/test/overlay-ssr.test.ts packages/vue/test/overlay-hydration.test.ts
+          - framework: angular
+            major: 18
+            install: '@angular/common@18 @angular/compiler@18 @angular/compiler-cli@18 @angular/core@18 @angular/platform-browser@18 @angular/platform-browser-dynamic@18 @angular/platform-server@18 typescript@5.5'
+            tests: packages/angular/test/overlay-ssr.test.ts packages/angular/test/overlay-hydration.test.ts
+          - framework: angular
+            major: 19
+            install: '@angular/common@19 @angular/compiler@19 @angular/compiler-cli@19 @angular/core@19 @angular/platform-browser@19 @angular/platform-browser-dynamic@19 @angular/platform-server@19 typescript@5.7'
+            tests: packages/angular/test/overlay-ssr.test.ts packages/angular/test/overlay-hydration.test.ts
+          - framework: angular
+            major: 20
+            install: '@angular/common@20 @angular/compiler@20 @angular/compiler-cli@20 @angular/core@20 @angular/platform-browser@20 @angular/platform-browser-dynamic@20 @angular/platform-server@20 typescript@5.9'
+            tests: packages/angular/test/overlay-ssr.test.ts packages/angular/test/overlay-hydration.test.ts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.16.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install framework major
+        run: pnpm add --workspace-root --save-dev --lockfile=false ${{ matrix.install }}
+      - run: pnpm --filter @simurgh-ui/core build
+      - name: Run SSR and hydration fixtures
+        run: pnpm exec vitest run ${{ matrix.tests }}

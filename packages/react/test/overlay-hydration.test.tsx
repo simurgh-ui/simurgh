@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { act } from '@testing-library/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
@@ -34,8 +34,13 @@ import {
 
 const options = [{ value: 'one', label: 'One' }];
 function AllPositionedOverlays() {
+  const [browserReady, setBrowserReady] = useState(false);
+  useEffect(() => setBrowserReady(true), []);
   return (
     <main>
+      <p data-browser-only>
+        {browserReady ? window.location.pathname : 'server'}
+      </p>
       <Popover>
         <PopoverTrigger>Open</PopoverTrigger>
         <PopoverContent>Content</PopoverContent>
@@ -75,7 +80,15 @@ describe('React positioned overlay hydration', () => {
     });
     await act(() => Promise.resolve());
     expect(recover).not.toHaveBeenCalled();
-    expect(container.innerHTML).toBe(normalizedMarkup);
+    expect(normalizedMarkup).toContain('data-browser-only');
+    expect(container.querySelector('[data-browser-only]')?.textContent).toBe(
+      '/',
+    );
+    expect(
+      container.querySelector('[aria-controls]')?.getAttribute('aria-controls'),
+    ).toMatch(/\S/);
+    const lazyOverlay = await import('../src/components/dialog.js');
+    expect(lazyOverlay.Dialog).toBeTypeOf('function');
     await act(() => root.unmount());
     container.remove();
   });

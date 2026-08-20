@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { renderToString } from '@vue/server-renderer';
-import { createSSRApp, h, nextTick, type Component } from 'vue';
+import { createSSRApp, h, nextTick, onMounted, ref, type Component } from 'vue';
 import { describe, expect, it, vi } from 'vitest';
 import { Combobox } from '../src/components/combobox.js';
 import {
@@ -44,24 +44,34 @@ const floating = (
     ],
   });
 const Root = {
-  render: () =>
-    h('main', null, [
-      floating(Popover, PopoverTrigger, PopoverContent, 'Open'),
-      floating(Tooltip, TooltipTrigger, TooltipContent, 'Help'),
-      floating(HoverCard, HoverCardTrigger, HoverCardContent, 'Profile'),
-      floating(
-        DropdownMenu,
-        DropdownMenuTrigger,
-        DropdownMenuContent,
-        'Actions',
-      ),
-      h(ContextMenu, null, {
-        default: () => h(ContextMenuTrigger, null, { default: () => 'Canvas' }),
-      }),
-      h(Select, { options }),
-      h(Combobox, { options }),
-      h(DatePicker),
-    ]),
+  setup() {
+    const browserReady = ref(false);
+    onMounted(() => (browserReady.value = true));
+    return () =>
+      h('main', null, [
+        h(
+          'p',
+          { 'data-browser-only': '' },
+          browserReady.value ? window.location.pathname : 'server',
+        ),
+        floating(Popover, PopoverTrigger, PopoverContent, 'Open'),
+        floating(Tooltip, TooltipTrigger, TooltipContent, 'Help'),
+        floating(HoverCard, HoverCardTrigger, HoverCardContent, 'Profile'),
+        floating(
+          DropdownMenu,
+          DropdownMenuTrigger,
+          DropdownMenuContent,
+          'Actions',
+        ),
+        h(ContextMenu, null, {
+          default: () =>
+            h(ContextMenuTrigger, null, { default: () => 'Canvas' }),
+        }),
+        h(Select, { options }),
+        h(Combobox, { options }),
+        h(DatePicker),
+      ]);
+  },
 };
 
 describe('Vue positioned overlay hydration', () => {
@@ -77,7 +87,15 @@ describe('Vue positioned overlay hydration', () => {
     app.mount(container);
     await nextTick();
     expect(warn).not.toHaveBeenCalled();
-    expect(container.innerHTML).toBe(normalizedMarkup);
+    expect(normalizedMarkup).toContain('data-browser-only');
+    expect(container.querySelector('[data-browser-only]')?.textContent).toBe(
+      '/',
+    );
+    expect(
+      container.querySelector('[aria-controls]')?.getAttribute('aria-controls'),
+    ).toMatch(/\S/);
+    const lazyOverlay = await import('../src/components/dialog.js');
+    expect(lazyOverlay.Dialog).toBeTruthy();
     app.unmount();
     container.remove();
   });
