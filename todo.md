@@ -557,7 +557,7 @@ roadmap and are not duplicated here.
       React, Vue, and Angular instead of relying only on equal test counts.
 - [x] Expand overlay coverage for initial focus, trapping, dismissal, restoration, nesting, portals,
       scroll locking, inert backgrounds, and interrupted unmounts.
-- [ ] Expand composite-widget coverage for LTR and RTL navigation, typeahead, disabled items,
+- [x] Expand composite-widget coverage for LTR and RTL navigation, typeahead, disabled items,
       selection models, orientation changes, and dynamic collection updates.
 - [ ] Test IME/composition, form reset, serialization, autofill, invalid state, native validation,
       and browser form submission for every form-capable component.

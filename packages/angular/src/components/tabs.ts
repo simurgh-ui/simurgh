@@ -10,7 +10,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { nextIndex } from '@simurgh-ui/core';
+import { nextIndex, typeaheadIndex } from '@simurgh-ui/core';
 
 @Component({
   selector: 'simurgh-tabs',
@@ -36,13 +36,23 @@ export class TabsComponent {
   }
   navigate(event: KeyboardEvent) {
     const tabs = Array.from(
-      this.element.nativeElement.querySelectorAll<HTMLElement>('[role=tab]'),
+      this.element.nativeElement.querySelectorAll<HTMLElement>(
+        '[role=tab]:not([disabled])',
+      ),
     );
     const i = tabs.indexOf(document.activeElement as HTMLElement);
-    const n = nextIndex(i, tabs.length, event.key, {
+    const directional = nextIndex(i, tabs.length, event.key, {
       orientation: this.orientation,
       direction: this.direction,
     });
+    const n =
+      directional === i
+        ? typeaheadIndex(
+            tabs.map((tab) => tab.textContent ?? ''),
+            i,
+            event.key,
+          )
+        : directional;
     if (n !== i) {
       event.preventDefault();
       tabs[n]?.focus();

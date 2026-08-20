@@ -69,6 +69,21 @@ export function nextIndex(
   return Math.max(0, Math.min(size - 1, candidate));
 }
 
+export function typeaheadIndex(
+  items: readonly string[],
+  current: number,
+  key: string,
+): number {
+  if (key.length !== 1 || /\s/.test(key)) return current;
+  const query = key.toLocaleLowerCase();
+  for (let offset = 1; offset <= items.length; offset += 1) {
+    const candidate = (current + offset + items.length) % items.length;
+    if (items[candidate]?.trim().toLocaleLowerCase().startsWith(query))
+      return candidate;
+  }
+  return current;
+}
+
 export function focusable(container: ParentNode): HTMLElement[] {
   return Array.from(
     container.querySelectorAll<HTMLElement>(

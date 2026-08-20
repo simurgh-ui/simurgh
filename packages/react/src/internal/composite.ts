@@ -1,4 +1,9 @@
-import { nextIndex, type Direction, type Orientation } from '@simurgh-ui/core';
+import {
+  nextIndex,
+  typeaheadIndex,
+  type Direction,
+  type Orientation,
+} from '@simurgh-ui/core';
 import type { KeyboardEvent } from 'react';
 
 export function moveCompositeFocus(
@@ -14,7 +19,15 @@ export function moveCompositeFocus(
     event.currentTarget.querySelectorAll<HTMLElement>(selector),
   );
   const current = items.indexOf(document.activeElement as HTMLElement);
-  const target = nextIndex(current, items.length, event.key, options);
+  const directional = nextIndex(current, items.length, event.key, options);
+  const target =
+    directional === current
+      ? typeaheadIndex(
+          items.map((item) => item.textContent ?? ''),
+          current,
+          event.key,
+        )
+      : directional;
   if (target === current) return false;
   event.preventDefault();
   items[target]?.focus();

@@ -1,6 +1,7 @@
 import {
   createId,
   nextIndex,
+  typeaheadIndex,
   type Direction,
   type Orientation,
 } from '@simurgh-ui/core';
@@ -20,8 +21,8 @@ type TabsContext = {
   value: Ref<string>;
   setValue(value: string): void;
   id: string;
-  orientation: Orientation;
-  direction: Direction;
+  orientation: Ref<Orientation>;
+  direction: Ref<Direction>;
 };
 const tabsKey: InjectionKey<TabsContext> = Symbol('tabs');
 
@@ -50,8 +51,8 @@ export const Tabs = /* @__PURE__ */ defineComponent({
       value,
       setValue: (next) => (value.value = next),
       id: createId('tabs'),
-      orientation: props.orientation,
-      direction: props.direction,
+      orientation: computed(() => props.orientation),
+      direction: computed(() => props.direction),
     });
     return () => slots.default?.();
   },
@@ -67,15 +68,26 @@ export const TabsList = /* @__PURE__ */ defineComponent({
         {
           ...attrs,
           role: 'tablist',
-          'aria-orientation': context.orientation,
+          'aria-orientation': context.orientation.value,
           onKeydown: (event: KeyboardEvent) => {
             const nodes = Array.from(
               (
                 event.currentTarget as HTMLElement
-              ).querySelectorAll<HTMLElement>('[role=tab]'),
+              ).querySelectorAll<HTMLElement>('[role=tab]:not([disabled])'),
             );
             const index = nodes.indexOf(document.activeElement as HTMLElement);
-            const next = nextIndex(index, nodes.length, event.key, context);
+            const directional = nextIndex(index, nodes.length, event.key, {
+              orientation: context.orientation.value,
+              direction: context.direction.value,
+            });
+            const next =
+              directional === index
+                ? typeaheadIndex(
+                    nodes.map((node) => node.textContent ?? ''),
+                    index,
+                    event.key,
+                  )
+                : directional;
             if (next !== index) {
               event.preventDefault();
               nodes[next]?.focus();
