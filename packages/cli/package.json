@@ -34,7 +34,7 @@
     "lint": "eslint src test"
   },
   "dependencies": {
-    "@simurgh-ui/registry": "0.3.1",
+    "@simurgh-ui/registry": "workspace:*",
     "cac": "^6.7.14",
     "picocolors": "^1.1.1",
     "typescript": "^5.9.3"
