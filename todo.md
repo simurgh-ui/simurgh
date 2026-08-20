@@ -602,7 +602,7 @@ roadmap and are not duplicated here.
       upgrades, and safe adoption of upstream fixes.
 - [x] Version the registry schema and provide migrations or actionable compatibility errors for
       older `simurgh.json` files and generated-source metadata.
-- [ ] Publish maintained starter applications for React, Vue, and Angular using packed or released
+- [x] Publish maintained starter applications for React, Vue, and Angular using packed or released
       artifacts and production-representative configuration.
 - [x] Add component/version/framework-aware documentation feedback and issue links that prefill the
       diagnostic context needed to reproduce a problem.

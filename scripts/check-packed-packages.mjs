@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import {
+  cp,
   mkdir,
   mkdtemp,
   readFile,
@@ -53,6 +54,7 @@ try {
   await mkdir(tarballRoot, { recursive: true });
   await mkdir(consumerRoot, { recursive: true });
   const dependencies = {};
+  const versions = {};
   for (const directory of directories) {
     const packageRoot = resolve(root, 'packages', directory);
     const manifest = JSON.parse(
@@ -81,6 +83,7 @@ try {
       );
     }
     dependencies[manifest.name] = `file:${tarball.replaceAll('\\', '/')}`;
+    versions[manifest.name] = manifest.version;
   }
   Object.assign(dependencies, {
     react: `file:${resolve(root, 'packages/react/node_modules/react').replaceAll('\\', '/')}`,
@@ -174,17 +177,30 @@ try {
     },
   );
 
-  const quickStarts = {
-    react: `import React from 'react'; import { Button } from '@simurgh-ui/react/button'; import '@simurgh-ui/styles/button.css'; export const App=()=> <Button>Save</Button>;`,
-    vue: `import { h } from 'vue'; import { Button } from '@simurgh-ui/vue/button'; import '@simurgh-ui/styles/button.css'; export const App=()=>h(Button,{},()=> 'Save');`,
-    angular: `import { Component } from '@angular/core'; import { ButtonComponent } from '@simurgh-ui/angular/button'; import '@simurgh-ui/styles/button.css'; @Component({standalone:true,imports:[ButtonComponent],template:'<simurgh-button>Save</simurgh-button>'}) export class App {}`,
-  };
-  for (const [framework, source] of Object.entries(quickStarts)) {
+  const starterRoot = resolve(consumerRoot, 'starters');
+  await mkdir(starterRoot, { recursive: true });
+  await cp(resolve(root, 'fixtures/reference-apps/theme.css'), resolve(starterRoot, 'theme.css'));
+  for (const framework of ['react', 'vue', 'angular']) {
     const extension = framework === 'react' ? 'tsx' : 'ts';
-    const entry = resolve(consumerRoot, `${framework}.${extension}`);
-    await writeFile(entry, source);
+    const sourceRoot = resolve(root, 'fixtures/reference-apps', framework);
+    const targetRoot = resolve(starterRoot, framework);
+    await cp(sourceRoot, targetRoot, { recursive: true });
+    const manifest = JSON.parse(await readFile(resolve(targetRoot, 'package.json'), 'utf8'));
+    const viteConfig = await readFile(resolve(targetRoot, 'vite.config.ts'), 'utf8');
+    if (
+      manifest.scripts?.build !== 'vite build' ||
+      !manifest.devDependencies?.vite ||
+      !viteConfig.includes("target: 'es2022'") ||
+      !viteConfig.includes('sourcemap: false')
+    )
+      throw new Error(`${framework} starter lacks its maintained production build configuration.`);
+    for (const packageName of [`@simurgh-ui/${framework}`, '@simurgh-ui/styles']) {
+      if (manifest.dependencies?.[packageName] !== `^${versions[packageName]}`)
+        throw new Error(`${framework} starter must track packed ${packageName}@${versions[packageName]}.`);
+    }
+    const entry = resolve(targetRoot, `main.${extension}`);
     const result = await build({
-      absWorkingDir: consumerRoot,
+      absWorkingDir: targetRoot,
       bundle: true,
       entryPoints: [entry],
       external: [
@@ -200,6 +216,7 @@ try {
       ],
       format: 'esm',
       logLevel: 'silent',
+      nodePaths: [resolve(consumerRoot, 'node_modules')],
       outdir: 'out',
       platform: 'browser',
       tsconfig: resolve(consumerRoot, 'tsconfig.json'),
@@ -208,10 +225,10 @@ try {
     if (!result.outputFiles?.some((file) => file.path.endsWith('.js')))
       throw new Error(`${framework} tarball quick start lacks JavaScript.`);
     if (!result.outputFiles?.some((file) => file.path.endsWith('.css')))
-      throw new Error(`${framework} tarball quick start lacks CSS.`);
+      throw new Error(`${framework} packed-package starter lacks CSS.`);
   }
   process.stdout.write(
-    `Packed, installed, type-resolved, and bundled ${directories.length} packages.\n`,
+    `Packed, installed, type-resolved, and bundled ${directories.length} packages through 3 maintained starters.\n`,
   );
 } finally {
   await rm(temporaryRoot, { recursive: true, force: true });

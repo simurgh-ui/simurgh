@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "experimentalDecorators": true, "module": "ESNext", "moduleResolution": "Bundler", "strict": true, "target": "ES2022" },
+  "include": ["main.ts", "server.ts", "vite.config.ts"]
+}
