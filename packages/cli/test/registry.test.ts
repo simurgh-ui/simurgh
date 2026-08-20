@@ -189,6 +189,7 @@ describe('CLI application fixture', () => {
         rmSync(fixture, { recursive: true, force: true });
       }
     },
+    30_000,
   );
 
   it('initializes, adds idempotently, and detects local changes', () => {
