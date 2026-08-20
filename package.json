@@ -13,6 +13,7 @@
     "bundle:size": "node scripts/check-floating-size.mjs && node scripts/check-bundle-size.mjs && node scripts/check-icons-bundle-size.mjs && node scripts/check-motion-size.mjs && node scripts/check-angular-production-size.mjs && node scripts/check-lazy-overlay-size.mjs",
     "bundle:react-splitting": "node scripts/analyze-react-code-splitting.mjs",
     "chart:performance": "node scripts/benchmark-charts.mjs",
+    "research:icons": "node scripts/aggregate-icon-study.mjs",
     "changeset": "changeset",
     "format": "prettier --write .",
     "release": "changeset publish",
@@ -23,7 +24,7 @@
     "test:release-notes": "node scripts/check-release-notes.mjs",
     "test:tarballs": "node scripts/check-packed-packages.mjs",
     "test:api-reports": "node scripts/check-api-reports.mjs",
-    "test:release": "node scripts/check-governance.mjs && node scripts/check-package-metadata.mjs && node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs && node scripts/check-api-reports.mjs && node scripts/check-stability-policy.mjs && node scripts/check-icon-evidence-policy.mjs",
+    "test:release": "node scripts/check-governance.mjs && node scripts/check-package-metadata.mjs && node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs && node scripts/check-api-reports.mjs && node scripts/check-stability-policy.mjs && node scripts/check-icon-evidence-policy.mjs && node --test scripts/aggregate-icon-study.test.mjs",
     "version-packages": "changeset version"
   },
   "devDependencies": {

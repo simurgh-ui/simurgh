@@ -22,6 +22,19 @@ consented sessions using the versioned template in
 6. Delete raw session records after 30 days. Publish only cohort aggregates containing at least
    five sessions; suppress slices smaller than five.
 
+Store completed records as separate JSON files under the ignored `research/sessions/icons`
+directory. After at least five valid sessions, generate a publishable aggregate without session
+identifiers:
+
+```sh
+pnpm research:icons
+```
+
+The command rejects missing consent, withdrawn records, stale policy versions, duplicate session
+codes, free-form or prohibited fields, incomplete metrics, unsupported issue codes, and cohorts
+smaller than five. It writes only aggregate rates, counts, and framework cohort sizes to
+`artifacts/icon-study-aggregate.json`; review that file before committing it.
+
 ## Allowed metrics
 
 The machine-readable policy permits only these fields:

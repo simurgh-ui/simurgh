@@ -7,6 +7,7 @@ coverage
 playwright-report
 test-results
 artifacts/npm-cache
+research/sessions/
 packages/cli/assets/react/*.tsx
 packages/cli/assets/vue/*.ts
 packages/cli/assets/angular/*.ts
