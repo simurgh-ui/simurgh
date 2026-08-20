@@ -20,7 +20,7 @@
     "test:e2e": "playwright test",
     "test:quick-starts": "node scripts/check-package-quick-starts.mjs",
     "test:references": "node scripts/check-reference-apps.mjs",
-    "test:release": "node scripts/check-governance.mjs && node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs",
+    "test:release": "node scripts/check-governance.mjs && node scripts/check-package-metadata.mjs && node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs",
     "version-packages": "changeset version"
   },
   "devDependencies": {

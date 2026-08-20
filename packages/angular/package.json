@@ -2,6 +2,7 @@
   "name": "@simurgh-ui/angular",
   "version": "0.1.2",
   "description": "Accessible Simurgh UI components for Angular.",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/simurgh-ui/simurgh.git",

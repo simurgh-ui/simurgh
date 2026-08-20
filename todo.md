@@ -531,7 +531,7 @@ roadmap and are not duplicated here.
       CLI, registry, styles, adapter, icons, and motion versions with a generated release check.
 - [x] Add LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, and CODEOWNERS policies suitable for a
       public component library.
-- [ ] Add license, repository, homepage, bugs, engines, funding where applicable, and publish
+- [x] Add license, repository, homepage, bugs, engines, funding where applicable, and publish
       configuration metadata to every published package.
 - [x] Publish coverage reports in CI and establish non-blocking baselines before adopting meaningful
       per-package thresholds.

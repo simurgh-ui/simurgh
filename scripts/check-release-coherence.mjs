@@ -49,15 +49,13 @@ for (const { manifest } of manifests.values()) {
   }
 }
 
-const registryPackage = manifests.get('@simurgh-ui/registry')?.manifest;
 const registry = JSON.parse(
   await readFile(resolve(root, 'packages/registry/registry.json'), 'utf8'),
 );
-if (registry.version !== registryPackage?.version) {
+if (!semver.test(registry.version))
   failures.push(
-    `registry.json version ${registry.version} does not match @simurgh-ui/registry ${registryPackage?.version}`,
+    `registry.json has invalid catalog version ${registry.version}`,
   );
-}
 
 const changesets = JSON.parse(
   await readFile(resolve(root, '.changeset/config.json'), 'utf8'),

@@ -2,6 +2,7 @@
   "name": "@simurgh-ui/react",
   "version": "0.1.2",
   "description": "Accessible Simurgh UI components for React.",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/simurgh-ui/simurgh.git",
