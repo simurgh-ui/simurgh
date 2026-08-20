@@ -35,6 +35,7 @@ actual
 actually
 adapt
 adapter
+adapter-boundary
 adapter-host
 adapter's
 adapters
@@ -97,6 +98,7 @@ anchor's
 anchored
 anchors
 and
+android
 angular
 angular's
 animate
@@ -135,8 +137,6 @@ apply
 appointment
 appropriate
 appropriately
-approval
-approve
 approximate
 arabic
 arbitrarily
@@ -157,7 +157,6 @@ artwork
 as
 ask
 aspect
-assert
 assertive
 assessed
 asset
@@ -238,6 +237,7 @@ below
 beneath
 beside
 beta
+betas
 between
 beyond
 bind
@@ -247,6 +247,7 @@ binds
 blank
 block
 blocked
+blockers
 blocks
 blue
 body
@@ -279,7 +280,6 @@ brief
 briefly
 brittle
 broad
-broaden
 broader
 broadly
 browse
@@ -373,7 +373,6 @@ changelogs
 changes
 changeset
 changesets
-changesets-based
 changing
 channels
 character
@@ -440,7 +439,6 @@ codeowners
 codes
 codetabs
 codex
-coherence
 cohort
 cohorts
 collapse
@@ -563,7 +561,6 @@ consume
 consumed
 consumer
 consumer-owned
-consumer-visible
 consumers
 consumes
 consuming
@@ -635,6 +632,7 @@ created
 creates
 creating
 creation
+credentials
 criteria
 criterion
 cropping
@@ -679,7 +677,6 @@ declare
 declared
 declares
 declaring
-decomposition
 decoration
 decorative
 decrement
@@ -692,6 +689,7 @@ defect
 defects
 defer
 deferred
+deferred-content
 definition
 definitions
 degree
@@ -777,6 +775,7 @@ disables
 disclose
 disclosed
 disclosure
+discover
 discoverable
 discovery
 discrete
@@ -800,6 +799,7 @@ divides
 dividing
 division
 do
+docs-only
 document
 documentation
 documentation-discovery
@@ -869,7 +869,6 @@ enforced
 engine
 engine-level
 engineering
-engines
 ensure
 enter
 enters
@@ -909,9 +908,9 @@ exceptional
 exceptions
 excludes
 exclusive
-execute
 exercise
 exercised
+exercises
 exhaustive
 exist
 existing
@@ -1022,6 +1021,7 @@ floor
 flow
 flows
 focus
+focus-appearance
 focus-restoration
 focus-ring
 focus-visible
@@ -1088,7 +1088,6 @@ general-purpose
 generally
 generate
 generated
-generated-registry
 generated-source
 generic
 generous
@@ -1097,6 +1096,7 @@ geometric
 geometry
 gesture
 gestures
+github
 give
 gives
 giving
@@ -1137,6 +1137,7 @@ harder
 hardware
 harmonizes
 has
+hashes
 have
 header
 heading
@@ -1252,6 +1253,7 @@ indicate
 indicator
 indicators
 individual
+inferred
 information
 informational
 informative
@@ -1318,6 +1320,7 @@ invasive
 invent
 inversions
 invoking
+ios
 iranian
 irreversible
 is
@@ -1325,6 +1328,7 @@ isfahan
 iso
 isolated
 issue
+issues
 it
 item
 items
@@ -1381,6 +1385,7 @@ layouts
 lazy
 lazy-load
 lazy-loaded
+lazy-overlay
 learn
 least
 leave
@@ -1453,7 +1458,6 @@ maintain
 maintained
 maintainers
 major
-majors
 make
 makes
 making
@@ -1617,6 +1621,8 @@ newly
 next
 next.js
 ngmodule
+nine
+nine-package
 no
 no-javascript
 node
@@ -1647,6 +1653,7 @@ notices
 notifications
 now
 now-unused
+npm
 number
 numbers
 numeric
@@ -1749,7 +1756,7 @@ package-import
 package-registry
 package-scoped
 packages
-packed
+packed-package
 page
 page's
 pages
@@ -1776,6 +1783,7 @@ partners
 parts
 pass
 passed
+passes
 password
 paste
 pasted
@@ -1811,6 +1819,7 @@ person
 photograph
 photographs
 physical
+physical-device
 physical-direction
 picker
 pickercomponentpreview
@@ -1934,6 +1943,7 @@ props
 protocol
 prove
 provenance
+provenance-bearing
 provide
 provided
 providers
@@ -1943,9 +1953,11 @@ proximity
 proxy
 public
 public-api
+publication
 publish
 publishable
 published
+publishing
 pull
 pulsing
 purely
@@ -2075,6 +2087,7 @@ reopening
 reorder
 reordered
 reordering
+repaired
 repeat
 repeatable
 repeated
@@ -2320,7 +2333,6 @@ sidebar
 sides
 sighted
 sign-in
-sign-off
 signal
 silently
 similar
@@ -2355,6 +2367,7 @@ slots
 small
 smaller
 smallest
+smoke
 sms
 snippets
 so
@@ -2402,6 +2415,7 @@ standalone
 standard
 starlight
 start
+starter
 starting
 starts
 state
@@ -2506,6 +2520,8 @@ tags
 tailwind
 take
 taking
+talkback
+tarball
 tarballs
 target
 targeted
@@ -2592,6 +2608,7 @@ total
 touch
 touch-first
 touch-friendly
+touch-target
 toward
 tracks
 tradeoffs
@@ -2710,6 +2727,7 @@ validate
 validated
 validates
 validation
+validators
 validity
 value
 values
@@ -2747,6 +2765,7 @@ visual
 visual-viewport
 visually
 vocabulary
+voiceover
 voices
 vue
 vue's
