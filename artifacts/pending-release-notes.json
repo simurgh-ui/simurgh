@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "packages": {
+    "@simurgh-ui/angular": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "quiet-modals-isolate",
+        "level": "patch",
+        "summary": "Lock document scrolling and make background content inert while a Dialog is open, with nesting-safe\ncleanup when dialogs close or are interrupted by adapter unmounts."
+      },
+      {
+        "changeset": "smart-composites-navigate",
+        "level": "patch",
+        "summary": "Add typeahead navigation to composite widgets, skip disabled Tabs triggers consistently, and keep\nVue Tabs navigation reactive when orientation or direction changes."
+      },
+      {
+        "changeset": "smart-forms-reset",
+        "level": "patch",
+        "summary": "Restore each form-capable component's initial value when its owning form resets, preserve native serialization and validation behavior, and avoid committing IME composition keystrokes in composite inputs."
+      }
+    ],
+    "@simurgh-ui/cli": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      }
+    ],
+    "@simurgh-ui/core": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "quiet-modals-isolate",
+        "level": "patch",
+        "summary": "Lock document scrolling and make background content inert while a Dialog is open, with nesting-safe\ncleanup when dialogs close or are interrupted by adapter unmounts."
+      },
+      {
+        "changeset": "smart-composites-navigate",
+        "level": "patch",
+        "summary": "Add typeahead navigation to composite widgets, skip disabled Tabs triggers consistently, and keep\nVue Tabs navigation reactive when orientation or direction changes."
+      },
+      {
+        "changeset": "smart-forms-reset",
+        "level": "patch",
+        "summary": "Restore each form-capable component's initial value when its owning form resets, preserve native serialization and validation behavior, and avoid committing IME composition keystrokes in composite inputs."
+      }
+    ],
+    "@simurgh-ui/icons": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      }
+    ],
+    "@simurgh-ui/motion": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      }
+    ],
+    "@simurgh-ui/react": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "quiet-modals-isolate",
+        "level": "patch",
+        "summary": "Lock document scrolling and make background content inert while a Dialog is open, with nesting-safe\ncleanup when dialogs close or are interrupted by adapter unmounts."
+      },
+      {
+        "changeset": "smart-composites-navigate",
+        "level": "patch",
+        "summary": "Add typeahead navigation to composite widgets, skip disabled Tabs triggers consistently, and keep\nVue Tabs navigation reactive when orientation or direction changes."
+      },
+      {
+        "changeset": "smart-forms-reset",
+        "level": "patch",
+        "summary": "Restore each form-capable component's initial value when its owning form resets, preserve native serialization and validation behavior, and avoid committing IME composition keystrokes in composite inputs."
+      }
+    ],
+    "@simurgh-ui/registry": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      }
+    ],
+    "@simurgh-ui/styles": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      }
+    ],
+    "@simurgh-ui/vue": [
+      {
+        "changeset": "clean-package-metadata",
+        "level": "patch",
+        "summary": "Declare the MIT license and complete the public repository metadata in every published package."
+      },
+      {
+        "changeset": "quiet-modals-isolate",
+        "level": "patch",
+        "summary": "Lock document scrolling and make background content inert while a Dialog is open, with nesting-safe\ncleanup when dialogs close or are interrupted by adapter unmounts."
+      },
+      {
+        "changeset": "smart-composites-navigate",
+        "level": "patch",
+        "summary": "Add typeahead navigation to composite widgets, skip disabled Tabs triggers consistently, and keep\nVue Tabs navigation reactive when orientation or direction changes."
+      },
+      {
+        "changeset": "smart-forms-reset",
+        "level": "patch",
+        "summary": "Restore each form-capable component's initial value when its owning form resets, preserve native serialization and validation behavior, and avoid committing IME composition keystrokes in composite inputs."
+      }
+    ]
+  }
+}

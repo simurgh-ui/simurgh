@@ -584,7 +584,7 @@ roadmap and are not duplicated here.
 
 - [x] Add Changesets-driven release-candidate and publish workflows with human approval before
       registry publication.
-- [ ] Generate package-scoped release notes and validate that every consumer-visible package change
+- [x] Generate package-scoped release notes and validate that every consumer-visible package change
       has an appropriate Changeset entry.
 - [ ] Pack every publishable package and run export, type-resolution, package-content, installation,
       and framework quick-start checks against tarballs rather than workspace source.

@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
           version: 11.16.0
@@ -29,6 +31,9 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - run: pnpm test:release-notes
+        env:
+          CHANGESET_BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'origin/main' }}
       - run: pnpm coverage
       - run: pnpm --filter @simurgh-ui/docs feedback
       - run: pnpm --filter @simurgh-ui/docs readiness
