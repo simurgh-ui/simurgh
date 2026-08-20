@@ -66,8 +66,10 @@ const strategies = [
   ),
 ];
 
-const rawSvg = await readFile(
-  resolve(root, 'packages/icons/svg/arrow-right.svg'),
+const rawSvg = Buffer.from(
+  (
+    await readFile(resolve(root, 'packages/icons/svg/arrow-right.svg'), 'utf8')
+  ).replaceAll('\r\n', '\n'),
 );
 strategies.push({
   id: 'raw-svg',

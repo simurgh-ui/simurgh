@@ -42,9 +42,9 @@
       "label": "Raw SVG asset",
       "example": "import arrowRightUrl from '@simurgh-ui/icons/svg/arrow-right';",
       "delivery": "Standalone SVG asset",
-      "minified": 762,
-      "gzip": 474,
-      "brotli": 401,
+      "minified": 755,
+      "gzip": 469,
+      "brotli": 398,
       "retainedIconDefinitions": 1,
       "consequence": "Ships one authored asset and no framework adapter; behavior and accessibility are consumer-owned."
     }
