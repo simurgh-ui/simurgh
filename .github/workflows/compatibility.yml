@@ -1,0 +1,75 @@
+name: Browser and framework compatibility
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 3 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    name: ${{ matrix.framework }} ${{ matrix.major }} / ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [react, vue, angular]
+        edge: [oldest, newest]
+        browser: [chromium, firefox, webkit]
+        include:
+          - {
+              framework: react,
+              edge: oldest,
+              major: 18,
+              install: 'react@18 react-dom@18 @types/react@18 @types/react-dom@18',
+            }
+          - {
+              framework: react,
+              edge: newest,
+              major: 19,
+              install: 'react@19 react-dom@19 @types/react@19 @types/react-dom@19',
+            }
+          - {
+              framework: vue,
+              edge: oldest,
+              major: 3.4,
+              install: 'vue@3.4 @vue/server-renderer@3.4',
+            }
+          - {
+              framework: vue,
+              edge: newest,
+              major: 3.5,
+              install: 'vue@3.5 @vue/server-renderer@3.5',
+            }
+          - {
+              framework: angular,
+              edge: oldest,
+              major: 18,
+              install: '@angular/common@18 @angular/compiler@18 @angular/compiler-cli@18 @angular/core@18 @angular/platform-browser@18 @angular/platform-browser-dynamic@18 @angular/platform-server@18 typescript@5.5',
+            }
+          - {
+              framework: angular,
+              edge: newest,
+              major: 20,
+              install: '@angular/common@20 @angular/compiler@20 @angular/compiler-cli@20 @angular/core@20 @angular/platform-browser@20 @angular/platform-browser-dynamic@20 @angular/platform-server@20 typescript@5.9',
+            }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.16.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install ${{ matrix.framework }} ${{ matrix.major }}
+        run: pnpm add --workspace-root --save-dev --lockfile=false ${{ matrix.install }}
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+      - name: Exercise documentation and adapter journeys
+        run: pnpm exec playwright test e2e/docs.spec.ts e2e/docs.task-journey.spec.ts --project=${{ matrix.browser }}

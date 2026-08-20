@@ -19,6 +19,7 @@ export default defineConfig({
       'node apps/docs/node_modules/astro/astro.js preview --root apps/docs --host 127.0.0.1 --port 4321',
     env: { ASTRO_TELEMETRY_DISABLED: '1' },
     url: 'http://127.0.0.1:4321',
+    timeout: 180_000,
     reuseExistingServer: !process.env.CI,
   },
   projects: [

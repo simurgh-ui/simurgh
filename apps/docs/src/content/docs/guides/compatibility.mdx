@@ -3,21 +3,21 @@ title: Compatibility
 description: Supported framework peer versions, package requirements, browser engines, and CI verification scope.
 ---
 
-Simurgh is pre-release. This page distinguishes **declared compatibility** from **versions exercised
-in this repository**. A peer range allows installation; CI coverage provides stronger evidence for
-the exact versions and environments it runs.
+Simurgh is pre-release. Compatibility runs in CI: every pull request runs the oldest and newest
+supported framework peers against Chromium, Firefox, and WebKit. CI also runs every seven days to
+detect browser changes. A peer range allows installation; this matrix provides evidence at
+both supported edges.
 
 ## Framework compatibility
 
-| Adapter               | Declared peer requirement         | Repository development version | CI verification                                                                                                         |
-| --------------------- | --------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| `@simurgh-ui/react`   | React `>=18` and React DOM `>=18` | React `19.1.1`                 | Type checks, contract tests, package quick start, build, and browser documentation scenarios.                           |
-| `@simurgh-ui/vue`     | Vue `>=3.4`                       | Vue `3.5.22`                   | Type checks, contract tests, package quick start, build, and browser documentation scenarios.                           |
-| `@simurgh-ui/angular` | Angular Core and Common `>=18`    | Angular `20.3.2`               | Angular compilation, contract tests, package quick start, production-size fixture, and browser documentation scenarios. |
+| Adapter               | Declared peer requirement         | Repository development version | CI verification                                     |
+| --------------------- | --------------------------------- | ------------------------------ | --------------------------------------------------- |
+| `@simurgh-ui/react`   | React `>=18` and React DOM `>=18` | React `19.2.8`                 | React 18 and 19 on Chromium, Firefox, and WebKit.   |
+| `@simurgh-ui/vue`     | Vue `>=3.4`                       | Vue `3.5.41`                   | Vue 3.4 and 3.5 on Chromium, Firefox, and WebKit.   |
+| `@simurgh-ui/angular` | Angular Core and Common `>=18`    | Angular `20.3.27`              | Angular 18 and 20 on Chromium, Firefox, and WebKit. |
 
-The repository does not currently run a framework-version matrix for every minor version inside
-those peer ranges. Treat the lower peer bound as intended install support, report failures with a
-minimal reproduction, and use the development versions above when maximum verification is needed.
+The matrix verifies the lower and upper supported edges rather than every minor release. Failures at
+either edge block a merge.
 
 Install only one framework adapter in a consuming application. Framework peer dependencies remain
 the application's responsibility; Simurgh does not bundle React, Vue, or Angular into the adapter.

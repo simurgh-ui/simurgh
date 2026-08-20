@@ -563,7 +563,7 @@ roadmap and are not duplicated here.
       and browser form submission for every form-capable component.
 - [x] Add SSR and hydration fixtures for every supported framework major, including generated IDs,
       portals, browser-only APIs, lazy overlays, and streamed or deferred content.
-- [ ] Maintain an executable browser/framework compatibility matrix covering the oldest and newest
+- [x] Maintain an executable browser/framework compatibility matrix covering the oldest and newest
       supported peer versions rather than documenting untested version ranges.
 - [ ] Add representative mobile screen-reader smoke tests and retain manual evidence for zoom,
       forced colors, reduced motion, touch targets, and focus appearance.
