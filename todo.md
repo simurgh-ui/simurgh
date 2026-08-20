@@ -600,7 +600,7 @@ roadmap and are not duplicated here.
 - [ ] Add CLI dry-run and machine-readable output for `init`, `add`, `list`, and `diff`.
 - [x] Improve `simurgh diff` guidance for customized generated source, conflict resolution, registry
       upgrades, and safe adoption of upstream fixes.
-- [ ] Version the registry schema and provide migrations or actionable compatibility errors for
+- [x] Version the registry schema and provide migrations or actionable compatibility errors for
       older `simurgh.json` files and generated-source metadata.
 - [ ] Publish maintained starter applications for React, Vue, and Angular using packed or released
       artifacts and production-representative configuration.

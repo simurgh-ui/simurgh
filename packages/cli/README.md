@@ -17,6 +17,11 @@ packages, creates `simurgh.json`, and copies the token stylesheet and recipe ind
 command copies only the selected component recipes into `styles/simurgh/components/` and updates
 the index. A framework can also be selected explicitly:
 
+`simurgh.json` uses `schemaVersion: 1`. The CLI automatically migrates the original unversioned
+configuration to schema 1 and rejects newer schemas with an instruction to upgrade the CLI.
+Generated component files carry a machine-readable schema, registry version, framework, and
+component header before the source-ownership notice.
+
 ```sh
 pnpm dlx @simurgh-ui/cli init --framework react
 pnpm dlx @simurgh-ui/cli init --framework vue --skip-install

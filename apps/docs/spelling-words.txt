@@ -514,6 +514,8 @@ concise
 conditional
 conditionally
 conduct
+config
+configs
 configurable
 configuration
 configurations
@@ -1060,6 +1062,7 @@ generally
 generate
 generated
 generated-registry
+generated-source
 generic
 generous
 genuinely
@@ -1467,6 +1470,7 @@ meter
 method
 methods
 middleware
+migrate
 migrating
 migration
 migrations
@@ -1564,6 +1568,7 @@ never
 new
 newer
 newest
+newly
 next
 next.js
 ngmodule
@@ -2146,6 +2151,7 @@ scalar
 scale
 scatter
 scenarios
+schema
 scheme
 scope
 scoped
@@ -2588,16 +2594,19 @@ unpressed
 unrecognized
 unrelated
 unsuffixed
+unsupported
 unsure
 unsynchronized
 until
 untyped
 unused
+unversioned
 up
 update
 updated
 updates
 updating
+upgrade
 upgrades
 upgrading
 upload

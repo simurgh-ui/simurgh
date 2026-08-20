@@ -15,11 +15,14 @@ import pc from 'picocolors';
 import ts from 'typescript';
 
 type Config = {
+  schemaVersion: 1;
   framework: Framework;
   components: string;
   styles: string;
   registryVersion: string;
 };
+const CONFIG_SCHEMA_VERSION = 1 as const;
+const GENERATED_SOURCE_SCHEMA_VERSION = 1 as const;
 const cwd = () => process.cwd();
 const configPath = () => join(cwd(), 'simurgh.json');
 function readJson<T>(path: string): T {
@@ -42,7 +45,35 @@ function detectFramework(): Framework {
 function loadConfig(): Config {
   if (!existsSync(configPath()))
     throw new Error('simurgh.json not found. Run `simurgh init` first.');
-  return readJson<Config>(configPath());
+  const config = readJson<Partial<Config> & { schemaVersion?: unknown }>(
+    configPath(),
+  );
+  if (config.schemaVersion === undefined) {
+    const migrated = { schemaVersion: CONFIG_SCHEMA_VERSION, ...config };
+    writeFileSync(configPath(), `${JSON.stringify(migrated, null, 2)}\n`);
+    console.log(pc.green('Migrated simurgh.json from schema 0 to schema 1.'));
+    return migrated as Config;
+  }
+  if (config.schemaVersion !== CONFIG_SCHEMA_VERSION) {
+    throw new Error(
+      typeof config.schemaVersion === 'number' &&
+        config.schemaVersion > CONFIG_SCHEMA_VERSION
+        ? `simurgh.json uses schema ${config.schemaVersion}, but this CLI supports schema ${CONFIG_SCHEMA_VERSION}. Upgrade @simurgh-ui/cli before continuing.`
+        : `Unsupported simurgh.json schema ${String(config.schemaVersion)}. Restore a schema 1 config or rerun \`simurgh init\` in a clean application and migrate your paths.`,
+    );
+  }
+  if (
+    !config.framework ||
+    !(config.framework in manifest.frameworks) ||
+    typeof config.components !== 'string' ||
+    typeof config.styles !== 'string' ||
+    typeof config.registryVersion !== 'string'
+  ) {
+    throw new Error(
+      'Invalid simurgh.json schema 1 config. Expected framework, components, styles, and registryVersion. Run `simurgh init` in a clean application to generate a reference config, then migrate your reviewed paths.',
+    );
+  }
+  return config as Config;
 }
 function assetRoot(): string {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), '../assets');
@@ -345,11 +376,18 @@ function expectedSource(config: Config, component: string): string {
   const sourcePath = existsSync(componentSource)
     ? componentSource
     : join(assetRoot(), `${config.framework}.${entry.extension}`);
-  return extractComponentSource(
+  const source = extractComponentSource(
     readFileSync(sourcePath, 'utf8'),
     entry.symbols,
     sourcePath,
   );
+  const metadata = JSON.stringify({
+    schemaVersion: GENERATED_SOURCE_SCHEMA_VERSION,
+    registryVersion: manifest.version,
+    framework: config.framework,
+    component,
+  });
+  return `// @simurgh-ui/generated ${metadata}\n${source}`;
 }
 
 function printDiffGuidance(config: Config, components: readonly string[]) {
@@ -392,6 +430,7 @@ cli
     const root = assetRoot();
     const paths = projectPaths(framework);
     const config: Config = {
+      schemaVersion: CONFIG_SCHEMA_VERSION,
       framework,
       ...paths,
       registryVersion: manifest.version,

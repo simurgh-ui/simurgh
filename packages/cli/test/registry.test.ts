@@ -65,6 +65,59 @@ describe('registry', () => {
 });
 
 describe('CLI application fixture', () => {
+  it('migrates legacy configs and rejects newer schemas with upgrade guidance', () => {
+    const fixture = mkdtempSync(join(tmpdir(), 'simurgh-schema-'));
+    const cli = fileURLToPath(new URL('../dist/index.js', import.meta.url));
+    const configPath = join(fixture, 'simurgh.json');
+    const legacyConfig = {
+      framework: 'react',
+      components: 'src/components/ui',
+      styles: 'src/styles/simurgh',
+      registryVersion: manifest.version,
+    };
+    try {
+      writeFileSync(configPath, `${JSON.stringify(legacyConfig, null, 2)}\n`);
+      const migrated = spawnSync(process.execPath, [cli, 'diff'], {
+        cwd: fixture,
+        encoding: 'utf8',
+      });
+      expect(migrated.stdout).toContain(
+        'Migrated simurgh.json from schema 0 to schema 1.',
+      );
+      expect(JSON.parse(readFileSync(configPath, 'utf8')).schemaVersion).toBe(
+        1,
+      );
+
+      writeFileSync(
+        configPath,
+        `${JSON.stringify({ ...legacyConfig, schemaVersion: 2 }, null, 2)}\n`,
+      );
+      const future = spawnSync(process.execPath, [cli, 'diff'], {
+        cwd: fixture,
+        encoding: 'utf8',
+      });
+      expect(future.status).toBe(1);
+      expect(future.stderr).toContain(
+        'Upgrade @simurgh-ui/cli before continuing.',
+      );
+
+      writeFileSync(
+        configPath,
+        `${JSON.stringify({ schemaVersion: 1, framework: 'react' }, null, 2)}\n`,
+      );
+      const invalid = spawnSync(process.execPath, [cli, 'diff'], {
+        cwd: fixture,
+        encoding: 'utf8',
+      });
+      expect(invalid.status).toBe(1);
+      expect(invalid.stderr).toContain(
+        'Invalid simurgh.json schema 1 config.',
+      );
+    } finally {
+      rmSync(fixture, { recursive: true, force: true });
+    }
+  });
+
   it.each([
     ['react', 'react', 'src/components/ui/button.tsx', 'export const Button'],
     ['vue', 'vue', 'src/components/ui/button.ts', 'export const Button'],
@@ -100,7 +153,8 @@ describe('CLI application fixture', () => {
 
         const config = JSON.parse(
           readFileSync(join(fixture, 'simurgh.json'), 'utf8'),
-        ) as { framework: string };
+        ) as { schemaVersion: number; framework: string };
+        expect(config.schemaVersion).toBe(1);
         expect(config.framework).toBe(framework);
         expect(readFileSync(join(fixture, componentPath), 'utf8')).toContain(
           expectedExport,
@@ -108,6 +162,9 @@ describe('CLI application fixture', () => {
         const generatedSource = readFileSync(
           join(fixture, componentPath),
           'utf8',
+        );
+        expect(generatedSource).toContain(
+          `// @simurgh-ui/generated {"schemaVersion":1,"registryVersion":"${manifest.version}","framework":"${framework}","component":"button"}`,
         );
         const importedModules = [
           ...generatedSource.matchAll(/\bfrom\s+['"]([^'"]+)['"]/gu),

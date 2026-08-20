@@ -7,6 +7,12 @@ The update process depends on the installation model. Package consumers update d
 CLI consumers own copied source and decide how to reconcile it with the current registry. Check the
 component's import path when you are unsure which model it uses.
 
+Current projects use `schemaVersion: 1` in `simurgh.json`. The CLI automatically adds that version
+to legacy unversioned configs while preserving their framework and paths. If a config uses a newer
+schema, upgrade `@simurgh-ui/cli`; if its schema is otherwise unsupported, create a clean schema 1
+config with `simurgh init` and migrate the reviewed paths. Newly copied component files also record
+generated-source schema 1, the registry version, framework, and component in their header.
+
 Applications upgrading positioned overlays should also read the
 [overlay positioning migration](/guides/overlay-positioning-migration/). It records the supported
 positioning subset, interaction differences, dependency cleanup, and measured bundle change.
