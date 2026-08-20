@@ -96,6 +96,13 @@ Observation:
 
 User-confirmed pass on 2026-08-13.
 
+The final mobile audit must use physical Android and iOS devices. Copy
+`research/manual-accessibility-evidence.template.json` to
+`artifacts/manual-accessibility-evidence.json`, replace every placeholder with exact versions and
+observations, and validate it with `pnpm research:accessibility`. The validator requires TalkBack
+and VoiceOver sessions plus explicit zoom, forced-colors, reduced-motion, touch-target, and focus
+appearance evidence; unresolved issues prevent sign-off.
+
 ## Sign-off
 
 - [ ] All task-based steps passed.

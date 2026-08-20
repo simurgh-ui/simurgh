@@ -15,6 +15,7 @@
     "chart:performance": "node scripts/benchmark-charts.mjs",
     "research:icons": "node scripts/aggregate-icon-study.mjs",
     "research:release-candidate": "node scripts/aggregate-release-candidate-study.mjs",
+    "research:accessibility": "node scripts/check-manual-accessibility-evidence.mjs",
     "changeset": "changeset",
     "format": "prettier --write .",
     "release": "changeset publish",
@@ -26,7 +27,7 @@
     "test:tarballs": "node scripts/check-packed-packages.mjs",
     "test:api-reports": "node scripts/check-api-reports.mjs",
     "test:registry-versions": "node scripts/check-registry-versions.mjs",
-    "test:release": "node scripts/check-governance.mjs && node scripts/check-package-metadata.mjs && node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs && node scripts/check-api-reports.mjs && node scripts/check-stability-policy.mjs && node scripts/check-icon-evidence-policy.mjs && node --test scripts/aggregate-icon-study.test.mjs scripts/aggregate-release-candidate-study.test.mjs scripts/check-registry-versions.test.mjs",
+    "test:release": "node scripts/check-governance.mjs && node scripts/check-package-metadata.mjs && node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs && node scripts/check-api-reports.mjs && node scripts/check-stability-policy.mjs && node scripts/check-icon-evidence-policy.mjs && node --test scripts/aggregate-icon-study.test.mjs scripts/aggregate-release-candidate-study.test.mjs scripts/check-manual-accessibility-evidence.test.mjs scripts/check-registry-versions.test.mjs",
     "version-packages": "changeset version"
   },
   "devDependencies": {

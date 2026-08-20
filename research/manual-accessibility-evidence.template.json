@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "YYYY-MM-DD",
+  "commitSha": "40-character-git-commit-sha",
+  "packageVersion": "release-candidate-version",
+  "mobileScreenReaderSessions": [
+    {
+      "platform": "android",
+      "platformVersion": "exact-version",
+      "physicalDevice": true,
+      "screenReader": "TalkBack",
+      "screenReaderVersion": "exact-version",
+      "browser": "Chrome",
+      "browserVersion": "exact-version",
+      "checks": {
+        "requiredFormError": {
+          "passed": null,
+          "observation": "exact announcement or issue code"
+        },
+        "dialogContextAndFocus": {
+          "passed": null,
+          "observation": "exact announcement or issue code"
+        },
+        "nativeSelect": {
+          "passed": null,
+          "observation": "exact announcement or issue code"
+        },
+        "toastAnnouncement": {
+          "passed": null,
+          "observation": "exact announcement or issue code"
+        }
+      }
+    },
+    {
+      "platform": "ios",
+      "platformVersion": "exact-version",
+      "physicalDevice": true,
+      "screenReader": "VoiceOver",
+      "screenReaderVersion": "exact-version",
+      "browser": "Safari",
+      "browserVersion": "exact-version",
+      "checks": {
+        "requiredFormError": {
+          "passed": null,
+          "observation": "exact announcement or issue code"
+        },
+        "dialogContextAndFocus": {
+          "passed": null,
+          "observation": "exact announcement or issue code"
+        },
+        "nativeSelect": {
+          "passed": null,
+          "observation": "exact announcement or issue code"
+        },
+        "toastAnnouncement": {
+          "passed": null,
+          "observation": "exact announcement or issue code"
+        }
+      }
+    }
+  ],
+  "manualChecks": {
+    "zoom200Percent": {
+      "passed": null,
+      "platform": "exact platform and browser",
+      "observation": "what was checked"
+    },
+    "forcedColors": {
+      "passed": null,
+      "platform": "exact platform and browser",
+      "observation": "what was checked"
+    },
+    "reducedMotion": {
+      "passed": null,
+      "platform": "exact platform and browser",
+      "observation": "what was checked"
+    },
+    "touchTargets": {
+      "passed": null,
+      "platform": "exact physical device",
+      "observation": "measurement and controls checked"
+    },
+    "focusAppearance": {
+      "passed": null,
+      "platform": "exact platform and browser",
+      "observation": "controls and themes checked"
+    }
+  },
+  "issues": []
+}
