@@ -1,5 +1,5 @@
 import type { Direction } from '@simurgh-ui/core';
-import { defineComponent, h, ref, type PropType } from 'vue';
+import { defineComponent, h, nextTick, ref, type PropType } from 'vue';
 import { useFormReset } from '../internal/forms.js';
 
 const dateValue = (date: Date) => date.toJSON().slice(0, 10);
@@ -95,7 +95,7 @@ export const Calendar = /* @__PURE__ */ defineComponent({
     });
     const focusDate = (date: string) => {
       if (date.slice(0, 7) !== displayedMonth()) setMonth(date.slice(0, 7));
-      requestAnimationFrame(() =>
+      void nextTick(() =>
         root.value
           ?.querySelector<HTMLElement>(`[data-date="${date}"]`)
           ?.focus(),

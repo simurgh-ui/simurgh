@@ -652,7 +652,7 @@ describe('Vue accessibility contract', () => {
     });
     twelfth.focus();
     await fireEvent.keyDown(twelfth, { key: 'ArrowRight' });
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await nextTick();
     const thirteenth = screen.getByRole('button', {
       name: 'Thursday, August 13, 2026',
     });
@@ -670,7 +670,7 @@ describe('Vue accessibility contract', () => {
     });
     augustThirtyFirst.focus();
     await fireEvent.keyDown(augustThirtyFirst, { key: 'PageDown' });
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await nextTick();
     expect(
       screen.getByRole('button', {
         name: 'Wednesday, September 30, 2026',
