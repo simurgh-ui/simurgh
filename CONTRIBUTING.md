@@ -35,7 +35,8 @@ parity. Do not update visual snapshots without reviewing the rendered difference
 Add a Changeset for every consumer-visible change to a published package. Choose the smallest
 appropriate release level and explain migrations for breaking pre-release changes. Internal tests,
 documentation-only changes, and repository maintenance do not require a package release unless
-they alter published files.
+they alter published files. After Changesets are merged to `main`, automation collects them into a
+release pull request and generates each affected package's `CHANGELOG.md` entry.
 
 Keep pull requests scoped, describe the consumer-visible result, and complete the repository pull
 request checklist. By contributing, you agree that your contribution is provided under the

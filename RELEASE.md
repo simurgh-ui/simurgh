@@ -1,7 +1,9 @@
 # Release operations
 
-Simurgh packages use independent versions managed by Changesets. Releases are deliberately manual:
-an authorized maintainer starts the **Release** workflow, and the `npm` GitHub environment should
+Simurgh packages use independent versions managed by Changesets. When Changesets reach `main`, the
+**Changelog** workflow automatically creates or updates a release pull request containing package
+version bumps and generated `CHANGELOG.md` entries. Publishing remains deliberately manual: an
+authorized maintainer starts the **Release** workflow, and the `npm` GitHub environment should
 require a reviewer before the job can access publication credentials.
 
 ## Configure release access
@@ -19,10 +21,10 @@ require a reviewer before the job can access publication credentials.
 
 1. Confirm all consumer-visible package changes have an accurate Changeset.
 2. Run CI from a clean checkout and review package, API, accessibility, and bundle-size changes.
-3. Start the Release workflow on `main`.
-4. Review and merge the release pull request created by Changesets.
-5. Start the workflow again after merge to publish the versioned packages.
-6. Verify npm package contents, provenance, changelogs, documentation links, and framework quick
+3. Review the version and changelog pull request automatically maintained by the Changelog
+   workflow, then merge it.
+4. Start the Release workflow on `main` to publish the versioned packages.
+5. Verify npm package contents, provenance, changelogs, documentation links, and framework quick
    starts using the published versions.
 
 Never publish from an uncommitted local working tree or bypass a failed release gate.

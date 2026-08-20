@@ -8,9 +8,8 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
   id-token: write
-  pull-requests: write
 
 jobs:
   release:
@@ -36,12 +35,7 @@ jobs:
       - run: pnpm test:release
       - run: pnpm test:quick-starts
       - run: pnpm bundle:size
-      - uses: changesets/action@v1
-        with:
-          publish: pnpm release
-          title: 'chore: release packages'
-          commit: 'chore: release packages'
+      - run: pnpm release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'

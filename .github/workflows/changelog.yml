@@ -1,0 +1,37 @@
+name: Changelog
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: simurgh-changelog
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    name: Update release changelogs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.16.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: changesets/action@v1
+        with:
+          version: pnpm version-packages
+          title: 'chore: update package versions and changelogs'
+          commit: 'chore: update package versions and changelogs'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
