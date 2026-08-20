@@ -64,7 +64,7 @@ const measure = async (source, size) => {
 if (!checkOnly) await mkdir(outputDirectory, { recursive: true });
 const records = [];
 
-const persist = async (path, contents) => {
+const persist = async (path, contents, { checkContents = true } = {}) => {
   if (!checkOnly) {
     await writeFile(path, contents);
     return;
@@ -75,6 +75,11 @@ const persist = async (path, contents) => {
   } catch {
     throw new Error(`Missing generated icon optical-review artifact: ${path}`);
   }
+  // Review sheets contain platform-rendered text. Font substitution and native
+  // libvips differences make their PNG bytes vary between Windows and Linux,
+  // so CI can only require that these human-review artifacts are present. The
+  // platform-independent JSON audit below remains content-checked for staleness.
+  if (!checkContents) return;
   const expected = Buffer.isBuffer(contents) ? contents : Buffer.from(contents);
   if (!current.equals(expected)) {
     throw new Error(
@@ -129,7 +134,9 @@ for (const size of sizes) {
       ${cells.join('')}
     </svg>`);
   const renderedSheet = await sharp(sheet).png().toBuffer();
-  await persist(resolve(outputDirectory, `icons-${size}px.png`), renderedSheet);
+  await persist(resolve(outputDirectory, `icons-${size}px.png`), renderedSheet, {
+    checkContents: false,
+  });
 }
 
 const grouped = Object.groupBy(records, ({ icon }) => icon);
