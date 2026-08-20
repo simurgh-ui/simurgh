@@ -163,6 +163,7 @@ import {
 afterEach(cleanup);
 
 describe('React accessibility contract', () => {
+  describe('overlays and dialogs', () => {
   it('opens a named modal and passes an axe audit', async () => {
     render(
       <Dialog>
@@ -304,7 +305,10 @@ describe('React accessibility contract', () => {
     expect(screen.queryByRole('menu')).toBeNull();
   });
 
-  it('serializes checkbox state and emits changes', () => {
+  });
+
+  describe('composite widgets and form controls', () => {
+    it('serializes checkbox state and emits changes', () => {
     const change = vi.fn();
     render(
       <form>
@@ -779,7 +783,10 @@ describe('React accessibility contract', () => {
     expect(screen.queryByText('Accessibility')).toBeNull();
     expect((await axe.run(form)).violations).toEqual([]);
   });
-  it('associates a native label with its form control', async () => {
+  });
+
+  describe('semantic and native foundations', () => {
+    it('associates a native label with its form control', async () => {
     render(
       <main>
         <Label htmlFor="email">Email address</Label>
@@ -1320,5 +1327,6 @@ describe('React accessibility contract', () => {
     expect(container.querySelector('dd')?.textContent).toBe(
       'Angular, React, and Vue',
     );
+  });
   });
 });

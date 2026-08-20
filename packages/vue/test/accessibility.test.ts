@@ -157,6 +157,7 @@ import {
 afterEach(cleanup);
 
 describe('Vue accessibility contract', () => {
+  describe('semantic and structural foundations', () => {
   it('opens a side-anchored sheet and restores trigger focus', async () => {
     render({
       components: {
@@ -396,7 +397,10 @@ describe('Vue accessibility contract', () => {
       'Angular, React, and Vue',
     );
   });
-  it('opens a modal and passes an axe audit', async () => {
+  });
+
+  describe('overlays, composite widgets, and form controls', () => {
+    it('opens a modal and passes an axe audit', async () => {
     render({
       components: { Dialog, DialogTrigger, DialogContent },
       template: `<Dialog><DialogTrigger>Open settings</DialogTrigger><DialogContent aria-label="Settings"><button>Save</button></DialogContent></Dialog>`,
@@ -900,7 +904,10 @@ describe('Vue accessibility contract', () => {
     expect(screen.queryByText('Accessibility')).toBeNull();
     expect((await axe.run(view.container)).violations).toEqual([]);
   });
-  it('associates a native label with its form control', async () => {
+  });
+
+  describe('native controls and presentation semantics', () => {
+    it('associates a native label with its form control', async () => {
     render({
       components: { Label },
       template: `<main><Label for="email">Email address</Label><input id="email" /></main>`,
@@ -1217,5 +1224,6 @@ describe('Vue accessibility contract', () => {
     expect(screen.getByText('Button').getAttribute('aria-current')).toBe(
       'page',
     );
+  });
   });
 });

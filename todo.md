@@ -544,7 +544,7 @@ roadmap and are not duplicated here.
       existing standalone and aggregate bundle budgets during the React decomposition.
 - [x] Remove `--passWithNoTests` from packages expected to own tests so accidental test-discovery
       failures cannot pass CI.
-- [ ] Split monolithic framework accessibility suites into component or behavior-family suites with
+- [x] Split monolithic framework accessibility suites into component or behavior-family suites with
       clear ownership and failure localization.
 - [x] Generate a framework-parity matrix from the registry and fail CI when a registered component
       lacks an implementation, export, style status, documentation page, or required contract test.

@@ -1041,6 +1041,7 @@ class BadgeHost {}
 class BreadcrumbHost {}
 
 describe('Angular accessibility contract', () => {
+  describe('overlays, composite widgets, and form controls', () => {
   it('focuses the safe action in a destructive alert dialog', async () => {
     const fixture = TestBed.createComponent(AlertDialogHost);
     fixture.detectChanges();
@@ -1735,7 +1736,10 @@ describe('Angular accessibility contract', () => {
     expect((await axe.run(fixture.nativeElement)).violations).toEqual([]);
     fixture.destroy();
   });
-  it('associates a native label with its form control', async () => {
+  });
+
+  describe('semantic and native foundations', () => {
+    it('associates a native label with its form control', async () => {
     const fixture = TestBed.createComponent(LabelHost);
     fixture.detectChanges();
     const label = fixture.nativeElement.querySelector(
@@ -2222,5 +2226,6 @@ describe('Angular accessibility contract', () => {
       'Angular, React, and Vue',
     );
     fixture.destroy();
+  });
   });
 });
