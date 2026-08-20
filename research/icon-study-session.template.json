@@ -1,0 +1,16 @@
+{
+  "policyVersion": 1,
+  "sessionCode": "random-code-created-for-this-session",
+  "consentRecorded": true,
+  "framework": "react | vue | angular",
+  "tasks": {
+    "findFromConcept": { "success": null, "seconds": null, "zeroResultQueries": null },
+    "compareCandidates": { "success": null, "mistakenSubstitutions": null },
+    "copyFrameworkImport": { "success": null },
+    "themeIcon": { "success": null },
+    "labelIconOnlyControl": { "success": null },
+    "verifyRtl": { "success": null }
+  },
+  "structuredIssueCodes": [],
+  "withdrawn": false
+}

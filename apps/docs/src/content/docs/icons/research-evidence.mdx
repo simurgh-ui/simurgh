@@ -1,0 +1,55 @@
+---
+title: Privacy-preserving research evidence
+description: Collect useful icon discovery evidence through consented, structured studies without product telemetry.
+---
+
+Simurgh does not collect icon searches, copied snippets, account data, or interaction events from
+the documentation site. Product telemetry is disabled. Discovery evidence comes from moderated,
+consented sessions using the versioned template in
+[`research/icon-study-session.template.json`](https://github.com/simurgh-ui/simurgh/blob/main/research/icon-study-session.template.json).
+
+## Study protocol
+
+1. Explain the tasks, data fields, retention period, and right to withdraw; record consent before
+   starting.
+2. Create a random session code used only for this study. Do not connect it to an account or a
+   recruitment list.
+3. Ask the participant to find an icon from a concept, compare similar candidates, copy the import
+   for their assigned framework, theme it, label an icon-only control, and verify RTL behavior.
+4. Record only booleans, elapsed seconds, counts, the assigned framework, and predefined issue
+   codes. Do not record screens, voices, arbitrary queries, application data, or free-form notes.
+5. Let the participant withdraw during or after the session. Delete withdrawn records immediately.
+6. Delete raw session records after 30 days. Publish only cohort aggregates containing at least
+   five sessions; suppress slices smaller than five.
+
+## Allowed metrics
+
+The machine-readable policy permits only these fields:
+
+- `search-success`
+- `time-to-first-correct-icon-seconds`
+- `zero-result-query-count`
+- `framework-import-copy-success`
+- `theme-task-success`
+- `icon-only-label-task-success`
+- `rtl-verification-success`
+- `mistaken-icon-substitution-count`
+
+Use structured issue codes for taxonomy, alias, comparison, copy, accessibility, and RTL problems.
+Do not store the participant's exact query: a moderator may increment the zero-result count and
+select a predefined taxonomy code instead.
+
+## Prohibited data
+
+Never collect or retain `name`, `email`, `ip-address`, `account-id`, `screen-recording`, or
+`free-form-product-data`. Recruitment and scheduling records stay outside the study dataset and are
+deleted under the recruiting service's own policy. Do not join study codes to repository, website,
+support, or package-registry activity.
+
+The repository check validates the policy, template, retention ceiling, cohort floor, prohibited
+fields, and metric names. Changing the protocol requires review before another session begins;
+completed sessions retain the policy version used when consent was obtained.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

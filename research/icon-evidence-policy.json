@@ -1,0 +1,28 @@
+{
+  "$schema": "./icon-evidence-policy.schema.json",
+  "version": 1,
+  "collectionMode": "moderated-structured-study",
+  "productTelemetryEnabled": false,
+  "consentRequired": true,
+  "participantIdentifier": "random-session-code",
+  "rawDataRetentionDays": 30,
+  "minimumPublishedCohortSize": 5,
+  "prohibitedFields": [
+    "name",
+    "email",
+    "ip-address",
+    "account-id",
+    "screen-recording",
+    "free-form-product-data"
+  ],
+  "metrics": [
+    "search-success",
+    "time-to-first-correct-icon-seconds",
+    "zero-result-query-count",
+    "framework-import-copy-success",
+    "theme-task-success",
+    "icon-only-label-task-success",
+    "rtl-verification-success",
+    "mistaken-icon-substitution-count"
+  ]
+}

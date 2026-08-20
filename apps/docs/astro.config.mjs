@@ -77,6 +77,10 @@ export default defineConfig({
               label: 'Accessibility and RTL',
               slug: 'icons/accessibility-and-rtl',
             },
+            {
+              label: 'Research evidence',
+              slug: 'icons/research-evidence',
+            },
           ],
         },
         { label: 'Components', autogenerate: { directory: 'components' } },

@@ -577,7 +577,7 @@ roadmap and are not duplicated here.
       tasks in the icon sections above before expanding the catalog.
 - [x] Generate review sheets for all icons at 16, 20, 24, and 32 pixels and retain approved sheets
       or targeted visual baselines as release evidence.
-- [ ] Document a privacy-preserving method for collecting icon-search evidence; use structured user
+- [x] Document a privacy-preserving method for collecting icon-search evidence; use structured user
       studies instead if product telemetry is not appropriate.
 
 ### Phase 4: make releases reproducible

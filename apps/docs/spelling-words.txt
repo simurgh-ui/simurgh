@@ -30,6 +30,7 @@ activating
 activation
 active
 active-item
+activity
 actual
 actually
 adapt
@@ -67,10 +68,12 @@ aggregates
 alert
 alert-dialog
 alerts
+alias
 align
 aligned
 alignment
 all
+allowed
 allowing
 allows
 alone
@@ -152,6 +155,7 @@ arrow
 arrows
 artwork
 as
+ask
 aspect
 assert
 assertive
@@ -159,6 +163,7 @@ assessed
 asset
 asset-import
 assets
+assigned
 assignee
 assigning
 assignment
@@ -247,6 +252,7 @@ blue
 body
 body-portalled
 boolean
+booleans
 border
 borders
 both
@@ -325,6 +331,7 @@ can
 cancel
 cancellation
 candidate
+candidates
 cannot
 canonical
 canvas
@@ -352,6 +359,7 @@ causal
 causality
 cause
 causes
+ceiling
 celebratory
 cell
 cells
@@ -433,10 +441,12 @@ codes
 codetabs
 codex
 coherence
+cohort
 collapse
 collapsed
 collapses
 collapsible
+collect
 collection
 collection-level
 collections
@@ -513,6 +523,7 @@ compound-component
 comprehension
 compression
 computed
+concept
 concepts
 concern
 concise
@@ -536,6 +547,8 @@ conflicts
 connect
 connected
 connects
+consent
+consented
 consequences
 consistent
 consistently
@@ -648,6 +661,7 @@ dark-mode
 dark-theme
 data
 data-heavy
+dataset
 date
 dates
 day
@@ -682,6 +696,7 @@ degree
 delay
 delays
 delete
+deleted
 deleting
 deliberate
 deliberately
@@ -827,6 +842,7 @@ effect
 effects
 eight
 either
+elapsed
 element
 elements
 elevation
@@ -1000,6 +1016,7 @@ flex
 flip
 flipping
 floating
+floor
 flow
 flows
 focus
@@ -1045,6 +1062,7 @@ framework-specific
 framework-switch
 framework's
 frameworks
+free-form
 fresh
 fresh-context
 fresh-reader
@@ -1310,6 +1328,7 @@ its
 itself
 jameh
 javascript
+join
 joins
 journey
 jump
@@ -1485,6 +1504,8 @@ metaphor
 meter
 method
 methods
+metric
+metrics
 middleware
 migrate
 migrating
@@ -1516,6 +1537,7 @@ mode
 model
 models
 moderated
+moderator
 modern
 modes
 modified
@@ -1630,6 +1652,7 @@ observation
 observations
 observed
 observer
+obtained
 occur
 occurs
 ochre
@@ -1718,6 +1741,7 @@ package
 package-consumer
 package-export
 package-import
+package-registry
 package-scoped
 packages
 packed
@@ -1738,6 +1762,8 @@ parent-owned
 parity
 part
 partial
+participant
+participant's
 participate
 participates
 particular
@@ -1831,6 +1857,7 @@ possible
 pre-release
 precise
 precisely
+predefined
 predictable
 predictably
 prefer
@@ -1869,6 +1896,7 @@ primitive
 primitives
 principles
 problem
+problems
 process
 processed
 produce
@@ -1881,6 +1909,7 @@ profile
 programmatic
 programmatically
 progress
+prohibited
 project
 project-owned
 project's
@@ -1897,6 +1926,7 @@ properties
 property
 proportion
 props
+protocol
 prove
 provenance
 provide
@@ -1977,6 +2007,8 @@ recording
 records
 recoverable
 recovery
+recruiting
+recruitment
 rectangles
 red
 redefining
@@ -2103,6 +2135,7 @@ retain
 retained
 retaining
 retains
+retention
 retested
 retries
 return
@@ -2174,6 +2207,7 @@ scalar
 scale
 scatter
 scenarios
+scheduling
 schema
 scheme
 scope
@@ -2191,6 +2225,7 @@ scrolled
 scrolling
 search
 searchable
+searches
 searching
 searchselectioncomponentpreview
 second
@@ -2232,6 +2267,9 @@ server-backed
 server-generated
 server-rendered
 server-side
+service's
+session
+sessions
 set
 sets
 setting
@@ -2299,6 +2337,7 @@ skeleton
 skip
 skipped
 skipping
+slices
 slide
 slider
 slides
@@ -2355,6 +2394,7 @@ standalone
 standard
 starlight
 start
+starting
 starts
 state
 state-consistency
@@ -2384,6 +2424,7 @@ structurally
 structure
 structured
 structures
+study
 style
 style-hook
 styled
@@ -2427,6 +2468,7 @@ support
 supported
 supporting
 supports
+suppress
 suppressing
 surface
 surfaces
@@ -2463,8 +2505,10 @@ targets
 task
 task-based
 tasks
+taxonomy
 teardown
 technology
+telemetry
 teleport
 template
 template-driven
@@ -2676,6 +2720,7 @@ verified
 verifies
 verify
 version
+versioned
 versioning
 versions
 vertical
@@ -2694,6 +2739,7 @@ visual
 visual-viewport
 visually
 vocabulary
+voices
 vue
 vue's
 walkthrough
@@ -2709,6 +2755,7 @@ wcag's
 weaken
 web
 webkit
+website
 webview
 week
 weight
@@ -2738,6 +2785,8 @@ window
 windows
 wins
 with
+withdraw
+withdrawn
 within
 without
 wording
@@ -2766,6 +2815,7 @@ yours
 yourself
 z-index
 zero
+zero-result
 zero-state
 zone
 zoom
