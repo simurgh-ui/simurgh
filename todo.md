@@ -522,7 +522,7 @@ roadmap and are not duplicated here.
 
 ### Phase 0: establish the release baseline
 
-- [ ] Run lint, type checking, unit/contract tests, production builds, quick starts, bundle budgets,
+- [x] Run lint, type checking, unit/contract tests, production builds, quick starts, bundle budgets,
       and cross-browser E2E serially from a clean checkout; record tool and platform versions.
 - [ ] Complete and sign off the release-candidate task journey, including installation, theming,
       forms, Dialog focus restoration, form serialization, copied-source customization, and issue
