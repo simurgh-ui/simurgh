@@ -4,6 +4,12 @@ Use a clean consumer application and the published documentation only. Record th
 system, framework, package version, screen reader, and date. Do not use repository source as guidance
 during the tasks.
 
+For the final five-person release-candidate cohort, copy
+`research/release-candidate-study.template.json` into the ignored
+`research/sessions/release-candidate` directory for each consented session. Record only structured
+outcomes and whole-second timings. Run `pnpm research:release-candidate` after five sessions to
+create the anonymized aggregate used by the documentation, journey, and adoption-timing gates.
+
 ## Session details
 
 - Tester: Codex agent-run technical session (human sign-off still required)

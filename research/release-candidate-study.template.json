@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "sessionCode": "random-code-created-for-this-session",
+  "consentRecorded": true,
+  "framework": "react | vue | angular",
+  "packageVersion": "release-candidate-version",
+  "tasks": {
+    "installComponent": { "success": null, "seconds": null },
+    "customizeTheme": { "success": null, "seconds": null },
+    "completeAccessibleForm": { "success": null, "seconds": null },
+    "restoreDialogFocus": { "success": null },
+    "serializeForm": { "success": null },
+    "handleEvent": { "success": null },
+    "customizeCopiedSource": { "success": null },
+    "completeProductionBuild": { "success": null, "seconds": null }
+  },
+  "structuredIssueCodes": [],
+  "withdrawn": false
+}
