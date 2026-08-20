@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/registry",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Framework-aware component registry metadata for Simurgh UI.",
   "repository": {
     "type": "git",
