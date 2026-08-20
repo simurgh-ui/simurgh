@@ -371,10 +371,33 @@ describe('CLI application fixture', () => {
           .status,
       ).toBe(0);
       writeFileSync(generated, `${original}\n// application customization\n`);
-      expect(
-        spawnSync(process.execPath, [cli, 'diff', 'dialog'], { cwd: fixture })
-          .status,
-      ).toBe(1);
+      const configPath = join(fixture, 'simurgh.json');
+      const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
+        registryVersion: string;
+      };
+      writeFileSync(
+        configPath,
+        `${JSON.stringify({ ...config, registryVersion: '0.0.1' }, null, 2)}\n`,
+      );
+      const customizedDiff = spawnSync(
+        process.execPath,
+        [cli, 'diff', 'dialog'],
+        { cwd: fixture, encoding: 'utf8' },
+      );
+      expect(customizedDiff.status).toBe(1);
+      expect(customizedDiff.stdout).toContain('Safe update guidance');
+      expect(customizedDiff.stdout).toContain(
+        'This project records registry 0.0.1; the CLI bundles',
+      );
+      expect(customizedDiff.stdout).toContain(
+        'Commit or stash your current customizations',
+      );
+      expect(customizedDiff.stdout).toContain(
+        'simurgh add dialog --overwrite',
+      );
+      expect(customizedDiff.stdout).toContain(
+        'retain relevant upstream accessibility and bug fixes',
+      );
     } finally {
       rmSync(fixture, { recursive: true, force: true });
     }

@@ -598,7 +598,7 @@ roadmap and are not duplicated here.
 ### Phase 5: improve developer experience and measure adoption
 
 - [ ] Add CLI dry-run and machine-readable output for `init`, `add`, `list`, and `diff`.
-- [ ] Improve `simurgh diff` guidance for customized generated source, conflict resolution, registry
+- [x] Improve `simurgh diff` guidance for customized generated source, conflict resolution, registry
       upgrades, and safe adoption of upstream fixes.
 - [ ] Version the registry schema and provide migrations or actionable compatibility errors for
       older `simurgh.json` files and generated-source metadata.

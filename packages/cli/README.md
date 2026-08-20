@@ -33,5 +33,11 @@ pnpm dlx @simurgh-ui/cli init --framework angular
 | `simurgh add dialog --overwrite` | Replace an existing generated component.                        |
 | `simurgh diff [component]`       | Compare local source with the bundled registry.                 |
 
+When `diff` finds customized or outdated generated source, it exits with status
+1 and prints a safe update workflow. Commit or stash local work, overwrite only
+on a temporary branch, review the resulting diff, and selectively merge upstream
+accessibility and bug fixes into the application-owned source. Once the update is
+adopted and tested, update `registryVersion` in `simurgh.json`.
+
 React and Vue source is written under `src/components/ui` when a `src` directory exists, or under
 `components/ui` otherwise. Angular source is written under `src/app/components/ui`.

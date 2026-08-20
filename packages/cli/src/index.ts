@@ -352,6 +352,32 @@ function expectedSource(config: Config, component: string): string {
   );
 }
 
+function printDiffGuidance(config: Config, components: readonly string[]) {
+  const names = components.join(' ');
+  console.log('');
+  console.log(pc.bold('Safe update guidance'));
+  if (config.registryVersion !== manifest.version) {
+    console.log(
+      pc.yellow(
+        `- This project records registry ${config.registryVersion}; the CLI bundles ${manifest.version}.`,
+      ),
+    );
+  }
+  console.log('- Commit or stash your current customizations before updating.');
+  console.log(
+    `- On a temporary branch, run \`simurgh add ${names} --overwrite\` to materialize the bundled source.`,
+  );
+  console.log(
+    '- Review that branch\'s diff, then merge upstream fixes into your customized source instead of accepting the overwrite wholesale.',
+  );
+  console.log(
+    '- Resolve conflicts in favor of required local behavior, retain relevant upstream accessibility and bug fixes, then run your tests.',
+  );
+  console.log(
+    '- After adopting the registry update, update `registryVersion` in simurgh.json to the bundled version.',
+  );
+}
+
 const cli = cac('simurgh');
 cli
   .command('init', 'Initialize Simurgh in the current application')
@@ -431,23 +457,27 @@ cli
         'No generated Simurgh source found. Run `simurgh add` first.',
       );
     let differs = false;
+    const changed: string[] = [];
     for (const name of selected) {
       registryEntry(name, config.framework);
       const target = componentTarget(config, name);
       if (!existsSync(target)) {
         console.log(pc.yellow(`${name}: not installed`));
         differs = true;
+        changed.push(name);
         continue;
       }
       const same =
         readFileSync(target, 'utf8') === expectedSource(config, name);
       differs ||= !same;
+      if (!same) changed.push(name);
       console.log(
         same
           ? pc.green(`${name}: matches the registry`)
           : pc.yellow(`${name}: differs; local customizations are preserved`),
       );
     }
+    if (changed.length) printDiffGuidance(config, changed);
     process.exitCode = differs ? 1 : 0;
   });
 cli.help();
