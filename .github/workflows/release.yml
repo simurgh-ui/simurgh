@@ -43,3 +43,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
+      - run: node scripts/verify-published-beta.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: published-beta-evidence
+          path: artifacts/published-beta-evidence.json
+          if-no-files-found: error
