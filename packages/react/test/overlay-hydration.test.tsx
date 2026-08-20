@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
@@ -78,12 +78,13 @@ describe('React positioned overlay hydration', () => {
     const root = hydrateRoot(container, <AllPositionedOverlays />, {
       onRecoverableError: recover,
     });
-    await act(() => Promise.resolve());
+    await waitFor(() =>
+      expect(
+        container.querySelector('[data-browser-only]')?.textContent,
+      ).toBe('/'),
+    );
     expect(recover).not.toHaveBeenCalled();
     expect(normalizedMarkup).toContain('data-browser-only');
-    expect(container.querySelector('[data-browser-only]')?.textContent).toBe(
-      '/',
-    );
     expect(
       container.querySelector('[aria-controls]')?.getAttribute('aria-controls'),
     ).toMatch(/\S/);
