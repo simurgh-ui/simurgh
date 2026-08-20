@@ -1,0 +1,91 @@
+---
+import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
+import angularPackage from '../../../../packages/angular/package.json';
+import reactPackage from '../../../../packages/react/package.json';
+import registry from '../../../../packages/registry/registry.json';
+import vuePackage from '../../../../packages/vue/package.json';
+
+const component = Astro.url.pathname.match(/^\/components\/([^/]+)\/?$/u)?.[1];
+const frameworks = [
+  ['React', reactPackage.version],
+  ['Vue', vuePackage.version],
+  ['Angular', angularPackage.version],
+] as const;
+
+function issueUrl(framework: string, adapterVersion: string) {
+  const title = `[Documentation][${framework}][${component}] `;
+  const body = `## Diagnostic context
+
+- Component: ${component}
+- Framework: ${framework}
+- Adapter version: ${adapterVersion}
+- Registry version: ${registry.version}
+- Documentation: https://simurgh-ui.dev${Astro.url.pathname}
+
+## What was unclear or incorrect?
+
+
+## What did you expect?
+
+
+## Minimal reproduction or relevant code
+
+`;
+  const parameters = new URLSearchParams({
+    labels: 'documentation',
+    title,
+    body,
+  });
+  return `https://github.com/simurgh-ui/simurgh/issues/new?${parameters}`;
+}
+---
+
+{
+  component && (
+    <aside class="documentation-feedback" aria-labelledby="documentation-feedback-title">
+      <h2 id="documentation-feedback-title">Help improve this component guide</h2>
+      <p>
+        Report unclear or incorrect guidance with the component, framework, package version,
+        registry version, and documentation URL already included.
+      </p>
+      <ul>
+        {frameworks.map(([framework, version]) => (
+          <li>
+            <a href={issueUrl(framework, version)}>Give {framework} feedback</a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}
+
+<DefaultFooter />
+
+<style>
+  .documentation-feedback {
+    margin-block: 2rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    background: var(--sl-color-gray-7);
+  }
+
+  .documentation-feedback h2 {
+    margin-block: 0 0.5rem;
+    font-size: var(--sl-text-lg);
+  }
+
+  .documentation-feedback p {
+    margin-block: 0 0.75rem;
+    color: var(--sl-color-gray-2);
+  }
+
+  .documentation-feedback ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

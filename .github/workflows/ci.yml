@@ -30,6 +30,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm coverage
+      - run: pnpm --filter @simurgh-ui/docs feedback
       - run: pnpm --filter @simurgh-ui/docs readiness
       - uses: actions/upload-artifact@v4
         with:

@@ -604,7 +604,7 @@ roadmap and are not duplicated here.
       older `simurgh.json` files and generated-source metadata.
 - [ ] Publish maintained starter applications for React, Vue, and Angular using packed or released
       artifacts and production-representative configuration.
-- [ ] Add component/version/framework-aware documentation feedback and issue links that prefill the
+- [x] Add component/version/framework-aware documentation feedback and issue links that prefill the
       diagnostic context needed to reproduce a problem.
 - [ ] Measure time to first component, first theme customization, accessible form completion, and
       first production build through structured release-candidate studies.
