@@ -14,14 +14,14 @@ Last assessed: **2026-08-20**. Overall status: **in progress**.
 
 | Dimension | Status | Evidence today | Remaining exit criteria | Owner |
 | --- | --- | --- | --- | --- |
-| Architecture | In progress | Framework packages expose component subpaths; bundle budgets and registry parity are enforced. | Complete the remaining React source decomposition and assert every framework subpath stays independent of its root barrel. | Framework maintainers |
+| Architecture | Ready | Framework packages expose component subpaths; adapter-boundary checks prove every generated framework subpath remains independent of its root barrel, and bundle budgets enforce narrow imports. | Keep adapter boundaries and bundle budgets required for catalog changes. | Framework maintainers |
 | Framework parity | Ready | The generated parity matrix fails CI for missing implementations, exports, styles, documentation, or contract coverage across React, Vue, and Angular. | Keep the parity gate required for every catalog change. | Framework maintainers |
-| Accessibility | In progress | Contract, axe, keyboard, RTL, form, focus, contrast, and release-candidate browser evidence cover representative components. | Complete final release-candidate manual accessibility and first-time-user sign-off, including mobile screen-reader evidence. | Accessibility reviewers |
-| Compatibility | In progress | Supported engines, peers, browser targets, SSR guidance, and a compatibility matrix are documented and exercised by current CI fixtures. | Execute the oldest and newest supported framework majors and broaden SSR/hydration fixtures across the catalog. | Release engineering |
-| Documentation | In progress | Component pages include installation, real previews, API and styling contracts, accessibility guidance, verification markers, and framework-specific feedback links. | Complete the final task-based user test using only the published documentation. | Documentation maintainers |
-| Package integrity | In progress | Release coherence, exports, bundle budgets, quick starts, provenance, and generated-registry checks run in CI. | Validate packed tarballs for contents, type resolution, installation, exports, and production quick starts; complete package metadata. | Package maintainers |
-| Governance | Blocked | Versioning and copied-source stability policies are published. | Add and approve LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, CODEOWNERS, deprecation, and support policies. | Project maintainers |
-| Release automation | In progress | Changesets-based release-candidate and publish workflows require human approval and support registry provenance. | Generate package-scoped release notes, require Changesets for consumer-visible changes, and record one clean reproducible release run. | Release engineering |
+| Accessibility | In progress | Contract, axe, keyboard, RTL, form, focus, contrast, and Android/iOS browser smoke coverage exercise representative components. | Record physical-device TalkBack and VoiceOver sessions plus zoom, forced-colors, reduced-motion, touch-target, and focus-appearance observations. | Accessibility reviewers |
+| Compatibility | Ready | The compatibility workflow exercises the oldest and newest supported React, Vue, and Angular peers; SSR, hydration, portal, lazy-overlay, and deferred-content contracts are covered. | Keep both compatibility edges and SSR contracts required. | Release engineering |
+| Documentation | In progress | Component pages include installation, real previews, API and styling contracts, accessibility guidance, verification markers, and framework-specific feedback links; the automated docs-only journey passes. | Record a consented final task-based user session using only the published documentation. | Documentation maintainers |
+| Package integrity | Ready | Packed-package checks validate contents, type resolution, installation, exports, starter production builds, bundle budgets, and package metadata. The nine-package beta registry evidence records exact tags, tarballs, and integrity hashes. | Keep tarball and registry verification required for every release. | Package maintainers |
+| Governance | Ready | LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, CODEOWNERS, versioning, support, deprecation, copied-source stability, and breaking-change policies are present and validated. | Keep governance and stability checks required. | Project maintainers |
+| Release automation | In progress | Changesets produces package-scoped notes and beta tags; all nine betas were directly published and verified in `artifacts/published-beta-evidence.json`. | Replace the invalid GitHub `NPM_TOKEN` or configure npm trusted publishing, then record a successful provenance-bearing CI publish. | Release engineering |
 
 ## Update policy
 
@@ -34,6 +34,15 @@ Before declaring `1.0.0`, every row must be **ready**, all P0 and P1 roadmap wor
 explicitly deferred with rationale, a beta must be published, and beta feedback must be reviewed.
 The repository [`todo.md`](https://github.com/simurgh-ui/simurgh/blob/main/todo.md) remains the
 detailed work queue; this page is the concise release decision record.
+
+## Current V1 blockers
+
+The beta publication requirement is complete. The remaining evidence cannot be inferred from
+automated tests: it requires consented first-time-user icon and release-candidate sessions, physical
+Android TalkBack and iOS VoiceOver observations, the five documented manual accessibility checks,
+and review of any issues those sessions discover. Stable versioning remains blocked until those
+records pass their repository validators. CI publication also needs repaired npm credentials before
+the first stable release so npm can attach build provenance.
 
 {/* doc-verification:start */}
 _Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
