@@ -1,0 +1,13 @@
+@import '@simurgh-ui/styles/all.css';
+
+:root {
+  --simurgh-color-primary: #3157d5;
+  --simurgh-radius-control: 0.75rem;
+}
+
+.reference-app {
+  display: grid;
+  gap: 1rem;
+  max-inline-size: 32rem;
+  margin: 2rem auto;
+}

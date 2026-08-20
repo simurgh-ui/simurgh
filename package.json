@@ -19,6 +19,7 @@
     "test:contracts": "vitest run packages/react/test packages/vue/test packages/angular/test packages/cli/test",
     "test:e2e": "playwright test",
     "test:quick-starts": "node scripts/check-package-quick-starts.mjs",
+    "test:references": "node scripts/check-reference-apps.mjs",
     "test:release": "node scripts/check-release-coherence.mjs && node scripts/check-adapter-boundaries.mjs",
     "version-packages": "changeset version"
   },

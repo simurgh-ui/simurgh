@@ -38,6 +38,7 @@ jobs:
           path: packages/*/coverage
           if-no-files-found: error
       - run: pnpm build
+      - run: pnpm test:references
       - run: pnpm test:release
       - run: pnpm test:quick-starts
       - run: pnpm bundle:size

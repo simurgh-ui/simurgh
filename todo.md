@@ -567,7 +567,7 @@ roadmap and are not duplicated here.
       supported peer versions rather than documenting untested version ranges.
 - [ ] Add representative mobile screen-reader smoke tests and retain manual evidence for zoom,
       forced colors, reduced motion, touch targets, and focus appearance.
-- [ ] Create small production reference applications for React, Vue, and Angular that exercise
+- [x] Create small production reference applications for React, Vue, and Angular that exercise
       installation, theming, forms, overlays, SSR where relevant, and production bundling.
 
 ### Phase 3: complete the icons product
