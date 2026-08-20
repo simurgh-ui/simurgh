@@ -10,6 +10,8 @@ Describe the consumer-visible behavior and the packages or registry components a
 
 ## Documentation and public API
 
+- [ ] I reviewed generated public API reports for additions, removals, signature changes, and
+      intentional framework-parity differences.
 - [ ] I updated component API tables, examples, styling hooks, accessibility behavior, and migration
       guidance for every changed public prop, callback, ref, input, output, event, slot, method,
       default, package export, recipe selector, token, or generated-source contract.

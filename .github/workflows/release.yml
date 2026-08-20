@@ -32,6 +32,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm test:api-reports
       - run: pnpm test:release
       - run: pnpm test:release-notes
       - run: pnpm test:quick-starts

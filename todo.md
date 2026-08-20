@@ -590,7 +590,7 @@ roadmap and are not duplicated here.
       and framework quick-start checks against tarballs rather than workspace source.
 - [x] Add package provenance or signing supported by the target registry and document maintainer
       recovery and release-access procedures.
-- [ ] Add public API report snapshots and require explicit review for additions, removals, signature
+- [x] Add public API report snapshots and require explicit review for additions, removals, signature
       changes, and framework parity differences.
 - [ ] Define deprecation, support, and breaking-change policies, including a minimum notice period
       and an experimental namespace or package for unstable chart and motion APIs.
