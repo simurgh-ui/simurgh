@@ -40,6 +40,7 @@ export default defineConfig({
               slug: 'guides/overlay-positioning-migration',
             },
             { label: 'Versioning and stability', slug: 'guides/versioning' },
+            { label: 'V1 readiness', slug: 'guides/v1-readiness' },
             { label: 'Troubleshooting', slug: 'guides/troubleshooting' },
             {
               label: 'Documentation acceptance test',

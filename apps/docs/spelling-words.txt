@@ -51,6 +51,7 @@ adopted
 adopting
 adopts
 adornments
+advance
 advancement
 affect
 affected
@@ -130,6 +131,8 @@ apply
 appointment
 appropriate
 appropriately
+approval
+approve
 approximate
 arabic
 arbitrarily
@@ -149,7 +152,9 @@ arrows
 artwork
 as
 aspect
+assert
 assertive
+assessed
 asset
 asset-import
 assets
@@ -190,6 +195,7 @@ avatar
 avoid
 avoids
 away
+axe
 axe-core
 axes
 back
@@ -201,6 +207,7 @@ backward
 badge
 badges
 bar
+barrel
 bars
 base
 baseline
@@ -223,6 +230,7 @@ belongs
 below
 beneath
 beside
+beta
 between
 beyond
 bind
@@ -262,6 +270,7 @@ brief
 briefly
 brittle
 broad
+broaden
 broader
 broadly
 browse
@@ -277,6 +286,7 @@ browsing
 brush
 bubble
 bubbling
+budgets
 bug
 build
 building
@@ -351,6 +361,7 @@ changelog
 changelogs
 changes
 changesets
+changesets-based
 changing
 channels
 character
@@ -412,9 +423,11 @@ closes
 closing
 cobalt
 code
+codeowners
 codes
 codetabs
 codex
+coherence
 collapse
 collapsed
 collapses
@@ -468,6 +481,7 @@ complement
 complementary
 complements
 complete
+completed
 completing
 completion
 complex
@@ -499,6 +513,7 @@ concern
 concise
 conditional
 conditionally
+conduct
 configurable
 configuration
 configurations
@@ -525,6 +540,7 @@ consume
 consumed
 consumer
 consumer-owned
+consumer-visible
 consumers
 consumes
 consuming
@@ -549,6 +565,7 @@ contrast
 contrasts
 contribute
 contributes
+contributing
 control
 control-size
 control's
@@ -594,6 +611,8 @@ created
 creates
 creating
 creation
+criteria
+criterion
 cropping
 cross-field
 cross-framework
@@ -634,6 +653,8 @@ declarations
 declare
 declared
 declares
+declaring
+decomposition
 decoration
 decorative
 decrement
@@ -818,6 +839,8 @@ enforce
 enforced
 engine
 engine-level
+engineering
+engines
 ensure
 enter
 enters
@@ -858,6 +881,7 @@ exceptional
 exceptions
 excludes
 exclusive
+execute
 exercise
 exercised
 exhaustive
@@ -947,6 +971,7 @@ fires
 first
 first-day
 first-time-reader
+first-time-user
 first-use
 firuzeh
 fit
@@ -1027,12 +1052,14 @@ gallery
 gap
 gaps
 gate
+gates
 gecko
 general
 general-purpose
 generally
 generate
 generated
+generated-registry
 generic
 generous
 genuinely
@@ -1049,6 +1076,7 @@ global
 globals
 glossaries
 glue
+governance
 graph
 grayscale
 green
@@ -1224,6 +1252,7 @@ instead
 instructions
 intact
 integration
+integrity
 intended
 intentional
 intentionally
@@ -1324,6 +1353,7 @@ let
 level
 levels
 library's
+license
 lifecycle
 light
 lightweight
@@ -1379,6 +1409,8 @@ magnitude
 main
 maintain
 maintained
+maintainers
+majors
 make
 makes
 making
@@ -1398,6 +1430,7 @@ maps
 margin
 mark
 marked
+markers
 marks
 markup
 marquee
@@ -1530,6 +1563,7 @@ neutral
 never
 new
 newer
+newest
 next
 next.js
 ngmodule
@@ -1582,6 +1616,7 @@ offset
 often
 old
 older
+oldest
 omit
 omitted
 omitting
@@ -1633,6 +1668,7 @@ outputs
 outside
 outside-pointer
 over
+overall
 overflow
 overlay
 overlay-stack
@@ -1649,13 +1685,16 @@ overwrites
 overwriting
 own
 owned
+owner
 ownership
 owns
 package
 package-consumer
 package-export
 package-import
+package-scoped
 packages
+packed
 page
 page's
 pages
@@ -1744,6 +1783,7 @@ point
 pointer
 pointer-adjustable
 points
+policies
 policy
 polite
 politely
@@ -1773,6 +1813,7 @@ preferences
 preferred
 prefix
 preparing
+prerequisite
 preselect
 presence
 present
@@ -1825,12 +1866,14 @@ prominent
 promise
 promised
 promising
+promotions
 prop
 properties
 property
 proportion
 props
 prove
+provenance
 provide
 provided
 providers
@@ -1869,6 +1912,7 @@ raster
 rather
 rating
 ratio
+rationale
 ratios
 raw
 re-export
@@ -1886,6 +1930,7 @@ readable
 reader
 reading
 reads
+ready
 real
 real-world
 reapply
@@ -1928,6 +1973,7 @@ regions
 registry
 registry's
 regression-tested
+regressions
 reinforce
 related
 relationship
@@ -2007,6 +2053,7 @@ reset
 resets
 resizable
 resize
+resolution
 resolve
 resolves
 resolving
@@ -2044,6 +2091,7 @@ reversed
 reverses
 review
 reviewed
+reviewers
 reviewing
 reviews
 rhythm
@@ -2051,6 +2099,7 @@ richer
 right
 right-click
 ring
+roadmap
 role
 roles
 root
@@ -2089,6 +2138,7 @@ same-looking
 same-name
 sampled
 sans
+satisfies
 save
 saving
 say
@@ -2100,6 +2150,7 @@ scheme
 scope
 scoped
 score
+scorecard
 screen-reader
 screens
 screenshots
@@ -2192,6 +2243,7 @@ sidebar
 sides
 sighted
 sign-in
+sign-off
 signal
 silently
 similar
@@ -2257,6 +2309,7 @@ square
 src
 ssr
 ssr-safe
+stability
 stabilization
 stable
 stack
@@ -2372,6 +2425,7 @@ tags
 tailwind
 take
 taking
+tarballs
 target
 targeted
 targets
@@ -2432,6 +2486,7 @@ titles
 to
 toast
 toastprovider
+today
 together
 toggle
 toggled
@@ -2454,6 +2509,7 @@ total
 touch
 touch-first
 touch-friendly
+toward
 tracks
 tradeoffs
 transfer
@@ -2586,9 +2642,11 @@ verified
 verifies
 verify
 version
+versioning
 versions
 vertical
 via
+view
 viewchild
 viewport
 viewports

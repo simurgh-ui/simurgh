@@ -1,0 +1,40 @@
+---
+title: V1 readiness scorecard
+description: Track the evidence, remaining work, and ownership for Simurgh UI's path to a stable 1.0 release.
+---
+
+This scorecard is the public view of Simurgh's progress toward a stable `1.0.0`. A dimension is
+**ready** only when its automated gates pass and its required human evidence is recorded. **In
+progress** means useful evidence exists but at least one published exit criterion remains open.
+**Blocked** means the release cannot advance until the named prerequisite is completed.
+
+Last assessed: **2026-08-20**. Overall status: **in progress**.
+
+## Scorecard
+
+| Dimension | Status | Evidence today | Remaining exit criteria | Owner |
+| --- | --- | --- | --- | --- |
+| Architecture | In progress | Framework packages expose component subpaths; bundle budgets and registry parity are enforced. | Complete the remaining React source decomposition and assert every framework subpath stays independent of its root barrel. | Framework maintainers |
+| Framework parity | Ready | The generated parity matrix fails CI for missing implementations, exports, styles, documentation, or contract coverage across React, Vue, and Angular. | Keep the parity gate required for every catalog change. | Framework maintainers |
+| Accessibility | In progress | Contract, axe, keyboard, RTL, form, focus, contrast, and release-candidate browser evidence cover representative components. | Complete final release-candidate manual accessibility and first-time-user sign-off, including mobile screen-reader evidence. | Accessibility reviewers |
+| Compatibility | In progress | Supported engines, peers, browser targets, SSR guidance, and a compatibility matrix are documented and exercised by current CI fixtures. | Execute the oldest and newest supported framework majors and broaden SSR/hydration fixtures across the catalog. | Release engineering |
+| Documentation | In progress | Component pages include installation, real previews, API and styling contracts, accessibility guidance, and verification markers. | Complete the final task-based user test using only the published documentation. | Documentation maintainers |
+| Package integrity | In progress | Release coherence, exports, bundle budgets, quick starts, provenance, and generated-registry checks run in CI. | Validate packed tarballs for contents, type resolution, installation, exports, and production quick starts; complete package metadata. | Package maintainers |
+| Governance | Blocked | Versioning and copied-source stability policies are published. | Add and approve LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, CODEOWNERS, deprecation, and support policies. | Project maintainers |
+| Release automation | In progress | Changesets-based release-candidate and publish workflows require human approval and support registry provenance. | Generate package-scoped release notes, require Changesets for consumer-visible changes, and record one clean reproducible release run. | Release engineering |
+
+## Update policy
+
+Review the scorecard in every release-candidate pull request and whenever a linked gate changes.
+Status promotions require a repository link, CI run, or recorded human observation that satisfies
+the remaining criterion. Regressions move a dimension back immediately; they are not deferred to
+the next release review.
+
+Before declaring `1.0.0`, every row must be **ready**, all P0 and P1 roadmap work must be closed or
+explicitly deferred with rationale, a beta must be published, and beta feedback must be reviewed.
+The repository [`todo.md`](https://github.com/simurgh-ui/simurgh/blob/main/todo.md) remains the
+detailed work queue; this page is the concise release decision record.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

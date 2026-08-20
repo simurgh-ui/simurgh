@@ -16,6 +16,8 @@ Describe the consumer-visible behavior and the packages or registry components a
 - [ ] I updated `apps/docs/verification.json` only after reviewing every documentation page affected
       by the registry/API change; I did not advance the marker merely to satisfy CI.
 - [ ] I ran the documentation integrity, spelling, example, and production-build checks.
+- [ ] I reviewed the V1-readiness scorecard if this change adds, removes, or materially changes
+      release evidence or an exit criterion.
 - [ ] This change has no public API or documentation impact, and I explained why in the summary.
 
 Check either the applicable documentation items or the final no-impact item. Do not mark mutually

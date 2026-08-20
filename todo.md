@@ -608,7 +608,7 @@ roadmap and are not duplicated here.
       diagnostic context needed to reproduce a problem.
 - [ ] Measure time to first component, first theme customization, accessible form completion, and
       first production build through structured release-candidate studies.
-- [ ] Publish and maintain a v1-readiness scorecard covering architecture, parity, accessibility,
+- [x] Publish and maintain a v1-readiness scorecard covering architecture, parity, accessibility,
       compatibility, documentation, package integrity, governance, and release automation.
 
 ### V1 exit gate
