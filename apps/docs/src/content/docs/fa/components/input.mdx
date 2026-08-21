@@ -1,0 +1,84 @@
+---
+title: Input
+description: ورودی متن بومی با binding مخصوص Angular، React و Vue.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add input
+```
+
+```ts
+import { Input } from '@simurgh-ui/react/input';
+import { Input as VueInput } from '@simurgh-ui/vue/input';
+import { InputComponent } from '@simurgh-ui/angular/input';
+import '@simurgh-ui/styles/input.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Input" kind="live">
+  <ReactComponentPreview component="input" />
+</ComponentPreview>
+
+## استفاده
+
+### React
+
+```tsx
+<label htmlFor="email">رایانامه</label>
+<Input
+  id="email"
+  name="email"
+  type="email"
+  required
+  invalid={Boolean(error)}
+  aria-describedby={error ? 'email-error' : undefined}
+/>
+```
+
+### Vue
+
+```vue
+<label for="email">رایانامه</label>
+<Input id="email" v-model="email" name="email" required :invalid="!!error" />
+```
+
+### Angular
+
+```html
+<label for="email">رایانامه</label>
+<simurgh-input
+  id="email"
+  name="email"
+  [(value)]="email"
+  [required]="true"
+  [invalid]="!!error"
+/>
+```
+
+## قرارداد state
+
+- React از `value`، `defaultValue` و eventهای بومی input استفاده می‌کند.
+- Vue قرارداد کنترل‌شدهٔ `v-model` را دارد.
+- Angular مقدار کنترل‌شدهٔ `[(value)]` و `valueChange` را ارائه می‌دهد.
+
+## فرم و دسترس‌پذیری
+
+هر Input باید label متصل داشته باشد. برای state نامعتبر علاوه بر `invalid` متن خطای قابل‌مشاهده را با `aria-describedby` متصل کنید. کنترل بدون `name` در `FormData` ثبت نمی‌شود و کنترل disabled از submit حذف می‌شود.
+
+## API اصلی
+
+| سطح | قرارداد |
+| --- | --- |
+| React | attributeهای بومی `input`، `invalid` و ref به `HTMLInputElement` |
+| Vue | `modelValue`، `type`، `name`، `required`، `disabled`، `invalid` و eventهای `update:modelValue` و `change` |
+| Angular | `value`، `type`، `name`، `required`، `disabled`، `invalid` و output برابر `valueChange` |
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

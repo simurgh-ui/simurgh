@@ -1,0 +1,70 @@
+---
+title: SSR و hydration
+description: ثابت نگه‌داشتن markup میان server render، hydration، portal و lazy loading.
+---
+
+نخستین render مرورگر باید با خروجی server یکسان باشد: component tree، ID، value، open state، ترتیب item، جهت و accessible label.
+
+## state اولیهٔ ثابت
+
+هنگام render اولیه state را از `window`، `document`، اندازهٔ viewport، `localStorage`، زمان جاری، random value یا مرتب‌سازی وابسته به locale نسازید. یک fallback قطعی render کنید و state مرورگر را پس از hydration بخوانید.
+
+## ID و رابطه‌های دسترس‌پذیر
+
+وقتی adapter ID تولید می‌کند همان را نگه دارید. ID سفارشی را از دادهٔ پایدار بسازید، نه index قابل‌جابه‌جایی یا مقدار تصادفی. title و description باید در server و نخستین client render حضور یکسان داشته باشند.
+
+## portal و overlay
+
+overlay را در server و نخستین client render بسته نگه دارید، مگر اینکه portal target سمت server کاملاً آزمایش شده باشد. destination باید پیش از mount وجود داشته باشد. focus فقط پس از mount مرورگر مدیریت می‌شود.
+
+## React
+
+```tsx
+import { useEffect, useState } from 'react';
+
+const [open, setOpen] = useState(false);
+
+useEffect(() => {
+  setOpen(window.localStorage.getItem('show-preferences') === 'true');
+}, []);
+```
+
+ترتیب component و hook را ثابت نگه دارید تا `useId` تغییر نکند.
+
+## Vue
+
+```vue
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+const open = ref(false);
+onMounted(() => {
+  open.value = window.localStorage.getItem('show-preferences') === 'true';
+});
+</script>
+```
+
+async component را در module scope تعریف کنید و مطمئن شوید target مربوط به Teleport در سند اولیه وجود دارد.
+
+## Angular
+
+```ts
+import { afterNextRender } from '@angular/core';
+
+afterNextRender(() => {
+  this.open = window.localStorage.getItem('show-preferences') === 'true';
+});
+```
+
+providerهای locale، direction و مقدار اولیهٔ فرم را میان server و browser هماهنگ نگه دارید.
+
+## دادهٔ async و collection
+
+تا رسیدن optionها یک loading یا empty state قطعی render کنید. در نخستین client render آیتمی را خودکار انتخاب نکنید که server آن را نداشته است. keyها و selected value باید پس از جایگزینی collection معتبر بمانند.
+
+## چک‌لیست
+
+build واقعی SSR را با load مستقیم URL آزمایش کنید، console را برای mismatch بررسی کنید و ID، value، label و ترتیب را مقایسه کنید. سپس overlay، RTL، dark mode، reduced motion، preference ذخیره‌شده و routeهای lazy را کنترل کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

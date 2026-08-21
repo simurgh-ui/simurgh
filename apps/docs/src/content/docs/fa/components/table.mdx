@@ -1,0 +1,65 @@
+---
+title: Table
+description: ساختار بومی جدول با header معنایی و چینش منطقی.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add table
+```
+
+```ts
+import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from '@simurgh-ui/react/table';
+import { Table as VueTable } from '@simurgh-ui/vue/table';
+import { TableDirective, TableHeaderDirective, TableBodyDirective, TableFooterDirective, TableRowDirective, TableHeadDirective, TableCellDirective, TableCaptionDirective } from '@simurgh-ui/angular/table';
+import '@simurgh-ui/styles/table.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Table" kind="live">
+  <ReactComponentPreview component="table" />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Table>
+  <TableCaption>انتشارها</TableCaption>
+  <TableHeader><TableRow><TableHead>نسخه</TableHead></TableRow></TableHeader>
+  <TableBody><TableRow><TableCell>0.1.0</TableCell></TableRow></TableBody>
+</Table>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Table>
+  <TableCaption>انتشارها</TableCaption>
+  <TableHeader><TableRow><TableHead>نسخه</TableHead></TableRow></TableHeader>
+  <TableBody><TableRow><TableCell>0.1.0</TableCell></TableRow></TableBody>
+</Table>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<table simurghTable>
+  <caption simurghTableCaption>انتشارها</caption>
+  <thead simurghTableHeader><tr simurghTableRow><th simurghTableHead>نسخه</th></tr></thead>
+  <tbody simurghTableBody><tr simurghTableRow><td simurghTableCell>0.1.0</td></tr></tbody>
+</table>
+```
+</TabItem>
+</Tabs>
+
+ساختار بومی caption، بخش‌ها، سطر، header و سلول را حفظ کنید. caption نام و هدف جدول را برای همه روشن می‌کند. در Angular از directiveهای ویژگی استفاده می‌شود تا ساختار معتبر عنصرهای بومی جدول تغییر نکند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

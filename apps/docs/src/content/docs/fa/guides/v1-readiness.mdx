@@ -1,0 +1,29 @@
+---
+title: آمادگی نسخه یک
+description: شواهد، کارهای باقی‌مانده و مسئولیت‌ها برای رسیدن Simurgh UI به نسخهٔ پایدار 1.0.
+---
+
+## امتیازنامه
+
+| حوزه | وضعیت | شواهد فعلی | معیار باقی‌مانده |
+| --- | --- | --- | --- |
+| معماری | آماده | subpathهای مستقل فریم‌ورک و بودجهٔ bundle در CI کنترل می‌شوند | حفظ gateها برای تغییرات catalog |
+| برابری فریم‌ورک | آماده | parity matrix نبود implementation، export، style، مستندات یا contract را تشخیص می‌دهد | اجباری‌ماندن parity برای هر تغییر |
+| دسترس‌پذیری | در حال انجام | contract، axe، صفحه‌کلید، RTL، فرم، focus، contrast و mobile smoke پوشش دارند | ثبت TalkBack و VoiceOver روی دستگاه واقعی و آزمون zoom، forced colors و reduced motion |
+| سازگاری | آماده | قدیمی‌ترین و جدیدترین peerهای Angular، React و Vue همراه SSR و hydration آزمایش می‌شوند | حفظ هر دو لبهٔ سازگاری |
+| مستندات | در حال انجام | نصب، preview واقعی، API، styling، دسترس‌پذیری و feedback در صفحات وجود دارند | یک نشست نهایی کاربر با رضایت و فقط با مستندات منتشرشده |
+| سلامت بسته | آماده | tarball، type resolution، export، starter build، metadata و بودجهٔ اندازهٔ بسته بررسی می‌شوند | ادامهٔ verification در هر release |
+| حاکمیت | آماده | مجوز، امنیت، مشارکت، code of conduct، ownership و سیاست نسخه‌بندی موجود است | حفظ کنترل‌های governance |
+| انتشار خودکار | در حال انجام | Changesets و beta tagها فعال‌اند و شواهد انتشار مستقیم ثبت شده است | تنظیم trusted publishing یا token معتبر و ثبت publish دارای provenance |
+
+## سیاست به‌روزرسانی
+
+این امتیازنامه باید همراه تغییر شواهد یا معیار خروج به‌روزرسانی شود. «آماده» یعنی gate قابل‌تکرار وجود دارد، نه اینکه آن حوزه دیگر نیازمند نگهداری نیست.
+
+## موانع فعلی نسخه یک
+
+سه مورد اصلی باقی مانده‌اند: آزمون assistive technology روی دستگاه فیزیکی، نشست پذیرش نهایی مستندات با کاربر و انتشار CI دارای provenance. جزئیات پایداری API در [نسخه‌بندی](/fa/guides/versioning/) آمده است.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

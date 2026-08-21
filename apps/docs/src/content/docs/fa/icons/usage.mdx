@@ -1,0 +1,104 @@
+---
+title: استفاده و API آیکن‌ها
+description: استفاده و شخصی‌سازی آیکن‌های Simurgh در Angular، React، Vue، SSR و asset ثابت.
+---
+
+برای آیکن ثابت از کامپوننت نام‌دار و برای نامی که از داده می‌آید از `SimurghIcon` استفاده کنید.
+
+## React
+
+```tsx
+import { ArrowRight, SimurghIcon } from '@simurgh-ui/icons/react';
+
+<ArrowRight size={20} title="صفحهٔ بعد" className="next-icon" />
+<SimurghIcon name="settings" size="1.25em" aria-hidden="true" />
+```
+
+## Vue
+
+```vue
+<script setup lang="ts">
+import { ArrowRight, SimurghIcon } from '@simurgh-ui/icons/vue';
+</script>
+
+<template>
+  <ArrowRight :size="20" title="صفحهٔ بعد" class="next-icon" />
+  <SimurghIcon name="settings" size="1.25em" aria-hidden="true" />
+</template>
+```
+
+## Angular
+
+```ts
+import { Component } from '@angular/core';
+import { ArrowRight, SimurghIcon } from '@simurgh-ui/icons/angular';
+
+@Component({
+  standalone: true,
+  imports: [ArrowRight, SimurghIcon],
+  template: `
+    <simurgh-arrow-right-icon [size]="20" title="صفحهٔ بعد" />
+    <simurgh-icon name="settings" size="1.25em" />
+  `,
+})
+export class Actions {}
+```
+
+## propهای مشترک
+
+| Prop/input | Type | پیش‌فرض | کاربرد |
+| --- | --- | --- | --- |
+| `name` | `IconName` | برای `SimurghIcon` اجباری | انتخاب نام kebab-case |
+| `size` | `number \| string` | `24` | width و height؛ عدد برحسب pixel یا رشتهٔ CSS |
+| `title` | `string` | ندارد | نام قابل‌دسترسی و `role="img"` برای آیکن اطلاعاتی |
+| `direction` | `'ltr' \| 'rtl'` | نزدیک‌ترین `dir` | override جهت mirror |
+| `mirrorInRtl` | `boolean` | `true` | جلوگیری از mirror برای جهت فیزیکی |
+| `colorMode` | `'duotone' \| 'currentColor'` | `'duotone'` | رنگ authored یا ارث‌بری رنگ متن |
+
+## استایل و اندازه
+
+```css
+.toolbar-icon {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  color: var(--action-foreground);
+}
+
+.brand-icon {
+  --simurgh-icon-primary: var(--brand-strong);
+  --simurgh-icon-secondary: var(--brand-accent);
+}
+```
+
+در Button، Link و navigation معمولاً `colorMode="currentColor"` مناسب است. pathهای داخلی تولیدشده stable styling hook نیستند.
+
+## API مستقل از فریم‌ورک
+
+```ts
+import {
+  getIcon,
+  iconGroups,
+  iconNames,
+  renderIconSvg,
+} from '@simurgh-ui/icons';
+
+const definition = getIcon('home');
+const navigationNames = iconGroups.landmarks;
+const markup = renderIconSvg('arrow-right', {
+  size: 20,
+  title: 'صفحهٔ بعد',
+  direction: 'rtl',
+});
+```
+
+## SVG ثابت و هزینهٔ bundle
+
+```ts
+import homeUrl from '@simurgh-ui/icons/svg/home';
+```
+
+برای آیکن ثابت، subpath نام‌دار کوچک‌ترین graph را می‌دهد. APIهای dynamic و دسته‌بندی باید catalog کامل را نگه دارند. SVG خام adapter cost کمتری دارد، اما sizing، رنگ، RTL و دسترس‌پذیری آن بر عهدهٔ برنامه است.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

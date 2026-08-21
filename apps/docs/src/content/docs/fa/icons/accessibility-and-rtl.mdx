@@ -1,0 +1,69 @@
+---
+title: دسترس‌پذیری و RTL آیکن‌ها
+description: نام‌گذاری درست آیکن اطلاعاتی و تعاملی و کنترل mirror در layout راست‌به‌چپ.
+---
+
+SVG به‌صورت پیش‌فرض تزئینی است و `aria-hidden="true"` و `focusable="false"` می‌گیرد. با `title` به تصویر دارای `role="img"` و نام قابل‌دسترسی تبدیل می‌شود.
+
+## آیکن تزئینی
+
+وقتی متن کنار آیکن همان معنا را دارد، آیکن را پنهان نگه دارید:
+
+```tsx
+<Button>
+  <Download aria-hidden="true" />
+  دریافت گزارش
+</Button>
+```
+
+## کنترل فقط‌آیکن
+
+element تعاملی را نام‌گذاری کنید، نه SVG فرزند را:
+
+```tsx
+<Button aria-label="بستن پنجره" iconOnly>
+  <Close aria-hidden="true" />
+</Button>
+```
+
+Tooltip می‌تواند برای کاربر بینا مفید باشد، اما جای accessible name را نمی‌گیرد.
+
+## آیکن اطلاعاتی مستقل
+
+```tsx
+<Verified title="حساب تأییدشده" />
+```
+
+برای وضعیت یا دستورالعمل پیچیده، متن قابل‌مشاهده بهتر است و icon باید تزئینی بماند.
+
+## mirror در RTL
+
+آیکن directional از نزدیک‌ترین `dir` به‌صورت خودکار پیروی می‌کند:
+
+```tsx
+<section dir={localeDirection}>
+  <ArrowRight title="صفحهٔ بعد" />
+</section>
+```
+
+back، forward، previous، next، enter و exit باید با جهت خواندن mirror شوند. media control، نشان تجاری، علامت تیک و جهت واقعی جغرافیایی نباید معکوس شوند:
+
+```tsx
+<ArrowRight
+  direction="rtl"
+  mirrorInRtl={false}
+  title="شرق"
+/>
+```
+
+## چک‌لیست
+
+- هر کنترل فقط‌آیکن روی خود کنترل نام دارد.
+- آیکن تزئینی از assistive technology پنهان است.
+- آیکن اطلاعاتی متن نزدیک یا `title` کوتاه دارد.
+- معنا فقط با رنگ یا شکل icon منتقل نمی‌شود.
+- RTL در هر دو جهت آزمایش شده و استثنای جهت فیزیکی `mirrorInRtl={false}` دارد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

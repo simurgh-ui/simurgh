@@ -1,0 +1,49 @@
+---
+title: Meter
+description: اندازه‌گیری scalar بومی همراه آستانه‌های low، high و optimum.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add meter
+```
+
+```ts
+import { Meter } from '@simurgh-ui/react/meter';
+import { Meter as VueMeter } from '@simurgh-ui/vue/meter';
+import { MeterComponent } from '@simurgh-ui/angular/meter';
+import '@simurgh-ui/styles/meter.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Meter" kind="live">
+  <ReactComponentPreview component="meter" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Meter
+  label="فضای استفاده‌شده"
+  value={72}
+  max={100}
+  low={40}
+  high={80}
+  optimum={20}
+/>
+```
+
+## معنا و دسترس‌پذیری
+
+Meter مقدار فعلی را در یک بازهٔ معلوم نشان می‌دهد؛ برای پیشرفت task از Progress استفاده کنید. `min`، `max`، `low`، `high` و `optimum` باید ترتیب منطقی داشته باشند و label نوع اندازه‌گیری را روشن کند.
+
+مقدار عددی یا متن معادل را کنار نمودار نگه دارید و وضعیت خوب/بد را فقط با رنگ نشان ندهید. Meter بومی semantics و announcement مناسب را در browser حفظ می‌کند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

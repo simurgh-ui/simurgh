@@ -1,0 +1,61 @@
+---
+title: Item
+description: ردیف‌های semantic فهرست همراه media، content، description و action.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add item
+```
+
+```ts
+import {
+  ItemGroup,
+  Item,
+  ItemMedia,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+  ItemActions,
+} from '@simurgh-ui/react/item';
+import '@simurgh-ui/styles/item.css';
+```
+
+Vue و Angular partهای متناظر را از subpath `item` صادر می‌کنند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Item" kind="live">
+  <ReactComponentPreview component="item" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<ItemGroup aria-label="پروژه‌ها">
+  <Item>
+    <ItemMedia aria-hidden="true">س</ItemMedia>
+    <ItemContent>
+      <ItemTitle>سیستم طراحی</ItemTitle>
+      <ItemDescription>دو دقیقه پیش به‌روزرسانی شد</ItemDescription>
+    </ItemContent>
+    <ItemActions>
+      <Button>بازکردن</Button>
+    </ItemActions>
+  </Item>
+</ItemGroup>
+```
+
+## ساختار و دسترس‌پذیری
+
+Group را نام‌گذاری و ترتیب DOM را media، content و action نگه دارید. Item به‌خودی‌خود کلیک‌پذیر نیست؛ action را با Button یا Link واقعی بسازید. اگر کل ردیف یک مقصد دارد یک Link گستردهٔ قابل‌فهم بهتر از چند handler هم‌پوشان است.
+
+Media تزئینی باید پنهان شود. Title هویت اصلی و Description metadata ثانویه است. در viewport کوچک action نباید پیش از عنوان در ترتیب focus ظاهر شود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

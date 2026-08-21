@@ -1,0 +1,67 @@
+---
+title: Popover
+description: محتوای غیرmodal متصل به trigger با موقعیت‌دهی collision-aware.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add popover
+```
+
+```ts
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@simurgh-ui/react/popover';
+import '@simurgh-ui/styles/popover.css';
+```
+
+Vue همین partها را از `@simurgh-ui/vue/popover` صادر می‌کند. Angular از `PopoverComponent` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Popover" kind="live">
+  <OverlayComponentPreview component="popover" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Popover>
+  <PopoverTrigger>جزئیات</PopoverTrigger>
+  <PopoverContent>اطلاعات تکمیلی</PopoverContent>
+</Popover>
+```
+
+```vue
+<Popover v-model:open="open">
+  <PopoverTrigger>جزئیات</PopoverTrigger>
+  <PopoverContent>اطلاعات تکمیلی</PopoverContent>
+</Popover>
+```
+
+```html
+<simurgh-popover [(open)]="open">
+  <span trigger>جزئیات</span>
+  <p>اطلاعات تکمیلی</p>
+</simurgh-popover>
+```
+
+## صفحه‌کلید و focus
+
+Tab روی trigger و سپس کنترل‌های قابل‌focus content در ترتیب DOM حرکت می‌کند. Enter یا Space trigger را تغییر می‌دهد و Escape هنگامی که focus داخل content است Popover را می‌بندد. Popover غیرmodal است و نباید focus را trap کند.
+
+## موقعیت‌دهی
+
+content با فاصلهٔ پیش‌فرض از trigger قرار می‌گیرد، در لبهٔ viewport flip و shift می‌شود و به scroll و resize واکنش دارد. برای محدودیت‌های engine راهنمای [مهاجرت موقعیت‌دهی](/fa/guides/overlay-positioning-migration/) را ببینید.
+
+برای محتوای modal یا workflow طولانی از [Dialog](/fa/components/dialog/) یا [Drawer](/fa/components/drawer/) استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

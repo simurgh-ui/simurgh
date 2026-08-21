@@ -1,0 +1,43 @@
+---
+title: زبان بصری
+description: سیستم بصری محدود و منسجم برای typography، ریتم، مرز، motion، تصویر و empty state.
+---
+
+## اصول
+
+- معنا و خوانایی بر تزئین مقدم‌اند.
+- رنگ‌های heritage باید از طریق token معنایی وارد رابط شوند، نه به‌صورت مقدار پراکنده.
+- component state با متن، icon یا شکل نیز مشخص شود و فقط به رنگ وابسته نباشد.
+- تنوع بصری باید سلسله‌مراتب را روشن کند، نه اینکه هر سطح را متفاوت نشان دهد.
+
+## تایپوگرافی
+
+تعداد اندازه‌ها و وزن‌ها را محدود نگه دارید. متن فارسی به `line-height` کافی و فاصلهٔ عمودی بیشتر از حروف لاتین فشرده نیاز دارد. کد و شناسهٔ لاتین را در محتوای RTL با جهت LTR نمایش دهید.
+
+## ریتم هندسی
+
+فاصله‌ها را از یک scale کوچک انتخاب کنید و alignment را با محورهای مشترک بسازید. نقش‌مایهٔ هندسی می‌تواند در قاب، separator یا background کم‌رنگ دیده شود، اما نباید خواندن یا focus را مختل کند.
+
+## مرز، separator و elevation
+
+برای تفکیک سطح ابتدا spacing، سپس background یا border و در نهایت shadow را به کار ببرید. همهٔ cardها نیاز به shadow ندارند. modal و floating surface باید از محتوای زیر خود قابل‌تشخیص باشند.
+
+## حرکت
+
+motion باید علت و نتیجهٔ تغییر state را توضیح دهد. زمان کوتاه، فاصلهٔ کم و منحنی سرعت ثابت انتخاب کنید. validation، focus یا دسترسی به محتوا را تا پایان animation معطل نکنید و reduced motion را رعایت کنید.
+
+## تصویر و illustration
+
+تصویر باید به محتوا یا هویت محصول کمک کند. برای تصویر اطلاعاتی alt دقیق بنویسید و تصویر تزئینی را از accessibility tree حذف کنید. برش و کنتراست را در mobile و dark mode بررسی کنید.
+
+## empty state
+
+empty state باید وضعیت را نام‌گذاری کند، علت احتمالی را توضیح دهد و در صورت امکان یک اقدام روشن ارائه کند. illustration جای heading یا action را نمی‌گیرد.
+
+## چک‌لیست بازبینی
+
+سلسله‌مراتب heading، contrast، focus، اندازهٔ هدف لمسی، RTL، zoom، reduced motion، متن طولانی و حالت‌های loading، empty، error، disabled و selected را کنترل کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

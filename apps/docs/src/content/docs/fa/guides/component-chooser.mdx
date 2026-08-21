@@ -1,0 +1,33 @@
+---
+title: انتخاب کامپوننت
+description: بر اساس نیاز تعاملی و معنای رابط، کامپوننت مناسب Simurgh را انتخاب کنید.
+---
+
+انتخاب را از رفتار و معنای موردنیاز شروع کنید، نه از ظاهر. این جدول مسیر رایج را نشان می‌دهد:
+
+| نیاز | کامپوننت پیشنهادی |
+| --- | --- |
+| اجرای یک عمل | [Button](/components/button/) |
+| انتخاب مستقل چند گزینه | [Checkbox](/components/checkbox/) |
+| روشن یا خاموش کردن فوری یک تنظیم | [Switch](/components/switch/) |
+| انتخاب دقیقاً یک گزینه از فهرست قابل‌مشاهده | [Radio Group](/components/radio-group/) |
+| انتخاب یک گزینه از فهرست فشرده | [Select](/components/select/) |
+| جست‌وجو و انتخاب از مجموعهٔ بزرگ | [Combobox](/components/combobox/) |
+| نمایش محتوای modal عمومی | [Dialog](/components/dialog/) |
+| تأیید عملی مهم یا مخرب | [Alert Dialog](/components/alert-dialog/) |
+| بازخورد کوتاه و غیرمسدودکننده | [Toast](/components/toast/) |
+| جابه‌جایی میان چند نمای هم‌سطح | [Tabs](/components/tabs/) |
+
+## چند اصل کاربردی
+
+- برای رفتن به صفحه‌ای دیگر از لینک استفاده کنید؛ برای انجام عمل از Button.
+- Checkbox برای انتخاب مستقل است؛ Radio Group برای انتخاب انحصاری؛ Switch برای تغییری که همان لحظه اعمال می‌شود.
+- برای ورودی آزاد از Input یا Textarea استفاده کنید. Select و Combobox باید به مجموعه‌ای از گزینه‌های معتبر محدود باشند.
+- Alert Dialog را فقط برای تصمیمی به کار ببرید که باید پیش از ادامه پاسخ داده شود.
+- Tooltip جایگزین برچسب یا متن ضروری نیست.
+
+برای overlayها، علاوه بر ظاهر، مدیریت focus، بستن با Escape و بازگرداندن focus را هم در نظر بگیرید؛ کامپوننت‌های واقعی Simurgh این رفتارها را فراهم می‌کنند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

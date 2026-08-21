@@ -1,0 +1,60 @@
+---
+title: Native Select
+description: انتخاب option بومی platform با semantics فرم و validation.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add native-select
+```
+
+```ts
+import { NativeSelect } from '@simurgh-ui/react/native-select';
+import { NativeSelect as VueNativeSelect } from '@simurgh-ui/vue/native-select';
+import { NativeSelectComponent } from '@simurgh-ui/angular/native-select';
+import '@simurgh-ui/styles/native-select.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Native Select" kind="live">
+  <ReactComponentPreview component="native-select" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Label htmlFor="timezone">منطقهٔ زمانی</Label>
+<NativeSelect id="timezone" name="timezone" defaultValue="tehran" required>
+  <option value="utc">UTC</option>
+  <option value="tehran">تهران</option>
+</NativeSelect>
+```
+
+```html
+<simurgh-label for="timezone">منطقهٔ زمانی</simurgh-label>
+<simurgh-native-select
+  id="timezone"
+  name="timezone"
+  [value]="timezone"
+  [required]="true"
+  (valueChange)="timezone = $event"
+>
+  <option value="utc">UTC</option>
+  <option value="tehran">تهران</option>
+</simurgh-native-select>
+```
+
+## state، فرم و دسترس‌پذیری
+
+React از قرارداد بومی select، Vue از `v-model` و Angular از `value`/`valueChange` استفاده می‌کنند. `name` و `required` مستقیماً در فرم شرکت می‌کنند. یک Label متصل و option placeholder غیرفعال برای «انتخاب کنید» ارائه دهید.
+
+Native Select بهترین سازگاری platform و assistive technology را دارد. وقتی search، option سفارشی یا positioning لازم است از Select یا Combobox استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

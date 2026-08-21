@@ -1,0 +1,72 @@
+---
+title: Accordion
+description: ناحیه‌های برچسب‌دار باز و بسته‌شونده با حالت تک یا چندانتخابی.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add accordion
+```
+
+```ts
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from '@simurgh-ui/react/accordion';
+import '@simurgh-ui/styles/accordion.css';
+```
+
+Vue همین partها را از `@simurgh-ui/vue/accordion` صادر می‌کند. Angular از `AccordionComponent` و `AccordionItemComponent` در `@simurgh-ui/angular/accordion` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Accordion" kind="live">
+  <CompositeComponentPreview component="accordion" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Accordion type="single">
+  <AccordionItem value="shipping">
+    <AccordionTrigger>ارسال سفارش</AccordionTrigger>
+    <AccordionContent>سفارش طی دو روز ارسال می‌شود.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+```vue
+<Accordion>
+  <AccordionItem value="shipping">
+    <AccordionTrigger>ارسال سفارش</AccordionTrigger>
+    <AccordionContent>سفارش طی دو روز ارسال می‌شود.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+```html
+<simurgh-accordion>
+  <simurgh-accordion-item value="shipping">
+    <span trigger>ارسال سفارش</span>
+    <p>سفارش طی دو روز ارسال می‌شود.</p>
+  </simurgh-accordion-item>
+</simurgh-accordion>
+```
+
+## state و صفحه‌کلید
+
+در حالت `single` یک item و در حالت `multiple` چند item می‌توانند باز باشند. برای collection پویا value پایدار و مستقل از index انتخاب کنید. Tab از triggerهای بومی عبور می‌کند و Enter یا Space item دارای focus را تغییر می‌دهد.
+
+## دسترس‌پذیری
+
+Trigger باید پرسش یا عنوان ناحیه را روشن بیان کند و content متناظر زیر همان item باقی بماند. heading level اطراف Accordion را منظم نگه دارید و اطلاعات ضروری را به‌طور پیش‌فرض پنهان نکنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

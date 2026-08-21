@@ -1,0 +1,78 @@
+---
+title: Tabs
+description: پیمایش tab جهت‌محور با roving focus و state بومی هر فریم‌ورک.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add tabs
+```
+
+```ts
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from '@simurgh-ui/react/tabs';
+import '@simurgh-ui/styles/tabs.css';
+```
+
+Vue همین partها را از `@simurgh-ui/vue/tabs` صادر می‌کند. Angular از `TabsComponent`، `TabDirective` و `TabPanelDirective` در `@simurgh-ui/angular/tabs` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Tabs" kind="live">
+  <CompositeComponentPreview component="tabs" client:load />
+</ComponentPreview>
+
+## React
+
+```tsx
+<Tabs defaultValue="account" direction="rtl">
+  <TabsList>
+    <TabsTrigger value="account">حساب</TabsTrigger>
+    <TabsTrigger value="security">امنیت</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">تنظیمات حساب</TabsContent>
+  <TabsContent value="security">تنظیمات امنیت</TabsContent>
+</Tabs>
+```
+
+## Vue
+
+```vue
+<Tabs v-model="tab" direction="rtl">
+  <TabsList>
+    <TabsTrigger value="account">حساب</TabsTrigger>
+    <TabsTrigger value="security">امنیت</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">تنظیمات حساب</TabsContent>
+  <TabsContent value="security">تنظیمات امنیت</TabsContent>
+</Tabs>
+```
+
+## Angular
+
+```html
+<simurgh-tabs [(value)]="tab" direction="rtl">
+  <button tab simurghTab="account">حساب</button>
+  <button tab simurghTab="security">امنیت</button>
+  <section simurghTabPanel="account">تنظیمات حساب</section>
+  <section simurghTabPanel="security">تنظیمات امنیت</section>
+</simurgh-tabs>
+```
+
+## صفحه‌کلید و RTL
+
+Tab روی tab فعال وارد می‌شود و سپس به panel یا focusable بعدی می‌رود. Arrowها tab را حرکت و فعال می‌کنند؛ Home/End ابتدا و انتها را انتخاب می‌کنند. در orientation افقی، Arrow چپ و راست در RTL معکوس می‌شوند.
+
+هر Trigger باید `value` متناظر با یک Content داشته باشد. برای state کنترل‌شده از `value` و callback در React، `v-model` در Vue و `[(value)]` در Angular استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

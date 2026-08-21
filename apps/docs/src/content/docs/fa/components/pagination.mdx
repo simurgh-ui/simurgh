@@ -1,0 +1,46 @@
+---
+title: Pagination
+description: پیمایش صفحه‌های نام‌گذاری‌شده با ساختار list و semantics صفحهٔ جاری.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add pagination
+```
+
+```ts
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from '@simurgh-ui/react/pagination';
+import '@simurgh-ui/styles/pagination.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Pagination" kind="live">
+  <ReactComponentPreview component="pagination" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Pagination label="صفحه‌های نتایج">
+  <PaginationContent>
+    <PaginationItem><PaginationLink href="?page=1">۱</PaginationLink></PaginationItem>
+    <PaginationItem><PaginationLink href="?page=2" current>۲</PaginationLink></PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+Pagination یک ناحیهٔ پیمایش نام‌دار و list پیوندهاست. صفحهٔ جاری باید `aria-current="page"` داشته باشد. Previous/Next را با متن یا accessible name مشخص و در ابتدا/انتها واقعاً غیرفعال کنید. تغییر صفحه باید heading یا نقطهٔ شروع نتایج را برای focus قابل‌یافتن نگه دارد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

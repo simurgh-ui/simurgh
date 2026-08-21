@@ -1,0 +1,46 @@
+---
+title: Kbd
+description: معنای بومی ورودی صفحه‌کلید برای میان‌بر و ترکیب کلیدها.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add kbd
+```
+
+```ts
+import { Kbd } from '@simurgh-ui/react/kbd';
+import { Kbd as VueKbd } from '@simurgh-ui/vue/kbd';
+import { KbdComponent } from '@simurgh-ui/angular/kbd';
+import '@simurgh-ui/styles/kbd.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Kbd" kind="live">
+  <ReactComponentPreview component="kbd" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<p>
+  برای جست‌وجو <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd> را فشار دهید.
+</p>
+```
+
+Angular از `<simurgh-kbd>` و Vue از `<Kbd>` استفاده می‌کند.
+
+## دسترس‌پذیری
+
+Kbd عنصر بومی `<kbd>` را حفظ می‌کند. نام کلید را مطابق platform و زبان رابط بنویسید و shortcut را تنها راه اجرای action قرار ندهید. برای ترکیب چند کلید، هر کلید را جدا و separator خوانا نمایش دهید.
+
+Kbd تعاملی نیست؛ برای اجرای shortcut از Button یا کنترل واقعی استفاده کنید. shortcutهای سیستم‌عامل و assistive technology را override نکنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

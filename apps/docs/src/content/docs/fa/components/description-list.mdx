@@ -1,0 +1,61 @@
+---
+title: Description List
+description: ساختار بومی term و detail برای metadata منظم.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add description-list
+```
+
+```ts
+import {
+  DescriptionList,
+  DescriptionListGroup,
+  DescriptionListTerm,
+  DescriptionListDetails,
+} from '@simurgh-ui/react/description-list';
+import '@simurgh-ui/styles/description-list.css';
+```
+
+Vue همین partها را صادر می‌کند. Angular directiveهای `DescriptionListDirective`، `DescriptionListGroupDirective`، `DescriptionListTermDirective` و `DescriptionListDetailsDirective` را ارائه می‌دهد.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Description List" kind="live">
+  <ReactComponentPreview component="description-list" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<DescriptionList>
+  <DescriptionListGroup>
+    <DescriptionListTerm>فریم‌ورک‌ها</DescriptionListTerm>
+    <DescriptionListDetails>Angular، React و Vue</DescriptionListDetails>
+  </DescriptionListGroup>
+</DescriptionList>
+```
+
+```html
+<dl simurghDescriptionList>
+  <div simurghDescriptionListGroup>
+    <dt simurghDescriptionListTerm>فریم‌ورک‌ها</dt>
+    <dd simurghDescriptionListDetails>Angular، React و Vue</dd>
+  </div>
+</dl>
+```
+
+## semantics و دسترس‌پذیری
+
+این component ترتیب بومی `dl`، `dt` و `dd` را حفظ می‌کند. هر term می‌تواند یک یا چند detail داشته باشد. برای دادهٔ دوبعدی با headerهای ستونی و ردیفی از Table استفاده کنید؛ Description List برای جفت‌های نام و مقدار یا metadata مناسب است.
+
+در responsive layout ترتیب DOM را تغییر ندهید. مقدار خالی را با متن معنادار مانند «ثبت نشده» نشان دهید، نه با حذف detail.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

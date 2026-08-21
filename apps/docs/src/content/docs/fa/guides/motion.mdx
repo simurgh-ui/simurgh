@@ -1,0 +1,100 @@
+---
+title: حرکت و پویانمایی
+description: پویانمایی سبک و اختیاری برای Angular، React و Vue.
+---
+
+`@simurgh-ui/motion` بدون تغییر رفتار پیش‌فرض کامپوننت‌ها motion هدفمند اضافه می‌کند. duration و delay برحسب ثانیه‌اند و engine از Web Animations API استفاده می‌کند.
+
+```sh
+pnpm add @simurgh-ui/motion
+```
+
+## API اصلی
+
+```ts
+import { animate, sequence } from '@simurgh-ui/motion';
+
+const controls = animate(
+  card,
+  { opacity: [0, 1], y: [8, 0] },
+  { type: 'spring', stiffness: 180, damping: 24 },
+);
+
+await sequence([
+  [heading, { opacity: [0, 1] }],
+  [actions, { opacity: [0, 1], y: [4, 0] }, { delay: 0.04 }],
+]).finished;
+
+controls.pause();
+controls.play();
+controls.cancel();
+```
+
+## React
+
+```tsx
+import { animated, Presence } from '@simurgh-ui/motion/react';
+
+const panel = {
+  initial: { opacity: 0, y: 6 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -4 },
+};
+
+<Presence exit={panel}>
+  {open && <animated.div motion={panel}>محتوا</animated.div>}
+</Presence>;
+```
+
+## Vue
+
+```vue
+<script setup lang="ts">
+import { Motion, Presence } from '@simurgh-ui/motion/vue';
+const panel = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+};
+</script>
+
+<Presence :exit="panel">
+  <Motion v-if="open" :motion="panel">محتوا</Motion>
+</Presence>
+```
+
+## Angular
+
+```ts
+import {
+  SimurghMotionDirective,
+  SimurghPresence,
+} from '@simurgh-ui/motion/angular';
+
+@Component({
+  imports: [SimurghMotionDirective, SimurghPresence],
+  template: `<simurgh-presence [present]="open" [motion]="panel">
+    <section [simurghMotion]="panel">محتوا</section>
+  </simurgh-presence>`,
+})
+export class Example {
+  open = true;
+  panel = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+  };
+}
+```
+
+## gesture، variant و stagger
+
+تعریف‌ها stateهای `whileHover`، `whilePress`، `whileFocus` و `whileInView` را می‌پذیرند. `stagger` روی parent، animation فرزندان را به‌ترتیب سند زمان‌بندی می‌کند. وقتی wrapper اضافی semantics را تغییر می‌دهد از `useMotion` یا directive استفاده کنید.
+
+## reduced motion و دسترس‌پذیری
+
+مقدار پیش‌فرض `reducedMotion: "user"` از تنظیم سیستم‌عامل پیروی می‌کند. مقدار `"always"` برای تنظیمی است که motion را خاموش می‌کند. animation تزئینی نباید focus، dismiss، validation یا دسترسی به محتوا را به تأخیر بیندازد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

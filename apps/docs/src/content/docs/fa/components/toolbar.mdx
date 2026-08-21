@@ -1,0 +1,62 @@
+---
+title: Toolbar
+description: گروه نام‌دار فرمان با پیمایش وابسته به جهت و orientation.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add toolbar
+```
+
+```ts
+import { Toolbar, ToolbarButton } from '@simurgh-ui/react/toolbar';
+import { Toolbar as VueToolbar, ToolbarButton as VueToolbarButton } from '@simurgh-ui/vue/toolbar';
+import { ToolbarComponent, ToolbarButtonDirective } from '@simurgh-ui/angular/toolbar';
+import '@simurgh-ui/styles/toolbar.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Toolbar" kind="live">
+  <CompositeComponentPreview component="toolbar" client:load />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Toolbar label="قالب‌بندی متن">
+  <ToolbarButton>ضخیم</ToolbarButton>
+  <ToolbarButton>مورب</ToolbarButton>
+</Toolbar>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Toolbar label="قالب‌بندی متن">
+  <ToolbarButton>ضخیم</ToolbarButton>
+  <ToolbarButton>مورب</ToolbarButton>
+</Toolbar>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-toolbar label="قالب‌بندی متن">
+  <button simurghToolbarButton>ضخیم</button>
+  <button simurghToolbarButton>مورب</button>
+</simurgh-toolbar>
+```
+</TabItem>
+</Tabs>
+
+Toolbar کنترل‌های مرتبط را در یک توقف صفحه‌کلید گروه‌بندی می‌کند و هنگام جابه‌جایی focus موردهای غیرفعال را رد می‌کند. برای گروه عمودی `orientation="vertical"` را تعیین کنید. در حالت افقی راست‌به‌چپ، کلیدهای قبلی و بعدی مطابق جهت منطقی معکوس می‌شوند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

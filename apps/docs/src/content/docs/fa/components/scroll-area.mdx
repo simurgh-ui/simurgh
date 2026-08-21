@@ -1,0 +1,40 @@
+---
+title: Scroll Area
+description: پیمایش بومی صفحه‌کلید و اشاره‌گر همراه معنای اختیاری ناحیهٔ نام‌دار.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add scroll-area
+```
+
+```ts
+import { ScrollArea } from '@simurgh-ui/react/scroll-area';
+import { ScrollArea as VueScrollArea } from '@simurgh-ui/vue/scroll-area';
+import { ScrollAreaComponent } from '@simurgh-ui/angular/scroll-area';
+import '@simurgh-ui/styles/scroll-area.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Scroll Area" kind="live">
+  <ReactComponentPreview component="scroll-area" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<ScrollArea label="فعالیت‌ها" orientation="vertical">
+  {events}
+</ScrollArea>
+```
+
+scroll بومی wheel، touch و صفحه‌کلید را حفظ می‌کند. فقط وقتی ناحیه مستقل و مهم است `label` و landmark اضافه کنید. focus نباید داخل ناحیه گیر کند و scrollbar سفارشی باید در forced colors و touch قابل‌استفاده بماند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

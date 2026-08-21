@@ -1,0 +1,53 @@
+---
+title: Spinner
+description: وضعیت نام‌دار برای بارگذاری کوتاه و نامعین.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add spinner
+```
+
+```ts
+import { Spinner } from '@simurgh-ui/react/spinner';
+import { Spinner as VueSpinner } from '@simurgh-ui/vue/spinner';
+import { SpinnerComponent } from '@simurgh-ui/angular/spinner';
+import '@simurgh-ui/styles/spinner.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Spinner" kind="live">
+  <ReactComponentPreview component="spinner" />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Spinner label="در حال بارگذاری نتایج" />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Spinner label="در حال بارگذاری نتایج" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-spinner label="در حال بارگذاری نتایج" />
+```
+</TabItem>
+</Tabs>
+
+Spinner کار نامعین کوتاه را به‌صورت status زنده و نام‌دار اعلام می‌کند و نشانگر دیداری آن از فناوری کمکی پنهان است. اگر میزان پیشرفت قابل‌اندازه‌گیری است از Progress و برای نمایش شکل تقریبی محتوای آینده از Skeleton استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

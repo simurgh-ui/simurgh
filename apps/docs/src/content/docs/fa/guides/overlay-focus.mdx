@@ -1,0 +1,52 @@
+---
+title: فوکوس لایه‌ها
+description: مدیریت focus اولیه، containment، restoration، portal، dismiss و overlay تو‌در‌تو.
+---
+
+Dialog، Alert Dialog، Sheet و Drawer modal هستند و focus را هنگام بازبودن داخل خود نگه می‌دارند. Popover، menu، Select، Combobox، Hover Card و Tooltip غیرmodal‌اند و مدل focus مخصوص خود را دارند.
+
+## چرخهٔ focus در modal
+
+| مرحله | Dialog، Sheet و Drawer | Alert Dialog |
+| --- | --- | --- |
+| بازشدن | element دارای focus ثبت می‌شود | element دارای focus ثبت می‌شود |
+| focus اولیه | container محتوا focus می‌گیرد | cancel امن در صورت وجود focus می‌گیرد |
+| Tab | میان descendantهای قابل‌focus می‌چرخد | میان descendantهای قابل‌focus می‌چرخد |
+| Escape | modal بالایی را می‌بندد | dialog را می‌بندد؛ cancel قابل‌مشاهده نیز لازم است |
+| بستن | focus به opener موجود برمی‌گردد | focus به opener موجود برمی‌گردد |
+
+مدیریت focus جای accessible title و description را نمی‌گیرد.
+
+## تفاوت فریم‌ورک‌ها
+
+| Adapter | Portal | کنترل برنامه‌ای |
+| --- | --- | --- |
+| React | `DialogPortal` محتوا را در `document.body` mount می‌کند | `open` و `onOpenChange` یا `defaultOpen` |
+| Vue | modal با `Teleport` به body می‌رود | `v-model:open` یا `default-open` |
+| Angular | محتوا در host می‌ماند | متدهای `show()` و `close()` را فراخوانی کنید؛ assignment مستقیم lifecycle را دور می‌زند |
+
+## overlay غیرmodal
+
+Tooltip و Hover Card focus را به loop modal منتقل نمی‌کنند. Popover با Escape بسته می‌شود. Menuها focus را میان itemها جابه‌جا می‌کنند. Select و Combobox باید رفتار فرم و active option خود را حفظ کنند. Tab را در یک surface غیرmodal trap نکنید.
+
+## موقعیت‌دهی
+
+فاصلهٔ پیش‌فرض ۸px است، سمت `bottom` ترجیح دارد و در برخورد با viewport به جهت مقابل flip می‌شود. engine با scroll، resize و تغییر اندازهٔ element به‌روزرسانی و در teardown همهٔ listenerها را پاک می‌کند.
+
+## overlayهای تو‌در‌تو
+
+در صورت امکان از modal داخل modal خودداری کنید. اگر لازم است:
+
+1. child را از element پایدار داخل parent باز کنید.
+2. Escape اول فقط child را ببندد.
+3. focus به opener داخل parent برگردد.
+4. پس از بستن parent، focus به opener اصلی برگردد.
+5. outside press نباید هر دو سطح را هم‌زمان ببندد.
+
+## بررسی نهایی
+
+با صفحه‌کلید opener را فعال کنید، focus اولیه و accessible name را بررسی کنید، با Tab و Shift+Tab حرکت کنید و Escape را بزنید. آزمون را در RTL، reduced motion، صفحهٔ scrollشده و viewport موبایل تکرار کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

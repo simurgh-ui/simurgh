@@ -1,0 +1,41 @@
+---
+title: شواهد پژوهشی با حفظ حریم خصوصی
+description: جمع‌آوری شواهد مفید دربارهٔ یافتن آیکن با مطالعهٔ رضایت‌محور و بدون telemetry محصول.
+---
+
+Simurgh عبارت جست‌وجوی آیکن، قطعه‌کد کپی‌شده، دادهٔ حساب یا event تعاملی سایت مستندات را جمع‌آوری نمی‌کند. شواهد discovery فقط از جلسهٔ مدیریت‌شده و رضایت‌محور با template نسخه‌دار به دست می‌آید.
+
+## پروتکل مطالعه
+
+1. کارها، fieldها، زمان نگهداری و حق انصراف را توضیح دهید و پیش از شروع رضایت را ثبت کنید.
+2. یک کد تصادفی بسازید که به account یا recruitment list متصل نباشد.
+3. از شرکت‌کننده بخواهید icon را پیدا کند، گزینه‌های مشابه را مقایسه کند، import فریم‌ورک را کپی کند، theme و label کنترل فقط‌آیکن و RTL را بررسی کند.
+4. فقط boolean، زمان، count، فریم‌ورک و issue code ازپیش‌تعریف‌شده ثبت کنید؛ تصویر صفحه، صدا، query خام یا یادداشت آزاد نگیرید.
+5. در صورت انصراف، record را فوری حذف کنید.
+6. دادهٔ خام را پس از ۳۰ روز حذف و فقط aggregate حداقل پنج جلسه را منتشر کنید.
+
+پس از پنج جلسهٔ معتبر:
+
+```sh
+pnpm research:icons
+```
+
+این دستور consent مفقود، record انصرافی، policy قدیمی، session code تکراری، field ممنوع و cohort کوچک‌تر از پنج را رد می‌کند.
+
+## metricهای مجاز
+
+- موفقیت جست‌وجو و زمان رسیدن به نخستین icon درست
+- تعداد query بدون نتیجه
+- موفقیت کپی import فریم‌ورک
+- موفقیت theme، accessible label و بررسی RTL
+- تعداد جایگزینی اشتباه icon
+
+query دقیق کاربر را ذخیره نکنید؛ moderator فقط count و taxonomy code ازپیش‌تعریف‌شده را ثبت می‌کند.
+
+## دادهٔ ممنوع
+
+نام، رایانامه، آدرس شبکه، account ID، ضبط تصویر صفحه و دادهٔ آزاد محصول نباید جمع‌آوری یا نگهداری شوند. دادهٔ recruitment بیرون dataset مطالعه می‌ماند و session code نباید به فعالیت repository، website، support یا package registry متصل شود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

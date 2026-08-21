@@ -1,0 +1,56 @@
+---
+title: به‌روزرسانی و مهاجرت
+description: به‌روزرسانی امن بسته‌های Simurgh یا هماهنگ‌کردن کامپوننت‌های محلی با registry جدید.
+---
+
+روش به‌روزرسانی به مدل نصب وابسته است. مصرف‌کنندهٔ package نسخهٔ dependency را تغییر می‌دهد؛ مصرف‌کنندهٔ CLI مالک سورس کپی‌شده است و خودش تغییرات registry جدید را ادغام می‌کند.
+
+## پیش از به‌روزرسانی
+
+1. کد برنامه، `simurgh.json`، کامپوننت‌های محلی و تغییرات theme را commit یا پشتیبان‌گیری کنید.
+2. نسخه‌های فعلی Simurgh و مقدار `registryVersion` را ثبت کنید.
+3. release note و Changeset نسخهٔ مقصد را بخوانید. پروژه هنوز پیش‌انتشار است و نسخه‌های minor یا patch هم ممکن است نیاز به مهاجرت داشته باشند.
+4. هر بار فقط یک مدل نصب را به‌روزرسانی کنید.
+
+## به‌روزرسانی بسته‌ها
+
+adapter و styles را با هم ارتقا دهید:
+
+```sh
+# برای پروژه‌های Vue یا Angular نام adapter را جایگزین کنید.
+pnpm update @simurgh-ui/react @simurgh-ui/styles
+```
+
+پس از آن lockfile، بررسی نوع، آزمون واحد، دسترس‌پذیری و مرورگر را اجرا کنید. state کنترل‌شده، submit فرم، پیمایش با صفحه‌کلید، overlay، RTL و tokenهای سفارشی را دوباره آزمایش کنید.
+
+## به‌روزرسانی سورس کپی‌شده با CLI
+
+ارتقای CLI فایل‌های داخل برنامه را خودکار تغییر نمی‌دهد:
+
+```sh
+pnpm dlx @simurgh-ui/cli@<version> list
+pnpm dlx @simurgh-ui/cli@<version> diff dialog
+```
+
+خروجی متفاوت الزاماً خطا نیست و می‌تواند ناشی از سفارشی‌سازی عمدی باشد. نسخهٔ قدیمی registry، فایل محلی و نسخهٔ جدید را سه‌طرفه مقایسه کنید؛ سپس اصلاحات رفتار و دسترس‌پذیری upstream را با حفظ سیاست‌های برنامه ادغام کنید.
+
+## استفادهٔ امن از overwrite
+
+```sh
+pnpm dlx @simurgh-ui/cli@<version> add dialog --overwrite
+```
+
+`--overwrite` فایل مقصد را کامل جایگزین می‌کند و merge انجام نمی‌دهد. فقط وقتی استفاده کنید که تغییر محلی در version control قابل‌بازیابی باشد. بلافاصله بعد از اجرا `git diff` را بررسی کنید.
+
+## حل اختلاف diff
+
+- role، نام قابل‌دسترسی، صفحه‌کلید، focus، مقدار فرم و disabled state نسخهٔ جدید را حفظ کنید.
+- تغییر بصری را تا حد ممکن با token، recipe class یا state hook بازاعمال کنید.
+- prop، event، input، output و slot را پیش از حذف API قدیمی در تمام call siteها بررسی کنید.
+- analytics، اعتبارسنجی دامنه و data fetching را در wrapper برنامه نگه دارید، نه داخل primitive.
+
+تفاوت عمدی با registry قابل‌قبول است؛ دلیل آن را مستند کنید. برای overlayها راهنمای [مهاجرت موقعیت‌دهی](/fa/guides/overlay-positioning-migration/) را نیز بخوانید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

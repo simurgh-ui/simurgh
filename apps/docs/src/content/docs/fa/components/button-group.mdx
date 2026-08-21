@@ -1,0 +1,58 @@
+---
+title: Button Group
+description: مجموعهٔ actionهای مرتبط در یک گروه افقی یا عمودی نام‌گذاری‌شده.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add button-group
+```
+
+```ts
+import {
+  ButtonGroup,
+  ButtonGroupText,
+  ButtonGroupSeparator,
+} from '@simurgh-ui/react/button-group';
+import '@simurgh-ui/styles/button-group.css';
+```
+
+Vue همین partها را از `@simurgh-ui/vue/button-group` و Angular کامپوننت‌های متناظر را از `@simurgh-ui/angular/button-group` صادر می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Button Group" kind="live">
+  <ReactComponentPreview component="button-group" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<ButtonGroup aria-label="تراز متن">
+  <Button>راست</Button>
+  <Button>وسط</Button>
+  <Button>چپ</Button>
+</ButtonGroup>
+```
+
+```html
+<simurgh-button-group aria-label="تراز متن">
+  <simurgh-button>راست</simurgh-button>
+  <simurgh-button>وسط</simurgh-button>
+  <simurgh-button>چپ</simurgh-button>
+</simurgh-button-group>
+```
+
+## semantics
+
+Group باید accessible name داشته باشد. هر Button همچنان action مستقل خود را حفظ می‌کند و Tab طبق ترتیب DOM میان آن‌ها حرکت می‌کند. برای انتخاب یک state پایدار به‌جای مجموعهٔ action از Toggle Group استفاده کنید.
+
+`ButtonGroupText` متن غیرتعاملی و `ButtonGroupSeparator` مرز بصری میان زیرگروه‌هاست. separator تزئینی نباید در accessibility tree خوانده شود. orientation بصری را با ترتیب منطقی DOM و RTL هماهنگ نگه دارید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

@@ -1,0 +1,51 @@
+---
+title: Hover Card
+description: محتوای تکمیلی متصل که با hover pointer یا focus صفحه‌کلید در دسترس است.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add hover-card
+```
+
+```ts
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+} from '@simurgh-ui/react/hover-card';
+import '@simurgh-ui/styles/hover-card.css';
+```
+
+Vue همین partها و Angular `HoverCardComponent` را صادر می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Hover Card" kind="live">
+  <OverlayComponentPreview component="hover-card" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<HoverCard>
+  <HoverCardTrigger>Simurgh UI</HoverCardTrigger>
+  <HoverCardContent label="معرفی Simurgh UI">
+    کامپوننت‌های دسترس‌پذیر برای Angular، React و Vue.
+  </HoverCardContent>
+</HoverCard>
+```
+
+## رفتار و دسترس‌پذیری
+
+Content با hover یا focus trigger ظاهر و هنگام خروج pointer یا focus بسته می‌شود. اطلاعات ضروری، action اصلی یا محتوای قابل‌تعامل پیچیده را فقط داخل Hover Card قرار ندهید؛ روی دستگاه لمسی hover قابل اتکا نیست.
+
+Trigger باید بدون کارت نیز قابل‌فهم باشد و Content accessible label داشته باشد. نمایش و بستن نباید focus را جابه‌جا کند. برای محتوای تعاملی قابل‌بستن از Popover و برای توضیح بسیار کوتاه از Tooltip استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

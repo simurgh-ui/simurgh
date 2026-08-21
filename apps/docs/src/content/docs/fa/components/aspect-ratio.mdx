@@ -1,0 +1,56 @@
+---
+title: Aspect Ratio
+description: ابزار چیدمان برای حفظ نسبت ثابت رسانه.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add aspect-ratio
+```
+
+```ts
+import { AspectRatio } from '@simurgh-ui/react/aspect-ratio';
+import { AspectRatio as VueAspectRatio } from '@simurgh-ui/vue/aspect-ratio';
+import { AspectRatioComponent } from '@simurgh-ui/angular/aspect-ratio';
+import '@simurgh-ui/styles/aspect-ratio.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Aspect Ratio" kind="live">
+  <ReactComponentPreview component="aspect-ratio" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<AspectRatio ratio={16 / 9}>
+  <img src={cover} alt="کوه دماوند" />
+</AspectRatio>
+```
+
+```vue
+<AspectRatio :ratio="16 / 9">
+  <img :src="cover" alt="کوه دماوند" />
+</AspectRatio>
+```
+
+```html
+<simurgh-aspect-ratio [ratio]="16 / 9">
+  <img [src]="cover" alt="کوه دماوند" />
+</simurgh-aspect-ratio>
+```
+
+## رفتار و دسترس‌پذیری
+
+`ratio` یک عدد مثبت است و مقدار پیش‌فرض آن ۱ است. این primitive فقط اندازهٔ container را کنترل می‌کند و semantics فرزند را تغییر نمی‌دهد. تصویر اطلاعاتی به alt دقیق نیاز دارد؛ تصویر تزئینی باید `alt=""` داشته باشد.
+
+برای جلوگیری از جابه‌جایی layout، width مناسب parent را مشخص کنید و برای تصویر یا ویدئو از `object-fit` سازگار با برش موردنظر استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

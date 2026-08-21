@@ -1,0 +1,66 @@
+---
+title: Avatar
+description: تصویر هویت همراه fallback قطعی و قابل‌دسترسی.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add avatar
+```
+
+```ts
+import { Avatar } from '@simurgh-ui/react/avatar';
+import { Avatar as VueAvatar } from '@simurgh-ui/vue/avatar';
+import { AvatarComponent } from '@simurgh-ui/angular/avatar';
+import '@simurgh-ui/styles/avatar.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Avatar" kind="live">
+  <ReactComponentPreview component="avatar" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Avatar
+  src={user.avatar}
+  alt="مریم میرزاخانی"
+  fallback="م‌م"
+/>
+```
+
+```vue
+<Avatar :src="user.avatar" alt="مریم میرزاخانی" fallback="م‌م" />
+```
+
+```html
+<simurgh-avatar
+  [src]="user.avatar"
+  alt="مریم میرزاخانی"
+  fallback="م‌م"
+/>
+```
+
+## رفتار و API
+
+اگر `src` بارگذاری شود تصویر نمایش داده می‌شود و در غیر این صورت fallback قطعی باقی می‌ماند.
+
+| Prop/Input | Type | الزام |
+| --- | --- | --- |
+| `src` | `string` | اختیاری |
+| `alt` | `string` | نام یا توضیح مناسب |
+| `fallback` | متن یا `ReactNode` | لازم |
+
+## دسترس‌پذیری
+
+اگر نام شخص کنار Avatar نوشته شده و تصویر اطلاعات تازه‌ای ندارد، `alt=""` مناسب است. در غیر این صورت نام مختصر هویت را بنویسید. fallback نباید تنها وسیلهٔ انتقال هویت مهم باشد و رنگ نیز به‌تنهایی کافی نیست.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

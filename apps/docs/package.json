@@ -26,7 +26,8 @@
     "astro": "^5.18.2",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "vazirmatn": "33.0.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10"

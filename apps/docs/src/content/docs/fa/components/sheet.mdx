@@ -1,0 +1,50 @@
+---
+title: Sheet
+description: پنل modal متصل به کنار صفحه با مدیریت کامل focus.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add sheet
+```
+
+```ts
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetTitle,
+  SheetDescription,
+  SheetClose,
+} from '@simurgh-ui/react/sheet';
+import '@simurgh-ui/styles/sheet.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Sheet" kind="live">
+  <OverlayComponentPreview component="sheet" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Sheet>
+  <SheetTrigger>بازکردن فیلترها</SheetTrigger>
+  <SheetContent side="right">
+    <SheetTitle>فیلترها</SheetTitle>
+    <SheetDescription>نتایج قابل‌مشاهده را محدود کنید.</SheetDescription>
+    <SheetClose>تمام</SheetClose>
+  </SheetContent>
+</Sheet>
+```
+
+Sheet modal است و focus را trap و پس از بستن به opener بازمی‌گرداند. Escape سطح بالایی را می‌بندد. `side` جهت فیزیکی panel است؛ اثر آن را در RTL بررسی کنید. title، description و close قابل‌مشاهده لازم‌اند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

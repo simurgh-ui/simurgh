@@ -1,0 +1,59 @@
+---
+title: Alert
+description: بازخورد live region مؤدبانه یا فوری برای تغییرات معنادار.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add alert
+```
+
+```ts
+import { Alert } from '@simurgh-ui/react/alert';
+import { Alert as VueAlert } from '@simurgh-ui/vue/alert';
+import { AlertComponent } from '@simurgh-ui/angular/alert';
+import '@simurgh-ui/styles/alert.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Alert" kind="live">
+  <ReactComponentPreview component="alert" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Alert>
+  <strong>پروفایل به‌روزرسانی شد</strong>
+  <p>تغییرات شما ذخیره شد.</p>
+</Alert>
+```
+
+همین ساختار در Vue با `<Alert>` و در Angular با `<simurgh-alert>` استفاده می‌شود.
+
+## رفتار
+
+در حالت عادی Alert دارای `role="status"` و `aria-live="polite"` است. با `urgent` به `role="alert"` و اعلان assertive تبدیل می‌شود.
+
+```tsx
+<Alert urgent>
+  اتصال قطع شد. تغییرات ذخیره نشده‌اند.
+</Alert>
+```
+
+## دسترس‌پذیری
+
+Alert را فقط هنگامی mount یا update کنید که پیام جدیدی برای اعلام وجود دارد. پیام فوری را برای خطری نگه دارید که نیازمند توجه همان لحظه است. focus را بدون دلیل به Alert منتقل نکنید و معنا را فقط با رنگ یا icon منتقل نکنید.
+
+| Prop/Input | Type | پیش‌فرض |
+| --- | --- | --- |
+| `urgent` | `boolean` | `false` |
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

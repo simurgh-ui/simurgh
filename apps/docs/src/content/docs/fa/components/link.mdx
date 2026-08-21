@@ -1,0 +1,55 @@
+---
+title: Link
+description: پیمایش anchor بومی با حالت external و disabled.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add link
+```
+
+```ts
+import { Link } from '@simurgh-ui/react/link';
+import { Link as VueLink } from '@simurgh-ui/vue/link';
+import { LinkComponent } from '@simurgh-ui/angular/link';
+import '@simurgh-ui/styles/link.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Link" kind="live">
+  <ReactComponentPreview component="link" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Link href="/fa/guides/installation/">مستندات نصب</Link>
+<Link href="https://github.com/simurgh-ui/simurgh" external>
+  مخزن GitHub
+</Link>
+```
+
+```html
+<simurgh-link href="/fa/guides/installation/">مستندات نصب</simurgh-link>
+<simurgh-link
+  href="https://github.com/simurgh-ui/simurgh"
+  [external]="true"
+>
+  مخزن GitHub
+</simurgh-link>
+```
+
+## semantics و امنیت
+
+Link برای تغییر location است؛ برای action داخل صفحه از Button استفاده کنید. متن لینک باید بیرون از context نیز مقصد را روشن کند. `external` رفتار و نشانهٔ مقصد بیرونی را فعال می‌کند؛ هنگام بازکردن tab تازه، policy امن `rel` را حفظ کنید.
+
+لینک disabled ذاتاً الگوی ضعیفی است. اگر مقصد موجود نیست لینک را render نکنید یا دلیل عدم دسترسی را توضیح دهید؛ عنصر بدون `href` نباید شبیه لینک فعال بماند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

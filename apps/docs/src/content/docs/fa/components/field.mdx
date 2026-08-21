@@ -1,0 +1,54 @@
+---
+title: Field
+description: گروه‌بندی بومی کنترل‌ها همراه legend، راهنما و خطای validation.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add field
+```
+
+```ts
+import {
+  Field,
+  FieldLegend,
+  FieldDescription,
+  FieldError,
+} from '@simurgh-ui/react/field';
+import '@simurgh-ui/styles/field.css';
+```
+
+Vue و Angular partهای متناظر را از subpath `field` صادر می‌کنند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Field" kind="live">
+  <ReactComponentPreview component="field" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Field>
+  <FieldLegend>اعلان‌ها</FieldLegend>
+  <FieldDescription id="channel-help">
+    یک کانال انتخاب کنید.
+  </FieldDescription>
+  <Checkbox aria-describedby="channel-help">رایانامه</Checkbox>
+  {error && <FieldError id="channel-error">{error}</FieldError>}
+</Field>
+```
+
+## semantics
+
+Field برای گروهی از کنترل‌های مرتبط است و ساختار `<fieldset>` و `<legend>` را حفظ می‌کند. برای یک Input منفرد از Label متصل استفاده کنید. Description و Error باید با ID پایدار و `aria-describedby` به کنترل مربوط وصل شوند.
+
+Error فقط با رنگ مشخص نشود و هنگام submit نامعتبر در summary فرم نیز قابل‌یافتن باشد. کنترل disabled همچنان به legend گروه نیاز دارد، اما در submit بومی شرکت نمی‌کند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

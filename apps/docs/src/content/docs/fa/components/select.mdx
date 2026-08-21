@@ -1,0 +1,78 @@
+---
+title: Select
+description: فهرست انتخاب سفارشی با انتخاب تکی، صفحه‌کلید و ارسال بومی فرم.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import SearchSelectionComponentPreview from '../../../../components/previews/SearchSelectionComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add select
+```
+
+```ts
+import { Select } from '@simurgh-ui/react/select';
+import { Select as VueSelect, SelectOption } from '@simurgh-ui/vue/select';
+import {
+  SelectComponent,
+  SelectOption as AngularSelectOption,
+} from '@simurgh-ui/angular/select';
+import '@simurgh-ui/styles/select.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Select" kind="live">
+  <SearchSelectionComponentPreview component="select" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+const cities = [
+  { value: 'tehran', label: 'تهران' },
+  { value: 'isfahan', label: 'اصفهان' },
+];
+
+<Select
+  name="city"
+  options={cities}
+  value={city}
+  onValueChange={setCity}
+  placeholder="انتخاب شهر"
+/>;
+```
+
+```vue
+<Select
+  v-model="city"
+  name="city"
+  :options="cities"
+  placeholder="انتخاب شهر"
+/>
+```
+
+```html
+<simurgh-select
+  name="city"
+  [options]="cities"
+  [(value)]="city"
+  placeholder="انتخاب شهر"
+/>
+```
+
+## صفحه‌کلید
+
+Tab روی trigger قرار می‌گیرد. Arrow Down/Up فهرست را باز و option فعال را جابه‌جا می‌کند؛ Home/End ابتدا و انتها را انتخاب می‌کند؛ Enter یا Space انتخاب را ثبت و Escape فهرست را بدون تغییر focus می‌بندد.
+
+## API و فرم
+
+`options` آرایه‌ای از `SelectOption` و اجباری است. `value` و `onValueChange` در React، `v-model` در Vue و `[(value)]` در Angular state را کنترل می‌کنند. `defaultValue` حالت اولیه را در React ارائه می‌دهد. `name` و `required` در submit بومی شرکت می‌کنند.
+
+برای جست‌وجوی متنی داخل گزینه‌ها از [Combobox](/fa/components/combobox/) استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

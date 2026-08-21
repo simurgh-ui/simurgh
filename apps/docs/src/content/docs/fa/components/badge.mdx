@@ -1,0 +1,57 @@
+---
+title: Badge
+description: فرادادهٔ کوتاه درون‌خطی و بازخورد اختیاری و مؤدبانهٔ وضعیت.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add badge
+```
+
+```ts
+import { Badge, type BadgeTone } from '@simurgh-ui/react/badge';
+import { Badge as VueBadge } from '@simurgh-ui/vue/badge';
+import { BadgeComponent } from '@simurgh-ui/angular/badge';
+import '@simurgh-ui/styles/badge.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Badge" kind="live">
+  <ReactComponentPreview component="badge" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Badge tone="success">منتشرشده</Badge>
+```
+
+```vue
+<Badge tone="warning">نیازمند بازبینی</Badge>
+```
+
+```html
+<simurgh-badge tone="danger">ناموفق</simurgh-badge>
+```
+
+## API
+
+| Prop/Input | Type | پیش‌فرض |
+| --- | --- | --- |
+| `tone` | `"neutral" \| "accent" \| "success" \| "warning" \| "danger"` | `"neutral"` |
+| `status` | `boolean` | `false` |
+
+وقتی `status` فعال باشد Badge با `role="status"` و live region مؤدبانه تغییر متن را اعلام می‌کند. برای metadata ثابت آن را خاموش نگه دارید.
+
+## دسترس‌پذیری
+
+متن Badge باید بدون وابستگی به رنگ قابل‌فهم باشد. برای عمل تعاملی از Button یا Link استفاده کنید؛ Badge به‌خودی‌خود کنترل نیست. تغییرات پرتکرار را live اعلام نکنید، چون می‌تواند صفحه‌خوان را شلوغ کند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

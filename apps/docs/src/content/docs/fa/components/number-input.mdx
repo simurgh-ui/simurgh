@@ -1,0 +1,48 @@
+---
+title: Number Input
+description: ورود عدد بومی همراه کنترل‌های افزایش و کاهش دسترس‌پذیر.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import FormComponentPreview from '../../../../components/previews/FormComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add number-input
+```
+
+```ts
+import { NumberInput } from '@simurgh-ui/react/number-input';
+import { NumberInput as VueNumberInput } from '@simurgh-ui/vue/number-input';
+import { NumberInputComponent } from '@simurgh-ui/angular/number-input';
+import '@simurgh-ui/styles/number-input.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Number Input" kind="live">
+  <FormComponentPreview component="number-input" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<NumberInput
+  aria-label="تعداد"
+  name="quantity"
+  value={quantity}
+  min={0}
+  max={10}
+  step={1}
+  onValueChange={setQuantity}
+/>
+```
+
+Vue از `v-model` و Angular از `[(value)]` استفاده می‌کنند. `min`، `max` و `step` باید با validation سمت server یکسان باشند.
+
+کنترل‌های افزایش/کاهش accessible name روشن نیاز دارند. ورود مستقیم صفحه‌کلید، paste و مقدار خالی را پشتیبانی کنید و هنگام تجزیهٔ نامعتبر state خطا و متن اصلاح را نشان دهید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

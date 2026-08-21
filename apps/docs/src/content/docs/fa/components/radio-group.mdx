@@ -1,0 +1,77 @@
+---
+title: Radio Group
+description: کنترل انتخاب تکی با roving focus، صفحه‌کلید جهت‌محور و submit بومی.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import SelectionComponentPreview from '../../../../components/previews/SelectionComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add radio-group
+```
+
+```ts
+import { RadioGroup, RadioGroupItem } from '@simurgh-ui/react/radio-group';
+import {
+  RadioGroup as VueRadioGroup,
+  RadioGroupItem as VueRadioGroupItem,
+} from '@simurgh-ui/vue/radio-group';
+import {
+  RadioGroupComponent,
+  RadioGroupItemDirective,
+} from '@simurgh-ui/angular/radio-group';
+import '@simurgh-ui/styles/radio-group.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Radio Group" kind="live">
+  <SelectionComponentPreview component="radio-group" client:load />
+</ComponentPreview>
+
+## استفاده
+
+### React
+
+```tsx
+<RadioGroup name="plan" defaultValue="basic">
+  <RadioGroupItem value="basic">پایه</RadioGroupItem>
+  <RadioGroupItem value="pro">حرفه‌ای</RadioGroupItem>
+</RadioGroup>
+```
+
+### Vue
+
+```vue
+<RadioGroup v-model="plan" name="plan">
+  <RadioGroupItem value="basic">پایه</RadioGroupItem>
+  <RadioGroupItem value="pro">حرفه‌ای</RadioGroupItem>
+</RadioGroup>
+```
+
+### Angular
+
+```html
+<simurgh-radio-group name="plan" [(value)]="plan">
+  <button simurghRadio="basic">پایه</button>
+  <button simurghRadio="pro">حرفه‌ای</button>
+</simurgh-radio-group>
+```
+
+## صفحه‌کلید
+
+Tab وارد گزینهٔ انتخاب‌شده یا نخستین گزینهٔ فعال می‌شود. Arrowها focus و انتخاب را حرکت می‌دهند و Home/End به ابتدا و انتها می‌روند. در حالت افقی، جهت previous و next در RTL معکوس می‌شود.
+
+## state و فرم
+
+React از `value`/`onValueChange` یا `defaultValue`، Vue از `v-model` و Angular از `[(value)]` استفاده می‌کنند. `name` مقدار انتخاب‌شده را در فرم ثبت می‌کند.
+
+## دسترس‌پذیری
+
+برای کل گروه یک label یا accessible name و برای هر item متن روشن ارائه دهید. گزینهٔ disabled باید از پیمایش و انتخاب کنار گذاشته شود. ترتیب DOM را با ترتیب بصری هماهنگ نگه دارید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

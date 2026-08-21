@@ -1,0 +1,53 @@
+---
+title: Slider
+description: ورودی بومی بازه با اتصال مقدار و رفتار استاندارد فرم.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add slider
+```
+
+```ts
+import { Slider } from '@simurgh-ui/react/slider';
+import { Slider as VueSlider } from '@simurgh-ui/vue/slider';
+import { SliderComponent } from '@simurgh-ui/angular/slider';
+import '@simurgh-ui/styles/slider.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Slider" kind="live">
+  <ReactComponentPreview component="slider" />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Slider aria-label="بلندی صدا" name="volume" defaultValue={40} min={0} max={100} step={10} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Slider v-model="volume" aria-label="بلندی صدا" name="volume" :step="10" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-slider [(value)]="volume" label="بلندی صدا" name="volume" [step]="10" />
+```
+</TabItem>
+</Tabs>
+
+همیشه با label دیداری یا `aria-label` نام دسترس‌پذیر فراهم کنید. ورودی بازهٔ بومی به‌طور خودکار کلیدهای جهت، Home، End، اشاره‌گر و لمس را پشتیبانی می‌کند. در حالت کنترل‌شده، برنامه باید هر تغییر را در مقدار منبع بازتاب دهد؛ مقدار پیش‌فرض فقط هنگام mount خوانده می‌شود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

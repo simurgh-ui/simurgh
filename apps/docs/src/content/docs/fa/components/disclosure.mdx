@@ -1,0 +1,60 @@
+---
+title: Disclosure
+description: معنای بومی جزئیات و خلاصه برای محتوای بازشدنی.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add disclosure
+```
+
+```ts
+import {
+  Disclosure,
+  DisclosureSummary,
+  DisclosureContent,
+} from '@simurgh-ui/react/disclosure';
+import '@simurgh-ui/styles/disclosure.css';
+```
+
+Vue همین partها را صادر می‌کند. Angular از `DisclosureComponent`، `DisclosureSummaryDirective` و `DisclosureContentDirective` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Disclosure" kind="live">
+  <ReactComponentPreview component="disclosure" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Disclosure open={open} onOpenChange={setOpen}>
+  <DisclosureSummary>Simurgh چیست؟</DisclosureSummary>
+  <DisclosureContent>
+    مجموعه‌ای از primitiveهای رابط برای سه فریم‌ورک.
+  </DisclosureContent>
+</Disclosure>
+```
+
+```html
+<simurgh-disclosure [(open)]="open">
+  <summary simurghDisclosureSummary>Simurgh چیست؟</summary>
+  <div simurghDisclosureContent>
+    مجموعه‌ای از primitiveهای رابط برای سه فریم‌ورک.
+  </div>
+</simurgh-disclosure>
+```
+
+## رفتار و دسترس‌پذیری
+
+Disclosure semantics بومی `<details>` و `<summary>` را حفظ می‌کند. Enter و Space روی Summary حالت open را تغییر می‌دهند و Tab طبق محتوای قابل‌مشاهده حرکت می‌کند. Summary باید عنوانی کوتاه و مستقل باشد.
+
+برای یک بخش ساده Disclosure مناسب است؛ برای چند بخش با state هماهنگ از [Accordion](/fa/components/accordion/) استفاده کنید. style نشانگر بازشدن نباید تنها نشانهٔ state باشد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

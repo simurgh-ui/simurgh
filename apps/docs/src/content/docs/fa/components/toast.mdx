@@ -1,0 +1,58 @@
+---
+title: Toast
+description: اعلان زمان‌دار وضعیت همراه امکان بستن صریح.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add toast
+```
+
+```ts
+import { ToastProvider, useToast, ToastViewport, ToastMessage } from '@simurgh-ui/react/toast';
+import { ToastProvider as VueToastProvider, useToast as useVueToast, ToastViewport as VueToastViewport } from '@simurgh-ui/vue/toast';
+import { ToastViewportComponent } from '@simurgh-ui/angular/toast';
+import '@simurgh-ui/styles/toast.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Toast" kind="live">
+  <CompositeComponentPreview component="toast" client:load />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+const { toast } = useToast();
+toast({ title: 'ذخیره شد', description: 'تغییرهای شما منتشر شدند.' });
+// ToastViewport را داخل ToastProvider رندر کنید.
+```
+</TabItem>
+<TabItem label="Vue">
+```ts
+const { toast } = useToast();
+toast({ title: 'ذخیره شد', description: 'تغییرهای شما منتشر شدند.' });
+// ToastViewport را داخل ToastProvider رندر کنید.
+```
+</TabItem>
+<TabItem label="Angular">
+```ts
+@ViewChild(ToastViewportComponent) toasts!: ToastViewportComponent;
+this.toasts.toast({ title: 'ذخیره شد', description: 'تغییرهای شما منتشر شدند.' });
+```
+</TabItem>
+</Tabs>
+
+فراهم‌کننده صف پیام‌ها را نگه می‌دارد و viewport آن‌ها را به‌صورت status مؤدبانه اعلام می‌کند. پیام را کوتاه نگه دارید و برای هر toast دکمهٔ بستن با نام روشن فراهم کنید. اگر کاربر باید پیش از ادامه پاسخ دهد، dialog یا خطای درون‌صفحه‌ای مناسب‌تر است.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

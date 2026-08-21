@@ -1,0 +1,69 @@
+---
+title: Drawer
+description: محتوای modal متصل به پایین صفحه با containment و بازگرداندن focus.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add drawer
+```
+
+```ts
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerClose,
+} from '@simurgh-ui/react/drawer';
+import '@simurgh-ui/styles/drawer.css';
+```
+
+Vue همین partها را از `@simurgh-ui/vue/drawer` صادر می‌کند. Angular از `DrawerComponent` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Drawer" kind="live">
+  <OverlayComponentPreview component="drawer" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Drawer>
+  <DrawerTrigger>ویرایش پروفایل</DrawerTrigger>
+  <DrawerContent>
+    <DrawerTitle>ویرایش پروفایل</DrawerTitle>
+    <DrawerDescription>اطلاعات عمومی حساب را تغییر دهید.</DrawerDescription>
+    <DrawerClose>تمام</DrawerClose>
+  </DrawerContent>
+</Drawer>
+```
+
+```html
+<simurgh-drawer
+  #drawer
+  labelledBy="drawer-title"
+  describedBy="drawer-description"
+>
+  <button trigger (click)="drawer.show()">ویرایش پروفایل</button>
+  <h2 id="drawer-title">ویرایش پروفایل</h2>
+  <p id="drawer-description">اطلاعات عمومی حساب را تغییر دهید.</p>
+  <button (click)="drawer.close()">تمام</button>
+</simurgh-drawer>
+```
+
+## focus و دسترس‌پذیری
+
+Drawer modal است: focus هنگام بازبودن داخل آن می‌ماند، Escape آن را می‌بندد و focus به opener برمی‌گردد. title، description مناسب و دکمهٔ بستن قابل‌مشاهده ارائه دهید. برای محتوای غیرmodal کوتاه از [Popover](/fa/components/popover/) استفاده کنید.
+
+state با `open` و callback در React، `v-model:open` در Vue و `[(open)]` یا `show()`/`close()` در Angular کنترل می‌شود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

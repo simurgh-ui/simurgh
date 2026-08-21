@@ -53,7 +53,12 @@ function words(source) {
         .replaceAll('’', "'")
         .replace(/^[.-]+|[.'-]+$/gu, ''),
     )
-    .filter((word) => word.length > 1 && !/^x+$/u.test(word));
+    .filter(
+      (word) =>
+        word.length > 1 &&
+        /^[a-z][a-z'.-]*$/u.test(word) &&
+        !/^x+$/u.test(word),
+    );
 }
 
 const used = new Set();

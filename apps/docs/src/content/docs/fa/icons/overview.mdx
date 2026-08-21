@@ -1,0 +1,46 @@
+---
+title: فهرست آیکن‌ها
+description: جست‌وجوی فهرست کامل آیکن‌های Simurgh UI و انتخاب import مناسب هر فریم‌ورک.
+---
+
+import IconGallery from '../../../../components/IconGallery.astro';
+import IconAccessibilityExamples from '../../../../components/IconAccessibilityExamples.astro';
+import { iconNames } from '../../../../../../../packages/icons/src/icons.generated';
+
+بستهٔ `@simurgh-ui/icons` شامل **{iconNames.length} آیکن کاربردی** برای پیمایش، عمل، وضعیت، فایل و layout است. هر آیکن به‌صورت کامپوننت نام‌دار Angular، React و Vue، کامپوننت dynamic، دادهٔ مستقل از فریم‌ورک و فایل SVG در دسترس است.
+
+## نصب
+
+```sh
+pnpm add @simurgh-ui/icons
+```
+
+peer همان entry point فریم‌ورک را نصب کنید. برنامهٔ React به Vue یا Angular نیاز ندارد.
+
+## انتخاب import
+
+| نیاز | Import | راهنما |
+| --- | --- | --- |
+| آیکن ثابت برنامه | `@simurgh-ui/icons/react`، `/vue` یا `/angular` | کامپوننت نام‌دار به bundler اجازهٔ حذف آیکن‌های بدون استفاده را می‌دهد |
+| نام برگرفته از داده | `SimurghIcon` هر فریم‌ورک | یک `name` تایپ‌شده با قالب kebab-case بدهید |
+| markup سمت server | `renderIconSvg` از `@simurgh-ui/icons` | رشتهٔ SVG برمی‌گرداند؛ فقط نام و option قابل‌اعتماد را استفاده کنید |
+| renderer سفارشی | `icons`، `iconNames`، `iconGroups` یا `getIcon` | تعریف و metadata مستقل از فریم‌ورک |
+| asset ثابت | `@simurgh-ui/icons/svg/<name>` | وقتی component import لازم یا ممکن نیست |
+
+## الگوهای دسترس‌پذیر
+
+این نمونه‌ها تفاوت آیکن تزئینی، تصویر اطلاعاتی مستقل و کنترل فقط‌آیکن نام‌گذاری‌شده را نشان می‌دهند:
+
+<IconAccessibilityExamples />
+
+پیش از استفاده در کنترل تعاملی، [دسترس‌پذیری و RTL](/fa/icons/accessibility-and-rtl/) را بخوانید.
+
+## فهرست کامل
+
+با نام یا مفهوم آشنا جست‌وجو کنید و قالب کپی مناسب فریم‌ورک را بردارید.
+
+<IconGallery />
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

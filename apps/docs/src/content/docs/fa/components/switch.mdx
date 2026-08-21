@@ -1,0 +1,63 @@
+---
+title: Switch
+description: تنظیم روشن/خاموش فوری با semantics بومی فرم.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import FormComponentPreview from '../../../../components/previews/FormComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add switch
+```
+
+```ts
+import { Switch } from '@simurgh-ui/react/switch';
+import { Switch as VueSwitch } from '@simurgh-ui/vue/switch';
+import { SwitchComponent } from '@simurgh-ui/angular/switch';
+import '@simurgh-ui/styles/switch.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Switch" kind="live">
+  <FormComponentPreview component="switch" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Switch
+  name="darkMode"
+  value="enabled"
+  checked={dark}
+  onCheckedChange={setDark}
+>
+  حالت تیره
+</Switch>
+```
+
+```vue
+<Switch v-model="dark" name="darkMode" value="enabled">
+  حالت تیره
+</Switch>
+```
+
+```html
+<simurgh-switch name="darkMode" value="enabled" [(checked)]="dark">
+  حالت تیره
+</simurgh-switch>
+```
+
+## زمان استفاده
+
+Switch برای تنظیمی است که تغییر آن همان لحظه اعمال می‌شود. اگر کاربر چند گزینهٔ مستقل را انتخاب می‌کند یا تغییر فقط هنگام submit اعمال می‌شود، [Checkbox](/fa/components/checkbox/) مناسب‌تر است.
+
+## state، فرم و دسترس‌پذیری
+
+React از `checked`/`onCheckedChange` یا `defaultChecked`، Vue از `v-model` و Angular از `[(checked)]` استفاده می‌کنند. Space حالت را تغییر می‌دهد. label باید نتیجهٔ روشن و خاموش را قابل‌فهم کند و state تنها با رنگ نشان داده نشود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

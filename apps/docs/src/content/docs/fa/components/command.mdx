@@ -1,0 +1,69 @@
+---
+title: Command
+description: انتخاب action قابل‌جست‌وجو با صفحه‌کلید و مدیریت item غیرفعال.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import SearchSelectionComponentPreview from '../../../../components/previews/SearchSelectionComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add command
+```
+
+```ts
+import { Command } from '@simurgh-ui/react/command';
+import { Command as VueCommand } from '@simurgh-ui/vue/command';
+import { CommandComponent } from '@simurgh-ui/angular/command';
+import '@simurgh-ui/styles/command.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Command" kind="live">
+  <SearchSelectionComponentPreview component="command" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Command
+  options={commands}
+  placeholder="جست‌وجوی فرمان‌ها"
+  noResults="فرمانی پیدا نشد"
+  value={selectedCommand}
+  onValueChange={runCommand}
+/>
+```
+
+```vue
+<Command
+  :options="commands"
+  placeholder="جست‌وجوی فرمان‌ها"
+  v-model="selectedCommand"
+/>
+```
+
+```html
+<simurgh-command
+  [options]="commands"
+  placeholder="جست‌وجوی فرمان‌ها"
+  [value]="selectedCommand"
+  (valueChange)="runCommand($event)"
+/>
+```
+
+## رفتار
+
+input فهرست را فیلتر می‌کند، Arrow Up/Down میان itemهای فعال حرکت می‌کند، Home/End ابتدا و انتها را می‌گیرد و Enter action را انتخاب می‌کند. item disabled باید از navigation و activation کنار گذاشته شود.
+
+برای search سمت server درخواست قبلی را هنگام تغییر query لغو کنید، loading را جداگانه نمایش دهید و آخرین نتیجهٔ موفق را تا رسیدن پاسخ تازه پایدار نگه دارید. پیام `noResults` نباید loading و نتیجهٔ خالی را با هم اشتباه بگیرد.
+
+## دسترس‌پذیری
+
+placeholder جای label نیست؛ Command به accessible name نیاز دارد. action انتخاب‌شده باید از طریق callback، `v-model` یا `valueChange` دقیقاً یک بار اجرا شود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

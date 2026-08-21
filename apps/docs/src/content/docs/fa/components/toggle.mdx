@@ -1,0 +1,53 @@
+---
+title: Toggle
+description: دکمهٔ دوحالته با معنای بومی فشرده‌شدن.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import SelectionComponentPreview from '../../../../components/previews/SelectionComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add toggle
+```
+
+```ts
+import { Toggle } from '@simurgh-ui/react/toggle';
+import { Toggle as VueToggle } from '@simurgh-ui/vue/toggle';
+import { ToggleComponent } from '@simurgh-ui/angular/toggle';
+import '@simurgh-ui/styles/toggle.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Toggle" kind="live">
+  <SelectionComponentPreview component="toggle" client:load />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Toggle defaultPressed onPressedChange={setBold}>ضخیم</Toggle>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Toggle v-model="bold">ضخیم</Toggle>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-toggle [(pressed)]="bold">ضخیم</simurgh-toggle>
+```
+</TabItem>
+</Tabs>
+
+Toggle یک انتخاب مستقل روشن یا خاموش را نمایش می‌دهد. رفتار صفحه‌کلید دکمهٔ بومی حفظ می‌شود و حالت از راه `aria-pressed` و `data-state` در دسترس است. در حالت کنترل‌شده، هر تغییر را در state برنامه ذخیره کنید. برای چند انتخاب مرتبط با جابه‌جایی focus از Toggle Group استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

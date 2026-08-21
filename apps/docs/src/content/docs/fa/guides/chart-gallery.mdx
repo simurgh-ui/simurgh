@@ -1,0 +1,92 @@
+---
+title: گالری نمودارها
+description: انتخاب و استفاده از انواع نمودار Simurgh UI با API واقعی React.
+---
+
+برای API کامل، streaming، Canvas و دسترس‌پذیری به مرجع [Chart](/components/chart/) مراجعه کنید.
+
+## importها
+
+```tsx
+import {
+  AreaChart,
+  BarChart,
+  BubbleChart,
+  ComboChart,
+  DonutChart,
+  HeatmapChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  ScatterChart,
+} from '@simurgh-ui/react/chart';
+import '@simurgh-ui/styles/chart.css';
+```
+
+## دادهٔ مشترک
+
+```tsx
+const salesData = [
+  { month: 'Jan', revenue: 28, cost: 18, radius: 6 },
+  { month: 'Feb', revenue: 44, cost: 25, radius: 11 },
+  { month: 'Mar', revenue: 36, cost: 30, radius: 8 },
+  { month: 'Apr', revenue: 62, cost: 38, radius: 15 },
+];
+```
+
+## انتخاب نوع نمودار
+
+| نوع | کاربرد مناسب |
+| --- | --- |
+| Line | روند و تغییر در یک ترتیب زمانی |
+| Area | روندی که بزرگی سطح زیر خط هم مهم است |
+| Bar | مقایسهٔ مستقیم categoryها یا دوره‌ها |
+| Pie و Donut | سهم چند بخش غیرمنفی از یک کل |
+| Scatter | رابطهٔ دو متغیر عددی |
+| Bubble | رابطهٔ عددی همراه متغیر سوم برای اندازه |
+| Radar | مقایسهٔ profileهای چندبعدی با scale مشترک |
+| Heatmap | شدت مقدار در تقاطع دو بعد |
+| Combo | ترکیب سری‌هایی با نمایش متفاوت در محور مشترک |
+
+## نمونهٔ Line
+
+```tsx
+<LineChart
+  data={salesData}
+  x="month"
+  xScale="band"
+  height={280}
+  series={[
+    { id: 'درآمد', y: 'revenue' },
+    { id: 'هزینه', y: 'cost' },
+  ]}
+  accessibility={{
+    title: 'نمودار خطی',
+    description: 'درآمد و هزینهٔ ماهانه.',
+  }}
+/>
+```
+
+## نمونهٔ Bar
+
+```tsx
+<BarChart
+  data={salesData}
+  x="month"
+  height={280}
+  series={[
+    { id: 'درآمد', y: 'revenue' },
+    { id: 'هزینه', y: 'cost' },
+  ]}
+  accessibility={{
+    title: 'نمودار میله‌ای',
+    description: 'مقایسهٔ درآمد و هزینهٔ ماهانه.',
+  }}
+/>
+```
+
+برای هر نمودار title و description قابل‌دسترسی بنویسید و دادهٔ مهم را تنها با رنگ منتقل نکنید. برای مجموعهٔ بزرگ، جدول یا خلاصهٔ متنی جایگزین نیز ارائه دهید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

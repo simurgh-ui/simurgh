@@ -1,0 +1,60 @@
+---
+title: Empty
+description: محتوای ساختاریافتهٔ zero-state با اعلان status اختیاری.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add empty
+```
+
+```ts
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from '@simurgh-ui/react/empty';
+import '@simurgh-ui/styles/empty.css';
+```
+
+Vue و Angular partهای متناظر را از subpath `empty` صادر می‌کنند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Empty" kind="live">
+  <ReactComponentPreview component="empty" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Empty>
+  <EmptyMedia aria-hidden="true">+</EmptyMedia>
+  <EmptyHeader>
+    <EmptyTitle>هنوز پروژه‌ای وجود ندارد</EmptyTitle>
+    <EmptyDescription>
+      برای سازمان‌دهی کار خود یک پروژه بسازید.
+    </EmptyDescription>
+  </EmptyHeader>
+  <EmptyContent>
+    <Button>ساخت پروژه</Button>
+  </EmptyContent>
+</Empty>
+```
+
+## محتوا و دسترس‌پذیری
+
+Title وضعیت را نام‌گذاری، Description دلیل یا راه بعدی را توضیح و Content action اصلی را نگهداری می‌کند. Media تزئینی باید از accessibility tree پنهان باشد. بیش از یک action اصلی یا متن طولانی، empty state را مبهم می‌کند.
+
+اگر Empty پس از یک تغییر async ظاهر می‌شود، status announcement را فقط یک بار و با پیام کوتاه فعال کنید. برای loading از Skeleton یا Spinner و برای failure از Alert استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

@@ -1,5 +1,10 @@
+@import 'vazirmatn/Vazirmatn-Variable-font-face.css';
 @import '@simurgh-ui/styles/tokens.css';
 @import '@simurgh-ui/styles/recipes.css';
+
+html[lang='fa'] {
+  --sl-font: 'Vazirmatn';
+}
 
 :root {
   --sl-color-accent-low: hsl(var(--simurgh-ivory));
@@ -270,4 +275,27 @@ pre {
     translate: 0 -2px;
     box-shadow: 0 14px 34px hsl(var(--simurgh-ink) / 0.1);
   }
+}
+
+html[dir='rtl'] .hero h1 {
+  letter-spacing: 0;
+}
+
+html[dir='rtl'] .sidebar-content a[aria-current='page'] {
+  border-radius: 0.5rem 0 0 0.5rem;
+  background: linear-gradient(
+    270deg,
+    hsl(var(--simurgh-firuzeh) / 0.16),
+    transparent
+  );
+}
+
+html[dir='rtl'] pre,
+html[dir='rtl'] .expressive-code {
+  direction: ltr;
+  text-align: left;
+}
+
+html[dir='rtl'] .heritage-frame figcaption {
+  text-align: right;
 }

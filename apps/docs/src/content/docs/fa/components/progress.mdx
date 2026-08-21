@@ -1,0 +1,38 @@
+---
+title: Progress
+description: نشانگر progress دسترس‌پذیر در حالت determinate یا indeterminate.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add progress
+```
+
+```ts
+import { Progress } from '@simurgh-ui/react/progress';
+import { Progress as VueProgress } from '@simurgh-ui/vue/progress';
+import { ProgressComponent } from '@simurgh-ui/angular/progress';
+import '@simurgh-ui/styles/progress.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Progress" kind="live">
+  <ReactComponentPreview component="progress" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Progress aria-label="بارگذاری فایل‌ها" value={68} />
+```
+
+با `value` مقدار مشخص و بدون آن حالت نامشخص نمایش داده می‌شود. برای اندازه‌گیری ثابت مانند فضای دیسک از Meter استفاده کنید. label باید task را نام ببرد و updateها بیش از حد اعلان نشوند. animation حالت نامشخص باید reduced motion را رعایت کند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

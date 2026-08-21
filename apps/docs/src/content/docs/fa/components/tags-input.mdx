@@ -1,0 +1,53 @@
+---
+title: Tags Input
+description: ورود صفحه‌کلیدی و دسترس‌پذیر فهرستی از مقدارهای کوتاه فرم.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import FormComponentPreview from '../../../../components/previews/FormComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add tags-input
+```
+
+```ts
+import { TagsInput } from '@simurgh-ui/react/tags-input';
+import { TagsInput as VueTagsInput } from '@simurgh-ui/vue/tags-input';
+import { TagsInputComponent } from '@simurgh-ui/angular/tags-input';
+import '@simurgh-ui/styles/tags-input.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Tags Input" kind="live">
+  <FormComponentPreview component="tags-input" client:load />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<TagsInput aria-label="مهارت‌ها" inputLabel="افزودن مهارت" name="skills" defaultValue={['TypeScript']} onValueChange={setSkills} />
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<TagsInput v-model="skills" aria-label="مهارت‌ها" input-label="افزودن مهارت" name="skills" />
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-tags-input aria-label="مهارت‌ها" inputLabel="افزودن مهارت" name="skills" [value]="skills" (valueChange)="skills = $event" />
+```
+</TabItem>
+</Tabs>
+
+Enter یا ویرگول مقدار جاری را اضافه می‌کند و Backspace روی ورودی خالی آخرین tag را حذف می‌کند. مقدار خالی و تکراری نادیده گرفته می‌شود. با تعیین `name`، برای هر tag یک ورودی پنهان ساخته می‌شود و `FormData.getAll(name)` فهرست کامل را برمی‌گرداند. label ورودی و دکمهٔ حذف را بومی‌سازی کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

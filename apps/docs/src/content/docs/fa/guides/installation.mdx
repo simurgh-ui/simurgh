@@ -1,0 +1,101 @@
+---
+title: نصب
+description: نصب Simurgh به‌صورت سورس قابل‌ویرایش یا بسته‌های Angular، React و Vue.
+---
+
+Simurgh دو روش نصب دارد. برای هر کامپوننت یکی از این روش‌ها را انتخاب کنید و مسیر import آن را ثابت نگه دارید:
+
+- **کپی سورس با CLI**؛ وقتی می‌خواهید پیاده‌سازی کامپوننت داخل پروژه باشد و بتوانید آن را ویرایش کنید.
+- **نصب بسته‌ها**؛ وقتی به‌روزرسانی معمول وابستگی‌ها و import از `@simurgh-ui/{framework}` را ترجیح می‌دهید.
+
+این پروژه هنوز پیش‌انتشار است. در محیط production نسخه‌ها را دقیق pin کنید و پیش از ارتقا یا بازنویسی سورس کپی‌شده، تغییرات را بررسی کنید.
+
+## کپی سورس قابل‌ویرایش با CLI
+
+در ریشهٔ یک برنامهٔ موجود Angular، React یا Vue اجرا کنید:
+
+```sh
+pnpm dlx @simurgh-ui/cli init
+pnpm dlx @simurgh-ui/cli add dialog tabs checkbox
+```
+
+دستور `init` فریم‌ورک را از `package.json` تشخیص می‌دهد، فایل `simurgh.json` را می‌سازد، توکن‌ها و recipeهای CSS را کپی می‌کند و وابستگی‌های لازم را نصب می‌کند. دستور `add` سورس بومی همان فریم‌ورک و استایل کامپوننت را به پروژه اضافه می‌کند.
+
+برای دیدن فهرست کامپوننت‌ها و مقایسهٔ نسخهٔ محلی با registry:
+
+```sh
+pnpm dlx @simurgh-ui/cli list
+pnpm dlx @simurgh-ui/cli diff dialog
+```
+
+فایل‌های موجود بدون `--overwrite` حفظ می‌شوند. پیش از بازنویسی، تغییرات محلی را commit یا پشتیبان‌گیری کنید.
+
+## نصب به‌صورت بسته
+
+adapter فریم‌ورک خود و بستهٔ استایل را از npm نصب کنید:
+
+```sh
+# React
+pnpm add @simurgh-ui/react @simurgh-ui/styles
+
+# Vue
+pnpm add @simurgh-ui/vue @simurgh-ui/styles
+
+# Angular
+pnpm add @simurgh-ui/angular @simurgh-ui/styles
+```
+
+حداقل نسخه‌های پشتیبانی‌شده React 18، Vue 3.4 و Angular 18 هستند.
+
+## شروع سریع React
+
+```tsx
+import { Button } from '@simurgh-ui/react/button';
+import '@simurgh-ui/styles/button.css';
+
+export function SaveButton() {
+  return <Button type="button">ذخیره تغییرات</Button>;
+}
+```
+
+## شروع سریع Vue
+
+```vue
+<script setup lang="ts">
+import { Button } from '@simurgh-ui/vue/button';
+import '@simurgh-ui/styles/button.css';
+</script>
+
+<template>
+  <Button type="button">ذخیره تغییرات</Button>
+</template>
+```
+
+## شروع سریع Angular
+
+```ts
+import { Component } from '@angular/core';
+import { ButtonComponent } from '@simurgh-ui/angular/button';
+
+@Component({
+  selector: 'app-save-button',
+  standalone: true,
+  imports: [ButtonComponent],
+  template: `<simurgh-button type="button">ذخیره تغییرات</simurgh-button>`,
+})
+export class SaveButtonComponent {}
+```
+
+recipe را به استایل سراسری برنامه اضافه کنید:
+
+```css
+@import '@simurgh-ui/styles/button.css';
+```
+
+برای کوچک نگه‌داشتن bundle، importهای زیرمسیر هر کامپوننت را ترجیح دهید. CSS اختیاری است و رفتار headless کامپوننت‌ها به آن وابسته نیست.
+
+اکنون می‌توانید [کامپوننت مناسب را انتخاب کنید](/fa/guides/component-chooser/)، [فهرست کامپوننت‌ها](/fa/components/overview/) را ببینید و راهنمای [دسترس‌پذیری و RTL](/fa/guides/accessibility-rtl/) را بخوانید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

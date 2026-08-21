@@ -1,0 +1,59 @@
+---
+title: Dropdown Menu
+description: منوی action قابل‌بستن با semantics item غیرفعال.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add dropdown-menu
+```
+
+```ts
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@simurgh-ui/react/dropdown-menu';
+import '@simurgh-ui/styles/dropdown-menu.css';
+```
+
+Vue همین partها را صادر می‌کند. Angular از `DropdownMenuComponent` و `DropdownMenuItemDirective` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Dropdown Menu" kind="live">
+  <OverlayComponentPreview component="dropdown-menu" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<DropdownMenu>
+  <DropdownMenuTrigger>عملیات</DropdownMenuTrigger>
+  <DropdownMenuContent aria-label="عملیات سند">
+    <DropdownMenuItem onSelect={archive}>بایگانی</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+```html
+<simurgh-dropdown-menu>
+  <span trigger>عملیات</span>
+  <button simurghMenuItem (select)="archive()">بایگانی</button>
+</simurgh-dropdown-menu>
+```
+
+## صفحه‌کلید
+
+Tab به trigger می‌رسد. Arrow بالا و پایین و Home/End میان itemهای فعال حرکت می‌کنند؛ Enter یا Space action را فعال می‌کند. Escape منو را می‌بندد و focus باید به trigger برگردد. item غیرفعال از navigation و activation کنار گذاشته می‌شود.
+
+Content را با accessible name مشخص کنید. برای انتخاب state پایدار به‌جای action menu از Select یا Radio Group استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

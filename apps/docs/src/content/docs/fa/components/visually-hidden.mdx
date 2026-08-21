@@ -1,0 +1,62 @@
+---
+title: Visually Hidden
+description: محتوای در دسترس screen reader که از layout دیداری کنار گذاشته می‌شود.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add visually-hidden
+```
+
+```ts
+import { VisuallyHidden } from '@simurgh-ui/react/visually-hidden';
+import { VisuallyHidden as VueVisuallyHidden } from '@simurgh-ui/vue/visually-hidden';
+import { VisuallyHiddenComponent } from '@simurgh-ui/angular/visually-hidden';
+import '@simurgh-ui/styles/visually-hidden.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Visually Hidden" kind="live">
+  <ReactComponentPreview component="visually-hidden" />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<button>
+  <CloseIcon aria-hidden />
+  <VisuallyHidden>بستن dialog</VisuallyHidden>
+</button>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<button>
+  <CloseIcon aria-hidden="true" />
+  <VisuallyHidden>بستن dialog</VisuallyHidden>
+</button>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<button>
+  <simurgh-close-icon aria-hidden="true" />
+  <simurgh-visually-hidden>بستن dialog</simurgh-visually-hidden>
+</button>
+```
+</TabItem>
+</Tabs>
+
+Visually Hidden متن معنادار را بدون اشغال فضای دیداری در اختیار فناوری کمکی می‌گذارد؛ برای کنترل‌های فقط‌آیکن و راهنمای تکمیلی مفید است. کنترل تعاملی را با این primitive پنهان نکنید. متن پنهان باید کوتاه باشد و نام دسترس‌پذیر یا context ضروری اضافه کند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

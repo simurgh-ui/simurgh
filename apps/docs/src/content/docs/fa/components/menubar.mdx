@@ -1,0 +1,54 @@
+---
+title: Menubar
+description: منوی افقی application با نام و roving focus.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add menubar
+```
+
+```ts
+import { Menubar, MenubarItem } from '@simurgh-ui/react/menubar';
+import { Menubar as VueMenubar, MenubarItem as VueMenubarItem } from '@simurgh-ui/vue/menubar';
+import { MenubarComponent, MenubarItemDirective } from '@simurgh-ui/angular/menubar';
+import '@simurgh-ui/styles/menubar.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Menubar" kind="live">
+  <CompositeComponentPreview component="menubar" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Menubar label="ویرایشگر">
+  <MenubarItem onClick={createDocument}>فایل</MenubarItem>
+  <MenubarItem onClick={undo}>ویرایش</MenubarItem>
+  <MenubarItem disabled>نمایش</MenubarItem>
+</Menubar>
+```
+
+```html
+<simurgh-menubar label="ویرایشگر">
+  <button simurghMenubarItem (select)="createDocument()">فایل</button>
+  <button simurghMenubarItem (select)="undo()">ویرایش</button>
+  <button simurghMenubarItem [disabled]="true">نمایش</button>
+</simurgh-menubar>
+```
+
+## صفحه‌کلید و RTL
+
+Tab یک بار وارد Menubar می‌شود و roving `tabindex`، item فعال را نگه می‌دارد. Arrow چپ/راست میان itemها حرکت می‌کند و در RTL معکوس می‌شود؛ Home/End به ابتدا و انتها و Enter یا Space به activation می‌روند. item disabled skip می‌شود.
+
+Menubar برای commandهای application است، نه navigation معمول سایت. `label` باید purpose گروه را مشخص کند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

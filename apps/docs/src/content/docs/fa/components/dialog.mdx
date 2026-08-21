@@ -1,0 +1,89 @@
+---
+title: Dialog
+description: سطح modal دسترس‌پذیر با containment و بازگرداندن focus.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add dialog
+```
+
+```ts
+import {
+  Dialog,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from '@simurgh-ui/react/dialog';
+import '@simurgh-ui/styles/dialog.css';
+```
+
+Vue همین partها را به‌جز `DialogPortal` از `@simurgh-ui/vue/dialog` صادر می‌کند. Angular از `DialogComponent` در `@simurgh-ui/angular/dialog` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Dialog" kind="live">
+  <OverlayComponentPreview component="dialog" client:load />
+</ComponentPreview>
+
+## React
+
+```tsx
+<Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger>ویرایش پروفایل</DialogTrigger>
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogContent>
+      <DialogTitle>پروفایل</DialogTitle>
+      <DialogDescription>اطلاعات عمومی را تغییر دهید.</DialogDescription>
+      <DialogClose>تمام</DialogClose>
+    </DialogContent>
+  </DialogPortal>
+</Dialog>
+```
+
+## Vue
+
+```vue
+<Dialog v-model:open="open">
+  <DialogTrigger>ویرایش پروفایل</DialogTrigger>
+  <DialogContent>
+    <DialogTitle>پروفایل</DialogTitle>
+    <DialogDescription>اطلاعات عمومی را تغییر دهید.</DialogDescription>
+    <DialogClose>تمام</DialogClose>
+  </DialogContent>
+</Dialog>
+```
+
+## Angular
+
+```html
+<simurgh-dialog
+  #dialog
+  labelledBy="profile-title"
+  describedBy="profile-description"
+>
+  <button trigger type="button" (click)="dialog.show()">ویرایش پروفایل</button>
+  <h2 id="profile-title">پروفایل</h2>
+  <p id="profile-description">اطلاعات عمومی را تغییر دهید.</p>
+  <button type="button" (click)="dialog.close()">تمام</button>
+</simurgh-dialog>
+```
+
+## focus و صفحه‌کلید
+
+هنگام بازشدن، opener ثبت و focus داخل modal نگه داشته می‌شود. Tab و Shift+Tab داخل descendantها می‌چرخند. Escape سطح بالایی را می‌بندد و focus را به opener موجود برمی‌گرداند. title یا accessible label و یک روش بستن قابل‌مشاهده الزامی‌اند.
+
+React state کنترل‌شدهٔ `open`/`onOpenChange` و `defaultOpen` دارد؛ Vue از `v-model:open` و Angular از `[(open)]` یا متدهای `show()` و `close()` استفاده می‌کند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

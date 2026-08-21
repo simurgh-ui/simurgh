@@ -1,0 +1,44 @@
+---
+title: Rating
+description: امتیازدهی ستاره‌ای دسترس‌پذیر بر پایهٔ radio control بومی.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import SelectionComponentPreview from '../../../../components/previews/SelectionComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add rating
+```
+
+```ts
+import { Rating } from '@simurgh-ui/react/rating';
+import { Rating as VueRating } from '@simurgh-ui/vue/rating';
+import { RatingComponent } from '@simurgh-ui/angular/rating';
+import '@simurgh-ui/styles/rating.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Rating" kind="live">
+  <SelectionComponentPreview component="rating" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Rating
+  aria-label="امتیاز محصول"
+  name="rating"
+  defaultValue={3}
+  max={5}
+  onValueChange={setRating}
+/>
+```
+
+Vue از `v-model` و Angular از `[(value)]` استفاده می‌کنند. Arrowها میان امتیازها حرکت می‌کنند و مقدار انتخابی با `name` در فرم ثبت می‌شود. هر گزینه باید مقدار قابل‌خواندن مانند «۳ از ۵» داشته باشد و معنا فقط با شکل ستاره منتقل نشود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

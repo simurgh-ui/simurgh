@@ -1,0 +1,70 @@
+---
+title: Calendar
+description: تقویم تک‌تاریخ دسترس‌پذیر با پیمایش صفحه‌کلید و serialization فرم.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import PickerComponentPreview from '../../../../components/previews/PickerComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add calendar
+```
+
+```ts
+import { Calendar, type CalendarProps } from '@simurgh-ui/react/calendar';
+import { Calendar as VueCalendar } from '@simurgh-ui/vue/calendar';
+import { CalendarComponent } from '@simurgh-ui/angular/calendar';
+import '@simurgh-ui/styles/calendar.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Calendar" kind="live">
+  <PickerComponentPreview component="calendar" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Calendar
+  defaultValue="2026-08-12"
+  defaultMonth="2026-08"
+  name="appointment"
+  label="تقویم وقت ملاقات"
+  locale="fa-IR"
+  direction="rtl"
+  onValueChange={setDate}
+/>
+```
+
+```vue
+<Calendar
+  v-model="date"
+  v-model:month="month"
+  name="appointment"
+  label="تقویم وقت ملاقات"
+/>
+```
+
+```html
+<simurgh-calendar
+  [(value)]="date"
+  [(month)]="month"
+  name="appointment"
+  label="تقویم وقت ملاقات"
+/>
+```
+
+## state و فرم
+
+مقدار تاریخ با قالب ISO یعنی `YYYY-MM-DD` و ماه با `YYYY-MM` مبادله می‌شود. React حالت کنترل‌شده و default، Vue مدل‌های date/month و Angular bindingهای `[(value)]` و `[(month)]` را ارائه می‌دهند. `name` یک مقدار پنهان معتبر برای submit می‌سازد.
+
+## صفحه‌کلید و RTL
+
+Tab وارد grid روزها می‌شود. Arrow بالا و پایین یک هفته، Home/End تا لبهٔ هفته و Enter یا Space برای انتخاب حرکت می‌کنند. Arrow چپ و راست در RTL معکوس می‌شوند. روز disabled باید از انتخاب خارج و دلیل محدودیت بیرون تقویم توضیح داده شود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

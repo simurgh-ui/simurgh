@@ -1,0 +1,60 @@
+---
+title: آزمون پذیرش مستندات
+description: مسیر نهایی خواننده برای نصب، theme، فرم، overlay، event، به‌روزرسانی سورس و تغییر فریم‌ورک.
+---
+
+این آزمون بررسی می‌کند که یک خواننده بتواند بدون دانش داخلی مخزن، فقط با مستندات منتشرشده یک مسیر واقعی را تکمیل کند.
+
+## آماده‌سازی آزمون
+
+یک پروژهٔ خالی با نسخهٔ پشتیبانی‌شدهٔ Angular، React یا Vue بسازید. زمان شروع، نسخه‌ها، مرورگر، ورودی‌های استفاده‌شده و هر نقطهٔ ابهام را ثبت کنید. در میانهٔ کار از سورس مخزن کمک نگیرید.
+
+## ۱. نصب یک کامپوننت
+
+یک Button را با package یا CLI نصب کنید، CSS درست را وارد کنید و نام قابل‌دسترسی و فعال‌سازی با صفحه‌کلید را بررسی کنید.
+
+## ۲. شخصی‌سازی theme
+
+حداقل یک token رنگ و focus را برای حالت روشن و تیره تغییر دهید. contrast، RTL، zoom و reduced motion را کنترل کنید.
+
+## ۳. ساخت و ارسال فرم
+
+یک کنترل دارای `name`، validation و پیام خطا بسازید. مقدار `FormData`، announcement خطا و جلوگیری از submit تکراری را ثبت کنید.
+
+## ۴. بازکردن overlay
+
+Dialog یا Popover را باز کنید. focus اولیه، containment، Escape، outside press، scroll و بازگشت focus باید قابل‌پیش‌بینی باشند.
+
+## ۵. مدیریت event
+
+یک callback، emit یا output مستندشده را متصل کنید و مطمئن شوید هر فعالیت pointer یا صفحه‌کلید فقط یک event تولید می‌کند.
+
+## ۶. به‌روزرسانی کامپوننت کپی‌شده
+
+با `diff` تغییر محلی را با registry مقایسه کنید. سپس یک ارتقای سه‌طرفه انجام دهید و نشان دهید سفارشی‌سازی محلی حفظ شده است.
+
+## بررسی تغییر فریم‌ورک
+
+همان کار را در adapter دوم پیدا کنید. نام API ممکن است بومی فریم‌ورک باشد، اما نتیجهٔ رفتاری، فرم و دسترس‌پذیری باید معادل بماند.
+
+## بررسی درک خوانندهٔ تازه‌وارد
+
+خواننده باید بتواند تفاوت package و copied source، محل CSS، قرارداد state، API رویداد و مسیر گزارش feedback را بدون راهنمای شفاهی توضیح دهد.
+
+## نتیجهٔ پذیرش
+
+| کار | شواهد CI | شواهد دستی لازم |
+| --- | --- | --- |
+| نصب | build نمونه‌های سه فریم‌ورک | activation و accessible name |
+| theme | tokenها و ۲۰ جفت contrast | focus بصری، RTL، zoom و reduced motion |
+| فرم | contractها و مثال‌های کامپایل‌شده | مقدار submit، announcement و focus |
+| overlay | contract و browser test | containment، restoration، scroll و viewport باریک |
+| event | API table و مثال‌ها | یک event برای هر activation |
+| copied source | آزمون init، add، diff و overwrite | کیفیت review سه‌طرفه |
+| تغییر فریم‌ورک | parity و مثال هر adapter | درک خواننده و نتیجهٔ معادل |
+
+نتیجهٔ CI به‌تنهایی جای مشاهدهٔ دستی را نمی‌گیرد. برای release candidate، خروجی آزمون، تاریخ، نسخه‌ها، رضایت شرکت‌کننده و مشکل‌های کشف‌شده را ثبت کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

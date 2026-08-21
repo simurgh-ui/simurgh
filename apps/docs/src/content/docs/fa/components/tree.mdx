@@ -1,0 +1,71 @@
+---
+title: Tree
+description: نمایش سلسله‌مراتبی با focus گردشی و nesting وابسته به جهت.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add tree
+```
+
+```ts
+import { Tree, TreeItem } from '@simurgh-ui/react/tree';
+import { Tree as VueTree, TreeItem as VueTreeItem } from '@simurgh-ui/vue/tree';
+import { TreeDirective, TreeItemComponent } from '@simurgh-ui/angular/tree';
+import '@simurgh-ui/styles/tree.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Tree" kind="live">
+  <CompositeComponentPreview component="tree" client:load />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Tree aria-label="فایل‌ها">
+  <TreeItem label="سندها" defaultExpanded>
+    <TreeItem label="راهنما" />
+    <TreeItem label="قفل‌شده" disabled />
+  </TreeItem>
+  <TreeItem label="تصویرها" />
+</Tree>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Tree aria-label="فایل‌ها">
+  <TreeItem label="سندها" default-expanded>
+    <TreeItem label="راهنما" />
+    <TreeItem label="قفل‌شده" disabled />
+  </TreeItem>
+  <TreeItem label="تصویرها" />
+</Tree>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<ul simurghTree aria-label="فایل‌ها">
+  <simurgh-tree-item label="سندها" [expandable]="true" [expanded]="true">
+    <simurgh-tree-item label="راهنما" />
+    <simurgh-tree-item label="قفل‌شده" [disabled]="true" />
+  </simurgh-tree-item>
+  <simurgh-tree-item label="تصویرها" />
+</ul>
+```
+</TabItem>
+</Tabs>
+
+Tree دادهٔ سلسله‌مراتبی را به‌صورت یک توقف Tab نمایش می‌دهد؛ برای پیمایش سایت از آن استفاده نکنید. ریشه label کوتاه، هر شاخه نام‌های یکتا و گره‌های unavailable حالت disabled داشته باشند. جهت‌های بالا و پایین میان موردهای دیداری حرکت می‌کنند؛ Home و End به مرزها می‌روند و جهت‌های راست و چپ بازشدن، بسته‌شدن و حرکت میان والد و فرزند را کنترل می‌کنند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

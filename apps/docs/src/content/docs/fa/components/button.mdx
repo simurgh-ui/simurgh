@@ -1,0 +1,78 @@
+---
+title: Button
+description: دکمهٔ بومی با type امن، حالت loading و variantهای واقعی Simurgh.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add button
+```
+
+```ts
+// React
+import { Button } from '@simurgh-ui/react/button';
+// Vue
+import { Button } from '@simurgh-ui/vue/button';
+// Angular
+import { ButtonComponent } from '@simurgh-ui/angular/button';
+import '@simurgh-ui/styles/button.css';
+```
+
+برای استایل کاملاً headless فایل CSS را وارد نکنید. در مدل CLI از مسیر محلی نوشته‌شده در `simurgh.json` استفاده کنید.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Button" kind="live">
+  <ReactComponentPreview component="button" />
+</ComponentPreview>
+
+## استفاده
+
+### React
+
+```tsx
+<Button variant="primary" loading={saving}>ذخیره تغییرات</Button>
+<Button variant="secondary">پیش‌نمایش</Button>
+<Button variant="destructive">حذف</Button>
+<Button variant="quiet">انصراف</Button>
+```
+
+### Vue
+
+```vue
+<Button variant="primary" :loading="saving">ذخیره تغییرات</Button>
+```
+
+### Angular
+
+```html
+<simurgh-button variant="primary" [loading]="saving">
+  ذخیره تغییرات
+</simurgh-button>
+```
+
+## رفتار و دسترس‌پذیری
+
+`type` پیش‌فرض `button` است تا داخل فرم ناخواسته submit نشود. برای ارسال فرم `type="submit"` را صریح بنویسید. حالت loading با busy state از تعامل تکراری جلوگیری می‌کند. Button فقط‌آیکن باید روی خود کنترل accessible name داشته باشد.
+
+## API اصلی
+
+| Prop/Input | Type | پیش‌فرض |
+| --- | --- | --- |
+| `type` | `"button" \| "submit" \| "reset"` | `"button"` |
+| `loading` | `boolean` | `false` |
+| `disabled` | `boolean` | `false` |
+| `variant` | `"primary" \| "secondary" \| "destructive" \| "quiet"` | `"primary"` |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` |
+| `fullWidth` | `boolean` | `false` |
+| `iconOnly` | `boolean` | `false` |
+
+React ویژگی‌های بومی button و ref را forward می‌کند. Vue attributeهای پشتیبانی‌شده را به button می‌رساند و Angular از `ButtonComponent` مستقل استفاده می‌کند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

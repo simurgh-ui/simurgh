@@ -1,0 +1,74 @@
+---
+title: Chart
+description: نمودارهای سبک، واکنش‌گرا و دسترس‌پذیر برای dashboard و telemetry.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add chart
+```
+
+```tsx
+import {
+  LineChart,
+  AreaChart,
+  BarChart,
+  PieChart,
+  DonutChart,
+  ScatterChart,
+  BubbleChart,
+  RadarChart,
+  HeatmapChart,
+  ComboChart,
+} from '@simurgh-ui/react/chart';
+import '@simurgh-ui/styles/chart.css';
+```
+
+Vue همین نمودارها را از `@simurgh-ui/vue/chart` و Angular کامپوننت‌های متناظر را از `@simurgh-ui/angular/chart` صادر می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Chart" kind="live">
+  <ReactComponentPreview component="chart" />
+</ComponentPreview>
+
+## نمونه
+
+```tsx
+const data = [
+  { month: 'فروردین', revenue: 28, cost: 18 },
+  { month: 'اردیبهشت', revenue: 44, cost: 25 },
+  { month: 'خرداد', revenue: 36, cost: 30 },
+];
+
+<LineChart
+  data={data}
+  x="month"
+  xScale="band"
+  height={280}
+  series={[
+    { id: 'درآمد', y: 'revenue' },
+    { id: 'هزینه', y: 'cost' },
+  ]}
+  accessibility={{
+    title: 'روند درآمد و هزینه',
+    description: 'مقایسهٔ سه ماه نخست سال.',
+  }}
+/>
+```
+
+## انتخاب و ترکیب
+
+Line و Area برای روند، Bar برای مقایسه، Pie و Donut برای اجزای یک کل کوچک، Scatter و Bubble برای رابطهٔ عددی، Heatmap برای شدت دوبعدی و Combo برای markهای ترکیبی مناسب‌اند. نمونه‌های بیشتر در [گالری نمودارها](/fa/guides/chart-gallery/) هستند.
+
+## دسترس‌پذیری و داده
+
+هر نمودار title و description دقیق نیاز دارد. داده یا state مهم را فقط با رنگ نشان ندهید و در صورت نیاز جدول یا خلاصهٔ متنی ارائه کنید. مقدار عددی نامعتبر به gap تبدیل می‌شود؛ دادهٔ خالی باید `emptyContent` معنادار داشته باشد. streaming سریع را با `createChartStream` در Core مدیریت کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

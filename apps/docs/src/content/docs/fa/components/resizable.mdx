@@ -1,0 +1,44 @@
+---
+title: Resizable
+description: پنل‌های تقسیم‌شدهٔ محدود با تغییر اندازه از اشاره‌گر و صفحه‌کلید جهت‌محور.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add resizable
+```
+
+```ts
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from '@simurgh-ui/react/resizable';
+import '@simurgh-ui/styles/resizable.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Resizable" kind="live">
+  <CompositeComponentPreview component="resizable" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<ResizablePanelGroup aria-label="پنل‌های فضای کار">
+  <ResizablePanel defaultSize={35} minSize={20}>پیمایش</ResizablePanel>
+  <ResizableHandle aria-label="تغییر اندازهٔ پنل‌ها" />
+  <ResizablePanel defaultSize={65} minSize={30}>محتوا</ResizablePanel>
+</ResizablePanelGroup>
+```
+
+Handle با Arrowها اندازه را تغییر می‌دهد و mapping افقی در RTL معکوس می‌شود. `minSize` و `maxSize` باید از ناپدیدشدن محتوا جلوگیری کنند. Handle به accessible name، focus indicator واضح و target pointer کافی نیاز دارد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

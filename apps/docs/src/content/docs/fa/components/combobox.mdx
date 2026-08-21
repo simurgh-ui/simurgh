@@ -1,0 +1,86 @@
+---
+title: Combobox
+description: کنترل انتخاب تکی قابل‌ویرایش و فیلترشدنی با semantics بومی فرم.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import SearchSelectionComponentPreview from '../../../../components/previews/SearchSelectionComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add combobox
+```
+
+```ts
+import {
+  Combobox,
+  type ComboboxProps,
+  type SelectOption,
+} from '@simurgh-ui/react/combobox';
+import {
+  Combobox as VueCombobox,
+  type ComboboxOption,
+} from '@simurgh-ui/vue/combobox';
+import {
+  ComboboxComponent,
+  SelectOption as AngularSelectOption,
+} from '@simurgh-ui/angular/combobox';
+import '@simurgh-ui/styles/combobox.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Combobox" align="start" kind="live">
+  <SearchSelectionComponentPreview component="combobox" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+const cities = [
+  { value: 'tehran', label: 'تهران' },
+  { value: 'isfahan', label: 'اصفهان' },
+];
+
+<Combobox
+  name="city"
+  value={city}
+  onValueChange={setCity}
+  placeholder="جست‌وجوی شهر"
+  noResults="شهری پیدا نشد"
+  options={cities}
+/>;
+```
+
+```vue
+<Combobox
+  v-model="city"
+  name="city"
+  placeholder="جست‌وجوی شهر"
+  :options="cities"
+/>
+```
+
+```html
+<simurgh-combobox
+  name="city"
+  [(value)]="city"
+  placeholder="جست‌وجوی شهر"
+  [options]="cities"
+/>
+```
+
+## صفحه‌کلید
+
+Tab از input وارد و خارج می‌شود. Arrow Down/Up فهرست را باز و option فعال را جابه‌جا می‌کند؛ Home/End به ابتدا و انتها می‌رود؛ Enter انتخاب می‌کند و Escape بدون انتخاب فهرست را می‌بندد. متن input به‌جای typeahead گزینه‌ها را فیلتر می‌کند.
+
+## API اصلی
+
+`options` اجباری است. `value`، `defaultValue`، `name`، `required`، `disabled`، `placeholder` و `noResults` در adapterها وجود دارند. state انتخاب با callback، `v-model` یا `[(value)]` به برنامه متصل می‌شود.
+
+برای مجموعهٔ کوچک بدون جست‌وجو [Select](/fa/components/select/) ساده‌تر است.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

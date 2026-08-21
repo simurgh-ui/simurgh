@@ -1,0 +1,52 @@
+---
+title: Navigation Menu
+description: پیمایش semantic سایت با لینک بومی و state صفحهٔ جاری.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add navigation-menu
+```
+
+```ts
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+} from '@simurgh-ui/react/navigation-menu';
+import '@simurgh-ui/styles/navigation-menu.css';
+```
+
+Vue partهای مشابه و Angular کامپوننت‌های متناظر را صادر می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Navigation Menu" kind="live">
+  <ReactComponentPreview component="navigation-menu" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<NavigationMenu label="پیمایش اصلی">
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/" current>خانه</NavigationMenuLink>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/fa/guides/installation/">مستندات</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+Linkها باید `href` واقعی داشته باشند و صفحهٔ جاری با `current`/`aria-current="page"` مشخص شود. نام landmark را با `label` تعیین کنید. برای commandهای application از Menubar و برای actionها از Button استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

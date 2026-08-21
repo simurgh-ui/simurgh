@@ -1,0 +1,63 @@
+---
+title: Collapsible
+description: باز و بسته‌کردن یک بخش با semantics متصل trigger و content.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add collapsible
+```
+
+```ts
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from '@simurgh-ui/react/collapsible';
+import '@simurgh-ui/styles/collapsible.css';
+```
+
+Vue همین partها را صادر می‌کند. Angular از `CollapsibleComponent` در `@simurgh-ui/angular/collapsible` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Collapsible" kind="live">
+  <CompositeComponentPreview component="collapsible" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Collapsible open={open} onOpenChange={setOpen}>
+  <CollapsibleTrigger>جزئیات</CollapsibleTrigger>
+  <CollapsibleContent>محتوای تکمیلی</CollapsibleContent>
+</Collapsible>
+```
+
+```vue
+<Collapsible v-model:open="open">
+  <CollapsibleTrigger>جزئیات</CollapsibleTrigger>
+  <CollapsibleContent>محتوای تکمیلی</CollapsibleContent>
+</Collapsible>
+```
+
+```html
+<simurgh-collapsible [(open)]="open">
+  <span trigger>جزئیات</span>
+  <div>محتوای تکمیلی</div>
+</simurgh-collapsible>
+```
+
+## state و صفحه‌کلید
+
+React از `open`/`onOpenChange` یا `defaultOpen`، Vue از `v-model:open` و Angular از `[(open)]` استفاده می‌کنند. Tab trigger را focus می‌کند و Enter یا Space آن را تغییر می‌دهد.
+
+Collapsible برای یک بخش مستقل است. برای مجموعه‌ای از چند بخش مرتبط که policy بازشدن مشترک دارند از [Accordion](/fa/components/accordion/) استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

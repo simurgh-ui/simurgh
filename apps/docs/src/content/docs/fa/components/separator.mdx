@@ -1,0 +1,36 @@
+---
+title: Separator
+description: جداکنندهٔ معنایی یا تزئینی همراه فرادادهٔ جهت.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add separator
+```
+
+```ts
+import { Separator } from '@simurgh-ui/react/separator';
+import { Separator as VueSeparator } from '@simurgh-ui/vue/separator';
+import { SeparatorComponent } from '@simurgh-ui/angular/separator';
+import '@simurgh-ui/styles/separator.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Separator" kind="live">
+  <ReactComponentPreview component="separator" />
+</ComponentPreview>
+
+```tsx
+<Separator orientation="horizontal" decorative />
+```
+
+Separator تزئینی از accessibility tree حذف می‌شود. اگر مرز ساختار معنایی مهمی را نشان می‌دهد `decorative` را خاموش و orientation درست را نگه دارید. فاصله یا heading اغلب از separatorهای زیاد خواناتر است.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

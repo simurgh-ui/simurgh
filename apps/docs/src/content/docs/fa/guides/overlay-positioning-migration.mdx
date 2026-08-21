@@ -1,0 +1,43 @@
+---
+title: مهاجرت موقعیت‌دهی لایه‌ها
+description: مهاجرت overlayها به لایهٔ داخلی موقعیت‌دهی و تعامل Simurgh.
+---
+
+Simurgh برای overlayهای رایج، موقعیت‌دهی کوچک و داخلی خود را دارد. هنگام جایگزینی یک کتابخانهٔ عمومی positioning، فقط قابلیت‌هایی را منتقل کنید که در قرارداد Simurgh پشتیبانی می‌شوند.
+
+## محدودهٔ پشتیبانی‌شده
+
+لایهٔ داخلی placementهای اصلی، offset، flip به سمت مقابل، جلوگیری از خروج از viewport، به‌روزرسانی در resize/scroll و مالکیت منطقی overlayهای تو‌در‌تو را پوشش می‌دهد.
+
+## تفاوت‌های عمدی
+
+| بخش | رفتار مهاجرت |
+| --- | --- |
+| مرز برخورد | visual viewport مرز collision است؛ مرز سفارشی element پشتیبانی نمی‌شود |
+| middleware | arrow positioning، virtual anchor، hide/size middleware و زنجیرهٔ پردازش دلخواه وجود ندارند |
+| fallback | placement فقط می‌تواند به سمت مقابل flip شود |
+| portal | React و Vue محتوای portalled را نسبت به body موقعیت می‌دهند؛ محتوای Angular در host باقی می‌ماند |
+| render اولیه | محتوا در SSR و نخستین hydration بسته و قطعی می‌ماند؛ اندازه‌گیری پس از mount و بازشدن آغاز می‌شود |
+| dismiss تو‌در‌تو | Escape ابتدا فرزند را می‌بندد و parent باز می‌ماند |
+
+## پاک‌سازی dependency
+
+پس از مهاجرت همهٔ overlayها، importها، adapterها و dependency قدیمی positioning را حذف کنید. lockfile و ابزار تحلیل بسته را بررسی کنید تا نسخهٔ غیرمستقیم یا کد تکراری باقی نمانده باشد.
+
+## تغییر اندازهٔ bundle
+
+اندازه‌گیری gzip مرجع پس از جایگزینی لایهٔ قبلی:
+
+| Adapter | میانگین پیش از مهاجرت | میانگین پس از مهاجرت | کاهش |
+| --- | ---: | ---: | ---: |
+| React | 11,424 B | 2,548 B | 77.7% |
+| Vue | 5,242 B | 2,140 B | 59.2% |
+| Angular | 5,513 B | 2,591 B | 53.0% |
+
+## بررسی پس از ارتقا
+
+placement و flip را کنار تمام لبه‌های viewport، در zoom و RTL آزمایش کنید. سپس scroll، resize، trigger حذف‌شده، overlay تو‌در‌تو، Escape، outside press و بازگشت focus را کنترل کنید. SSR باید بدون اختلاف hydration باشد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

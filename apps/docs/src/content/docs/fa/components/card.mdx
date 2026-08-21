@@ -1,0 +1,62 @@
+---
+title: Card
+description: ساختار ترکیبی برای گروه‌بندی اطلاعات و actionهای مرتبط.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add card
+```
+
+```ts
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@simurgh-ui/react/card';
+import '@simurgh-ui/styles/card.css';
+```
+
+Vue همین partها را از `@simurgh-ui/vue/card` و Angular کامپوننت‌های متناظر را از `@simurgh-ui/angular/card` صادر می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Card" kind="live">
+  <ReactComponentPreview component="card" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>رابط کاربری سیمرغ</CardTitle>
+    <CardDescription>کامپوننت‌های دسترس‌پذیر</CardDescription>
+  </CardHeader>
+  <CardContent>سورس قابل‌مالکیت برای سه فریم‌ورک.</CardContent>
+  <CardFooter>
+    <a href="/fa/guides/installation/">شروع کنید</a>
+  </CardFooter>
+</Card>
+```
+
+ساختار Vue با نام‌های مشابه است. Angular از selectorهای `simurgh-card`، `simurgh-card-header`، `simurgh-card-title`، `simurgh-card-description`، `simurgh-card-content` و `simurgh-card-footer` استفاده می‌کند.
+
+## semantics
+
+Card به‌خودی‌خود کنترل تعاملی یا landmark نیست. heading مناسب را در `CardTitle` قرار دهید و actionها را Button یا Link واقعی بسازید. کل Card را فقط وقتی کلیک‌پذیر کنید که دقیقاً یک مقصد دارد؛ در حالت چند action لینک‌ها و دکمه‌های داخلی را مستقل نگه دارید.
+
+## سفارشی‌سازی
+
+partهای Card برای composition پایدارند. رنگ، radius، border و shadow را با tokenهای معنایی یا class روی part مربوط تغییر دهید. ترتیب DOM باید در responsive layout ثابت و منطقی بماند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

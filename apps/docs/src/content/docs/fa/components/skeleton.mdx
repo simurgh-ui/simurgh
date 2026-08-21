@@ -1,0 +1,36 @@
+---
+title: Skeleton
+description: جای‌نگهدار بارگذاری با حالت تزئینی یا وضعیت نام‌دار.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add skeleton
+```
+
+```ts
+import { Skeleton } from '@simurgh-ui/react/skeleton';
+import { Skeleton as VueSkeleton } from '@simurgh-ui/vue/skeleton';
+import { SkeletonComponent } from '@simurgh-ui/angular/skeleton';
+import '@simurgh-ui/styles/skeleton.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Skeleton" kind="live">
+  <ReactComponentPreview component="skeleton" />
+</ComponentPreview>
+
+```tsx
+<Skeleton label="در حال بارگذاری پروفایل" />
+```
+
+اگر loading از متن اطراف قابل‌فهم است Skeleton را تزئینی نگه دارید؛ اگر ناحیه مستقل است label کوتاه بدهید. ابعاد placeholder باید layout نهایی را تقریب بزند. shimmer با reduced motion متوقف شود و بارگذاری پایان‌یافته status تازه را بی‌دلیل تکرار نکند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

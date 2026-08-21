@@ -1,0 +1,62 @@
+---
+title: Toggle Group
+description: کنترل‌های انتخاب تکی یا چندتایی با پیمایش منطقی صفحه‌کلید.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import SelectionComponentPreview from '../../../../components/previews/SelectionComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add toggle-group
+```
+
+```ts
+import { ToggleGroup, ToggleGroupItem } from '@simurgh-ui/react/toggle-group';
+import { ToggleGroup as VueToggleGroup, ToggleGroupItem as VueToggleGroupItem } from '@simurgh-ui/vue/toggle-group';
+import { ToggleGroupComponent, ToggleGroupItemDirective } from '@simurgh-ui/angular/toggle-group';
+import '@simurgh-ui/styles/toggle-group.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Toggle Group" kind="live">
+  <SelectionComponentPreview component="toggle-group" client:load />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<ToggleGroup aria-label="تراز متن">
+  <ToggleGroupItem value="start">ابتدا</ToggleGroupItem>
+  <ToggleGroupItem value="center">وسط</ToggleGroupItem>
+</ToggleGroup>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<ToggleGroup v-model="alignment" aria-label="تراز متن">
+  <ToggleGroupItem value="start">ابتدا</ToggleGroupItem>
+  <ToggleGroupItem value="center">وسط</ToggleGroupItem>
+</ToggleGroup>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-toggle-group [(value)]="alignment" aria-label="تراز متن">
+  <button simurghToggleGroupItem="start">ابتدا</button>
+  <button simurghToggleGroupItem="center">وسط</button>
+</simurgh-toggle-group>
+```
+</TabItem>
+</Tabs>
+
+برای فعال‌بودن هم‌زمان چند گزینه `type="multiple"` را تعیین کنید. هر item فقط‌آیکن باید نام دسترس‌پذیر داشته باشد. کلیدهای جهت focus را جابه‌جا می‌کنند، Home و End به ابتدا و انتها می‌روند و در layout راست‌به‌چپ جهت افقی به‌طور منطقی معکوس می‌شود.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

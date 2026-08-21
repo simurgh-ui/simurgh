@@ -1,0 +1,72 @@
+---
+title: Date Picker
+description: تقویم بازشو با نمایش بومی، مقدار استاندارد فرم و بازگرداندن تمرکز.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import PickerComponentPreview from '../../../../components/previews/PickerComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add date-picker
+```
+
+```ts
+import { DatePicker, type DatePickerProps } from '@simurgh-ui/react/date-picker';
+import { DatePicker as VueDatePicker } from '@simurgh-ui/vue/date-picker';
+import { DatePickerComponent } from '@simurgh-ui/angular/date-picker';
+import '@simurgh-ui/styles/date-picker.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Date Picker" kind="live">
+  <PickerComponentPreview component="date-picker" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<DatePicker
+  value={date}
+  onValueChange={setDate}
+  name="appointment"
+  min="2026-08-21"
+  max="2026-09-30"
+  disabledDates={holidays}
+  label="تاریخ وقت ملاقات"
+  locale="fa-IR"
+  required
+/>
+```
+
+```vue
+<DatePicker
+  v-model="date"
+  v-model:month="month"
+  name="appointment"
+  label="تاریخ وقت ملاقات"
+/>
+```
+
+```html
+<simurgh-date-picker
+  [(value)]="date"
+  [(month)]="month"
+  name="appointment"
+  label="تاریخ وقت ملاقات"
+/>
+```
+
+## مقدار و validation
+
+نمایش می‌تواند با locale فارسی باشد، اما مقدار فرم با ISO یعنی `YYYY-MM-DD` باقی می‌ماند. `min`، `max` و `disabledDates` را در client و server یکسان نگه دارید و محدودیت را دوباره در server validate کنید.
+
+## صفحه‌کلید
+
+Tab trigger و grid باز را طی می‌کند. Arrowها روز را حرکت می‌دهند، Home/End به لبهٔ هفته می‌روند، Enter یا Space انتخاب می‌کند و Escape popover را می‌بندد. حرکت چپ و راست در RTL معکوس است و focus پس از بستن به trigger بازمی‌گردد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

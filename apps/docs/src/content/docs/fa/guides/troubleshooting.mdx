@@ -1,0 +1,56 @@
+---
+title: رفع اشکال
+description: تشخیص مشکلات نصب، استایل، overlay، فرم، hydration، focus و RTL در Simurgh.
+---
+
+ابتدا مدل نصب را مشخص کنید. کامپوننت کپی‌شده باید از مسیر محلی برنامه import شود و کامپوننت package از `@simurgh-ui/{framework}`. این دو مدل را مانند یکدیگر به‌روزرسانی نکنید.
+
+## کامپوننت استایل ندارد
+
+رفتار Simurgh headless است و recipe بصری خودکار تزریق نمی‌شود:
+
+```css
+@import '@simurgh-ui/styles/dialog.css';
+```
+
+برای سورس CLI، مطمئن شوید `tokens.css` و `recipes.css` کپی‌شده در stylesheet سراسری برنامه وارد شده‌اند. در Network و Styles مرورگر بارگذاری و cascade را بررسی کنید.
+
+## تغییر theme اعمال نمی‌شود
+
+متغیرهای `--simurgh-*` را بعد از stylesheet کتابخانه override کنید. `.dark` یا `data-theme="dark"` باید روی ancestor کامپوننت باشد. به‌جای افزایش مداوم specificity، ترتیب cascade یا tokenهای semantic را اصلاح کنید.
+
+## overlay بریده یا پشت محتواست
+
+ancestorها را برای `overflow: hidden`، `transform`، `filter`، `isolation` و stacking context دارای `z-index` بررسی کنید. در صورت پشتیبانی از portal استفاده کنید. یک مقیاس لایهٔ مشخص برای navigation، overlay، modal و اعلان تعریف کنید.
+
+## hydration mismatch در SSR
+
+open state، مقدار انتخاب‌شده، تاریخ و ترتیب itemها باید در server و نخستین render مرورگر یکسان باشند. هنگام render اولیه به `window`، storage، اندازهٔ viewport، زمان جاری یا مقدار تصادفی وابسته نشوید.
+
+## فرم مقدار موردانتظار را submit نمی‌کند
+
+کنترل باید `name` داشته باشد و داخل `<form>` درست قرار بگیرد. کنترل disabled در `FormData` نمی‌آید. نوع پیش‌فرض Button برابر `button` است؛ برای ارسال فرم `type="submit"` را صریح بنویسید.
+
+## focus پس از بستن overlay برنمی‌گردد
+
+overlay را از trigger مستندشده باز کنید تا opener ثبت شود. trigger را پیش از پایان بستن حذف یا disabled نکنید. overlayهای تو‌در‌تو باید به‌ترتیب stack بسته شوند.
+
+## صفحه‌کلید کار نمی‌کند
+
+ساختار parent/child، role، ID و childهای مستند را حفظ کنید. یک wrapper قابل‌focus یا `preventDefault()` روی Arrow، Enter، Space، Home، End، Tab و Escape می‌تواند مدل تعاملی را بشکند.
+
+## RTL یا کلیدهای جهت برعکس‌اند
+
+`dir="rtl"` را روی سند یا ancestor مرتبط بگذارید. overrideهای فیزیکی مانند `margin-left` را با ویژگی منطقی مانند `margin-inline-start` جایگزین کنید. داده‌ها و منطق صفحه‌کلید را هم‌زمان معکوس نکنید.
+
+## کامپوننت محلی با registry متفاوت است
+
+```sh
+pnpm dlx @simurgh-ui/cli diff component-name
+```
+
+`diff` تغییرات را merge نمی‌کند. پیش از `add component-name --overwrite` فایل محلی را review و commit کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

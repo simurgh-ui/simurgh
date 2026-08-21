@@ -1,0 +1,76 @@
+---
+title: Alert Dialog
+description: تأیید modal وقفه‌انداز با focus اولیه روی عمل امن.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add alert-dialog
+```
+
+```ts
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from '@simurgh-ui/react/alert-dialog';
+import '@simurgh-ui/styles/alert-dialog.css';
+```
+
+Vue همین partها را صادر می‌کند. Angular از `AlertDialogComponent`، `AlertDialogActionDirective` و `AlertDialogCancelDirective` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Alert Dialog" kind="live">
+  <OverlayComponentPreview component="alert-dialog" client:load />
+</ComponentPreview>
+
+## React
+
+```tsx
+<AlertDialog>
+  <AlertDialogTrigger>حذف پروژه</AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogTitle>پروژه حذف شود؟</AlertDialogTitle>
+    <AlertDialogDescription>
+      این عمل قابل‌بازگشت نیست.
+    </AlertDialogDescription>
+    <AlertDialogCancel>انصراف</AlertDialogCancel>
+    <AlertDialogAction onClick={removeProject}>حذف</AlertDialogAction>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+## Angular
+
+```html
+<simurgh-alert-dialog
+  #dialog
+  labelledBy="delete-title"
+  describedBy="delete-description"
+>
+  <button trigger (click)="dialog.show()">حذف پروژه</button>
+  <h2 id="delete-title">پروژه حذف شود؟</h2>
+  <p id="delete-description">این عمل قابل‌بازگشت نیست.</p>
+  <button simurghAlertDialogCancel>انصراف</button>
+  <button simurghAlertDialogAction (action)="removeProject()">حذف</button>
+</simurgh-alert-dialog>
+```
+
+## focus و صفحه‌کلید
+
+focus اولیه روی Cancel امن قرار می‌گیرد. Tab و Shift+Tab داخل modal می‌چرخند؛ Escape آن را می‌بندد و focus به trigger برمی‌گردد. همیشه Cancel قابل‌مشاهده ارائه دهید و Escape را تنها مسیر امن خروج قرار ندهید.
+
+Alert Dialog برای تصمیم مهم یا مخرب است. برای محتوای modal عمومی از [Dialog](/fa/components/dialog/) و برای پیام غیرمسدودکننده از [Alert](/fa/components/alert/) استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

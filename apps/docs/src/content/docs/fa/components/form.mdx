@@ -1,0 +1,60 @@
+---
+title: Form
+description: اعتبارسنجی بومی فرم با تمرکز قابل‌پیش‌بینی روی کنترل نامعتبر و خلاصهٔ خطا.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import FormComponentPreview from '../../../../components/previews/FormComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add form
+```
+
+```ts
+import { Form, FormErrorSummary } from '@simurgh-ui/react/form';
+import { Form as VueForm, FormErrorSummary as VueFormErrorSummary } from '@simurgh-ui/vue/form';
+import { FormDirective, FormErrorSummaryComponent } from '@simurgh-ui/angular/form';
+import '@simurgh-ui/styles/form.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Form" kind="live">
+  <FormComponentPreview component="form" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Form onSubmit={save} onInvalid={trackInvalid}>
+  <Label htmlFor="email">رایانامه</Label>
+  <Input id="email" name="email" type="email" required />
+  {errors.length > 0 && (
+    <FormErrorSummary>{errors.join('، ')}</FormErrorSummary>
+  )}
+  <Button type="submit">ادامه</Button>
+</Form>
+```
+
+```html
+<form simurghForm (submit)="save($event)" (invalidControl)="trackInvalid($event)">
+  <simurgh-label for="email">رایانامه</simurgh-label>
+  <simurgh-input id="email" name="email" type="email" [required]="true" />
+  <simurgh-form-error-summary *ngIf="errors.length">
+    {{ errors.join('، ') }}
+  </simurgh-form-error-summary>
+  <simurgh-button type="submit">ادامه</simurgh-button>
+</form>
+```
+
+## validation و focus
+
+از constraint validation بومی استفاده کنید و خطا را کنار کنترل و در summary قابل‌پیوند نمایش دهید. هنگام submit ناموفق، focus به نخستین کنترل نامعتبر یا summary معنادار منتقل می‌شود. پیام خطا باید روش اصلاح را توضیح دهد و فقط رنگ قرمز نباشد.
+
+در submit async دکمه را busy کنید، از ارسال تکراری جلوگیری کنید و نتیجه را بدون جابه‌جایی غیرمنتظرهٔ focus اعلام کنید. اعتبارسنجی سمت client هرگز جای validation سمت server را نمی‌گیرد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

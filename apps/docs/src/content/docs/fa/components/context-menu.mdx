@@ -1,0 +1,63 @@
+---
+title: Context Menu
+description: کنش‌های وابسته به زمینه در موقعیت اشاره‌گر با دسترسی کامل صفحه‌کلید.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add context-menu
+```
+
+```ts
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+} from '@simurgh-ui/react/context-menu';
+import '@simurgh-ui/styles/context-menu.css';
+```
+
+Vue همین partها را صادر می‌کند. Angular از `ContextMenuComponent` و `ContextMenuItemDirective` استفاده می‌کند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Context Menu" kind="live">
+  <OverlayComponentPreview component="context-menu" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<ContextMenu>
+  <ContextMenuTrigger>بوم طراحی</ContextMenuTrigger>
+  <ContextMenuContent aria-label="عملیات بوم">
+    <ContextMenuItem onSelect={copy}>کپی</ContextMenuItem>
+    <ContextMenuItem onSelect={duplicate}>ساخت نسخهٔ مشابه</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+```html
+<simurgh-context-menu>
+  <span trigger>بوم طراحی</span>
+  <button simurghContextMenuItem (select)="copy()">کپی</button>
+  <button simurghContextMenuItem (select)="duplicate()">ساخت نسخهٔ مشابه</button>
+</simurgh-context-menu>
+```
+
+## صفحه‌کلید و focus
+
+کلیک راست، کلید Context Menu یا Shift+F10 منو را از trigger باز می‌کند. Arrow Up/Down و Home/End میان itemهای فعال حرکت می‌کنند؛ Enter یا Space انتخاب می‌کند؛ Escape منو را می‌بندد و focus را به trigger برمی‌گرداند.
+
+## دسترس‌پذیری
+
+همهٔ actionها باید بدون pointer قابل‌دسترسی باشند. Content یک accessible name روشن لازم دارد. action مخرب را با متن واضح و confirmation مناسب طراحی کنید. منو جایگزین navigation اصلی یا تنها راه رسیدن به یک عمل ضروری نیست.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

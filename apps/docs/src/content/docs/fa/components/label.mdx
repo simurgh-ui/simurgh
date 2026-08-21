@@ -1,0 +1,53 @@
+---
+title: Label
+description: ابزار بومی برچسب برای نام‌گذاری دسترس‌پذیر کنترل فرم.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add label
+```
+
+```ts
+import { Label } from '@simurgh-ui/react/label';
+import { Label as VueLabel } from '@simurgh-ui/vue/label';
+import { LabelComponent } from '@simurgh-ui/angular/label';
+import '@simurgh-ui/styles/label.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Label" kind="live">
+  <ReactComponentPreview component="label" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Label htmlFor="email">نشانی رایانامه</Label>
+<Input id="email" name="email" type="email" />
+```
+
+```vue
+<Label for="email">نشانی رایانامه</Label>
+<Input id="email" name="email" type="email" />
+```
+
+```html
+<simurgh-label for="email">نشانی رایانامه</simurgh-label>
+<simurgh-input id="email" name="email" type="email" />
+```
+
+## دسترس‌پذیری
+
+`for`/`htmlFor` باید با ID یکتای کنترل برابر باشد. کلیک روی Label باید کنترل را focus یا toggle کند. placeholder جای Label نیست و متن Required باید علاوه بر نشانهٔ بصری برای صفحه‌خوان قابل‌درک باشد.
+
+برای گروه Checkbox یا Radio Group از legend یا accessible group label استفاده کنید. Label نباید چند کنترل نامرتبط را هم‌زمان هدف بگیرد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

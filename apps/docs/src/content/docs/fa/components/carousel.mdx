@@ -1,0 +1,57 @@
+---
+title: Carousel
+description: اسلایدهای ترکیبی و نام‌گذاری‌شده با کنترل جهت‌محور و تکرار اختیاری.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add carousel
+```
+
+```ts
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@simurgh-ui/react/carousel';
+import '@simurgh-ui/styles/carousel.css';
+```
+
+Vue همین partها و Angular کامپوننت‌های متناظر را از subpath `carousel` صادر می‌کنند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Carousel" kind="live">
+  <CompositeComponentPreview component="carousel" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Carousel label="پروژه‌های منتخب" direction="rtl">
+  <CarouselContent>
+    <CarouselItem>سیستم طراحی</CarouselItem>
+    <CarouselItem>مستندات</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious>›</CarouselPrevious>
+  <CarouselNext>‹</CarouselNext>
+</Carousel>
+```
+
+## صفحه‌کلید
+
+Tab viewport و کنترل‌ها را طبق DOM طی می‌کند. Arrow چپ و راست slide قبلی و بعدی را فعال می‌کنند و mapping آن‌ها در RTL معکوس می‌شود. Previous و Next باید accessible name روشن داشته باشند.
+
+## دسترس‌پذیری
+
+Carousel را با `label` نام‌گذاری کنید و جایگاه هر slide را قابل‌درک نگه دارید. پخش خودکار اگر اضافه می‌شود باید قابل توقف باشد و با reduced motion سازگار شود. محتوای خارج از slide فعال نباید focusهای گم‌شده ایجاد کند. `loop` را فقط وقتی فعال کنید که بازگشت از انتها به ابتدا برای کاربر قابل‌پیش‌بینی باشد.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

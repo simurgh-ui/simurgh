@@ -1,0 +1,61 @@
+---
+title: Input OTP
+description: ورود کد یک‌بارمصرف با autofill، paste، فیلتر و semantics فرم.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import FormComponentPreview from '../../../../components/previews/FormComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add input-otp
+```
+
+```ts
+import { InputOtp } from '@simurgh-ui/react/input-otp';
+import { InputOtp as VueInputOtp } from '@simurgh-ui/vue/input-otp';
+import { InputOtpComponent } from '@simurgh-ui/angular/input-otp';
+import '@simurgh-ui/styles/input-otp.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Input OTP" kind="live">
+  <FormComponentPreview component="input-otp" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Label htmlFor="code">کد تأیید</Label>
+<InputOtp
+  id="code"
+  name="code"
+  length={6}
+  autoComplete="one-time-code"
+  required
+/>
+```
+
+```html
+<simurgh-label for="code">کد تأیید</simurgh-label>
+<simurgh-input-otp
+  id="code"
+  name="code"
+  [length]="6"
+  [value]="code"
+  [required]="true"
+  (valueChange)="code = $event"
+/>
+```
+
+## رفتار و امنیت
+
+paste کل کد، فیلتر کاراکتر نامعتبر و autofill سیستم‌عامل باید بدون حرکت دستی میان slotها کار کند. value نهایی به‌صورت یک رشته و با `name` در فرم شرکت می‌کند.
+
+کد را در گزارش سیستمی یا analytics ذخیره نکنید. پیام انقضا و تلاش ناموفق را قابل‌مشاهده و live اعلام کنید، اما مقدار کد را نخوانید. label واحد برای کل کنترل بهتر از نام‌گذاری جداگانهٔ هر slot است.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

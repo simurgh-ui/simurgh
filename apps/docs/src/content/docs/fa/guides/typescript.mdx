@@ -1,0 +1,108 @@
+---
+title: الگوهای TypeScript
+description: تعریف نوع پوشش، مقدار، رویداد، ویژگی بومی و ارجاع عنصر در سه فریم‌ورک.
+---
+
+تا حد ممکن type را از کامپوننت نصب‌شده استخراج کنید تا wrapper با تغییر native attribute یا prop هماهنگ بماند. type عمومی مانند `SelectOption` را از همان subpath کامپوننت import کنید.
+
+## React: گسترش prop و ارسال ref
+
+```tsx
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type ComponentRef,
+} from 'react';
+import { Button } from '@simurgh-ui/react/button';
+
+type ButtonProps = ComponentPropsWithoutRef<typeof Button>;
+
+export const SaveButton = forwardRef<
+  ComponentRef<typeof Button>,
+  ButtonProps
+>(function SaveButton(props, ref) {
+  return <Button {...props} ref={ref}>ذخیره</Button>;
+});
+```
+
+ref و native event را حفظ کنید و callback بدون type جایگزین آن نکنید.
+
+## React: value و callback
+
+```tsx
+import { Select, type SelectOption } from '@simurgh-ui/react/select';
+
+const countries: SelectOption[] = [
+  { value: 'ir', label: 'ایران' },
+  { value: 'am', label: 'ارمنستان' },
+];
+
+<Select
+  options={countries}
+  value={country}
+  onValueChange={(next: string) => setCountry(next)}
+/>;
+```
+
+## Vue: prop، model و attribute
+
+```vue
+<script setup lang="ts">
+import { useAttrs } from 'vue';
+import { Select, type SelectOption } from '@simurgh-ui/vue/select';
+
+defineOptions({ inheritAttrs: false });
+const props = defineProps<{ options: SelectOption[]; label: string }>();
+const value = defineModel<string>({ default: '' });
+const attrs = useAttrs();
+</script>
+
+<template>
+  <label>
+    {{ props.label }}
+    <Select v-bind="attrs" v-model="value" :options="props.options" />
+  </label>
+</template>
+```
+
+`inheritAttrs: false` مانع افتادن تصادفی attributeها روی root wrapper می‌شود.
+
+## Angular: input و output
+
+```ts
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  SelectComponent,
+  type SelectOption,
+} from '@simurgh-ui/angular/select';
+
+@Component({
+  selector: 'app-country-select',
+  standalone: true,
+  imports: [SelectComponent],
+  template: `<simurgh-select
+    [options]="options"
+    [value]="value"
+    (valueChange)="valueChange.emit($event)"
+  />`,
+})
+export class CountrySelectComponent {
+  @Input({ required: true }) options: SelectOption[] = [];
+  @Input() value = '';
+  @Output() readonly valueChange = new EventEmitter<string>();
+}
+```
+
+برای method مستند از `@ViewChild(ComponentClass)` استفاده کنید و به element داخلی مستندنشده دسترسی مستقیم نگیرید.
+
+## چک‌لیست wrapper
+
+- prop، value و event عمومی type دقیق دارند.
+- ref یا instance فقط سطح عمومی مستند را expose می‌کند.
+- class، style، ARIA و `data-*` به part درست forward می‌شوند.
+- defaultهای wrapper با ترتیب روشن نسبت به prop مصرف‌کننده اعمال می‌شوند.
+- disabled، required، name و accessible label در مسیر forwarding گم نمی‌شوند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

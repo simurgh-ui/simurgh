@@ -1,0 +1,104 @@
+---
+title: شخصی‌سازی پوسته
+description: تنظیم رنگ، شکل، سایه و motion tokenهای معنایی Simurgh برای theme روشن و تیره.
+---
+
+Simurgh رنگ‌های خام الهام‌گرفته از میراث ایرانی را از نقش‌های معنایی رابط جدا می‌کند. کامپوننت‌ها tokenهای معنایی را مصرف می‌کنند؛ بنابراین می‌توانید ظاهر محصول را بدون ویرایش سورس کامپوننت تغییر دهید.
+
+## واردکردن tokenها
+
+```css
+@import '@simurgh-ui/styles/tokens.css';
+```
+
+هر stylesheet کامپوننت نیز tokenهای مشترک را وارد می‌کند. اگر فقط `button.css` را وارد کرده‌اید، import جداگانهٔ token لازم نیست.
+
+## ترتیب ترکیب CSS
+
+ترتیب پیشنهادی:
+
+1. reset یا base برنامه
+2. token و recipeهای Simurgh
+3. overrideهای theme و کامپوننت برنامه
+
+```css
+@import './reset.css';
+@import '@simurgh-ui/styles/dialog.css';
+@import './theme.css';
+@import './component-overrides.css';
+```
+
+Simurgh reset سراسری ارائه نمی‌کند. سیاست `box-sizing`، typography و body margin بر عهدهٔ برنامه است. پیش از افزایش specificity یا استفاده از `!important`، ترتیب source و cascade layer را اصلاح کنید.
+
+## tokenهای اصلی
+
+مقدار رنگ‌ها channelهای HSL است؛ برای مصرف از `hsl(var(--simurgh-primary))` استفاده کنید.
+
+| Token | نقش |
+| --- | --- |
+| `--simurgh-background` و `--simurgh-foreground` | canvas و متن اصلی |
+| `--simurgh-surface` و `--simurgh-muted` | card، menu، dialog و سطح‌های ثانویه |
+| `--simurgh-primary` و `--simurgh-primary-foreground` | عمل اصلی و متن روی آن |
+| `--simurgh-danger` | عمل مخرب و خطا؛ معنا را فقط با رنگ منتقل نکنید |
+| `--simurgh-border` | مرز کنترل و سطح |
+| `--simurgh-ring` | نشانگر focus صفحه‌کلید |
+| `--simurgh-radius` | گردی گوشه‌های مشترک |
+| `--simurgh-shadow` | elevation سطح شناور |
+| `--simurgh-duration` | مدت transition؛ در reduced motion به حداقل می‌رسد |
+
+## سه سطح سفارشی‌سازی
+
+### ۱. تغییر tokenهای معنایی
+
+```css
+:root {
+  --simurgh-primary: 265 72% 44%;
+  --simurgh-ring: 265 82% 55%;
+  --simurgh-radius: 1rem;
+}
+```
+
+این روش پیشنهادی برای تصمیم‌های سراسری برند است.
+
+### ۲. تغییر recipe و state hook
+
+```css
+@import '@simurgh-ui/styles/dialog.css';
+
+.simurgh-dialog {
+  border-block-start: 0.25rem solid hsl(var(--simurgh-accent));
+  padding: 1.5rem;
+}
+
+.simurgh-overlay[data-state='open'] {
+  backdrop-filter: blur(0.25rem);
+}
+```
+
+فقط class، part و attribute مستندشده را هدف بگیرید.
+
+### ۳. استایل کاملاً headless
+
+recipe بصری را وارد نکنید و DOM و رفتار واقعی Simurgh را با classهای برنامه استایل دهید. در این حالت نمایش focus، disabled، invalid، selected، open و reduced motion کاملاً مسئولیت برنامه است.
+
+## حالت تیره
+
+`.dark` یا `[data-theme='dark']` را روی ancestor قرار دهید و tokenهای معنایی را override کنید:
+
+```css
+[data-theme='dark'] {
+  --simurgh-background: 222 47% 9%;
+  --simurgh-foreground: 39 55% 92%;
+  --simurgh-surface: 222 40% 13%;
+}
+```
+
+contrast متن، icon، border و focus ring را در هر دو theme و forced colors آزمایش کنید.
+
+## Motion و RTL
+
+برای زمان‌بندی از `--simurgh-duration` و برای layout از ویژگی‌های منطقی CSS استفاده کنید. آیکن جهت‌دار را انتخابی mirror کنید؛ نمادهای غیرجهتی و برند نباید خودکار معکوس شوند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

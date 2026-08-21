@@ -1,0 +1,54 @@
+---
+title: Breadcrumb
+description: ناحیهٔ پیمایش نام‌گذاری‌شده برای نمایش موقعیت سلسله‌مراتبی.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add breadcrumb
+```
+
+```ts
+import { Breadcrumb } from '@simurgh-ui/react/breadcrumb';
+import { Breadcrumb as VueBreadcrumb } from '@simurgh-ui/vue/breadcrumb';
+import { BreadcrumbComponent } from '@simurgh-ui/angular/breadcrumb';
+import '@simurgh-ui/styles/breadcrumb.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Breadcrumb" kind="live">
+  <ReactComponentPreview component="breadcrumb" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Breadcrumb label="مسیر صفحه">
+  <ol>
+    <li><a href="/">خانه</a></li>
+    <li><a href="/components/">کامپوننت‌ها</a></li>
+    <li aria-current="page">Breadcrumb</li>
+  </ol>
+</Breadcrumb>
+```
+
+در Vue همین childها داخل `<Breadcrumb>` و در Angular داخل `<simurgh-breadcrumb>` قرار می‌گیرند.
+
+## دسترس‌پذیری
+
+Breadcrumb یک `nav` با accessible label می‌سازد. مسیر را در یک فهرست مرتب قرار دهید. آیتم آخر یا صفحهٔ جاری باید `aria-current="page"` داشته باشد و لازم نیست لینک باشد. separator تزئینی را از accessibility tree پنهان کنید.
+
+| Prop/Input | Type | پیش‌فرض |
+| --- | --- | --- |
+| `label` | `string` | `"Breadcrumb"` |
+
+اگر صفحه چند landmark پیمایش دارد، label فارسی و متمایز مانند «مسیر صفحه» بنویسید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

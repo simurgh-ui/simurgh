@@ -1,0 +1,79 @@
+---
+title: Checkbox
+description: انتخاب دودویی با serialization بومی فرم و state کنترل‌شده یا اولیه.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import FormComponentPreview from '../../../../components/previews/FormComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add checkbox
+```
+
+```ts
+import { Checkbox } from '@simurgh-ui/react/checkbox';
+import { Checkbox as VueCheckbox } from '@simurgh-ui/vue/checkbox';
+import { CheckboxComponent } from '@simurgh-ui/angular/checkbox';
+import '@simurgh-ui/styles/checkbox.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Checkbox" kind="live">
+  <FormComponentPreview component="checkbox" client:load />
+</ComponentPreview>
+
+## استفاده
+
+### React
+
+```tsx
+<Checkbox
+  name="terms"
+  checked={accepted}
+  onCheckedChange={setAccepted}
+>
+  شرایط را می‌پذیرم
+</Checkbox>
+```
+
+### Vue
+
+```vue
+<Checkbox v-model="accepted" name="terms">
+  شرایط را می‌پذیرم
+</Checkbox>
+```
+
+### Angular
+
+```html
+<simurgh-checkbox name="terms" [(checked)]="accepted">
+  شرایط را می‌پذیرم
+</simurgh-checkbox>
+```
+
+## قرارداد state
+
+React حالت کنترل‌شدهٔ `checked` و `onCheckedChange` و حالت اولیهٔ `defaultChecked` دارد. Vue از `v-model` و Angular از `[(checked)]` استفاده می‌کنند.
+
+## فرم و دسترس‌پذیری
+
+با Space مقدار checkbox تغییر می‌کند. label باید هدف کلیک واضحی داشته باشد. Checkbox برای گزینه‌های مستقل مناسب است؛ برای انتخاب دقیقاً یک مورد از [Radio Group](/fa/components/radio-group/) استفاده کنید. کنترل disabled در submit بومی حذف می‌شود.
+
+## API اصلی
+
+| Prop/Input | کاربرد |
+| --- | --- |
+| `checked` / `modelValue` | مقدار کنترل‌شده |
+| `defaultChecked` | مقدار اولیه در React |
+| `name` و `value` | serialization فرم |
+| `required` | الزام انتخاب |
+| `disabled` | توقف تعامل |
+| `onCheckedChange` / `update:modelValue` / `checkedChange` | رویداد تغییر |
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

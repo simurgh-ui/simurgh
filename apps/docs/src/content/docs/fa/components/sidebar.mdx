@@ -1,0 +1,56 @@
+---
+title: Sidebar
+description: پیمایش collapsible و نام‌گذاری‌شده با state بومی هر فریم‌ورک.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import CompositeComponentPreview from '../../../../components/previews/CompositeComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add sidebar
+```
+
+```ts
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarTrigger,
+  SidebarHeader,
+  SidebarContent,
+  SidebarGroup,
+  SidebarMenu,
+} from '@simurgh-ui/react/sidebar';
+import '@simurgh-ui/styles/sidebar.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Sidebar" kind="live">
+  <CompositeComponentPreview component="sidebar" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<SidebarProvider defaultOpen onOpenChange={setSidebarOpen}>
+  <SidebarTrigger>تغییر وضعیت پیمایش</SidebarTrigger>
+  <Sidebar aria-label="پیمایش فضای کار">
+    <SidebarHeader>Simurgh</SidebarHeader>
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarMenu>
+          <li><a href="/projects">پروژه‌ها</a></li>
+        </SidebarMenu>
+      </SidebarGroup>
+    </SidebarContent>
+  </Sidebar>
+</SidebarProvider>
+```
+
+فراهم‌کننده state بازبودن را مالک است؛ Vue از `v-model:open` و Angular از binding متناظر استفاده می‌کند. Trigger باید state را اعلام کند. در mobile، focus و scroll پس‌زمینه را مطابق رفتار modal کنترل کنید؛ در desktop ترتیب tab و landmark navigation باید پایدار بماند.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

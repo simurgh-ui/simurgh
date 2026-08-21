@@ -1,0 +1,52 @@
+---
+title: Input Group
+description: ترکیب کنترل فرم با prefix، suffix و adornmentهای block.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add input-group
+```
+
+```ts
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+} from '@simurgh-ui/react/input-group';
+import '@simurgh-ui/styles/input-group.css';
+```
+
+Vue و Angular partهای متناظر را از subpath `input-group` صادر می‌کنند.
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Input Group" kind="live">
+  <ReactComponentPreview component="input-group" />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<Label id="website-label" htmlFor="website">وب‌سایت</Label>
+<InputGroup aria-labelledby="website-label">
+  <InputGroupAddon decorative>
+    <InputGroupText>https://</InputGroupText>
+  </InputGroupAddon>
+  <Input id="website" name="website" placeholder="example.com" />
+</InputGroup>
+```
+
+## semantics
+
+Input داخل گروه همچنان کنترل بومی و صاحب value، name و validation است. Addon تزئینی را با `decorative` از accessibility tree حذف کنید. اگر prefix یا suffix برای درک مقدار ضروری است آن را در accessible description کنترل نیز منعکس کنید.
+
+Button داخل Input Group باید accessible name مستقل داشته باشد. ترتیب بصری prefix/suffix را با CSS منطقی و `dir` بسازید، نه با جابه‌جایی DOM در RTL.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

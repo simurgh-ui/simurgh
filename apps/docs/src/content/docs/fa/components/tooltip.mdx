@@ -1,0 +1,62 @@
+---
+title: Tooltip
+description: توضیح کوتاهی که با hover اشاره‌گر یا focus صفحه‌کلید نمایان می‌شود.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import OverlayComponentPreview from '../../../../components/previews/OverlayComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add tooltip
+```
+
+```ts
+import { Tooltip, TooltipTrigger, TooltipContent } from '@simurgh-ui/react/tooltip';
+import { Tooltip as VueTooltip, TooltipTrigger as VueTooltipTrigger, TooltipContent as VueTooltipContent } from '@simurgh-ui/vue/tooltip';
+import { TooltipComponent } from '@simurgh-ui/angular/tooltip';
+import '@simurgh-ui/styles/tooltip.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Tooltip" kind="live">
+  <OverlayComponentPreview component="tooltip" client:load />
+</ComponentPreview>
+
+## استفاده
+
+<Tabs>
+<TabItem label="React">
+```tsx
+<Tooltip>
+  <TooltipTrigger aria-label="کپی نشانی">کپی</TooltipTrigger>
+  <TooltipContent>کپی نشانی</TooltipContent>
+</Tooltip>
+```
+</TabItem>
+<TabItem label="Vue">
+```vue
+<Tooltip>
+  <TooltipTrigger aria-label="کپی نشانی">کپی</TooltipTrigger>
+  <TooltipContent>کپی نشانی</TooltipContent>
+</Tooltip>
+```
+</TabItem>
+<TabItem label="Angular">
+```html
+<simurgh-tooltip>
+  <button trigger aria-label="کپی نشانی">کپی</button>
+  <span>کپی نشانی</span>
+</simurgh-tooltip>
+```
+</TabItem>
+</Tabs>
+
+Tooltip فقط برای توضیح تکمیلی کوتاه است و نباید کنترل تعاملی در خود داشته باشد. محتوا هم با hover و هم با focus ظاهر می‌شود و `role="tooltip"` دارد. برای اطلاعات ضروری یا تعاملی از محتوای درون‌صفحه‌ای یا Popover استفاده کنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

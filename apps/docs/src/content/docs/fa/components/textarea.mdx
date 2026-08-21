@@ -1,0 +1,77 @@
+---
+title: Textarea
+description: کنترل بومی فرم چندخطی با binding مخصوص هر فریم‌ورک.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import ReactComponentPreview from '../../../../components/ReactComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add textarea
+```
+
+```ts
+import { Textarea } from '@simurgh-ui/react/textarea';
+import { Textarea as VueTextarea } from '@simurgh-ui/vue/textarea';
+import { TextareaComponent } from '@simurgh-ui/angular/textarea';
+import '@simurgh-ui/styles/textarea.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="Textarea" kind="live">
+  <ReactComponentPreview component="textarea" />
+</ComponentPreview>
+
+## استفاده
+
+### React
+
+```tsx
+<label htmlFor="message">پیام</label>
+<Textarea
+  id="message"
+  name="message"
+  rows={5}
+  required
+  invalid={Boolean(error)}
+/>
+```
+
+### Vue
+
+```vue
+<Textarea v-model="message" name="message" :invalid="!!error" />
+```
+
+### Angular
+
+```html
+<simurgh-textarea
+  name="message"
+  [(value)]="message"
+  [invalid]="!!error"
+/>
+```
+
+## state و فرم
+
+React attributeهای بومی `textarea` را forward می‌کند. Vue از `v-model` و Angular از `[(value)]` استفاده می‌کنند. مقدار کنترل‌شده را با تغییر model برنامه reset کنید. `name` برای submit بومی لازم است.
+
+## دسترس‌پذیری
+
+Textarea باید label متصل و در صورت نیاز description و error message داشته باشد. `invalid` فقط state بصری و معنایی را مشخص می‌کند و جای متن خطا را نمی‌گیرد. resize را فقط وقتی غیرفعال کنید که layout جایگزین مناسبی برای متن طولانی دارد.
+
+## API اصلی
+
+| سطح | قرارداد |
+| --- | --- |
+| React | attributeهای بومی textarea، `invalid` و ref به `HTMLTextAreaElement` |
+| Vue | `modelValue`، `name`، `required`، `disabled`، `invalid`، `update:modelValue` و `change` |
+| Angular | `value`، `name`، `required`، `disabled`، `invalid` و `valueChange` |
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

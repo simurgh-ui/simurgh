@@ -1,0 +1,36 @@
+---
+title: سازگاری
+description: نسخه‌های پشتیبانی‌شدهٔ فریم‌ورک‌ها، ابزارها، مرورگرها و محدودهٔ آزمون CI.
+---
+
+این صفحه محدوده‌ای را ثبت می‌کند که بسته‌های Simurgh در آن توسعه و به‌صورت خودکار آزمایش می‌شوند. نسخه‌ای خارج از این محدوده ممکن است کار کند، اما تا وقتی در CI پوشش داده نشود پشتیبانی رسمی ندارد.
+
+## سازگاری فریم‌ورک‌ها
+
+| Adapter | peer موردنیاز | نسخهٔ توسعه در مخزن | پوشش CI |
+| --- | --- | --- | --- |
+| `@simurgh-ui/react` | React و React DOM نسخهٔ `>=18` | React `19.2.8` | React 18 و 19 در Chromium، Firefox و WebKit |
+| `@simurgh-ui/vue` | Vue نسخهٔ `>=3.4` | Vue `3.5.41` | Vue 3.4 و 3.5 در Chromium، Firefox و WebKit |
+| `@simurgh-ui/angular` | Angular Core و Common نسخهٔ `>=18` | Angular `20.3.27` | Angular 18 و 20 در Chromium، Firefox و WebKit |
+
+## محیط اجرا و ابزارها
+
+| ابزار | نیاز یا نسخهٔ تأییدشده |
+| --- | --- |
+| قالب بسته | ECMAScript module همراه declarationهای TypeScript؛ bundler باید `exports` بسته را پشتیبانی کند |
+| package manager | هر ابزاری که peer dependency و package export را درست نصب کند؛ مثال‌های مخزن از pnpm استفاده می‌کنند |
+| pnpm | build مخزن روی `11.16.0` ثابت شده است؛ برنامهٔ مصرف‌کننده مجبور به استفاده از همین نسخه نیست |
+| Node.js | CI، fixtureهای CLI و quick startها روی Node.js 22 اجرا می‌شوند |
+| TypeScript | declarationها با TypeScript 5.9.2 تولید می‌شوند؛ نسخهٔ مصرف‌کننده باید با فریم‌ورک انتخابی سازگار باشد |
+
+## پشتیبانی مرورگر
+
+آزمون‌های مرورگری روی نسخه‌های جاری Chromium، Firefox و WebKit اجرا می‌شوند. رفتارهای صفحه‌کلید، focus، فرم، overlay، RTL، SSR و hydration در مجموعهٔ CI پوشش دارند. برای انتشار production، نسخه‌های واقعی مرورگر و دستگاه‌هایی را که کاربران محصول شما استفاده می‌کنند نیز آزمایش کنید.
+
+## گزارش مشکل سازگاری
+
+هنگام گزارش، نام و نسخهٔ adapter، فریم‌ورک، مرورگر، installation model و یک نمونهٔ کوچک قابل‌اجرا را ثبت کنید. همچنین مشخص کنید مشکل در package import رخ می‌دهد یا در سورس کپی‌شده با CLI.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}

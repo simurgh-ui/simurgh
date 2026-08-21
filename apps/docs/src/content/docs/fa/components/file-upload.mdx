@@ -1,0 +1,60 @@
+---
+title: File Upload
+description: انتخاب فایل مبتنی بر input بومی همراه کشیدن و رهاکردن و feedback زنده.
+---
+
+import ComponentPreview from '../../../../components/ComponentPreview.astro';
+import FormComponentPreview from '../../../../components/previews/FormComponentPreview';
+
+## نصب
+
+```sh
+pnpm dlx @simurgh-ui/cli add file-upload
+```
+
+```ts
+import { FileUpload } from '@simurgh-ui/react/file-upload';
+import { FileUpload as VueFileUpload } from '@simurgh-ui/vue/file-upload';
+import { FileUploadComponent } from '@simurgh-ui/angular/file-upload';
+import '@simurgh-ui/styles/file-upload.css';
+```
+
+## پیش‌نمایش واقعی
+
+<ComponentPreview title="File Upload" kind="live">
+  <FormComponentPreview component="file-upload" client:load />
+</ComponentPreview>
+
+## استفاده
+
+```tsx
+<FileUpload
+  label="بارگذاری مدارک"
+  description="فقط فایل PDF"
+  accept=".pdf"
+  multiple
+  name="documents"
+  onFilesChange={setFiles}
+/>
+```
+
+```html
+<simurgh-file-upload
+  label="بارگذاری مدارک"
+  description="فقط فایل PDF"
+  accept=".pdf"
+  name="documents"
+  [multiple]="true"
+  (filesChange)="files = $event"
+/>
+```
+
+## validation و دسترس‌پذیری
+
+`accept` فقط راهنمای file picker است و جای validation سمت server را نمی‌گیرد. نوع، اندازه، تعداد و محتوای فایل را دوباره بررسی کنید. label و محدودیت‌ها باید پیش از انتخاب قابل‌مشاهده باشند و نتیجهٔ موفق یا خطا با live feedback کوتاه اعلام شود.
+
+کشیدن و رهاکردن باید مکمل input بومی باشد؛ کاربر صفحه‌کلید باید بتواند همان فایل‌ها را انتخاب کند. نام فایل را نمایش دهید، اما مسیر محلی یا دادهٔ حساس را ذخیره نکنید.
+
+{/* doc-verification:start */}
+_Last verified on 2026-08-13 against [Simurgh registry 0.1.1](https://github.com/simurgh-ui/simurgh/blob/main/packages/registry/registry.json)._
+{/* doc-verification:end */}
