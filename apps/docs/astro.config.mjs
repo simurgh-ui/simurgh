@@ -13,6 +13,22 @@ export default defineConfig({
       },
       description:
         'Accessible, source-owned primitives for Angular, React, and Vue.',
+      head: [
+        {
+          tag: 'script',
+          attrs: {
+            async: true,
+            src: 'https://www.googletagmanager.com/gtag/js?id=G-J6TJG3BEDL',
+          },
+        },
+        {
+          tag: 'script',
+          content: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-J6TJG3BEDL');`,
+        },
+      ],
       defaultLocale: 'root',
       locales: {
         root: {
