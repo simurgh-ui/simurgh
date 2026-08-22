@@ -1,5 +1,11 @@
 # @simurgh-ui/react
 
+## 0.3.2-beta.2
+
+### Patch Changes
+
+- ae1445d: Restore Dialog, Sheet, and Drawer trigger focus in WebKit when pointer or touch activation does not focus the trigger before opening the overlay.
+
 ## 0.3.2-beta.1
 
 ### Patch Changes

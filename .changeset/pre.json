@@ -14,6 +14,7 @@
   },
   "changesets": [
     "calm-react-modules",
+    "calm-webkit-dialogs",
     "clean-package-metadata",
     "fast-calendars-focus",
     "kind-toast-regions",
