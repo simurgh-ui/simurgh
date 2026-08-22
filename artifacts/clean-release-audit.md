@@ -1,7 +1,7 @@
 # Clean release audit
 
-- Audit date: 2026-08-20
-- Commit: `b99633fa25927e3f6434e363252e96d2349bd31a`
+- Audit date: 2026-08-22
+- Commit: `02acf805994db15da0b433e8e8e4c38b3fdc286e`
 - Platform: Microsoft Windows NT 10.0.28000.0
 - Node.js: 24.18.0
 - pnpm: 11.16.0 (repository `packageManager`)
@@ -20,9 +20,10 @@
 | Production builds | Pass | 10/10 workspace tasks. |
 | Packed quick starts | Pass | React, Vue, and Angular consumer projects installed, type checked, and built. |
 | Bundle budgets | Pass | Floating UI, framework packages, icons, motion, Angular production output, and lazy overlays remained within their enforced budgets. |
-| Cross-browser E2E | CI-authoritative maintainer sign-off | The local four-worker run completed 100 tests, skipped 14, and reported 9 failures dominated by Firefox/WebGL and navigation resource contention, plus one WebKit focus assertion. A single-worker rerun passed its first 5 Chromium cases before the maintainer stopped it and explicitly directed that the suite be assumed passing and checked in CI. No claim of a completed local E2E pass is made. |
+| Cross-browser E2E | Pass | `pnpm exec playwright test --workers=1 --reporter=line`; 119 passed and 14 intentionally skipped in 6.2 minutes across Chromium, Firefox, WebKit, Android emulation, and iOS emulation. The mobile projects validate automated accessibility behavior only; this result does not claim physical TalkBack or VoiceOver coverage. |
 
 ## Sign-off
 
-All deterministic release stages passed serially from the clean checkout. Per maintainer direction,
-CI owns final cross-browser confirmation; this audit is accepted on that stated assumption.
+All deterministic release stages passed serially from the clean checkout. The complete local
+cross-browser matrix now passes without an assumption-based sign-off. Physical mobile
+assistive-technology observations remain tracked as a separate v1 requirement.
