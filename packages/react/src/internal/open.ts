@@ -1,4 +1,5 @@
 import { useControlledState } from './controlled-state.js';
+import type { RefObject } from 'react';
 
 export type OpenProps = {
   open?: boolean;
@@ -11,6 +12,7 @@ export type OverlayContextValue = {
   setOpen(value: boolean): void;
   titleId: string;
   descriptionId: string;
+  triggerRef?: RefObject<HTMLElement | null>;
 };
 
 export function useOpen(props: OpenProps) {

@@ -200,7 +200,6 @@ describe('React accessibility contract', () => {
       </Sheet>,
     );
     const trigger = screen.getByRole('button', { name: 'Open filters' });
-    trigger.focus();
     fireEvent.click(trigger);
     const sheet = screen.getByRole('dialog', { name: 'Filters' });
     expect(sheet.getAttribute('data-side')).toBe('left');

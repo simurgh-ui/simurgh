@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useId,
+  useRef,
   type PropsWithChildren,
 } from 'react';
 
@@ -19,6 +20,7 @@ export function useDialogContext() {
 export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
   const [open, setOpen] = useOpen(props);
   const uid = useId();
+  const triggerRef = useRef<HTMLElement>(null);
   return (
     <DialogContext.Provider
       value={{
@@ -26,6 +28,7 @@ export function Dialog({ children, ...props }: PropsWithChildren<OpenProps>) {
         setOpen,
         titleId: `${uid}-title`,
         descriptionId: `${uid}-description`,
+        triggerRef,
       }}
     >
       {children}
