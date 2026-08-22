@@ -414,6 +414,7 @@ class
 classes
 classified
 clean
+clean-release
 cleanup
 clear
 cli
@@ -632,10 +633,10 @@ created
 creates
 creating
 creation
-credentials
 criteria
 criterion
 cropping
+cross-browser
 cross-field
 cross-framework
 crosshair
@@ -859,6 +860,7 @@ emphasize
 emphasized
 empty
 empty-state
+emulation
 enable
 enabled
 encode
@@ -1096,7 +1098,6 @@ geometric
 geometry
 gesture
 gestures
-github
 give
 gives
 giving
@@ -1675,6 +1676,7 @@ offers
 offline
 offset
 often
+oidc
 old
 older
 oldest
@@ -1756,7 +1758,6 @@ package-import
 package-registry
 package-scoped
 packages
-packed-package
 page
 page's
 pages
@@ -1784,6 +1785,7 @@ parts
 pass
 passed
 passes
+passing
 password
 paste
 pasted
@@ -1957,6 +1959,7 @@ publication
 publish
 publishable
 published
+publisher
 publishing
 pull
 pulsing
@@ -2087,7 +2090,6 @@ reopening
 reorder
 reordered
 reordering
-repaired
 repeat
 repeatable
 repeated
@@ -2280,6 +2282,7 @@ separator
 separators
 sequence
 sequential
+serial
 serialization
 serialize
 series
@@ -2591,6 +2594,7 @@ toggle
 toggled
 toggles
 token
+token-free
 tokens
 tone
 tool
@@ -2644,6 +2648,7 @@ trigger-opened
 triggers
 truly
 trusted
+trusted-publisher
 truth
 turnkey
 turns
