@@ -565,7 +565,10 @@ roadmap and are not duplicated here.
       portals, browser-only APIs, lazy overlays, and streamed or deferred content.
 - [x] Maintain an executable browser/framework compatibility matrix covering the oldest and newest
       supported peer versions rather than documenting untested version ranges.
-- [ ] Add representative mobile screen-reader smoke tests and retain manual evidence for zoom,
+- [x] Add representative Android and iOS browser accessibility smoke tests for form semantics,
+      Dialog context and focus restoration, native Select and Toast semantics, reduced motion,
+      touch targets, and automated WCAG A/AA checks.
+- [ ] Retain physical-device TalkBack and VoiceOver evidence plus manual observations for zoom,
       forced colors, reduced motion, touch targets, and focus appearance.
 - [x] Create small production reference applications for React, Vue, and Angular that exercise
       installation, theming, forms, overlays, SSR where relevant, and production bundling.
