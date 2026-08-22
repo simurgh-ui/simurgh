@@ -8,7 +8,7 @@ This scorecard is the public view of Simurgh's progress toward a stable `1.0.0`.
 progress** means useful evidence exists but at least one published exit criterion remains open.
 **Blocked** means the release cannot advance until the named prerequisite is completed.
 
-Last assessed: **2026-08-20**. Overall status: **in progress**.
+Last assessed: **2026-08-22**. Overall status: **in progress**.
 
 ## Scorecard
 
@@ -16,10 +16,10 @@ Last assessed: **2026-08-20**. Overall status: **in progress**.
 | --- | --- | --- | --- | --- |
 | Architecture | Ready | Framework packages expose component subpaths; adapter-boundary checks prove every generated framework subpath remains independent of its root barrel, and bundle budgets enforce narrow imports. | Keep adapter boundaries and bundle budgets required for catalog changes. | Framework maintainers |
 | Framework parity | Ready | The generated parity matrix fails CI for missing implementations, exports, styles, documentation, or contract coverage across React, Vue, and Angular. | Keep the parity gate required for every catalog change. | Framework maintainers |
-| Accessibility | In progress | Contract, axe, keyboard, RTL, form, focus, contrast, and Android/iOS browser smoke coverage exercise representative components. | Record physical-device TalkBack and VoiceOver sessions plus zoom, forced-colors, reduced-motion, touch-target, and focus-appearance observations. | Accessibility reviewers |
+| Accessibility | In progress | Contract, axe, keyboard, RTL, form, focus, contrast, and Android/iOS browser smoke coverage exercise representative components. The complete serial Playwright matrix passes in Chromium, Firefox, WebKit, Android emulation, and iOS emulation. | Record physical-device TalkBack and VoiceOver sessions plus zoom, forced-colors, reduced-motion, touch-target, and focus-appearance observations. | Accessibility reviewers |
 | Compatibility | Ready | The compatibility workflow exercises the oldest and newest supported React, Vue, and Angular peers; SSR, hydration, portal, lazy-overlay, and deferred-content contracts are covered. | Keep both compatibility edges and SSR contracts required. | Release engineering |
 | Documentation | In progress | Component pages include installation, real previews, API and styling contracts, accessibility guidance, verification markers, and framework-specific feedback links; the automated docs-only journey passes. | Record a consented final task-based user session using only the published documentation. | Documentation maintainers |
-| Package integrity | Ready | Packed-package checks validate contents, type resolution, installation, exports, starter production builds, bundle budgets, and package metadata. The nine-package beta registry evidence records exact tags, tarballs, and integrity hashes. | Keep tarball and registry verification required for every release. | Package maintainers |
+| Package integrity | Ready | The 2026-08-22 clean-release audit and CI validate contents, type resolution, installation, exports, starter production builds, bundle budgets, package metadata, and 119 passing cross-browser tests. The nine-package beta registry evidence records exact tags, tarballs, and integrity hashes. | Keep tarball and registry verification required for every release. | Package maintainers |
 | Governance | Ready | LICENSE, SECURITY, CONTRIBUTING, CODE_OF_CONDUCT, CODEOWNERS, versioning, support, deprecation, copied-source stability, and breaking-change policies are present and validated. | Keep governance and stability checks required. | Project maintainers |
 | Release automation | In progress | Changesets produces package-scoped notes and beta tags; all nine betas were directly published and verified in `artifacts/published-beta-evidence.json`. | Replace the invalid GitHub `NPM_TOKEN` or configure npm trusted publishing, then record a successful provenance-bearing CI publish. | Release engineering |
 
