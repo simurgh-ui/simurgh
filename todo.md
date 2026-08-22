@@ -592,8 +592,10 @@ roadmap and are not duplicated here.
       has an appropriate Changeset entry.
 - [x] Pack every publishable package and run export, type-resolution, package-content, installation,
       and framework quick-start checks against tarballs rather than workspace source.
-- [x] Add package provenance or signing supported by the target registry and document maintainer
-      recovery and release-access procedures.
+- [x] Configure the release workflow for token-free npm trusted publishing with OIDC and automatic
+      provenance; document maintainer recovery and release-access procedures.
+- [ ] Configure `release.yml` as the trusted publisher for all nine npm packages and record a
+      successful provenance-bearing CI publication.
 - [x] Add public API report snapshots and require explicit review for additions, removals, signature
       changes, and framework parity differences.
 - [x] Define deprecation, support, and breaking-change policies, including a minimum notice period
