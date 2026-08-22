@@ -188,7 +188,7 @@ Version snapshot: 0.3.2-beta.2
 - `SheetSide`: `type SheetSide = 'top' | 'right' | 'bottom' | 'left';`
 - `SheetTitle`: `DefineComponent<{}, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<{}, {}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
 - `SheetTrigger`: `DefineComponent<{}, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<{}, {}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
-- `Sidebar`: `DefineComponent<ExtractPropTypes<{ side: { type: PropType<"start" | "end">; default: string; }; }>, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<ExtractPropTypes<{ side: { type: PropType<"start" | "end">; default: string; }; }>, {}>, { side: "end" | "start"; }, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
+- `Sidebar`: `DefineComponent<ExtractPropTypes<{ side: { type: PropType<"start" | "end">; default: string; }; }>, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<ExtractPropTypes<{ side: { type: PropType<"start" | "end">; default: string; }; }>, {}>, { side: "start" | "end"; }, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
 - `SidebarContent`: `DefineComponent<{}, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<{}, {}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
 - `SidebarFooter`: `DefineComponent<{}, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<{}, {}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
 - `SidebarGroup`: `DefineComponent<{}, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<{}, {}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
@@ -232,19 +232,36 @@ Version snapshot: 0.3.2-beta.2
 
 ## ./chart-interactions
 
+- `chartInteractionKey`: `(event: Pick<KeyboardEvent, "key" | "shiftKey">, viewport: ChartViewport) => { viewport: ChartViewport; clearSelection?: true; }`
+- `ChartSelection`: `type ChartSelection = { start: readonly [number, number]; end: readonly [number, number]; } | null;`
+- `ChartViewport`: `type ChartViewport = { x?: ChartDomain; y?: ChartDomain; };`
+- `nextChartIndex`: `(current: number, size: number, key: string, direction?: "ltr" | "rtl") => number`
+- `panDomain`: `(domain: ChartDomain, fraction: number) => ChartDomain`
+- `SpatialGrid`: `typeof SpatialGrid`
+- `zoomDomain`: `(domain: ChartDomain, factor: number, anchor?: number) => ChartDomain`
 
 ## ./chart-stream
 
+- `ChartStream`: `type ChartStream<D extends string> = { readonly capacity: number; readonly dimensions: readonly D[]; readonly length: number; append(batch: Readonly<Record<D, ArrayLike<number>>>): void; clear(): void; snapshot(): ChartStreamSnapshot<D>; subscribe(listener: () => void): () => void; };`
+- `ChartStreamSnapshot`: `type ChartStreamSnapshot<D extends string> = Readonly<{ length: number; version: number; columns: Readonly<Record<D, Float64Array>>; }>;`
+- `createChartStream`: `<const D extends string>(options: { capacity: number; dimensions: readonly D[]; }) => ChartStream<D>`
 
 ## ./chart-canvas
 
+- `CanvasMark`: `type CanvasMark = { type: 'line'; points: readonly (readonly [number, number])[]; color: string; width?: number; } | { type: 'area'; points: readonly (readonly [number, number])[]; color: string; baseline: number; opacity?: number; } | { type: 'point'; x: number; y: number; radius?: number; color: string; } | { type: 'rect'; x: number; y: number; width: number; height: number; color: string; opacity?: number; };`
+- `ChartWorkerRequest`: `type ChartWorkerRequest = { id: number; operation: 'decimate'; points: { x: number; y: number; }[]; width: number; } | { id: number; operation: 'heatmap'; points: { x: number; y: number; value?: number; }[]; columns: number; rows: number; };`
+- `ChartWorkerResponse`: `type ChartWorkerResponse = { id: number; result?: unknown; error?: string; };`
+- `createChartWorker`: `() => Worker | null`
+- `drawChartCanvas`: `(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, marks: readonly CanvasMark[], width: number, height: number, pixelRatio?: number) => void`
+- `runChartWorker`: `<T>(worker: Worker, request: Omit<ChartWorkerRequest, "id">) => Promise<T>`
+- `supportsWorkerCanvas`: `() => boolean`
 
 ## ./chart-motion
 
-- `MotionDefinition`: `MotionDefinition`
-- `ReducedMotionMode`: `ReducedMotionMode`
-- `useMotion`: `useMotion`
-- `vMotion`: `vMotion`
+- `MotionDefinition`: `type MotionDefinition = { initial?: MotionTarget | string; animate?: MotionTarget | string; exit?: MotionTarget | string; whileHover?: MotionTarget | string; whilePress?: MotionTarget | string; whileFocus?: MotionTarget | string; whileInView?: MotionTarget | string; variants?: Record<string, MotionVariant>; transition?: MotionTransition; reducedMotion?: ReducedMotionMode; stagger?: number; onStart?: () => void; onComplete?: () => void; onCancel?: () => void; };`
+- `ReducedMotionMode`: `type ReducedMotionMode = 'user' | 'always' | 'never';`
+- `useMotion`: `(definition: MotionDefinition) => import("vue").Ref<Element | undefined, Element | undefined>`
+- `vMotion`: `Directive<Element, MotionDefinition>`
 
 ## ./accordion
 
@@ -638,7 +655,7 @@ Version snapshot: 0.3.2-beta.2
 
 ## ./sidebar
 
-- `Sidebar`: `DefineComponent<ExtractPropTypes<{ side: { type: PropType<"start" | "end">; default: string; }; }>, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<ExtractPropTypes<{ side: { type: PropType<"start" | "end">; default: string; }; }>, {}>, { side: "end" | "start"; }, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
+- `Sidebar`: `DefineComponent<ExtractPropTypes<{ side: { type: PropType<"start" | "end">; default: string; }; }>, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<ExtractPropTypes<{ side: { type: PropType<"start" | "end">; default: string; }; }>, {}>, { side: "start" | "end"; }, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
 - `SidebarContent`: `DefineComponent<{}, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<{}, {}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
 - `SidebarFooter`: `DefineComponent<{}, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<{}, {}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`
 - `SidebarGroup`: `DefineComponent<{}, () => VNode<RendererNode, RendererElement, { [key: string]: any; }>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, ToResolvedProps<{}, {}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>`

@@ -240,32 +240,32 @@ Version snapshot: 0.3.2-beta.2
 
 ## ./chart-interactions
 
-- `chartInteractionKey`: `chartInteractionKey`
-- `ChartSelection`: `type ChartSelection`
-- `ChartViewport`: `type ChartViewport`
-- `nextChartIndex`: `nextChartIndex`
-- `panDomain`: `panDomain`
-- `SpatialGrid`: `SpatialGrid`
-- `zoomDomain`: `zoomDomain`
+- `chartInteractionKey`: `(event: Pick<KeyboardEvent, "key" | "shiftKey">, viewport: ChartViewport) => { viewport: ChartViewport; clearSelection?: true; }`
+- `ChartSelection`: `type ChartSelection = { start: readonly [number, number]; end: readonly [number, number]; } | null;`
+- `ChartViewport`: `type ChartViewport = { x?: ChartDomain; y?: ChartDomain; };`
+- `nextChartIndex`: `(current: number, size: number, key: string, direction?: "ltr" | "rtl") => number`
+- `panDomain`: `(domain: ChartDomain, fraction: number) => ChartDomain`
+- `SpatialGrid`: `typeof SpatialGrid`
+- `zoomDomain`: `(domain: ChartDomain, factor: number, anchor?: number) => ChartDomain`
 
 ## ./chart-stream
 
-- `ChartStream`: `type ChartStream`
-- `ChartStreamSnapshot`: `type ChartStreamSnapshot`
-- `createChartStream`: `createChartStream`
+- `ChartStream`: `type ChartStream<D extends string> = { readonly capacity: number; readonly dimensions: readonly D[]; readonly length: number; append(batch: Readonly<Record<D, ArrayLike<number>>>): void; clear(): void; snapshot(): ChartStreamSnapshot<D>; subscribe(listener: () => void): () => void; };`
+- `ChartStreamSnapshot`: `type ChartStreamSnapshot<D extends string> = Readonly<{ length: number; version: number; columns: Readonly<Record<D, Float64Array>>; }>;`
+- `createChartStream`: `<const D extends string>(options: { capacity: number; dimensions: readonly D[]; }) => ChartStream<D>`
 
 ## ./chart-canvas
 
-- `CanvasMark`: `type CanvasMark`
-- `drawChartCanvas`: `drawChartCanvas`
-- `supportsWorkerCanvas`: `supportsWorkerCanvas`
+- `CanvasMark`: `type CanvasMark = { type: 'line'; points: readonly (readonly [number, number])[]; color: string; width?: number; } | { type: 'area'; points: readonly (readonly [number, number])[]; color: string; baseline: number; opacity?: number; } | { type: 'point'; x: number; y: number; radius?: number; color: string; } | { type: 'rect'; x: number; y: number; width: number; height: number; color: string; opacity?: number; };`
+- `drawChartCanvas`: `(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, marks: readonly CanvasMark[], width: number, height: number, pixelRatio?: number) => void`
+- `supportsWorkerCanvas`: `() => boolean`
 
 ## ./chart-motion
 
-- `animated`: `animated`
-- `MotionDefinition`: `MotionDefinition`
-- `ReducedMotionMode`: `ReducedMotionMode`
-- `useMotion`: `useMotion`
+- `animated`: `Record<string, ForwardRefExoticComponent<Omit<AnimatedProps, "ref"> & RefAttributes<Element>>>`
+- `MotionDefinition`: `type MotionDefinition = { initial?: MotionTarget | string; animate?: MotionTarget | string; exit?: MotionTarget | string; whileHover?: MotionTarget | string; whilePress?: MotionTarget | string; whileFocus?: MotionTarget | string; whileInView?: MotionTarget | string; variants?: Record<string, MotionVariant>; transition?: MotionTransition; reducedMotion?: ReducedMotionMode; stagger?: number; onStart?: () => void; onComplete?: () => void; onCancel?: () => void; };`
+- `ReducedMotionMode`: `type ReducedMotionMode = 'user' | 'always' | 'never';`
+- `useMotion`: `<T extends Element>(definition: MotionDefinition) => { ref: import("react").RefObject<T | null>; controls: import("react").RefObject<MotionControls | null>; }`
 
 ## ./accordion
 
