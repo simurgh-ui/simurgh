@@ -1887,7 +1887,11 @@ export const DialogTrigger = /* @__PURE__ */ forwardRef<
     <button
       type="button"
       {...props}
-      ref={ref}
+      ref={(node) => {
+        if (context.triggerRef) context.triggerRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref) ref.current = node;
+      }}
       data-slot="dialog-trigger"
       aria-haspopup="dialog"
       aria-expanded={context.open}
@@ -1925,12 +1929,13 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >((props, forwardedRef) => {
-  const { open, setOpen, titleId, descriptionId } = useDialogContext();
+  const { open, setOpen, titleId, descriptionId, triggerRef } =
+    useDialogContext();
   const localRef = useRef<HTMLDivElement>(null);
   const previous = useRef<Element | null>(null);
   useEffect(() => {
     if (!open) return;
-    previous.current = document.activeElement;
+    previous.current = triggerRef?.current ?? document.activeElement;
     const restoreIsolation = localRef.current
       ? isolateModal(localRef.current)
       : undefined;
@@ -1939,7 +1944,7 @@ export const DialogContent = /* @__PURE__ */ forwardRef<
       restoreIsolation?.();
       if (previous.current instanceof HTMLElement) previous.current.focus();
     };
-  }, [open]);
+  }, [open, triggerRef]);
   if (!open) return null;
   return (
     <div
