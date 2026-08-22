@@ -575,9 +575,10 @@ roadmap and are not duplicated here.
 
 ### Phase 3: complete the icons product
 
-- [ ] Complete the open multi-size optical audit, automatic RTL inference, Angular host parity,
-      accessibility examples, bundle comparisons, first-time-user study, and discovery metrics
-      tasks in the icon sections above before expanding the catalog.
+- [x] Complete the multi-size optical audit, automatic RTL inference, Angular host parity,
+      accessibility examples, and bundle comparisons in the icon sections above.
+- [ ] Complete the first-time-user icon study and discovery metrics tasks above before expanding
+      the catalog.
 - [x] Generate review sheets for all icons at 16, 20, 24, and 32 pixels and retain approved sheets
       or targeted visual baselines as release evidence.
 - [x] Document a privacy-preserving method for collecting icon-search evidence; use structured user
