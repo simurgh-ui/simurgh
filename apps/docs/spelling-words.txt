@@ -122,6 +122,8 @@ appear
 appearance
 appears
 append
+appended
+appends
 applicable
 application
 application-host
@@ -296,6 +298,7 @@ brush
 bubble
 bubbling
 budgets
+buffer
 bug
 build
 building
@@ -2034,6 +2037,7 @@ recruitment
 rectangles
 red
 redefining
+redraws
 reduce
 reduced
 reduced-motion
@@ -2440,7 +2444,9 @@ store
 stored
 story
 strategy
+stream
 streaming
+streamingchartpreview
 string
 strings
 strong
@@ -2541,6 +2547,7 @@ template
 template-driven
 template's
 temporary
+ten
 term
 terminology
 test
