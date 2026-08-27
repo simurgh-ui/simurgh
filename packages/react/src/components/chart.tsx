@@ -290,10 +290,12 @@ export function ComboChart<T>(props: ChartProps<T>) { return <CartesianChart {..
 export function PieChart<T>(props: ChartProps<T>) { return <PolarChart {...props} />; }
 export function DonutChart<T>(props: ChartProps<T>) { return <PolarChart {...props} donut />; }
 export function RadarChart<T>(props: ChartProps<T>) {
-  const { data: inputData, stream, y, series, accessibility, width = 360, height = 360, emptyContent = 'No chart data', ...native } = props;
+  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, emptyContent = 'No chart data', ...native } = props;
   const data = useChartRows(inputData, stream, width);
   const value = y ?? series?.[0]?.y;
   const values = value ? data.map((datum, index) => numericValue(chartValue(datum, value, index))).filter((item): item is number => item != null) : [];
   const decorative = 'decorative' in accessibility && accessibility.decorative;
-  return <figure className="simurgh-chart" data-slot="chart" data-state={values.length ? undefined : 'empty'} aria-hidden={decorative || undefined} {...native}>{values.length ? <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true"><polygon data-part="series" points={radarPoints(values, Math.min(width, height) / 2 - 24)} fill={colors[0]} stroke={colors[0]} /></svg> : emptyContent}{!decorative && <><figcaption>{accessibility.title}</figcaption><p data-part="description">{accessibility.description} {chartSummary(values)}</p></>}</figure>;
+  const radius = Math.min(width, height) / 2 - 24;
+  const labels = values.map((_, index) => String(chartValue(data[index]!, x, index) ?? index + 1));
+  return <figure className="simurgh-chart" data-slot="chart" data-state={values.length ? undefined : 'empty'} aria-hidden={decorative || undefined} {...native}>{values.length ? <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true"><g data-part="radar-axes">{labels.map((label, index) => { const angle = -Math.PI / 2 + (index / Math.max(1, values.length)) * Math.PI * 2; const x = Math.cos(angle) * radius; const y = Math.sin(angle) * radius; const labelX = Math.cos(angle) * (radius + 16); const labelY = Math.sin(angle) * (radius + 16); return <g key={`${label}-${index}`}><line x1="0" y1="0" x2={x} y2={y} /><text data-part="axis-label" x={labelX} y={labelY} textAnchor={Math.abs(labelX) < 1 ? 'middle' : labelX > 0 ? 'start' : 'end'}>{label}</text></g>; })}</g><polygon data-part="series" points={radarPoints(values, radius)} fill={colors[0]} stroke={colors[0]} /></svg> : emptyContent}{!decorative && <><figcaption>{accessibility.title}</figcaption><p data-part="description">{accessibility.description} {chartSummary(values)}</p></>}</figure>;
 }

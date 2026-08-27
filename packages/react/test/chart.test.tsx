@@ -4,7 +4,7 @@ import axe from 'axe-core';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { BarChart, LineChart, PieChart } from '../src/components/chart.js';
+import { BarChart, LineChart, PieChart, RadarChart } from '../src/components/chart.js';
 
 const data = [
   { month: 'Jan', revenue: 12, cost: 8 },
@@ -55,6 +55,9 @@ describe('React charts', () => {
     expect(container.querySelectorAll('[data-part="series"] rect').length).toBe(6);
     rerender(<PieChart data={data} y="revenue" accessibility={accessibility} />);
     expect(container.querySelectorAll('path[data-part="series"]').length).toBe(3);
+    rerender(<RadarChart data={[{ channel: 'Product', value: 42 }, { channel: 'Services', value: 28 }, { channel: 'Support', value: 18 }]} x="channel" y="value" accessibility={accessibility} />);
+    expect(container.querySelectorAll('[data-part="axis-label"]')).toHaveLength(3);
+    expect(screen.getByText('Product')).toBeTruthy();
     rerender(<LineChart data={[]} y="revenue" accessibility={accessibility} />);
     expect(container.querySelector('[data-state="empty"]')).toBeTruthy();
   });
