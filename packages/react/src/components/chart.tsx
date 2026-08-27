@@ -264,18 +264,40 @@ function SeriesMarks<T>({ item, index, baseline, bandwidth, orientation }: { ite
 }
 
 function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: boolean }) {
-  const { data: inputData, stream, y, series, accessibility, width = 360, height = 360, innerRadius, emptyContent = 'No chart data', ...native } = props;
+  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, emptyContent = 'No chart data', ...native } = props;
   const data = useChartRows(inputData, stream, width);
   const value = y ?? series?.[0]?.y;
   if (!value) throw new TypeError('Pie and donut charts require a y accessor or series.');
   const radius = Math.max(0, Math.min(width, height) / 2 - 16);
-  const arcs = pieArcs(data, value, radius, donut ? innerRadius ?? radius * 0.55 : innerRadius ?? 0);
+  const resolvedInnerRadius = donut ? innerRadius ?? radius * 0.55 : innerRadius ?? 0;
+  const arcs = pieArcs(data, value, radius, resolvedInnerRadius);
   const titleId = `${useId()}-title`;
+  const [focus, setFocus] = useState(0);
   const decorative = 'decorative' in accessibility && accessibility.decorative;
   if (!arcs.length) return <figure className="simurgh-chart" data-state="empty" {...native}>{emptyContent}</figure>;
+  const focused = arcs[Math.min(focus, arcs.length - 1)]!;
+  const focusFromMouse = (event: React.MouseEvent<HTMLDivElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const localX = ((event.clientX - bounds.left) / bounds.width) * width - width / 2;
+    const localY = ((event.clientY - bounds.top) / bounds.height) * height - height / 2;
+    if (Math.hypot(localX, localY) < resolvedInnerRadius) return;
+    let angle = Math.atan2(localY, localX) + Math.PI / 2;
+    if (angle < 0) angle += Math.PI * 2;
+    const next = arcs.findIndex((arc) => angle >= arc.startAngle + Math.PI / 2 && angle < arc.endAngle + Math.PI / 2);
+    if (next >= 0) setFocus(next);
+  };
+  const label = String(chartValue(focused.datum, x, focused.index) ?? focused.index + 1);
   return <figure className="simurgh-chart" data-slot="chart" aria-labelledby={decorative ? undefined : titleId} aria-hidden={decorative || undefined} {...native}>
     {!decorative && <figcaption id={titleId}>{accessibility.title}</figcaption>}
-    <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} />)}</svg>
+    <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromMouse}>
+      <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} style={{ opacity: index === focus ? 1 : 0.7 }} />)}</svg>
+      <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
+        if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(arcs.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((current) => Math.max(0, current - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((current) => Math.min(arcs.length - 1, current + 1)); else return;
+        event.preventDefault();
+      }} />
+      <div role="tooltip" data-part="tooltip">{label}: {focused.value}</div>
+    </div>
     {!decorative && <p data-part="description">{accessibility.description} {chartSummary(arcs.map((arc) => arc.value), 'Slices')}</p>}
   </figure>;
 }

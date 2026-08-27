@@ -4,7 +4,7 @@ import axe from 'axe-core';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { BarChart, LineChart, PieChart, RadarChart } from '../src/components/chart.js';
+import { BarChart, DonutChart, LineChart, PieChart, RadarChart } from '../src/components/chart.js';
 
 const data = [
   { month: 'Jan', revenue: 12, cost: 8 },
@@ -55,6 +55,16 @@ describe('React charts', () => {
     expect(container.querySelectorAll('[data-part="series"] rect').length).toBe(6);
     rerender(<PieChart data={data} y="revenue" accessibility={accessibility} />);
     expect(container.querySelectorAll('path[data-part="series"]').length).toBe(3);
+    rerender(<PieChart data={[{ channel: 'Product', value: 42 }, { channel: 'Services', value: 28 }, { channel: 'Support', value: 18 }]} x="channel" y="value" accessibility={accessibility} />);
+    const polarViewport = container.querySelector('[data-part="viewport"]')!;
+    vi.spyOn(polarViewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 360, height: 360, right: 360, bottom: 360, x: 0, y: 0, toJSON: () => ({}) });
+    expect(screen.getByRole('tooltip').textContent).toContain('Product: 42');
+    fireEvent.keyDown(screen.getByRole('button', { name: 'Explore chart data' }), { key: 'ArrowRight' });
+    expect(screen.getByRole('tooltip').textContent).toContain('Services: 28');
+    fireEvent.mouseMove(polarViewport, { clientX: 80, clientY: 100 });
+    expect(screen.getByRole('tooltip').textContent).toContain('Support: 18');
+    rerender(<DonutChart data={[{ channel: 'Product', value: 42 }, { channel: 'Services', value: 28 }]} x="channel" y="value" accessibility={accessibility} />);
+    expect(screen.getByRole('button', { name: 'Explore chart data' })).toBeTruthy();
     rerender(<RadarChart data={[{ channel: 'Product', value: 42 }, { channel: 'Services', value: 28 }, { channel: 'Support', value: 18 }]} x="channel" y="value" accessibility={accessibility} />);
     expect(container.querySelectorAll('[data-part="axis-label"]')).toHaveLength(3);
     expect(screen.getByText('Product')).toBeTruthy();
