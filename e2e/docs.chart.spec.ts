@@ -20,6 +20,12 @@ test.describe('chart documentation preview', () => {
     await explorer.press('ArrowRight');
     await expect(chart.getByRole('tooltip')).toContainText('value: 48');
 
+    const viewport = chart.locator('[data-part="viewport"]');
+    const viewportBox = await viewport.boundingBox();
+    if (!viewportBox) throw new Error('Chart viewport is not measurable');
+    await page.mouse.move(viewportBox.x + viewportBox.width * 0.75, viewportBox.y + viewportBox.height / 2);
+    await expect(chart.getByRole('tooltip')).toContainText('value: 41');
+
     const width = await chart.locator('[data-part="viewport"]').evaluate((element) =>
       element.getBoundingClientRect().width,
     );

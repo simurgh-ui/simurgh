@@ -211,11 +211,27 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     <div data-part="legend">{definitions.map((item, index) => <button type="button" key={item.id} aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>)}</div>
   </figure>;
   const focused = flat[Math.min(focus, flat.length - 1)];
+  const focusFromPointer = (event: Pick<React.MouseEvent<HTMLDivElement>, 'currentTarget' | 'clientX' | 'clientY'>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const x = ((event.clientX - bounds.left) / bounds.width) * width;
+    const y = ((event.clientY - bounds.top) / bounds.height) * height;
+    let nearest = 0;
+    let distance = Number.POSITIVE_INFINITY;
+    flat.forEach((point, index) => {
+      const nextDistance = Math.hypot(point.x - x, point.y - y);
+      if (nextDistance < distance) {
+        distance = nextDistance;
+        nearest = index;
+      }
+    });
+    setFocus(nearest);
+  };
   const ticks = Array.from({ length: 5 }, (_, index) => resolvedY[0] + ((resolvedY[1] - resolvedY[0]) * index) / 4);
   return (
     <figure className="simurgh-chart" data-slot="chart" data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p></>}
-      <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }}>
+      <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer}>
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
           <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>

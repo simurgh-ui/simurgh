@@ -37,6 +37,17 @@ describe('React charts', () => {
     fireEvent.click(screen.getByRole('button', { name: 'cost' }));
     expect(change).toHaveBeenCalledWith(['cost']);
   });
+  it('supports pointer exploration', () => {
+    const { container } = render(<LineChart data={data} x="month" xScale="band" y="revenue" accessibility={accessibility} />);
+    const viewport = container.querySelector('[data-part="viewport"]')!;
+    vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({
+      left: 0, top: 0, width: 640, height: 360, right: 640, bottom: 360,
+      x: 0, y: 0, toJSON: () => ({}),
+    });
+    fireEvent.mouseMove(viewport, { clientX: 320, clientY: 120 });
+    expect(screen.getByRole('tooltip').textContent).toContain('value: 18');
+    expect(container.querySelector('[data-part="crosshair"]')).toBeTruthy();
+  });
   it('renders horizontal, stacked, polar, and empty states', () => {
     const { container, rerender } = render(<BarChart data={data} x="month" y="revenue" orientation="horizontal" accessibility={accessibility} />);
     expect(container.querySelectorAll('rect').length).toBe(3);
