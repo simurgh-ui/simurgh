@@ -1823,6 +1823,18 @@
   text-anchor: end;
   dominant-baseline: central;
 }
+[data-slot='chart'] [data-part='radar-axes'] line,
+.simurgh-chart [data-part='radar-axes'] line {
+  stroke: hsl(var(--simurgh-chart-grid));
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+[data-slot='chart'] [data-part='axis-label'],
+.simurgh-chart [data-part='axis-label'] {
+  fill: hsl(var(--simurgh-chart-axis));
+  font-size: 0.75rem;
+  dominant-baseline: central;
+}
 [data-slot='chart'] [data-part='series'],
 .simurgh-chart [data-part='series'] {
   stroke-linecap: round;
