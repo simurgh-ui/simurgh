@@ -8,6 +8,8 @@ import {
   Output,
   ViewChild,
   ChangeDetectorRef,
+  Optional,
+  Inject,
 } from '@angular/core';
 import type { AfterViewChecked, OnDestroy } from '@angular/core';
 import {
@@ -219,7 +221,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   tooltipX = 0;
   tooltipY = 0;
   private drawn = '';
-  constructor(private readonly changeDetector?: ChangeDetectorRef) {}
+  constructor(@Inject(ChangeDetectorRef) @Optional() private readonly changeDetector?: ChangeDetectorRef) {}
 
   get effectiveHiddenSeries() { return this.hiddenSeries ?? this.uncontrolledHiddenSeries ?? this.defaultHiddenSeries; }
   get chartLabels(): ChartLocale { return { ...defaultChartLocale, ...this.locale }; }
@@ -368,7 +370,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       if (next.y) this.yDomainChange.emit(next.y);
       return;
     }
-    const size = this.model.marks.length;
+    const size = this.model.points.length;
     if (event.key === 'Home') this.focused = 0;
     else if (event.key === 'End') this.focused = Math.max(0, size - 1);
     else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) this.focused = Math.max(0, this.focused - 1);

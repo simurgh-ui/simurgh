@@ -1,5 +1,6 @@
 import '@angular/compiler';
 import { describe, expect, it } from 'vitest';
+import { assertSpecialtyModelContract } from '../../core/test-utils/chart-contract.js';
 import { BoxPlotChartComponent, CandlestickChartComponent, FunnelChartComponent, GaugeChartComponent, GeoChartComponent, HistogramChartComponent, MapChartComponent, OhlcChartComponent, PolarAreaChartComponent, SankeyChartComponent, TreemapChartComponent, ViolinChartComponent, WaterfallChartComponent } from '../src/components/specialty-charts.js';
 
 const charts = [CandlestickChartComponent, OhlcChartComponent, BoxPlotChartComponent, ViolinChartComponent, HistogramChartComponent, FunnelChartComponent, GaugeChartComponent, PolarAreaChartComponent, WaterfallChartComponent, TreemapChartComponent, SankeyChartComponent, GeoChartComponent, MapChartComponent];
@@ -12,6 +13,7 @@ describe('Angular specialty charts', () => {
       expect(chart.marks.length).toBeGreaterThan(0);
       expect(chart.uniqueMarks[0]?.label).toBeTruthy();
       expect(chart.summary).toContain(chart.kind);
+      assertSpecialtyModelContract(chart.kind, chart.marks.length, chart.summary, chart.uniqueMarks.length);
     }
   });
 });

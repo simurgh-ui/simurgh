@@ -553,7 +553,7 @@ budgets remain fixed.
 - [x] Add candlestick/OHLC, box plot, violin, histogram, funnel, gauge, polar-area, waterfall, treemap, Sankey, and map/geo chart types where scope permits.
 - [x] Add screen-reader navigation for individual points, series regions, dynamic updates, selections, zoom state, and chart controls.
 - [x] Add chart-level localization for labels, controls, tooltips, export text, and data-table pagination.
-- [ ] Add cross-framework chart capability and accessibility contract tests for every implemented interaction.
+- [x] Add cross-framework chart capability and accessibility contract tests for every implemented interaction.
 
 ## Release-readiness development roadmap
 
