@@ -51,6 +51,12 @@ describe('Angular charts', () => {
     expect(chart.model.marks[0]?.color).toBe('red');
     expect(chart.model.marks[0]?.radius).toBe(9);
   });
+  it('prepares smooth curves and mark styling', () => {
+    const chart = new LineChartComponent();
+    chart.data = [{ x: 1, y: 2 }, { x: 2, y: 8 }, { x: 3, y: 3 }]; chart.x = 'x'; chart.y = 'y'; chart.series = [{ id: 'value', x: 'x', y: 'y', curve: 'smooth', lineDash: '3 2' }]; chart.accessibility = accessibility;
+    expect(chart.model.marks[0]?.path).toContain('C');
+    expect(chart.model.marks[0]?.lineDash).toBe('3 2');
+  });
   it('supports viewport zoom, brush gestures, and point events', () => {
     const chart = new LineChartComponent();
     chart.data = [{ x: 0, y: 2 }, { x: 10, y: 8 }];

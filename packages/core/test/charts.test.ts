@@ -27,6 +27,9 @@ describe('chart scales and geometry', () => {
   it('builds stepped curve paths', () => {
     expect(chartCurvePath([[0, 0], [10, 10]], 'step')).toContain('M0,0L10,0L10,10');
   });
+  it('builds cubic smooth curves', () => {
+    expect(chartCurvePath([[0, 0], [10, 10], [20, 0]], 'smooth')).toContain('C');
+  });
   it('pads constant domains and omits invalid logarithmic values', () => {
     expect(chartDomain([5, 5])).toEqual([4.75, 5.25]);
     expect(chartDomain([-2, 0, 10], { log: true })).toEqual([9.5, 10.5]);

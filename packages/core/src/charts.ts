@@ -67,13 +67,30 @@ export type ChartSeries<T> = {
   stack?: string;
   axis?: 'start' | 'end';
   curve?: 'linear' | 'step' | 'smooth' | 'monotone';
+  tension?: number;
   lineWidth?: number;
   lineDash?: string;
   pointSymbol?: 'circle' | 'square' | 'diamond';
+  fill?: string;
+  pattern?: string;
 };
 
-export function chartCurvePath(points: readonly (readonly [number, number])[], curve: ChartSeries<unknown>['curve'] = 'linear'): string {
-  if (curve !== 'step' || points.length < 2) return linePath(points);
+export function chartCurvePath(points: readonly (readonly [number, number])[], curve: ChartSeries<unknown>['curve'] = 'linear', tension?: number): string {
+  if (points.length < 2 || curve === 'linear' || curve == null) return linePath(points);
+  if (curve === 'smooth' || curve === 'monotone') {
+    const factor = Math.max(0, Math.min(1, tension ?? 0.5)) / 6;
+    let path = `M${points[0]![0]},${points[0]![1]}`;
+    for (let index = 0; index < points.length - 1; index += 1) {
+      const previous = points[Math.max(0, index - 1)]!;
+      const current = points[index]!;
+      const next = points[index + 1]!;
+      const after = points[Math.min(points.length - 1, index + 2)]!;
+      const control1: [number, number] = [current[0] + (next[0] - previous[0]) * factor, current[1] + (next[1] - previous[1]) * factor];
+      const control2: [number, number] = [next[0] - (after[0] - current[0]) * factor, next[1] - (after[1] - current[1]) * factor];
+      path += `C${control1[0]},${control1[1]} ${control2[0]},${control2[1]} ${next[0]},${next[1]}`;
+    }
+    return path;
+  }
   const stepped: [number, number][] = [points[0] as [number, number]];
   for (let index = 1; index < points.length; index += 1) {
     const previous = points[index - 1]!;

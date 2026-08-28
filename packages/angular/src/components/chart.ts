@@ -63,6 +63,7 @@ type Mark = {
   opacity?: number;
   lineWidth?: number;
   lineDash?: string;
+  symbol?: 'circle' | 'square' | 'diamond';
 };
 const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart-${index + 1}))`);
 
@@ -83,7 +84,9 @@ const template = `
         <ng-container *ngFor="let mark of model.marks">
           <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color" [attr.stroke-width]="mark.lineWidth" [attr.stroke-dasharray]="mark.lineDash" [attr.opacity]="mark.opacity" (mouseenter)="onPolarSliceHover(mark.id)" (click)="onPolarSliceClick(mark.id)"></path>
           <rect *ngIf="mark.type === 'bar' || mark.type === 'heatmap'" data-part="series" [attr.x]="mark.x" [attr.y]="mark.y" [attr.width]="mark.width" [attr.height]="mark.height" [attr.fill]="mark.color"></rect>
-          <circle *ngIf="mark.type === 'scatter' || mark.type === 'bubble'" data-part="series" [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.r]="mark.radius" [attr.fill]="mark.color"></circle>
+          <rect *ngIf="(mark.type === 'scatter' || mark.type === 'bubble') && mark.symbol === 'square'" data-part="series" [attr.x]="(mark.x || 0) - (mark.radius || 3)" [attr.y]="(mark.y || 0) - (mark.radius || 3)" [attr.width]="(mark.radius || 3) * 2" [attr.height]="(mark.radius || 3) * 2" [attr.fill]="mark.color" [attr.opacity]="mark.opacity"></rect>
+          <path *ngIf="(mark.type === 'scatter' || mark.type === 'bubble') && mark.symbol === 'diamond'" data-part="series" [attr.d]="'M' + mark.x + ',' + ((mark.y || 0) - (mark.radius || 3)) + 'L' + ((mark.x || 0) + (mark.radius || 3)) + ',' + mark.y + 'L' + mark.x + ',' + ((mark.y || 0) + (mark.radius || 3)) + 'L' + ((mark.x || 0) - (mark.radius || 3)) + ',' + mark.y + 'Z'" [attr.fill]="mark.color" [attr.opacity]="mark.opacity"></path>
+          <circle *ngIf="(mark.type === 'scatter' || mark.type === 'bubble') && (!mark.symbol || mark.symbol === 'circle')" data-part="series" [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.r]="mark.radius" [attr.fill]="mark.color" [attr.opacity]="mark.opacity"></circle>
         </ng-container>
       </ng-container>
       <ng-container *ngIf="model.points.length"><g data-part="crosshair"><line [attr.x1]="model.points[focused]?.x" [attr.x2]="model.points[focused]?.x" [attr.y1]="layoutTop" [attr.y2]="layoutTop + plotHeight"></line><line [attr.x1]="layoutLeft" [attr.x2]="layoutLeft + plotWidth" [attr.y1]="model.points[focused]?.y" [attr.y2]="model.points[focused]?.y"></line><text [attr.x]="(model.points[focused]?.x ?? 0) + 6" [attr.y]="layoutTop + 14">{{ model.points[focused]?.xValue }}</text><text [attr.x]="layoutLeft + 6" [attr.y]="(model.points[focused]?.y ?? 0) - 6">{{ model.points[focused]?.yValue }}</text><circle [attr.cx]="model.points[focused]?.x" [attr.cy]="model.points[focused]?.y" r="4"></circle></g></ng-container>
@@ -255,11 +258,12 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     for (const [seriesIndex, definition] of active.entries()) {
       const type = definition.type ?? (this.kind === 'combo' ? 'line' : this.kind);
       const color = definition.color ?? colors[seriesIndex % colors.length]!;
+      const fill = definition.pattern ? `url(#${definition.pattern})` : definition.fill ?? color;
       const values = raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : xMap(item.numericX), y: (definition.axis === 'end' ? secondaryYMap : yMap)(item.end), y0: (definition.axis === 'end' ? secondaryYMap : yMap)(item.start) }));
       points.push(...values.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: definition.id })));
       if (type === 'line' || type === 'area') {
-        const path = type === 'line' ? chartCurvePath(values.map((item) => [item.x, item.y]), definition.curve) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
-        marks.push({ id: definition.id, type, color, path, ...(definition.lineWidth == null ? {} : { lineWidth: definition.lineWidth }), ...(definition.lineDash == null ? {} : { lineDash: definition.lineDash }) });
+        const path = type === 'line' ? chartCurvePath(values.map((item) => [item.x, item.y]), definition.curve, definition.tension) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
+        marks.push({ id: definition.id, type, color: fill, path, ...(definition.lineWidth == null ? {} : { lineWidth: definition.lineWidth }), ...(definition.lineDash == null ? {} : { lineDash: definition.lineDash }) });
         canvasMarks.push(type === 'line' ? { type: 'line', points: values.map((item) => [item.x, item.y]), color } : { type: 'area', points: values.map((item) => [item.x, item.y]), baseline: yMap(0), color, opacity: 0.3 });
       } else for (const item of values) {
         if (type === 'bar' || type === 'heatmap') {
@@ -267,12 +271,12 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
           const origin = definition.stack ? item.y0 : yMap(0);
           const y = type === 'bar' ? Math.min(item.y, origin) : item.y - 5;
           const height = type === 'bar' ? Math.abs(item.y - origin) : 10;
-          marks.push({ id: definition.id, type, color, x: item.x - width / 2, y, width, height });
+          marks.push({ id: definition.id, type, color: fill, x: item.x - width / 2, y, width, height });
           canvasMarks.push({ type: 'rect', x: item.x - width / 2, y, width, height, color });
         } else {
           const radius = type === 'bubble' ? item.radius : 3;
           const style = chartVisualStyle(item.yValue, this.visualMap);
-          marks.push({ id: definition.id, type, color: style.color ?? color, x: item.x, y: item.y, radius: style.size ?? radius });
+          marks.push({ id: definition.id, type, color: style.color ?? color, x: item.x, y: item.y, radius: style.size ?? radius, ...(definition.pointSymbol == null ? {} : { symbol: definition.pointSymbol }) });
           canvasMarks.push({ type: 'point', x: item.x, y: item.y, radius, color });
         }
       }
