@@ -23,7 +23,7 @@ import {
   type ChartSeriesType,
   type ChartValue,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, panDomain, selectionFromPoints, zoomDomain } from '@simurgh-ui/core/chart-interactions';
+import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 import {
@@ -158,6 +158,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const [selection, setSelection] = useState<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
   const pointerStart = useRef<readonly [number, number] | null>(null);
   const pointerLast = useRef<readonly [number, number] | null>(null);
+  const brushHandle = useRef<ChartBrushHandle | null>(null);
   const hiddenSeries = controlledHiddenSeries ?? uncontrolledHiddenSeries;
   const data = useChartRows(inputData, stream, width);
   const titleId = `${useId()}-title`;
@@ -257,6 +258,27 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     if (axisEnabled(interaction.brush, 'y')) nextViewport.y = domainFromSelection(fullY, [next.start[1], next.end[1]], [layout.top + layout.plotHeight, layout.top]);
     setViewport(nextViewport);
   };
+  const resizeSelection = (point: readonly [number, number]) => {
+    const handle = brushHandle.current;
+    if (!handle || !selection || !interaction) return;
+    const next = resizeChartSelection(selection, handle, point);
+    setSelection(next);
+    onSelectionChange?.(next);
+    const selected = flat.filter((item) => (!axisEnabled(interaction.brush, 'x') || item.x >= next.start[0] && item.x <= next.end[0]) && (!axisEnabled(interaction.brush, 'y') || item.y >= next.start[1] && item.y <= next.end[1])).map((item) => item.datum);
+    onSelectedDataChange?.([...new Set(selected)]);
+    const nextViewport = { ...viewport };
+    if (axisEnabled(interaction.brush, 'x')) nextViewport.x = domainFromSelection(fullX, [next.start[0], next.end[0]], [layout.left, layout.left + layout.plotWidth]);
+    if (axisEnabled(interaction.brush, 'y')) nextViewport.y = domainFromSelection(fullY, [next.start[1], next.end[1]], [layout.top + layout.plotHeight, layout.top]);
+    setViewport(nextViewport);
+  };
+  const brushHandleFromPoint = (point: readonly [number, number]): ChartBrushHandle | null => {
+    if (!selection || !interaction) return null;
+    const candidates: readonly [ChartBrushHandle, readonly [number, number]][] = [
+      ['start', selection.start], ['end', [selection.end[0], selection.start[1]]],
+      ['start-y', [selection.start[0], selection.end[1]]], ['end-y', selection.end],
+    ];
+    return candidates.find(([, handlePoint]) => Math.hypot(point[0] - handlePoint[0], point[1] - handlePoint[1]) <= 12)?.[0] ?? null;
+  };
   const moveViewport = (point: readonly [number, number]) => {
     const previous = pointerLast.current;
     if (!previous || !interaction) return;
@@ -313,17 +335,17 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) onPointClick?.(point); }}
         onDoubleClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) onPointDoubleClick?.(point); }}
         onContextMenu={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { event.preventDefault(); onPointContextMenu?.(point); } }} onWheel={handleWheel}
-        onPointerDown={(event) => { if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { const point = pointFromEvent(event); pointerStart.current = point; pointerLast.current = point; event.currentTarget.setPointerCapture(event.pointerId); } }}
-        onPointerMove={(event) => { if (pointerStart.current && interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y'))) moveViewport(pointFromEvent(event)); }}
-        onPointerUp={(event) => { const point = pointFromEvent(event); if (pointerStart.current && interaction && (axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) finishSelection(point); else { pointerStart.current = null; pointerLast.current = null; } }}
-        onPointerCancel={() => { pointerStart.current = null; pointerLast.current = null; }}>
+        onPointerDown={(event) => { if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { const point = pointFromEvent(event); brushHandle.current = axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y') ? brushHandleFromPoint(point) : null; pointerStart.current = brushHandle.current ? null : point; pointerLast.current = point; event.currentTarget.setPointerCapture(event.pointerId); } }}
+        onPointerMove={(event) => { const point = pointFromEvent(event); if (brushHandle.current) resizeSelection(point); else if (pointerStart.current && interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y'))) moveViewport(point); }}
+        onPointerUp={(event) => { const point = pointFromEvent(event); if (brushHandle.current) { resizeSelection(point); brushHandle.current = null; pointerLast.current = null; } else if (pointerStart.current && interaction && (axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) finishSelection(point); else { pointerStart.current = null; pointerLast.current = null; } }}
+        onPointerCancel={() => { pointerStart.current = null; pointerLast.current = null; brushHandle.current = null; }}>
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
           <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>
           <g data-part="y-axis">{ticks.map((tick) => <text key={tick} x={layout.left - 8} y={yMap(tick)}>{axisNumberFormatter.format(tick)}</text>)}</g>
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><circle cx={focused.x} cy={focused.y} r="4" /></g>}
-          {selection && <g data-part="brush"><rect x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.end[1] - 4} width="8" height="8" /></g>}
+          {selection && <g data-part="brush"><rect x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.end[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.end[1] - 4} width="8" height="8" /></g>}
         </svg>
         <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
           if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(flat.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((value) => Math.max(0, value - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((value) => Math.min(flat.length - 1, value + 1)); else return;
