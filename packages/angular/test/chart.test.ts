@@ -33,6 +33,16 @@ describe('Angular charts', () => {
     radar.accessibility = accessibility;
     expect(radar.points.split(' ')).toHaveLength(3);
   });
+  it('supports legend select-all and isolate controls', () => {
+    const chart = new LineChartComponent();
+    const emitted = vi.fn();
+    chart.series = [{ id: 'revenue', y: 'revenue' }, { id: 'cost', y: 'cost' }];
+    chart.hiddenSeriesChange.subscribe(emitted);
+    chart.selectAllSeries();
+    expect(emitted).toHaveBeenCalledWith([]);
+    chart.isolateSeries('revenue');
+    expect(emitted).toHaveBeenCalledWith(['cost']);
+  });
   it('supports viewport zoom, brush gestures, and point events', () => {
     const chart = new LineChartComponent();
     chart.data = [{ x: 0, y: 2 }, { x: 10, y: 8 }];

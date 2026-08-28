@@ -37,6 +37,15 @@ describe('React charts', () => {
     fireEvent.click(screen.getByRole('button', { name: 'cost' }));
     expect(change).toHaveBeenCalledWith(['cost']);
   });
+  it('supports legend select-all, isolate, scrolling, and custom content', () => {
+    const change = vi.fn();
+    const { container } = render(<LineChart data={data} x="month" xScale="band" series={[{ id: 'revenue', y: 'revenue' }, { id: 'cost', y: 'cost' }]} accessibility={accessibility} legend={{ isolate: true, maxHeight: 40 }} onHiddenSeriesChange={change} />);
+    expect(container.querySelector('[data-part="legend"]')?.getAttribute('data-orientation')).toBe('horizontal');
+    fireEvent.click(screen.getByRole('button', { name: 'Isolate revenue' }));
+    expect(change).toHaveBeenCalledWith(['cost']);
+    fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+    expect(change).toHaveBeenCalledWith([]);
+  });
   it('supports pointer exploration', () => {
     const { container } = render(<LineChart data={data} x="month" xScale="band" y="revenue" accessibility={accessibility} />);
     const viewport = container.querySelector('[data-part="viewport"]')!;

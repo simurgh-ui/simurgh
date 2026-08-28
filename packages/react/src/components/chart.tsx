@@ -21,6 +21,7 @@ import {
   type ChartAccessor,
   type ChartDomain,
   type ChartDataLabelConfig,
+  type ChartLegendConfig,
   type ChartRenderMode,
   type ChartScaleType,
   type ChartSeries,
@@ -66,6 +67,8 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   references?: readonly ChartReference[];
   annotations?: readonly ChartAnnotation[];
   dataLabels?: boolean | ChartDataLabelConfig;
+  legend?: ChartLegendConfig;
+  legendContent?: (series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode;
   viewport?: { x?: ChartDomain; y?: ChartDomain };
   defaultViewport?: { x?: ChartDomain; y?: ChartDomain };
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -168,7 +171,7 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
 function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeriesType | 'combo' }) {
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
-    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, viewport: controlledViewport, defaultViewport, interaction, sync,
+    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
@@ -270,10 +273,14 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     if (controlledHiddenSeries === undefined) setUncontrolledHiddenSeries(next);
     onHiddenSeriesChange?.(next);
   };
+  const renderLegend = () => legendContent ? legendContent(definitions, hiddenSeries) : <div data-part="legend" data-placement={legend.placement ?? 'bottom'} data-orientation={legend.orientation ?? 'horizontal'} style={legend.maxHeight ? { maxHeight: legend.maxHeight, overflowY: 'auto' } : undefined}>
+    {legend.selectAll !== false && <button type="button" data-action="select-all" onClick={() => { if (controlledHiddenSeries === undefined) setUncontrolledHiddenSeries([]); onHiddenSeriesChange?.([]); }}>Select all</button>}
+    {definitions.map((item, index) => <span key={item.id}><button type="button" aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>{legend.isolate && <button type="button" data-action="isolate" aria-label={`Isolate ${item.label ?? item.id}`} onClick={() => { const next = definitions.filter((candidate) => candidate.id !== item.id).map((candidate) => candidate.id); if (controlledHiddenSeries === undefined) setUncontrolledHiddenSeries(next); onHiddenSeriesChange?.(next); }}>Isolate</button>}</span>)}
+  </div>;
   if (!flat.length) return <figure className="simurgh-chart" data-slot="chart" data-state="empty" {...native}>
     {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description}</p></>}
     <div data-part="empty">{emptyContent}</div>
-    <div data-part="legend">{definitions.map((item, index) => <button type="button" key={item.id} aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>)}</div>
+    {renderLegend()}
   </figure>;
   const focused = flat[Math.min(focus, flat.length - 1)];
   const setViewport = (next: { x?: ChartDomain; y?: ChartDomain }) => {
@@ -461,7 +468,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); sync?.set({ selection: null, focused: null }); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>Reset view</button>}
         {tooltipPoints.length > 0 && tooltipVisible && <div role="tooltip" data-part="tooltip" style={tooltipPosition === 'cursor' && tooltipPoint ? { position: 'absolute', left: `${tooltipPoint[0]}px`, top: `${tooltipPoint[1]}px` } : undefined}>{tooltipContent ? tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => <div key={`${item.series.id}:${item.index}`}>{tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.series.label ?? item.series.id}: ${item.yValue}`}</div>)}</div>}
       </div>
-      <div data-part="legend">{definitions.map((item, index) => <button type="button" key={item.id} aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>)}</div>
+      {renderLegend()}
       {table && <ChartDataTable data={data} pageSize={typeof table === 'object' ? table.pageSize ?? 50 : 50} columns={[{ label: 'Category', value: x }, ...definitions.map((item) => ({ label: item.label ?? item.id, value: item.y }))]} />}
     </figure>
   );

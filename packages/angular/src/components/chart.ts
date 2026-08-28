@@ -32,6 +32,7 @@ import {
   type ChartReference,
   type ChartAxisConfig,
   type ChartDataLabelConfig,
+  type ChartLegendConfig,
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
@@ -86,10 +87,12 @@ const template = `
     <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
     <div *ngIf="model.tooltip && tooltipVisible" role="tooltip" data-part="tooltip" [style.position]="tooltipPosition === 'cursor' ? 'absolute' : null" [style.left.px]="tooltipPosition === 'cursor' ? tooltipX : null" [style.top.px]="tooltipPosition === 'cursor' ? tooltipY : null">{{ model.tooltip }}</div>
   </div>
-  <div data-part="legend">
-    <button *ngFor="let item of model.legend; let index = index" type="button" [attr.aria-pressed]="!effectiveHiddenSeries.includes(item.id)" (click)="toggleSeries(item.id)">
+  <div data-part="legend" [attr.data-placement]="legend?.placement || 'bottom'" [attr.data-orientation]="legend?.orientation || 'horizontal'" [style.max-height.px]="legend?.maxHeight" [style.overflow-y]="legend?.maxHeight ? 'auto' : null">
+    <button *ngIf="legend?.selectAll !== false" type="button" data-action="select-all" (click)="selectAllSeries()">Select all</button>
+    <ng-container *ngIf="!legendContent; else customLegend"><span *ngFor="let item of model.legend; let index = index"><button type="button" [attr.aria-pressed]="!effectiveHiddenSeries.includes(item.id)" (click)="toggleSeries(item.id)">
       <span [style.background]="item.color"></span>{{ item.label }}
-    </button>
+      </button><button *ngIf="legend?.isolate" type="button" data-action="isolate" [attr.aria-label]="'Isolate ' + item.label" (click)="isolateSeries(item.id)">Isolate</button></span></ng-container>
+    <ng-template #customLegend><span [innerHTML]="legendContent?.(activeSeries, effectiveHiddenSeries)"></span></ng-template>
   </div>
   <div *ngIf="tableEnabled" data-part="data-table">
     <table>
@@ -127,6 +130,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() references: readonly ChartReference[] = [];
   @Input() annotations: readonly ChartAnnotation[] = [];
   @Input() dataLabels: boolean | ChartDataLabelConfig = false;
+  @Input() legend?: ChartLegendConfig;
+  @Input() legendContent?: (series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => string;
   @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
   @Input() interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -479,6 +484,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (this.hiddenSeries === undefined) this.uncontrolledHiddenSeries = next;
     this.hiddenSeriesChange.emit(next);
   }
+  selectAllSeries() { if (this.hiddenSeries === undefined) this.uncontrolledHiddenSeries = []; this.hiddenSeriesChange.emit([]); }
+  isolateSeries(id: string) { const next = this.activeSeries.filter((item) => item.id !== id).map((item) => item.id); if (this.hiddenSeries === undefined) this.uncontrolledHiddenSeries = next; this.hiddenSeriesChange.emit(next); }
   ngOnDestroy(): void { this.unsubscribeStream?.(); this.unsubscribeSync?.(); }
   private polarModel() {
     const value = this.y ?? this.series?.[0]?.y;

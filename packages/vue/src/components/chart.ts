@@ -18,6 +18,7 @@ import {
   type ChartAnnotation,
   type ChartAxisConfig,
   type ChartDataLabelConfig,
+  type ChartLegendConfig,
   type ChartAccessor,
   type ChartSeries,
   type ChartSeriesType,
@@ -51,6 +52,8 @@ const commonProps = {
   references: Array as PropType<readonly ChartReference[]>,
   annotations: Array as PropType<readonly ChartAnnotation[]>,
   dataLabels: [Boolean, Object] as PropType<boolean | ChartDataLabelConfig>,
+  legend: Object as PropType<ChartLegendConfig>,
+  legendContent: Function as PropType<(series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => unknown>,
   viewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   defaultViewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   interaction: Object as PropType<{ zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }>,
@@ -136,6 +139,14 @@ function cartesian(kind: ChartSeriesType | 'combo') {
       }, { immediate: true });
       onBeforeUnmount(() => unsubscribeSync?.());
       const rowsForChart = useRows(props);
+      const renderLegend = (definitions: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]): any => {
+        const config = props.legend ?? {};
+        if (props.legendContent) return props.legendContent(definitions, hiddenSeries);
+        return h('div', { 'data-part': 'legend', 'data-placement': config.placement ?? 'bottom', 'data-orientation': config.orientation ?? 'horizontal', style: config.maxHeight ? { maxHeight: `${config.maxHeight}px`, overflowY: 'auto' } : undefined }, [
+          config.selectAll !== false && h('button', { type: 'button', 'data-action': 'select-all', onClick: () => { if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = []; emit('update:hiddenSeries', []); } }, 'Select all'),
+          ...definitions.map((item, index) => h('span', { key: item.id }, [h('button', { type: 'button', 'aria-pressed': !hiddenSeries.includes(item.id), onClick: () => { const next = hiddenSeries.includes(item.id) ? hiddenSeries.filter((id) => id !== item.id) : [...hiddenSeries, item.id]; if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = next; emit('update:hiddenSeries', next); } }, [h('span', { style: { background: item.color ?? colors[index % colors.length] } }), item.label ?? item.id]), config.isolate && h('button', { type: 'button', 'data-action': 'isolate', 'aria-label': `Isolate ${item.label ?? item.id}`, onClick: () => { const next = definitions.filter((candidate) => candidate.id !== item.id).map((candidate) => candidate.id); if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = next; emit('update:hiddenSeries', next); } }, 'Isolate')]))
+        ]);
+      };
       return () => {
         const rows = rowsForChart();
         const layout = chartLayout(props.width, props.height);
@@ -155,7 +166,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
         if (!raw.length) return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': 'empty' }, [
           h('div', { 'data-part': 'empty' }, props.emptyContent),
-          h('div', { 'data-part': 'legend' }, definitions.map((item, index) => h('button', { type: 'button', 'aria-pressed': !hiddenSeries.includes(item.id), onClick: () => { const next = hiddenSeries.includes(item.id) ? hiddenSeries.filter((id) => id !== item.id) : [...hiddenSeries, item.id]; if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = next; emit('update:hiddenSeries', next); } }, [h('span', { style: { background: item.color ?? colors[index % colors.length] } }), item.label ?? item.id]))),
+          renderLegend(definitions, hiddenSeries),
         ]);
         const fullX = props.xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
         const fullY = props.yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar') }) ?? [0, 1];
@@ -345,7 +356,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
             props.interaction && h('button', { type: 'button', 'data-part': 'reset-viewport', onClick: () => { setViewport({}); selection.value = null; props.sync?.set({ selection: null, focused: null }); emit('update:selection', null); props.onSelectedDataChange?.([]); } }, 'Reset view'),
             tooltipPoints.length && tooltipVisible.value && h('div', { role: 'tooltip', 'data-part': 'tooltip', style: props.tooltipPosition === 'cursor' && tooltipPoint.value ? { position: 'absolute', left: `${tooltipPoint.value[0]}px`, top: `${tooltipPoint.value[1]}px` } : undefined }, props.tooltipContent ? props.tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => h('div', { key: `${item.definition.id}:${item.index}` }, props.tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.definition.label ?? item.definition.id}: ${item.yValue}`))),
           ]),
-          h('div', { 'data-part': 'legend' }, definitions.map((item, index) => h('button', { type: 'button', 'aria-pressed': !hiddenSeries.includes(item.id), onClick: () => { const next = hiddenSeries.includes(item.id) ? hiddenSeries.filter((id) => id !== item.id) : [...hiddenSeries, item.id]; if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = next; emit('update:hiddenSeries', next); } }, [h('span', { style: { background: item.color ?? colors[index % colors.length] } }), item.label ?? item.id]))),
+          renderLegend(definitions, hiddenSeries),
           table && h('div', { 'data-part': 'data-table' }, [
             h('table', [h('thead', h('tr', [h('th', { scope: 'col' }, 'Category'), ...definitions.map((item) => h('th', { scope: 'col' }, item.label ?? item.id))])), h('tbody', rows.slice(tablePage.value * pageSize, tablePage.value * pageSize + pageSize).map((datum, row) => h('tr', [h('td', String(chartValue(datum, xAccessor, tablePage.value * pageSize + row) ?? '')), ...definitions.map((item) => h('td', String(chartValue(datum, item.y, tablePage.value * pageSize + row) ?? '')))])))]),
             tablePages > 1 && h('nav', { 'aria-label': 'Chart data pages' }, [h('button', { type: 'button', disabled: tablePage.value === 0, onClick: () => tablePage.value-- }, 'Previous'), h('span', `${tablePage.value + 1} / ${tablePages}`), h('button', { type: 'button', disabled: tablePage.value + 1 >= tablePages, onClick: () => tablePage.value++ }, 'Next')]),

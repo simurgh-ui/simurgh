@@ -27,6 +27,7 @@ export type ChartAxisConfig = {
 export type ChartReference = { id?: string; axis: 'x' | 'y'; value: number; endValue?: number; label?: string; color?: string };
 export type ChartAnnotation = { id?: string; x: number; y: number; label?: string; color?: string; description?: string };
 export type ChartDataLabelConfig = { enabled?: boolean; placement?: 'top' | 'inside' | 'bottom'; minDistance?: number; formatter?: (value: number, index: number, seriesId: string) => string };
+export type ChartLegendConfig = { placement?: 'top' | 'right' | 'bottom' | 'left'; orientation?: 'horizontal' | 'vertical'; maxHeight?: number; selectAll?: boolean; isolate?: boolean };
 
 export function chartTicks(domain: ChartDomain, count = 5): number[] {
   const size = Math.max(2, Math.floor(count));

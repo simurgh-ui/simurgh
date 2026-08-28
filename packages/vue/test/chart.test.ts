@@ -58,4 +58,12 @@ describe('Vue charts', () => {
     expect(selectionChange).toHaveBeenCalledWith(expect.objectContaining({ start: [100, 120] }));
     expect(pointClick).toHaveBeenCalledWith(expect.objectContaining({ seriesId: 'value' }));
   });
+  it('supports legend isolate and select-all controls', async () => {
+    const change = vi.fn();
+    const result = render(LineChart, { props: { data: [{ x: 1, a: 2, b: 3 }], x: 'x', series: [{ id: 'a', y: 'a' }, { id: 'b', y: 'b' }], accessibility, legend: { isolate: true }, 'onUpdate:hiddenSeries': change } });
+    await fireEvent.click(result.getByRole('button', { name: 'Isolate a' }));
+    expect(change).toHaveBeenCalledWith(['b']);
+    await fireEvent.click(result.getByRole('button', { name: 'Select all' }));
+    expect(change).toHaveBeenCalledWith([]);
+  });
 });
