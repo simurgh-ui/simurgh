@@ -99,6 +99,7 @@ const template = `
     <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
     <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
     <button *ngIf="drilldownDepth > 0" type="button" data-part="drilldown-back" (click)="onDrilldownBack.emit()">Back</button>
+    <button *ngIf="streamControls && stream" type="button" data-part="stream-toggle" [attr.aria-pressed]="streamPaused" (click)="toggleStream()">{{ streamPaused ? 'Resume stream' : 'Pause stream' }}</button>
     <div *ngIf="model.tooltip && tooltipVisible" role="tooltip" data-part="tooltip" [style.position]="tooltipPosition === 'cursor' ? 'absolute' : null" [style.left.px]="tooltipPosition === 'cursor' ? tooltipX : null" [style.top.px]="tooltipPosition === 'cursor' ? tooltipY : null">{{ model.tooltip }}</div>
   </div>
   <div data-part="legend" [attr.data-placement]="legend?.placement || 'bottom'" [attr.data-orientation]="legend?.orientation || 'horizontal'" [style.max-height.px]="legend?.maxHeight" [style.overflow-y]="legend?.maxHeight ? 'auto' : null">
@@ -147,6 +148,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() legend?: ChartLegendConfig;
   @Input() visualMap?: ChartVisualMap;
   @Input() dataOptions?: ChartDataOptions<Datum>;
+  @Input() streamControls = false;
   @Input() centerLabel?: string;
   @Input() showTotal = false;
   @Input() drilldownDepth = 0;
@@ -196,6 +198,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private pinchStart: { distance: number } | null = null;
   private zoomDrag = false;
   private selectedPolarSlice: number | null = null;
+  streamPaused = false;
   private hoveredPolarSlice: number | null = null;
   tooltipVisible = this.tooltipTrigger !== 'click';
   tooltipIntersected = true;
@@ -526,6 +529,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     this.changeDetector?.markForCheck();
   }
   onPolarSliceHover(id: string) { if (this.kind === 'pie' || this.kind === 'donut') { this.hoveredPolarSlice = Number(id); this.changeDetector?.markForCheck(); } }
+  toggleStream() { if (!this.streamValue) return; if (this.streamPaused) this.streamValue.resume(); else this.streamValue.pause(); this.streamPaused = !this.streamPaused; }
   ngOnDestroy(): void { this.unsubscribeStream?.(); this.unsubscribeSync?.(); }
   private polarModel() {
     const value = this.y ?? this.series?.[0]?.y;

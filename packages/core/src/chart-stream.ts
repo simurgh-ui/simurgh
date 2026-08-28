@@ -8,8 +8,11 @@ export type ChartStream<D extends string> = {
   readonly capacity: number;
   readonly dimensions: readonly D[];
   readonly length: number;
+  readonly paused: boolean;
   append(batch: Readonly<Record<D, ArrayLike<number>>>): void;
   clear(): void;
+  pause(): void;
+  resume(): void;
   snapshot(): ChartStreamSnapshot<D>;
   subscribe(listener: () => void): () => void;
 };
@@ -29,12 +32,14 @@ export function createChartStream<const D extends string>(options: {
   let version = 0;
   let cached: ChartStreamSnapshot<D> | undefined;
   let scheduled = false;
+  let paused = false;
   const notify = () => {
     if (scheduled) return;
     scheduled = true;
     const schedule = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : (callback: FrameRequestCallback) => setTimeout(callback, 0);
     schedule(() => {
       scheduled = false;
+      if (paused) return;
       for (const listener of listeners) listener();
     });
   };
@@ -43,6 +48,9 @@ export function createChartStream<const D extends string>(options: {
     dimensions: [...options.dimensions],
     get length() {
       return length;
+    },
+    get paused() {
+      return paused;
     },
     append(batch) {
       const size = batch[options.dimensions[0]!]!.length;
@@ -56,15 +64,17 @@ export function createChartStream<const D extends string>(options: {
       }
       version += 1;
       cached = undefined;
-      notify();
+      if (!paused) notify();
     },
     clear() {
       start = 0;
       length = 0;
       version += 1;
       cached = undefined;
-      notify();
+      if (!paused) notify();
     },
+    pause() { paused = true; },
+    resume() { paused = false; notify(); },
     snapshot() {
       if (cached) return cached;
       const columns = {} as Record<D, Float64Array>;

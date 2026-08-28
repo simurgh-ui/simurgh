@@ -62,6 +62,7 @@ const commonProps = {
   legendContent: Function as PropType<(series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => unknown>,
   visualMap: Object as PropType<ChartVisualMap>,
   dataOptions: Object as PropType<ChartDataOptions<Datum>>,
+  streamControls: Boolean,
   centerLabel: String,
   showTotal: Boolean,
   onSliceSelect: Function as PropType<(slice: { datum: Datum; index: number; value: number }) => void>,
@@ -127,6 +128,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
     emits: ['update:hiddenSeries', 'update:viewport', 'update:selection'],
     setup(props, { attrs, emit }) {
       const focused = ref(0);
+      const streamPaused = ref(Boolean(props.stream?.paused));
       const tablePage = ref(0);
       const uncontrolledHiddenSeries = ref<readonly string[]>([...props.defaultHiddenSeries]);
       const uncontrolledViewport = ref(props.viewport ?? props.defaultViewport ?? props.sync?.state.viewport ?? {});
@@ -370,6 +372,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
             h('button', { type: 'button', 'data-part': 'keyboard-target', 'aria-label': 'Explore chart data', onKeydown: (event: KeyboardEvent) => { if (props.interaction && (['+', '=', '-', 'Escape'].includes(event.key) || event.shiftKey && ['ArrowLeft', 'ArrowRight'].includes(event.key))) { onChartKeydown(event); return; } if (event.key === 'Home') focused.value = 0; else if (event.key === 'End') focused.value = flat.length - 1; else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) focused.value = Math.max(0, focused.value - 1); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) focused.value = Math.min(flat.length - 1, focused.value + 1); else return; tooltipVisible.value = true; event.preventDefault(); } }),
             props.interaction && h('button', { type: 'button', 'data-part': 'reset-viewport', onClick: () => { setViewport({}); selection.value = null; props.sync?.set({ selection: null, focused: null }); emit('update:selection', null); props.onSelectedDataChange?.([]); } }, 'Reset view'),
             props.drilldownDepth && props.drilldownDepth > 0 && h('button', { type: 'button', 'data-part': 'drilldown-back', onClick: props.onDrilldownBack }, 'Back'),
+            props.streamControls && props.stream && h('button', { type: 'button', 'data-part': 'stream-toggle', 'aria-pressed': streamPaused.value, onClick: () => { if (streamPaused.value) props.stream?.resume(); else props.stream?.pause(); streamPaused.value = !streamPaused.value; } }, streamPaused.value ? 'Resume stream' : 'Pause stream'),
             tooltipPoints.length && tooltipVisible.value && h('div', { role: 'tooltip', 'data-part': 'tooltip', style: props.tooltipPosition === 'cursor' && tooltipPoint.value ? { position: 'absolute', left: `${tooltipPoint.value[0]}px`, top: `${tooltipPoint.value[1]}px` } : undefined }, props.tooltipContent ? props.tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => h('div', { key: `${item.definition.id}:${item.index}` }, props.tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.definition.label ?? item.definition.id}: ${item.yValue}`))),
           ]),
           renderLegend(definitions, hiddenSeries),

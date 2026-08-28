@@ -140,4 +140,12 @@ describe('chart stream', () => {
     const stream = createChartStream({ capacity: 3, dimensions: ['x', 'y'] as const });
     expect(() => stream.append({ x: [1], y: [2, 3] })).toThrow(/same length/);
   });
+  it('pauses and resumes stream notifications without dropping data', async () => {
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => setTimeout(callback, 0));
+    const stream = createChartStream({ capacity: 3, dimensions: ['x', 'y'] as const }); const listener = vi.fn(); stream.subscribe(listener);
+    stream.pause(); stream.append({ x: [1], y: [2] }); await new Promise((resolve) => setTimeout(resolve, 5));
+    expect(stream.paused).toBe(true); expect(listener).not.toHaveBeenCalled(); expect(stream.length).toBe(1);
+    stream.resume(); await new Promise((resolve) => setTimeout(resolve, 5)); expect(listener).toHaveBeenCalledOnce();
+    vi.unstubAllGlobals();
+  });
 });
