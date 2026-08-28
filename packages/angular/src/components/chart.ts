@@ -65,6 +65,7 @@ const template = `
           <circle *ngIf="mark.type === 'scatter' || mark.type === 'bubble'" data-part="series" [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.r]="mark.radius" [attr.fill]="mark.color"></circle>
         </ng-container>
       </ng-container>
+      <ng-container *ngIf="model.points.length"><g data-part="crosshair"><line [attr.x1]="model.points[focused]?.x" [attr.x2]="model.points[focused]?.x" [attr.y1]="layoutTop" [attr.y2]="layoutTop + plotHeight"></line><line [attr.x1]="layoutLeft" [attr.x2]="layoutLeft + plotWidth" [attr.y1]="model.points[focused]?.y" [attr.y2]="model.points[focused]?.y"></line><text [attr.x]="(model.points[focused]?.x ?? 0) + 6" [attr.y]="layoutTop + 14">{{ model.points[focused]?.xValue }}</text><text [attr.x]="layoutLeft + 6" [attr.y]="(model.points[focused]?.y ?? 0) - 6">{{ model.points[focused]?.yValue }}</text><circle [attr.cx]="model.points[focused]?.x" [attr.cy]="model.points[focused]?.y" r="4"></circle></g></ng-container>
       <rect *ngIf="selection" data-part="brush" [attr.x]="selection.start[0]" [attr.y]="selection.start[1]" [attr.width]="selection.end[0] - selection.start[0]" [attr.height]="selection.end[1] - selection.start[1]"></rect>
       <ng-container *ngIf="selection"><rect data-part="brush-handle" [attr.x]="selection.start[0] - 4" [attr.y]="selection.start[1] - 4" width="8" height="8"></rect><rect data-part="brush-handle" [attr.x]="selection.end[0] - 4" [attr.y]="selection.end[1] - 4" width="8" height="8"></rect></ng-container>
     </svg>
@@ -148,6 +149,10 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
   get effectiveHiddenSeries() { return this.hiddenSeries ?? this.uncontrolledHiddenSeries ?? this.defaultHiddenSeries; }
+  get layoutTop() { return chartLayout(this.width, this.height).top; }
+  get layoutLeft() { return chartLayout(this.width, this.height).left; }
+  get plotHeight() { return chartLayout(this.width, this.height).plotHeight; }
+  get plotWidth() { return chartLayout(this.width, this.height).plotWidth; }
   get effectiveViewport() { return this.viewport ?? (Object.keys(this.uncontrolledViewport).length ? this.uncontrolledViewport : this.defaultViewport ?? this.sync?.state.viewport ?? {}); }
 
   get decorative() {
