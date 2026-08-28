@@ -64,6 +64,7 @@ const template = `
         </ng-container>
       </ng-container>
       <rect *ngIf="selection" data-part="brush" [attr.x]="selection.start[0]" [attr.y]="selection.start[1]" [attr.width]="selection.end[0] - selection.start[0]" [attr.height]="selection.end[1] - selection.start[1]"></rect>
+      <ng-container *ngIf="selection"><rect data-part="brush-handle" [attr.x]="selection.start[0] - 4" [attr.y]="selection.start[1] - 4" width="8" height="8"></rect><rect data-part="brush-handle" [attr.x]="selection.end[0] - 4" [attr.y]="selection.end[1] - 4" width="8" height="8"></rect></ng-container>
     </svg>
     <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
     <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
@@ -117,6 +118,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Output() readonly hiddenSeriesChange = new EventEmitter<string[]>();
   @Output() readonly viewportChange = new EventEmitter<{ x?: ChartDomain; y?: ChartDomain }>();
   @Output() readonly selectionChange = new EventEmitter<{ start: readonly [number, number]; end: readonly [number, number] } | null>();
+  @Output() readonly selectedDataChange = new EventEmitter<readonly Datum[]>();
   @Output() readonly pointHover = new EventEmitter<ChartPointInteraction | null>();
   @Output() readonly pointClick = new EventEmitter<ChartPointInteraction>();
   @Output() readonly pointDoubleClick = new EventEmitter<ChartPointInteraction>();
@@ -280,7 +282,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const start = this.pointerStart;
     this.pointerStart = null;
     this.pointerLast = null;
-    if (!start || !this.interaction || (!this.axisEnabled(this.interaction.brush, 'x') && !this.axisEnabled(this.interaction.brush, 'y'))) return;
+    const interaction = this.interaction;
+    if (!start || !interaction || (!this.axisEnabled(interaction.brush, 'x') && !this.axisEnabled(interaction.brush, 'y'))) return;
     const point = this.pointFromPointer(event);
     const nextSelection = { start: [Math.min(start[0], point[0]), Math.min(start[1], point[1])] as const, end: [Math.max(start[0], point[0]), Math.max(start[1], point[1])] as const };
     this.selection = nextSelection;
@@ -290,8 +293,10 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const fullX = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
     const fullY = 'yDomain' in model ? model.yDomain : [0, 1] as ChartDomain;
     const next = { ...this.effectiveViewport };
-    if (this.axisEnabled(this.interaction.brush, 'x')) next.x = domainFromSelection(fullX, [nextSelection.start[0], nextSelection.end[0]], [layout.left, layout.left + layout.plotWidth]);
-    if (this.axisEnabled(this.interaction.brush, 'y')) next.y = domainFromSelection(fullY, [nextSelection.start[1], nextSelection.end[1]], [layout.top + layout.plotHeight, layout.top]);
+    if (this.axisEnabled(interaction.brush, 'x')) next.x = domainFromSelection(fullX, [nextSelection.start[0], nextSelection.end[0]], [layout.left, layout.left + layout.plotWidth]);
+    if (this.axisEnabled(interaction.brush, 'y')) next.y = domainFromSelection(fullY, [nextSelection.start[1], nextSelection.end[1]], [layout.top + layout.plotHeight, layout.top]);
+    const points = 'points' in model ? model.points : [];
+    this.selectedDataChange.emit([...new Set(points.filter((item) => (!this.axisEnabled(interaction.brush, 'x') || item.x >= nextSelection.start[0] && item.x <= nextSelection.end[0]) && (!this.axisEnabled(interaction.brush, 'y') || item.y >= nextSelection.start[1] && item.y <= nextSelection.end[1])).map((item) => item.datum))]);
     if (this.viewport === undefined) this.uncontrolledViewport = next;
     this.viewportChange.emit(next);
     this.changeDetector?.markForCheck();
@@ -312,7 +317,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointClick.emit(point); }
   onPointDoubleClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointDoubleClick.emit(point); }
   onPointContextMenu(event: MouseEvent) { const point = this.pointAt(event); if (point) { event.preventDefault(); this.pointContextMenu.emit(point); } }
-  resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.viewportChange.emit({}); this.selectionChange.emit(null); this.changeDetector?.markForCheck(); }
+  resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.viewportChange.emit({}); this.selectionChange.emit(null); this.selectedDataChange.emit([]); this.changeDetector?.markForCheck(); }
   private axisEnabled(value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') { return value === true || value === 'xy' || value === axis; }
   toggleSeries(id: string) {
     const hidden = this.effectiveHiddenSeries;
