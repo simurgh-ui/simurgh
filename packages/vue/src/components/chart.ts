@@ -17,6 +17,7 @@ import {
   type ChartAccessibility,
   type ChartAnnotation,
   type ChartAxisConfig,
+  type ChartDataLabelConfig,
   type ChartAccessor,
   type ChartSeries,
   type ChartSeriesType,
@@ -49,6 +50,7 @@ const commonProps = {
   yAxis: Object as PropType<ChartAxisConfig>,
   references: Array as PropType<readonly ChartReference[]>,
   annotations: Array as PropType<readonly ChartAnnotation[]>,
+  dataLabels: [Boolean, Object] as PropType<boolean | ChartDataLabelConfig>,
   viewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   defaultViewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   interaction: Object as PropType<{ zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }>,
@@ -167,6 +169,8 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const secondaryYMap = (props.yScale === 'log' ? logScale : linearScale)(secondaryFullY, [layout.top + layout.plotHeight, layout.top]);
         const prepared = active.map((definition) => ({ ...definition, type: definition.type ?? (kind === 'combo' ? 'line' : kind), points: raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : numericXMap(item.numericX), y: (definition.axis === 'end' ? secondaryYMap : yMap)(item.end), y0: (definition.axis === 'end' ? secondaryYMap : yMap)(item.start) })) }));
         const flat = prepared.flatMap((item) => item.points.map((point) => ({ ...point, series: item })));
+        const labelConfig: ChartDataLabelConfig | undefined = props.dataLabels === true ? {} : props.dataLabels || undefined;
+        const labelPoints = labelConfig?.enabled === false ? [] : flat.reduce<typeof flat>((visible, point) => visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18)) ? visible : [...visible, point], []);
         const useCanvas = props.renderMode === 'canvas' || (props.renderMode === 'auto' && flat.length > props.canvasThreshold);
         const decorative = 'decorative' in props.accessibility && props.accessibility.decorative;
         const table = !decorative && props.accessibility.table;
@@ -295,7 +299,8 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const referenceNodes = (props.references ?? []).map((reference) => reference.axis === 'x' ? h('g', { 'data-part': 'reference' }, [h('line', { x1: numericXMap(reference.value), x2: numericXMap(reference.value), y1: layout.top, y2: layout.top + layout.plotHeight, stroke: reference.color }), h('text', { x: numericXMap(reference.value) + 4, y: layout.top + 14 }, reference.label)]) : h('g', { 'data-part': 'reference' }, [h('line', { x1: layout.left, x2: layout.left + layout.plotWidth, y1: yMap(reference.value), y2: yMap(reference.value), stroke: reference.color }), h('text', { x: layout.left + 4, y: yMap(reference.value) - 4 }, reference.label)]));
         const referenceAreaNodes = (props.references ?? []).filter((reference) => reference.endValue != null).map((reference) => reference.axis === 'x' ? h('rect', { 'data-part': 'reference-area', x: Math.min(numericXMap(reference.value), numericXMap(reference.endValue!)), y: layout.top, width: Math.abs(numericXMap(reference.endValue!) - numericXMap(reference.value)), height: layout.plotHeight, fill: reference.color, opacity: 0.15 }) : h('rect', { 'data-part': 'reference-area', x: layout.left, y: Math.min(yMap(reference.value), yMap(reference.endValue!)), width: layout.plotWidth, height: Math.abs(yMap(reference.endValue!) - yMap(reference.value)), fill: reference.color, opacity: 0.15 }));
         const annotationNodes = (props.annotations ?? []).map((annotation) => h('g', { 'data-part': 'annotation', 'aria-label': annotation.description }, [h('circle', { cx: numericXMap(annotation.x), cy: yMap(annotation.y), r: 4, fill: annotation.color }), h('text', { x: numericXMap(annotation.x) + 6, y: yMap(annotation.y) - 6 }, annotation.label)]));
-        const seriesNodes = [...axisNodes, ...referenceAreaNodes, ...referenceNodes, ...annotationNodes, ...prepared.map((item, seriesIndex) => {
+        const labelNodes = labelPoints.length ? [h('g', { 'data-part': 'data-labels' }, labelPoints.map((point) => h('text', { x: point.x, y: point.y + (labelConfig?.placement === 'bottom' ? 14 : labelConfig?.placement === 'inside' ? 4 : -8), 'text-anchor': 'middle' }, labelConfig?.formatter?.(point.yValue, point.index, point.definition.id) ?? String(point.yValue))))] : [];
+        const seriesNodes = [...axisNodes, ...referenceAreaNodes, ...referenceNodes, ...annotationNodes, ...labelNodes, ...prepared.map((item, seriesIndex) => {
           const color = item.color ?? colors[seriesIndex % colors.length];
           const points = item.points.map((point) => [point.x, point.y] as const);
           if (item.type === 'line') return h('path', { 'data-part': 'series', 'data-series': item.id, d: linePath(points), fill: 'none', stroke: color });

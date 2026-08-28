@@ -28,6 +28,15 @@ describe('Vue charts', () => {
     expect(screen.getByText('Time')).toBeTruthy();
     expect(screen.getByText('Value')).toBeTruthy();
   });
+  it('renders reference lines and accessible annotations', () => {
+    const result = render(LineChart, { props: { data, x: 'x', y: 'y', accessibility, references: [{ axis: 'y', value: 5, label: 'Target' }], annotations: [{ x: 3, y: 5, label: 'Peak', description: 'Peak value' }] } });
+    expect(result.container.querySelector('[data-part="reference"]')).toBeTruthy();
+    expect(result.container.querySelector('[data-part="annotation"]')?.getAttribute('aria-label')).toBe('Peak value');
+  });
+  it('renders collision-aware data labels', () => {
+    const result = render(LineChart, { props: { data, x: 'x', y: 'y', dataLabels: { formatter: (value: number) => `v${value}` }, accessibility } });
+    expect(result.container.querySelector('[data-part="data-labels"]')?.textContent).toContain('v4');
+  });
   it('supports viewport zoom, brush gestures, and point callbacks', async () => {
     const viewportChange = vi.fn();
     const selectionChange = vi.fn();

@@ -31,6 +31,7 @@ import {
   type ChartAccessor,
   type ChartReference,
   type ChartAxisConfig,
+  type ChartDataLabelConfig,
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
@@ -69,6 +70,7 @@ const template = `
       <g data-part="x-axis"><text *ngFor="let tick of model.xTicks" [attr.x]="tick.position" [attr.y]="layoutTop + plotHeight + 20" text-anchor="middle" [attr.transform]="xAxis?.tickRotation ? 'rotate(' + xAxis.tickRotation + ' ' + tick.position + ' ' + (layoutTop + plotHeight + 20) + ')' : null">{{ formatAxisTick(tick.value, xAxis) }}</text><text *ngIf="xAxis?.title" [attr.x]="layoutLeft + plotWidth / 2" [attr.y]="height - 4" text-anchor="middle">{{ xAxis.title }}</text></g>
       <ng-container *ngFor="let reference of model.references"><rect *ngIf="reference.endPosition != null" data-part="reference-area" [attr.x]="reference.axis === 'x' ? min(reference.position, reference.endPosition) : layoutLeft" [attr.y]="reference.axis === 'y' ? min(reference.position, reference.endPosition) : layoutTop" [attr.width]="reference.axis === 'x' ? abs(reference.endPosition - reference.position) : plotWidth" [attr.height]="reference.axis === 'y' ? abs(reference.endPosition - reference.position) : plotHeight" [attr.fill]="reference.color" opacity="0.15"></rect><g data-part="reference"><line *ngIf="reference.axis === 'x'" [attr.x1]="reference.position" [attr.x2]="reference.position" [attr.y1]="layoutTop" [attr.y2]="layoutTop + plotHeight" [attr.stroke]="reference.color"></line><line *ngIf="reference.axis === 'y'" [attr.x1]="layoutLeft" [attr.x2]="layoutLeft + plotWidth" [attr.y1]="reference.position" [attr.y2]="reference.position" [attr.stroke]="reference.color"></line><text [attr.x]="reference.axis === 'x' ? reference.position + 4 : layoutLeft + 4" [attr.y]="reference.axis === 'x' ? layoutTop + 14 : reference.position - 4">{{ reference.label }}</text></g></ng-container>
       <ng-container *ngFor="let annotation of model.annotations"><g data-part="annotation" [attr.aria-label]="annotation.description"><circle [attr.cx]="annotation.x" [attr.cy]="annotation.y" r="4" [attr.fill]="annotation.color"></circle><text [attr.x]="annotation.x + 6" [attr.y]="annotation.y - 6">{{ annotation.label }}</text></g></ng-container>
+      <g *ngIf="model.dataLabels.length" data-part="data-labels"><text *ngFor="let label of model.dataLabels" [attr.x]="label.x" [attr.y]="label.y">{{ label.text }}</text></g>
       <ng-container *ngIf="!model.useCanvas">
         <ng-container *ngFor="let mark of model.marks">
           <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color"></path>
@@ -124,6 +126,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() yAxis?: ChartAxisConfig;
   @Input() references: readonly ChartReference[] = [];
   @Input() annotations: readonly ChartAnnotation[] = [];
+  @Input() dataLabels: boolean | ChartDataLabelConfig = false;
   @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
   @Input() interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -261,8 +264,10 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const axisYDomain = this.yAxis?.position === 'end' ? secondaryYDomain : yDomain;
     const axisYMap = this.yAxis?.position === 'end' ? secondaryYMap : yMap;
     const yTicks = chartTicks(axisYDomain, this.yAxis?.ticks ?? 5).map((value) => ({ value, position: axisYMap(value) }));
+    const labelConfig: ChartDataLabelConfig | undefined = this.dataLabels === true ? {} : this.dataLabels || undefined;
+    const dataLabels = labelConfig?.enabled === false ? [] : points.reduce<{ x: number; y: number; text: string }[]>((visible, point) => visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18)) ? visible : [...visible, { x: point.x, y: point.y + (labelConfig?.placement === 'bottom' ? 14 : labelConfig?.placement === 'inside' ? 4 : -8), text: labelConfig?.formatter?.(point.yValue, point.index, point.seriesId) ?? String(point.yValue) }], []);
     const xTicks = chartTicks(xDomain, this.xAxis?.ticks ?? 5).map((value) => ({ value, position: xMap(value) }));
-    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, xTicks, yTicks, references: this.references.map((reference) => ({ ...reference, position: reference.axis === 'x' ? xMap(reference.value) : yMap(reference.value), endPosition: reference.endValue == null ? undefined : reference.axis === 'x' ? xMap(reference.endValue) : yMap(reference.endValue) })), annotations: this.annotations.map((annotation) => ({ ...annotation, x: xMap(annotation.x), y: yMap(annotation.y) })), summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, xTicks, yTicks, references: this.references.map((reference) => ({ ...reference, position: reference.axis === 'x' ? xMap(reference.value) : yMap(reference.value), endPosition: reference.endValue == null ? undefined : reference.axis === 'x' ? xMap(reference.endValue) : yMap(reference.endValue) })), annotations: this.annotations.map((annotation) => ({ ...annotation, x: xMap(annotation.x), y: yMap(annotation.y) })), dataLabels, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
   ngAfterViewChecked(): void {
@@ -479,7 +484,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const value = this.y ?? this.series?.[0]?.y;
     const radius = Math.min(this.width, this.height) / 2 - 16;
     const arcs = value ? pieArcs(this.rows, value, radius, this.kind === 'donut' ? this.innerRadius ?? radius * 0.55 : this.innerRadius ?? 0) : [];
-    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: [], summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
   }
 }
 

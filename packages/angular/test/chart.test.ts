@@ -84,4 +84,24 @@ describe('Angular charts', () => {
     expect(chart.model.xTicks).toHaveLength(3);
     expect(chart.model.yTicks).toHaveLength(4);
   });
+  it('prepares reference lines and annotations', () => {
+    const chart = new LineChartComponent();
+    chart.data = [{ x: 0, y: 2 }, { x: 10, y: 8 }];
+    chart.x = 'x';
+    chart.y = 'y';
+    chart.accessibility = accessibility;
+    chart.references = [{ axis: 'y', value: 5, label: 'Target' }];
+    chart.annotations = [{ x: 10, y: 8, label: 'Peak', description: 'Peak value' }];
+    expect(chart.model.references).toHaveLength(1);
+    expect(chart.model.annotations[0]?.description).toBe('Peak value');
+  });
+  it('prepares collision-aware data labels', () => {
+    const chart = new LineChartComponent();
+    chart.data = [{ x: 0, y: 2 }, { x: 10, y: 8 }];
+    chart.x = 'x';
+    chart.y = 'y';
+    chart.accessibility = accessibility;
+    chart.dataLabels = { formatter: (value) => `v${value}` };
+    expect(chart.model.dataLabels.map((label) => label.text)).toContain('v2');
+  });
 });

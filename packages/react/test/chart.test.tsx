@@ -133,4 +133,13 @@ describe('React charts', () => {
     expect(screen.getByText('Time')).toBeTruthy();
     expect(screen.getByText('Value')).toBeTruthy();
   });
+  it('renders reference lines and accessible annotations', () => {
+    const { container } = render(<LineChart data={[{ x: 0, y: 2 }, { x: 10, y: 8 }]} x="x" y="y" references={[{ axis: 'y', value: 5, label: 'Target' }]} annotations={[{ x: 10, y: 8, label: 'Peak', description: 'Peak value' }]} accessibility={accessibility} />);
+    expect(container.querySelector('[data-part="reference"]')).toBeTruthy();
+    expect(container.querySelector('[data-part="annotation"]')?.getAttribute('aria-label')).toBe('Peak value');
+  });
+  it('renders collision-aware data labels', () => {
+    const { container } = render(<LineChart data={[{ x: 0, y: 2 }, { x: 10, y: 8 }]} x="x" y="y" dataLabels={{ formatter: (value) => `v${value}` }} accessibility={accessibility} />);
+    expect(container.querySelector('[data-part="data-labels"]')?.textContent).toContain('v2');
+  });
 });

@@ -20,6 +20,7 @@ import {
   type ChartAnnotation,
   type ChartAccessor,
   type ChartDomain,
+  type ChartDataLabelConfig,
   type ChartRenderMode,
   type ChartScaleType,
   type ChartSeries,
@@ -64,6 +65,7 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   yAxis?: ChartAxisConfig;
   references?: readonly ChartReference[];
   annotations?: readonly ChartAnnotation[];
+  dataLabels?: boolean | ChartDataLabelConfig;
   viewport?: { x?: ChartDomain; y?: ChartDomain };
   defaultViewport?: { x?: ChartDomain; y?: ChartDomain };
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -166,7 +168,7 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
 function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeriesType | 'combo' }) {
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
-    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], viewport: controlledViewport, defaultViewport, interaction, sync,
+    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
@@ -222,6 +224,8 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const useCanvas = renderMode === 'canvas' || (renderMode === 'auto' && pointCount > canvasThreshold);
   const [focus, setFocus] = useState(0);
   const flat = prepared.flatMap((item) => item.points.map((point) => ({ ...point, series: item })));
+  const labelConfig: ChartDataLabelConfig | undefined = dataLabels === true ? {} : dataLabels || undefined;
+  const labelPoints = labelConfig?.enabled === false ? [] : flat.reduce<typeof flat>((visible, point) => visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18)) ? visible : [...visible, point], []);
   useEffect(() => {
     if (!sync) return;
     return sync.subscribe((state) => {
@@ -443,6 +447,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
           {references.map((reference) => reference.axis === 'x' ? <g key={reference.id ?? `x-${reference.value}`} data-part="reference"><line x1={xMap(reference.value)} x2={xMap(reference.value)} y1={layout.top} y2={layout.top + layout.plotHeight} stroke={reference.color} /><text x={xMap(reference.value) + 4} y={layout.top + 14}>{reference.label}</text></g> : <g key={reference.id ?? `y-${reference.value}`} data-part="reference"><line x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(reference.value)} y2={yMap(reference.value)} stroke={reference.color} /><text x={layout.left + 4} y={yMap(reference.value) - 4}>{reference.label}</text></g>)}
           {references.filter((reference) => reference.endValue != null).map((reference) => reference.axis === 'x' ? <rect key={`${reference.id ?? 'x'}-area`} data-part="reference-area" x={Math.min(xMap(reference.value), xMap(reference.endValue!))} y={layout.top} width={Math.abs(xMap(reference.endValue!) - xMap(reference.value))} height={layout.plotHeight} fill={reference.color} opacity="0.15" /> : <rect key={`${reference.id ?? 'y'}-area`} data-part="reference-area" x={layout.left} y={Math.min(yMap(reference.value), yMap(reference.endValue!))} width={layout.plotWidth} height={Math.abs(yMap(reference.endValue!) - yMap(reference.value))} fill={reference.color} opacity="0.15" />)}
           {annotations.map((annotation) => <g key={annotation.id ?? `${annotation.x}-${annotation.y}`} data-part="annotation" aria-label={annotation.description}><circle cx={xMap(annotation.x)} cy={yMap(annotation.y)} r="4" fill={annotation.color} /><text x={xMap(annotation.x) + 6} y={yMap(annotation.y) - 6}>{annotation.label}</text></g>)}
+          {labelPoints.length > 0 && <g data-part="data-labels">{labelPoints.map((point) => <text key={`${point.series.id}:${point.index}`} x={point.x} y={point.y + (labelConfig?.placement === 'bottom' ? 14 : labelConfig?.placement === 'inside' ? 4 : -8)} textAnchor="middle">{labelConfig?.formatter?.(point.yValue, point.index, point.series.id) ?? String(point.yValue)}</text>)}</g>}
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><line x1={layout.left} x2={layout.left + layout.plotWidth} y1={focused.y} y2={focused.y} /><text x={focused.x + 6} y={layout.top + 14}>{String(focused.xValue)}</text><text x={layout.left + 6} y={focused.y - 6}>{String(focused.yValue)}</text><circle cx={focused.x} cy={focused.y} r="4" /></g>}
           {selection && <g data-part="brush"><rect x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.end[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.end[1] - 4} width="8" height="8" /></g>}
