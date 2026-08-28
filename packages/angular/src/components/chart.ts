@@ -33,7 +33,7 @@ import {
   type ChartTooltipTrigger,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
-import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
+import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, pinchZoomDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 
@@ -144,6 +144,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private pointerStart: readonly [number, number] | null = null;
   private pointerLast: readonly [number, number] | null = null;
   private brushHandle: ChartBrushHandle | null = null;
+  private pointers = new Map<number, readonly [number, number]>();
+  private pinchStart: { distance: number } | null = null;
   tooltipVisible = true;
   private drawn = '';
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
@@ -288,21 +290,45 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     return [((event.clientX - bounds.left) / bounds.width) * this.width, ((event.clientY - bounds.top) / bounds.height) * this.height];
   }
   onPointerDown(event: PointerEvent) {
-    if (!this.interaction || (!this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y') && !this.axisEnabled(this.interaction.brush, 'x') && !this.axisEnabled(this.interaction.brush, 'y'))) return;
     const point = this.pointFromPointer(event);
+    this.pointers.set(event.pointerId, point);
+    if (this.pointers.size === 2 && this.interaction && (this.axisEnabled(this.interaction.zoom, 'x') || this.axisEnabled(this.interaction.zoom, 'y'))) {
+      const values = [...this.pointers.values()];
+      this.pinchStart = { distance: Math.hypot(values[1]![0] - values[0]![0], values[1]![1] - values[0]![1]) };
+      this.pointerStart = null;
+      this.pointerLast = null;
+      return;
+    }
+    if (!this.interaction || (!this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y') && !this.axisEnabled(this.interaction.brush, 'x') && !this.axisEnabled(this.interaction.brush, 'y'))) return;
     this.brushHandle = this.brushHandleFromPoint(point);
     this.pointerStart = this.brushHandle ? null : point;
     this.pointerLast = point;
     (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId);
   }
   onPointerMove(event: PointerEvent) {
+    const point = this.pointFromPointer(event);
+    if (this.pointers.has(event.pointerId)) this.pointers.set(event.pointerId, point);
+    if (this.pinchStart && this.pointers.size >= 2 && this.interaction) {
+      const values = [...this.pointers.values()];
+      const distance = Math.hypot(values[1]![0] - values[0]![0], values[1]![1] - values[0]![1]);
+      const midpoint: readonly [number, number] = [(values[0]![0] + values[1]![0]) / 2, (values[0]![1] + values[1]![1]) / 2];
+      const model = this.model;
+      const fullX = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
+      const fullY = 'yDomain' in model ? model.yDomain : [0, 1] as ChartDomain;
+      const next = { ...this.effectiveViewport };
+      if (this.axisEnabled(this.interaction.zoom, 'x')) next.x = clampDomain(pinchZoomDomain(this.effectiveViewport.x ?? fullX, this.pinchStart.distance, distance, domainFromSelection(this.effectiveViewport.x ?? fullX, [midpoint[0], midpoint[0]], [this.layoutLeft, this.layoutLeft + this.plotWidth])[0]), fullX);
+      if (this.axisEnabled(this.interaction.zoom, 'y')) next.y = clampDomain(pinchZoomDomain(this.effectiveViewport.y ?? fullY, this.pinchStart.distance, distance, domainFromSelection(this.effectiveViewport.y ?? fullY, [midpoint[1], midpoint[1]], [this.layoutTop + this.plotHeight, this.layoutTop])[0]), fullY);
+      if (this.viewport === undefined) this.uncontrolledViewport = next;
+      this.sync?.set({ viewport: next });
+      this.viewportChange.emit(next);
+      return;
+    }
     if (this.brushHandle && this.selection) {
       this.applySelection(resizeChartSelection(this.selection, this.brushHandle, this.pointFromPointer(event)));
       return;
     }
     if (!this.pointerLast || !this.interaction || (!this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y'))) return;
     const previous = this.pointerLast;
-    const point = this.pointFromPointer(event);
     const layout = chartLayout(this.width, this.height);
     const model = this.model;
     const fullX = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
@@ -317,6 +343,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     this.changeDetector?.markForCheck();
   }
   onPointerUp(event: PointerEvent) {
+    this.pointers.delete(event.pointerId);
+    if (this.pointers.size < 2) this.pinchStart = null;
     if (this.brushHandle) {
       if (this.selection) this.applySelection(resizeChartSelection(this.selection, this.brushHandle, this.pointFromPointer(event)));
       this.brushHandle = null;
@@ -357,7 +385,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const candidates: readonly [ChartBrushHandle, readonly [number, number]][] = [['start', this.selection.start], ['end', [this.selection.end[0], this.selection.start[1]]], ['start-y', [this.selection.start[0], this.selection.end[1]]], ['end-y', this.selection.end]];
     return candidates.find(([, item]) => Math.hypot(point[0] - item[0], point[1] - item[1]) <= 12)?.[0] ?? null;
   }
-  onPointerCancel() { this.pointerStart = null; this.pointerLast = null; this.brushHandle = null; }
+  onPointerCancel() { this.pointers.clear(); this.pinchStart = null; this.pointerStart = null; this.pointerLast = null; this.brushHandle = null; }
   private pointAt(event: MouseEvent): ChartPointInteraction | null {
     const points = 'points' in this.model ? this.model.points : [];
     const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
