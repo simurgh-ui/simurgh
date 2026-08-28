@@ -158,4 +158,13 @@ describe('chart stream', () => {
     stream.resume(); await new Promise((resolve) => setTimeout(resolve, 5)); expect(listener).toHaveBeenCalledOnce();
     vi.unstubAllGlobals();
   });
+  it('supports live windows and historical backfill', async () => {
+    const stream = createChartStream({ capacity: 6, dimensions: ['x', 'y'] as const, window: 2 });
+    stream.append({ x: [3, 4], y: [30, 40] });
+    stream.backfill({ x: [1, 2], y: [10, 20] });
+    expect([...stream.snapshot().columns.x]).toEqual([3, 4]);
+    stream.setWindow(4);
+    expect([...stream.snapshot().columns.x]).toEqual([1, 2, 3, 4]);
+    expect(stream.window).toBe(4);
+  });
 });
