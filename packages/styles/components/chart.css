@@ -87,6 +87,32 @@
   fill-opacity: 0.28;
 }
 
+[data-slot='chart'][data-motion='on'] [data-part='series'],
+.simurgh-chart[data-motion='on'] [data-part='series'] {
+  animation: simurgh-chart-enter 180ms ease both;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+[data-slot='chart'][data-motion='on'] [data-part='crosshair'],
+.simurgh-chart[data-motion='on'] [data-part='crosshair'] {
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+@keyframes simurgh-chart-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot='chart'] [data-part='series'],
+  .simurgh-chart [data-part='series'],
+  [data-slot='chart'] [data-part='crosshair'],
+  .simurgh-chart [data-part='crosshair'] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 [data-slot='chart'] [data-part='crosshair'],
 .simurgh-chart [data-part='crosshair'] {
   color: hsl(var(--simurgh-foreground));
