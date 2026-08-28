@@ -514,6 +514,47 @@ budgets remain fixed.
 - [ ] Track search success rate, time to first correct icon, zero-result queries, copy success, and
       mistaken icon substitutions to guide taxonomy and alias improvements.
 
+## Chart capability expansion
+
+### P0: core chart interactions
+
+- [ ] Wire component-level zooming to mouse drag, wheel, touch pinch, keyboard controls, and reset/zoom-out actions.
+- [ ] Wire component-level panning to mouse drag, touch gestures, keyboard controls, and bounded domains.
+- [ ] Implement brush/range selection with x/y selection modes, resize handles, cancel/reset behavior, selected-domain output, and selected-data output.
+- [x] Add pointer interaction events for hover, leave, click, double-click, context menu, and point/series selection across React, Vue, and Angular.
+- [ ] Replace the basic tooltip with configurable nearest, intersect, index/shared, click-to-pin, cursor-following, formatting, and custom-content modes.
+- [ ] Complete crosshair behavior with x/y lines, series snapping, axis labels, and synchronized crosshairs.
+- [ ] Add linked-chart synchronization for zoom, pan, brush, tooltip, and crosshair state.
+
+### P1: chart usability and presentation
+
+- [ ] Build a complete axis system with x/y axes, tick generation, date/number/locale formatting, axis titles, rotation, grid configuration, and multiple axes.
+- [ ] Expose controlled x/y domains and domain-change events consistently across React, Vue, and Angular.
+- [ ] Add responsive sizing with ResizeObserver, percentage dimensions, responsive containers, and layout/margin measurement.
+- [ ] Add PNG, SVG, CSV, print, clipboard, and image export APIs.
+- [ ] Add reference lines/areas, thresholds, point annotations, labels, callouts, and annotation accessibility.
+- [ ] Add data labels with placement and collision handling for bars, points, and pie/donut slices.
+- [ ] Expand legend controls with placement, orientation, scrolling, select-all, isolate-series, and custom content.
+- [ ] Add continuous and piecewise visual mapping for color, opacity, size, and threshold-based styling.
+- [ ] Add configurable curves and marks: smooth/spline, step, monotone, tension, line width/dash, point symbols, gradients, patterns, and per-point styles.
+- [ ] Add drilldown interactions for bars, points, and pie/donut slices, including accessible announcements and back navigation.
+- [ ] Add pie/donut center labels, totals, slice hover/selection, labels, and richer polar interactions.
+
+### P1: data and performance
+
+- [ ] Add missing-value policies, interpolation options, sorting, filtering, aggregation, windowing, and configurable stacking behavior.
+- [ ] Integrate decimation and worker-backed processing consistently across SVG, Canvas, React, Vue, and Angular.
+- [ ] Add viewport culling, progressive rendering, and optional WebGL rendering for large datasets.
+- [ ] Add streaming-chart controls for pause/resume, auto-scroll, live-window selection, backfill, and accessible new-data announcements.
+- [ ] Integrate chart motion with initial render, data updates, enter/exit transitions, zoom, pan, and reduced-motion preferences.
+
+### P2: chart coverage and accessibility
+
+- [ ] Add candlestick/OHLC, box plot, violin, histogram, funnel, gauge, polar-area, waterfall, treemap, Sankey, and map/geo chart types where scope permits.
+- [ ] Add screen-reader navigation for individual points, series regions, dynamic updates, selections, zoom state, and chart controls.
+- [ ] Add chart-level localization for labels, controls, tooltips, export text, and data-table pagination.
+- [ ] Add cross-framework chart capability and accessibility contract tests for every implemented interaction.
+
 ## Release-readiness development roadmap
 
 Freeze material catalog expansion until the structural, validation, governance, and release gates
