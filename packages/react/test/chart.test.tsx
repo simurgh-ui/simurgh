@@ -51,6 +51,11 @@ describe('React charts', () => {
     expect(container.querySelector('circle')?.getAttribute('fill')).toBe('red');
     expect(container.querySelector('circle')?.getAttribute('r')).toBe('9');
   });
+  it('renders configurable stepped curves and point symbols', () => {
+    const { container } = render(<LineChart data={[{ x: 1, y: 2 }, { x: 2, y: 8 }]} x="x" y="y" series={[{ id: 'value', x: 'x', y: 'y', curve: 'step', lineDash: '4 2', pointSymbol: 'diamond' }]} accessibility={accessibility} />);
+    expect(container.querySelector('[data-part="series"] path')?.getAttribute('d')).toContain('L');
+    expect(container.querySelector('[data-part="series"] path')?.getAttribute('stroke-dasharray')).toBe('4 2');
+  });
   it('supports pointer exploration', () => {
     const { container } = render(<LineChart data={data} x="month" xScale="band" y="revenue" accessibility={accessibility} />);
     const viewport = container.querySelector('[data-part="viewport"]')!;

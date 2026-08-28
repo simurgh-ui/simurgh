@@ -66,7 +66,22 @@ export type ChartSeries<T> = {
   color?: string;
   stack?: string;
   axis?: 'start' | 'end';
+  curve?: 'linear' | 'step' | 'smooth' | 'monotone';
+  lineWidth?: number;
+  lineDash?: string;
+  pointSymbol?: 'circle' | 'square' | 'diamond';
 };
+
+export function chartCurvePath(points: readonly (readonly [number, number])[], curve: ChartSeries<unknown>['curve'] = 'linear'): string {
+  if (curve !== 'step' || points.length < 2) return linePath(points);
+  const stepped: [number, number][] = [points[0] as [number, number]];
+  for (let index = 1; index < points.length; index += 1) {
+    const previous = points[index - 1]!;
+    const current = points[index]!;
+    stepped.push([current[0], previous[1]], [current[0], current[1]]);
+  }
+  return linePath(stepped);
+}
 
 export type ChartAccessibility =
   | {

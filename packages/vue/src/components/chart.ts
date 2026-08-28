@@ -20,6 +20,7 @@ import {
   type ChartDataLabelConfig,
   type ChartLegendConfig,
   chartVisualStyle,
+  chartCurvePath,
   type ChartVisualMap,
   type ChartAccessor,
   type ChartSeries,
@@ -317,7 +318,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const seriesNodes = [...axisNodes, ...referenceAreaNodes, ...referenceNodes, ...annotationNodes, ...labelNodes, ...prepared.map((item, seriesIndex) => {
           const color = item.color ?? colors[seriesIndex % colors.length];
           const points = item.points.map((point) => [point.x, point.y] as const);
-          if (item.type === 'line') return h('path', { 'data-part': 'series', 'data-series': item.id, d: linePath(points), fill: 'none', stroke: color });
+          if (item.type === 'line') return h('path', { 'data-part': 'series', 'data-series': item.id, d: chartCurvePath(points, item.curve), fill: 'none', stroke: color, 'stroke-width': item.lineWidth, 'stroke-dasharray': item.lineDash });
           if (item.type === 'area') return h('path', { 'data-part': 'series', 'data-series': item.id, d: item.stack ? stackedAreaPath(item.points.map((point) => ({ x: point.x, y0: point.y0, y1: point.y }))) : areaPath(points, baseline), fill: color, stroke: color });
           if (item.type === 'bar') return h('g', { 'data-part': 'series', 'data-series': item.id }, item.points.map((point) => { const origin = item.stack ? point.y0 : baseline; const style = chartVisualStyle(point.yValue, props.visualMap); return h('rect', { x: point.x - (bands?.bandwidth ?? 8) / 2, y: Math.min(point.y, origin), width: bands?.bandwidth ?? 8, height: Math.abs(point.y - origin), fill: style.color ?? color, opacity: style.opacity }); }));
           return h('g', { 'data-part': 'series', 'data-series': item.id }, item.points.map((point) => { const style = chartVisualStyle(point.yValue, props.visualMap); return h('circle', { cx: point.x, cy: point.y, r: style.size ?? (item.type === 'bubble' ? point.radius : 3), fill: style.color ?? color, opacity: style.opacity }); }));

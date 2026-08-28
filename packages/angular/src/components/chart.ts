@@ -34,6 +34,7 @@ import {
   type ChartDataLabelConfig,
   type ChartLegendConfig,
   chartVisualStyle,
+  chartCurvePath,
   type ChartVisualMap,
   type ChartSeries,
   type ChartSeriesType,
@@ -248,7 +249,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       const values = raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : xMap(item.numericX), y: (definition.axis === 'end' ? secondaryYMap : yMap)(item.end), y0: (definition.axis === 'end' ? secondaryYMap : yMap)(item.start) }));
       points.push(...values.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: definition.id })));
       if (type === 'line' || type === 'area') {
-        const path = type === 'line' ? linePath(values.map((item) => [item.x, item.y])) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
+        const path = type === 'line' ? chartCurvePath(values.map((item) => [item.x, item.y]), definition.curve) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
         marks.push({ id: definition.id, type, color, path });
         canvasMarks.push(type === 'line' ? { type: 'line', points: values.map((item) => [item.x, item.y]), color } : { type: 'area', points: values.map((item) => [item.x, item.y]), baseline: yMap(0), color, opacity: 0.3 });
       } else for (const item of values) {

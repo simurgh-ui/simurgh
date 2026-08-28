@@ -12,6 +12,7 @@ import {
   stackChartValues,
   stackedAreaPath,
   chartVisualStyle,
+  chartCurvePath,
 } from '../src/charts.js';
 import { SpatialGrid, clampDomain, createChartSync, domainFromSelection, nextChartIndex, panDomain, pinchZoomDomain, resizeChartSelection, selectionFromPoints, zoomDomain } from '../src/chart-interactions.js';
 import { createChartStream } from '../src/chart-stream.js';
@@ -22,6 +23,9 @@ describe('chart scales and geometry', () => {
     expect(chartVisualStyle(5, { min: 0, max: 10, opacity: [0.2, 1], size: [2, 8] }).opacity).toBeCloseTo(0.6);
     expect(chartVisualStyle(5, { min: 0, max: 10, opacity: [0.2, 1], size: [2, 8] }).size).toBe(5);
     expect(chartVisualStyle(7, { pieces: [{ gte: 5, color: 'red', size: 9 }] })).toMatchObject({ color: 'red', size: 9 });
+  });
+  it('builds stepped curve paths', () => {
+    expect(chartCurvePath([[0, 0], [10, 10]], 'step')).toContain('M0,0L10,0L10,10');
   });
   it('pads constant domains and omits invalid logarithmic values', () => {
     expect(chartDomain([5, 5])).toEqual([4.75, 5.25]);
