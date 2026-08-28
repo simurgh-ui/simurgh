@@ -42,6 +42,10 @@
       "types": "./dist/chart-export.d.ts",
       "default": "./dist/chart-export.js"
     },
+    "./chart-responsive": {
+      "types": "./dist/chart-responsive.d.ts",
+      "default": "./dist/chart-responsive.js"
+    },
     "./chart-motion": {
       "types": "./dist/chart-motion.d.ts",
       "default": "./dist/chart-motion.js"

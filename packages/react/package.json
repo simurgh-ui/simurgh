@@ -38,6 +38,10 @@
       "types": "./dist/chart-export.d.ts",
       "import": "./dist/chart-export.js"
     },
+    "./chart-responsive": {
+      "types": "./dist/chart-responsive.d.ts",
+      "import": "./dist/chart-responsive.js"
+    },
     "./chart-motion": {
       "types": "./dist/chart-motion.d.ts",
       "import": "./dist/chart-motion.js"
