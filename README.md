@@ -49,6 +49,20 @@ pnpm dlx @simurgh-ui/cli init --framework angular
 | `simurgh add dialog --overwrite` | Replace an existing generated component with the registry version. |
 | `simurgh diff [component]` | Compare local component source with the current registry without overwriting customizations. |
 
+## MCP server
+
+Simurgh also includes `@simurgh-ui/mcp`, a read-only Model Context Protocol server for AI coding
+clients. It exposes registry search, component metadata, framework-specific source, and component
+documentation while keeping filesystem changes in the existing CLI.
+
+```sh
+pnpm --filter @simurgh-ui/mcp build
+node packages/mcp/dist/index.js
+```
+
+See [`packages/mcp/README.md`](packages/mcp/README.md) for client configuration and the complete
+tool/resource list.
+
 ## Packages
 
 | Package | Description |
