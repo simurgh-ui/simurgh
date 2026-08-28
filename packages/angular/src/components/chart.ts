@@ -149,6 +149,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private pointers = new Map<number, readonly [number, number]>();
   private pinchStart: { distance: number } | null = null;
   tooltipVisible = this.tooltipTrigger !== 'click';
+  tooltipIntersected = true;
   tooltipX = 0;
   tooltipY = 0;
   private drawn = '';
@@ -234,7 +235,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     }
     const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
     const current = points[Math.min(this.focused, points.length - 1)];
-    const tooltipPoints = this.tooltipMode === 'none' ? [] : this.tooltipMode === 'nearest' || this.tooltipMode === 'intersect' ? (current ? [current] : []) : current ? points.filter((item) => item.index === current.index) : [];
+    const tooltipPoints = this.tooltipMode === 'none' ? [] : this.tooltipMode === 'nearest' ? (current ? [current] : []) : this.tooltipMode === 'intersect' ? (this.tooltipIntersected && current ? [current] : []) : current ? points.filter((item) => item.index === current.index) : [];
     return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
@@ -400,9 +401,9 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   }
   onMouseMove(event: MouseEvent) {
     const point = this.pointAt(event);
-    if (point) { const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect(); this.tooltipX = ((event.clientX - bounds.left) / bounds.width) * this.width; this.tooltipY = ((event.clientY - bounds.top) / bounds.height) * this.height; this.focused = point.index; this.tooltipVisible = true; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
+    if (point) { const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect(); this.tooltipX = ((event.clientX - bounds.left) / bounds.width) * this.width; this.tooltipY = ((event.clientY - bounds.top) / bounds.height) * this.height; this.tooltipIntersected = Math.hypot(point.x - this.tooltipX, point.y - this.tooltipY) <= Math.max(point.radius, 8); this.focused = point.index; this.tooltipVisible = true; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
   }
-  onMouseLeave() { this.pointHover.emit(null); if (this.tooltipTrigger === 'hover') this.tooltipVisible = false; }
+  onMouseLeave() { this.tooltipIntersected = false; this.pointHover.emit(null); if (this.tooltipTrigger === 'hover') this.tooltipVisible = false; }
   onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) { this.tooltipVisible = true; this.pointClick.emit(point); } }
   onPointDoubleClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointDoubleClick.emit(point); }
   onPointContextMenu(event: MouseEvent) { const point = this.pointAt(event); if (point) { event.preventDefault(); this.pointContextMenu.emit(point); } }

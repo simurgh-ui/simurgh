@@ -101,6 +101,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
       const uncontrolledViewport = ref(props.viewport ?? props.defaultViewport ?? props.sync?.state.viewport ?? {});
       const selection = ref<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
       const tooltipVisible = ref(props.tooltipTrigger !== 'hover' && props.tooltipTrigger !== 'click');
+      const tooltipIntersected = ref(true);
       const tooltipPoint = ref<readonly [number, number] | null>(null);
       const pointerStart = ref<readonly [number, number] | null>(null);
       const pointerLast = ref<readonly [number, number] | null>(null);
@@ -157,7 +158,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const pageSize = typeof table === 'object' ? table.pageSize ?? 50 : 50;
         const tablePages = Math.max(1, Math.ceil(rows.length / pageSize));
         const current = flat[Math.min(focused.value, flat.length - 1)]!;
-      const tooltipPoints = props.tooltipMode === 'none' ? [] : props.tooltipMode === 'nearest' || props.tooltipMode === 'intersect' ? (current ? [current] : []) : current ? flat.filter((item) => item.index === current.index) : [];
+      const tooltipPoints = props.tooltipMode === 'none' ? [] : props.tooltipMode === 'nearest' ? (current ? [current] : []) : props.tooltipMode === 'intersect' ? (tooltipIntersected.value && current ? [current] : []) : current ? flat.filter((item) => item.index === current.index) : [];
         const tooltipInteractions = tooltipPoints.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: item.definition.id }));
         const axisEnabled = (value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') => value === true || value === 'xy' || value === axis;
         const pointFromEvent = (event: Pick<PointerEvent, 'currentTarget' | 'clientX' | 'clientY'>): readonly [number, number] => {
@@ -197,6 +198,8 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           const index = pointIndexFromEvent(event);
           const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
           tooltipPoint.value = [((event.clientX - bounds.left) / bounds.width) * props.width, ((event.clientY - bounds.top) / bounds.height) * props.height];
+          const nearestPoint = flat[index];
+          tooltipIntersected.value = Boolean(nearestPoint && Math.hypot(nearestPoint.x - tooltipPoint.value[0], nearestPoint.y - tooltipPoint.value[1]) <= Math.max(nearestPoint.radius, 8));
           focused.value = index;
           props.onPointHover?.(interactionPoint(index));
           if (props.tooltipTrigger === 'hover') tooltipVisible.value = true;
@@ -288,7 +291,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           !decorative && h('figcaption', props.accessibility.title),
           !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(flat.map((item) => item.yValue))}`),
           h('div', { 'data-part': 'viewport', style: { aspectRatio: `${props.width} / ${props.height}` }, onWheel, onMousemove: onMouseMove,
-            onMouseleave: () => { props.onPointHover?.(null); if (props.tooltipTrigger === 'hover') tooltipVisible.value = false; },
+            onMouseleave: () => { tooltipIntersected.value = false; props.onPointHover?.(null); if (props.tooltipTrigger === 'hover') tooltipVisible.value = false; },
             onClick: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) { tooltipVisible.value = true; props.onPointClick?.(point); } },
             onDblclick: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) props.onPointDoubleClick?.(point); },
             onContextmenu: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) { event.preventDefault(); props.onPointContextMenu?.(point); } },
