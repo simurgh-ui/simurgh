@@ -1,6 +1,6 @@
 # @simurgh-ui/icons public API
 
-Version snapshot: 0.1.2-beta.0
+Version snapshot: 0.1.2-beta.1
 
 ## Export map
 

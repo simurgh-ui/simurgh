@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/registry",
-  "version": "0.3.2-beta.0",
+  "version": "0.3.2-beta.1",
   "description": "Framework-aware component registry metadata for Simurgh UI.",
   "license": "MIT",
   "repository": {

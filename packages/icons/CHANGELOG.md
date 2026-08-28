@@ -1,5 +1,11 @@
 # @simurgh-ui/icons
 
+## 0.1.2-beta.1
+
+### Patch Changes
+
+- Publish the completed chart capability expansion with React, Vue, and Angular parity, specialty charts, large-data rendering, localization, accessibility contracts, and updated bundle budgets.
+
 ## 0.1.2-beta.0
 
 ### Patch Changes

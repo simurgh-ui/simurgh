@@ -1,5 +1,11 @@
 # @simurgh-ui/motion
 
+## 0.1.3-beta.1
+
+### Patch Changes
+
+- Publish the completed chart capability expansion with React, Vue, and Angular parity, specialty charts, large-data rendering, localization, accessibility contracts, and updated bundle budgets.
+
 ## 0.1.3-beta.0
 
 ### Patch Changes

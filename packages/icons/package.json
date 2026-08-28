@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/icons",
-  "version": "0.1.2-beta.0",
+  "version": "0.1.2-beta.1",
   "description": "Tree-shakeable Simurgh icons for React, Vue, Angular, and raw SVG use.",
   "license": "MIT",
   "repository": {

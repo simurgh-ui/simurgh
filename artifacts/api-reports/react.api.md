@@ -1,6 +1,6 @@
 # @simurgh-ui/react public API
 
-Version snapshot: 0.3.2-beta.2
+Version snapshot: 0.3.2-beta.3
 
 ## Export map
 

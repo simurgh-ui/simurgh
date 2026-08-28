@@ -3,7 +3,7 @@
 ```json
 {
   "name": "@simurgh-ui/cli",
-  "version": "0.4.1-beta.2",
+  "version": "0.4.1-beta.3",
   "bin": {
     "simurgh": "dist/index.js"
   }

@@ -1,6 +1,6 @@
 # @simurgh-ui/registry public API
 
-Version snapshot: 0.3.2-beta.0
+Version snapshot: 0.3.2-beta.1
 
 ## Export map
 

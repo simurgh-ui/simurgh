@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/cli",
-  "version": "0.4.1-beta.2",
+  "version": "0.4.1-beta.3",
   "description": "Install and update source-owned Simurgh UI components.",
   "license": "MIT",
   "repository": {
