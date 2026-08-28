@@ -12,7 +12,7 @@ import {
   stackChartValues,
   stackedAreaPath,
 } from '../src/charts.js';
-import { SpatialGrid, nextChartIndex, panDomain, zoomDomain } from '../src/chart-interactions.js';
+import { SpatialGrid, clampDomain, domainFromSelection, nextChartIndex, panDomain, selectionFromPoints, zoomDomain } from '../src/chart-interactions.js';
 import { createChartStream } from '../src/chart-stream.js';
 
 describe('chart scales and geometry', () => {
@@ -58,6 +58,12 @@ describe('chart interaction helpers', () => {
     expect(zoomDomain([0, 10], 2)).toEqual([2.5, 7.5]);
     expect(panDomain([0, 10], 0.1)).toEqual([1, 11]);
     expect(nextChartIndex(0, 3, 'ArrowLeft', 'rtl')).toBe(1);
+  });
+  it('converts pixel selections to ordered domains and clamps panning', () => {
+    expect(domainFromSelection([0, 100], [75, 25], [0, 100])).toEqual([25, 75]);
+    expect(selectionFromPoints([80, 20], [10, 60])).toEqual({ start: [10, 20], end: [80, 60] });
+    expect(clampDomain([-10, 40], [0, 100])).toEqual([0, 50]);
+    expect(clampDomain([70, 120], [0, 100])).toEqual([50, 100]);
   });
   it('finds nearby dense marks', () => {
     const grid = new SpatialGrid<{ x: number; y: number; id: string }>(10);

@@ -3,6 +3,21 @@ import type { ChartDomain } from './charts.js';
 export type ChartViewport = { x?: ChartDomain; y?: ChartDomain };
 export type ChartSelection = { start: readonly [number, number]; end: readonly [number, number] } | null;
 
+export type ChartInteractionConfig = {
+  zoom?: boolean | 'x' | 'y' | 'xy';
+  pan?: boolean | 'x' | 'y' | 'xy';
+  brush?: boolean | 'x' | 'y' | 'xy';
+};
+
+export function clampDomain(domain: ChartDomain, bounds?: ChartDomain): ChartDomain {
+  if (!bounds) return domain;
+  const span = domain[1] - domain[0];
+  const boundSpan = bounds[1] - bounds[0];
+  if (span >= boundSpan) return bounds;
+  const min = Math.min(bounds[1] - span, Math.max(bounds[0], domain[0]));
+  return [min, min + span];
+}
+
 export function zoomDomain(domain: ChartDomain, factor: number, anchor = (domain[0] + domain[1]) / 2): ChartDomain {
   if (!Number.isFinite(factor) || factor <= 0) return domain;
   return [anchor + (domain[0] - anchor) / factor, anchor + (domain[1] - anchor) / factor];
@@ -11,6 +26,27 @@ export function zoomDomain(domain: ChartDomain, factor: number, anchor = (domain
 export function panDomain(domain: ChartDomain, fraction: number): ChartDomain {
   const amount = (domain[1] - domain[0]) * fraction;
   return [domain[0] + amount, domain[1] + amount];
+}
+
+export function domainFromSelection(
+  domain: ChartDomain,
+  selection: readonly [number, number],
+  pixels: readonly [number, number],
+): ChartDomain {
+  const pixelSpan = pixels[1] - pixels[0] || 1;
+  const start = domain[0] + ((selection[0] - pixels[0]) / pixelSpan) * (domain[1] - domain[0]);
+  const end = domain[0] + ((selection[1] - pixels[0]) / pixelSpan) * (domain[1] - domain[0]);
+  return start <= end ? [start, end] : [end, start];
+}
+
+export function selectionFromPoints(
+  start: readonly [number, number],
+  end: readonly [number, number],
+): ChartSelection {
+  return {
+    start: [Math.min(start[0], end[0]), Math.min(start[1], end[1])],
+    end: [Math.max(start[0], end[0]), Math.max(start[1], end[1])],
+  };
 }
 
 export function nextChartIndex(current: number, size: number, key: string, direction: 'ltr' | 'rtl' = 'ltr'): number {
