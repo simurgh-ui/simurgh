@@ -184,8 +184,8 @@
   opacity: 0.5;
 }
 
-[data-slot='chart'] [data-part='legend'] span,
-.simurgh-chart [data-part='legend'] span {
+[data-slot='chart'] [data-part='legend'] button > span,
+.simurgh-chart [data-part='legend'] button > span {
   inline-size: 0.75rem;
   block-size: 0.75rem;
   border-radius: 999px;

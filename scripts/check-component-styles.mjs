@@ -46,4 +46,12 @@ for (const file of expected) {
   }
 }
 
+const chartCss = await readFile(resolve(componentsRoot, 'chart.css'), 'utf8');
+if (chartCss.includes("[data-part='legend'] span")) {
+  throw new Error('Chart legend styles must not size series item wrappers.');
+}
+if (!chartCss.includes("[data-part='legend'] button > span")) {
+  throw new Error('Chart legend styles must target color swatches directly.');
+}
+
 console.log(`Verified ${expected.size} component-level CSS exports.`);
