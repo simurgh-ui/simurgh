@@ -151,7 +151,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const pageSize = typeof table === 'object' ? table.pageSize ?? 50 : 50;
         const tablePages = Math.max(1, Math.ceil(rows.length / pageSize));
         const current = flat[Math.min(focused.value, flat.length - 1)]!;
-        const tooltipPoints = props.tooltipMode === 'none' ? [] : props.tooltipMode === 'nearest' ? (current ? [current] : []) : current ? flat.filter((item) => item.index === current.index) : [];
+      const tooltipPoints = props.tooltipMode === 'none' ? [] : props.tooltipMode === 'nearest' || props.tooltipMode === 'intersect' ? (current ? [current] : []) : current ? flat.filter((item) => item.index === current.index) : [];
         const tooltipInteractions = tooltipPoints.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: item.definition.id }));
         const axisEnabled = (value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') => value === true || value === 'xy' || value === axis;
         const pointFromEvent = (event: Pick<PointerEvent, 'currentTarget' | 'clientX' | 'clientY'>): readonly [number, number] => {

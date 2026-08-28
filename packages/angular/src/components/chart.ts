@@ -30,6 +30,7 @@ import {
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
+  type ChartTooltipTrigger,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
 import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
@@ -54,7 +55,7 @@ const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart
 const template = `
   <figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption>
   <p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ model.summary }}</p>
-  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)" (mousemove)="onMouseMove($event)" (mouseleave)="pointHover.emit(null)" (click)="onPointClick($event)" (dblclick)="onPointDoubleClick($event)" (contextmenu)="onPointContextMenu($event)" (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)" (pointercancel)="onPointerCancel()">
+  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave()" (click)="onPointClick($event)" (dblclick)="onPointDoubleClick($event)" (contextmenu)="onPointContextMenu($event)" (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)" (pointercancel)="onPointerCancel()">
     <canvas #canvas *ngIf="model.useCanvas" [attr.width]="width" [attr.height]="height" aria-hidden="true"></canvas>
     <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" data-part="plot" aria-hidden="true">
       <ng-container *ngIf="!model.useCanvas">
@@ -69,7 +70,7 @@ const template = `
     </svg>
     <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
     <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
-    <div *ngIf="model.tooltip" role="tooltip" data-part="tooltip">{{ model.tooltip }}</div>
+    <div *ngIf="model.tooltip && tooltipVisible" role="tooltip" data-part="tooltip">{{ model.tooltip }}</div>
   </div>
   <div data-part="legend">
     <button *ngFor="let item of model.legend; let index = index" type="button" [attr.aria-pressed]="!effectiveHiddenSeries.includes(item.id)" (click)="toggleSeries(item.id)">
@@ -111,7 +112,9 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
   @Input() interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
   @Input() tooltipMode: ChartTooltipMode = 'nearest';
+  @Input() tooltipTrigger: ChartTooltipTrigger = 'always';
   @Input() tooltipFormatter?: (point: ChartPointInteraction) => string;
+  @Input() tooltipContent?: (points: readonly ChartPointInteraction[]) => string;
   private syncValue: ChartSync | undefined = undefined;
   private unsubscribeSync: (() => void) | undefined = undefined;
   @Input() set sync(value: ChartSync | undefined) { this.unsubscribeSync?.(); this.syncValue = value; this.unsubscribeSync = value?.subscribe(() => this.changeDetector?.markForCheck()); }
@@ -140,6 +143,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private pointerStart: readonly [number, number] | null = null;
   private pointerLast: readonly [number, number] | null = null;
   private brushHandle: ChartBrushHandle | null = null;
+  tooltipVisible = true;
   private drawn = '';
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
@@ -219,8 +223,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     }
     const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
     const current = points[Math.min(this.focused, points.length - 1)];
-    const tooltipPoints = this.tooltipMode === 'none' ? [] : this.tooltipMode === 'nearest' ? (current ? [current] : []) : current ? points.filter((item) => item.index === current.index) : [];
-    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+    const tooltipPoints = this.tooltipMode === 'none' ? [] : this.tooltipMode === 'nearest' || this.tooltipMode === 'intersect' ? (current ? [current] : []) : current ? points.filter((item) => item.index === current.index) : [];
+    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
   ngAfterViewChecked(): void {
@@ -257,6 +261,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   }
   onWheel(event: WheelEvent) {
     if (!this.interaction || (!this.axisEnabled(this.interaction.zoom, 'x') && !this.axisEnabled(this.interaction.zoom, 'y'))) return;
+    this.tooltipVisible = true;
     event.preventDefault();
     const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const point: readonly [number, number] = [((event.clientX - bounds.left) / bounds.width) * this.width, ((event.clientY - bounds.top) / bounds.height) * this.height];
@@ -357,9 +362,10 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   }
   onMouseMove(event: MouseEvent) {
     const point = this.pointAt(event);
-    if (point) { this.focused = point.index; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
+    if (point) { this.focused = point.index; this.tooltipVisible = true; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
   }
-  onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointClick.emit(point); }
+  onMouseLeave() { this.pointHover.emit(null); if (this.tooltipTrigger === 'hover') this.tooltipVisible = false; }
+  onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) { this.tooltipVisible = true; this.pointClick.emit(point); } }
   onPointDoubleClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointDoubleClick.emit(point); }
   onPointContextMenu(event: MouseEvent) { const point = this.pointAt(event); if (point) { event.preventDefault(); this.pointContextMenu.emit(point); } }
   resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.sync?.set({ viewport: {}, selection: null, focused: null }); this.viewportChange.emit({}); this.selectionChange.emit(null); this.selectedDataChange.emit([]); this.changeDetector?.markForCheck(); }

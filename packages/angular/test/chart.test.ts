@@ -54,4 +54,20 @@ describe('Angular charts', () => {
     chart.onPointerUp(end);
     expect(selectionChange).toHaveBeenCalledWith(expect.objectContaining({ start: [100, 120] }));
   });
+  it('supports tooltip modes, triggers, and custom content', () => {
+    const chart = new LineChartComponent();
+    chart.data = [{ x: 0, y: 2 }, { x: 10, y: 8 }];
+    chart.x = 'x';
+    chart.y = 'y';
+    chart.accessibility = accessibility;
+    chart.tooltipMode = 'shared';
+    chart.tooltipTrigger = 'hover';
+    chart.tooltipContent = (points) => `selected:${points.length}`;
+    chart.onMouseMove({ currentTarget: { getBoundingClientRect: () => ({ left: 0, top: 0, width: 640, height: 360 }) }, clientX: 320, clientY: 180 } as unknown as MouseEvent);
+    expect(chart.model.tooltip).toBe('selected:1');
+    chart.onMouseLeave();
+    expect(chart.tooltipVisible).toBe(false);
+    chart.tooltipMode = 'none';
+    expect(chart.model.tooltip).toBe('selected:0');
+  });
 });
