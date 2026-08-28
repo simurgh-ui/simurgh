@@ -5,6 +5,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { BarChart, DonutChart, LineChart, PieChart, RadarChart, ScatterChart } from '../src/components/chart.js';
+import { createChartStream } from '@simurgh-ui/core/chart-stream';
 
 const data = [
   { month: 'Jan', revenue: 12, cost: 8 },
@@ -184,5 +185,12 @@ describe('React charts', () => {
   it('supports filtered and windowed chart data', () => {
     const { container } = render(<LineChart data={[{ x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 3 }]} x="x" y="y" dataOptions={{ filter: (row) => row.y > 1, window: 1 }} accessibility={accessibility} />);
     expect(container.querySelectorAll('[data-part="series"]')).toHaveLength(1);
+  });
+  it('announces live stream state and exposes pause controls', () => {
+    const stream = createChartStream({ capacity: 4, dimensions: ['x', 'y'] as const });
+    stream.append({ x: [1], y: [2] });
+    const { container } = render(<LineChart stream={stream} streamControls streamAnnouncement streamAutoScroll y="y" accessibility={accessibility} />);
+    expect(container.querySelector('[data-part="stream-announcement"]')?.textContent).toContain('following latest data');
+    expect(screen.getByRole('button', { name: 'Pause stream' })).toBeTruthy();
   });
 });

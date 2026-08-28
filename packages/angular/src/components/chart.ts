@@ -102,6 +102,7 @@ const template = `
     <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
     <button *ngIf="drilldownDepth > 0" type="button" data-part="drilldown-back" (click)="onDrilldownBack.emit()">Back</button>
     <button *ngIf="streamControls && stream" type="button" data-part="stream-toggle" [attr.aria-pressed]="streamPaused" (click)="toggleStream()">{{ streamPaused ? 'Resume stream' : 'Pause stream' }}</button>
+    <div *ngIf="stream && streamAnnouncement" data-part="stream-announcement" aria-live="polite">{{ stream.length }} data points{{ streamAutoScroll ? ', following latest data' : '' }}</div>
     <div *ngIf="model.tooltip && tooltipVisible" role="tooltip" data-part="tooltip" [style.position]="tooltipPosition === 'cursor' ? 'absolute' : null" [style.left.px]="tooltipPosition === 'cursor' ? tooltipX : null" [style.top.px]="tooltipPosition === 'cursor' ? tooltipY : null">{{ model.tooltip }}</div>
   </div>
   <div data-part="legend" [attr.data-placement]="legend?.placement || 'bottom'" [attr.data-orientation]="legend?.orientation || 'horizontal'" [style.max-height.px]="legend?.maxHeight" [style.overflow-y]="legend?.maxHeight ? 'auto' : null">
@@ -151,6 +152,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() visualMap?: ChartVisualMap;
   @Input() dataOptions?: ChartDataOptions<Datum>;
   @Input() streamControls = false;
+  @Input() streamAutoScroll = false;
+  @Input() streamAnnouncement = false;
   @Input() centerLabel?: string;
   @Input() showTotal = false;
   @Input() drilldownDepth = 0;

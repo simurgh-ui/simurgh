@@ -1,6 +1,7 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { BarChartComponent, LineChartComponent, PieChartComponent, RadarChartComponent, ScatterChartComponent } from '../src/components/chart.js';
+import { createChartStream } from '@simurgh-ui/core/chart-stream';
 
 const accessibility = { title: 'Revenue', description: 'Monthly revenue.' } as const;
 
@@ -154,5 +155,10 @@ describe('Angular charts', () => {
     chart.drilldown.emit({ datum: { x: 1, y: 2 }, index: 0, x: 1, y: 2, xValue: 1, yValue: 2, radius: 3, seriesId: 'value' }); chart.drilldownBack.emit();
     expect(drill).toHaveBeenCalled();
     expect(back).toHaveBeenCalled();
+  });
+  it('exposes live stream controls and announcement state', () => {
+    const chart = new LineChartComponent(); const stream = createChartStream({ capacity: 4, dimensions: ['x', 'y'] as const });
+    stream.append({ x: [1], y: [2] }); chart.stream = stream; chart.streamControls = true; chart.streamAnnouncement = true; chart.streamAutoScroll = true;
+    expect(chart.stream?.length).toBe(1); chart.toggleStream(); expect(chart.stream?.paused).toBe(true); chart.toggleStream(); expect(chart.stream?.paused).toBe(false);
   });
 });

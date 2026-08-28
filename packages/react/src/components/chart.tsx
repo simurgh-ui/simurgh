@@ -79,6 +79,8 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   visualMap?: ChartVisualMap;
   dataOptions?: ChartDataOptions<T>;
   streamControls?: boolean;
+  streamAutoScroll?: boolean;
+  streamAnnouncement?: boolean;
   centerLabel?: string;
   showTotal?: boolean;
   onSliceSelect?: (slice: { datum: T; index: number; value: number }) => void;
@@ -187,7 +189,7 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
 function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeriesType | 'combo' }) {
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
-    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, dataOptions, streamControls = false, viewport: controlledViewport, defaultViewport, interaction, sync,
+    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, dataOptions, streamControls = false, streamAutoScroll = false, streamAnnouncement = false, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu, drilldownDepth, onDrilldown, onDrilldownBack,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
@@ -487,6 +489,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         }} />
         {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); sync?.set({ selection: null, focused: null }); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>Reset view</button>}
         {streamControls && stream && <button type="button" data-part="stream-toggle" aria-pressed={streamPaused} onClick={() => { if (streamPaused) stream.resume(); else stream.pause(); setStreamPaused(!streamPaused); }}>{streamPaused ? 'Resume stream' : 'Pause stream'}</button>}
+        {stream && streamAnnouncement && <div data-part="stream-announcement" aria-live="polite">{stream.length} data points{streamAutoScroll ? ', following latest data' : ''}</div>}
         {drilldownDepth && drilldownDepth > 0 && <button type="button" data-part="drilldown-back" onClick={onDrilldownBack}>Back</button>}
         {tooltipPoints.length > 0 && tooltipVisible && <div role="tooltip" data-part="tooltip" style={tooltipPosition === 'cursor' && tooltipPoint ? { position: 'absolute', left: `${tooltipPoint[0]}px`, top: `${tooltipPoint[1]}px` } : undefined}>{tooltipContent ? tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => <div key={`${item.series.id}:${item.index}`}>{tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.series.label ?? item.series.id}: ${item.yValue}`}</div>)}</div>}
       </div>

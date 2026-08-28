@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DonutChart, LineChart, PieChart, ScatterChart } from '../src/components/chart.js';
+import { createChartStream } from '@simurgh-ui/core/chart-stream';
 
 const data = [{ x: 1, y: 4 }, { x: 2, y: 7 }, { x: 3, y: 5 }];
 const accessibility = { title: 'Trend', description: 'Three observations.', table: true } as const;
@@ -54,6 +55,12 @@ describe('Vue charts', () => {
     await fireEvent.click(result.container.querySelector('[data-part="series"]')!);
     await fireEvent.click(result.getByRole('button', { name: 'Back' }));
     expect(drill).toHaveBeenCalled(); expect(back).toHaveBeenCalled();
+  });
+  it('announces live stream state and exposes pause controls', () => {
+    const stream = createChartStream({ capacity: 4, dimensions: ['x', 'y'] as const }); stream.append({ x: [1], y: [2] });
+    const result = render(LineChart, { props: { stream, streamControls: true, streamAnnouncement: true, streamAutoScroll: true, y: 'y', accessibility } });
+    expect(result.container.querySelector('[data-part="stream-announcement"]')?.textContent).toContain('following latest data');
+    expect(result.getByRole('button', { name: 'Pause stream' })).toBeTruthy();
   });
   it('supports viewport zoom, brush gestures, and point callbacks', async () => {
     const viewportChange = vi.fn();
