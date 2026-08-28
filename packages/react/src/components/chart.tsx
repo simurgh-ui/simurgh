@@ -23,7 +23,7 @@ import {
   type ChartSeriesType,
   type ChartValue,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle } from '@simurgh-ui/core/chart-interactions';
+import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 import {
@@ -55,6 +55,7 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   viewport?: { x?: ChartDomain; y?: ChartDomain };
   defaultViewport?: { x?: ChartDomain; y?: ChartDomain };
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
+  sync?: ChartSync;
   onViewportChange?: (viewport: { x?: ChartDomain; y?: ChartDomain }) => void;
   onSelectionChange?: (selection: { start: readonly [number, number]; end: readonly [number, number] } | null) => void;
   onSelectedDataChange?: (data: readonly T[]) => void;
@@ -147,13 +148,13 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
 function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeriesType | 'combo' }) {
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
-    xScale = 'linear', yScale = 'linear', xDomain, yDomain, viewport: controlledViewport, defaultViewport, interaction,
+    xScale = 'linear', yScale = 'linear', xDomain, yDomain, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
     renderMode = 'auto', canvasThreshold = 2000,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
   const [uncontrolledHiddenSeries, setUncontrolledHiddenSeries] = useState<readonly string[]>(defaultHiddenSeries);
-  const [uncontrolledViewport, setUncontrolledViewport] = useState(controlledViewport ?? defaultViewport ?? {});
+  const [uncontrolledViewport, setUncontrolledViewport] = useState(controlledViewport ?? defaultViewport ?? sync?.state.viewport ?? {});
   const viewport = controlledViewport ?? uncontrolledViewport;
   const [selection, setSelection] = useState<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
   const pointerStart = useRef<readonly [number, number] | null>(null);
@@ -194,6 +195,17 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const useCanvas = renderMode === 'canvas' || (renderMode === 'auto' && pointCount > canvasThreshold);
   const [focus, setFocus] = useState(0);
   const flat = prepared.flatMap((item) => item.points.map((point) => ({ ...point, series: item })));
+  useEffect(() => {
+    if (!sync) return;
+    return sync.subscribe((state) => {
+      if (controlledViewport === undefined) setUncontrolledViewport(state.viewport);
+      setSelection(state.selection);
+      if (state.focused) {
+        const next = flat.findIndex((item) => item.series.id === state.focused?.seriesId && item.index === state.focused?.index);
+        if (next >= 0) setFocus(next);
+      }
+    });
+  }, [sync, controlledViewport, flat]);
   const canvas = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     if (!useCanvas || !canvas.current) return;
@@ -235,6 +247,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const focused = flat[Math.min(focus, flat.length - 1)];
   const setViewport = (next: { x?: ChartDomain; y?: ChartDomain }) => {
     if (controlledViewport === undefined) setUncontrolledViewport(next);
+    sync?.set({ viewport: next });
     onViewportChange?.(next);
   };
   const axisEnabled = (value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') => value === true || value === 'xy' || value === axis;
@@ -251,6 +264,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     if (!next) return;
     setSelection(next);
     onSelectionChange?.(next);
+    sync?.set({ selection: next });
     const selected = flat.filter((item) => (!axisEnabled(interaction.brush, 'x') || item.x >= next.start[0] && item.x <= next.end[0]) && (!axisEnabled(interaction.brush, 'y') || item.y >= next.start[1] && item.y <= next.end[1])).map((item) => item.datum);
     onSelectedDataChange?.([...new Set(selected)]);
     const nextViewport = { ...viewport };
@@ -264,6 +278,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     const next = resizeChartSelection(selection, handle, point);
     setSelection(next);
     onSelectionChange?.(next);
+    sync?.set({ selection: next });
     const selected = flat.filter((item) => (!axisEnabled(interaction.brush, 'x') || item.x >= next.start[0] && item.x <= next.end[0]) && (!axisEnabled(interaction.brush, 'y') || item.y >= next.start[1] && item.y <= next.end[1])).map((item) => item.datum);
     onSelectedDataChange?.([...new Set(selected)]);
     const nextViewport = { ...viewport };
@@ -315,6 +330,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     setFocus(nearest);
     const point = flat[nearest];
     onPointHover?.(point ? { datum: point.datum, index: point.index, x: point.x, y: point.y, xValue: point.xValue, yValue: point.yValue, radius: point.radius, seriesId: point.series.id } : null);
+    if (point) sync?.set({ focused: { seriesId: point.series.id, index: point.index } });
   };
   const pointFromPointerEvent = (event: Pick<React.MouseEvent<HTMLDivElement>, 'currentTarget' | 'clientX' | 'clientY'>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -351,7 +367,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
           if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(flat.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((value) => Math.max(0, value - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((value) => Math.min(flat.length - 1, value + 1)); else return;
           event.preventDefault();
         }} />
-        {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>Reset view</button>}
+        {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); sync?.set({ selection: null, focused: null }); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>Reset view</button>}
         {focused && <div role="tooltip" data-part="tooltip">{focused.series.label ?? focused.series.id}: {focused.yValue}</div>}
       </div>
       <div data-part="legend">{definitions.map((item, index) => <button type="button" key={item.id} aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>)}</div>
