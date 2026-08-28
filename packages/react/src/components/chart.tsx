@@ -57,6 +57,7 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
   onViewportChange?: (viewport: { x?: ChartDomain; y?: ChartDomain }) => void;
   onSelectionChange?: (selection: { start: readonly [number, number]; end: readonly [number, number] } | null) => void;
+  onSelectedDataChange?: (data: readonly T[]) => void;
   onPointHover?: (point: ChartPointInteraction<T> | null) => void;
   onPointClick?: (point: ChartPointInteraction<T>) => void;
   onPointDoubleClick?: (point: ChartPointInteraction<T>) => void;
@@ -147,7 +148,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, viewport: controlledViewport, defaultViewport, interaction,
-    onViewportChange, onSelectionChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
+    onViewportChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
     renderMode = 'auto', canvasThreshold = 2000,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
@@ -249,6 +250,8 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     if (!next) return;
     setSelection(next);
     onSelectionChange?.(next);
+    const selected = flat.filter((item) => (!axisEnabled(interaction.brush, 'x') || item.x >= next.start[0] && item.x <= next.end[0]) && (!axisEnabled(interaction.brush, 'y') || item.y >= next.start[1] && item.y <= next.end[1])).map((item) => item.datum);
+    onSelectedDataChange?.([...new Set(selected)]);
     const nextViewport = { ...viewport };
     if (axisEnabled(interaction.brush, 'x')) nextViewport.x = domainFromSelection(fullX, [next.start[0], next.end[0]], [layout.left, layout.left + layout.plotWidth]);
     if (axisEnabled(interaction.brush, 'y')) nextViewport.y = domainFromSelection(fullY, [next.start[1], next.end[1]], [layout.top + layout.plotHeight, layout.top]);
@@ -320,13 +323,13 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
           <g data-part="y-axis">{ticks.map((tick) => <text key={tick} x={layout.left - 8} y={yMap(tick)}>{axisNumberFormatter.format(tick)}</text>)}</g>
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><circle cx={focused.x} cy={focused.y} r="4" /></g>}
-          {selection && <rect data-part="brush" x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} />}
+          {selection && <g data-part="brush"><rect x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.end[1] - 4} width="8" height="8" /></g>}
         </svg>
         <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
           if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(flat.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((value) => Math.max(0, value - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((value) => Math.min(flat.length - 1, value + 1)); else return;
           event.preventDefault();
         }} />
-        {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); onSelectionChange?.(null); }}>Reset view</button>}
+        {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>Reset view</button>}
         {focused && <div role="tooltip" data-part="tooltip">{focused.series.label ?? focused.series.id}: {focused.yValue}</div>}
       </div>
       <div data-part="legend">{definitions.map((item, index) => <button type="button" key={item.id} aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>)}</div>
