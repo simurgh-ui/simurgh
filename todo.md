@@ -518,7 +518,7 @@ budgets remain fixed.
 
 ### P0: core chart interactions
 
-- [ ] Wire component-level zooming to mouse drag, wheel, touch pinch, keyboard controls, and reset/zoom-out actions.
+- [x] Wire component-level zooming to mouse drag, wheel, touch pinch, keyboard controls, and reset/zoom-out actions.
 - [x] Wire component-level panning to mouse drag, touch gestures, keyboard controls, and bounded domains.
 - [x] Implement brush/range selection with x/y selection modes, resize handles, cancel/reset behavior, selected-domain output, and selected-data output.
 - [x] Add pointer interaction events for hover, leave, click, double-click, context menu, and point/series selection across React, Vue, and Angular.
