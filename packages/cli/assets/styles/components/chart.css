@@ -58,6 +58,20 @@
   dominant-baseline: central;
 }
 
+[data-slot='chart'] [data-part='radar-axes'] line,
+.simurgh-chart [data-part='radar-axes'] line {
+  stroke: hsl(var(--simurgh-chart-grid));
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+[data-slot='chart'] [data-part='axis-label'],
+.simurgh-chart [data-part='axis-label'] {
+  fill: hsl(var(--simurgh-chart-axis));
+  font-size: 0.75rem;
+  dominant-baseline: central;
+}
+
 [data-slot='chart'] [data-part='series'],
 .simurgh-chart [data-part='series'] {
   stroke-linecap: round;
@@ -69,6 +83,25 @@
 [data-slot='chart'] path[data-part='series'][fill]:not([fill='none']),
 .simurgh-chart path[data-part='series'][fill]:not([fill='none']) {
   fill-opacity: 0.28;
+}
+
+[data-slot='chart'][data-motion='on'] [data-part='series'],
+.simurgh-chart[data-motion='on'] [data-part='series'] {
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+[data-slot='chart'][data-motion='on'] [data-part='crosshair'],
+.simurgh-chart[data-motion='on'] [data-part='crosshair'] {
+  transition: opacity 120ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot='chart'] [data-part='series'],
+  .simurgh-chart [data-part='series'],
+  [data-slot='chart'] [data-part='crosshair'],
+  .simurgh-chart [data-part='crosshair'] {
+    transition: none !important;
+  }
 }
 
 [data-slot='chart'] [data-part='crosshair'],

@@ -546,7 +546,7 @@ budgets remain fixed.
 - [x] Integrate decimation and worker-backed processing consistently across SVG, Canvas, React, Vue, and Angular.
 - [ ] Add viewport culling, progressive rendering, and optional WebGL rendering for large datasets.
 - [x] Add streaming-chart controls for pause/resume, auto-scroll, live-window selection, backfill, and accessible new-data announcements.
-- [ ] Integrate chart motion with initial render, data updates, enter/exit transitions, zoom, pan, and reduced-motion preferences.
+- [x] Integrate chart motion with initial render, data updates, enter/exit transitions, zoom, pan, and reduced-motion preferences.
 
 ### P2: chart coverage and accessibility
 

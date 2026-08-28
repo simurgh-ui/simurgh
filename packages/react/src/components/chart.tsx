@@ -110,6 +110,7 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   canvasThreshold?: number;
   workerProcessing?: boolean;
   viewportCulling?: boolean;
+  motion?: boolean;
   hiddenSeries?: readonly string[];
   defaultHiddenSeries?: readonly string[];
   onHiddenSeriesChange?: (series: string[]) => void;
@@ -195,7 +196,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, dataOptions, streamControls = false, streamAutoScroll = false, streamAnnouncement = false, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu, drilldownDepth, onDrilldown, onDrilldownBack,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
-    renderMode = 'auto', canvasThreshold = 2000, workerProcessing = false, viewportCulling = false,
+    renderMode = 'auto', canvasThreshold = 2000, workerProcessing = false, viewportCulling = false, motion = false,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
   const [uncontrolledHiddenSeries, setUncontrolledHiddenSeries] = useState<readonly string[]>(defaultHiddenSeries);
@@ -473,7 +474,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const xTicks = chartTicks(resolvedX, xAxis?.ticks ?? 5);
   const formatTick = (value: ChartValue, axis: ChartAxisConfig | undefined) => axis?.tickFormatter?.(value) ?? formatChartValue(value, axis?.locale);
   return (
-    <figure className="simurgh-chart" data-slot="chart" data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
+    <figure className="simurgh-chart" data-slot="chart" data-motion={motion ? 'on' : 'off'} data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p></>}
       <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onMouseLeave={() => { setTooltipIntersected(false); onPointHover?.(null); if (tooltipTrigger === 'hover') setTooltipVisible(false); }}
         onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { setTooltipVisible(true); onPointClick?.(point); onDrilldown?.(point); } }}

@@ -100,6 +100,7 @@ const commonProps = {
   canvasThreshold: { type: Number, default: 2000 },
   workerProcessing: Boolean,
   viewportCulling: Boolean,
+  motion: Boolean,
   hiddenSeries: Array as PropType<readonly string[]>,
   defaultHiddenSeries: { type: Array as PropType<readonly string[]>, default: () => [] },
   innerRadius: Number,
@@ -376,7 +377,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
             });
           }
         }
-        return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-renderer': useCanvas ? 'canvas-fallback' : 'svg', 'aria-hidden': decorative || undefined }, [
+        return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-motion': props.motion ? 'on' : 'off', 'data-renderer': useCanvas ? 'canvas-fallback' : 'svg', 'aria-hidden': decorative || undefined }, [
           !decorative && h('figcaption', props.accessibility.title),
           !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(flat.map((item) => item.yValue))}`),
           h('div', { 'data-part': 'viewport', style: { aspectRatio: `${props.width} / ${props.height}` }, onWheel, onMousemove: onMouseMove,

@@ -175,6 +175,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() canvasThreshold = 2000;
   @Input() workerProcessing = false;
   @Input() viewportCulling = false;
+  @Input() motion = false;
   @Input() hiddenSeries?: readonly string[];
   @Input() defaultHiddenSeries: readonly string[] = [];
   @Input() innerRadius?: number;
@@ -570,7 +571,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
 }
 
 function chartMetadata(selector: string) {
-  return Component({ selector, standalone: true, imports: [CommonModule], template, host: { class: 'simurgh-chart', 'data-slot': 'chart', '[attr.data-state]': "model.marks.length ? null : 'empty'", '[attr.aria-hidden]': 'decorative || null' } });
+  return Component({ selector, standalone: true, imports: [CommonModule], template, host: { class: 'simurgh-chart', 'data-slot': 'chart', '[attr.data-motion]': "motion ? 'on' : 'off'", '[attr.data-state]': "model.marks.length ? null : 'empty'", '[attr.aria-hidden]': 'decorative || null' } });
 }
 
 @chartMetadata('simurgh-line-chart') export class LineChartComponent extends ChartBaseComponent { readonly kind = 'line'; }
