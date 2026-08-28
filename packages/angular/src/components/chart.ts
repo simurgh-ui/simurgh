@@ -29,7 +29,9 @@ import {
   type ChartAccessor,
   type ChartSeries,
   type ChartSeriesType,
+  type ChartDomain,
 } from '@simurgh-ui/core/charts';
+import { clampDomain, domainFromSelection, zoomDomain } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 
@@ -50,7 +52,7 @@ const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart
 const template = `
   <figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption>
   <p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ model.summary }}</p>
-  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height">
+  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)">
     <canvas #canvas *ngIf="model.useCanvas" [attr.width]="width" [attr.height]="height" aria-hidden="true"></canvas>
     <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" data-part="plot" aria-hidden="true">
       <ng-container *ngIf="!model.useCanvas">
@@ -98,6 +100,11 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() height = 360;
   @Input() xScale: 'linear' | 'time' | 'band' | 'log' = 'linear';
   @Input() yScale: 'linear' | 'time' | 'log' = 'linear';
+  @Input() xDomain?: ChartDomain;
+  @Input() yDomain?: ChartDomain;
+  @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
+  @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
+  @Input() interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
   @Input() renderMode: 'auto' | 'svg' | 'canvas' = 'auto';
   @Input() canvasThreshold = 2000;
   @Input() hiddenSeries?: readonly string[];
@@ -105,15 +112,18 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() innerRadius?: number;
   @Input() emptyContent = 'No chart data';
   @Output() readonly hiddenSeriesChange = new EventEmitter<string[]>();
+  @Output() readonly viewportChange = new EventEmitter<{ x?: ChartDomain; y?: ChartDomain }>();
   @ViewChild('canvas') canvas?: ElementRef<HTMLCanvasElement>;
   abstract readonly kind: ChartSeriesType | 'combo' | 'pie' | 'donut';
   focused = 0;
   tablePage = 0;
   private uncontrolledHiddenSeries?: readonly string[];
+  private uncontrolledViewport: { x?: ChartDomain; y?: ChartDomain } = {};
   private drawn = '';
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
   get effectiveHiddenSeries() { return this.hiddenSeries ?? this.uncontrolledHiddenSeries ?? this.defaultHiddenSeries; }
+  get effectiveViewport() { return this.viewport ?? this.uncontrolledViewport; }
 
   get decorative() {
     return 'decorative' in this.accessibility && this.accessibility.decorative;
@@ -152,8 +162,10 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
         ? null : { index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
     }).filter((item): item is NonNullable<typeof item> => item != null));
     const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
-    const xDomain = chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
-    const yDomain = chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || this.kind === 'bar') }) ?? [0, 1];
+    const fullX = this.xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
+    const fullY = this.yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || this.kind === 'bar') }) ?? [0, 1];
+    const xDomain = this.effectiveViewport.x ?? fullX;
+    const yDomain = this.effectiveViewport.y ?? fullY;
     const bands = this.xScale === 'band' ? bandScale(raw.map((item) => item.xValue), [layout.left, layout.left + layout.plotWidth]) : null;
     const xMap = (this.xScale === 'log' ? logScale : linearScale)(xDomain, [layout.left, layout.left + layout.plotWidth]);
     const yMap = (this.yScale === 'log' ? logScale : linearScale)(yDomain, [layout.top + layout.plotHeight, layout.top]);
@@ -186,7 +198,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     }
     const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
     const current = points[Math.min(this.focused, points.length - 1)];
-    return { marks, canvasMarks, useCanvas, summary: chartSummary(points.map((item) => item.yValue)), tooltip: current ? `${current.label}: ${current.yValue}` : '', legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+    return { marks, canvasMarks, useCanvas, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: current ? `${current.label}: ${current.yValue}` : '', legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
   ngAfterViewChecked(): void {
@@ -209,6 +221,24 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     else return;
     event.preventDefault();
   }
+  onWheel(event: WheelEvent) {
+    if (!this.interaction || (!this.axisEnabled(this.interaction.zoom, 'x') && !this.axisEnabled(this.interaction.zoom, 'y'))) return;
+    event.preventDefault();
+    const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const point: readonly [number, number] = [((event.clientX - bounds.left) / bounds.width) * this.width, ((event.clientY - bounds.top) / bounds.height) * this.height];
+    const layout = chartLayout(this.width, this.height);
+    const model = this.model;
+    const fullX = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
+    const fullY = 'yDomain' in model ? model.yDomain : [0, 1] as ChartDomain;
+    const next = { ...this.effectiveViewport };
+    const factor = event.deltaY < 0 ? 1.2 : 1 / 1.2;
+    if (this.axisEnabled(this.interaction.zoom, 'x')) next.x = clampDomain(zoomDomain(this.effectiveViewport.x ?? fullX, factor, domainFromSelection(this.effectiveViewport.x ?? fullX, [point[0], point[0]], [layout.left, layout.left + layout.plotWidth])[0]), fullX);
+    if (this.axisEnabled(this.interaction.zoom, 'y')) next.y = clampDomain(zoomDomain(this.effectiveViewport.y ?? fullY, factor, domainFromSelection(this.effectiveViewport.y ?? fullY, [point[1], point[1]], [layout.top + layout.plotHeight, layout.top])[0]), fullY);
+    if (this.viewport === undefined) this.uncontrolledViewport = next;
+    this.viewportChange.emit(next);
+    this.changeDetector?.markForCheck();
+  }
+  private axisEnabled(value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') { return value === true || value === 'xy' || value === axis; }
   toggleSeries(id: string) {
     const hidden = this.effectiveHiddenSeries;
     const next = hidden.includes(id) ? hidden.filter((item) => item !== id) : [...hidden, id];
@@ -220,7 +250,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const value = this.y ?? this.series?.[0]?.y;
     const radius = Math.min(this.width, this.height) / 2 - 16;
     const arcs = value ? pieArcs(this.rows, value, radius, this.kind === 'donut' ? this.innerRadius ?? radius * 0.55 : this.innerRadius ?? 0) : [];
-    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
   }
 }
 
