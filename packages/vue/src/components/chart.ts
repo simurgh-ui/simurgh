@@ -20,8 +20,11 @@ import {
   type ChartDataLabelConfig,
   type ChartLegendConfig,
   chartVisualStyle,
+  chartMissingValue,
+  prepareChartData,
   chartCurvePath,
   type ChartVisualMap,
+  type ChartDataOptions,
   type ChartAccessor,
   type ChartSeries,
   type ChartSeriesType,
@@ -58,6 +61,7 @@ const commonProps = {
   legend: Object as PropType<ChartLegendConfig>,
   legendContent: Function as PropType<(series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => unknown>,
   visualMap: Object as PropType<ChartVisualMap>,
+  dataOptions: Object as PropType<ChartDataOptions<Datum>>,
   centerLabel: String,
   showTotal: Boolean,
   onSliceSelect: Function as PropType<(slice: { datum: Datum; index: number; value: number }) => void>,
@@ -94,7 +98,7 @@ const commonProps = {
   emptyContent: { type: String, default: 'No chart data' },
 };
 
-function useRows(props: { data: readonly Datum[]; stream: ChartStream<string> | undefined; width: number }) {
+function useRows(props: { data: readonly Datum[]; stream: ChartStream<string> | undefined; width: number; dataOptions: ChartDataOptions<Datum> | undefined }) {
   const version = ref(0);
   let unsubscribe: (() => void) | undefined;
   watch(() => props.stream, (stream) => {
@@ -104,14 +108,14 @@ function useRows(props: { data: readonly Datum[]; stream: ChartStream<string> | 
   onBeforeUnmount(() => unsubscribe?.());
   return () => {
     void version.value;
-    if (!props.stream) return props.data;
+    if (!props.stream) return prepareChartData(props.data, props.dataOptions);
     if (props.data.length) throw new TypeError('Chart accepts either data or stream, not both.');
     const snapshot = props.stream.snapshot();
     const limit = Math.max(2, Math.floor(props.width * 2));
     const step = Math.max(1, Math.ceil(snapshot.length / limit));
     const indexes = Array.from({ length: Math.ceil(snapshot.length / step) }, (_, index) => index * step);
     if (snapshot.length && indexes.at(-1) !== snapshot.length - 1) indexes.push(snapshot.length - 1);
-    return indexes.map((index) => Object.fromEntries(props.stream!.dimensions.map((key) => [key, snapshot.columns[key]![index]])) as Datum);
+    return prepareChartData(indexes.map((index) => Object.fromEntries(props.stream!.dimensions.map((key) => [key, snapshot.columns[key]![index]])) as Datum), props.dataOptions);
   };
 }
 
@@ -168,7 +172,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const active = definitions.filter((item) => !hiddenSeries.includes(item.id));
         const unstacked = active.flatMap((definition) => rows.map((datum, index) => {
           const xValue = chartValue(datum, definition.x ?? xAccessor, index);
-          const yValue = numericValue(chartValue(datum, definition.y, index));
+          const yValue = chartMissingValue(numericValue(chartValue(datum, definition.y, index)), props.dataOptions?.missing);
           const numericX = numericValue(xValue);
           return xValue == null || yValue == null || (props.xScale !== 'band' && numericX == null) || (props.yScale === 'log' && yValue <= 0)
             ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };

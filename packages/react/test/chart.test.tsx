@@ -175,8 +175,14 @@ describe('React charts', () => {
   it('supports accessible drilldown callbacks and back navigation', () => {
     const drill = vi.fn(); const back = vi.fn();
     const { container } = render(<LineChart data={[{ x: 1, y: 2 }]} x="x" y="y" drilldownDepth={1} onDrilldown={drill} onDrilldownBack={back} accessibility={accessibility} />);
-    fireEvent.click(container.querySelector('[data-part="series"]')!);
+    const viewport = container.querySelector('[data-part="viewport"]')!;
+    vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 640, height: 360, right: 640, bottom: 360, x: 0, y: 0, toJSON: () => ({}) });
+    fireEvent.click(viewport, { clientX: 320, clientY: 180 });
     fireEvent.click(screen.getByRole('button', { name: 'Back' }));
     expect(drill).toHaveBeenCalled(); expect(back).toHaveBeenCalled();
+  });
+  it('supports filtered and windowed chart data', () => {
+    const { container } = render(<LineChart data={[{ x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 3 }]} x="x" y="y" dataOptions={{ filter: (row) => row.y > 1, window: 1 }} accessibility={accessibility} />);
+    expect(container.querySelectorAll('[data-part="series"]')).toHaveLength(1);
   });
 });

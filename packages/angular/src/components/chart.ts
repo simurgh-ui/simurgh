@@ -34,8 +34,11 @@ import {
   type ChartDataLabelConfig,
   type ChartLegendConfig,
   chartVisualStyle,
+  chartMissingValue,
+  prepareChartData,
   chartCurvePath,
   type ChartVisualMap,
+  type ChartDataOptions,
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
@@ -143,6 +146,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() dataLabels: boolean | ChartDataLabelConfig = false;
   @Input() legend?: ChartLegendConfig;
   @Input() visualMap?: ChartVisualMap;
+  @Input() dataOptions?: ChartDataOptions<Datum>;
   @Input() centerLabel?: string;
   @Input() showTotal = false;
   @Input() drilldownDepth = 0;
@@ -215,14 +219,14 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   get tableEnabled() { return !this.decorative && 'table' in this.accessibility && Boolean(this.accessibility.table); }
   get tablePageSize() { const table = 'table' in this.accessibility ? this.accessibility.table : false; return typeof table === 'object' ? table.pageSize ?? 50 : 50; }
   get rows(): readonly Datum[] {
-    if (!this.streamValue) return this.data;
+    if (!this.streamValue) return prepareChartData(this.data, this.dataOptions);
     if (this.data.length) throw new TypeError('Chart accepts either data or stream, not both.');
     const snapshot = this.streamValue.snapshot();
     const limit = Math.max(2, Math.floor(this.width * 2));
     const step = Math.max(1, Math.ceil(snapshot.length / limit));
     const indexes = Array.from({ length: Math.ceil(snapshot.length / step) }, (_, index) => index * step);
     if (snapshot.length && indexes.at(-1) !== snapshot.length - 1) indexes.push(snapshot.length - 1);
-    return indexes.map((index) => Object.fromEntries(this.streamValue!.dimensions.map((key) => [key, snapshot.columns[key]![index]])) as Datum);
+    return prepareChartData(indexes.map((index) => Object.fromEntries(this.streamValue!.dimensions.map((key) => [key, snapshot.columns[key]![index]])) as Datum), this.dataOptions);
   }
   get tablePages() { return Math.max(1, Math.ceil(this.rows.length / this.tablePageSize)); }
   get tableRows() { return this.rows.slice(this.tablePage * this.tablePageSize, this.tablePage * this.tablePageSize + this.tablePageSize); }
@@ -241,7 +245,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const active = this.activeSeries;
     const unstacked = active.flatMap((definition) => this.rows.map((datum, index) => {
       const xValue = chartValue(datum, definition.x ?? xAccessor, index);
-      const yValue = numericValue(chartValue(datum, definition.y, index));
+          const yValue = chartMissingValue(numericValue(chartValue(datum, definition.y, index)), this.dataOptions?.missing);
       const numericX = numericValue(xValue);
       return xValue == null || yValue == null || (this.xScale !== 'band' && numericX == null) || (this.yScale === 'log' && yValue <= 0)
         ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };

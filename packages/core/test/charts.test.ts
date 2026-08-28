@@ -13,6 +13,8 @@ import {
   stackedAreaPath,
   chartVisualStyle,
   chartCurvePath,
+  chartMissingValue,
+  prepareChartData,
 } from '../src/charts.js';
 import { SpatialGrid, clampDomain, createChartSync, domainFromSelection, nextChartIndex, panDomain, pinchZoomDomain, resizeChartSelection, selectionFromPoints, zoomDomain } from '../src/chart-interactions.js';
 import { createChartStream } from '../src/chart-stream.js';
@@ -29,6 +31,10 @@ describe('chart scales and geometry', () => {
   });
   it('builds cubic smooth curves', () => {
     expect(chartCurvePath([[0, 0], [10, 10], [20, 0]], 'smooth')).toContain('C');
+  });
+  it('applies data preparation policies', () => {
+    expect(chartMissingValue(null, 'zero')).toBe(0);
+    expect(prepareChartData([{ value: 1 }, { value: 3 }, { value: 2 }], { sort: (a, b) => b.value - a.value, window: 2 })).toEqual([{ value: 2 }, { value: 1 }]);
   });
   it('pads constant domains and omits invalid logarithmic values', () => {
     expect(chartDomain([5, 5])).toEqual([4.75, 5.25]);

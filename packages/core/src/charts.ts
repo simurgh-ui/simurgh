@@ -31,6 +31,36 @@ export type ChartLegendConfig = { placement?: 'top' | 'right' | 'bottom' | 'left
 export type ChartVisualMapPiece = { gte?: number; lte?: number; color?: string; opacity?: number; size?: number };
 export type ChartVisualMap = { min?: number; max?: number; color?: readonly [string, string]; opacity?: readonly [number, number]; size?: readonly [number, number]; pieces?: readonly ChartVisualMapPiece[] };
 export type ChartVisualStyle = { color?: string; opacity?: number; size?: number };
+export type ChartDataOptions<T = unknown> = {
+  missing?: 'skip' | 'zero' | 'connect';
+  interpolate?: 'none' | 'linear' | 'step';
+  sort?: 'ascending' | 'descending' | ((a: T, b: T) => number);
+  filter?: (datum: T, index: number) => boolean;
+  aggregate?: 'sum' | 'mean' | 'min' | 'max' | ((values: readonly number[]) => number);
+  aggregateBy?: ChartAccessor<T>;
+  window?: number;
+  stackOffset?: 'zero' | 'expand';
+};
+export function chartMissingValue(value: number | null, policy: ChartDataOptions['missing'] = 'skip'): number | null {
+  return value == null || !Number.isFinite(value) ? policy === 'zero' ? 0 : null : value;
+}
+export function prepareChartData<T>(data: readonly T[], options: ChartDataOptions<T> | undefined): readonly T[] {
+  if (!options) return data;
+  let rows = options.filter ? data.filter(options.filter) : [...data];
+  if (options.sort) rows = [...rows].sort(typeof options.sort === 'function' ? options.sort : (a, b) => {
+    const left = String(a); const right = String(b);
+    return (left < right ? -1 : left > right ? 1 : 0) * (options.sort === 'descending' ? -1 : 1);
+  });
+  if (options.window != null && options.window > 0 && rows.length > options.window) rows = rows.slice(-Math.floor(options.window));
+  if (!options.aggregate || !options.aggregateBy) return rows;
+  const groups = new Map<ChartValue, T[]>();
+  rows.forEach((row, index) => { const key = chartValue(row, options.aggregateBy!, index) ?? index; const group = groups.get(key) ?? []; group.push(row); groups.set(key, group); });
+  return [...groups.values()].map((group) => {
+    const first = group[0]!;
+    if (typeof options.aggregate === 'function') return first;
+    return first;
+  });
+}
 export function chartVisualStyle(value: number, map: ChartVisualMap | undefined): ChartVisualStyle {
   if (!map) return {};
   const piece = map.pieces?.find((item) => (item.gte == null || value >= item.gte) && (item.lte == null || value <= item.lte));

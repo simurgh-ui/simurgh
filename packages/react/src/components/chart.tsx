@@ -22,9 +22,12 @@ import {
   type ChartDomain,
   type ChartDataLabelConfig,
   chartVisualStyle,
+  chartMissingValue,
+  prepareChartData,
   chartCurvePath,
   type ChartLegendConfig,
   type ChartVisualMap,
+  type ChartDataOptions,
   type ChartRenderMode,
   type ChartScaleType,
   type ChartSeries,
@@ -73,6 +76,7 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   legend?: ChartLegendConfig;
   legendContent?: (series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode;
   visualMap?: ChartVisualMap;
+  dataOptions?: ChartDataOptions<T>;
   centerLabel?: string;
   showTotal?: boolean;
   onSliceSelect?: (slice: { datum: T; index: number; value: number }) => void;
@@ -124,19 +128,19 @@ const ChartContext = createContext<ChartContextValue | null>(null);
 
 const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart-${index + 1}))`);
 
-function useChartRows<T>(data: readonly T[] | undefined, stream: ChartStream<string> | undefined, width: number): readonly T[] {
+function useChartRows<T>(data: readonly T[] | undefined, stream: ChartStream<string> | undefined, width: number, options?: ChartDataOptions<T>): readonly T[] {
   const [version, setVersion] = useState(0);
   useEffect(() => stream?.subscribe(() => setVersion((value) => value + 1)), [stream]);
   return useMemo(() => {
     if (data && stream) throw new TypeError('Chart accepts either data or stream, not both.');
-    if (!stream) return data ?? [];
+    if (!stream) return prepareChartData(data ?? [], options);
     const snapshot = stream.snapshot();
     const limit = Math.max(2, Math.floor(width * 2));
     const step = Math.max(1, Math.ceil(snapshot.length / limit));
     const indexes = Array.from({ length: Math.ceil(snapshot.length / step) }, (_, index) => index * step);
     if (snapshot.length && indexes.at(-1) !== snapshot.length - 1) indexes.push(snapshot.length - 1);
-    return indexes.map((index) => Object.fromEntries(stream.dimensions.map((key) => [key, snapshot.columns[key]![index]])) as T);
-  }, [data, stream, version, width]);
+    return prepareChartData(indexes.map((index) => Object.fromEntries(stream.dimensions.map((key) => [key, snapshot.columns[key]![index]])) as T), options);
+  }, [data, stream, version, width, options]);
 }
 
 export function ChartRoot({ width = 640, height = 360, children, ...props }: HTMLAttributes<HTMLElement> & ChartContextValue) {
@@ -181,7 +185,7 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
 function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeriesType | 'combo' }) {
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
-    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, viewport: controlledViewport, defaultViewport, interaction, sync,
+    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, dataOptions, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu, drilldownDepth, onDrilldown, onDrilldownBack,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
@@ -201,7 +205,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const pinchStart = useRef<{ distance: number; midpoint: readonly [number, number] } | null>(null);
   const zoomDrag = useRef(false);
   const hiddenSeries = controlledHiddenSeries ?? uncontrolledHiddenSeries;
-  const data = useChartRows(inputData, stream, width);
+  const data = useChartRows(inputData, stream, width, dataOptions);
   const titleId = `${useId()}-title`;
   const descriptionId = `${titleId}-description`;
   const layout = chartLayout(width, height);
@@ -209,7 +213,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const active = definitions.filter((item) => !hiddenSeries.includes(item.id));
   const unstacked = active.flatMap((definition) => data.map((datum, index) => {
     const xValue = chartValue(datum, definition.x ?? x, index);
-    const yValue = numericValue(chartValue(datum, definition.y, index));
+    const yValue = chartMissingValue(numericValue(chartValue(datum, definition.y, index)), dataOptions?.missing);
     const numericX = numericValue(xValue);
     return yValue == null || xValue == null || (xScale !== 'band' && numericX == null) || (yScale === 'log' && yValue <= 0)
       ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4, definition };
@@ -499,8 +503,8 @@ function SeriesMarks<T>({ item, index, baseline, bandwidth, orientation, visualM
 }
 
 function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: boolean }) {
-  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, centerLabel, showTotal = false, onSliceSelect, drilldownDepth, onDrilldown, onDrilldownBack, emptyContent = 'No chart data', ...native } = props;
-  const data = useChartRows(inputData, stream, width);
+  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, centerLabel, showTotal = false, onSliceSelect, drilldownDepth, onDrilldown, onDrilldownBack, dataOptions, emptyContent = 'No chart data', ...native } = props;
+  const data = useChartRows(inputData, stream, width, dataOptions);
   const value = y ?? series?.[0]?.y;
   if (!value) throw new TypeError('Pie and donut charts require a y accessor or series.');
   const radius = Math.max(0, Math.min(width, height) / 2 - 16);
@@ -557,8 +561,8 @@ export function ComboChart<T>(props: ChartProps<T>) { return <CartesianChart {..
 export function PieChart<T>(props: ChartProps<T>) { return <PolarChart {...props} />; }
 export function DonutChart<T>(props: ChartProps<T>) { return <PolarChart {...props} donut />; }
 export function RadarChart<T>(props: ChartProps<T>) {
-  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, emptyContent = 'No chart data', ...native } = props;
-  const data = useChartRows(inputData, stream, width);
+  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, dataOptions, emptyContent = 'No chart data', ...native } = props;
+  const data = useChartRows(inputData, stream, width, dataOptions);
   const value = y ?? series?.[0]?.y;
   const values = value ? data.map((datum, index) => numericValue(chartValue(datum, value, index))).filter((item): item is number => item != null) : [];
   const decorative = 'decorative' in accessibility && accessibility.decorative;
