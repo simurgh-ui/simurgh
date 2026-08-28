@@ -174,10 +174,11 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private unsubscribeSync: (() => void) | undefined = undefined;
   @Input() set sync(value: ChartSync | undefined) { this.unsubscribeSync?.(); this.syncValue = value; this.unsubscribeSync = value?.subscribe((state) => { if (state.focused) this.focused = state.focused.index; this.changeDetector?.markForCheck(); }); }
   get sync() { return this.syncValue; }
-  @Input() renderMode: 'auto' | 'svg' | 'canvas' = 'auto';
+  @Input() renderMode: 'auto' | 'svg' | 'canvas' | 'webgl' = 'auto';
   @Input() canvasThreshold = 2000;
   @Input() workerProcessing = false;
   @Input() viewportCulling = false;
+  @Input() progressiveChunkSize = 0;
   @Input() motion = false;
   @Input() locale: Partial<ChartLocale> = defaultChartLocale;
   @Input() hiddenSeries?: readonly string[];
@@ -310,7 +311,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
         }
       }
     }
-    const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
+    const useCanvas = this.renderMode === 'canvas' || this.renderMode === 'webgl' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
     const current = points[Math.min(this.focused, points.length - 1)];
     const tooltipPoints = this.tooltipMode === 'none' ? [] : this.tooltipMode === 'nearest' ? (current ? [current] : []) : this.tooltipMode === 'intersect' ? (this.tooltipIntersected && current ? [current] : []) : current ? points.filter((item) => item.index === current.index) : [];
     const axisYDomain = this.yAxis?.position === 'end' ? secondaryYDomain : yDomain;
@@ -327,17 +328,27 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const signature = `${this.rows.length}:${model.marks.length}:${this.width}:${this.height}`;
     if (!model.useCanvas || !this.canvas || signature === this.drawn) return;
     this.drawn = signature;
-    void import('@simurgh-ui/core/chart-canvas').then(async ({ drawChartCanvas, createChartWorker, runChartWorker }) => {
-      const context = this.canvas?.nativeElement.getContext('2d');
-      if (!context) return;
+    void import('@simurgh-ui/core/chart-canvas').then(async ({ drawChartCanvas, drawChartCanvasProgressive, drawChartWebGL, createChartWorker, runChartWorker }) => {
+      const paint = (marks: readonly CanvasMark[]) => {
+        const canvas = this.canvas?.nativeElement;
+        if (!canvas) return;
+        if (this.renderMode === 'webgl' && marks.every((mark) => mark.type === 'line')) {
+          const gl = canvas.getContext('webgl');
+          if (gl && drawChartWebGL(gl, marks, this.width, this.height)) return;
+        }
+        const context = canvas.getContext('2d');
+        if (!context) return;
+        if (this.progressiveChunkSize > 0) drawChartCanvasProgressive(context, marks, this.width, this.height, { pixelRatio: globalThis.devicePixelRatio || 1, chunkSize: this.progressiveChunkSize });
+        else drawChartCanvas(context, marks, this.width, this.height, globalThis.devicePixelRatio || 1);
+      };
       if (this.workerProcessing && model.canvasMarks.some((mark) => mark.type === 'line' || mark.type === 'area')) {
         const worker = createChartWorker();
         if (worker) try {
           const processed = await Promise.all(model.canvasMarks.map(async (mark) => mark.type === 'line' || mark.type === 'area' ? { ...mark, points: (await runChartWorker<{ x: number; y: number }[]>(worker, { operation: 'decimate', points: mark.points.map(([x, y]) => ({ x, y })), width: this.plotWidth })).map(({ x, y }) => [x, y] as const) } : mark));
-          drawChartCanvas(context, processed, this.width, this.height, globalThis.devicePixelRatio || 1);
+          paint(processed);
         } finally { worker.terminate(); }
-        else drawChartCanvas(context, model.canvasMarks, this.width, this.height, globalThis.devicePixelRatio || 1);
-      } else drawChartCanvas(context, model.canvasMarks, this.width, this.height, globalThis.devicePixelRatio || 1);
+        else paint(model.canvasMarks);
+      } else paint(model.canvasMarks);
     });
   }
 
@@ -575,7 +586,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
 }
 
 function chartMetadata(selector: string) {
-  return Component({ selector, standalone: true, imports: [CommonModule], template, host: { class: 'simurgh-chart', 'data-slot': 'chart', '[attr.data-motion]': "motion ? 'on' : 'off'", '[attr.data-state]': "model.marks.length ? null : 'empty'", '[attr.aria-hidden]': 'decorative || null' } });
+  return Component({ selector, standalone: true, imports: [CommonModule], template, host: { class: 'simurgh-chart', 'data-slot': 'chart', '[attr.data-motion]': "motion ? 'on' : 'off'", '[attr.data-renderer]': "renderMode === 'webgl' ? 'webgl' : model.useCanvas ? 'canvas' : 'svg'", '[attr.data-state]': "model.marks.length ? null : 'empty'", '[attr.aria-hidden]': 'decorative || null' } });
 }
 
 @chartMetadata('simurgh-line-chart') export class LineChartComponent extends ChartBaseComponent { readonly kind = 'line'; }

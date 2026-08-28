@@ -544,7 +544,7 @@ budgets remain fixed.
 
 - [x] Add missing-value policies, interpolation options, sorting, filtering, aggregation, windowing, and configurable stacking behavior.
 - [x] Integrate decimation and worker-backed processing consistently across SVG, Canvas, React, Vue, and Angular.
-- [ ] Add viewport culling, progressive rendering, and optional WebGL rendering for large datasets.
+- [x] Add viewport culling, progressive rendering, and optional WebGL rendering for large datasets.
 - [x] Add streaming-chart controls for pause/resume, auto-scroll, live-window selection, backfill, and accessible new-data announcements.
 - [x] Integrate chart motion with initial render, data updates, enter/exit transitions, zoom, pan, and reduced-motion preferences.
 

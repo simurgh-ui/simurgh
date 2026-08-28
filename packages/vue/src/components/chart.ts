@@ -98,10 +98,11 @@ const commonProps = {
   height: { type: Number, default: 360 },
   xScale: { type: String as PropType<'linear' | 'time' | 'band' | 'log'>, default: 'linear' },
   yScale: { type: String as PropType<'linear' | 'time' | 'log'>, default: 'linear' },
-  renderMode: { type: String as PropType<'auto' | 'svg' | 'canvas'>, default: 'auto' },
+  renderMode: { type: String as PropType<'auto' | 'svg' | 'canvas' | 'webgl'>, default: 'auto' },
   canvasThreshold: { type: Number, default: 2000 },
   workerProcessing: Boolean,
   viewportCulling: Boolean,
+  progressiveChunkSize: { type: Number, default: 0 },
   motion: Boolean,
   locale: Object as PropType<Partial<ChartLocale>>,
   hiddenSeries: Array as PropType<readonly string[]>,
@@ -212,7 +213,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const flat = prepared.flatMap((item) => item.points.map((point) => ({ ...point, series: item })));
         const labelConfig: ChartDataLabelConfig | undefined = props.dataLabels === true ? {} : props.dataLabels || undefined;
         const labelPoints = labelConfig?.enabled === false ? [] : flat.reduce<typeof flat>((visible, point) => visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18)) ? visible : [...visible, point], []);
-        const useCanvas = props.renderMode === 'canvas' || (props.renderMode === 'auto' && flat.length > props.canvasThreshold);
+        const useCanvas = props.renderMode === 'canvas' || props.renderMode === 'webgl' || (props.renderMode === 'auto' && flat.length > props.canvasThreshold);
         const decorative = 'decorative' in props.accessibility && props.accessibility.decorative;
         const table = !decorative && props.accessibility.table;
         const pageSize = typeof table === 'object' ? table.pageSize ?? 50 : 50;
@@ -356,9 +357,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
             drawn = signature;
             void nextTick(async () => {
               if (!canvas.value) return;
-              const { drawChartCanvas } = await import('@simurgh-ui/core/chart-canvas');
-              const context = canvas.value.getContext('2d');
-              if (!context) return;
+              const { drawChartCanvas, drawChartCanvasProgressive, drawChartWebGL, createChartWorker, runChartWorker } = await import('@simurgh-ui/core/chart-canvas');
               const marks: CanvasMark[] = prepared.flatMap<CanvasMark>((item, seriesIndex) => {
                 const color = item.color ?? colors[seriesIndex % colors.length]!;
                 const visible = props.viewportCulling ? cullChartPoints(item.points, { x: [layout.left, layout.left + layout.plotWidth], y: [layout.top, layout.top + layout.plotHeight] }) : item.points;
@@ -368,19 +367,29 @@ function cartesian(kind: ChartSeriesType | 'combo') {
                 if (item.type === 'bar') return item.points.map((point) => { const origin = item.stack ? point.y0 : baseline; return { type: 'rect' as const, x: point.x - (bands?.bandwidth ?? 8) / 2, y: Math.min(point.y, origin), width: bands?.bandwidth ?? 8, height: Math.abs(point.y - origin), color }; });
                 return item.points.map((point) => ({ type: 'point' as const, x: point.x, y: point.y, radius: item.type === 'bubble' ? point.radius : 3, color }));
               });
+              const paint = (nextMarks: readonly CanvasMark[]) => {
+                if (!canvas.value) return;
+                if (props.renderMode === 'webgl' && nextMarks.every((mark) => mark.type === 'line')) {
+                  const gl = canvas.value.getContext('webgl');
+                  if (gl && drawChartWebGL(gl, nextMarks, props.width, props.height)) return;
+                }
+                const context = canvas.value.getContext('2d');
+                if (!context) return;
+                if (props.progressiveChunkSize > 0) drawChartCanvasProgressive(context, nextMarks, props.width, props.height, { pixelRatio: globalThis.devicePixelRatio || 1, chunkSize: props.progressiveChunkSize });
+                else drawChartCanvas(context, nextMarks, props.width, props.height, globalThis.devicePixelRatio || 1);
+              };
               if (props.workerProcessing && marks.some((mark) => mark.type === 'line' || mark.type === 'area')) {
-                const { createChartWorker, runChartWorker } = await import('@simurgh-ui/core/chart-canvas');
                 const worker = createChartWorker();
-                if (!worker) drawChartCanvas(context, marks, props.width, props.height, globalThis.devicePixelRatio || 1);
+                if (!worker) paint(marks);
                 else try {
                   const processed = await Promise.all(marks.map(async (mark) => mark.type === 'line' || mark.type === 'area' ? { ...mark, points: (await runChartWorker<{ x: number; y: number }[]>(worker, { operation: 'decimate', points: mark.points.map(([x, y]) => ({ x, y })), width: layout.plotWidth })).map(({ x, y }) => [x, y] as const) } : mark));
-                  drawChartCanvas(context, processed, props.width, props.height, globalThis.devicePixelRatio || 1);
+                  paint(processed);
                 } finally { worker.terminate(); }
-              } else drawChartCanvas(context, marks, props.width, props.height, globalThis.devicePixelRatio || 1);
+              } else paint(marks);
             });
           }
         }
-        return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-motion': props.motion ? 'on' : 'off', 'data-renderer': useCanvas ? 'canvas-fallback' : 'svg', 'aria-hidden': decorative || undefined }, [
+        return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-motion': props.motion ? 'on' : 'off', 'data-renderer': props.renderMode === 'webgl' ? 'webgl' : useCanvas ? 'canvas' : 'svg', 'aria-hidden': decorative || undefined }, [
           !decorative && h('figcaption', props.accessibility.title),
           !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(flat.map((item) => item.yValue))}`),
           !decorative && flat[focused.value] && h('div', { 'data-part': 'point-announcement', 'aria-live': 'polite', class: 'simurgh-visually-hidden' }, `${flat[focused.value]!.series.label ?? flat[focused.value]!.series.id}: ${String(flat[focused.value]!.xValue)}, ${flat[focused.value]!.yValue}`),

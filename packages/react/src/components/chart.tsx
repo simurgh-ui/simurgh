@@ -112,6 +112,7 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   canvasThreshold?: number;
   workerProcessing?: boolean;
   viewportCulling?: boolean;
+  progressiveChunkSize?: number;
   motion?: boolean;
   locale?: Partial<ChartLocale>;
   hiddenSeries?: readonly string[];
@@ -199,7 +200,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, dataOptions, streamControls = false, streamAutoScroll = false, streamAnnouncement = false, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu, drilldownDepth, onDrilldown, onDrilldownBack,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
-    renderMode = 'auto', canvasThreshold = 2000, workerProcessing = false, viewportCulling = false, motion = false, locale,
+    renderMode = 'auto', canvasThreshold = 2000, workerProcessing = false, viewportCulling = false, progressiveChunkSize = 0, motion = false, locale,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
   const [uncontrolledHiddenSeries, setUncontrolledHiddenSeries] = useState<readonly string[]>(defaultHiddenSeries);
@@ -253,7 +254,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     ? ({ ...item, x: horizontalValueMap(item.end), y: xBand ? xBand.map(item.xValue) + xBand.bandwidth / 2 : xMap(item.xValue), y0: horizontalValueMap(item.start) })
     : ({ ...item, x: xMap(item.xValue), y: (definition.axis === 'end' ? secondaryYMap : yMap)(item.end), y0: (definition.axis === 'end' ? secondaryYMap : yMap)(item.start) })) }));
   const pointCount = prepared.reduce((sum, item) => sum + item.points.length, 0);
-  const useCanvas = renderMode === 'canvas' || (renderMode === 'auto' && pointCount > canvasThreshold);
+  const useCanvas = renderMode === 'canvas' || renderMode === 'webgl' || (renderMode === 'auto' && pointCount > canvasThreshold);
   const [focus, setFocus] = useState(0);
   const flat = prepared.flatMap((item) => item.points.map((point) => ({ ...point, series: item })));
   const labelConfig: ChartDataLabelConfig | undefined = dataLabels === true ? {} : dataLabels || undefined;
@@ -273,10 +274,9 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   useEffect(() => {
     if (!useCanvas || !canvas.current) return;
     let current = true;
-    void import('@simurgh-ui/core/chart-canvas').then(({ drawChartCanvas }) => {
+    let cancelProgressive: (() => void) | undefined;
+    void import('@simurgh-ui/core/chart-canvas').then(({ drawChartCanvas, drawChartCanvasProgressive, drawChartWebGL, createChartWorker, runChartWorker }) => {
       if (!current || !canvas.current) return;
-      const context = canvas.current.getContext('2d');
-      if (!context) return;
       const marks: CanvasMark[] = prepared.flatMap<CanvasMark>((item, seriesIndex) => {
         const color = item.color ?? colors[seriesIndex % colors.length]!;
         const visible = viewportCulling ? cullChartPoints(item.points, { x: [layout.left, layout.left + layout.plotWidth], y: [layout.top, layout.top + layout.plotHeight] }) : item.points;
@@ -291,21 +291,32 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         });
         return points.map((point) => ({ type: 'point' as const, x: point.x, y: point.y, radius: item.type === 'bubble' ? point.radius : 3, color }));
       });
+      const paint = (nextMarks: readonly CanvasMark[]) => {
+        if (!current || !canvas.current) return;
+        if (renderMode === 'webgl' && nextMarks.every((mark) => mark.type === 'line')) {
+          const gl = canvas.current.getContext('webgl');
+          if (gl && drawChartWebGL(gl, nextMarks, width, height)) return;
+        }
+        const context = canvas.current.getContext('2d');
+        if (!context) return;
+        if (progressiveChunkSize > 0) cancelProgressive = drawChartCanvasProgressive(context, nextMarks, width, height, { pixelRatio: window.devicePixelRatio || 1, chunkSize: progressiveChunkSize });
+        else drawChartCanvas(context, nextMarks, width, height, window.devicePixelRatio || 1);
+      };
       if (workerProcessing && marks.some((mark) => mark.type === 'line' || mark.type === 'area')) {
-        void import('@simurgh-ui/core/chart-canvas').then(async ({ createChartWorker, runChartWorker }) => {
+        void (async () => {
           const worker = createChartWorker();
-          if (!worker) return drawChartCanvas(context, marks, width, height, window.devicePixelRatio || 1);
+          if (!worker) return paint(marks);
           try {
             const processed = await Promise.all(marks.map(async (mark) => mark.type === 'line' || mark.type === 'area'
               ? { ...mark, points: (await runChartWorker<{ x: number; y: number }[]>(worker, { operation: 'decimate', points: mark.points.map(([x, y]) => ({ x, y })), width: layout.plotWidth })).map(({ x, y }) => [x, y] as const) }
               : mark));
-            if (current) drawChartCanvas(context, processed, width, height, window.devicePixelRatio || 1);
+            paint(processed);
           } finally { worker.terminate(); }
-        });
-      } else drawChartCanvas(context, marks, width, height, window.devicePixelRatio || 1);
+        })();
+      } else paint(marks);
     });
-    return () => { current = false; };
-  }, [useCanvas, prepared, layout.plotWidth, layout.left, layout.top, layout.plotHeight, width, height, workerProcessing, viewportCulling]);
+    return () => { current = false; cancelProgressive?.(); };
+  }, [useCanvas, prepared, layout.plotWidth, layout.left, layout.top, layout.plotHeight, width, height, workerProcessing, viewportCulling, progressiveChunkSize, renderMode]);
   const summary = chartSummary(flat.map((item) => item.yValue));
   const decorative = 'decorative' in accessibility && accessibility.decorative;
   const table = !decorative && accessibility.table;
@@ -477,7 +488,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const xTicks = chartTicks(resolvedX, xAxis?.ticks ?? 5);
   const formatTick = (value: ChartValue, axis: ChartAxisConfig | undefined) => axis?.tickFormatter?.(value) ?? formatChartValue(value, axis?.locale);
   return (
-    <figure className="simurgh-chart" data-slot="chart" data-motion={motion ? 'on' : 'off'} data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
+    <figure className="simurgh-chart" data-slot="chart" data-motion={motion ? 'on' : 'off'} data-renderer={renderMode === 'webgl' ? 'webgl' : useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p>{focused && <div data-part="point-announcement" aria-live="polite" className="simurgh-visually-hidden">{focused.series.label ?? focused.series.id}: {String(focused.xValue)}, {focused.yValue}</div>}</>}
       <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onMouseLeave={() => { setTooltipIntersected(false); onPointHover?.(null); if (tooltipTrigger === 'hover') setTooltipVisible(false); }}
         onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { setTooltipVisible(true); onPointClick?.(point); onDrilldown?.(point); } }}
