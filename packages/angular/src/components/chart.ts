@@ -36,6 +36,7 @@ import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 
 type Datum = Record<PropertyKey, unknown>;
+export type ChartPointInteraction<T = Datum> = { datum: T; index: number; x: number; y: number; xValue: string | number | Date; yValue: number; radius: number; seriesId: string };
 type Mark = {
   id: string;
   type: ChartSeriesType;
@@ -52,7 +53,7 @@ const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart
 const template = `
   <figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption>
   <p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ model.summary }}</p>
-  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)">
+  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)" (mousemove)="onMouseMove($event)" (mouseleave)="pointHover.emit(null)" (click)="onPointClick($event)" (dblclick)="onPointDoubleClick($event)" (contextmenu)="onPointContextMenu($event)">
     <canvas #canvas *ngIf="model.useCanvas" [attr.width]="width" [attr.height]="height" aria-hidden="true"></canvas>
     <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" data-part="plot" aria-hidden="true">
       <ng-container *ngIf="!model.useCanvas">
@@ -64,6 +65,7 @@ const template = `
       </ng-container>
     </svg>
     <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
+    <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
     <div *ngIf="model.tooltip" role="tooltip" data-part="tooltip">{{ model.tooltip }}</div>
   </div>
   <div data-part="legend">
@@ -113,6 +115,11 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() emptyContent = 'No chart data';
   @Output() readonly hiddenSeriesChange = new EventEmitter<string[]>();
   @Output() readonly viewportChange = new EventEmitter<{ x?: ChartDomain; y?: ChartDomain }>();
+  @Output() readonly selectionChange = new EventEmitter<{ start: readonly [number, number]; end: readonly [number, number] } | null>();
+  @Output() readonly pointHover = new EventEmitter<ChartPointInteraction | null>();
+  @Output() readonly pointClick = new EventEmitter<ChartPointInteraction>();
+  @Output() readonly pointDoubleClick = new EventEmitter<ChartPointInteraction>();
+  @Output() readonly pointContextMenu = new EventEmitter<ChartPointInteraction>();
   @ViewChild('canvas') canvas?: ElementRef<HTMLCanvasElement>;
   abstract readonly kind: ChartSeriesType | 'combo' | 'pie' | 'donut';
   focused = 0;
@@ -159,7 +166,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       const yValue = numericValue(chartValue(datum, definition.y, index));
       const numericX = numericValue(xValue);
       return xValue == null || yValue == null || (this.xScale !== 'band' && numericX == null) || (this.yScale === 'log' && yValue <= 0)
-        ? null : { index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
+        ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
     }).filter((item): item is NonNullable<typeof item> => item != null));
     const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
     const fullX = this.xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
@@ -171,12 +178,12 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const yMap = (this.yScale === 'log' ? logScale : linearScale)(yDomain, [layout.top + layout.plotHeight, layout.top]);
     const marks: Mark[] = [];
     const canvasMarks: CanvasMark[] = [];
-    const points: { id: string; label: string; yValue: number }[] = [];
+    const points: ChartPointInteraction[] = [];
     for (const [seriesIndex, definition] of active.entries()) {
       const type = definition.type ?? (this.kind === 'combo' ? 'line' : this.kind);
       const color = definition.color ?? colors[seriesIndex % colors.length]!;
       const values = raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : xMap(item.numericX), y: yMap(item.end), y0: yMap(item.start) }));
-      points.push(...values.map((item) => ({ id: definition.id, label: definition.label ?? definition.id, yValue: item.yValue })));
+      points.push(...values.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: definition.id })));
       if (type === 'line' || type === 'area') {
         const path = type === 'line' ? linePath(values.map((item) => [item.x, item.y])) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
         marks.push({ id: definition.id, type, color, path });
@@ -198,7 +205,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     }
     const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
     const current = points[Math.min(this.focused, points.length - 1)];
-    return { marks, canvasMarks, useCanvas, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: current ? `${current.label}: ${current.yValue}` : '', legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: current ? `${current.seriesId}: ${current.yValue}` : '', legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
   ngAfterViewChecked(): void {
@@ -238,6 +245,22 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     this.viewportChange.emit(next);
     this.changeDetector?.markForCheck();
   }
+  private pointAt(event: MouseEvent): ChartPointInteraction | null {
+    const points = 'points' in this.model ? this.model.points : [];
+    const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    if (!bounds.width || !bounds.height || !points.length) return null;
+    const x = ((event.clientX - bounds.left) / bounds.width) * this.width;
+    const y = ((event.clientY - bounds.top) / bounds.height) * this.height;
+    return points.reduce((nearest, point) => Math.hypot(point.x - x, point.y - y) < Math.hypot(nearest.x - x, nearest.y - y) ? point : nearest, points[0]!);
+  }
+  onMouseMove(event: MouseEvent) {
+    const point = this.pointAt(event);
+    if (point) { this.focused = point.index; this.pointHover.emit(point); }
+  }
+  onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointClick.emit(point); }
+  onPointDoubleClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointDoubleClick.emit(point); }
+  onPointContextMenu(event: MouseEvent) { const point = this.pointAt(event); if (point) { event.preventDefault(); this.pointContextMenu.emit(point); } }
+  resetViewport() { this.uncontrolledViewport = {}; this.viewportChange.emit({}); this.selectionChange.emit(null); }
   private axisEnabled(value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') { return value === true || value === 'xy' || value === axis; }
   toggleSeries(id: string) {
     const hidden = this.effectiveHiddenSeries;
@@ -250,7 +273,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const value = this.y ?? this.series?.[0]?.y;
     const radius = Math.min(this.width, this.height) / 2 - 16;
     const arcs = value ? pieArcs(this.rows, value, radius, this.kind === 'donut' ? this.innerRadius ?? radius * 0.55 : this.innerRadius ?? 0) : [];
-    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
   }
 }
 
