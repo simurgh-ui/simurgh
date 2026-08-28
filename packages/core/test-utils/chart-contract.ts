@@ -29,8 +29,10 @@ export async function runSharedChartContract(createHarness: () => Promise<ChartC
     expect(harness.announcement()).toContain('2');
     await harness.wheel();
     expect(harness.viewportChanges()).toBeGreaterThan(0);
+    expect(harness.root.querySelector('[data-part="interaction-announcement"]')?.textContent).toContain('Chart view');
     await harness.click();
     expect(harness.pointClicks()).toBeGreaterThan(0);
+    expect(harness.root.querySelector('[data-part="interaction-announcement"]')?.textContent).toContain('Drilled into');
   } finally { harness.destroy(); }
 }
 

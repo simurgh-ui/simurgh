@@ -81,6 +81,7 @@ const template = `
   <figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption>
   <p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ model.summary }}</p>
   <div *ngIf="!decorative && model.points[focused]" data-part="point-announcement" aria-live="polite" class="simurgh-visually-hidden">{{ model.points[focused].seriesId }}: {{ model.points[focused].xValue }}, {{ model.points[focused].yValue }}</div>
+  <div *ngIf="!decorative && interactionStatus" data-part="interaction-announcement" aria-live="polite" class="simurgh-visually-hidden">{{ interactionStatus }}</div>
   <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave()" (click)="onPointClick($event)" (dblclick)="onPointDoubleClick($event)" (contextmenu)="onPointContextMenu($event)" (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)" (pointercancel)="onPointerCancel()">
     <canvas #canvas *ngIf="model.useCanvas" [attr.width]="width" [attr.height]="height" aria-hidden="true"></canvas>
     <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" data-part="plot" aria-hidden="true">
@@ -220,11 +221,13 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   tooltipIntersected = true;
   tooltipX = 0;
   tooltipY = 0;
+  drilldownStatus = '';
   private drawn = '';
   constructor(@Inject(ChangeDetectorRef) @Optional() private readonly changeDetector?: ChangeDetectorRef) {}
 
   get effectiveHiddenSeries() { return this.hiddenSeries ?? this.uncontrolledHiddenSeries ?? this.defaultHiddenSeries; }
   get chartLabels(): ChartLocale { return { ...defaultChartLocale, ...this.locale }; }
+  get interactionStatus() { const model = this.model; if (this.drilldownStatus) return this.drilldownStatus; if (this.selection) return this.chartLabels.selectionState(('points' in model ? model.points : []).filter((item) => item.x >= this.selection!.start[0] && item.x <= this.selection!.end[0] && item.y >= this.selection!.start[1] && item.y <= this.selection!.end[1]).length); const viewport = this.effectiveViewport; return viewport.x || viewport.y ? this.chartLabels.viewportState(viewport.x, viewport.y) : ''; }
   get layoutTop() { return chartLayout(this.width, this.height).top; }
   get layoutLeft() { return chartLayout(this.width, this.height).left; }
   get plotHeight() { return chartLayout(this.width, this.height).plotHeight; }
@@ -543,10 +546,10 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (point) { const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect(); this.tooltipX = ((event.clientX - bounds.left) / bounds.width) * this.width; this.tooltipY = ((event.clientY - bounds.top) / bounds.height) * this.height; this.tooltipIntersected = Math.hypot(point.x - this.tooltipX, point.y - this.tooltipY) <= Math.max(point.radius, 8); this.focused = point.index; this.tooltipVisible = true; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
   }
   onMouseLeave() { this.tooltipIntersected = false; this.pointHover.emit(null); if (this.tooltipTrigger === 'hover') this.tooltipVisible = false; }
-  onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) { this.tooltipVisible = true; this.pointClick.emit(point); this.drilldown.emit(point); } }
+  onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) { this.tooltipVisible = true; this.pointClick.emit(point); this.drilldown.emit(point); this.drilldownStatus = this.chartLabels.drilldownState(point.seriesId); } }
   onPointDoubleClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointDoubleClick.emit(point); }
   onPointContextMenu(event: MouseEvent) { const point = this.pointAt(event); if (point) { event.preventDefault(); this.pointContextMenu.emit(point); } }
-  resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.sync?.set({ viewport: {}, selection: null, focused: null }); this.viewportChange.emit({}); this.selectionChange.emit(null); this.selectedDataChange.emit([]); this.changeDetector?.markForCheck(); }
+  resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.drilldownStatus = ''; this.sync?.set({ viewport: {}, selection: null, focused: null }); this.viewportChange.emit({}); this.selectionChange.emit(null); this.selectedDataChange.emit([]); this.changeDetector?.markForCheck(); }
   private axisEnabled(value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') { return value === true || value === 'xy' || value === axis; }
   toggleSeries(id: string) {
     const hidden = this.effectiveHiddenSeries;
@@ -567,6 +570,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     this.selectedPolarSlice = this.selectedPolarSlice === arc.index ? null : arc.index;
     this.sliceSelect.emit({ datum: arc.datum, index: arc.index, value: arc.value });
     this.drilldown.emit({ datum: arc.datum, index: arc.index, value: arc.value });
+    this.drilldownStatus = this.chartLabels.drilldownState(String(arc.index + 1));
     this.changeDetector?.markForCheck();
   }
   onPolarSliceHover(id: string) { if (this.kind === 'pie' || this.kind === 'donut') { this.hoveredPolarSlice = Number(id); this.changeDetector?.markForCheck(); } }
@@ -585,7 +589,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       if (visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18))) return visible;
       return [...visible, { ...point, text: labelConfig?.formatter?.(arc.value, arc.index, 'slices') ?? String(arc.index + 1) }];
     }, []);
-    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path, opacity: this.selectedPolarSlice != null && this.selectedPolarSlice !== arc.index ? 0.35 : this.hoveredPolarSlice != null && this.hoveredPolarSlice !== arc.index ? 0.65 : 1 })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: labels, polarTotal: arcs.reduce((total, arc) => total + arc.value, 0), summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+    const points: ChartPointInteraction[] = arcs.map((arc) => { const angle = (arc.startAngle + arc.endAngle) / 2; return { datum: arc.datum, index: arc.index, x: this.width / 2 + Math.cos(angle) * radius * 0.7, y: this.height / 2 + Math.sin(angle) * radius * 0.7, xValue: arc.index + 1, yValue: arc.value, radius: 4, seriesId: 'slices' }; });
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path, opacity: this.selectedPolarSlice != null && this.selectedPolarSlice !== arc.index ? 0.35 : this.hoveredPolarSlice != null && this.hoveredPolarSlice !== arc.index ? 0.65 : 1 })), canvasMarks: [], useCanvas: false, points, xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: labels, polarTotal: arcs.reduce((total, arc) => total + arc.value, 0), summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
   }
 }
 

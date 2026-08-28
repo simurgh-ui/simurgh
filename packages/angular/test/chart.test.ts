@@ -141,6 +141,7 @@ describe('Angular charts', () => {
     const chart = new PieChartComponent();
     chart.data = [{ value: 2 }, { value: 8 }]; chart.y = 'value'; chart.centerLabel = 'Total'; chart.showTotal = true;
     expect(chart.model.polarTotal).toBe(10);
+    expect(chart.model.points).toHaveLength(2);
   });
   it('emits polar slice selection', () => {
     const chart = new PieChartComponent();

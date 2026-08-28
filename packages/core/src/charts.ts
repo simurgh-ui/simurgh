@@ -178,6 +178,9 @@ export type ChartLocale = {
   selectAll: string;
   isolate: (series: string) => string;
   dataPoints: (count: number, followingLatest?: boolean) => string;
+  viewportState: (x?: ChartDomain, y?: ChartDomain) => string;
+  selectionState: (count: number) => string;
+  drilldownState: (label: string) => string;
 };
 
 export const defaultChartLocale: ChartLocale = {
@@ -185,6 +188,8 @@ export const defaultChartLocale: ChartLocale = {
   pauseStream: 'Pause stream', resumeStream: 'Resume stream', previous: 'Previous', next: 'Next',
   dataPages: 'Chart data pages', category: 'Category', selectAll: 'Select all', isolate: (series) => `Isolate ${series}`,
   dataPoints: (count, followingLatest) => `${count} data points${followingLatest ? ', following latest data' : ''}`,
+  viewportState: (x, y) => `Chart view${x ? `, x ${x[0]} to ${x[1]}` : ''}${y ? `, y ${y[0]} to ${y[1]}` : ''}`,
+  selectionState: (count) => `${count} data points selected`, drilldownState: (label) => `Drilled into ${label}`,
 };
 
 export type ChartPoint<T = unknown> = {

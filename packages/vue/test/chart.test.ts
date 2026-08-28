@@ -21,6 +21,8 @@ describe('Vue charts', () => {
   it('renders polar geometry', () => {
     const result = render(PieChart, { props: { data, y: 'y', accessibility } });
     expect(result.container.querySelectorAll('path[data-part="series"]')).toHaveLength(3);
+    expect(result.getByRole('button', { name: 'Explore chart data' })).toBeTruthy();
+    expect(result.container.querySelector('[data-part="point-announcement"]')?.textContent).toContain('4');
   });
   it('renders configurable x and y axes', () => {
     const result = render(LineChart, { props: { data, x: 'x', y: 'y', accessibility, xAxis: { title: 'Time', ticks: 3 }, yAxis: { title: 'Value', ticks: 4 } } });

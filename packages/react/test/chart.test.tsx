@@ -169,10 +169,11 @@ describe('React charts', () => {
   });
   it('renders polar center totals and selects slices', () => {
     const selected = vi.fn();
-    const { container } = render(<DonutChart data={[{ value: 2 }, { value: 8 }]} y="value" centerLabel="Total" showTotal onSliceSelect={selected} accessibility={accessibility} />);
+    const { container } = render(<DonutChart data={[{ value: 2 }, { value: 8 }]} y="value" centerLabel="Total" showTotal onSliceSelect={selected} onDrilldown={() => {}} accessibility={accessibility} />);
     expect(container.querySelector('[data-part="center-label"]')?.textContent).toContain('Total');
     fireEvent.click(container.querySelector('[data-part="series"]')!);
     expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: 2 }));
+    expect(container.querySelector('[data-part="interaction-announcement"]')?.textContent).toContain('Drilled into');
   });
   it('supports accessible drilldown callbacks and back navigation', () => {
     const drill = vi.fn(); const back = vi.fn();
