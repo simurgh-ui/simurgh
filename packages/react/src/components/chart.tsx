@@ -23,7 +23,7 @@ import {
   type ChartSeriesType,
   type ChartValue,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
+import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 import {
@@ -313,6 +313,25 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     if (axisEnabled(interaction.zoom, 'y')) next.y = clampDomain(zoomDomain(resolvedY, factor, domainFromSelection(resolvedY, [point[1], point[1]], [layout.top + layout.plotHeight, layout.top])[0]), fullY);
     setViewport(next);
   };
+  const handleChartKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (!interaction) return;
+    const result = chartInteractionKey(event, { x: resolvedX, y: resolvedY });
+    if (result.clearSelection) {
+      setSelection(null);
+      sync?.set({ selection: null });
+      onSelectionChange?.(null);
+      onSelectedDataChange?.([]);
+      event.preventDefault();
+      return;
+    }
+    if (result.viewport.x !== resolvedX || result.viewport.y !== resolvedY) {
+      const next: { x?: ChartDomain; y?: ChartDomain } = {};
+      if (result.viewport.x) next.x = clampDomain(result.viewport.x, fullX);
+      if (result.viewport.y) next.y = clampDomain(result.viewport.y, fullY);
+      setViewport(next);
+      event.preventDefault();
+    }
+  };
   const focusFromPointer = (event: Pick<React.MouseEvent<HTMLDivElement>, 'currentTarget' | 'clientX' | 'clientY'>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     if (!bounds.width || !bounds.height) return;
@@ -364,6 +383,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
           {selection && <g data-part="brush"><rect x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.end[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.end[1] - 4} width="8" height="8" /></g>}
         </svg>
         <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
+          if (interaction && ['+', '=', '-', 'Escape'].includes(event.key) || interaction && event.shiftKey && ['ArrowLeft', 'ArrowRight'].includes(event.key)) { handleChartKeyDown(event); return; }
           if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(flat.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((value) => Math.max(0, value - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((value) => Math.min(flat.length - 1, value + 1)); else return;
           event.preventDefault();
         }} />
