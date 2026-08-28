@@ -19,7 +19,7 @@ import {
   type ChartSeriesType,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, panDomain, zoomDomain } from '@simurgh-ui/core/chart-interactions';
+import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle } from '@simurgh-ui/core/chart-interactions';
 import { defineComponent, h, nextTick, onBeforeUnmount, ref, watch, type PropType } from 'vue';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
@@ -93,6 +93,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
       const selection = ref<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
       const pointerStart = ref<readonly [number, number] | null>(null);
       const pointerLast = ref<readonly [number, number] | null>(null);
+      const brushHandle = ref<ChartBrushHandle | null>(null);
       const canvas = ref<HTMLCanvasElement>();
       let drawn = '';
       const rowsForChart = useRows(props);
@@ -150,6 +151,21 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           if (props.viewport === undefined) uncontrolledViewport.value = next;
           emit('update:viewport', next);
         };
+        const brushHandleFromPoint = (point: readonly [number, number]): ChartBrushHandle | null => {
+          if (!selection.value || !props.interaction) return null;
+          const candidates: readonly [ChartBrushHandle, readonly [number, number]][] = [['start', selection.value.start], ['end', [selection.value.end[0], selection.value.start[1]]], ['start-y', [selection.value.start[0], selection.value.end[1]]], ['end-y', selection.value.end]];
+          return candidates.find(([, item]) => Math.hypot(point[0] - item[0], point[1] - item[1]) <= 12)?.[0] ?? null;
+        };
+        const applySelection = (nextSelection: { start: readonly [number, number]; end: readonly [number, number] }) => {
+          selection.value = nextSelection;
+          emit('update:selection', nextSelection);
+          const selected = flat.filter((item) => (!axisEnabled(props.interaction?.brush, 'x') || item.x >= nextSelection.start[0] && item.x <= nextSelection.end[0]) && (!axisEnabled(props.interaction?.brush, 'y') || item.y >= nextSelection.start[1] && item.y <= nextSelection.end[1])).map((item) => item.datum);
+          props.onSelectedDataChange?.([...new Set(selected)]);
+          const next = { ...viewport };
+          if (axisEnabled(props.interaction?.brush, 'x')) next.x = domainFromSelection(fullX, [nextSelection.start[0], nextSelection.end[0]], [layout.left, layout.left + layout.plotWidth]);
+          if (axisEnabled(props.interaction?.brush, 'y')) next.y = domainFromSelection(fullY, [nextSelection.start[1], nextSelection.end[1]], [layout.top + layout.plotHeight, layout.top]);
+          setViewport(next);
+        };
         const onMouseMove = (event: MouseEvent) => {
           const index = pointIndexFromEvent(event);
           focused.value = index;
@@ -159,6 +175,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           const previous = pointerLast.value;
           if (!previous || !props.interaction) return;
           const point = pointFromEvent(event);
+          if (brushHandle.value && selection.value) { applySelection(resizeChartSelection(selection.value, brushHandle.value, point)); return; }
           const next = { ...viewport };
           if (axisEnabled(props.interaction.pan, 'x')) next.x = clampDomain(panDomain(xDomain, -(point[0] - previous[0]) / (layout.plotWidth || 1)), fullX);
           if (axisEnabled(props.interaction.pan, 'y')) next.y = clampDomain(panDomain(yDomain, (point[1] - previous[1]) / (layout.plotHeight || 1)), fullY);
@@ -172,14 +189,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           if (!start || !props.interaction || (!axisEnabled(props.interaction.brush, 'x') && !axisEnabled(props.interaction.brush, 'y'))) return;
           const point = pointFromEvent(event);
           const nextSelection = { start: [Math.min(start[0], point[0]), Math.min(start[1], point[1])] as const, end: [Math.max(start[0], point[0]), Math.max(start[1], point[1])] as const };
-          selection.value = nextSelection;
-          emit('update:selection', nextSelection);
-          const selected = flat.filter((item) => (!axisEnabled(props.interaction?.brush, 'x') || item.x >= nextSelection.start[0] && item.x <= nextSelection.end[0]) && (!axisEnabled(props.interaction?.brush, 'y') || item.y >= nextSelection.start[1] && item.y <= nextSelection.end[1])).map((item) => item.datum);
-          props.onSelectedDataChange?.([...new Set(selected)]);
-          const next = { ...viewport };
-          if (axisEnabled(props.interaction.brush, 'x')) next.x = domainFromSelection(fullX, [nextSelection.start[0], nextSelection.end[0]], [layout.left, layout.left + layout.plotWidth]);
-          if (axisEnabled(props.interaction.brush, 'y')) next.y = domainFromSelection(fullY, [nextSelection.start[1], nextSelection.end[1]], [layout.top + layout.plotHeight, layout.top]);
-          setViewport(next);
+          applySelection(nextSelection);
         };
         const onWheel = (event: WheelEvent) => {
           if (!props.interaction || (!axisEnabled(props.interaction.zoom, 'x') && !axisEnabled(props.interaction.zoom, 'y'))) return;
@@ -229,11 +239,11 @@ function cartesian(kind: ChartSeriesType | 'combo') {
             onClick: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) props.onPointClick?.(point); },
             onDblclick: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) props.onPointDoubleClick?.(point); },
             onContextmenu: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) { event.preventDefault(); props.onPointContextMenu?.(point); } },
-            onPointerdown: (event: PointerEvent) => { if (props.interaction && (axisEnabled(props.interaction.pan, 'x') || axisEnabled(props.interaction.pan, 'y') || axisEnabled(props.interaction.brush, 'x') || axisEnabled(props.interaction.brush, 'y'))) { const point = pointFromEvent(event); pointerStart.value = point; pointerLast.value = point; (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId); } },
-            onPointermove: onPointerMove, onPointerup: onPointerUp, onPointercancel: () => { pointerStart.value = null; pointerLast.value = null; },
+            onPointerdown: (event: PointerEvent) => { if (props.interaction && (axisEnabled(props.interaction.pan, 'x') || axisEnabled(props.interaction.pan, 'y') || axisEnabled(props.interaction.brush, 'x') || axisEnabled(props.interaction.brush, 'y'))) { const point = pointFromEvent(event); brushHandle.value = brushHandleFromPoint(point); pointerStart.value = brushHandle.value ? null : point; pointerLast.value = point; (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId); } },
+            onPointermove: onPointerMove, onPointerup: (event: PointerEvent) => { if (brushHandle.value) { onPointerMove(event); brushHandle.value = null; pointerLast.value = null; } else onPointerUp(event); }, onPointercancel: () => { pointerStart.value = null; pointerLast.value = null; brushHandle.value = null; },
           }, [
             useCanvas && h('canvas', { ref: canvas, width: props.width, height: props.height, 'aria-hidden': 'true' }),
-            h('svg', { viewBox: `0 0 ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [...(useCanvas ? [] : seriesNodes), h('g', { 'data-part': 'crosshair' }, [h('line', { x1: current.x, x2: current.x, y1: layout.top, y2: layout.top + layout.plotHeight }), h('circle', { cx: current.x, cy: current.y, r: 4 })]), selection.value && h('g', { 'data-part': 'brush' }, [h('rect', { x: selection.value.start[0], y: selection.value.start[1], width: selection.value.end[0] - selection.value.start[0], height: selection.value.end[1] - selection.value.start[1] }), h('rect', { 'data-part': 'brush-handle', x: selection.value.start[0] - 4, y: selection.value.start[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.end[0] - 4, y: selection.value.end[1] - 4, width: 8, height: 8 })])]),
+            h('svg', { viewBox: `0 0 ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [...(useCanvas ? [] : seriesNodes), h('g', { 'data-part': 'crosshair' }, [h('line', { x1: current.x, x2: current.x, y1: layout.top, y2: layout.top + layout.plotHeight }), h('circle', { cx: current.x, cy: current.y, r: 4 })]), selection.value && h('g', { 'data-part': 'brush' }, [h('rect', { x: selection.value.start[0], y: selection.value.start[1], width: selection.value.end[0] - selection.value.start[0], height: selection.value.end[1] - selection.value.start[1] }), h('rect', { 'data-part': 'brush-handle', x: selection.value.start[0] - 4, y: selection.value.start[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.end[0] - 4, y: selection.value.start[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.start[0] - 4, y: selection.value.end[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.end[0] - 4, y: selection.value.end[1] - 4, width: 8, height: 8 })])]),
             h('button', { type: 'button', 'data-part': 'keyboard-target', 'aria-label': 'Explore chart data', onKeydown: (event: KeyboardEvent) => { if (event.key === 'Home') focused.value = 0; else if (event.key === 'End') focused.value = flat.length - 1; else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) focused.value = Math.max(0, focused.value - 1); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) focused.value = Math.min(flat.length - 1, focused.value + 1); else return; event.preventDefault(); } }),
             props.interaction && h('button', { type: 'button', 'data-part': 'reset-viewport', onClick: () => { setViewport({}); selection.value = null; emit('update:selection', null); props.onSelectedDataChange?.([]); } }, 'Reset view'),
             h('div', { role: 'tooltip', 'data-part': 'tooltip' }, `${current.series.label ?? current.series.id}: ${current.yValue}`),
