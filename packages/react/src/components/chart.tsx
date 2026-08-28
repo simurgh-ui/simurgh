@@ -23,7 +23,7 @@ import {
   type ChartSeriesType,
   type ChartValue,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, selectionFromPoints, zoomDomain } from '@simurgh-ui/core/chart-interactions';
+import { clampDomain, domainFromSelection, panDomain, selectionFromPoints, zoomDomain } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 import {
@@ -150,6 +150,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const viewport = controlledViewport ?? uncontrolledViewport;
   const [selection, setSelection] = useState<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
   const pointerStart = useRef<readonly [number, number] | null>(null);
+  const pointerLast = useRef<readonly [number, number] | null>(null);
   const hiddenSeries = controlledHiddenSeries ?? uncontrolledHiddenSeries;
   const data = useChartRows(inputData, stream, width);
   const titleId = `${useId()}-title`;
@@ -236,6 +237,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const finishSelection = (point: readonly [number, number]) => {
     const start = pointerStart.current;
     pointerStart.current = null;
+    pointerLast.current = null;
     if (!start || !interaction || !axisEnabled(interaction.brush, 'x') && !axisEnabled(interaction.brush, 'y')) return;
     const next = selectionFromPoints(start, point);
     if (!next) return;
@@ -245,6 +247,15 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     if (axisEnabled(interaction.brush, 'x')) nextViewport.x = domainFromSelection(fullX, [next.start[0], next.end[0]], [layout.left, layout.left + layout.plotWidth]);
     if (axisEnabled(interaction.brush, 'y')) nextViewport.y = domainFromSelection(fullY, [next.start[1], next.end[1]], [layout.top + layout.plotHeight, layout.top]);
     setViewport(nextViewport);
+  };
+  const moveViewport = (point: readonly [number, number]) => {
+    const previous = pointerLast.current;
+    if (!previous || !interaction) return;
+    const next = { ...viewport };
+    if (axisEnabled(interaction.pan, 'x')) next.x = clampDomain(panDomain(resolvedX, -(point[0] - previous[0]) / (layout.plotWidth || 1)), fullX);
+    if (axisEnabled(interaction.pan, 'y')) next.y = clampDomain(panDomain(resolvedY, (point[1] - previous[1]) / (layout.plotHeight || 1)), fullY);
+    pointerLast.current = point;
+    if (next.x !== viewport.x || next.y !== viewport.y) setViewport(next);
   };
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     if (!interaction || !axisEnabled(interaction.zoom, 'x') && !axisEnabled(interaction.zoom, 'y')) return;
@@ -277,8 +288,10 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     <figure className="simurgh-chart" data-slot="chart" data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p></>}
       <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onWheel={handleWheel}
-        onPointerDown={(event) => { if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { pointerStart.current = pointFromEvent(event); event.currentTarget.setPointerCapture(event.pointerId); } }}
-        onPointerUp={(event) => { if (pointerStart.current) finishSelection(pointFromEvent(event)); }}>
+        onPointerDown={(event) => { if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { const point = pointFromEvent(event); pointerStart.current = point; pointerLast.current = point; event.currentTarget.setPointerCapture(event.pointerId); } }}
+        onPointerMove={(event) => { if (pointerStart.current && interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y'))) moveViewport(pointFromEvent(event)); }}
+        onPointerUp={(event) => { const point = pointFromEvent(event); if (pointerStart.current && interaction && (axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) finishSelection(point); else { pointerStart.current = null; pointerLast.current = null; } }}
+        onPointerCancel={() => { pointerStart.current = null; pointerLast.current = null; }}>
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
           <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>
