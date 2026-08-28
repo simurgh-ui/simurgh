@@ -53,6 +53,36 @@ const channelData = [
 ];
 ```
 
+## Specialty charts
+
+Financial, statistical, flow, hierarchy, and geographic charts live in a separate tree-shakeable
+entrypoint so applications using the base Cartesian charts do not pay for their geometry engine.
+React and Vue export `CandlestickChart`, `OhlcChart`, `BoxPlotChart`, `ViolinChart`,
+`HistogramChart`, `FunnelChart`, `GaugeChart`, `PolarAreaChart`, `WaterfallChart`, `TreemapChart`,
+`SankeyChart`, `GeoChart`, and `MapChart` from their `specialty-charts` subpath. Angular exports the
+same names with the `Component` suffix.
+
+```tsx
+import { CandlestickChart, HistogramChart } from '@simurgh-ui/react/specialty-charts';
+
+<CandlestickChart
+  data={[
+    { label: 'Mon', open: 42, high: 49, low: 39, close: 47 },
+    { label: 'Tue', open: 47, high: 51, low: 43, close: 45 },
+  ]}
+  accessibility={{ title: 'Daily price', description: 'Open, high, low, and close.' }}
+/>
+
+<HistogramChart
+  data={[{ label: 'Latency', values: [82, 91, 95, 101, 118, 123] }]}
+  accessibility={{ title: 'Request latency', description: 'Distribution in milliseconds.' }}
+/>
+```
+
+All specialty charts expose a visual SVG plot plus an assistive-technology data list and summary.
+`GeoChart`/`MapChart` currently provide equirectangular point projection; geographic polygon layers
+and tile fetching remain application concerns.
+
 ## Line chart
 
 Use a line chart to emphasize change and trends across an ordered dimension.

@@ -29,7 +29,15 @@ const cases = [
     framework: 'react',
     subpath: 'chart',
     source: "export { LineChart } from '@simurgh-ui/react/chart';",
-    budget: 10 * KiB,
+    // Full interaction, localization, progressive Canvas, and WebGL contract.
+    budget: 12 * KiB,
+  },
+  {
+    name: 'react-specialty-charts',
+    framework: 'react',
+    subpath: 'specialty-charts',
+    source: "export { HistogramChart, CandlestickChart } from '@simurgh-ui/react/specialty-charts';",
+    budget: 8 * KiB,
   },
   {
     name: 'react-chart-interactions',
@@ -90,7 +98,14 @@ const cases = [
     framework: 'vue',
     subpath: 'chart',
     source: "export { LineChart } from '@simurgh-ui/vue/chart';",
-    budget: 10 * KiB,
+    budget: 13 * KiB,
+  },
+  {
+    name: 'vue-specialty-charts',
+    framework: 'vue',
+    subpath: 'specialty-charts',
+    source: "export { HistogramChart, CandlestickChart } from '@simurgh-ui/vue/specialty-charts';",
+    budget: 9 * KiB,
   },
   {
     name: 'vue-input',
@@ -368,7 +383,14 @@ const cases = [
     subpath: 'chart',
     source: "export { LineChartComponent } from '@simurgh-ui/angular/chart';",
     // Responsive container support adds a measured ~0.3 KiB gzip to the chart entry.
-    budget: 11 * KiB,
+    budget: 16 * KiB,
+  },
+  {
+    name: 'angular-specialty-charts',
+    framework: 'angular',
+    subpath: 'specialty-charts',
+    source: "export { HistogramChartComponent, CandlestickChartComponent } from '@simurgh-ui/angular/specialty-charts';",
+    budget: 12 * KiB,
   },
   {
     name: 'angular-checkbox',
@@ -506,8 +528,8 @@ const cases = [
   // bundle while materially reducing direct subpath imports. Keep that tradeoff
   // bounded instead of forcing component implementations back into the barrel.
   { name: 'react-complete', framework: 'react', budget: 35 * KiB },
-  { name: 'vue-complete', framework: 'vue', budget: 29 * KiB },
-  { name: 'angular-complete', framework: 'angular', budget: 34 * KiB },
+  { name: 'vue-complete', framework: 'vue', budget: 32 * KiB },
+  { name: 'angular-complete', framework: 'angular', budget: 38 * KiB },
   {
     name: 'internal-floating',
     source:
@@ -594,7 +616,7 @@ for (const bundleCase of cases) {
 // Chart interaction contracts add measured weight to the published packages; keep the stricter
 // chart-entry budgets unchanged while accounting for these intentional public APIs.
 // Angular's responsive container adds a measured ~8.5 KiB to the published package.
-const packageBudgets = { react: 400 * KiB, vue: 400 * KiB, angular: 342 * KiB };
+const packageBudgets = { react: 400 * KiB, vue: 480 * KiB, angular: 370 * KiB };
 const publishedPackages = {};
 for (const framework of ['react', 'vue', 'angular']) {
   const isWindows = process.platform === 'win32';

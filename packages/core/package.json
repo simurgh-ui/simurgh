@@ -41,6 +41,10 @@
     "./chart-export": {
       "types": "./dist/chart-export.d.ts",
       "import": "./dist/chart-export.js"
+    },
+    "./specialty-charts": {
+      "types": "./dist/specialty-charts.d.ts",
+      "import": "./dist/specialty-charts.js"
     }
   },
   "files": [
