@@ -31,7 +31,7 @@ import {
   type ChartSeriesType,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle } from '@simurgh-ui/core/chart-interactions';
+import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 
@@ -109,6 +109,10 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
   @Input() interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
+  private syncValue: ChartSync | undefined = undefined;
+  private unsubscribeSync: (() => void) | undefined = undefined;
+  @Input() set sync(value: ChartSync | undefined) { this.unsubscribeSync?.(); this.syncValue = value; this.unsubscribeSync = value?.subscribe(() => this.changeDetector?.markForCheck()); }
+  get sync() { return this.syncValue; }
   @Input() renderMode: 'auto' | 'svg' | 'canvas' = 'auto';
   @Input() canvasThreshold = 2000;
   @Input() hiddenSeries?: readonly string[];
@@ -137,7 +141,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
   get effectiveHiddenSeries() { return this.hiddenSeries ?? this.uncontrolledHiddenSeries ?? this.defaultHiddenSeries; }
-  get effectiveViewport() { return this.viewport ?? (Object.keys(this.uncontrolledViewport).length ? this.uncontrolledViewport : this.defaultViewport); }
+  get effectiveViewport() { return this.viewport ?? (Object.keys(this.uncontrolledViewport).length ? this.uncontrolledViewport : this.defaultViewport ?? this.sync?.state.viewport ?? {}); }
 
   get decorative() {
     return 'decorative' in this.accessibility && this.accessibility.decorative;
@@ -249,6 +253,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (this.axisEnabled(this.interaction.zoom, 'x')) next.x = clampDomain(zoomDomain(this.effectiveViewport.x ?? fullX, factor, domainFromSelection(this.effectiveViewport.x ?? fullX, [point[0], point[0]], [layout.left, layout.left + layout.plotWidth])[0]), fullX);
     if (this.axisEnabled(this.interaction.zoom, 'y')) next.y = clampDomain(zoomDomain(this.effectiveViewport.y ?? fullY, factor, domainFromSelection(this.effectiveViewport.y ?? fullY, [point[1], point[1]], [layout.top + layout.plotHeight, layout.top])[0]), fullY);
     if (this.viewport === undefined) this.uncontrolledViewport = next;
+    this.sync?.set({ viewport: next });
     this.viewportChange.emit(next);
     this.changeDetector?.markForCheck();
   }
@@ -305,6 +310,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (!interaction) return;
     this.selection = nextSelection;
     this.selectionChange.emit(nextSelection);
+    this.sync?.set({ selection: nextSelection });
     const layout = chartLayout(this.width, this.height);
     const model = this.model;
     const fullX = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
@@ -315,6 +321,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const points = 'points' in model ? model.points : [];
     this.selectedDataChange.emit([...new Set(points.filter((item) => (!this.axisEnabled(interaction.brush, 'x') || item.x >= nextSelection.start[0] && item.x <= nextSelection.end[0]) && (!this.axisEnabled(interaction.brush, 'y') || item.y >= nextSelection.start[1] && item.y <= nextSelection.end[1])).map((item) => item.datum))]);
     if (this.viewport === undefined) this.uncontrolledViewport = next;
+    this.sync?.set({ viewport: next });
     this.viewportChange.emit(next);
     this.changeDetector?.markForCheck();
   }
@@ -334,12 +341,12 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   }
   onMouseMove(event: MouseEvent) {
     const point = this.pointAt(event);
-    if (point) { this.focused = point.index; this.pointHover.emit(point); }
+    if (point) { this.focused = point.index; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
   }
   onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointClick.emit(point); }
   onPointDoubleClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointDoubleClick.emit(point); }
   onPointContextMenu(event: MouseEvent) { const point = this.pointAt(event); if (point) { event.preventDefault(); this.pointContextMenu.emit(point); } }
-  resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.viewportChange.emit({}); this.selectionChange.emit(null); this.selectedDataChange.emit([]); this.changeDetector?.markForCheck(); }
+  resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.sync?.set({ viewport: {}, selection: null, focused: null }); this.viewportChange.emit({}); this.selectionChange.emit(null); this.selectedDataChange.emit([]); this.changeDetector?.markForCheck(); }
   private axisEnabled(value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') { return value === true || value === 'xy' || value === axis; }
   toggleSeries(id: string) {
     const hidden = this.effectiveHiddenSeries;
@@ -347,7 +354,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (this.hiddenSeries === undefined) this.uncontrolledHiddenSeries = next;
     this.hiddenSeriesChange.emit(next);
   }
-  ngOnDestroy(): void { this.unsubscribeStream?.(); }
+  ngOnDestroy(): void { this.unsubscribeStream?.(); this.unsubscribeSync?.(); }
   private polarModel() {
     const value = this.y ?? this.series?.[0]?.y;
     const radius = Math.min(this.width, this.height) / 2 - 16;
