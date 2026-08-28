@@ -39,6 +39,9 @@ describe('chart scales and geometry', () => {
   it('supports normalized stacked values', () => {
     expect(stackChartValues([{ stack: 's', x: 'a', value: 2 }, { stack: 's', x: 'a', value: 8 }], 'expand').map((item) => [item.start, item.end])).toEqual([[0, 0.2], [0.2, 1]]);
   });
+  it('aggregates grouped numeric values into a configured field', () => {
+    expect(prepareChartData([{ group: 'a', value: 2 }, { group: 'a', value: 6 }, { group: 'b', value: 4 }], { aggregateBy: 'group', aggregateValue: 'value', aggregateKey: 'value', aggregate: 'mean' })).toEqual([{ group: 'a', value: 4 }, { group: 'b', value: 4 }]);
+  });
   it('pads constant domains and omits invalid logarithmic values', () => {
     expect(chartDomain([5, 5])).toEqual([4.75, 5.25]);
     expect(chartDomain([-2, 0, 10], { log: true })).toEqual([9.5, 10.5]);

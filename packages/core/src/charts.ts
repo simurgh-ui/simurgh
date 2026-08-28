@@ -37,6 +37,8 @@ export type ChartDataOptions<T = unknown> = {
   sort?: 'ascending' | 'descending' | ((a: T, b: T) => number);
   filter?: (datum: T, index: number) => boolean;
   aggregate?: 'sum' | 'mean' | 'min' | 'max' | ((values: readonly number[]) => number);
+  aggregateValue?: ChartAccessor<T, number>;
+  aggregateKey?: PropertyKey;
   aggregateBy?: ChartAccessor<T>;
   window?: number;
   stackOffset?: 'zero' | 'expand';
@@ -52,13 +54,15 @@ export function prepareChartData<T>(data: readonly T[], options: ChartDataOption
     return (left < right ? -1 : left > right ? 1 : 0) * (options.sort === 'descending' ? -1 : 1);
   });
   if (options.window != null && options.window > 0 && rows.length > options.window) rows = rows.slice(-Math.floor(options.window));
-  if (!options.aggregate || !options.aggregateBy) return rows;
+  if (!options.aggregate || !options.aggregateBy || !options.aggregateValue || options.aggregateKey == null) return rows;
   const groups = new Map<ChartValue, T[]>();
   rows.forEach((row, index) => { const key = chartValue(row, options.aggregateBy!, index) ?? index; const group = groups.get(key) ?? []; group.push(row); groups.set(key, group); });
   return [...groups.values()].map((group) => {
     const first = group[0]!;
-    if (typeof options.aggregate === 'function') return first;
-    return first;
+    const values = group.map((row, index) => numericValue(chartValue(row, options.aggregateValue!, index))).filter((value): value is number => value != null);
+    if (!values.length) return first;
+    const value = typeof options.aggregate === 'function' ? options.aggregate(values) : options.aggregate === 'mean' ? values.reduce((sum, item) => sum + item, 0) / values.length : options.aggregate === 'min' ? Math.min(...values) : options.aggregate === 'max' ? Math.max(...values) : values.reduce((sum, item) => sum + item, 0);
+    return { ...(first as object), [options.aggregateKey!]: value } as T;
   });
 }
 export function chartVisualStyle(value: number, map: ChartVisualMap | undefined): ChartVisualStyle {
