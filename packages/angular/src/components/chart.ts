@@ -250,7 +250,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       return xValue == null || yValue == null || (this.xScale !== 'band' && numericX == null) || (this.yScale === 'log' && yValue <= 0)
         ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
     }).filter((item): item is NonNullable<typeof item> => item != null));
-    const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
+    const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })), this.dataOptions?.stackOffset);
     const fullX = this.xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
     const fullY = this.yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || this.kind === 'bar') }) ?? [0, 1];
     const xDomain = this.effectiveViewport.x ?? fullX;

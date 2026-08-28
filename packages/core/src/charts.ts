@@ -312,15 +312,21 @@ export function stackedAreaPath(
 export type StackDatum<T> = T & { stack: string | undefined; x: ChartValue; value: number };
 export function stackChartValues<T extends { stack: string | undefined; x: ChartValue; value: number }>(
   values: readonly T[],
+  offset: 'zero' | 'expand' = 'zero',
 ): (T & { start: number; end: number })[] {
   const positive = new Map<string, number>();
   const negative = new Map<string, number>();
+  const totalsPositive = new Map<string, number>();
+  const totalsNegative = new Map<string, number>();
+  if (offset === 'expand') values.forEach((item) => { if (!item.stack) return; const totals = item.value < 0 ? totalsNegative : totalsPositive; const key = `${item.stack}\u0000${String(item.x)}`; totals.set(key, (totals.get(key) ?? 0) + Math.abs(item.value)); });
   return values.map((item) => {
     if (!item.stack) return { ...item, start: 0, end: item.value };
     const key = `${item.stack}\u0000${String(item.x)}`;
     const totals = item.value < 0 ? negative : positive;
     const start = totals.get(key) ?? 0;
-    const end = start + item.value;
+    const total = item.value < 0 ? totalsNegative : totalsPositive;
+    const scale = offset === 'expand' ? 1 / (total.get(key) || 1) : 1;
+    const end = start + item.value * scale;
     totals.set(key, end);
     return { ...item, start, end };
   });

@@ -218,7 +218,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     return yValue == null || xValue == null || (xScale !== 'band' && numericX == null) || (yScale === 'log' && yValue <= 0)
       ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4, definition };
   }).filter((item): item is NonNullable<typeof item> => item != null));
-  const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
+  const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })), dataOptions?.stackOffset);
   const categories = raw.map((item) => item.xValue);
   const fullX = xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
   const fullY = yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar'), log: yScale === 'log' }) ?? [0, 1];

@@ -36,6 +36,9 @@ describe('chart scales and geometry', () => {
     expect(chartMissingValue(null, 'zero')).toBe(0);
     expect(prepareChartData([{ value: 1 }, { value: 3 }, { value: 2 }], { sort: (a, b) => b.value - a.value, window: 2 })).toEqual([{ value: 2 }, { value: 1 }]);
   });
+  it('supports normalized stacked values', () => {
+    expect(stackChartValues([{ stack: 's', x: 'a', value: 2 }, { stack: 's', x: 'a', value: 8 }], 'expand').map((item) => [item.start, item.end])).toEqual([[0, 0.2], [0.2, 1]]);
+  });
   it('pads constant domains and omits invalid logarithmic values', () => {
     expect(chartDomain([5, 5])).toEqual([4.75, 5.25]);
     expect(chartDomain([-2, 0, 10], { log: true })).toEqual([9.5, 10.5]);

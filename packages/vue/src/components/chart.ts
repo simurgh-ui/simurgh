@@ -177,7 +177,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           return xValue == null || yValue == null || (props.xScale !== 'band' && numericX == null) || (props.yScale === 'log' && yValue <= 0)
             ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
         }).filter((item): item is NonNullable<typeof item> => item != null));
-        const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
+        const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })), props.dataOptions?.stackOffset);
         if (!raw.length) return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': 'empty' }, [
           h('div', { 'data-part': 'empty' }, props.emptyContent),
           renderLegend(definitions, hiddenSeries),
