@@ -22,6 +22,7 @@ import {
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
+  type ChartTooltipTrigger,
   type ChartValue,
 } from '@simurgh-ui/core/charts';
 import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
@@ -65,7 +66,9 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   onPointDoubleClick?: (point: ChartPointInteraction<T>) => void;
   onPointContextMenu?: (point: ChartPointInteraction<T>) => void;
   tooltipMode?: ChartTooltipMode;
+  tooltipTrigger?: ChartTooltipTrigger;
   tooltipFormatter?: (point: ChartPointInteraction<T>) => ReactNode;
+  tooltipContent?: (points: readonly ChartPointInteraction<T>[]) => ReactNode;
   renderMode?: ChartRenderMode;
   canvasThreshold?: number;
   hiddenSeries?: readonly string[];
@@ -153,7 +156,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
-    tooltipMode = 'nearest', tooltipFormatter,
+    tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
@@ -161,6 +164,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const [uncontrolledViewport, setUncontrolledViewport] = useState(controlledViewport ?? defaultViewport ?? sync?.state.viewport ?? {});
   const viewport = controlledViewport ?? uncontrolledViewport;
   const [selection, setSelection] = useState<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
+  const [tooltipVisible, setTooltipVisible] = useState(tooltipTrigger !== 'hover');
   const pointerStart = useRef<readonly [number, number] | null>(null);
   const pointerLast = useRef<readonly [number, number] | null>(null);
   const brushHandle = useRef<ChartBrushHandle | null>(null);
@@ -353,6 +357,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     setFocus(nearest);
     const point = flat[nearest];
     onPointHover?.(point ? { datum: point.datum, index: point.index, x: point.x, y: point.y, xValue: point.xValue, yValue: point.yValue, radius: point.radius, seriesId: point.series.id } : null);
+    if (tooltipTrigger === 'hover') setTooltipVisible(true);
     if (point) sync?.set({ focused: { seriesId: point.series.id, index: point.index } });
   };
   const pointFromPointerEvent = (event: Pick<React.MouseEvent<HTMLDivElement>, 'currentTarget' | 'clientX' | 'clientY'>) => {
@@ -366,13 +371,14 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     const point = flat[index];
     return point ? { datum: point.datum, index: point.index, x: point.x, y: point.y, xValue: point.xValue, yValue: point.yValue, radius: point.radius, seriesId: point.series.id } : null;
   };
-  const tooltipPoints = tooltipMode === 'none' ? [] : tooltipMode === 'nearest' ? (focused ? [focused] : []) : focused ? flat.filter((item) => item.index === focused.index) : [];
+  const tooltipPoints = tooltipMode === 'none' ? [] : tooltipMode === 'nearest' || tooltipMode === 'intersect' ? (focused ? [focused] : []) : focused ? flat.filter((item) => item.index === focused.index) : [];
+  const tooltipInteractions = tooltipPoints.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: item.series.id }));
   const ticks = Array.from({ length: 5 }, (_, index) => resolvedY[0] + ((resolvedY[1] - resolvedY[0]) * index) / 4);
   return (
     <figure className="simurgh-chart" data-slot="chart" data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p></>}
-      <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onMouseLeave={() => onPointHover?.(null)}
-        onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) onPointClick?.(point); }}
+      <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onMouseLeave={() => { onPointHover?.(null); if (tooltipTrigger === 'hover') setTooltipVisible(false); }}
+        onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { setTooltipVisible(true); onPointClick?.(point); } }}
         onDoubleClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) onPointDoubleClick?.(point); }}
         onContextMenu={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { event.preventDefault(); onPointContextMenu?.(point); } }} onWheel={handleWheel}
         onPointerDown={(event) => { if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { const point = pointFromEvent(event); brushHandle.current = axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y') ? brushHandleFromPoint(point) : null; pointerStart.current = brushHandle.current ? null : point; pointerLast.current = point; event.currentTarget.setPointerCapture(event.pointerId); } }}
@@ -390,10 +396,11 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
           if (interaction && ['+', '=', '-', 'Escape'].includes(event.key) || interaction && event.shiftKey && ['ArrowLeft', 'ArrowRight'].includes(event.key)) { handleChartKeyDown(event); return; }
           if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(flat.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((value) => Math.max(0, value - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((value) => Math.min(flat.length - 1, value + 1)); else return;
+          setTooltipVisible(true);
           event.preventDefault();
         }} />
         {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); sync?.set({ selection: null, focused: null }); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>Reset view</button>}
-        {tooltipPoints.length > 0 && <div role="tooltip" data-part="tooltip">{tooltipPoints.map((item) => { const point = { datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: item.series.id }; return <div key={`${item.series.id}:${item.index}`}>{tooltipFormatter?.(point) ?? `${item.series.label ?? item.series.id}: ${item.yValue}`}</div>; })}</div>}
+        {tooltipPoints.length > 0 && tooltipVisible && <div role="tooltip" data-part="tooltip">{tooltipContent ? tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => <div key={`${item.series.id}:${item.index}`}>{tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.series.label ?? item.series.id}: ${item.yValue}`}</div>)}</div>}
       </div>
       <div data-part="legend">{definitions.map((item, index) => <button type="button" key={item.id} aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>)}</div>
       {table && <ChartDataTable data={data} pageSize={typeof table === 'object' ? table.pageSize ?? 50 : 50} columns={[{ label: 'Category', value: x }, ...definitions.map((item) => ({ label: item.label ?? item.id, value: item.y }))]} />}
