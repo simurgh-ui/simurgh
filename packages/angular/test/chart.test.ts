@@ -33,4 +33,25 @@ describe('Angular charts', () => {
     radar.accessibility = accessibility;
     expect(radar.points.split(' ')).toHaveLength(3);
   });
+  it('supports viewport zoom, brush gestures, and point events', () => {
+    const chart = new LineChartComponent();
+    chart.data = [{ x: 0, y: 2 }, { x: 10, y: 8 }];
+    chart.x = 'x';
+    chart.y = 'y';
+    chart.accessibility = accessibility;
+    chart.interaction = { zoom: 'x', brush: 'x' };
+    const viewport = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 640, height: 360 }), setPointerCapture: vi.fn() } as unknown as HTMLElement;
+    const wheel = { currentTarget: viewport, clientX: 320, clientY: 180, deltaY: -100, preventDefault: vi.fn() } as unknown as WheelEvent;
+    const viewportChange = vi.fn();
+    chart.viewportChange.subscribe(viewportChange);
+    chart.onWheel(wheel);
+    expect(viewportChange).toHaveBeenCalled();
+    const selectionChange = vi.fn();
+    chart.selectionChange.subscribe(selectionChange);
+    const start = { currentTarget: viewport, clientX: 100, clientY: 120, pointerId: 1 } as unknown as PointerEvent;
+    const end = { currentTarget: viewport, clientX: 400, clientY: 220, pointerId: 1 } as unknown as PointerEvent;
+    chart.onPointerDown(start);
+    chart.onPointerUp(end);
+    expect(selectionChange).toHaveBeenCalledWith(expect.objectContaining({ start: [100, 120] }));
+  });
 });
