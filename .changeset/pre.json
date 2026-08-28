@@ -24,6 +24,7 @@
     "mcp-server",
     "quiet-modals-isolate",
     "smart-composites-navigate",
-    "smart-forms-reset"
+    "smart-forms-reset",
+    "tidy-mcp-publish"
   ]
 }
