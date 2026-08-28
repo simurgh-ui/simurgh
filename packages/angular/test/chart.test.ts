@@ -147,4 +147,12 @@ describe('Angular charts', () => {
     chart.onPolarSliceClick('0');
     expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: 2 }));
   });
+  it('emits drilldown callbacks and back navigation', () => {
+    const chart = new LineChartComponent(); const drill = vi.fn(); const back = vi.fn();
+    chart.drilldown.subscribe(drill); chart.drilldownBack.subscribe(back); chart.drilldownDepth = 1;
+    chart.data = [{ x: 1, y: 2 }]; chart.x = 'x'; chart.y = 'y'; chart.accessibility = accessibility;
+    chart.drilldown.emit({ datum: { x: 1, y: 2 }, index: 0, x: 1, y: 2, xValue: 1, yValue: 2, radius: 3, seriesId: 'value' }); chart.drilldownBack.emit();
+    expect(drill).toHaveBeenCalled();
+    expect(back).toHaveBeenCalled();
+  });
 });

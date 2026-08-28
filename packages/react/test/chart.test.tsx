@@ -172,4 +172,11 @@ describe('React charts', () => {
     fireEvent.click(container.querySelector('[data-part="series"]')!);
     expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: 2 }));
   });
+  it('supports accessible drilldown callbacks and back navigation', () => {
+    const drill = vi.fn(); const back = vi.fn();
+    const { container } = render(<LineChart data={[{ x: 1, y: 2 }]} x="x" y="y" drilldownDepth={1} onDrilldown={drill} onDrilldownBack={back} accessibility={accessibility} />);
+    fireEvent.click(container.querySelector('[data-part="series"]')!);
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }));
+    expect(drill).toHaveBeenCalled(); expect(back).toHaveBeenCalled();
+  });
 });

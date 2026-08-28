@@ -95,6 +95,7 @@ const template = `
     </svg>
     <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
     <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
+    <button *ngIf="drilldownDepth > 0" type="button" data-part="drilldown-back" (click)="onDrilldownBack.emit()">Back</button>
     <div *ngIf="model.tooltip && tooltipVisible" role="tooltip" data-part="tooltip" [style.position]="tooltipPosition === 'cursor' ? 'absolute' : null" [style.left.px]="tooltipPosition === 'cursor' ? tooltipX : null" [style.top.px]="tooltipPosition === 'cursor' ? tooltipY : null">{{ model.tooltip }}</div>
   </div>
   <div data-part="legend" [attr.data-placement]="legend?.placement || 'bottom'" [attr.data-orientation]="legend?.orientation || 'horizontal'" [style.max-height.px]="legend?.maxHeight" [style.overflow-y]="legend?.maxHeight ? 'auto' : null">
@@ -144,6 +145,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() visualMap?: ChartVisualMap;
   @Input() centerLabel?: string;
   @Input() showTotal = false;
+  @Input() drilldownDepth = 0;
   @Input() legendContent?: (series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => string;
   @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
@@ -174,6 +176,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Output() readonly pointDoubleClick = new EventEmitter<ChartPointInteraction>();
   @Output() readonly pointContextMenu = new EventEmitter<ChartPointInteraction>();
   @Output() readonly sliceSelect = new EventEmitter<{ datum: Datum; index: number; value: number }>();
+  @Output() readonly drilldown = new EventEmitter<ChartPointInteraction | { datum: Datum; index: number; value: number }>();
+  @Output() readonly drilldownBack = new EventEmitter<void>();
   @ViewChild('canvas') canvas?: ElementRef<HTMLCanvasElement>;
   abstract readonly kind: ChartSeriesType | 'combo' | 'pie' | 'donut';
   focused = 0;
@@ -491,7 +495,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (point) { const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect(); this.tooltipX = ((event.clientX - bounds.left) / bounds.width) * this.width; this.tooltipY = ((event.clientY - bounds.top) / bounds.height) * this.height; this.tooltipIntersected = Math.hypot(point.x - this.tooltipX, point.y - this.tooltipY) <= Math.max(point.radius, 8); this.focused = point.index; this.tooltipVisible = true; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
   }
   onMouseLeave() { this.tooltipIntersected = false; this.pointHover.emit(null); if (this.tooltipTrigger === 'hover') this.tooltipVisible = false; }
-  onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) { this.tooltipVisible = true; this.pointClick.emit(point); } }
+  onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) { this.tooltipVisible = true; this.pointClick.emit(point); this.drilldown.emit(point); } }
   onPointDoubleClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointDoubleClick.emit(point); }
   onPointContextMenu(event: MouseEvent) { const point = this.pointAt(event); if (point) { event.preventDefault(); this.pointContextMenu.emit(point); } }
   resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.sync?.set({ viewport: {}, selection: null, focused: null }); this.viewportChange.emit({}); this.selectionChange.emit(null); this.selectedDataChange.emit([]); this.changeDetector?.markForCheck(); }
@@ -514,6 +518,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (!arc) return;
     this.selectedPolarSlice = this.selectedPolarSlice === arc.index ? null : arc.index;
     this.sliceSelect.emit({ datum: arc.datum, index: arc.index, value: arc.value });
+    this.drilldown.emit({ datum: arc.datum, index: arc.index, value: arc.value });
     this.changeDetector?.markForCheck();
   }
   onPolarSliceHover(id: string) { if (this.kind === 'pie' || this.kind === 'donut') { this.hoveredPolarSlice = Number(id); this.changeDetector?.markForCheck(); } }

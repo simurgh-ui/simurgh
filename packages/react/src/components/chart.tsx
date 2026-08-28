@@ -76,6 +76,9 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   centerLabel?: string;
   showTotal?: boolean;
   onSliceSelect?: (slice: { datum: T; index: number; value: number }) => void;
+  drilldownDepth?: number;
+  onDrilldown?: (event: ChartPointInteraction<T> | { datum: T; index: number; value: number }) => void;
+  onDrilldownBack?: () => void;
   viewport?: { x?: ChartDomain; y?: ChartDomain };
   defaultViewport?: { x?: ChartDomain; y?: ChartDomain };
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -179,7 +182,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, viewport: controlledViewport, defaultViewport, interaction, sync,
-    onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
+    onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu, drilldownDepth, onDrilldown, onDrilldownBack,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
@@ -446,7 +449,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     <figure className="simurgh-chart" data-slot="chart" data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p></>}
       <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onMouseLeave={() => { setTooltipIntersected(false); onPointHover?.(null); if (tooltipTrigger === 'hover') setTooltipVisible(false); }}
-        onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { setTooltipVisible(true); onPointClick?.(point); } }}
+        onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { setTooltipVisible(true); onPointClick?.(point); onDrilldown?.(point); } }}
         onDoubleClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) onPointDoubleClick?.(point); }}
         onContextMenu={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { event.preventDefault(); onPointContextMenu?.(point); } }} onWheel={handleWheel}
         onPointerDown={(event) => { const point = pointFromEvent(event); pointers.current.set(event.pointerId, point); if (pointers.current.size === 2 && interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y'))) { const values = [...pointers.current.values()]; pinchStart.current = { distance: Math.hypot(values[1]![0] - values[0]![0], values[1]![1] - values[0]![1]), midpoint: [(values[0]![0] + values[1]![0]) / 2, (values[0]![1] + values[1]![1]) / 2] }; pointerStart.current = null; pointerLast.current = null; } else if (interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { const dragZoom = (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y')) && (!(axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y')) || event.shiftKey); zoomDrag.current = dragZoom; brushHandle.current = dragZoom ? null : (axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y') ? brushHandleFromPoint(point) : null); pointerStart.current = brushHandle.current ? null : point; pointerLast.current = point; } event.currentTarget.setPointerCapture?.(event.pointerId); }}
@@ -473,6 +476,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
           event.preventDefault();
         }} />
         {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); sync?.set({ selection: null, focused: null }); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>Reset view</button>}
+        {drilldownDepth && drilldownDepth > 0 && <button type="button" data-part="drilldown-back" onClick={onDrilldownBack}>Back</button>}
         {tooltipPoints.length > 0 && tooltipVisible && <div role="tooltip" data-part="tooltip" style={tooltipPosition === 'cursor' && tooltipPoint ? { position: 'absolute', left: `${tooltipPoint[0]}px`, top: `${tooltipPoint[1]}px` } : undefined}>{tooltipContent ? tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => <div key={`${item.series.id}:${item.index}`}>{tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.series.label ?? item.series.id}: ${item.yValue}`}</div>)}</div>}
       </div>
       {renderLegend()}
@@ -495,7 +499,7 @@ function SeriesMarks<T>({ item, index, baseline, bandwidth, orientation, visualM
 }
 
 function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: boolean }) {
-  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, centerLabel, showTotal = false, onSliceSelect, emptyContent = 'No chart data', ...native } = props;
+  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, centerLabel, showTotal = false, onSliceSelect, drilldownDepth, onDrilldown, onDrilldownBack, emptyContent = 'No chart data', ...native } = props;
   const data = useChartRows(inputData, stream, width);
   const value = y ?? series?.[0]?.y;
   if (!value) throw new TypeError('Pie and donut charts require a y accessor or series.');
@@ -531,7 +535,8 @@ function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: bo
   return <figure className="simurgh-chart" data-slot="chart" aria-labelledby={decorative ? undefined : titleId} aria-hidden={decorative || undefined} {...native}>
     {!decorative && <figcaption id={titleId}>{accessibility.title}</figcaption>}
     <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromMouse}>
-      <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} style={{ opacity: selected != null && selected !== index ? 0.35 : index === focus ? 1 : 0.7 }} onMouseEnter={() => setFocus(index)} onClick={() => { setSelected(index); onSliceSelect?.({ datum: arc.datum, index: arc.index, value: arc.value }); }} />)}{labels.length > 0 && <g data-part="data-labels">{labels.map((item, index) => <text key={index} data-part="data-label" x={item.x} y={item.y} textAnchor="middle">{item.text}</text>)}</g>}{(centerLabel || showTotal) && <g data-part="center-label"><text textAnchor="middle" dy={centerLabel ? -4 : 4}>{centerLabel}</text>{showTotal && <text textAnchor="middle" dy={centerLabel ? 14 : 18}>{arcs.reduce((total, arc) => total + arc.value, 0)}</text>}</g>}</svg>
+      <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} style={{ opacity: selected != null && selected !== index ? 0.35 : index === focus ? 1 : 0.7 }} onMouseEnter={() => setFocus(index)} onClick={() => { setSelected(index); const slice = { datum: arc.datum, index: arc.index, value: arc.value }; onSliceSelect?.(slice); onDrilldown?.(slice); }} />)}{labels.length > 0 && <g data-part="data-labels">{labels.map((item, index) => <text key={index} data-part="data-label" x={item.x} y={item.y} textAnchor="middle">{item.text}</text>)}</g>}{(centerLabel || showTotal) && <g data-part="center-label"><text textAnchor="middle" dy={centerLabel ? -4 : 4}>{centerLabel}</text>{showTotal && <text textAnchor="middle" dy={centerLabel ? 14 : 18}>{arcs.reduce((total, arc) => total + arc.value, 0)}</text>}</g>}</svg>
+      {drilldownDepth && drilldownDepth > 0 && <button type="button" data-part="drilldown-back" onClick={onDrilldownBack}>Back</button>}
       <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
         if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(arcs.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((current) => Math.max(0, current - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((current) => Math.min(arcs.length - 1, current + 1)); else return;
         event.preventDefault();

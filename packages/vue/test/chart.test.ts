@@ -48,6 +48,13 @@ describe('Vue charts', () => {
     await fireEvent.click(result.container.querySelector('[data-part="series"]')!);
     expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: 2 }));
   });
+  it('supports drilldown callbacks and back navigation', async () => {
+    const drill = vi.fn(); const back = vi.fn();
+    const result = render(LineChart, { props: { data: [{ x: 1, y: 2 }], x: 'x', y: 'y', drilldownDepth: 1, onDrilldown: drill, onDrilldownBack: back, accessibility } });
+    await fireEvent.click(result.container.querySelector('[data-part="series"]')!);
+    await fireEvent.click(result.getByRole('button', { name: 'Back' }));
+    expect(drill).toHaveBeenCalled(); expect(back).toHaveBeenCalled();
+  });
   it('supports viewport zoom, brush gestures, and point callbacks', async () => {
     const viewportChange = vi.fn();
     const selectionChange = vi.fn();
