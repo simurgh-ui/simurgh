@@ -164,7 +164,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const [uncontrolledViewport, setUncontrolledViewport] = useState(controlledViewport ?? defaultViewport ?? sync?.state.viewport ?? {});
   const viewport = controlledViewport ?? uncontrolledViewport;
   const [selection, setSelection] = useState<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
-  const [tooltipVisible, setTooltipVisible] = useState(tooltipTrigger !== 'hover');
+  const [tooltipVisible, setTooltipVisible] = useState(tooltipTrigger !== 'hover' && tooltipTrigger !== 'click');
   const pointerStart = useRef<readonly [number, number] | null>(null);
   const pointerLast = useRef<readonly [number, number] | null>(null);
   const brushHandle = useRef<ChartBrushHandle | null>(null);

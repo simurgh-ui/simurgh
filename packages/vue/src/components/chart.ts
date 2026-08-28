@@ -98,7 +98,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
       const uncontrolledHiddenSeries = ref<readonly string[]>([...props.defaultHiddenSeries]);
       const uncontrolledViewport = ref(props.viewport ?? props.defaultViewport ?? props.sync?.state.viewport ?? {});
       const selection = ref<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
-      const tooltipVisible = ref(props.tooltipTrigger !== 'hover');
+      const tooltipVisible = ref(props.tooltipTrigger !== 'hover' && props.tooltipTrigger !== 'click');
       const pointerStart = ref<readonly [number, number] | null>(null);
       const pointerLast = ref<readonly [number, number] | null>(null);
       const brushHandle = ref<ChartBrushHandle | null>(null);

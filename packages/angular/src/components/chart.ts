@@ -146,7 +146,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private brushHandle: ChartBrushHandle | null = null;
   private pointers = new Map<number, readonly [number, number]>();
   private pinchStart: { distance: number } | null = null;
-  tooltipVisible = true;
+  tooltipVisible = this.tooltipTrigger !== 'click';
   private drawn = '';
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
