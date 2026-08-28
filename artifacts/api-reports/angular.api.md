@@ -26,6 +26,14 @@ Version snapshot: 0.3.2-beta.1
     "types": "./dist/chart-canvas.d.ts",
     "default": "./dist/chart-canvas.js"
   },
+  "./chart-export": {
+    "types": "./dist/chart-export.d.ts",
+    "default": "./dist/chart-export.js"
+  },
+  "./chart-responsive": {
+    "types": "./dist/chart-responsive.d.ts",
+    "default": "./dist/chart-responsive.js"
+  },
   "./chart-motion": {
     "types": "./dist/chart-motion.d.ts",
     "default": "./dist/chart-motion.js"
@@ -75,6 +83,7 @@ Version snapshot: 0.3.2-beta.1
 - `ChartGridDirective`: `typeof ChartGridDirective`
 - `ChartLegendDirective`: `typeof ChartLegendDirective`
 - `ChartPlotComponent`: `typeof ChartPlotComponent`
+- `ChartPointInteraction`: `type ChartPointInteraction<T = Datum> = { datum: T; index: number; x: number; y: number; xValue: string | number | Date; yValue: number; radius: number; seriesId: string };`
 - `ChartRootComponent`: `typeof ChartRootComponent`
 - `ChartTooltipDirective`: `typeof ChartTooltipDirective`
 - `ChartXAxisDirective`: `typeof ChartXAxisDirective`
@@ -358,29 +367,57 @@ Version snapshot: 0.3.2-beta.1
 
 ## ./chart-interactions
 
+- `ChartBrushHandle`: `type ChartBrushHandle = 'start' | 'end' | 'start-y' | 'end-y';`
+- `ChartInteractionConfig`: `type ChartInteractionConfig = { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy'; };`
 - `chartInteractionKey`: `(event: Pick<KeyboardEvent, "key" | "shiftKey">, viewport: ChartViewport) => { viewport: ChartViewport; clearSelection?: true; }`
 - `ChartSelection`: `type ChartSelection = { start: readonly [number, number]; end: readonly [number, number]; } | null;`
+- `ChartSync`: `type ChartSync = { readonly state: ChartSyncState; set(next: Partial<ChartSyncState>): void; subscribe(listener: (state: ChartSyncState) => void): () => void; };`
+- `ChartSyncState`: `type ChartSyncState = { viewport: ChartViewport; selection: ChartSelection; focused?: { seriesId: string; index: number; } | null; };`
 - `ChartViewport`: `type ChartViewport = { x?: ChartDomain; y?: ChartDomain; };`
+- `clampDomain`: `(domain: ChartDomain, bounds?: ChartDomain) => ChartDomain`
+- `createChartSync`: `(initial?: Partial<ChartSyncState>) => ChartSync`
+- `domainFromSelection`: `(domain: ChartDomain, selection: readonly [number, number], pixels: readonly [number, number]) => ChartDomain`
 - `nextChartIndex`: `(current: number, size: number, key: string, direction?: "ltr" | "rtl") => number`
 - `panDomain`: `(domain: ChartDomain, fraction: number) => ChartDomain`
+- `pinchZoomDomain`: `(domain: ChartDomain, startDistance: number, endDistance: number, anchor: number) => ChartDomain`
+- `resizeChartSelection`: `(selection: Exclude<ChartSelection, null>, handle: ChartBrushHandle, point: readonly [number, number]) => Exclude<ChartSelection, null>`
+- `selectionFromPoints`: `(start: readonly [number, number], end: readonly [number, number]) => ChartSelection`
 - `SpatialGrid`: `typeof SpatialGrid`
 - `zoomDomain`: `(domain: ChartDomain, factor: number, anchor?: number) => ChartDomain`
 
 ## ./chart-stream
 
-- `ChartStream`: `type ChartStream<D extends string> = { readonly capacity: number; readonly dimensions: readonly D[]; readonly length: number; append(batch: Readonly<Record<D, ArrayLike<number>>>): void; clear(): void; snapshot(): ChartStreamSnapshot<D>; subscribe(listener: () => void): () => void; };`
+- `ChartStream`: `type ChartStream<D extends string> = { readonly capacity: number; readonly dimensions: readonly D[]; readonly length: number; readonly window: number | undefined; readonly paused: boolean; append(batch: Readonly<Record<D, ArrayLike<number>>>): void; backfill(batch: Readonly<Record<D, ArrayLike<number>>>): void; clear(): void; setWindow(size?: number): void; pause(): void; resume(): void; snapshot(): ChartStreamSnapshot<D>; subscribe(listener: () => void): () => void; };`
 - `ChartStreamSnapshot`: `type ChartStreamSnapshot<D extends string> = Readonly<{ length: number; version: number; columns: Readonly<Record<D, Float64Array>>; }>;`
-- `createChartStream`: `<const D extends string>(options: { capacity: number; dimensions: readonly D[]; }) => ChartStream<D>`
+- `createChartStream`: `<const D extends string>(options: { capacity: number; dimensions: readonly D[]; window?: number; }) => ChartStream<D>`
 
 ## ./chart-canvas
 
 - `CanvasMark`: `type CanvasMark = { type: 'line'; points: readonly (readonly [number, number])[]; color: string; width?: number; } | { type: 'area'; points: readonly (readonly [number, number])[]; color: string; baseline: number; opacity?: number; } | { type: 'point'; x: number; y: number; radius?: number; color: string; } | { type: 'rect'; x: number; y: number; width: number; height: number; color: string; opacity?: number; };`
+- `ChartWorkerInput`: `type ChartWorkerInput = { operation: 'decimate'; points: { x: number; y: number; }[]; width: number; } | { operation: 'heatmap'; points: { x: number; y: number; value?: number; }[]; columns: number; rows: number; };`
 - `ChartWorkerRequest`: `type ChartWorkerRequest = { id: number; operation: 'decimate'; points: { x: number; y: number; }[]; width: number; } | { id: number; operation: 'heatmap'; points: { x: number; y: number; value?: number; }[]; columns: number; rows: number; };`
 - `ChartWorkerResponse`: `type ChartWorkerResponse = { id: number; result?: unknown; error?: string; };`
 - `createChartWorker`: `() => Worker | null`
 - `drawChartCanvas`: `(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, marks: readonly CanvasMark[], width: number, height: number, pixelRatio?: number) => void`
-- `runChartWorker`: `<T>(worker: Worker, request: Omit<ChartWorkerRequest, "id">) => Promise<T>`
+- `drawChartCanvasProgressive`: `(context: CanvasRenderingContext2D, marks: readonly CanvasMark[], width: number, height: number, options?: { pixelRatio?: number; chunkSize?: number; }) => () => void`
+- `drawChartWebGL`: `(context: WebGLRenderingContext, marks: readonly CanvasMark[], width: number, height: number) => boolean`
+- `runChartWorker`: `<T>(worker: Worker, request: ChartWorkerInput) => Promise<T>`
 - `supportsWorkerCanvas`: `() => boolean`
+
+## ./chart-export
+
+- `ChartExportPoint`: `type ChartExportPoint = { seriesId: string; index: number; xValue: ChartValue; yValue: number; };`
+- `chartToCsv`: `(points: readonly ChartExportPoint[], delimiter?: string, headers?: readonly [string, string, string, string]) => string`
+- `copyChartText`: `(text: string) => Promise<void>`
+- `downloadChartBlob`: `(blob: Blob, filename: string) => void`
+- `printChart`: `(svg: string) => void`
+- `svgToDataUri`: `(svg: string) => string`
+- `svgToPng`: `(svg: string, width: number, height: number) => Promise<Blob>`
+
+## ./chart-responsive
+
+- `ChartResponsiveContainerComponent`: `typeof ChartResponsiveContainerComponent`
+- `ChartResponsiveSize`: `type ChartResponsiveSize = { width: number; height: number };`
 
 ## ./chart-motion
 
@@ -496,6 +533,7 @@ Version snapshot: 0.3.2-beta.1
 - `ChartGridDirective`: `typeof ChartGridDirective`
 - `ChartLegendDirective`: `typeof ChartLegendDirective`
 - `ChartPlotComponent`: `typeof ChartPlotComponent`
+- `ChartPointInteraction`: `type ChartPointInteraction<T = Datum> = { datum: T; index: number; x: number; y: number; xValue: string | number | Date; yValue: number; radius: number; seriesId: string };`
 - `ChartRootComponent`: `typeof ChartRootComponent`
 - `ChartTooltipDirective`: `typeof ChartTooltipDirective`
 - `ChartXAxisDirective`: `typeof ChartXAxisDirective`
@@ -736,6 +774,23 @@ Version snapshot: 0.3.2-beta.1
 ## ./slider
 
 - `SliderComponent`: `typeof SliderComponent`
+
+## ./specialty-charts
+
+- `BoxPlotChartComponent`: `typeof BoxPlotChartComponent`
+- `CandlestickChartComponent`: `typeof CandlestickChartComponent`
+- `FunnelChartComponent`: `typeof FunnelChartComponent`
+- `GaugeChartComponent`: `typeof GaugeChartComponent`
+- `GeoChartComponent`: `typeof GeoChartComponent`
+- `HistogramChartComponent`: `typeof HistogramChartComponent`
+- `MapChartComponent`: `typeof MapChartComponent`
+- `OhlcChartComponent`: `typeof OhlcChartComponent`
+- `PolarAreaChartComponent`: `typeof PolarAreaChartComponent`
+- `SankeyChartComponent`: `typeof SankeyChartComponent`
+- `SpecialtyChartComponent`: `typeof SpecialtyChartComponent`
+- `TreemapChartComponent`: `typeof TreemapChartComponent`
+- `ViolinChartComponent`: `typeof ViolinChartComponent`
+- `WaterfallChartComponent`: `typeof WaterfallChartComponent`
 
 ## ./spinner
 

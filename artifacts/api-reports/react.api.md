@@ -22,6 +22,14 @@ Version snapshot: 0.3.2-beta.2
     "types": "./dist/chart-canvas.d.ts",
     "import": "./dist/chart-canvas.js"
   },
+  "./chart-export": {
+    "types": "./dist/chart-export.d.ts",
+    "import": "./dist/chart-export.js"
+  },
+  "./chart-responsive": {
+    "types": "./dist/chart-responsive.d.ts",
+    "import": "./dist/chart-responsive.js"
+  },
   "./chart-motion": {
     "types": "./dist/chart-motion.d.ts",
     "import": "./dist/chart-motion.js"
@@ -74,11 +82,12 @@ Version snapshot: 0.3.2-beta.2
 - `CarouselPrevious`: `(props: ButtonHTMLAttributes<HTMLButtonElement>) => React.JSX.Element`
 - `ChartBrush`: `(props: SVGAttributes<SVGRectElement>) => JSX.Element`
 - `ChartCrosshair`: `(props: SVGAttributes<SVGGElement>) => JSX.Element`
-- `ChartDataTable`: `<T>({ data, columns, pageSize }: { data: readonly T[]; columns: readonly { label: string; value: ChartAccessor<T>; }[]; pageSize?: number; }) => JSX.Element`
+- `ChartDataTable`: `<T>({ data, columns, pageSize, locale }: { data: readonly T[]; columns: readonly { label: string; value: ChartAccessor<T>; }[]; pageSize?: number; locale?: Partial<ChartLocale>; }) => JSX.Element`
 - `ChartGrid`: `(props: SVGAttributes<SVGGElement>) => JSX.Element`
 - `ChartLegend`: `(props: HTMLAttributes<HTMLDivElement>) => JSX.Element`
 - `ChartPlot`: `(props: SVGAttributes<SVGSVGElement>) => JSX.Element`
-- `ChartProps`: `type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & { data?: readonly T[]; stream?: ChartStream<string>; x?: ChartAccessor<T>; y?: ChartAccessor<T, number>; series?: readonly ChartSeries<T>[]; accessibility: ChartAccessibility; width?: number; height?: number; xScale?: ChartScaleType; yScale?: Exclude<ChartScaleType, 'band'>; xDomain?: ChartDomain; yDomain?: ChartDomain; renderMode?: ChartRenderMode; canvasThreshold?: number; hiddenSeries?: readonly string[]; defaultHiddenSeries?: readonly string[]; onHiddenSeriesChange?: (series: string[]) => void; emptyContent?: ReactNode; orientation?: 'vertical' | 'horizontal'; innerRadius?: number; };`
+- `ChartPointInteraction`: `type ChartPointInteraction<T> = Pick<PreparedPoint<T>, 'datum' | 'index' | 'x' | 'y' | 'xValue' | 'yValue' | 'radius'> & { seriesId: string };`
+- `ChartProps`: `type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & { data?: readonly T[]; stream?: ChartStream<string>; x?: ChartAccessor<T>; y?: ChartAccessor<T, number>; series?: readonly ChartSeries<T>[]; accessibility: ChartAccessibility; width?: number; height?: number; xScale?: ChartScaleType; yScale?: Exclude<ChartScaleType, 'band'>; xDomain?: ChartDomain; yDomain?: ChartDomain; xAxis?: ChartAxisConfig; yAxis?: ChartAxisConfig; references?: readonly ChartReference[]; annotations?: readonly ChartAnnotation[]; dataLabels?: boolean | ChartDataLabelConfig; legend?: ChartLegendConfig; legendContent?: (series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode; visualMap?: ChartVisualMap; dataOptions?: ChartDataOptions<T>; streamControls?: boolean; streamAutoScroll?: boolean; streamAnnouncement?: boolean; centerLabel?: string; showTotal?: boolean; onSliceSelect?: (slice: { datum: T; index: number; value: number }) => void; drilldownDepth?: number; onDrilldown?: (event: ChartPointInteraction<T> | { datum: T; index: number; value: number }) => void; onDrilldownBack?: () => void; viewport?: { x?: ChartDomain; y?: ChartDomain }; defaultViewport?: { x?: ChartDomain; y?: ChartDomain }; interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }; sync?: ChartSync; onViewportChange?: (viewport: { x?: ChartDomain; y?: ChartDomain }) => void; onXDomainChange?: (domain: ChartDomain) => void; onYDomainChange?: (domain: ChartDomain) => void; onSelectionChange?: (selection: { start: readonly [number, number]; end: readonly [number, number] } | null) => void; onSelectedDataChange?: (data: readonly T[]) => void; onPointHover?: (point: ChartPointInteraction<T> | null) => void; onPointClick?: (point: ChartPointInteraction<T>) => void; onPointDoubleClick?: (point: ChartPointInteraction<T>) => void; onPointContextMenu?: (point: ChartPointInteraction<T>) => void; tooltipMode?: ChartTooltipMode; tooltipTrigger?: ChartTooltipTrigger; tooltipPosition?: ChartTooltipPosition; tooltipFormatter?: (point: ChartPointInteraction<T>) => ReactNode; tooltipContent?: (points: readonly ChartPointInteraction<T>[]) => ReactNode; renderMode?: ChartRenderMode; canvasThreshold?: number; workerProcessing?: boolean; viewportCulling?: boolean; progressiveChunkSize?: number; motion?: boolean; locale?: Partial<ChartLocale>; hiddenSeries?: readonly string[]; defaultHiddenSeries?: readonly string[]; onHiddenSeriesChange?: (series: string[]) => void; emptyContent?: ReactNode; orientation?: 'vertical' | 'horizontal'; innerRadius?: number; };`
 - `ChartRoot`: `({ width, height, children, ...props }: HTMLAttributes<HTMLElement> & ChartContextValue) => JSX.Element`
 - `ChartTooltip`: `(props: HTMLAttributes<HTMLDivElement>) => JSX.Element`
 - `ChartXAxis`: `(props: SVGAttributes<SVGGElement>) => JSX.Element`
@@ -250,15 +259,30 @@ Version snapshot: 0.3.2-beta.2
 
 ## ./chart-stream
 
-- `ChartStream`: `type ChartStream<D extends string> = { readonly capacity: number; readonly dimensions: readonly D[]; readonly length: number; append(batch: Readonly<Record<D, ArrayLike<number>>>): void; clear(): void; snapshot(): ChartStreamSnapshot<D>; subscribe(listener: () => void): () => void; };`
+- `ChartStream`: `type ChartStream<D extends string> = { readonly capacity: number; readonly dimensions: readonly D[]; readonly length: number; readonly window: number | undefined; readonly paused: boolean; append(batch: Readonly<Record<D, ArrayLike<number>>>): void; backfill(batch: Readonly<Record<D, ArrayLike<number>>>): void; clear(): void; setWindow(size?: number): void; pause(): void; resume(): void; snapshot(): ChartStreamSnapshot<D>; subscribe(listener: () => void): () => void; };`
 - `ChartStreamSnapshot`: `type ChartStreamSnapshot<D extends string> = Readonly<{ length: number; version: number; columns: Readonly<Record<D, Float64Array>>; }>;`
-- `createChartStream`: `<const D extends string>(options: { capacity: number; dimensions: readonly D[]; }) => ChartStream<D>`
+- `createChartStream`: `<const D extends string>(options: { capacity: number; dimensions: readonly D[]; window?: number; }) => ChartStream<D>`
 
 ## ./chart-canvas
 
 - `CanvasMark`: `type CanvasMark = { type: 'line'; points: readonly (readonly [number, number])[]; color: string; width?: number; } | { type: 'area'; points: readonly (readonly [number, number])[]; color: string; baseline: number; opacity?: number; } | { type: 'point'; x: number; y: number; radius?: number; color: string; } | { type: 'rect'; x: number; y: number; width: number; height: number; color: string; opacity?: number; };`
 - `drawChartCanvas`: `(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, marks: readonly CanvasMark[], width: number, height: number, pixelRatio?: number) => void`
 - `supportsWorkerCanvas`: `() => boolean`
+
+## ./chart-export
+
+- `ChartExportPoint`: `type ChartExportPoint = { seriesId: string; index: number; xValue: ChartValue; yValue: number; };`
+- `chartToCsv`: `(points: readonly ChartExportPoint[], delimiter?: string, headers?: readonly [string, string, string, string]) => string`
+- `copyChartText`: `(text: string) => Promise<void>`
+- `downloadChartBlob`: `(blob: Blob, filename: string) => void`
+- `printChart`: `(svg: string) => void`
+- `svgToDataUri`: `(svg: string) => string`
+- `svgToPng`: `(svg: string, width: number, height: number) => Promise<Blob>`
+
+## ./chart-responsive
+
+- `ChartResponsiveContainer`: `({ aspectRatio, minWidth, minHeight, children }: { aspectRatio?: number; minWidth?: number; minHeight?: number; children: (size: ChartResponsiveSize) => ReactNode; }) => JSX.Element`
+- `ChartResponsiveSize`: `type ChartResponsiveSize = { width: number; height: number };`
 
 ## ./chart-motion
 
@@ -402,11 +426,12 @@ Version snapshot: 0.3.2-beta.2
 - `BubbleChart`: `<T>(props: ChartProps<T>) => JSX.Element`
 - `ChartBrush`: `(props: SVGAttributes<SVGRectElement>) => JSX.Element`
 - `ChartCrosshair`: `(props: SVGAttributes<SVGGElement>) => JSX.Element`
-- `ChartDataTable`: `<T>({ data, columns, pageSize }: { data: readonly T[]; columns: readonly { label: string; value: ChartAccessor<T>; }[]; pageSize?: number; }) => JSX.Element`
+- `ChartDataTable`: `<T>({ data, columns, pageSize, locale }: { data: readonly T[]; columns: readonly { label: string; value: ChartAccessor<T>; }[]; pageSize?: number; locale?: Partial<ChartLocale>; }) => JSX.Element`
 - `ChartGrid`: `(props: SVGAttributes<SVGGElement>) => JSX.Element`
 - `ChartLegend`: `(props: HTMLAttributes<HTMLDivElement>) => JSX.Element`
 - `ChartPlot`: `(props: SVGAttributes<SVGSVGElement>) => JSX.Element`
-- `ChartProps`: `type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & { data?: readonly T[]; stream?: ChartStream<string>; x?: ChartAccessor<T>; y?: ChartAccessor<T, number>; series?: readonly ChartSeries<T>[]; accessibility: ChartAccessibility; width?: number; height?: number; xScale?: ChartScaleType; yScale?: Exclude<ChartScaleType, 'band'>; xDomain?: ChartDomain; yDomain?: ChartDomain; renderMode?: ChartRenderMode; canvasThreshold?: number; hiddenSeries?: readonly string[]; defaultHiddenSeries?: readonly string[]; onHiddenSeriesChange?: (series: string[]) => void; emptyContent?: ReactNode; orientation?: 'vertical' | 'horizontal'; innerRadius?: number; };`
+- `ChartPointInteraction`: `type ChartPointInteraction<T> = Pick<PreparedPoint<T>, 'datum' | 'index' | 'x' | 'y' | 'xValue' | 'yValue' | 'radius'> & { seriesId: string };`
+- `ChartProps`: `type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & { data?: readonly T[]; stream?: ChartStream<string>; x?: ChartAccessor<T>; y?: ChartAccessor<T, number>; series?: readonly ChartSeries<T>[]; accessibility: ChartAccessibility; width?: number; height?: number; xScale?: ChartScaleType; yScale?: Exclude<ChartScaleType, 'band'>; xDomain?: ChartDomain; yDomain?: ChartDomain; xAxis?: ChartAxisConfig; yAxis?: ChartAxisConfig; references?: readonly ChartReference[]; annotations?: readonly ChartAnnotation[]; dataLabels?: boolean | ChartDataLabelConfig; legend?: ChartLegendConfig; legendContent?: (series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode; visualMap?: ChartVisualMap; dataOptions?: ChartDataOptions<T>; streamControls?: boolean; streamAutoScroll?: boolean; streamAnnouncement?: boolean; centerLabel?: string; showTotal?: boolean; onSliceSelect?: (slice: { datum: T; index: number; value: number }) => void; drilldownDepth?: number; onDrilldown?: (event: ChartPointInteraction<T> | { datum: T; index: number; value: number }) => void; onDrilldownBack?: () => void; viewport?: { x?: ChartDomain; y?: ChartDomain }; defaultViewport?: { x?: ChartDomain; y?: ChartDomain }; interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }; sync?: ChartSync; onViewportChange?: (viewport: { x?: ChartDomain; y?: ChartDomain }) => void; onXDomainChange?: (domain: ChartDomain) => void; onYDomainChange?: (domain: ChartDomain) => void; onSelectionChange?: (selection: { start: readonly [number, number]; end: readonly [number, number] } | null) => void; onSelectedDataChange?: (data: readonly T[]) => void; onPointHover?: (point: ChartPointInteraction<T> | null) => void; onPointClick?: (point: ChartPointInteraction<T>) => void; onPointDoubleClick?: (point: ChartPointInteraction<T>) => void; onPointContextMenu?: (point: ChartPointInteraction<T>) => void; tooltipMode?: ChartTooltipMode; tooltipTrigger?: ChartTooltipTrigger; tooltipPosition?: ChartTooltipPosition; tooltipFormatter?: (point: ChartPointInteraction<T>) => ReactNode; tooltipContent?: (points: readonly ChartPointInteraction<T>[]) => ReactNode; renderMode?: ChartRenderMode; canvasThreshold?: number; workerProcessing?: boolean; viewportCulling?: boolean; progressiveChunkSize?: number; motion?: boolean; locale?: Partial<ChartLocale>; hiddenSeries?: readonly string[]; defaultHiddenSeries?: readonly string[]; onHiddenSeriesChange?: (series: string[]) => void; emptyContent?: ReactNode; orientation?: 'vertical' | 'horizontal'; innerRadius?: number; };`
 - `ChartRoot`: `({ width, height, children, ...props }: HTMLAttributes<HTMLElement> & ChartContextValue) => JSX.Element`
 - `ChartTooltip`: `(props: HTMLAttributes<HTMLDivElement>) => JSX.Element`
 - `ChartXAxis`: `(props: SVGAttributes<SVGGElement>) => JSX.Element`
@@ -705,6 +730,24 @@ Version snapshot: 0.3.2-beta.2
 ## ./slider
 
 - `Slider`: `ForwardRefExoticComponent<Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & { invalid?: boolean; } & RefAttributes<HTMLInputElement>>`
+
+## ./specialty-charts
+
+- `BoxPlotChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `CandlestickChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `FunnelChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `GaugeChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `GeoChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `HistogramChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `MapChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `OhlcChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `PolarAreaChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `SankeyChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `SpecialtyChart`: `({ kind, data, accessibility, width, height, ...native }: SpecialtyChartProps & { kind: SpecialtyChartKind; }) => JSX.Element`
+- `SpecialtyChartProps`: `type SpecialtyChartProps = Omit<HTMLAttributes<HTMLElement>, 'title'> & { data: readonly SpecialtyDatum[]; accessibility: ChartAccessibility; width?: number; height?: number };`
+- `TreemapChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `ViolinChart`: `(props: SpecialtyChartProps) => JSX.Element`
+- `WaterfallChart`: `(props: SpecialtyChartProps) => JSX.Element`
 
 ## ./spinner
 
