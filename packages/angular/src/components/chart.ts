@@ -22,6 +22,7 @@ import {
   linearScale,
   logScale,
   numericValue,
+  minMaxDecimate,
   pieArcs,
   radarPoints,
   stackChartValues,
@@ -275,7 +276,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       if (type === 'line' || type === 'area') {
         const path = type === 'line' ? chartCurvePath(values.map((item) => [item.x, item.y]), definition.curve, definition.tension) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
         marks.push({ id: definition.id, type, color: fill, path, ...(definition.lineWidth == null ? {} : { lineWidth: definition.lineWidth }), ...(definition.lineDash == null ? {} : { lineDash: definition.lineDash }) });
-        canvasMarks.push(type === 'line' ? { type: 'line', points: values.map((item) => [item.x, item.y]), color } : { type: 'area', points: values.map((item) => [item.x, item.y]), baseline: yMap(0), color, opacity: 0.3 });
+        const decimated = minMaxDecimate(values, this.plotWidth);
+        canvasMarks.push(type === 'line' ? { type: 'line', points: decimated.map((item) => [item.x, item.y]), color } : { type: 'area', points: decimated.map((item) => [item.x, item.y]), baseline: yMap(0), color, opacity: 0.3 });
       } else for (const item of values) {
         if (type === 'bar' || type === 'heatmap') {
           const width = type === 'bar' ? bands?.bandwidth ?? 8 : 10;

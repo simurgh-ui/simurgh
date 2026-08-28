@@ -10,6 +10,7 @@ import {
   linearScale,
   logScale,
   numericValue,
+  minMaxDecimate,
   pieArcs,
   radarPoints,
   stackChartValues,
@@ -347,8 +348,9 @@ function cartesian(kind: ChartSeriesType | 'combo') {
               if (!context) return;
               const marks: CanvasMark[] = prepared.flatMap<CanvasMark>((item, seriesIndex) => {
                 const color = item.color ?? colors[seriesIndex % colors.length]!;
-                if (item.type === 'line') return [{ type: 'line', points: item.points.map((point) => [point.x, point.y]), color }];
-                if (item.type === 'area') return [{ type: 'area', points: item.points.map((point) => [point.x, point.y]), baseline: item.points[0]?.y0 ?? baseline, color, opacity: 0.3 }];
+                const points = (item.type === 'line' || item.type === 'area') ? minMaxDecimate(item.points, layout.plotWidth) : item.points;
+                if (item.type === 'line') return [{ type: 'line', points: points.map((point) => [point.x, point.y]), color }];
+                if (item.type === 'area') return [{ type: 'area', points: points.map((point) => [point.x, point.y]), baseline: points[0]?.y0 ?? baseline, color, opacity: 0.3 }];
                 if (item.type === 'bar') return item.points.map((point) => { const origin = item.stack ? point.y0 : baseline; return { type: 'rect' as const, x: point.x - (bands?.bandwidth ?? 8) / 2, y: Math.min(point.y, origin), width: bands?.bandwidth ?? 8, height: Math.abs(point.y - origin), color }; });
                 return item.points.map((point) => ({ type: 'point' as const, x: point.x, y: point.y, radius: item.type === 'bubble' ? point.radius : 3, color }));
               });
