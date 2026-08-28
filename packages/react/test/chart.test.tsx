@@ -57,6 +57,8 @@ describe('React charts', () => {
     expect(change).toHaveBeenCalledOnce();
     const next = change.mock.calls[0]![0];
     expect(next.x[1] - next.x[0]).toBeLessThan(10);
+    fireEvent.click(screen.getByRole('button', { name: 'Reset view' }));
+    expect(change).toHaveBeenLastCalledWith({});
   });
   it('renders horizontal, stacked, polar, and empty states', () => {
     const { container, rerender } = render(<BarChart data={data} x="month" y="revenue" orientation="horizontal" accessibility={accessibility} />);
