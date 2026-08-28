@@ -385,7 +385,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const candidates: readonly [ChartBrushHandle, readonly [number, number]][] = [['start', this.selection.start], ['end', [this.selection.end[0], this.selection.start[1]]], ['start-y', [this.selection.start[0], this.selection.end[1]]], ['end-y', this.selection.end]];
     return candidates.find(([, item]) => Math.hypot(point[0] - item[0], point[1] - item[1]) <= 12)?.[0] ?? null;
   }
-  onPointerCancel() { this.pointers.clear(); this.pinchStart = null; this.pointerStart = null; this.pointerLast = null; this.brushHandle = null; }
+  onPointerCancel() { this.pointers.clear(); this.pinchStart = null; this.pointerStart = null; this.pointerLast = null; this.brushHandle = null; this.selection = null; this.sync?.set({ selection: null }); this.selectionChange.emit(null); this.selectedDataChange.emit([]); }
   private pointAt(event: MouseEvent): ChartPointInteraction | null {
     const points = 'points' in this.model ? this.model.points : [];
     const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
