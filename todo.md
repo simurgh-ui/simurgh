@@ -522,7 +522,7 @@ budgets remain fixed.
 - [x] Wire component-level panning to mouse drag, touch gestures, keyboard controls, and bounded domains.
 - [x] Implement brush/range selection with x/y selection modes, resize handles, cancel/reset behavior, selected-domain output, and selected-data output.
 - [x] Add pointer interaction events for hover, leave, click, double-click, context menu, and point/series selection across React, Vue, and Angular.
-- [ ] Replace the basic tooltip with configurable nearest, intersect, index/shared, click-to-pin, cursor-following, formatting, and custom-content modes.
+- [x] Replace the basic tooltip with configurable nearest, intersect, index/shared, click-to-pin, cursor-following, formatting, and custom-content modes.
 - [x] Complete crosshair behavior with x/y lines, series snapping, axis labels, and synchronized crosshairs.
 - [x] Add linked-chart synchronization for zoom, pan, brush, tooltip, and crosshair state.
 
