@@ -92,6 +92,15 @@ describe('React charts', () => {
     expect(change).toHaveBeenCalled();
     expect(change.mock.lastCall?.[0].x[1] - change.mock.lastCall?.[0].x[0]).toBeLessThan(10);
   });
+  it('supports drag zoom when pan and brush are disabled', () => {
+    const change = vi.fn();
+    const { container } = render(<LineChart data={[{ x: 0, y: 0 }, { x: 10, y: 10 }]} x="x" y="y" interaction={{ zoom: 'x' }} accessibility={accessibility} onViewportChange={change} />);
+    const viewport = container.querySelector('[data-part="viewport"]')!;
+    vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 640, height: 360, right: 640, bottom: 360, x: 0, y: 0, toJSON: () => ({}) });
+    fireEvent.pointerDown(viewport, { pointerId: 1, clientX: 150, clientY: 180 });
+    fireEvent.pointerUp(viewport, { pointerId: 1, clientX: 490, clientY: 180 });
+    expect(change.mock.lastCall?.[0].x[1] - change.mock.lastCall?.[0].x[0]).toBeLessThan(10);
+  });
   it('renders horizontal, stacked, polar, and empty states', () => {
     const { container, rerender } = render(<BarChart data={data} x="month" y="revenue" orientation="horizontal" accessibility={accessibility} />);
     expect(container.querySelectorAll('rect').length).toBe(3);
