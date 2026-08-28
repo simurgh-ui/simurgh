@@ -538,7 +538,7 @@ budgets remain fixed.
 - [x] Add continuous and piecewise visual mapping for color, opacity, size, and threshold-based styling.
 - [ ] Add configurable curves and marks: smooth/spline, step, monotone, tension, line width/dash, point symbols, gradients, patterns, and per-point styles.
 - [ ] Add drilldown interactions for bars, points, and pie/donut slices, including accessible announcements and back navigation.
-- [ ] Add pie/donut center labels, totals, slice hover/selection, labels, and richer polar interactions.
+- [x] Add pie/donut center labels, totals, slice hover/selection, labels, and richer polar interactions.
 
 ### P1: data and performance
 
