@@ -37,6 +37,10 @@
     "./chart-canvas": {
       "types": "./dist/chart-canvas.d.ts",
       "import": "./dist/chart-canvas.js"
+    },
+    "./chart-export": {
+      "types": "./dist/chart-export.d.ts",
+      "import": "./dist/chart-export.js"
     }
   },
   "files": [

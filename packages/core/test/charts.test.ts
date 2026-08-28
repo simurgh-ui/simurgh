@@ -14,6 +14,7 @@ import {
 } from '../src/charts.js';
 import { SpatialGrid, clampDomain, createChartSync, domainFromSelection, nextChartIndex, panDomain, pinchZoomDomain, resizeChartSelection, selectionFromPoints, zoomDomain } from '../src/chart-interactions.js';
 import { createChartStream } from '../src/chart-stream.js';
+import { chartToCsv, svgToDataUri } from '../src/chart-export.js';
 
 describe('chart scales and geometry', () => {
   it('pads constant domains and omits invalid logarithmic values', () => {
@@ -82,6 +83,13 @@ describe('chart interaction helpers', () => {
     grid.add({ x: 12, y: 14, id: 'near' });
     grid.add({ x: 100, y: 100, id: 'far' });
     expect(grid.nearest(10, 10, 10)?.id).toBe('near');
+  });
+});
+
+describe('chart export helpers', () => {
+  it('serializes points to CSV and SVG data URIs', () => {
+    expect(chartToCsv([{ seriesId: 'sales', index: 0, xValue: 'Q1', yValue: 12 }])).toContain('sales,0,Q1,12');
+    expect(svgToDataUri('<svg />')).toContain('data:image/svg+xml');
   });
 });
 

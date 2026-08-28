@@ -14,6 +14,7 @@ export {
 } from './floating-interactions.js';
 export type Orientation = 'horizontal' | 'vertical';
 export type MaybeGetter<T> = T | (() => T);
+export { chartToCsv, copyChartText, downloadChartBlob, printChart, svgToDataUri, svgToPng, type ChartExportPoint } from './chart-export.js';
 
 let id = 0;
 export function createId(prefix = 'simurgh'): string {
