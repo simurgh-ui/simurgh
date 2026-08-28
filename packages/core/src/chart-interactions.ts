@@ -51,6 +51,11 @@ export function panDomain(domain: ChartDomain, fraction: number): ChartDomain {
   return [domain[0] + amount, domain[1] + amount];
 }
 
+export function pinchZoomDomain(domain: ChartDomain, startDistance: number, endDistance: number, anchor: number): ChartDomain {
+  if (!Number.isFinite(startDistance) || !Number.isFinite(endDistance) || startDistance <= 0 || endDistance <= 0) return domain;
+  return zoomDomain(domain, endDistance / startDistance, anchor);
+}
+
 export function domainFromSelection(
   domain: ChartDomain,
   selection: readonly [number, number],

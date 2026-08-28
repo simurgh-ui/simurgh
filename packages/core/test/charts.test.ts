@@ -12,7 +12,7 @@ import {
   stackChartValues,
   stackedAreaPath,
 } from '../src/charts.js';
-import { SpatialGrid, clampDomain, createChartSync, domainFromSelection, nextChartIndex, panDomain, resizeChartSelection, selectionFromPoints, zoomDomain } from '../src/chart-interactions.js';
+import { SpatialGrid, clampDomain, createChartSync, domainFromSelection, nextChartIndex, panDomain, pinchZoomDomain, resizeChartSelection, selectionFromPoints, zoomDomain } from '../src/chart-interactions.js';
 import { createChartStream } from '../src/chart-stream.js';
 
 describe('chart scales and geometry', () => {
@@ -65,6 +65,9 @@ describe('chart interaction helpers', () => {
     expect(clampDomain([-10, 40], [0, 100])).toEqual([0, 50]);
     expect(clampDomain([70, 120], [0, 100])).toEqual([50, 100]);
     expect(resizeChartSelection({ start: [10, 20], end: [80, 60] }, 'start', [30, 0])).toEqual({ start: [30, 20], end: [80, 60] });
+  });
+  it('zooms around a pinch anchor', () => {
+    expect(pinchZoomDomain([0, 100], 100, 200, 50)).toEqual([25, 75]);
   });
   it('broadcasts linked chart state changes', () => {
     const sync = createChartSync();
