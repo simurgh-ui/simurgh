@@ -31,7 +31,7 @@ import {
   type ChartSeriesType,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, zoomDomain } from '@simurgh-ui/core/chart-interactions';
+import { clampDomain, domainFromSelection, panDomain, zoomDomain } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 
@@ -53,7 +53,7 @@ const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart
 const template = `
   <figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption>
   <p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ model.summary }}</p>
-  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)" (mousemove)="onMouseMove($event)" (mouseleave)="pointHover.emit(null)" (click)="onPointClick($event)" (dblclick)="onPointDoubleClick($event)" (contextmenu)="onPointContextMenu($event)">
+  <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)" (mousemove)="onMouseMove($event)" (mouseleave)="pointHover.emit(null)" (click)="onPointClick($event)" (dblclick)="onPointDoubleClick($event)" (contextmenu)="onPointContextMenu($event)" (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)" (pointercancel)="onPointerCancel()">
     <canvas #canvas *ngIf="model.useCanvas" [attr.width]="width" [attr.height]="height" aria-hidden="true"></canvas>
     <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" data-part="plot" aria-hidden="true">
       <ng-container *ngIf="!model.useCanvas">
@@ -63,6 +63,7 @@ const template = `
           <circle *ngIf="mark.type === 'scatter' || mark.type === 'bubble'" data-part="series" [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.r]="mark.radius" [attr.fill]="mark.color"></circle>
         </ng-container>
       </ng-container>
+      <rect *ngIf="selection" data-part="brush" [attr.x]="selection.start[0]" [attr.y]="selection.start[1]" [attr.width]="selection.end[0] - selection.start[0]" [attr.height]="selection.end[1] - selection.start[1]"></rect>
     </svg>
     <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
     <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
@@ -126,11 +127,14 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   tablePage = 0;
   private uncontrolledHiddenSeries?: readonly string[];
   private uncontrolledViewport: { x?: ChartDomain; y?: ChartDomain } = {};
+  selection: { start: readonly [number, number]; end: readonly [number, number] } | null = null;
+  private pointerStart: readonly [number, number] | null = null;
+  private pointerLast: readonly [number, number] | null = null;
   private drawn = '';
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
   get effectiveHiddenSeries() { return this.hiddenSeries ?? this.uncontrolledHiddenSeries ?? this.defaultHiddenSeries; }
-  get effectiveViewport() { return this.viewport ?? this.uncontrolledViewport; }
+  get effectiveViewport() { return this.viewport ?? (Object.keys(this.uncontrolledViewport).length ? this.uncontrolledViewport : this.defaultViewport); }
 
   get decorative() {
     return 'decorative' in this.accessibility && this.accessibility.decorative;
@@ -245,6 +249,54 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     this.viewportChange.emit(next);
     this.changeDetector?.markForCheck();
   }
+  private pointFromPointer(event: PointerEvent): readonly [number, number] {
+    const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    return [((event.clientX - bounds.left) / bounds.width) * this.width, ((event.clientY - bounds.top) / bounds.height) * this.height];
+  }
+  onPointerDown(event: PointerEvent) {
+    if (!this.interaction || (!this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y') && !this.axisEnabled(this.interaction.brush, 'x') && !this.axisEnabled(this.interaction.brush, 'y'))) return;
+    const point = this.pointFromPointer(event);
+    this.pointerStart = point;
+    this.pointerLast = point;
+    (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId);
+  }
+  onPointerMove(event: PointerEvent) {
+    if (!this.pointerLast || !this.interaction || (!this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y'))) return;
+    const previous = this.pointerLast;
+    const point = this.pointFromPointer(event);
+    const layout = chartLayout(this.width, this.height);
+    const model = this.model;
+    const fullX = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
+    const fullY = 'yDomain' in model ? model.yDomain : [0, 1] as ChartDomain;
+    const next = { ...this.effectiveViewport };
+    if (this.axisEnabled(this.interaction.pan, 'x')) next.x = clampDomain(panDomain(this.effectiveViewport.x ?? fullX, -(point[0] - previous[0]) / (layout.plotWidth || 1)), fullX);
+    if (this.axisEnabled(this.interaction.pan, 'y')) next.y = clampDomain(panDomain(this.effectiveViewport.y ?? fullY, (point[1] - previous[1]) / (layout.plotHeight || 1)), fullY);
+    this.pointerLast = point;
+    if (this.viewport === undefined) this.uncontrolledViewport = next;
+    this.viewportChange.emit(next);
+    this.changeDetector?.markForCheck();
+  }
+  onPointerUp(event: PointerEvent) {
+    const start = this.pointerStart;
+    this.pointerStart = null;
+    this.pointerLast = null;
+    if (!start || !this.interaction || (!this.axisEnabled(this.interaction.brush, 'x') && !this.axisEnabled(this.interaction.brush, 'y'))) return;
+    const point = this.pointFromPointer(event);
+    const nextSelection = { start: [Math.min(start[0], point[0]), Math.min(start[1], point[1])] as const, end: [Math.max(start[0], point[0]), Math.max(start[1], point[1])] as const };
+    this.selection = nextSelection;
+    this.selectionChange.emit(nextSelection);
+    const layout = chartLayout(this.width, this.height);
+    const model = this.model;
+    const fullX = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
+    const fullY = 'yDomain' in model ? model.yDomain : [0, 1] as ChartDomain;
+    const next = { ...this.effectiveViewport };
+    if (this.axisEnabled(this.interaction.brush, 'x')) next.x = domainFromSelection(fullX, [nextSelection.start[0], nextSelection.end[0]], [layout.left, layout.left + layout.plotWidth]);
+    if (this.axisEnabled(this.interaction.brush, 'y')) next.y = domainFromSelection(fullY, [nextSelection.start[1], nextSelection.end[1]], [layout.top + layout.plotHeight, layout.top]);
+    if (this.viewport === undefined) this.uncontrolledViewport = next;
+    this.viewportChange.emit(next);
+    this.changeDetector?.markForCheck();
+  }
+  onPointerCancel() { this.pointerStart = null; this.pointerLast = null; }
   private pointAt(event: MouseEvent): ChartPointInteraction | null {
     const points = 'points' in this.model ? this.model.points : [];
     const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
@@ -260,7 +312,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointClick.emit(point); }
   onPointDoubleClick(event: MouseEvent) { const point = this.pointAt(event); if (point) this.pointDoubleClick.emit(point); }
   onPointContextMenu(event: MouseEvent) { const point = this.pointAt(event); if (point) { event.preventDefault(); this.pointContextMenu.emit(point); } }
-  resetViewport() { this.uncontrolledViewport = {}; this.viewportChange.emit({}); this.selectionChange.emit(null); }
+  resetViewport() { this.uncontrolledViewport = {}; this.selection = null; this.viewportChange.emit({}); this.selectionChange.emit(null); this.changeDetector?.markForCheck(); }
   private axisEnabled(value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') { return value === true || value === 'xy' || value === axis; }
   toggleSeries(id: string) {
     const hidden = this.effectiveHiddenSeries;
