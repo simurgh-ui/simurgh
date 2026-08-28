@@ -23,6 +23,7 @@ import {
   type ChartSeriesType,
   type ChartValue,
 } from '@simurgh-ui/core/charts';
+import { clampDomain, domainFromSelection, selectionFromPoints, zoomDomain } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 import {
@@ -51,6 +52,11 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   yScale?: Exclude<ChartScaleType, 'band'>;
   xDomain?: ChartDomain;
   yDomain?: ChartDomain;
+  viewport?: { x?: ChartDomain; y?: ChartDomain };
+  defaultViewport?: { x?: ChartDomain; y?: ChartDomain };
+  interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
+  onViewportChange?: (viewport: { x?: ChartDomain; y?: ChartDomain }) => void;
+  onSelectionChange?: (selection: { start: readonly [number, number]; end: readonly [number, number] } | null) => void;
   renderMode?: ChartRenderMode;
   canvasThreshold?: number;
   hiddenSeries?: readonly string[];
@@ -135,10 +141,15 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
 function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeriesType | 'combo' }) {
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
-    xScale = 'linear', yScale = 'linear', xDomain, yDomain, renderMode = 'auto', canvasThreshold = 2000,
+    xScale = 'linear', yScale = 'linear', xDomain, yDomain, viewport: controlledViewport, defaultViewport, interaction,
+    onViewportChange, onSelectionChange, renderMode = 'auto', canvasThreshold = 2000,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
   const [uncontrolledHiddenSeries, setUncontrolledHiddenSeries] = useState<readonly string[]>(defaultHiddenSeries);
+  const [uncontrolledViewport, setUncontrolledViewport] = useState(controlledViewport ?? defaultViewport ?? {});
+  const viewport = controlledViewport ?? uncontrolledViewport;
+  const [selection, setSelection] = useState<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
+  const pointerStart = useRef<readonly [number, number] | null>(null);
   const hiddenSeries = controlledHiddenSeries ?? uncontrolledHiddenSeries;
   const data = useChartRows(inputData, stream, width);
   const titleId = `${useId()}-title`;
@@ -155,8 +166,10 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   }).filter((item): item is NonNullable<typeof item> => item != null));
   const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })));
   const categories = raw.map((item) => item.xValue);
-  const resolvedX = xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
-  const resolvedY = yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar'), log: yScale === 'log' }) ?? [0, 1];
+  const fullX = xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
+  const fullY = yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar'), log: yScale === 'log' }) ?? [0, 1];
+  const resolvedX = viewport.x ?? fullX;
+  const resolvedY = viewport.y ?? fullY;
   const horizontalBars = kind === 'bar' && orientation === 'horizontal';
   const xBand = xScale === 'band' ? bandScale(categories, horizontalBars ? [layout.top, layout.top + layout.plotHeight] : [layout.left, layout.left + layout.plotWidth]) : null;
   const numericXMap = (xScale === 'log' ? logScale : linearScale)(resolvedX, [layout.left, layout.left + layout.plotWidth]);
@@ -211,6 +224,38 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     <div data-part="legend">{definitions.map((item, index) => <button type="button" key={item.id} aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>)}</div>
   </figure>;
   const focused = flat[Math.min(focus, flat.length - 1)];
+  const setViewport = (next: { x?: ChartDomain; y?: ChartDomain }) => {
+    if (controlledViewport === undefined) setUncontrolledViewport(next);
+    onViewportChange?.(next);
+  };
+  const axisEnabled = (value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') => value === true || value === 'xy' || value === axis;
+  const pointFromEvent = (event: Pick<React.PointerEvent<HTMLDivElement>, 'currentTarget' | 'clientX' | 'clientY'>): readonly [number, number] => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    return [((event.clientX - bounds.left) / bounds.width) * width, ((event.clientY - bounds.top) / bounds.height) * height];
+  };
+  const finishSelection = (point: readonly [number, number]) => {
+    const start = pointerStart.current;
+    pointerStart.current = null;
+    if (!start || !interaction || !axisEnabled(interaction.brush, 'x') && !axisEnabled(interaction.brush, 'y')) return;
+    const next = selectionFromPoints(start, point);
+    if (!next) return;
+    setSelection(next);
+    onSelectionChange?.(next);
+    const nextViewport = { ...viewport };
+    if (axisEnabled(interaction.brush, 'x')) nextViewport.x = domainFromSelection(fullX, [next.start[0], next.end[0]], [layout.left, layout.left + layout.plotWidth]);
+    if (axisEnabled(interaction.brush, 'y')) nextViewport.y = domainFromSelection(fullY, [next.start[1], next.end[1]], [layout.top + layout.plotHeight, layout.top]);
+    setViewport(nextViewport);
+  };
+  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (!interaction || !axisEnabled(interaction.zoom, 'x') && !axisEnabled(interaction.zoom, 'y')) return;
+    event.preventDefault();
+    const factor = event.deltaY < 0 ? 1.2 : 1 / 1.2;
+    const point = pointFromEvent(event);
+    const next = { ...viewport };
+    if (axisEnabled(interaction.zoom, 'x')) next.x = clampDomain(zoomDomain(resolvedX, factor, domainFromSelection(resolvedX, [point[0], point[0]], [layout.left, layout.left + layout.plotWidth])[0]), fullX);
+    if (axisEnabled(interaction.zoom, 'y')) next.y = clampDomain(zoomDomain(resolvedY, factor, domainFromSelection(resolvedY, [point[1], point[1]], [layout.top + layout.plotHeight, layout.top])[0]), fullY);
+    setViewport(next);
+  };
   const focusFromPointer = (event: Pick<React.MouseEvent<HTMLDivElement>, 'currentTarget' | 'clientX' | 'clientY'>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     if (!bounds.width || !bounds.height) return;
@@ -231,13 +276,16 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   return (
     <figure className="simurgh-chart" data-slot="chart" data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p></>}
-      <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer}>
+      <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onWheel={handleWheel}
+        onPointerDown={(event) => { if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { pointerStart.current = pointFromEvent(event); event.currentTarget.setPointerCapture(event.pointerId); } }}
+        onPointerUp={(event) => { if (pointerStart.current) finishSelection(pointFromEvent(event)); }}>
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
           <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>
           <g data-part="y-axis">{ticks.map((tick) => <text key={tick} x={layout.left - 8} y={yMap(tick)}>{axisNumberFormatter.format(tick)}</text>)}</g>
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><circle cx={focused.x} cy={focused.y} r="4" /></g>}
+          {selection && <rect data-part="brush" x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} />}
         </svg>
         <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
           if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(flat.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((value) => Math.max(0, value - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((value) => Math.min(flat.length - 1, value + 1)); else return;
