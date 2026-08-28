@@ -199,6 +199,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const categories = raw.map((item) => item.xValue);
   const fullX = xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
   const fullY = yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar'), log: yScale === 'log' }) ?? [0, 1];
+  const secondaryFullY = chartDomain(raw.filter((item) => item.definition.axis === 'end').flatMap((item) => [item.start, item.end]), { includeZero: true }) ?? fullY;
   const resolvedX = viewport.x ?? fullX;
   const resolvedY = viewport.y ?? fullY;
   const horizontalBars = kind === 'bar' && orientation === 'horizontal';
@@ -208,10 +209,11 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     ? (value: ChartValue) => xBand.map(value) + xBand.bandwidth / 2
     : (value: ChartValue) => numericXMap(numericValue(value) ?? resolvedX[0]);
   const yMap = (yScale === 'log' ? logScale : linearScale)(resolvedY, [layout.top + layout.plotHeight, layout.top]);
+  const secondaryYMap = (yScale === 'log' ? logScale : linearScale)(secondaryFullY, [layout.top + layout.plotHeight, layout.top]);
   const horizontalValueMap = linearScale(resolvedY, [layout.left, layout.left + layout.plotWidth]);
   const prepared: PreparedSeries<T>[] = active.map((definition) => ({ ...definition, type: definition.type ?? (kind === 'combo' ? 'line' : kind), points: raw.filter((item) => item.definition === definition).map((item) => horizontalBars
     ? ({ ...item, x: horizontalValueMap(item.end), y: xBand ? xBand.map(item.xValue) + xBand.bandwidth / 2 : xMap(item.xValue), y0: horizontalValueMap(item.start) })
-    : ({ ...item, x: xMap(item.xValue), y: yMap(item.end), y0: yMap(item.start) })) }));
+    : ({ ...item, x: xMap(item.xValue), y: (definition.axis === 'end' ? secondaryYMap : yMap)(item.end), y0: (definition.axis === 'end' ? secondaryYMap : yMap)(item.start) })) }));
   const pointCount = prepared.reduce((sum, item) => sum + item.points.length, 0);
   const useCanvas = renderMode === 'canvas' || (renderMode === 'auto' && pointCount > canvasThreshold);
   const [focus, setFocus] = useState(0);
@@ -413,6 +415,9 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const tooltipPoints = tooltipMode === 'none' ? [] : tooltipMode === 'nearest' ? (focused ? [focused] : []) : tooltipMode === 'intersect' ? (tooltipIntersected && focused ? [focused] : []) : focused ? flat.filter((item) => item.index === focused.index) : [];
   const tooltipInteractions = tooltipPoints.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: item.series.id }));
   const ticks = chartTicks(resolvedY, yAxis?.ticks ?? 5);
+  const axisYDomain = yAxis?.position === 'end' ? secondaryFullY : resolvedY;
+  const axisYMap = yAxis?.position === 'end' ? secondaryYMap : yMap;
+  const axisTicks = chartTicks(axisYDomain, yAxis?.ticks ?? 5);
   const xTicks = chartTicks(resolvedX, xAxis?.ticks ?? 5);
   const formatTick = (value: ChartValue, axis: ChartAxisConfig | undefined) => axis?.tickFormatter?.(value) ?? formatChartValue(value, axis?.locale);
   return (
@@ -429,7 +434,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
           {yAxis?.grid !== false && <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>}
-          <g data-part="y-axis" transform={yAxis?.position === 'end' ? `translate(${layout.plotWidth + layout.left * 2} 0)` : undefined}>{ticks.map((tick) => <text key={tick} x={yAxis?.position === 'end' ? 8 : layout.left - 8} y={yMap(tick)} textAnchor={yAxis?.position === 'end' ? 'start' : 'end'}>{formatTick(tick, yAxis)}</text>)}{yAxis?.title && <text x={yAxis?.position === 'end' ? 32 : 16} y={layout.top + layout.plotHeight / 2} transform={`rotate(-90 ${yAxis?.position === 'end' ? 32 : 16} ${layout.top + layout.plotHeight / 2})`}>{yAxis.title}</text>}</g>
+          <g data-part="y-axis" transform={yAxis?.position === 'end' ? `translate(${layout.plotWidth + layout.left * 2} 0)` : undefined}>{axisTicks.map((tick) => <text key={tick} x={yAxis?.position === 'end' ? 8 : layout.left - 8} y={axisYMap(tick)} textAnchor={yAxis?.position === 'end' ? 'start' : 'end'}>{formatTick(tick, yAxis)}</text>)}{yAxis?.title && <text x={yAxis?.position === 'end' ? 32 : 16} y={layout.top + layout.plotHeight / 2} transform={`rotate(-90 ${yAxis?.position === 'end' ? 32 : 16} ${layout.top + layout.plotHeight / 2})`}>{yAxis.title}</text>}</g>
           <g data-part="x-axis">{xTicks.map((tick) => <text key={tick} x={xMap(tick)} y={layout.top + layout.plotHeight + 20} textAnchor="middle" transform={xAxis?.tickRotation ? `rotate(${xAxis.tickRotation} ${xMap(tick)} ${layout.top + layout.plotHeight + 20})` : undefined}>{formatTick(tick, xAxis)}</text>)}{xAxis?.title && <text x={layout.left + layout.plotWidth / 2} y={height - 4} textAnchor="middle">{xAxis.title}</text>}</g>
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><line x1={layout.left} x2={layout.left + layout.plotWidth} y1={focused.y} y2={focused.y} /><text x={focused.x + 6} y={layout.top + 14}>{String(focused.xValue)}</text><text x={layout.left + 6} y={focused.y - 6}>{String(focused.yValue)}</text><circle cx={focused.x} cy={focused.y} r="4" /></g>}

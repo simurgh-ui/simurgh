@@ -153,13 +153,15 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         ]);
         const fullX = props.xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
         const fullY = props.yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar') }) ?? [0, 1];
+        const secondaryFullY = chartDomain(raw.filter((item) => item.definition.axis === 'end').flatMap((item) => [item.start, item.end]), { includeZero: true }) ?? fullY;
         const viewport = props.viewport ?? uncontrolledViewport.value;
         const xDomain = viewport.x ?? fullX;
         const yDomain = viewport.y ?? fullY;
         const bands = props.xScale === 'band' ? bandScale(raw.map((item) => item.xValue), [layout.left, layout.left + layout.plotWidth]) : null;
         const numericXMap = (props.xScale === 'log' ? logScale : linearScale)(xDomain, [layout.left, layout.left + layout.plotWidth]);
         const yMap = (props.yScale === 'log' ? logScale : linearScale)(yDomain, [layout.top + layout.plotHeight, layout.top]);
-        const prepared = active.map((definition) => ({ ...definition, type: definition.type ?? (kind === 'combo' ? 'line' : kind), points: raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : numericXMap(item.numericX), y: yMap(item.end), y0: yMap(item.start) })) }));
+        const secondaryYMap = (props.yScale === 'log' ? logScale : linearScale)(secondaryFullY, [layout.top + layout.plotHeight, layout.top]);
+        const prepared = active.map((definition) => ({ ...definition, type: definition.type ?? (kind === 'combo' ? 'line' : kind), points: raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : numericXMap(item.numericX), y: (definition.axis === 'end' ? secondaryYMap : yMap)(item.end), y0: (definition.axis === 'end' ? secondaryYMap : yMap)(item.start) })) }));
         const flat = prepared.flatMap((item) => item.points.map((point) => ({ ...point, series: item })));
         const useCanvas = props.renderMode === 'canvas' || (props.renderMode === 'auto' && flat.length > props.canvasThreshold);
         const decorative = 'decorative' in props.accessibility && props.accessibility.decorative;
