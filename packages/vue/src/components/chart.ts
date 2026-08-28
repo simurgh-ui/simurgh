@@ -2,6 +2,7 @@ import {
   areaPath,
   bandScale,
   chartDomain,
+  chartTicks,
   chartLayout,
   chartSummary,
   chartValue,
@@ -14,12 +15,15 @@ import {
   stackChartValues,
   stackedAreaPath,
   type ChartAccessibility,
+  type ChartAxisConfig,
   type ChartAccessor,
   type ChartSeries,
   type ChartSeriesType,
   type ChartDomain,
   type ChartTooltipMode,
   type ChartTooltipTrigger,
+  type ChartValue,
+  formatChartValue,
   type ChartTooltipPosition,
 } from '@simurgh-ui/core/charts';
 import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, pinchZoomDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
@@ -39,6 +43,8 @@ const commonProps = {
   y: numericAccessor,
   xDomain: Object as PropType<ChartDomain>,
   yDomain: Object as PropType<ChartDomain>,
+  xAxis: Object as PropType<ChartAxisConfig>,
+  yAxis: Object as PropType<ChartAxisConfig>,
   viewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   defaultViewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   interaction: Object as PropType<{ zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }>,
@@ -161,6 +167,10 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const current = flat[Math.min(focused.value, flat.length - 1)]!;
       const tooltipPoints = props.tooltipMode === 'none' ? [] : props.tooltipMode === 'nearest' ? (current ? [current] : []) : props.tooltipMode === 'intersect' ? (tooltipIntersected.value && current ? [current] : []) : current ? flat.filter((item) => item.index === current.index) : [];
         const tooltipInteractions = tooltipPoints.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: item.definition.id }));
+        const xTicks = chartTicks(fullX, props.xAxis?.ticks ?? 5);
+        const yTicks = chartTicks(fullY, props.yAxis?.ticks ?? 5);
+        const formatTick = (value: ChartValue, axis: ChartAxisConfig | undefined) => axis?.tickFormatter?.(value) ?? formatChartValue(value, axis?.locale);
+        const axisNodes = [h('g', { 'data-part': 'grid' }, props.yAxis?.grid === false ? [] : yTicks.map((tick) => h('line', { x1: layout.left, x2: layout.left + layout.plotWidth, y1: yMap(tick), y2: yMap(tick) }))), h('g', { 'data-part': 'y-axis' }, yTicks.map((tick) => h('text', { x: layout.left - 8, y: yMap(tick), 'text-anchor': 'end' }, formatTick(tick, props.yAxis)))), h('g', { 'data-part': 'x-axis' }, xTicks.map((tick) => h('text', { x: numericXMap(tick), y: layout.top + layout.plotHeight + 20, 'text-anchor': 'middle', transform: props.xAxis?.tickRotation ? `rotate(${props.xAxis.tickRotation} ${numericXMap(tick)} ${layout.top + layout.plotHeight + 20})` : undefined }, formatTick(tick, props.xAxis)))), props.xAxis?.title && h('text', { x: layout.left + layout.plotWidth / 2, y: props.height - 4, 'text-anchor': 'middle' }, props.xAxis.title), props.yAxis?.title && h('text', { x: 16, y: layout.top + layout.plotHeight / 2, transform: `rotate(-90 16 ${layout.top + layout.plotHeight / 2})` }, props.yAxis.title)].filter(Boolean);
         const axisEnabled = (value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') => value === true || value === 'xy' || value === axis;
         const pointFromEvent = (event: Pick<PointerEvent, 'currentTarget' | 'clientX' | 'clientY'>): readonly [number, number] => {
           const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
@@ -271,14 +281,14 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           if (next.x || next.y) { setViewport(next); event.preventDefault(); }
         };
         const baseline = yMap(0);
-        const seriesNodes = prepared.map((item, seriesIndex) => {
+        const seriesNodes = [...axisNodes, ...prepared.map((item, seriesIndex) => {
           const color = item.color ?? colors[seriesIndex % colors.length];
           const points = item.points.map((point) => [point.x, point.y] as const);
           if (item.type === 'line') return h('path', { 'data-part': 'series', 'data-series': item.id, d: linePath(points), fill: 'none', stroke: color });
           if (item.type === 'area') return h('path', { 'data-part': 'series', 'data-series': item.id, d: item.stack ? stackedAreaPath(item.points.map((point) => ({ x: point.x, y0: point.y0, y1: point.y }))) : areaPath(points, baseline), fill: color, stroke: color });
           if (item.type === 'bar') return h('g', { 'data-part': 'series', 'data-series': item.id }, item.points.map((point) => { const origin = item.stack ? point.y0 : baseline; return h('rect', { x: point.x - (bands?.bandwidth ?? 8) / 2, y: Math.min(point.y, origin), width: bands?.bandwidth ?? 8, height: Math.abs(point.y - origin), fill: color }); }));
           return h('g', { 'data-part': 'series', 'data-series': item.id }, item.points.map((point) => h('circle', { cx: point.x, cy: point.y, r: item.type === 'bubble' ? point.radius : 3, fill: color })));
-        });
+        })];
         if (useCanvas) {
           const signature = `${rows.length}:${prepared.length}:${props.width}:${props.height}`;
           if (signature !== drawn) {

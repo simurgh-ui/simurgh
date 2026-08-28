@@ -15,6 +15,26 @@ export type ChartRenderMode = 'auto' | 'svg' | 'canvas';
 export type ChartTooltipMode = 'nearest' | 'intersect' | 'index' | 'shared' | 'none';
 export type ChartTooltipTrigger = 'always' | 'hover' | 'click';
 export type ChartTooltipPosition = 'static' | 'cursor';
+export type ChartAxisConfig = {
+  title?: string;
+  ticks?: number;
+  tickFormatter?: (value: ChartValue) => string;
+  tickRotation?: number;
+  grid?: boolean;
+  position?: 'start' | 'end';
+  locale?: string;
+};
+
+export function chartTicks(domain: ChartDomain, count = 5): number[] {
+  const size = Math.max(2, Math.floor(count));
+  return Array.from({ length: size }, (_, index) => domain[0] + ((domain[1] - domain[0]) * index) / (size - 1));
+}
+
+export function formatChartValue(value: ChartValue, locale = 'en-US'): string {
+  if (value instanceof Date) return new Intl.DateTimeFormat(locale).format(value);
+  if (typeof value === 'number') return new Intl.NumberFormat(locale).format(value);
+  return String(value);
+}
 
 export type ChartSeries<T> = {
   id: string;

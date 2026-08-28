@@ -70,4 +70,15 @@ describe('Angular charts', () => {
     chart.tooltipMode = 'none';
     expect(chart.model.tooltip).toBe('selected:0');
   });
+  it('prepares configurable axis ticks and titles', () => {
+    const chart = new LineChartComponent();
+    chart.data = [{ x: 0, y: 2 }, { x: 10, y: 8 }];
+    chart.x = 'x';
+    chart.y = 'y';
+    chart.accessibility = accessibility;
+    chart.xAxis = { ticks: 3, title: 'Time' };
+    chart.yAxis = { ticks: 4, title: 'Value' };
+    expect(chart.model.xTicks).toHaveLength(3);
+    expect(chart.model.yTicks).toHaveLength(4);
+  });
 });

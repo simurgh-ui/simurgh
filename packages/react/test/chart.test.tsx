@@ -124,4 +124,11 @@ describe('React charts', () => {
     rerender(<LineChart data={[]} y="revenue" accessibility={accessibility} />);
     expect(container.querySelector('[data-state="empty"]')).toBeTruthy();
   });
+  it('renders configurable x and y axes', () => {
+    const { container } = render(<LineChart data={[{ x: 0, y: 2 }, { x: 10, y: 8 }]} x="x" y="y" xAxis={{ title: 'Time', ticks: 3, tickRotation: 30 }} yAxis={{ title: 'Value', ticks: 4, grid: true }} accessibility={accessibility} />);
+    expect(container.querySelectorAll('[data-part="x-axis"] text')).toHaveLength(4);
+    expect(container.querySelectorAll('[data-part="y-axis"] text')).toHaveLength(5);
+    expect(screen.getByText('Time')).toBeTruthy();
+    expect(screen.getByText('Value')).toBeTruthy();
+  });
 });

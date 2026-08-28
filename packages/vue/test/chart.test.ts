@@ -21,6 +21,13 @@ describe('Vue charts', () => {
     const result = render(PieChart, { props: { data, y: 'y', accessibility } });
     expect(result.container.querySelectorAll('path[data-part="series"]')).toHaveLength(3);
   });
+  it('renders configurable x and y axes', () => {
+    const result = render(LineChart, { props: { data, x: 'x', y: 'y', accessibility, xAxis: { title: 'Time', ticks: 3 }, yAxis: { title: 'Value', ticks: 4 } } });
+    expect(result.container.querySelectorAll('[data-part="x-axis"] text')).toHaveLength(3);
+    expect(result.container.querySelectorAll('[data-part="y-axis"] text')).toHaveLength(4);
+    expect(screen.getByText('Time')).toBeTruthy();
+    expect(screen.getByText('Value')).toBeTruthy();
+  });
   it('supports viewport zoom, brush gestures, and point callbacks', async () => {
     const viewportChange = vi.fn();
     const selectionChange = vi.fn();

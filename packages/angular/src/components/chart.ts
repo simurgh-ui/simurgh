@@ -14,6 +14,7 @@ import {
   areaPath,
   bandScale,
   chartDomain,
+  chartTicks,
   chartLayout,
   chartSummary,
   chartValue,
@@ -27,10 +28,12 @@ import {
   stackedAreaPath,
   type ChartAccessibility,
   type ChartAccessor,
+  type ChartAxisConfig,
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
   type ChartTooltipPosition,
+  formatChartValue,
   type ChartTooltipTrigger,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
@@ -59,6 +62,9 @@ const template = `
   <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave()" (click)="onPointClick($event)" (dblclick)="onPointDoubleClick($event)" (contextmenu)="onPointContextMenu($event)" (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)" (pointercancel)="onPointerCancel()">
     <canvas #canvas *ngIf="model.useCanvas" [attr.width]="width" [attr.height]="height" aria-hidden="true"></canvas>
     <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" data-part="plot" aria-hidden="true">
+      <ng-container *ngIf="yAxis?.grid !== false"><g data-part="grid"><line *ngFor="let tick of model.yTicks" [attr.x1]="layoutLeft" [attr.x2]="layoutLeft + plotWidth" [attr.y1]="tick.position" [attr.y2]="tick.position"></line></g></ng-container>
+      <g data-part="y-axis"><text *ngFor="let tick of model.yTicks" [attr.x]="yAxis?.position === 'end' ? layoutLeft + plotWidth + 8 : layoutLeft - 8" [attr.y]="tick.position" [attr.text-anchor]="yAxis?.position === 'end' ? 'start' : 'end'">{{ formatAxisTick(tick.value, yAxis) }}</text><text *ngIf="yAxis?.title" [attr.x]="yAxis?.position === 'end' ? layoutLeft + plotWidth + 32 : 16" [attr.y]="layoutTop + plotHeight / 2" [attr.transform]="'rotate(-90 ' + (yAxis?.position === 'end' ? layoutLeft + plotWidth + 32 : 16) + ' ' + (layoutTop + plotHeight / 2) + ')'">{{ yAxis.title }}</text></g>
+      <g data-part="x-axis"><text *ngFor="let tick of model.xTicks" [attr.x]="tick.position" [attr.y]="layoutTop + plotHeight + 20" text-anchor="middle" [attr.transform]="xAxis?.tickRotation ? 'rotate(' + xAxis.tickRotation + ' ' + tick.position + ' ' + (layoutTop + plotHeight + 20) + ')' : null">{{ formatAxisTick(tick.value, xAxis) }}</text><text *ngIf="xAxis?.title" [attr.x]="layoutLeft + plotWidth / 2" [attr.y]="height - 4" text-anchor="middle">{{ xAxis.title }}</text></g>
       <ng-container *ngIf="!model.useCanvas">
         <ng-container *ngFor="let mark of model.marks">
           <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color"></path>
@@ -110,6 +116,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() yScale: 'linear' | 'time' | 'log' = 'linear';
   @Input() xDomain?: ChartDomain;
   @Input() yDomain?: ChartDomain;
+  @Input() xAxis?: ChartAxisConfig;
+  @Input() yAxis?: ChartAxisConfig;
   @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
   @Input() interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -183,6 +191,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   get tablePages() { return Math.max(1, Math.ceil(this.rows.length / this.tablePageSize)); }
   get tableRows() { return this.rows.slice(this.tablePage * this.tablePageSize, this.tablePage * this.tablePageSize + this.tablePageSize); }
   tableValue(datum: Datum, value: ChartAccessor<Datum>, row: number) { return String(chartValue(datum, value, this.tablePage * this.tablePageSize + row) ?? ''); }
+  formatAxisTick(value: number, axis: ChartAxisConfig | undefined) { return axis?.tickFormatter?.(value) ?? formatChartValue(value, axis?.locale); }
 
   get model() {
     if (this.kind === 'pie' || this.kind === 'donut') return this.polarModel();
@@ -237,7 +246,9 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
     const current = points[Math.min(this.focused, points.length - 1)];
     const tooltipPoints = this.tooltipMode === 'none' ? [] : this.tooltipMode === 'nearest' ? (current ? [current] : []) : this.tooltipMode === 'intersect' ? (this.tooltipIntersected && current ? [current] : []) : current ? points.filter((item) => item.index === current.index) : [];
-    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+    const yTicks = chartTicks(yDomain, this.yAxis?.ticks ?? 5).map((value) => ({ value, position: yMap(value) }));
+    const xTicks = chartTicks(xDomain, this.xAxis?.ticks ?? 5).map((value) => ({ value, position: xMap(value) }));
+    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, xTicks, yTicks, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
   ngAfterViewChecked(): void {
@@ -442,7 +453,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const value = this.y ?? this.series?.[0]?.y;
     const radius = Math.min(this.width, this.height) / 2 - 16;
     const arcs = value ? pieArcs(this.rows, value, radius, this.kind === 'donut' ? this.innerRadius ?? radius * 0.55 : this.innerRadius ?? 0) : [];
-    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
   }
 }
 

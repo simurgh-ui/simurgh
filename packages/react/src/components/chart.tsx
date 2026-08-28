@@ -2,6 +2,7 @@ import {
   areaPath,
   bandScale,
   chartDomain,
+  chartTicks,
   chartLayout,
   chartSummary,
   chartValue,
@@ -15,6 +16,7 @@ import {
   stackChartValues,
   stackedAreaPath,
   type ChartAccessibility,
+  type ChartAxisConfig,
   type ChartAccessor,
   type ChartDomain,
   type ChartRenderMode,
@@ -25,6 +27,7 @@ import {
   type ChartTooltipPosition,
   type ChartTooltipTrigger,
   type ChartValue,
+  formatChartValue,
 } from '@simurgh-ui/core/charts';
 import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, pinchZoomDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
@@ -55,6 +58,8 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   yScale?: Exclude<ChartScaleType, 'band'>;
   xDomain?: ChartDomain;
   yDomain?: ChartDomain;
+  xAxis?: ChartAxisConfig;
+  yAxis?: ChartAxisConfig;
   viewport?: { x?: ChartDomain; y?: ChartDomain };
   defaultViewport?: { x?: ChartDomain; y?: ChartDomain };
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -97,7 +102,6 @@ type ChartContextValue = { width: number; height: number };
 const ChartContext = createContext<ChartContextValue | null>(null);
 
 const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart-${index + 1}))`);
-const axisNumberFormatter = new Intl.NumberFormat('en-US');
 
 function useChartRows<T>(data: readonly T[] | undefined, stream: ChartStream<string> | undefined, width: number): readonly T[] {
   const [version, setVersion] = useState(0);
@@ -156,7 +160,7 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
 function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeriesType | 'combo' }) {
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
-    xScale = 'linear', yScale = 'linear', xDomain, yDomain, viewport: controlledViewport, defaultViewport, interaction, sync,
+    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
@@ -404,7 +408,9 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   };
   const tooltipPoints = tooltipMode === 'none' ? [] : tooltipMode === 'nearest' ? (focused ? [focused] : []) : tooltipMode === 'intersect' ? (tooltipIntersected && focused ? [focused] : []) : focused ? flat.filter((item) => item.index === focused.index) : [];
   const tooltipInteractions = tooltipPoints.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: item.series.id }));
-  const ticks = Array.from({ length: 5 }, (_, index) => resolvedY[0] + ((resolvedY[1] - resolvedY[0]) * index) / 4);
+  const ticks = chartTicks(resolvedY, yAxis?.ticks ?? 5);
+  const xTicks = chartTicks(resolvedX, xAxis?.ticks ?? 5);
+  const formatTick = (value: ChartValue, axis: ChartAxisConfig | undefined) => axis?.tickFormatter?.(value) ?? formatChartValue(value, axis?.locale);
   return (
     <figure className="simurgh-chart" data-slot="chart" data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p></>}
@@ -418,8 +424,9 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         onPointerCancel={() => { pointers.current.clear(); pinchStart.current = null; zoomDrag.current = false; pointerStart.current = null; pointerLast.current = null; brushHandle.current = null; setSelection(null); sync?.set({ selection: null }); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
-          <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>
-          <g data-part="y-axis">{ticks.map((tick) => <text key={tick} x={layout.left - 8} y={yMap(tick)}>{axisNumberFormatter.format(tick)}</text>)}</g>
+          {yAxis?.grid !== false && <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>}
+          <g data-part="y-axis" transform={yAxis?.position === 'end' ? `translate(${layout.plotWidth + layout.left * 2} 0)` : undefined}>{ticks.map((tick) => <text key={tick} x={yAxis?.position === 'end' ? 8 : layout.left - 8} y={yMap(tick)} textAnchor={yAxis?.position === 'end' ? 'start' : 'end'}>{formatTick(tick, yAxis)}</text>)}{yAxis?.title && <text x={yAxis?.position === 'end' ? 32 : 16} y={layout.top + layout.plotHeight / 2} transform={`rotate(-90 ${yAxis?.position === 'end' ? 32 : 16} ${layout.top + layout.plotHeight / 2})`}>{yAxis.title}</text>}</g>
+          <g data-part="x-axis">{xTicks.map((tick) => <text key={tick} x={xMap(tick)} y={layout.top + layout.plotHeight + 20} textAnchor="middle" transform={xAxis?.tickRotation ? `rotate(${xAxis.tickRotation} ${xMap(tick)} ${layout.top + layout.plotHeight + 20})` : undefined}>{formatTick(tick, xAxis)}</text>)}{xAxis?.title && <text x={layout.left + layout.plotWidth / 2} y={height - 4} textAnchor="middle">{xAxis.title}</text>}</g>
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><line x1={layout.left} x2={layout.left + layout.plotWidth} y1={focused.y} y2={focused.y} /><text x={focused.x + 6} y={layout.top + 14}>{String(focused.xValue)}</text><text x={layout.left + 6} y={focused.y - 6}>{String(focused.yValue)}</text><circle cx={focused.x} cy={focused.y} r="4" /></g>}
           {selection && <g data-part="brush"><rect x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.end[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.end[1] - 4} width="8" height="8" /></g>}
