@@ -80,6 +80,18 @@ describe('React charts', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Reset view' }));
     expect(change).toHaveBeenLastCalledWith({});
   });
+  it('supports two-pointer pinch zoom', () => {
+    const change = vi.fn();
+    const { container } = render(<LineChart data={[{ x: 0, y: 0 }, { x: 10, y: 10 }]} x="x" y="y" interaction={{ zoom: 'x' }} accessibility={accessibility} onViewportChange={change} />);
+    const viewport = container.querySelector('[data-part="viewport"]')!;
+    vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 640, height: 360, right: 640, bottom: 360, x: 0, y: 0, toJSON: () => ({}) });
+    fireEvent.pointerDown(viewport, { pointerId: 1, clientX: 100, clientY: 180 });
+    fireEvent.pointerDown(viewport, { pointerId: 2, clientX: 500, clientY: 180 });
+    fireEvent.pointerMove(viewport, { pointerId: 1, clientX: 50, clientY: 180 });
+    fireEvent.pointerMove(viewport, { pointerId: 2, clientX: 550, clientY: 180 });
+    expect(change).toHaveBeenCalled();
+    expect(change.mock.lastCall?.[0].x[1] - change.mock.lastCall?.[0].x[0]).toBeLessThan(10);
+  });
   it('renders horizontal, stacked, polar, and empty states', () => {
     const { container, rerender } = render(<BarChart data={data} x="month" y="revenue" orientation="horizontal" accessibility={accessibility} />);
     expect(container.querySelectorAll('rect').length).toBe(3);
