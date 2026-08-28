@@ -528,7 +528,7 @@ budgets remain fixed.
 
 ### P1: chart usability and presentation
 
-- [ ] Build a complete axis system with x/y axes, tick generation, date/number/locale formatting, axis titles, rotation, grid configuration, and multiple axes.
+- [x] Build a complete axis system with x/y axes, tick generation, date/number/locale formatting, axis titles, rotation, grid configuration, and multiple axes.
 - [x] Expose controlled x/y domains and domain-change events consistently across React, Vue, and Angular.
 - [ ] Add responsive sizing with ResizeObserver, percentage dimensions, responsive containers, and layout/margin measurement.
 - [x] Add PNG, SVG, CSV, print, clipboard, and image export APIs.
