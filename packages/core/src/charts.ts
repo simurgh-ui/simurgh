@@ -12,6 +12,7 @@ export type ChartSeriesType =
   | 'heatmap';
 export type ChartScaleType = 'linear' | 'time' | 'band' | 'log';
 export type ChartRenderMode = 'auto' | 'svg' | 'canvas';
+export type ChartTooltipMode = 'nearest' | 'index' | 'shared' | 'none';
 
 export type ChartSeries<T> = {
   id: string;

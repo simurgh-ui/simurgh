@@ -48,6 +48,14 @@ describe('React charts', () => {
     expect(screen.getByRole('tooltip').textContent).toContain('value: 18');
     expect(container.querySelector('[data-part="crosshair"]')).toBeTruthy();
   });
+  it('supports shared and disabled tooltip modes with formatting', () => {
+    const { container, rerender } = render(<LineChart data={data} x="month" xScale="band" series={[{ id: 'revenue', y: 'revenue' }, { id: 'cost', y: 'cost' }]} tooltipMode="index" tooltipFormatter={(point) => `formatted:${point.seriesId}:${point.yValue}`} accessibility={accessibility} />);
+    expect(container.querySelectorAll('[data-part="tooltip"] [data-testid]')).toHaveLength(0);
+    expect(screen.getByRole('tooltip').textContent).toContain('formatted:revenue:12');
+    expect(screen.getByRole('tooltip').textContent).toContain('formatted:cost:8');
+    rerender(<LineChart data={data} x="month" xScale="band" y="revenue" tooltipMode="none" accessibility={accessibility} />);
+    expect(screen.queryByRole('tooltip')).toBeNull();
+  });
   it('emits typed point pointer events', () => {
     const click = vi.fn();
     const leave = vi.fn();
