@@ -29,6 +29,7 @@ import {
   type ChartAccessor,
   type ChartSeries,
   type ChartSeriesType,
+  type ChartTooltipMode,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
 import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
@@ -109,6 +110,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
   @Input() interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
+  @Input() tooltipMode: ChartTooltipMode = 'nearest';
+  @Input() tooltipFormatter?: (point: ChartPointInteraction) => string;
   private syncValue: ChartSync | undefined = undefined;
   private unsubscribeSync: (() => void) | undefined = undefined;
   @Input() set sync(value: ChartSync | undefined) { this.unsubscribeSync?.(); this.syncValue = value; this.unsubscribeSync = value?.subscribe(() => this.changeDetector?.markForCheck()); }
@@ -216,7 +219,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     }
     const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
     const current = points[Math.min(this.focused, points.length - 1)];
-    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: current ? `${current.seriesId}: ${current.yValue}` : '', legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+    const tooltipPoints = this.tooltipMode === 'none' ? [] : this.tooltipMode === 'nearest' ? (current ? [current] : []) : current ? points.filter((item) => item.index === current.index) : [];
+    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, summary: chartSummary(points.map((item) => item.yValue)), tooltip: tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
   ngAfterViewChecked(): void {
