@@ -218,13 +218,15 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const bands = this.xScale === 'band' ? bandScale(raw.map((item) => item.xValue), [layout.left, layout.left + layout.plotWidth]) : null;
     const xMap = (this.xScale === 'log' ? logScale : linearScale)(xDomain, [layout.left, layout.left + layout.plotWidth]);
     const yMap = (this.yScale === 'log' ? logScale : linearScale)(yDomain, [layout.top + layout.plotHeight, layout.top]);
+    const secondaryYDomain = chartDomain(raw.filter((item) => item.definition.axis === 'end').flatMap((item) => [item.start, item.end]), { includeZero: true }) ?? yDomain;
+    const secondaryYMap = (this.yScale === 'log' ? logScale : linearScale)(secondaryYDomain, [layout.top + layout.plotHeight, layout.top]);
     const marks: Mark[] = [];
     const canvasMarks: CanvasMark[] = [];
     const points: ChartPointInteraction[] = [];
     for (const [seriesIndex, definition] of active.entries()) {
       const type = definition.type ?? (this.kind === 'combo' ? 'line' : this.kind);
       const color = definition.color ?? colors[seriesIndex % colors.length]!;
-      const values = raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : xMap(item.numericX), y: yMap(item.end), y0: yMap(item.start) }));
+      const values = raw.filter((item) => item.definition === definition).map((item) => ({ ...item, x: bands ? bands.map(item.xValue) + bands.bandwidth / 2 : xMap(item.numericX), y: (definition.axis === 'end' ? secondaryYMap : yMap)(item.end), y0: (definition.axis === 'end' ? secondaryYMap : yMap)(item.start) }));
       points.push(...values.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: definition.id })));
       if (type === 'line' || type === 'area') {
         const path = type === 'line' ? linePath(values.map((item) => [item.x, item.y])) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
@@ -248,7 +250,9 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const useCanvas = this.renderMode === 'canvas' || (this.renderMode === 'auto' && points.length > this.canvasThreshold);
     const current = points[Math.min(this.focused, points.length - 1)];
     const tooltipPoints = this.tooltipMode === 'none' ? [] : this.tooltipMode === 'nearest' ? (current ? [current] : []) : this.tooltipMode === 'intersect' ? (this.tooltipIntersected && current ? [current] : []) : current ? points.filter((item) => item.index === current.index) : [];
-    const yTicks = chartTicks(yDomain, this.yAxis?.ticks ?? 5).map((value) => ({ value, position: yMap(value) }));
+    const axisYDomain = this.yAxis?.position === 'end' ? secondaryYDomain : yDomain;
+    const axisYMap = this.yAxis?.position === 'end' ? secondaryYMap : yMap;
+    const yTicks = chartTicks(axisYDomain, this.yAxis?.ticks ?? 5).map((value) => ({ value, position: axisYMap(value) }));
     const xTicks = chartTicks(xDomain, this.xAxis?.ticks ?? 5).map((value) => ({ value, position: xMap(value) }));
     return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, xTicks, yTicks, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
