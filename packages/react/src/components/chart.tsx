@@ -30,6 +30,8 @@ import {
   type ChartLegendConfig,
   type ChartVisualMap,
   type ChartDataOptions,
+  type ChartLocale,
+  defaultChartLocale,
   type ChartRenderMode,
   type ChartScaleType,
   type ChartSeries,
@@ -111,6 +113,7 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   workerProcessing?: boolean;
   viewportCulling?: boolean;
   motion?: boolean;
+  locale?: Partial<ChartLocale>;
   hiddenSeries?: readonly string[];
   defaultHiddenSeries?: readonly string[];
   onHiddenSeriesChange?: (series: string[]) => void;
@@ -196,7 +199,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, dataOptions, streamControls = false, streamAutoScroll = false, streamAnnouncement = false, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu, drilldownDepth, onDrilldown, onDrilldownBack,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
-    renderMode = 'auto', canvasThreshold = 2000, workerProcessing = false, viewportCulling = false, motion = false,
+    renderMode = 'auto', canvasThreshold = 2000, workerProcessing = false, viewportCulling = false, motion = false, locale,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
   const [uncontrolledHiddenSeries, setUncontrolledHiddenSeries] = useState<readonly string[]>(defaultHiddenSeries);
@@ -497,16 +500,16 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><line x1={layout.left} x2={layout.left + layout.plotWidth} y1={focused.y} y2={focused.y} /><text x={focused.x + 6} y={layout.top + 14}>{String(focused.xValue)}</text><text x={layout.left + 6} y={focused.y - 6}>{String(focused.yValue)}</text><circle cx={focused.x} cy={focused.y} r="4" /></g>}
           {selection && <g data-part="brush"><rect x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.end[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.end[1] - 4} width="8" height="8" /></g>}
         </svg>
-        <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
+        <button type="button" data-part="keyboard-target" aria-label={locale?.explore ?? defaultChartLocale.explore} onKeyDown={(event) => {
           if (interaction && ['+', '=', '-', 'Escape'].includes(event.key) || interaction && event.shiftKey && ['ArrowLeft', 'ArrowRight'].includes(event.key)) { handleChartKeyDown(event); return; }
           if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(flat.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((value) => Math.max(0, value - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((value) => Math.min(flat.length - 1, value + 1)); else return;
           setTooltipVisible(true);
           event.preventDefault();
         }} />
-        {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); sync?.set({ selection: null, focused: null }); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>Reset view</button>}
-        {streamControls && stream && <button type="button" data-part="stream-toggle" aria-pressed={streamPaused} onClick={() => { if (streamPaused) stream.resume(); else stream.pause(); setStreamPaused(!streamPaused); }}>{streamPaused ? 'Resume stream' : 'Pause stream'}</button>}
-        {stream && streamAnnouncement && <div data-part="stream-announcement" aria-live="polite">{stream.length} data points{streamAutoScroll ? ', following latest data' : ''}</div>}
-        {drilldownDepth && drilldownDepth > 0 && <button type="button" data-part="drilldown-back" onClick={onDrilldownBack}>Back</button>}
+        {interaction && (axisEnabled(interaction.zoom, 'x') || axisEnabled(interaction.zoom, 'y') || axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y')) && <button type="button" data-part="reset-viewport" onClick={() => { setViewport({}); setSelection(null); sync?.set({ selection: null, focused: null }); onSelectionChange?.(null); onSelectedDataChange?.([]); }}>{locale?.reset ?? defaultChartLocale.reset}</button>}
+        {streamControls && stream && <button type="button" data-part="stream-toggle" aria-pressed={streamPaused} onClick={() => { if (streamPaused) stream.resume(); else stream.pause(); setStreamPaused(!streamPaused); }}>{streamPaused ? locale?.resumeStream ?? defaultChartLocale.resumeStream : locale?.pauseStream ?? defaultChartLocale.pauseStream}</button>}
+        {stream && streamAnnouncement && <div data-part="stream-announcement" aria-live="polite">{(locale?.dataPoints ?? defaultChartLocale.dataPoints)(stream.length, streamAutoScroll)}</div>}
+        {drilldownDepth && drilldownDepth > 0 && <button type="button" data-part="drilldown-back" onClick={onDrilldownBack}>{locale?.back ?? defaultChartLocale.back}</button>}
         {tooltipPoints.length > 0 && tooltipVisible && <div role="tooltip" data-part="tooltip" style={tooltipPosition === 'cursor' && tooltipPoint ? { position: 'absolute', left: `${tooltipPoint[0]}px`, top: `${tooltipPoint[1]}px` } : undefined}>{tooltipContent ? tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => <div key={`${item.series.id}:${item.index}`}>{tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.series.label ?? item.series.id}: ${item.yValue}`}</div>)}</div>}
       </div>
       {renderLegend()}

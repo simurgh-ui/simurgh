@@ -155,6 +155,24 @@ export type ChartAccessibility =
     }
   | { decorative: true; title?: never; description?: never; table?: never };
 
+export type ChartLocale = {
+  explore: string;
+  reset: string;
+  back: string;
+  pauseStream: string;
+  resumeStream: string;
+  previous: string;
+  next: string;
+  dataPages: string;
+  dataPoints: (count: number, followingLatest?: boolean) => string;
+};
+
+export const defaultChartLocale: ChartLocale = {
+  explore: 'Explore chart data', reset: 'Reset view', back: 'Back',
+  pauseStream: 'Pause stream', resumeStream: 'Resume stream', previous: 'Previous', next: 'Next',
+  dataPages: 'Chart data pages', dataPoints: (count, followingLatest) => `${count} data points${followingLatest ? ', following latest data' : ''}`,
+};
+
 export type ChartPoint<T = unknown> = {
   datum: T;
   index: number;

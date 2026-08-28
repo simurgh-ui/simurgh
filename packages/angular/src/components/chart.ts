@@ -42,6 +42,8 @@ import {
   cullChartPoints,
   type ChartVisualMap,
   type ChartDataOptions,
+  type ChartLocale,
+  defaultChartLocale,
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
@@ -177,6 +179,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() workerProcessing = false;
   @Input() viewportCulling = false;
   @Input() motion = false;
+  @Input() locale: Partial<ChartLocale> = defaultChartLocale;
   @Input() hiddenSeries?: readonly string[];
   @Input() defaultHiddenSeries: readonly string[] = [];
   @Input() innerRadius?: number;
