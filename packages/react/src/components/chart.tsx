@@ -25,7 +25,7 @@ import {
   type ChartTooltipTrigger,
   type ChartValue,
 } from '@simurgh-ui/core/charts';
-import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
+import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, pinchZoomDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 import {
@@ -168,6 +168,8 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const pointerStart = useRef<readonly [number, number] | null>(null);
   const pointerLast = useRef<readonly [number, number] | null>(null);
   const brushHandle = useRef<ChartBrushHandle | null>(null);
+  const pointers = useRef(new Map<number, readonly [number, number]>());
+  const pinchStart = useRef<{ distance: number; midpoint: readonly [number, number] } | null>(null);
   const hiddenSeries = controlledHiddenSeries ?? uncontrolledHiddenSeries;
   const data = useChartRows(inputData, stream, width);
   const titleId = `${useId()}-title`;
@@ -257,6 +259,17 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     if (controlledViewport === undefined) setUncontrolledViewport(next);
     sync?.set({ viewport: next });
     onViewportChange?.(next);
+  };
+  const applyPinch = () => {
+    const points = [...pointers.current.values()];
+    const initial = pinchStart.current;
+    if (points.length < 2 || !initial || !interaction) return;
+    const distance = Math.hypot(points[1]![0] - points[0]![0], points[1]![1] - points[0]![1]);
+    const midpoint: readonly [number, number] = [(points[0]![0] + points[1]![0]) / 2, (points[0]![1] + points[1]![1]) / 2];
+    const next = { ...viewport };
+    if (axisEnabled(interaction.zoom, 'x')) next.x = clampDomain(pinchZoomDomain(viewport.x ?? fullX, initial.distance, distance, domainFromSelection(viewport.x ?? fullX, [midpoint[0], midpoint[0]], [layout.left, layout.left + layout.plotWidth])[0]), fullX);
+    if (axisEnabled(interaction.zoom, 'y')) next.y = clampDomain(pinchZoomDomain(viewport.y ?? fullY, initial.distance, distance, domainFromSelection(viewport.y ?? fullY, [midpoint[1], midpoint[1]], [layout.top + layout.plotHeight, layout.top])[0]), fullY);
+    setViewport(next);
   };
   const axisEnabled = (value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') => value === true || value === 'xy' || value === axis;
   const pointFromEvent = (event: Pick<React.PointerEvent<HTMLDivElement>, 'currentTarget' | 'clientX' | 'clientY'>): readonly [number, number] => {
@@ -381,10 +394,10 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { setTooltipVisible(true); onPointClick?.(point); } }}
         onDoubleClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) onPointDoubleClick?.(point); }}
         onContextMenu={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { event.preventDefault(); onPointContextMenu?.(point); } }} onWheel={handleWheel}
-        onPointerDown={(event) => { if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { const point = pointFromEvent(event); brushHandle.current = axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y') ? brushHandleFromPoint(point) : null; pointerStart.current = brushHandle.current ? null : point; pointerLast.current = point; event.currentTarget.setPointerCapture(event.pointerId); } }}
-        onPointerMove={(event) => { const point = pointFromEvent(event); if (brushHandle.current) resizeSelection(point); else if (pointerStart.current && interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y'))) moveViewport(point); }}
-        onPointerUp={(event) => { const point = pointFromEvent(event); if (brushHandle.current) { resizeSelection(point); brushHandle.current = null; pointerLast.current = null; } else if (pointerStart.current && interaction && (axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) finishSelection(point); else { pointerStart.current = null; pointerLast.current = null; } }}
-        onPointerCancel={() => { pointerStart.current = null; pointerLast.current = null; brushHandle.current = null; }}>
+        onPointerDown={(event) => { const point = pointFromEvent(event); pointers.current.set(event.pointerId, point); if (pointers.current.size === 2 && interaction && axisEnabled(interaction.zoom, 'x') || pointers.current.size === 2 && interaction && axisEnabled(interaction.zoom, 'y')) { const values = [...pointers.current.values()]; pinchStart.current = { distance: Math.hypot(values[1]![0] - values[0]![0], values[1]![1] - values[0]![1]), midpoint: [(values[0]![0] + values[1]![0]) / 2, (values[0]![1] + values[1]![1]) / 2] }; pointerStart.current = null; pointerLast.current = null; } else if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { brushHandle.current = axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y') ? brushHandleFromPoint(point) : null; pointerStart.current = brushHandle.current ? null : point; pointerLast.current = point; } event.currentTarget.setPointerCapture(event.pointerId); }}
+        onPointerMove={(event) => { const point = pointFromEvent(event); if (pointers.current.has(event.pointerId)) pointers.current.set(event.pointerId, point); if (pinchStart.current) applyPinch(); else if (brushHandle.current) resizeSelection(point); else if (pointerStart.current && interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y'))) moveViewport(point); }}
+        onPointerUp={(event) => { pointers.current.delete(event.pointerId); const point = pointFromEvent(event); if (pointers.current.size < 2) pinchStart.current = null; if (brushHandle.current) { resizeSelection(point); brushHandle.current = null; pointerLast.current = null; } else if (!pinchStart.current && pointerStart.current && interaction && (axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) finishSelection(point); else { pointerStart.current = null; pointerLast.current = null; } }}
+        onPointerCancel={() => { pointers.current.clear(); pinchStart.current = null; pointerStart.current = null; pointerLast.current = null; brushHandle.current = null; }}>
         {useCanvas && <canvas ref={canvas} width={width} height={height} aria-hidden="true" />}
         <svg viewBox={`0 0 ${width} ${height}`} data-part="plot" aria-hidden="true">
           <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>
