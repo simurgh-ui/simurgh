@@ -123,7 +123,17 @@ export type ChartSeries<T> = {
 
 export function chartCurvePath(points: readonly (readonly [number, number])[], curve: ChartSeries<unknown>['curve'] = 'linear', tension?: number): string {
   if (points.length < 2 || curve === 'linear' || curve == null) return linePath(points);
-  if (curve === 'smooth' || curve === 'monotone') {
+  if (curve === 'monotone') {
+    const slopes = points.slice(1).map((point, index) => (point[1] - points[index]![1]) / (point[0] - points[index]![0] || 1));
+    const tangents = points.map((_, index) => index === 0 ? slopes[0] ?? 0 : index === points.length - 1 ? slopes.at(-1) ?? 0 : ((slopes[index - 1] ?? 0) + (slopes[index] ?? 0)) / 2);
+    let path = `M${points[0]![0]},${points[0]![1]}`;
+    for (let index = 0; index < points.length - 1; index += 1) {
+      const current = points[index]!; const next = points[index + 1]!; const dx = (next[0] - current[0]) / 3;
+      path += `C${current[0] + dx},${current[1] + dx * tangents[index]!} ${next[0] - dx},${next[1] - dx * tangents[index + 1]!} ${next[0]},${next[1]}`;
+    }
+    return path;
+  }
+  if (curve === 'smooth') {
     const factor = Math.max(0, Math.min(1, tension ?? 0.5)) / 6;
     let path = `M${points[0]![0]},${points[0]![1]}`;
     for (let index = 0; index < points.length - 1; index += 1) {

@@ -33,6 +33,7 @@ describe('chart scales and geometry', () => {
   });
   it('builds cubic smooth curves', () => {
     expect(chartCurvePath([[0, 0], [10, 10], [20, 0]], 'smooth')).toContain('C');
+    expect(chartCurvePath([[0, 0], [10, 10], [20, 10]], 'monotone')).not.toBe(chartCurvePath([[0, 0], [10, 10], [20, 10]], 'smooth'));
   });
   it('applies data preparation policies', () => {
     expect(chartMissingValue(null, 'zero')).toBe(0);

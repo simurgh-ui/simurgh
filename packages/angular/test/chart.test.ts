@@ -54,9 +54,10 @@ describe('Angular charts', () => {
   });
   it('prepares smooth curves and mark styling', () => {
     const chart = new LineChartComponent();
-    chart.data = [{ x: 1, y: 2 }, { x: 2, y: 8 }, { x: 3, y: 3 }]; chart.x = 'x'; chart.y = 'y'; chart.series = [{ id: 'value', x: 'x', y: 'y', curve: 'smooth', lineDash: '3 2' }]; chart.accessibility = accessibility;
+    chart.data = [{ x: 1, y: 2 }, { x: 2, y: 8 }, { x: 3, y: 3 }]; chart.x = 'x'; chart.y = 'y'; chart.series = [{ id: 'value', x: 'x', y: 'y', curve: 'smooth', lineDash: '3 2', pointSymbol: 'diamond' }]; chart.accessibility = accessibility;
     expect(chart.model.marks[0]?.path).toContain('C');
     expect(chart.model.marks[0]?.lineDash).toBe('3 2');
+    expect(chart.model.marks.some((mark) => mark.symbol === 'diamond')).toBe(true);
   });
   it('supports viewport zoom, brush gestures, and point events', () => {
     const chart = new LineChartComponent();

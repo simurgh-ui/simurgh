@@ -95,7 +95,7 @@ describe('Vue charts', () => {
   it('renders smooth curves and point symbols', () => {
     const result = render(LineChart, { props: { data: [{ x: 1, y: 2 }, { x: 2, y: 8 }, { x: 3, y: 3 }], x: 'x', y: 'y', series: [{ id: 'value', x: 'x', y: 'y', curve: 'smooth', pointSymbol: 'square', lineDash: '3 2' }], accessibility } });
     expect(result.container.querySelector('[data-part="series"] path')?.getAttribute('d')).toContain('C');
-    expect(result.container.querySelector('[data-part="point-symbol"]')).toBeTruthy();
+    expect(result.container.querySelector('[data-part="point-symbol"]')?.tagName).toBe('rect');
   });
   it('localizes chart controls and table pagination', () => {
     const result = render(LineChart, { props: { data: [{ x: 1, y: 2 }, { x: 2, y: 3 }], x: 'x', y: 'y', interaction: { zoom: true }, accessibility: { ...accessibility, table: { pageSize: 1 } }, locale: { explore: 'Explorer', reset: 'Réinitialiser', category: 'Catégorie', previous: 'Précédent', next: 'Suivant', dataPages: 'Pages de données' } } });
