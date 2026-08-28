@@ -3,6 +3,18 @@
   "version": "0.2.0-beta.0",
   "description": "Model Context Protocol server for Simurgh UI component discovery and source retrieval.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "bin": {
     "simurgh-mcp": "./dist/index.js"
