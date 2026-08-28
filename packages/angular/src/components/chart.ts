@@ -30,6 +30,7 @@ import {
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
+  type ChartTooltipPosition,
   type ChartTooltipTrigger,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
@@ -71,7 +72,7 @@ const template = `
     </svg>
     <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
     <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
-    <div *ngIf="model.tooltip && tooltipVisible" role="tooltip" data-part="tooltip">{{ model.tooltip }}</div>
+    <div *ngIf="model.tooltip && tooltipVisible" role="tooltip" data-part="tooltip" [style.position]="tooltipPosition === 'cursor' ? 'absolute' : null" [style.left.px]="tooltipPosition === 'cursor' ? tooltipX : null" [style.top.px]="tooltipPosition === 'cursor' ? tooltipY : null">{{ model.tooltip }}</div>
   </div>
   <div data-part="legend">
     <button *ngFor="let item of model.legend; let index = index" type="button" [attr.aria-pressed]="!effectiveHiddenSeries.includes(item.id)" (click)="toggleSeries(item.id)">
@@ -114,6 +115,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
   @Input() tooltipMode: ChartTooltipMode = 'nearest';
   @Input() tooltipTrigger: ChartTooltipTrigger = 'always';
+  @Input() tooltipPosition: ChartTooltipPosition = 'static';
   @Input() tooltipFormatter?: (point: ChartPointInteraction) => string;
   @Input() tooltipContent?: (points: readonly ChartPointInteraction[]) => string;
   private syncValue: ChartSync | undefined = undefined;
@@ -147,6 +149,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private pointers = new Map<number, readonly [number, number]>();
   private pinchStart: { distance: number } | null = null;
   tooltipVisible = this.tooltipTrigger !== 'click';
+  tooltipX = 0;
+  tooltipY = 0;
   private drawn = '';
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
@@ -396,7 +400,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   }
   onMouseMove(event: MouseEvent) {
     const point = this.pointAt(event);
-    if (point) { this.focused = point.index; this.tooltipVisible = true; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
+    if (point) { const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect(); this.tooltipX = ((event.clientX - bounds.left) / bounds.width) * this.width; this.tooltipY = ((event.clientY - bounds.top) / bounds.height) * this.height; this.focused = point.index; this.tooltipVisible = true; this.pointHover.emit(point); this.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } }); }
   }
   onMouseLeave() { this.pointHover.emit(null); if (this.tooltipTrigger === 'hover') this.tooltipVisible = false; }
   onPointClick(event: MouseEvent) { const point = this.pointAt(event); if (point) { this.tooltipVisible = true; this.pointClick.emit(point); } }
