@@ -3,6 +3,11 @@ import { LineChart } from '@simurgh-ui/react/chart';
 import { createChartStream } from '@simurgh-ui/react/chart-stream';
 import '@simurgh-ui/styles/chart.css';
 
+const streamTimeFormatter = new Intl.DateTimeFormat(undefined, {
+  minute: '2-digit',
+  second: '2-digit',
+});
+
 export default function StreamingChartPreview() {
   const stream = useMemo(
     () => createChartStream({ capacity: 60, dimensions: ['time', 'value'] as const }),
@@ -29,6 +34,10 @@ export default function StreamingChartPreview() {
       stream={stream}
       x="time"
       xScale="time"
+      xAxis={{
+        ticks: 3,
+        tickFormatter: (value) => streamTimeFormatter.format(Number(value)),
+      }}
       y="value"
       yDomain={[0, 100]}
       height={280}

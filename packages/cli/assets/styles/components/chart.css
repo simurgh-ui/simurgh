@@ -17,7 +17,13 @@
 }
 
 [data-slot='chart'] [data-part='description'],
-.simurgh-chart [data-part='description'] {
+[data-slot='chart'] [data-part='point-announcement'],
+[data-slot='chart'] [data-part='interaction-announcement'],
+[data-slot='chart'] [data-part='data-list'],
+.simurgh-chart [data-part='description'],
+.simurgh-chart [data-part='point-announcement'],
+.simurgh-chart [data-part='interaction-announcement'],
+.simurgh-chart [data-part='data-list'] {
   position: absolute;
   inline-size: 1px;
   block-size: 1px;

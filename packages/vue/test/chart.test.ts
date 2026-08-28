@@ -40,6 +40,14 @@ describe('Vue charts', () => {
     const result = render(LineChart, { props: { data, x: 'x', y: 'y', dataLabels: { formatter: (value: number) => `v${value}` }, accessibility } });
     expect(result.container.querySelector('[data-part="data-labels"]')?.textContent).toContain('v4');
   });
+  it('keeps data labels disabled by default', () => {
+    const result = render(LineChart, { props: { data, x: 'x', y: 'y', accessibility } });
+    expect(result.container.querySelector('[data-part="data-labels"]')).toBeNull();
+  });
+  it('formats crosshair labels with axis formatters', () => {
+    const result = render(LineChart, { props: { data: [{ x: 1, y: 2 }], x: 'x', y: 'y', xAxis: { tickFormatter: () => 'time' }, yAxis: { tickFormatter: () => 'value' }, accessibility } });
+    expect([...result.container.querySelectorAll('[data-part="crosshair"] text')].map((node) => node.textContent)).toEqual(['time', 'value']);
+  });
   it('renders formatted donut slice labels', () => {
     const result = render(DonutChart, { props: { data: [{ name: 'A', value: 2 }, { name: 'B', value: 8 }], x: 'name', y: 'value', dataLabels: { formatter: (value: number) => `slice-${value}` }, accessibility } });
     expect(result.container.querySelector('[data-part="data-labels"]')?.textContent).toContain('slice-2');

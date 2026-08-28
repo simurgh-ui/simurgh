@@ -53,5 +53,10 @@ if (chartCss.includes("[data-part='legend'] span")) {
 if (!chartCss.includes("[data-part='legend'] button > span")) {
   throw new Error('Chart legend styles must target color swatches directly.');
 }
+for (const part of ['point-announcement', 'interaction-announcement', 'data-list']) {
+  if (!chartCss.includes(`[data-part='${part}']`)) {
+    throw new Error(`Chart styles must visually hide ${part}.`);
+  }
+}
 
 console.log(`Verified ${expected.size} component-level CSS exports.`);

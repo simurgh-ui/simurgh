@@ -130,6 +130,19 @@ describe('Angular charts', () => {
     chart.dataLabels = { formatter: (value) => `v${value}` };
     expect(chart.model.dataLabels.map((label) => label.text)).toContain('v2');
   });
+  it('keeps data labels disabled by default', () => {
+    const chart = new LineChartComponent();
+    chart.data = [{ x: 0, y: 2 }, { x: 10, y: 8 }];
+    chart.x = 'x';
+    chart.y = 'y';
+    chart.accessibility = accessibility;
+    expect(chart.model.dataLabels).toEqual([]);
+  });
+  it('formats crosshair values with axis formatters', () => {
+    const chart = new LineChartComponent();
+    expect(chart.formatAxisTick(1, { tickFormatter: () => 'time' })).toBe('time');
+    expect(chart.formatAxisTick(2, { tickFormatter: () => 'value' })).toBe('value');
+  });
   it('prepares formatted pie slice labels', () => {
     const chart = new PieChartComponent();
     chart.data = [{ name: 'A', value: 2 }, { name: 'B', value: 8 }];

@@ -123,6 +123,11 @@ import { useEffect, useMemo } from 'react';
 import { LineChart } from '@simurgh-ui/react/chart';
 import { createChartStream } from '@simurgh-ui/react/chart-stream';
 
+const streamTimeFormatter = new Intl.DateTimeFormat(undefined, {
+  minute: '2-digit',
+  second: '2-digit',
+});
+
 function StreamingChartExample() {
   const stream = useMemo(
     () => createChartStream({ capacity: 60, dimensions: ['time', 'value'] as const }),
@@ -141,6 +146,10 @@ function StreamingChartExample() {
       stream={stream}
       x="time"
       xScale="time"
+      xAxis={{
+        ticks: 3,
+        tickFormatter: (value) => streamTimeFormatter.format(Number(value)),
+      }}
       y="value"
       yDomain={[0, 100]}
       accessibility={{
