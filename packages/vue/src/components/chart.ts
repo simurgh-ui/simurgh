@@ -19,7 +19,7 @@ import {
   type ChartSeriesType,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle } from '@simurgh-ui/core/chart-interactions';
+import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import { defineComponent, h, nextTick, onBeforeUnmount, ref, watch, type PropType } from 'vue';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
@@ -39,6 +39,7 @@ const commonProps = {
   viewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   defaultViewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   interaction: Object as PropType<{ zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }>,
+  sync: Object as PropType<ChartSync>,
   onPointHover: Function as PropType<(point: ChartPointInteraction | null) => void>,
   onPointClick: Function as PropType<(point: ChartPointInteraction) => void>,
   onPointDoubleClick: Function as PropType<(point: ChartPointInteraction) => void>,
@@ -89,13 +90,22 @@ function cartesian(kind: ChartSeriesType | 'combo') {
       const focused = ref(0);
       const tablePage = ref(0);
       const uncontrolledHiddenSeries = ref<readonly string[]>([...props.defaultHiddenSeries]);
-      const uncontrolledViewport = ref(props.viewport ?? props.defaultViewport ?? {});
+      const uncontrolledViewport = ref(props.viewport ?? props.defaultViewport ?? props.sync?.state.viewport ?? {});
       const selection = ref<{ start: readonly [number, number]; end: readonly [number, number] } | null>(null);
       const pointerStart = ref<readonly [number, number] | null>(null);
       const pointerLast = ref<readonly [number, number] | null>(null);
       const brushHandle = ref<ChartBrushHandle | null>(null);
       const canvas = ref<HTMLCanvasElement>();
       let drawn = '';
+      let unsubscribeSync: (() => void) | undefined;
+      watch(() => props.sync, (sync) => {
+        unsubscribeSync?.();
+        unsubscribeSync = sync?.subscribe((state) => {
+          if (props.viewport === undefined) uncontrolledViewport.value = state.viewport;
+          selection.value = state.selection;
+        });
+      }, { immediate: true });
+      onBeforeUnmount(() => unsubscribeSync?.());
       const rowsForChart = useRows(props);
       return () => {
         const rows = rowsForChart();
@@ -149,6 +159,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         };
         const setViewport = (next: { x?: ChartDomain; y?: ChartDomain }) => {
           if (props.viewport === undefined) uncontrolledViewport.value = next;
+          props.sync?.set({ viewport: next });
           emit('update:viewport', next);
         };
         const brushHandleFromPoint = (point: readonly [number, number]): ChartBrushHandle | null => {
@@ -159,6 +170,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const applySelection = (nextSelection: { start: readonly [number, number]; end: readonly [number, number] }) => {
           selection.value = nextSelection;
           emit('update:selection', nextSelection);
+          props.sync?.set({ selection: nextSelection });
           const selected = flat.filter((item) => (!axisEnabled(props.interaction?.brush, 'x') || item.x >= nextSelection.start[0] && item.x <= nextSelection.end[0]) && (!axisEnabled(props.interaction?.brush, 'y') || item.y >= nextSelection.start[1] && item.y <= nextSelection.end[1])).map((item) => item.datum);
           props.onSelectedDataChange?.([...new Set(selected)]);
           const next = { ...viewport };
@@ -170,6 +182,8 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           const index = pointIndexFromEvent(event);
           focused.value = index;
           props.onPointHover?.(interactionPoint(index));
+          const point = interactionPoint(index);
+          if (point) props.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } });
         };
         const onPointerMove = (event: PointerEvent) => {
           const previous = pointerLast.value;
@@ -245,7 +259,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
             useCanvas && h('canvas', { ref: canvas, width: props.width, height: props.height, 'aria-hidden': 'true' }),
             h('svg', { viewBox: `0 0 ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [...(useCanvas ? [] : seriesNodes), h('g', { 'data-part': 'crosshair' }, [h('line', { x1: current.x, x2: current.x, y1: layout.top, y2: layout.top + layout.plotHeight }), h('circle', { cx: current.x, cy: current.y, r: 4 })]), selection.value && h('g', { 'data-part': 'brush' }, [h('rect', { x: selection.value.start[0], y: selection.value.start[1], width: selection.value.end[0] - selection.value.start[0], height: selection.value.end[1] - selection.value.start[1] }), h('rect', { 'data-part': 'brush-handle', x: selection.value.start[0] - 4, y: selection.value.start[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.end[0] - 4, y: selection.value.start[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.start[0] - 4, y: selection.value.end[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.end[0] - 4, y: selection.value.end[1] - 4, width: 8, height: 8 })])]),
             h('button', { type: 'button', 'data-part': 'keyboard-target', 'aria-label': 'Explore chart data', onKeydown: (event: KeyboardEvent) => { if (event.key === 'Home') focused.value = 0; else if (event.key === 'End') focused.value = flat.length - 1; else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) focused.value = Math.max(0, focused.value - 1); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) focused.value = Math.min(flat.length - 1, focused.value + 1); else return; event.preventDefault(); } }),
-            props.interaction && h('button', { type: 'button', 'data-part': 'reset-viewport', onClick: () => { setViewport({}); selection.value = null; emit('update:selection', null); props.onSelectedDataChange?.([]); } }, 'Reset view'),
+            props.interaction && h('button', { type: 'button', 'data-part': 'reset-viewport', onClick: () => { setViewport({}); selection.value = null; props.sync?.set({ selection: null, focused: null }); emit('update:selection', null); props.onSelectedDataChange?.([]); } }, 'Reset view'),
             h('div', { role: 'tooltip', 'data-part': 'tooltip' }, `${current.series.label ?? current.series.id}: ${current.yValue}`),
           ]),
           h('div', { 'data-part': 'legend' }, definitions.map((item, index) => h('button', { type: 'button', 'aria-pressed': !hiddenSeries.includes(item.id), onClick: () => { const next = hiddenSeries.includes(item.id) ? hiddenSeries.filter((id) => id !== item.id) : [...hiddenSeries, item.id]; if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = next; emit('update:hiddenSeries', next); } }, [h('span', { style: { background: item.color ?? colors[index % colors.length] } }), item.label ?? item.id]))),
