@@ -148,6 +148,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private brushHandle: ChartBrushHandle | null = null;
   private pointers = new Map<number, readonly [number, number]>();
   private pinchStart: { distance: number } | null = null;
+  private zoomDrag = false;
   tooltipVisible = this.tooltipTrigger !== 'click';
   tooltipIntersected = true;
   tooltipX = 0;
@@ -304,8 +305,10 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       this.pointerLast = null;
       return;
     }
-    if (!this.interaction || (!this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y') && !this.axisEnabled(this.interaction.brush, 'x') && !this.axisEnabled(this.interaction.brush, 'y'))) return;
+    if (!this.interaction || (!this.axisEnabled(this.interaction.zoom, 'x') && !this.axisEnabled(this.interaction.zoom, 'y') && !this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y') && !this.axisEnabled(this.interaction.brush, 'x') && !this.axisEnabled(this.interaction.brush, 'y'))) return;
+    this.zoomDrag = (this.axisEnabled(this.interaction.zoom, 'x') || this.axisEnabled(this.interaction.zoom, 'y')) && (!(this.axisEnabled(this.interaction.pan, 'x') || this.axisEnabled(this.interaction.pan, 'y')) || event.shiftKey);
     this.brushHandle = this.brushHandleFromPoint(point);
+    if (this.zoomDrag) this.brushHandle = null;
     this.pointerStart = this.brushHandle ? null : point;
     this.pointerLast = point;
     (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId);
@@ -328,6 +331,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       this.viewportChange.emit(next);
       return;
     }
+    if (this.zoomDrag) return;
     if (this.brushHandle && this.selection) {
       this.applySelection(resizeChartSelection(this.selection, this.brushHandle, this.pointFromPointer(event)));
       return;
@@ -357,6 +361,24 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       return;
     }
     const start = this.pointerStart;
+    if (this.zoomDrag && !(this.interaction && (this.axisEnabled(this.interaction.brush, 'x') || this.axisEnabled(this.interaction.brush, 'y')))) {
+      this.zoomDrag = false;
+      this.pointerStart = null;
+      this.pointerLast = null;
+      if (start && this.interaction) {
+        const point = this.pointFromPointer(event);
+        const model = this.model;
+        const fullX = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
+        const fullY = 'yDomain' in model ? model.yDomain : [0, 1] as ChartDomain;
+        const next = { ...this.effectiveViewport };
+        if (this.axisEnabled(this.interaction.zoom, 'x')) next.x = clampDomain(domainFromSelection(fullX, [start[0], point[0]], [this.layoutLeft, this.layoutLeft + this.plotWidth]), fullX);
+        if (this.axisEnabled(this.interaction.zoom, 'y')) next.y = clampDomain(domainFromSelection(fullY, [start[1], point[1]], [this.layoutTop + this.plotHeight, this.layoutTop]), fullY);
+        if (this.viewport === undefined) this.uncontrolledViewport = next;
+        this.sync?.set({ viewport: next });
+        this.viewportChange.emit(next);
+      }
+      return;
+    }
     this.pointerStart = null;
     this.pointerLast = null;
     const interaction = this.interaction;
@@ -390,7 +412,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const candidates: readonly [ChartBrushHandle, readonly [number, number]][] = [['start', this.selection.start], ['end', [this.selection.end[0], this.selection.start[1]]], ['start-y', [this.selection.start[0], this.selection.end[1]]], ['end-y', this.selection.end]];
     return candidates.find(([, item]) => Math.hypot(point[0] - item[0], point[1] - item[1]) <= 12)?.[0] ?? null;
   }
-  onPointerCancel() { this.pointers.clear(); this.pinchStart = null; this.pointerStart = null; this.pointerLast = null; this.brushHandle = null; this.selection = null; this.sync?.set({ selection: null }); this.selectionChange.emit(null); this.selectedDataChange.emit([]); }
+  onPointerCancel() { this.pointers.clear(); this.pinchStart = null; this.zoomDrag = false; this.pointerStart = null; this.pointerLast = null; this.brushHandle = null; this.selection = null; this.sync?.set({ selection: null }); this.selectionChange.emit(null); this.selectedDataChange.emit([]); }
   private pointAt(event: MouseEvent): ChartPointInteraction | null {
     const points = 'points' in this.model ? this.model.points : [];
     const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
