@@ -46,6 +46,30 @@ export function drawChartCanvas(
   context.globalAlpha = 1;
 }
 
+/** Draw line marks with a minimal WebGL path; callers should fall back to Canvas2D for other marks. */
+export function drawChartWebGL(context: WebGLRenderingContext, marks: readonly CanvasMark[], width: number, height: number): boolean {
+  const lines = marks.filter((mark): mark is Extract<CanvasMark, { type: 'line' }> => mark.type === 'line');
+  if (!lines.length) return false;
+  const vertex = context.createShader(context.VERTEX_SHADER);
+  const fragment = context.createShader(context.FRAGMENT_SHADER);
+  if (!vertex || !fragment) return false;
+  context.shaderSource(vertex, 'attribute vec2 p; void main(){gl_Position=vec4(p,0.0,1.0);}');
+  context.shaderSource(fragment, 'precision mediump float; uniform vec4 c; void main(){gl_FragColor=c;}');
+  context.compileShader(vertex); context.compileShader(fragment);
+  const program = context.createProgram();
+  if (!program) return false;
+  context.attachShader(program, vertex); context.attachShader(program, fragment); context.linkProgram(program); context.useProgram(program);
+  context.viewport(0, 0, width, height); context.clearColor(0, 0, 0, 0); context.clear(context.COLOR_BUFFER_BIT);
+  const position = context.getAttribLocation(program, 'p');
+  for (const mark of lines) {
+    const values = new Float32Array(mark.points.flatMap(([x, y]) => [(x / width) * 2 - 1, 1 - (y / height) * 2]));
+    const buffer = context.createBuffer(); if (!buffer) continue;
+    context.bindBuffer(context.ARRAY_BUFFER, buffer); context.bufferData(context.ARRAY_BUFFER, values, context.STREAM_DRAW);
+    context.enableVertexAttribArray(position); context.vertexAttribPointer(position, 2, context.FLOAT, false, 0, 0); context.drawArrays(context.LINE_STRIP, 0, mark.points.length);
+  }
+  return true;
+}
+
 export function supportsWorkerCanvas(): boolean {
   return typeof Worker !== 'undefined' && typeof OffscreenCanvas !== 'undefined';
 }
