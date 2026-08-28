@@ -60,6 +60,8 @@ type Mark = {
   width?: number;
   height?: number;
   radius?: number;
+  lineWidth?: number;
+  lineDash?: string;
 };
 const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart-${index + 1}))`);
 
@@ -77,7 +79,7 @@ const template = `
       <g *ngIf="model.dataLabels.length" data-part="data-labels"><text *ngFor="let label of model.dataLabels" [attr.x]="label.x" [attr.y]="label.y">{{ label.text }}</text></g>
       <ng-container *ngIf="!model.useCanvas">
         <ng-container *ngFor="let mark of model.marks">
-          <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color"></path>
+          <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color" [attr.stroke-width]="mark.lineWidth" [attr.stroke-dasharray]="mark.lineDash"></path>
           <rect *ngIf="mark.type === 'bar' || mark.type === 'heatmap'" data-part="series" [attr.x]="mark.x" [attr.y]="mark.y" [attr.width]="mark.width" [attr.height]="mark.height" [attr.fill]="mark.color"></rect>
           <circle *ngIf="mark.type === 'scatter' || mark.type === 'bubble'" data-part="series" [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.r]="mark.radius" [attr.fill]="mark.color"></circle>
         </ng-container>
@@ -250,7 +252,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       points.push(...values.map((item) => ({ datum: item.datum, index: item.index, x: item.x, y: item.y, xValue: item.xValue, yValue: item.yValue, radius: item.radius, seriesId: definition.id })));
       if (type === 'line' || type === 'area') {
         const path = type === 'line' ? chartCurvePath(values.map((item) => [item.x, item.y]), definition.curve) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
-        marks.push({ id: definition.id, type, color, path });
+        marks.push({ id: definition.id, type, color, path, ...(definition.lineWidth == null ? {} : { lineWidth: definition.lineWidth }), ...(definition.lineDash == null ? {} : { lineDash: definition.lineDash }) });
         canvasMarks.push(type === 'line' ? { type: 'line', points: values.map((item) => [item.x, item.y]), color } : { type: 'area', points: values.map((item) => [item.x, item.y]), baseline: yMap(0), color, opacity: 0.3 });
       } else for (const item of values) {
         if (type === 'bar' || type === 'heatmap') {
