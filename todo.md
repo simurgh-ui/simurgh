@@ -531,7 +531,7 @@ budgets remain fixed.
 - [ ] Build a complete axis system with x/y axes, tick generation, date/number/locale formatting, axis titles, rotation, grid configuration, and multiple axes.
 - [x] Expose controlled x/y domains and domain-change events consistently across React, Vue, and Angular.
 - [ ] Add responsive sizing with ResizeObserver, percentage dimensions, responsive containers, and layout/margin measurement.
-- [ ] Add PNG, SVG, CSV, print, clipboard, and image export APIs.
+- [x] Add PNG, SVG, CSV, print, clipboard, and image export APIs.
 - [ ] Add reference lines/areas, thresholds, point annotations, labels, callouts, and annotation accessibility.
 - [ ] Add data labels with placement and collision handling for bars, points, and pie/donut slices.
 - [ ] Expand legend controls with placement, orientation, scrolling, select-all, isolate-series, and custom content.
