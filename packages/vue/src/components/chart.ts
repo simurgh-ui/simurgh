@@ -17,7 +17,9 @@ import {
   type ChartAccessor,
   type ChartSeries,
   type ChartSeriesType,
+  type ChartDomain,
 } from '@simurgh-ui/core/charts';
+import { clampDomain, domainFromSelection, zoomDomain } from '@simurgh-ui/core/chart-interactions';
 import { defineComponent, h, nextTick, onBeforeUnmount, ref, watch, type PropType } from 'vue';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
@@ -31,6 +33,11 @@ const commonProps = {
   stream: Object as PropType<ChartStream<string>>,
   x: accessor,
   y: numericAccessor,
+  xDomain: Object as PropType<ChartDomain>,
+  yDomain: Object as PropType<ChartDomain>,
+  viewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
+  defaultViewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
+  interaction: Object as PropType<{ zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }>,
   series: Array as PropType<readonly ChartSeries<Datum>[]>,
   accessibility: { type: Object as PropType<ChartAccessibility>, required: true as const },
   width: { type: Number, default: 640 },
@@ -71,11 +78,12 @@ function cartesian(kind: ChartSeriesType | 'combo') {
     name: `Simurgh${kind[0]!.toUpperCase()}${kind.slice(1)}Chart`,
     inheritAttrs: false,
     props: commonProps,
-    emits: ['update:hiddenSeries'],
+    emits: ['update:hiddenSeries', 'update:viewport'],
     setup(props, { attrs, emit }) {
       const focused = ref(0);
       const tablePage = ref(0);
       const uncontrolledHiddenSeries = ref<readonly string[]>([...props.defaultHiddenSeries]);
+      const uncontrolledViewport = ref(props.viewport ?? props.defaultViewport ?? {});
       const canvas = ref<HTMLCanvasElement>();
       let drawn = '';
       const rowsForChart = useRows(props);
@@ -100,8 +108,11 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           h('div', { 'data-part': 'empty' }, props.emptyContent),
           h('div', { 'data-part': 'legend' }, definitions.map((item, index) => h('button', { type: 'button', 'aria-pressed': !hiddenSeries.includes(item.id), onClick: () => { const next = hiddenSeries.includes(item.id) ? hiddenSeries.filter((id) => id !== item.id) : [...hiddenSeries, item.id]; if (props.hiddenSeries === undefined) uncontrolledHiddenSeries.value = next; emit('update:hiddenSeries', next); } }, [h('span', { style: { background: item.color ?? colors[index % colors.length] } }), item.label ?? item.id]))),
         ]);
-        const xDomain = chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
-        const yDomain = chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar') }) ?? [0, 1];
+        const fullX = props.xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
+        const fullY = props.yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || kind === 'bar') }) ?? [0, 1];
+        const viewport = props.viewport ?? uncontrolledViewport.value;
+        const xDomain = viewport.x ?? fullX;
+        const yDomain = viewport.y ?? fullY;
         const bands = props.xScale === 'band' ? bandScale(raw.map((item) => item.xValue), [layout.left, layout.left + layout.plotWidth]) : null;
         const numericXMap = (props.xScale === 'log' ? logScale : linearScale)(xDomain, [layout.left, layout.left + layout.plotWidth]);
         const yMap = (props.yScale === 'log' ? logScale : linearScale)(yDomain, [layout.top + layout.plotHeight, layout.top]);
@@ -113,6 +124,19 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         const pageSize = typeof table === 'object' ? table.pageSize ?? 50 : 50;
         const tablePages = Math.max(1, Math.ceil(rows.length / pageSize));
         const current = flat[Math.min(focused.value, flat.length - 1)]!;
+        const axisEnabled = (value: boolean | 'x' | 'y' | 'xy' | undefined, axis: 'x' | 'y') => value === true || value === 'xy' || value === axis;
+        const onWheel = (event: WheelEvent) => {
+          if (!props.interaction || (!axisEnabled(props.interaction.zoom, 'x') && !axisEnabled(props.interaction.zoom, 'y'))) return;
+          event.preventDefault();
+          const target = event.currentTarget as HTMLElement;
+          const bounds = target.getBoundingClientRect();
+          const point: readonly [number, number] = [((event.clientX - bounds.left) / bounds.width) * props.width, ((event.clientY - bounds.top) / bounds.height) * props.height];
+          const next = { ...viewport };
+          if (axisEnabled(props.interaction.zoom, 'x')) next.x = clampDomain(zoomDomain(xDomain, event.deltaY < 0 ? 1.2 : 1 / 1.2, domainFromSelection(xDomain, [point[0], point[0]], [layout.left, layout.left + layout.plotWidth])[0]), fullX);
+          if (axisEnabled(props.interaction.zoom, 'y')) next.y = clampDomain(zoomDomain(yDomain, event.deltaY < 0 ? 1.2 : 1 / 1.2, domainFromSelection(yDomain, [point[1], point[1]], [layout.top + layout.plotHeight, layout.top])[0]), fullY);
+          if (props.viewport === undefined) uncontrolledViewport.value = next;
+          emit('update:viewport', next);
+        };
         const baseline = yMap(0);
         const seriesNodes = prepared.map((item, seriesIndex) => {
           const color = item.color ?? colors[seriesIndex % colors.length];
@@ -145,7 +169,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-renderer': useCanvas ? 'canvas-fallback' : 'svg', 'aria-hidden': decorative || undefined }, [
           !decorative && h('figcaption', props.accessibility.title),
           !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(flat.map((item) => item.yValue))}`),
-          h('div', { 'data-part': 'viewport', style: { aspectRatio: `${props.width} / ${props.height}` } }, [
+          h('div', { 'data-part': 'viewport', style: { aspectRatio: `${props.width} / ${props.height}` }, onWheel }, [
             useCanvas && h('canvas', { ref: canvas, width: props.width, height: props.height, 'aria-hidden': 'true' }),
             h('svg', { viewBox: `0 0 ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [...(useCanvas ? [] : seriesNodes), h('g', { 'data-part': 'crosshair' }, [h('line', { x1: current.x, x2: current.x, y1: layout.top, y2: layout.top + layout.plotHeight }), h('circle', { cx: current.x, cy: current.y, r: 4 })])]),
             h('button', { type: 'button', 'data-part': 'keyboard-target', 'aria-label': 'Explore chart data', onKeydown: (event: KeyboardEvent) => { if (event.key === 'Home') focused.value = 0; else if (event.key === 'End') focused.value = flat.length - 1; else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) focused.value = Math.max(0, focused.value - 1); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) focused.value = Math.min(flat.length - 1, focused.value + 1); else return; event.preventDefault(); } }),
