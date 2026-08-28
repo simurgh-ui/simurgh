@@ -9,10 +9,8 @@ export class ChartResponsiveContainerComponent {
     this.observer?.disconnect();
     if (!value || typeof ResizeObserver === 'undefined') return;
     const update = (width: number, height: number) => this.sizeChange.emit({ width, height });
-    const node = value.nativeElement;
-    update(node.getBoundingClientRect().width, node.getBoundingClientRect().height);
     this.observer = new ResizeObserver((entries) => { const rect = entries[0]?.contentRect; if (rect) update(rect.width, rect.height); });
-    this.observer.observe(node);
+    this.observer.observe(value.nativeElement);
   }
   private observer?: ResizeObserver;
   ngOnDestroy() { this.observer?.disconnect(); }
