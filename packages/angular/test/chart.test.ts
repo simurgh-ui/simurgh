@@ -161,4 +161,11 @@ describe('Angular charts', () => {
     stream.append({ x: [1], y: [2] }); chart.stream = stream; chart.streamControls = true; chart.streamAnnouncement = true; chart.streamAutoScroll = true;
     expect(chart.stream?.length).toBe(1); chart.toggleStream(); expect(chart.stream?.paused).toBe(true); chart.toggleStream(); expect(chart.stream?.paused).toBe(false);
   });
+  it('merges localized chart labels with defaults', () => {
+    const chart = new LineChartComponent();
+    chart.locale = { explore: 'Explorer', next: 'Suivant' };
+    expect(chart.chartLabels.explore).toBe('Explorer');
+    expect(chart.chartLabels.next).toBe('Suivant');
+    expect(chart.chartLabels.previous).toBe('Previous');
+  });
 });

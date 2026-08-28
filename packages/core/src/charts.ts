@@ -164,13 +164,17 @@ export type ChartLocale = {
   previous: string;
   next: string;
   dataPages: string;
+  category: string;
+  selectAll: string;
+  isolate: (series: string) => string;
   dataPoints: (count: number, followingLatest?: boolean) => string;
 };
 
 export const defaultChartLocale: ChartLocale = {
   explore: 'Explore chart data', reset: 'Reset view', back: 'Back',
   pauseStream: 'Pause stream', resumeStream: 'Resume stream', previous: 'Previous', next: 'Next',
-  dataPages: 'Chart data pages', dataPoints: (count, followingLatest) => `${count} data points${followingLatest ? ', following latest data' : ''}`,
+  dataPages: 'Chart data pages', category: 'Category', selectAll: 'Select all', isolate: (series) => `Isolate ${series}`,
+  dataPoints: (count, followingLatest) => `${count} data points${followingLatest ? ', following latest data' : ''}`,
 };
 
 export type ChartPoint<T = unknown> = {

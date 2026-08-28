@@ -174,10 +174,11 @@ export function ChartTooltip(props: HTMLAttributes<HTMLDivElement>) { return <di
 export function ChartCrosshair(props: SVGAttributes<SVGGElement>) { return <g data-part="crosshair" {...props} />; }
 export function ChartBrush(props: SVGAttributes<SVGRectElement>) { return <rect data-part="brush" {...props} />; }
 
-export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
+export function ChartDataTable<T>({ data, columns, pageSize = 50, locale }: {
   data: readonly T[];
   columns: readonly { label: string; value: ChartAccessor<T> }[];
   pageSize?: number;
+  locale?: Partial<ChartLocale>;
 }) {
   const [page, setPage] = useState(0);
   const size = Math.max(1, pageSize);
@@ -189,7 +190,7 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
         <tbody>{data.slice(current * size, current * size + size).map((datum, row) => (
           <tr key={current * size + row}>{columns.map((column) => <td key={column.label}>{String(chartValue(datum, column.value, current * size + row) ?? '')}</td>)}</tr>
         ))}</tbody></table>
-      {pages > 1 && <nav aria-label="Chart data pages"><button type="button" disabled={!current} onClick={() => setPage(current - 1)}>Previous</button><span>{current + 1} / {pages}</span><button type="button" disabled={current + 1 >= pages} onClick={() => setPage(current + 1)}>Next</button></nav>}
+      {pages > 1 && <nav aria-label={locale?.dataPages ?? defaultChartLocale.dataPages}><button type="button" disabled={!current} onClick={() => setPage(current - 1)}>{locale?.previous ?? defaultChartLocale.previous}</button><span>{current + 1} / {pages}</span><button type="button" disabled={current + 1 >= pages} onClick={() => setPage(current + 1)}>{locale?.next ?? defaultChartLocale.next}</button></nav>}
     </div>
   );
 }
@@ -326,8 +327,8 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     onHiddenSeriesChange?.(next);
   };
   const renderLegend = () => legendContent ? legendContent(definitions, hiddenSeries) : <div data-part="legend" data-placement={legend.placement ?? 'bottom'} data-orientation={legend.orientation ?? 'horizontal'} style={legend.maxHeight ? { maxHeight: legend.maxHeight, overflowY: 'auto' } : undefined}>
-    {legend.selectAll !== false && <button type="button" data-action="select-all" onClick={() => { if (controlledHiddenSeries === undefined) setUncontrolledHiddenSeries([]); onHiddenSeriesChange?.([]); }}>Select all</button>}
-    {definitions.map((item, index) => <span key={item.id}><button type="button" aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>{legend.isolate && <button type="button" data-action="isolate" aria-label={`Isolate ${item.label ?? item.id}`} onClick={() => { const next = definitions.filter((candidate) => candidate.id !== item.id).map((candidate) => candidate.id); if (controlledHiddenSeries === undefined) setUncontrolledHiddenSeries(next); onHiddenSeriesChange?.(next); }}>Isolate</button>}</span>)}
+    {legend.selectAll !== false && <button type="button" data-action="select-all" onClick={() => { if (controlledHiddenSeries === undefined) setUncontrolledHiddenSeries([]); onHiddenSeriesChange?.([]); }}>{locale?.selectAll ?? defaultChartLocale.selectAll}</button>}
+    {definitions.map((item, index) => <span key={item.id}><button type="button" aria-pressed={!hiddenSeries.includes(item.id)} onClick={() => toggleSeries(item.id)}><span style={{ background: item.color ?? colors[index % colors.length] }} />{item.label ?? item.id}</button>{legend.isolate && <button type="button" data-action="isolate" aria-label={(locale?.isolate ?? defaultChartLocale.isolate)(item.label ?? item.id)} onClick={() => { const next = definitions.filter((candidate) => candidate.id !== item.id).map((candidate) => candidate.id); if (controlledHiddenSeries === undefined) setUncontrolledHiddenSeries(next); onHiddenSeriesChange?.(next); }}>{(locale?.isolate ?? defaultChartLocale.isolate)(item.label ?? item.id)}</button>}</span>)}
   </div>;
   if (!flat.length) return <figure className="simurgh-chart" data-slot="chart" data-state="empty" {...native}>
     {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description}</p></>}
@@ -521,10 +522,10 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         {streamControls && stream && <button type="button" data-part="stream-toggle" aria-pressed={streamPaused} onClick={() => { if (streamPaused) stream.resume(); else stream.pause(); setStreamPaused(!streamPaused); }}>{streamPaused ? locale?.resumeStream ?? defaultChartLocale.resumeStream : locale?.pauseStream ?? defaultChartLocale.pauseStream}</button>}
         {stream && streamAnnouncement && <div data-part="stream-announcement" aria-live="polite">{(locale?.dataPoints ?? defaultChartLocale.dataPoints)(stream.length, streamAutoScroll)}</div>}
         {drilldownDepth && drilldownDepth > 0 && <button type="button" data-part="drilldown-back" onClick={onDrilldownBack}>{locale?.back ?? defaultChartLocale.back}</button>}
-        {tooltipPoints.length > 0 && tooltipVisible && <div role="tooltip" data-part="tooltip" style={tooltipPosition === 'cursor' && tooltipPoint ? { position: 'absolute', left: `${tooltipPoint[0]}px`, top: `${tooltipPoint[1]}px` } : undefined}>{tooltipContent ? tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => <div key={`${item.series.id}:${item.index}`}>{tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.series.label ?? item.series.id}: ${item.yValue}`}</div>)}</div>}
+        {tooltipPoints.length > 0 && tooltipVisible && <div role="tooltip" data-part="tooltip" style={tooltipPosition === 'cursor' && tooltipPoint ? { position: 'absolute', left: `${tooltipPoint[0]}px`, top: `${tooltipPoint[1]}px` } : undefined}>{tooltipContent ? tooltipContent(tooltipInteractions) : tooltipPoints.map((item, index) => <div key={`${item.series.id}:${item.index}`}>{tooltipFormatter?.(tooltipInteractions[index]!) ?? `${item.series.label ?? item.series.id}: ${formatChartValue(item.yValue, yAxis?.locale)}`}</div>)}</div>}
       </div>
       {renderLegend()}
-      {table && <ChartDataTable data={data} pageSize={typeof table === 'object' ? table.pageSize ?? 50 : 50} columns={[{ label: 'Category', value: x }, ...definitions.map((item) => ({ label: item.label ?? item.id, value: item.y }))]} />}
+      {table && <ChartDataTable {...(locale ? { locale } : {})} data={data} pageSize={typeof table === 'object' ? table.pageSize ?? 50 : 50} columns={[{ label: locale?.category ?? defaultChartLocale.category, value: x }, ...definitions.map((item) => ({ label: item.label ?? item.id, value: item.y }))]} />}
     </figure>
   );
 }
@@ -543,7 +544,7 @@ function SeriesMarks<T>({ item, index, baseline, bandwidth, orientation, visualM
 }
 
 function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: boolean }) {
-  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, centerLabel, showTotal = false, onSliceSelect, drilldownDepth, onDrilldown, onDrilldownBack, dataOptions, emptyContent = 'No chart data', ...native } = props;
+  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, centerLabel, showTotal = false, onSliceSelect, drilldownDepth, onDrilldown, onDrilldownBack, dataOptions, locale, emptyContent = 'No chart data', ...native } = props;
   const data = useChartRows(inputData, stream, width, dataOptions);
   const value = y ?? series?.[0]?.y;
   if (!value) throw new TypeError('Pie and donut charts require a y accessor or series.');
@@ -580,8 +581,8 @@ function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: bo
     {!decorative && <figcaption id={titleId}>{accessibility.title}</figcaption>}
     <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromMouse}>
       <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} style={{ opacity: selected != null && selected !== index ? 0.35 : index === focus ? 1 : 0.7 }} onMouseEnter={() => setFocus(index)} onClick={() => { setSelected(index); const slice = { datum: arc.datum, index: arc.index, value: arc.value }; onSliceSelect?.(slice); onDrilldown?.(slice); }} />)}{labels.length > 0 && <g data-part="data-labels">{labels.map((item, index) => <text key={index} data-part="data-label" x={item.x} y={item.y} textAnchor="middle">{item.text}</text>)}</g>}{(centerLabel || showTotal) && <g data-part="center-label"><text textAnchor="middle" dy={centerLabel ? -4 : 4}>{centerLabel}</text>{showTotal && <text textAnchor="middle" dy={centerLabel ? 14 : 18}>{arcs.reduce((total, arc) => total + arc.value, 0)}</text>}</g>}</svg>
-      {drilldownDepth && drilldownDepth > 0 && <button type="button" data-part="drilldown-back" onClick={onDrilldownBack}>Back</button>}
-      <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
+      {drilldownDepth && drilldownDepth > 0 && <button type="button" data-part="drilldown-back" onClick={onDrilldownBack}>{locale?.back ?? defaultChartLocale.back}</button>}
+      <button type="button" data-part="keyboard-target" aria-label={locale?.explore ?? defaultChartLocale.explore} onKeyDown={(event) => {
         if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(arcs.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((current) => Math.max(0, current - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((current) => Math.min(arcs.length - 1, current + 1)); else return;
         event.preventDefault();
       }} />

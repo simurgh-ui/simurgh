@@ -102,26 +102,26 @@ const template = `
       <rect *ngIf="selection" data-part="brush" [attr.x]="selection.start[0]" [attr.y]="selection.start[1]" [attr.width]="selection.end[0] - selection.start[0]" [attr.height]="selection.end[1] - selection.start[1]"></rect>
       <ng-container *ngIf="selection"><rect data-part="brush-handle" [attr.x]="selection.start[0] - 4" [attr.y]="selection.start[1] - 4" width="8" height="8"></rect><rect data-part="brush-handle" [attr.x]="selection.end[0] - 4" [attr.y]="selection.end[1] - 4" width="8" height="8"></rect></ng-container>
     </svg>
-    <button type="button" data-part="keyboard-target" aria-label="Explore chart data" (keydown)="onKeydown($event)"></button>
-    <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">Reset view</button>
-    <button *ngIf="drilldownDepth > 0" type="button" data-part="drilldown-back" (click)="onDrilldownBack.emit()">Back</button>
-    <button *ngIf="streamControls && stream" type="button" data-part="stream-toggle" [attr.aria-pressed]="streamPaused" (click)="toggleStream()">{{ streamPaused ? 'Resume stream' : 'Pause stream' }}</button>
-    <div *ngIf="stream && streamAnnouncement" data-part="stream-announcement" aria-live="polite">{{ stream.length }} data points{{ streamAutoScroll ? ', following latest data' : '' }}</div>
+    <button type="button" data-part="keyboard-target" [attr.aria-label]="chartLabels.explore" (keydown)="onKeydown($event)"></button>
+    <button *ngIf="interaction" type="button" data-part="reset-viewport" (click)="resetViewport()">{{ chartLabels.reset }}</button>
+    <button *ngIf="drilldownDepth > 0" type="button" data-part="drilldown-back" (click)="onDrilldownBack.emit()">{{ chartLabels.back }}</button>
+    <button *ngIf="streamControls && stream" type="button" data-part="stream-toggle" [attr.aria-pressed]="streamPaused" (click)="toggleStream()">{{ streamPaused ? chartLabels.resumeStream : chartLabels.pauseStream }}</button>
+    <div *ngIf="stream && streamAnnouncement" data-part="stream-announcement" aria-live="polite">{{ chartLabels.dataPoints(stream.length, streamAutoScroll) }}</div>
     <div *ngIf="model.tooltip && tooltipVisible" role="tooltip" data-part="tooltip" [style.position]="tooltipPosition === 'cursor' ? 'absolute' : null" [style.left.px]="tooltipPosition === 'cursor' ? tooltipX : null" [style.top.px]="tooltipPosition === 'cursor' ? tooltipY : null">{{ model.tooltip }}</div>
   </div>
   <div data-part="legend" [attr.data-placement]="legend?.placement || 'bottom'" [attr.data-orientation]="legend?.orientation || 'horizontal'" [style.max-height.px]="legend?.maxHeight" [style.overflow-y]="legend?.maxHeight ? 'auto' : null">
-    <button *ngIf="legend?.selectAll !== false" type="button" data-action="select-all" (click)="selectAllSeries()">Select all</button>
+    <button *ngIf="legend?.selectAll !== false" type="button" data-action="select-all" (click)="selectAllSeries()">{{ chartLabels.selectAll }}</button>
     <ng-container *ngIf="!legendContent; else customLegend"><span *ngFor="let item of model.legend; let index = index"><button type="button" [attr.aria-pressed]="!effectiveHiddenSeries.includes(item.id)" (click)="toggleSeries(item.id)">
       <span [style.background]="item.color"></span>{{ item.label }}
-      </button><button *ngIf="legend?.isolate" type="button" data-action="isolate" [attr.aria-label]="'Isolate ' + item.label" (click)="isolateSeries(item.id)">Isolate</button></span></ng-container>
+      </button><button *ngIf="legend?.isolate" type="button" data-action="isolate" [attr.aria-label]="chartLabels.isolate(item.label)" (click)="isolateSeries(item.id)">{{ chartLabels.isolate(item.label) }}</button></span></ng-container>
     <ng-template #customLegend><span [innerHTML]="legendContent?.(activeSeries, effectiveHiddenSeries)"></span></ng-template>
   </div>
   <div *ngIf="tableEnabled" data-part="data-table">
     <table>
-      <thead><tr><th scope="col">Category</th><th *ngFor="let item of model.legend" scope="col">{{ item.label }}</th></tr></thead>
+      <thead><tr><th scope="col">{{ chartLabels.category }}</th><th *ngFor="let item of model.legend" scope="col">{{ item.label }}</th></tr></thead>
       <tbody><tr *ngFor="let datum of tableRows; let row = index"><td>{{ tableValue(datum, xAccessor, row) }}</td><td *ngFor="let item of activeSeries">{{ tableValue(datum, item.y, row) }}</td></tr></tbody>
     </table>
-    <nav *ngIf="tablePages > 1" aria-label="Chart data pages"><button type="button" [disabled]="tablePage === 0" (click)="tablePage = tablePage - 1">Previous</button><span>{{ tablePage + 1 }} / {{ tablePages }}</span><button type="button" [disabled]="tablePage + 1 >= tablePages" (click)="tablePage = tablePage + 1">Next</button></nav>
+    <nav *ngIf="tablePages > 1" [attr.aria-label]="chartLabels.dataPages"><button type="button" [disabled]="tablePage === 0" (click)="tablePage = tablePage - 1">{{ chartLabels.previous }}</button><span>{{ tablePage + 1 }} / {{ tablePages }}</span><button type="button" [disabled]="tablePage + 1 >= tablePages" (click)="tablePage = tablePage + 1">{{ chartLabels.next }}</button></nav>
   </div>
   <div *ngIf="!model.marks.length" data-part="empty">{{ emptyContent }}</div>
 `;
@@ -222,6 +222,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
   get effectiveHiddenSeries() { return this.hiddenSeries ?? this.uncontrolledHiddenSeries ?? this.defaultHiddenSeries; }
+  get chartLabels(): ChartLocale { return { ...defaultChartLocale, ...this.locale }; }
   get layoutTop() { return chartLayout(this.width, this.height).top; }
   get layoutLeft() { return chartLayout(this.width, this.height).left; }
   get plotHeight() { return chartLayout(this.width, this.height).plotHeight; }
@@ -320,7 +321,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const labelConfig: ChartDataLabelConfig | undefined = this.dataLabels === true ? {} : this.dataLabels || undefined;
     const dataLabels = labelConfig?.enabled === false ? [] : points.reduce<{ x: number; y: number; text: string }[]>((visible, point) => visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18)) ? visible : [...visible, { x: point.x, y: point.y + (labelConfig?.placement === 'bottom' ? 14 : labelConfig?.placement === 'inside' ? 4 : -8), text: labelConfig?.formatter?.(point.yValue, point.index, point.seriesId) ?? String(point.yValue) }], []);
     const xTicks = chartTicks(xDomain, this.xAxis?.ticks ?? 5).map((value) => ({ value, position: xMap(value) }));
-    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, xTicks, yTicks, references: this.references.map((reference) => ({ ...reference, position: reference.axis === 'x' ? xMap(reference.value) : yMap(reference.value), endPosition: reference.endValue == null ? undefined : reference.axis === 'x' ? xMap(reference.endValue) : yMap(reference.endValue) })), annotations: this.annotations.map((annotation) => ({ ...annotation, x: xMap(annotation.x), y: yMap(annotation.y) })), dataLabels, polarTotal: 0, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, xTicks, yTicks, references: this.references.map((reference) => ({ ...reference, position: reference.axis === 'x' ? xMap(reference.value) : yMap(reference.value), endPosition: reference.endValue == null ? undefined : reference.axis === 'x' ? xMap(reference.endValue) : yMap(reference.endValue) })), annotations: this.annotations.map((annotation) => ({ ...annotation, x: xMap(annotation.x), y: yMap(annotation.y) })), dataLabels, polarTotal: 0, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${formatChartValue(item.yValue, this.yAxis?.locale)}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
   ngAfterViewChecked(): void {

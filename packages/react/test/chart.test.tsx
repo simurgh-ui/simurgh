@@ -193,4 +193,11 @@ describe('React charts', () => {
     expect(container.querySelector('[data-part="stream-announcement"]')?.textContent).toContain('following latest data');
     expect(screen.getByRole('button', { name: 'Pause stream' })).toBeTruthy();
   });
+  it('localizes chart controls and table pagination', () => {
+    render(<LineChart data={[{ x: 1, y: 2 }, { x: 2, y: 3 }]} x="x" y="y" interaction={{ zoom: true }} accessibility={{ ...accessibility, table: { pageSize: 1 } }} locale={{ explore: 'Explorer', reset: 'Réinitialiser', category: 'Catégorie', previous: 'Précédent', next: 'Suivant', dataPages: 'Pages de données' }} />);
+    expect(screen.getByRole('button', { name: 'Explorer' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Réinitialiser' })).toBeTruthy();
+    expect(screen.getByRole('navigation', { name: 'Pages de données' })).toBeTruthy();
+    expect(screen.getByRole('columnheader', { name: 'Catégorie' })).toBeTruthy();
+  });
 });

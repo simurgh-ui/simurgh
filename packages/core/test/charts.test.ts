@@ -123,6 +123,7 @@ describe('chart interaction helpers', () => {
 describe('chart export helpers', () => {
   it('serializes points to CSV and SVG data URIs', () => {
     expect(chartToCsv([{ seriesId: 'sales', index: 0, xValue: 'Q1', yValue: 12 }])).toContain('sales,0,Q1,12');
+    expect(chartToCsv([], ',', ['serie', 'indice', 'x', 'y'])).toBe('serie,indice,x,y');
     expect(svgToDataUri('<svg />')).toContain('data:image/svg+xml');
   });
 });

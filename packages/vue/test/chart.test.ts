@@ -97,4 +97,10 @@ describe('Vue charts', () => {
     expect(result.container.querySelector('[data-part="series"] path')?.getAttribute('d')).toContain('C');
     expect(result.container.querySelector('[data-part="point-symbol"]')).toBeTruthy();
   });
+  it('localizes chart controls and table pagination', () => {
+    const result = render(LineChart, { props: { data: [{ x: 1, y: 2 }, { x: 2, y: 3 }], x: 'x', y: 'y', interaction: { zoom: true }, accessibility: { ...accessibility, table: { pageSize: 1 } }, locale: { explore: 'Explorer', reset: 'Réinitialiser', category: 'Catégorie', previous: 'Précédent', next: 'Suivant', dataPages: 'Pages de données' } } });
+    expect(result.getByRole('button', { name: 'Explorer' })).toBeTruthy();
+    expect(result.getByRole('button', { name: 'Réinitialiser' })).toBeTruthy();
+    expect(result.getByRole('navigation', { name: 'Pages de données' })).toBeTruthy();
+  });
 });

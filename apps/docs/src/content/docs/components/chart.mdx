@@ -184,6 +184,29 @@ Preserve the documented composition and accessible names when wrapping or restyl
 See [accessibility and RTL guidance](/guides/accessibility-rtl/) for keyboard, focus, labeling, and
 directionality requirements.
 
+Keyboard focus moves across individual data points with arrow, Home, and End keys. Point changes,
+stream updates, selections, and viewport controls are announced through polite live regions. Supply
+localized control and pagination text with the `locale` prop/input; axis locale settings also format
+default tooltip values. CSV exports accept a localized four-column header tuple.
+
+```tsx
+<LineChart
+  {...props}
+  locale={{
+    explore: 'Explorer les données',
+    reset: 'Réinitialiser',
+    previous: 'Précédent',
+    next: 'Suivant',
+    dataPages: 'Pages de données',
+  }}
+/>
+```
+
+For large datasets, use `viewportCulling`, `workerProcessing`, and `progressiveChunkSize`. Set
+`renderMode="webgl"` for line-only WebGL drawing; unsupported mark combinations retain the Canvas
+fallback. These paths are opt-in and keep the full interaction dataset available to assistive
+technology.
+
 ## API surface
 
 - React exports: `ChartProps`, `ChartRoot`, `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `ChartDataTable`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`

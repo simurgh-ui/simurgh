@@ -2,12 +2,12 @@ import type { ChartValue } from './charts.js';
 
 export type ChartExportPoint = { seriesId: string; index: number; xValue: ChartValue; yValue: number };
 
-export function chartToCsv(points: readonly ChartExportPoint[], delimiter = ','): string {
+export function chartToCsv(points: readonly ChartExportPoint[], delimiter = ',', headers: readonly [string, string, string, string] = ['series', 'index', 'x', 'y']): string {
   const escape = (value: unknown) => {
     const text = value instanceof Date ? value.toISOString() : String(value ?? '');
     return /["\r\n,]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
   };
-  return [['series', 'index', 'x', 'y'], ...points.map((point) => [point.seriesId, point.index, point.xValue, point.yValue])]
+  return [headers, ...points.map((point) => [point.seriesId, point.index, point.xValue, point.yValue])]
     .map((row) => row.map(escape).join(delimiter)).join('\r\n');
 }
 
