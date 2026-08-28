@@ -312,6 +312,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (this.axisEnabled(this.interaction.pan, 'y')) next.y = clampDomain(panDomain(this.effectiveViewport.y ?? fullY, (point[1] - previous[1]) / (layout.plotHeight || 1)), fullY);
     this.pointerLast = point;
     if (this.viewport === undefined) this.uncontrolledViewport = next;
+    this.sync?.set({ viewport: next });
     this.viewportChange.emit(next);
     this.changeDetector?.markForCheck();
   }
