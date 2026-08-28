@@ -129,4 +129,16 @@ describe('Angular charts', () => {
     chart.dataLabels = { formatter: (value) => `slice-${value}` };
     expect(chart.model.dataLabels.map((label) => label.text)).toContain('slice-2');
   });
+  it('prepares polar center totals', () => {
+    const chart = new PieChartComponent();
+    chart.data = [{ value: 2 }, { value: 8 }]; chart.y = 'value'; chart.centerLabel = 'Total'; chart.showTotal = true;
+    expect(chart.model.polarTotal).toBe(10);
+  });
+  it('emits polar slice selection', () => {
+    const chart = new PieChartComponent();
+    const selected = vi.fn();
+    chart.data = [{ value: 2 }, { value: 8 }]; chart.y = 'value'; chart.sliceSelect.subscribe(selected);
+    chart.onPolarSliceClick('0');
+    expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: 2 }));
+  });
 });

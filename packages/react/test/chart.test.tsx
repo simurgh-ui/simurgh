@@ -165,4 +165,11 @@ describe('React charts', () => {
     const { container } = render(<PieChart data={[{ name: 'A', value: 2 }, { name: 'B', value: 8 }]} x="name" y="value" dataLabels={{ formatter: (value) => `slice-${value}` }} accessibility={accessibility} />);
     expect(container.querySelector('[data-part="data-labels"]')?.textContent).toContain('slice-2');
   });
+  it('renders polar center totals and selects slices', () => {
+    const selected = vi.fn();
+    const { container } = render(<DonutChart data={[{ value: 2 }, { value: 8 }]} y="value" centerLabel="Total" showTotal onSliceSelect={selected} accessibility={accessibility} />);
+    expect(container.querySelector('[data-part="center-label"]')?.textContent).toContain('Total');
+    fireEvent.click(container.querySelector('[data-part="series"]')!);
+    expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: 2 }));
+  });
 });

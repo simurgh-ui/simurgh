@@ -60,6 +60,7 @@ type Mark = {
   width?: number;
   height?: number;
   radius?: number;
+  opacity?: number;
   lineWidth?: number;
   lineDash?: string;
 };
@@ -77,9 +78,10 @@ const template = `
       <ng-container *ngFor="let reference of model.references"><rect *ngIf="reference.endPosition != null" data-part="reference-area" [attr.x]="reference.axis === 'x' ? min(reference.position, reference.endPosition) : layoutLeft" [attr.y]="reference.axis === 'y' ? min(reference.position, reference.endPosition) : layoutTop" [attr.width]="reference.axis === 'x' ? abs(reference.endPosition - reference.position) : plotWidth" [attr.height]="reference.axis === 'y' ? abs(reference.endPosition - reference.position) : plotHeight" [attr.fill]="reference.color" opacity="0.15"></rect><g data-part="reference"><line *ngIf="reference.axis === 'x'" [attr.x1]="reference.position" [attr.x2]="reference.position" [attr.y1]="layoutTop" [attr.y2]="layoutTop + plotHeight" [attr.stroke]="reference.color"></line><line *ngIf="reference.axis === 'y'" [attr.x1]="layoutLeft" [attr.x2]="layoutLeft + plotWidth" [attr.y1]="reference.position" [attr.y2]="reference.position" [attr.stroke]="reference.color"></line><text [attr.x]="reference.axis === 'x' ? reference.position + 4 : layoutLeft + 4" [attr.y]="reference.axis === 'x' ? layoutTop + 14 : reference.position - 4">{{ reference.label }}</text></g></ng-container>
       <ng-container *ngFor="let annotation of model.annotations"><g data-part="annotation" [attr.aria-label]="annotation.description"><circle [attr.cx]="annotation.x" [attr.cy]="annotation.y" r="4" [attr.fill]="annotation.color"></circle><text [attr.x]="annotation.x + 6" [attr.y]="annotation.y - 6">{{ annotation.label }}</text></g></ng-container>
       <g *ngIf="model.dataLabels.length" data-part="data-labels"><text *ngFor="let label of model.dataLabels" [attr.x]="label.x" [attr.y]="label.y">{{ label.text }}</text></g>
+      <g *ngIf="(kind === 'pie' || kind === 'donut') && (centerLabel || showTotal)" data-part="center-label"><text x="width / 2" [attr.y]="height / 2 - (centerLabel ? 4 : -4)" text-anchor="middle">{{ centerLabel }}</text><text *ngIf="showTotal" x="width / 2" [attr.y]="height / 2 + (centerLabel ? 14 : 18)" text-anchor="middle">{{ model.polarTotal }}</text></g>
       <ng-container *ngIf="!model.useCanvas">
         <ng-container *ngFor="let mark of model.marks">
-          <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color" [attr.stroke-width]="mark.lineWidth" [attr.stroke-dasharray]="mark.lineDash"></path>
+          <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color" [attr.stroke-width]="mark.lineWidth" [attr.stroke-dasharray]="mark.lineDash" [attr.opacity]="mark.opacity" (click)="onPolarSliceClick(mark.id)"></path>
           <rect *ngIf="mark.type === 'bar' || mark.type === 'heatmap'" data-part="series" [attr.x]="mark.x" [attr.y]="mark.y" [attr.width]="mark.width" [attr.height]="mark.height" [attr.fill]="mark.color"></rect>
           <circle *ngIf="mark.type === 'scatter' || mark.type === 'bubble'" data-part="series" [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.r]="mark.radius" [attr.fill]="mark.color"></circle>
         </ng-container>
@@ -137,6 +139,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() dataLabels: boolean | ChartDataLabelConfig = false;
   @Input() legend?: ChartLegendConfig;
   @Input() visualMap?: ChartVisualMap;
+  @Input() centerLabel?: string;
+  @Input() showTotal = false;
   @Input() legendContent?: (series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => string;
   @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
@@ -166,6 +170,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Output() readonly pointClick = new EventEmitter<ChartPointInteraction>();
   @Output() readonly pointDoubleClick = new EventEmitter<ChartPointInteraction>();
   @Output() readonly pointContextMenu = new EventEmitter<ChartPointInteraction>();
+  @Output() readonly sliceSelect = new EventEmitter<{ datum: Datum; index: number; value: number }>();
   @ViewChild('canvas') canvas?: ElementRef<HTMLCanvasElement>;
   abstract readonly kind: ChartSeriesType | 'combo' | 'pie' | 'donut';
   focused = 0;
@@ -179,6 +184,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private pointers = new Map<number, readonly [number, number]>();
   private pinchStart: { distance: number } | null = null;
   private zoomDrag = false;
+  private selectedPolarSlice: number | null = null;
   tooltipVisible = this.tooltipTrigger !== 'click';
   tooltipIntersected = true;
   tooltipX = 0;
@@ -279,7 +285,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const labelConfig: ChartDataLabelConfig | undefined = this.dataLabels === true ? {} : this.dataLabels || undefined;
     const dataLabels = labelConfig?.enabled === false ? [] : points.reduce<{ x: number; y: number; text: string }[]>((visible, point) => visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18)) ? visible : [...visible, { x: point.x, y: point.y + (labelConfig?.placement === 'bottom' ? 14 : labelConfig?.placement === 'inside' ? 4 : -8), text: labelConfig?.formatter?.(point.yValue, point.index, point.seriesId) ?? String(point.yValue) }], []);
     const xTicks = chartTicks(xDomain, this.xAxis?.ticks ?? 5).map((value) => ({ value, position: xMap(value) }));
-    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, xTicks, yTicks, references: this.references.map((reference) => ({ ...reference, position: reference.axis === 'x' ? xMap(reference.value) : yMap(reference.value), endPosition: reference.endValue == null ? undefined : reference.axis === 'x' ? xMap(reference.endValue) : yMap(reference.endValue) })), annotations: this.annotations.map((annotation) => ({ ...annotation, x: xMap(annotation.x), y: yMap(annotation.y) })), dataLabels, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
+    return { marks, canvasMarks, useCanvas, points, xDomain: fullX, yDomain: fullY, xTicks, yTicks, references: this.references.map((reference) => ({ ...reference, position: reference.axis === 'x' ? xMap(reference.value) : yMap(reference.value), endPosition: reference.endValue == null ? undefined : reference.axis === 'x' ? xMap(reference.endValue) : yMap(reference.endValue) })), annotations: this.annotations.map((annotation) => ({ ...annotation, x: xMap(annotation.x), y: yMap(annotation.y) })), dataLabels, polarTotal: 0, summary: chartSummary(points.map((item) => item.yValue)), tooltip: this.tooltipContent ? this.tooltipContent(tooltipPoints) : tooltipPoints.map((item) => this.tooltipFormatter?.(item) ?? `${item.seriesId}: ${item.yValue}`).join('\n'), legend: definitions.map((item, index) => ({ id: item.id, label: item.label ?? item.id, color: item.color ?? colors[index % colors.length] })) };
   }
 
   ngAfterViewChecked(): void {
@@ -493,6 +499,18 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   }
   selectAllSeries() { if (this.hiddenSeries === undefined) this.uncontrolledHiddenSeries = []; this.hiddenSeriesChange.emit([]); }
   isolateSeries(id: string) { const next = this.activeSeries.filter((item) => item.id !== id).map((item) => item.id); if (this.hiddenSeries === undefined) this.uncontrolledHiddenSeries = next; this.hiddenSeriesChange.emit(next); }
+  onPolarSliceClick(id: string) {
+    if (this.kind !== 'pie' && this.kind !== 'donut') return;
+    const value = this.y ?? this.series?.[0]?.y;
+    if (!value) return;
+    const radius = Math.min(this.width, this.height) / 2 - 16;
+    const arcs = pieArcs(this.rows, value, radius, this.kind === 'donut' ? this.innerRadius ?? radius * 0.55 : this.innerRadius ?? 0);
+    const arc = arcs.find((item) => String(item.index) === id);
+    if (!arc) return;
+    this.selectedPolarSlice = this.selectedPolarSlice === arc.index ? null : arc.index;
+    this.sliceSelect.emit({ datum: arc.datum, index: arc.index, value: arc.value });
+    this.changeDetector?.markForCheck();
+  }
   ngOnDestroy(): void { this.unsubscribeStream?.(); this.unsubscribeSync?.(); }
   private polarModel() {
     const value = this.y ?? this.series?.[0]?.y;
@@ -507,7 +525,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       if (visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18))) return visible;
       return [...visible, { ...point, text: labelConfig?.formatter?.(arc.value, arc.index, 'slices') ?? String(arc.index + 1) }];
     }, []);
-    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: labels, summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path, opacity: this.selectedPolarSlice != null && this.selectedPolarSlice !== arc.index ? 0.35 : 1 })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: labels, polarTotal: arcs.reduce((total, arc) => total + arc.value, 0), summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
   }
 }
 

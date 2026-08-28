@@ -58,6 +58,9 @@ const commonProps = {
   legend: Object as PropType<ChartLegendConfig>,
   legendContent: Function as PropType<(series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => unknown>,
   visualMap: Object as PropType<ChartVisualMap>,
+  centerLabel: String,
+  showTotal: Boolean,
+  onSliceSelect: Function as PropType<(slice: { datum: Datum; index: number; value: number }) => void>,
   viewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   defaultViewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   interaction: Object as PropType<{ zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }>,
@@ -388,7 +391,7 @@ function polar(donut: boolean) {
         if (visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18))) return visible;
         return [...visible, { ...point, text: labelConfig?.formatter?.(arc.value, arc.index, 'slices') ?? String(chartValue(arc.datum, props.x ?? ((_, index) => index), arc.index) ?? arc.index + 1) }];
       }, []);
-      return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': arcs.length ? undefined : 'empty', 'aria-hidden': decorative || undefined }, arcs.length ? [!decorative && h('figcaption', props.accessibility.title), h('svg', { viewBox: `${-props.width / 2} ${-props.height / 2} ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [arcs.map((arc, index) => h('path', { 'data-part': 'series', d: arc.path, fill: colors[index % colors.length] })), labels.length > 0 && h('g', { 'data-part': 'data-labels' }, labels.map((item) => h('text', { 'data-part': 'data-label', x: item.x, y: item.y, 'text-anchor': 'middle' }, item.text)))]), !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(arcs.map((arc) => arc.value), 'Slices')}`)] : props.emptyContent);
+      return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': arcs.length ? undefined : 'empty', 'aria-hidden': decorative || undefined }, arcs.length ? [!decorative && h('figcaption', props.accessibility.title), h('svg', { viewBox: `${-props.width / 2} ${-props.height / 2} ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [arcs.map((arc, index) => h('path', { 'data-part': 'series', d: arc.path, fill: colors[index % colors.length], onMouseenter: () => props.onSliceSelect?.({ datum: arc.datum, index: arc.index, value: arc.value }), onClick: () => props.onSliceSelect?.({ datum: arc.datum, index: arc.index, value: arc.value }) })), labels.length > 0 && h('g', { 'data-part': 'data-labels' }, labels.map((item) => h('text', { 'data-part': 'data-label', x: item.x, y: item.y, 'text-anchor': 'middle' }, item.text))), (props.centerLabel || props.showTotal) && h('g', { 'data-part': 'center-label' }, [props.centerLabel && h('text', { 'text-anchor': 'middle', dy: -4 }, props.centerLabel), props.showTotal && h('text', { 'text-anchor': 'middle', dy: props.centerLabel ? 14 : 4 }, String(arcs.reduce((total, arc) => total + arc.value, 0)))])]), !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(arcs.map((arc) => arc.value), 'Slices')}`)] : props.emptyContent);
     }; },
   });
 }

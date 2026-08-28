@@ -41,6 +41,13 @@ describe('Vue charts', () => {
     const result = render(DonutChart, { props: { data: [{ name: 'A', value: 2 }, { name: 'B', value: 8 }], x: 'name', y: 'value', dataLabels: { formatter: (value: number) => `slice-${value}` }, accessibility } });
     expect(result.container.querySelector('[data-part="data-labels"]')?.textContent).toContain('slice-2');
   });
+  it('renders polar center totals and selects slices', async () => {
+    const selected = vi.fn();
+    const result = render(DonutChart, { props: { data: [{ value: 2 }, { value: 8 }], y: 'value', centerLabel: 'Total', showTotal: true, onSliceSelect: selected, accessibility } });
+    expect(result.container.querySelector('[data-part="center-label"]')?.textContent).toContain('Total');
+    await fireEvent.click(result.container.querySelector('[data-part="series"]')!);
+    expect(selected).toHaveBeenCalledWith(expect.objectContaining({ value: 2 }));
+  });
   it('supports viewport zoom, brush gestures, and point callbacks', async () => {
     const viewportChange = vi.fn();
     const selectionChange = vi.fn();

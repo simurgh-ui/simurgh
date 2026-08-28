@@ -73,6 +73,9 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   legend?: ChartLegendConfig;
   legendContent?: (series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode;
   visualMap?: ChartVisualMap;
+  centerLabel?: string;
+  showTotal?: boolean;
+  onSliceSelect?: (slice: { datum: T; index: number; value: number }) => void;
   viewport?: { x?: ChartDomain; y?: ChartDomain };
   defaultViewport?: { x?: ChartDomain; y?: ChartDomain };
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -491,7 +494,7 @@ function SeriesMarks<T>({ item, index, baseline, bandwidth, orientation, visualM
 }
 
 function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: boolean }) {
-  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, emptyContent = 'No chart data', ...native } = props;
+  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, centerLabel, showTotal = false, onSliceSelect, emptyContent = 'No chart data', ...native } = props;
   const data = useChartRows(inputData, stream, width);
   const value = y ?? series?.[0]?.y;
   if (!value) throw new TypeError('Pie and donut charts require a y accessor or series.');
@@ -500,6 +503,7 @@ function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: bo
   const arcs = pieArcs(data, value, radius, resolvedInnerRadius);
   const titleId = `${useId()}-title`;
   const [focus, setFocus] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
   const decorative = 'decorative' in accessibility && accessibility.decorative;
   if (!arcs.length) return <figure className="simurgh-chart" data-state="empty" {...native}>{emptyContent}</figure>;
   const focused = arcs[Math.min(focus, arcs.length - 1)]!;
@@ -526,7 +530,7 @@ function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: bo
   return <figure className="simurgh-chart" data-slot="chart" aria-labelledby={decorative ? undefined : titleId} aria-hidden={decorative || undefined} {...native}>
     {!decorative && <figcaption id={titleId}>{accessibility.title}</figcaption>}
     <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromMouse}>
-      <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} style={{ opacity: index === focus ? 1 : 0.7 }} />)}{labels.length > 0 && <g data-part="data-labels">{labels.map((item, index) => <text key={index} data-part="data-label" x={item.x} y={item.y} textAnchor="middle">{item.text}</text>)}</g>}</svg>
+      <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} style={{ opacity: selected != null && selected !== index ? 0.35 : index === focus ? 1 : 0.7 }} onMouseEnter={() => setFocus(index)} onClick={() => { setSelected(index); onSliceSelect?.({ datum: arc.datum, index: arc.index, value: arc.value }); }} />)}{labels.length > 0 && <g data-part="data-labels">{labels.map((item, index) => <text key={index} data-part="data-label" x={item.x} y={item.y} textAnchor="middle">{item.text}</text>)}</g>}{(centerLabel || showTotal) && <g data-part="center-label"><text textAnchor="middle" dy={centerLabel ? -4 : 4}>{centerLabel}</text>{showTotal && <text textAnchor="middle" dy={centerLabel ? 14 : 18}>{arcs.reduce((total, arc) => total + arc.value, 0)}</text>}</g>}</svg>
       <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
         if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(arcs.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((current) => Math.max(0, current - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((current) => Math.min(arcs.length - 1, current + 1)); else return;
         event.preventDefault();
