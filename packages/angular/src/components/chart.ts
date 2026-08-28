@@ -118,7 +118,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() tooltipContent?: (points: readonly ChartPointInteraction[]) => string;
   private syncValue: ChartSync | undefined = undefined;
   private unsubscribeSync: (() => void) | undefined = undefined;
-  @Input() set sync(value: ChartSync | undefined) { this.unsubscribeSync?.(); this.syncValue = value; this.unsubscribeSync = value?.subscribe(() => this.changeDetector?.markForCheck()); }
+  @Input() set sync(value: ChartSync | undefined) { this.unsubscribeSync?.(); this.syncValue = value; this.unsubscribeSync = value?.subscribe((state) => { if (state.focused) this.focused = state.focused.index; this.changeDetector?.markForCheck(); }); }
   get sync() { return this.syncValue; }
   @Input() renderMode: 'auto' | 'svg' | 'canvas' = 'auto';
   @Input() canvasThreshold = 2000;
