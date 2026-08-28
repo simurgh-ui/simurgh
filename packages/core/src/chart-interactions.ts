@@ -2,6 +2,28 @@ import type { ChartDomain } from './charts.js';
 
 export type ChartViewport = { x?: ChartDomain; y?: ChartDomain };
 export type ChartSelection = { start: readonly [number, number]; end: readonly [number, number] } | null;
+export type ChartSyncState = { viewport: ChartViewport; selection: ChartSelection; focused?: { seriesId: string; index: number } | null };
+export type ChartSync = {
+  readonly state: ChartSyncState;
+  set(next: Partial<ChartSyncState>): void;
+  subscribe(listener: (state: ChartSyncState) => void): () => void;
+};
+
+export function createChartSync(initial: Partial<ChartSyncState> = {}): ChartSync {
+  let state: ChartSyncState = { viewport: initial.viewport ?? {}, selection: initial.selection ?? null, focused: initial.focused ?? null };
+  const listeners = new Set<(state: ChartSyncState) => void>();
+  return {
+    get state() { return state; },
+    set(next) {
+      state = { ...state, ...next };
+      for (const listener of listeners) listener(state);
+    },
+    subscribe(listener) {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+  };
+}
 export type ChartBrushHandle = 'start' | 'end' | 'start-y' | 'end-y';
 
 export type ChartInteractionConfig = {
