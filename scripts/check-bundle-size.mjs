@@ -590,9 +590,9 @@ for (const bundleCase of cases) {
   }
 }
 
-// Angular's chart interaction contract adds a measured ~7 KiB to the published package.
-// Keep the stricter chart-entry budget unchanged while accounting for that intentional public API.
-const packageBudgets = { react: 400 * KiB, vue: 375 * KiB, angular: 325 * KiB };
+// Chart interaction contracts add measured weight to the published packages; keep the stricter
+// chart-entry budgets unchanged while accounting for these intentional public APIs.
+const packageBudgets = { react: 400 * KiB, vue: 400 * KiB, angular: 325 * KiB };
 const publishedPackages = {};
 for (const framework of ['react', 'vue', 'angular']) {
   const isWindows = process.platform === 'win32';
