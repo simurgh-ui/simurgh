@@ -48,6 +48,18 @@ describe('React charts', () => {
     expect(screen.getByRole('tooltip').textContent).toContain('value: 18');
     expect(container.querySelector('[data-part="crosshair"]')).toBeTruthy();
   });
+  it('emits typed point pointer events', () => {
+    const click = vi.fn();
+    const leave = vi.fn();
+    const { container } = render(<LineChart data={[{ x: 0, y: 4 }]} x="x" y="y" accessibility={accessibility} onPointClick={click} onPointHover={leave} />);
+    const viewport = container.querySelector('[data-part="viewport"]')!;
+    vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 640, height: 360, right: 640, bottom: 360, x: 0, y: 0, toJSON: () => ({}) });
+    fireEvent.mouseMove(viewport, { clientX: 100, clientY: 100 });
+    fireEvent.click(viewport, { clientX: 100, clientY: 100 });
+    fireEvent.mouseLeave(viewport);
+    expect(click).toHaveBeenCalledWith(expect.objectContaining({ seriesId: 'value', yValue: 4 }));
+    expect(leave).toHaveBeenLastCalledWith(null);
+  });
   it('supports wheel zoom with a controlled viewport callback', () => {
     const change = vi.fn();
     const { container } = render(<LineChart data={[{ x: 0, y: 0 }, { x: 10, y: 10 }]} x="x" y="y" interaction={{ zoom: 'x' }} accessibility={accessibility} onViewportChange={change} />);

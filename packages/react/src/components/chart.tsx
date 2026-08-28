@@ -57,6 +57,10 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
   onViewportChange?: (viewport: { x?: ChartDomain; y?: ChartDomain }) => void;
   onSelectionChange?: (selection: { start: readonly [number, number]; end: readonly [number, number] } | null) => void;
+  onPointHover?: (point: ChartPointInteraction<T> | null) => void;
+  onPointClick?: (point: ChartPointInteraction<T>) => void;
+  onPointDoubleClick?: (point: ChartPointInteraction<T>) => void;
+  onPointContextMenu?: (point: ChartPointInteraction<T>) => void;
   renderMode?: ChartRenderMode;
   canvasThreshold?: number;
   hiddenSeries?: readonly string[];
@@ -77,6 +81,7 @@ type PreparedPoint<T> = {
   radius: number;
   y0: number;
 };
+export type ChartPointInteraction<T> = Pick<PreparedPoint<T>, 'datum' | 'index' | 'x' | 'y' | 'xValue' | 'yValue' | 'radius'> & { seriesId: string };
 type PreparedSeries<T> = ChartSeries<T> & { points: PreparedPoint<T>[]; type: ChartSeriesType };
 type ChartContextValue = { width: number; height: number };
 const ChartContext = createContext<ChartContextValue | null>(null);
@@ -142,7 +147,8 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, viewport: controlledViewport, defaultViewport, interaction,
-    onViewportChange, onSelectionChange, renderMode = 'auto', canvasThreshold = 2000,
+    onViewportChange, onSelectionChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
+    renderMode = 'auto', canvasThreshold = 2000,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
   const [uncontrolledHiddenSeries, setUncontrolledHiddenSeries] = useState<readonly string[]>(defaultHiddenSeries);
@@ -282,12 +288,28 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
       }
     });
     setFocus(nearest);
+    const point = flat[nearest];
+    onPointHover?.(point ? { datum: point.datum, index: point.index, x: point.x, y: point.y, xValue: point.xValue, yValue: point.yValue, radius: point.radius, seriesId: point.series.id } : null);
+  };
+  const pointFromPointerEvent = (event: Pick<React.MouseEvent<HTMLDivElement>, 'currentTarget' | 'clientX' | 'clientY'>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return null;
+    const x = ((event.clientX - bounds.left) / bounds.width) * width;
+    const y = ((event.clientY - bounds.top) / bounds.height) * height;
+    return flat.reduce((nearest, point, index) => Math.hypot(point.x - x, point.y - y) < Math.hypot(flat[nearest]!.x - x, flat[nearest]!.y - y) ? index : nearest, 0);
+  };
+  const pointInteraction = (index: number): ChartPointInteraction<T> | null => {
+    const point = flat[index];
+    return point ? { datum: point.datum, index: point.index, x: point.x, y: point.y, xValue: point.xValue, yValue: point.yValue, radius: point.radius, seriesId: point.series.id } : null;
   };
   const ticks = Array.from({ length: 5 }, (_, index) => resolvedY[0] + ((resolvedY[1] - resolvedY[0]) * index) / 4);
   return (
     <figure className="simurgh-chart" data-slot="chart" data-renderer={useCanvas ? 'canvas' : 'svg'} dir={native.dir} aria-labelledby={decorative ? undefined : titleId} aria-describedby={decorative ? undefined : descriptionId} aria-hidden={decorative || undefined} {...native}>
       {!decorative && <><figcaption id={titleId}>{accessibility.title}</figcaption><p id={descriptionId} data-part="description">{accessibility.description} {summary}</p></>}
-      <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onWheel={handleWheel}
+      <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromPointer} onMouseLeave={() => onPointHover?.(null)}
+        onClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) onPointClick?.(point); }}
+        onDoubleClick={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) onPointDoubleClick?.(point); }}
+        onContextMenu={(event) => { const index = pointFromPointerEvent(event); const point = index == null ? null : pointInteraction(index); if (point) { event.preventDefault(); onPointContextMenu?.(point); } }} onWheel={handleWheel}
         onPointerDown={(event) => { if (interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y') || axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) { const point = pointFromEvent(event); pointerStart.current = point; pointerLast.current = point; event.currentTarget.setPointerCapture(event.pointerId); } }}
         onPointerMove={(event) => { if (pointerStart.current && interaction && (axisEnabled(interaction.pan, 'x') || axisEnabled(interaction.pan, 'y'))) moveViewport(pointFromEvent(event)); }}
         onPointerUp={(event) => { const point = pointFromEvent(event); if (pointerStart.current && interaction && (axisEnabled(interaction.brush, 'x') || axisEnabled(interaction.brush, 'y'))) finishSelection(point); else { pointerStart.current = null; pointerLast.current = null; } }}
