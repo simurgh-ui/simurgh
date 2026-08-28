@@ -31,7 +31,7 @@ import {
   type ChartSeriesType,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, panDomain, zoomDomain } from '@simurgh-ui/core/chart-interactions';
+import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 
@@ -132,6 +132,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   selection: { start: readonly [number, number]; end: readonly [number, number] } | null = null;
   private pointerStart: readonly [number, number] | null = null;
   private pointerLast: readonly [number, number] | null = null;
+  private brushHandle: ChartBrushHandle | null = null;
   private drawn = '';
   constructor(private readonly changeDetector?: ChangeDetectorRef) {}
 
@@ -258,11 +259,16 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   onPointerDown(event: PointerEvent) {
     if (!this.interaction || (!this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y') && !this.axisEnabled(this.interaction.brush, 'x') && !this.axisEnabled(this.interaction.brush, 'y'))) return;
     const point = this.pointFromPointer(event);
-    this.pointerStart = point;
+    this.brushHandle = this.brushHandleFromPoint(point);
+    this.pointerStart = this.brushHandle ? null : point;
     this.pointerLast = point;
     (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId);
   }
   onPointerMove(event: PointerEvent) {
+    if (this.brushHandle && this.selection) {
+      this.applySelection(resizeChartSelection(this.selection, this.brushHandle, this.pointFromPointer(event)));
+      return;
+    }
     if (!this.pointerLast || !this.interaction || (!this.axisEnabled(this.interaction.pan, 'x') && !this.axisEnabled(this.interaction.pan, 'y'))) return;
     const previous = this.pointerLast;
     const point = this.pointFromPointer(event);
@@ -279,6 +285,12 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     this.changeDetector?.markForCheck();
   }
   onPointerUp(event: PointerEvent) {
+    if (this.brushHandle) {
+      if (this.selection) this.applySelection(resizeChartSelection(this.selection, this.brushHandle, this.pointFromPointer(event)));
+      this.brushHandle = null;
+      this.pointerLast = null;
+      return;
+    }
     const start = this.pointerStart;
     this.pointerStart = null;
     this.pointerLast = null;
@@ -286,6 +298,11 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (!start || !interaction || (!this.axisEnabled(interaction.brush, 'x') && !this.axisEnabled(interaction.brush, 'y'))) return;
     const point = this.pointFromPointer(event);
     const nextSelection = { start: [Math.min(start[0], point[0]), Math.min(start[1], point[1])] as const, end: [Math.max(start[0], point[0]), Math.max(start[1], point[1])] as const };
+    this.applySelection(nextSelection);
+  }
+  private applySelection(nextSelection: { start: readonly [number, number]; end: readonly [number, number] }) {
+    const interaction = this.interaction;
+    if (!interaction) return;
     this.selection = nextSelection;
     this.selectionChange.emit(nextSelection);
     const layout = chartLayout(this.width, this.height);
@@ -301,7 +318,12 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     this.viewportChange.emit(next);
     this.changeDetector?.markForCheck();
   }
-  onPointerCancel() { this.pointerStart = null; this.pointerLast = null; }
+  private brushHandleFromPoint(point: readonly [number, number]): ChartBrushHandle | null {
+    if (!this.selection || !this.interaction) return null;
+    const candidates: readonly [ChartBrushHandle, readonly [number, number]][] = [['start', this.selection.start], ['end', [this.selection.end[0], this.selection.start[1]]], ['start-y', [this.selection.start[0], this.selection.end[1]]], ['end-y', this.selection.end]];
+    return candidates.find(([, item]) => Math.hypot(point[0] - item[0], point[1] - item[1]) <= 12)?.[0] ?? null;
+  }
+  onPointerCancel() { this.pointerStart = null; this.pointerLast = null; this.brushHandle = null; }
   private pointAt(event: MouseEvent): ChartPointInteraction | null {
     const points = 'points' in this.model ? this.model.points : [];
     const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
