@@ -6,7 +6,6 @@ import {
   chartLayout,
   chartSummary,
   chartValue,
-  linePath,
   linearScale,
   logScale,
   numericValue,
@@ -42,7 +41,7 @@ import {
   type ChartTooltipPosition,
 } from '@simurgh-ui/core/charts';
 import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, pinchZoomDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
-import { defineComponent, h, nextTick, onBeforeUnmount, ref, watch, type PropType } from 'vue';
+import { defineComponent, h, nextTick, onBeforeUnmount, ref, watch, type PropType, type VNodeChild } from 'vue';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 
@@ -64,7 +63,7 @@ const commonProps = {
   annotations: Array as PropType<readonly ChartAnnotation[]>,
   dataLabels: [Boolean, Object] as PropType<boolean | ChartDataLabelConfig>,
   legend: Object as PropType<ChartLegendConfig>,
-  legendContent: Function as PropType<(series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => unknown>,
+  legendContent: Function as PropType<(series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => VNodeChild>,
   visualMap: Object as PropType<ChartVisualMap>,
   dataOptions: Object as PropType<ChartDataOptions<Datum>>,
   streamControls: Boolean,
@@ -168,7 +167,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
       }, { immediate: true });
       onBeforeUnmount(() => unsubscribeSync?.());
       const rowsForChart = useRows(props);
-      const renderLegend = (definitions: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]): any => {
+      const renderLegend = (definitions: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => {
         const config = props.legend ?? {};
         if (props.legendContent) return props.legendContent(definitions, hiddenSeries);
         return h('div', { 'data-part': 'legend', 'data-placement': config.placement ?? 'bottom', 'data-orientation': config.orientation ?? 'horizontal', style: config.maxHeight ? { maxHeight: `${config.maxHeight}px`, overflowY: 'auto' } : undefined }, [

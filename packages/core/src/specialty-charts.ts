@@ -1,4 +1,4 @@
-import { chartDomain, linearScale, pieArcs } from './charts.js';
+import { chartDomain, linearScale } from './charts.js';
 
 export type SpecialtyChartKind = 'candlestick' | 'ohlc' | 'box-plot' | 'violin' | 'histogram' | 'funnel' | 'gauge' | 'polar-area' | 'waterfall' | 'treemap' | 'sankey' | 'geo';
 export type SpecialtyDatum = {
@@ -92,7 +92,7 @@ export function specialtyChartMarks(kind: SpecialtyChartKind, data: readonly Spe
   }
   if (kind === 'sankey') {
     const sources = [...new Set(data.map((item) => item.source ?? 'Source'))]; const targets = [...new Set(data.map((item) => item.target ?? 'Target'))]; const sourceY = new Map(sources.map((item, index) => [item, top + (index + 0.5) * plotHeight / sources.length])); const targetY = new Map(targets.map((item, index) => [item, top + (index + 0.5) * plotHeight / targets.length]));
-    return data.map((item, index) => { const sy = sourceY.get(item.source ?? 'Source')!; const ty = targetY.get(item.target ?? 'Target')!; return mark('path', 'link', `${item.source ?? 'Source'} → ${item.target ?? 'Target'}`, finite(item.value), { path: `M${left},${sy}C${width / 2},${sy} ${width / 2},${ty} ${left + plotWidth},${ty}` }); });
+    return data.map((item) => { const sy = sourceY.get(item.source ?? 'Source')!; const ty = targetY.get(item.target ?? 'Target')!; return mark('path', 'link', `${item.source ?? 'Source'} → ${item.target ?? 'Target'}`, finite(item.value), { path: `M${left},${sy}C${width / 2},${sy} ${width / 2},${ty} ${left + plotWidth},${ty}` }); });
   }
   return data.map((item, index) => { const longitude = Math.max(-180, Math.min(180, finite(item.longitude))); const latitude = Math.max(-90, Math.min(90, finite(item.latitude))); return mark('circle', 'location', item.label ?? String(index + 1), finite(item.value, 1), { x: left + (longitude + 180) / 360 * plotWidth, y: top + (90 - latitude) / 180 * plotHeight, radius: Math.max(3, Math.sqrt(Math.abs(finite(item.value, 1)))) }); });
 }

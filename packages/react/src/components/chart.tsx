@@ -6,7 +6,6 @@ import {
   chartLayout,
   chartSummary,
   chartValue,
-  linePath,
   linearScale,
   logScale,
   minMaxDecimate,
