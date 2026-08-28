@@ -380,6 +380,7 @@ function cartesian(kind: ChartSeriesType | 'combo') {
         return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-motion': props.motion ? 'on' : 'off', 'data-renderer': useCanvas ? 'canvas-fallback' : 'svg', 'aria-hidden': decorative || undefined }, [
           !decorative && h('figcaption', props.accessibility.title),
           !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(flat.map((item) => item.yValue))}`),
+          !decorative && flat[focused.value] && h('div', { 'data-part': 'point-announcement', 'aria-live': 'polite', class: 'simurgh-visually-hidden' }, `${flat[focused.value]!.series.label ?? flat[focused.value]!.series.id}: ${String(flat[focused.value]!.xValue)}, ${flat[focused.value]!.yValue}`),
           h('div', { 'data-part': 'viewport', style: { aspectRatio: `${props.width} / ${props.height}` }, onWheel, onMousemove: onMouseMove,
             onMouseleave: () => { tooltipIntersected.value = false; props.onPointHover?.(null); if (props.tooltipTrigger === 'hover') tooltipVisible.value = false; },
             onClick: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) { tooltipVisible.value = true; props.onPointClick?.(point); props.onDrilldown?.(point); } },

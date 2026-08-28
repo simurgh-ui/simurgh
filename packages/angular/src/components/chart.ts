@@ -76,6 +76,7 @@ const colors = Array.from({ length: 10 }, (_, index) => `hsl(var(--simurgh-chart
 const template = `
   <figcaption *ngIf="!decorative">{{ accessibility.title }}</figcaption>
   <p *ngIf="!decorative" data-part="description">{{ accessibility.description }} {{ model.summary }}</p>
+  <div *ngIf="!decorative && model.points[focused]" data-part="point-announcement" aria-live="polite" class="simurgh-visually-hidden">{{ model.points[focused].seriesId }}: {{ model.points[focused].xValue }}, {{ model.points[focused].yValue }}</div>
   <div data-part="viewport" [style.aspect-ratio]="width + ' / ' + height" (wheel)="onWheel($event)" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave()" (click)="onPointClick($event)" (dblclick)="onPointDoubleClick($event)" (contextmenu)="onPointContextMenu($event)" (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)" (pointerup)="onPointerUp($event)" (pointercancel)="onPointerCancel()">
     <canvas #canvas *ngIf="model.useCanvas" [attr.width]="width" [attr.height]="height" aria-hidden="true"></canvas>
     <svg [attr.viewBox]="'0 0 ' + width + ' ' + height" data-part="plot" aria-hidden="true">
