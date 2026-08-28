@@ -81,7 +81,7 @@ const template = `
       <g *ngIf="(kind === 'pie' || kind === 'donut') && (centerLabel || showTotal)" data-part="center-label"><text x="width / 2" [attr.y]="height / 2 - (centerLabel ? 4 : -4)" text-anchor="middle">{{ centerLabel }}</text><text *ngIf="showTotal" x="width / 2" [attr.y]="height / 2 + (centerLabel ? 14 : 18)" text-anchor="middle">{{ model.polarTotal }}</text></g>
       <ng-container *ngIf="!model.useCanvas">
         <ng-container *ngFor="let mark of model.marks">
-          <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color" [attr.stroke-width]="mark.lineWidth" [attr.stroke-dasharray]="mark.lineDash" [attr.opacity]="mark.opacity" (click)="onPolarSliceClick(mark.id)"></path>
+          <path *ngIf="mark.path" data-part="series" [attr.data-series]="mark.id" [attr.d]="mark.path" [attr.fill]="mark.type === 'line' ? 'none' : mark.color" [attr.stroke]="mark.color" [attr.stroke-width]="mark.lineWidth" [attr.stroke-dasharray]="mark.lineDash" [attr.opacity]="mark.opacity" (mouseenter)="onPolarSliceHover(mark.id)" (click)="onPolarSliceClick(mark.id)"></path>
           <rect *ngIf="mark.type === 'bar' || mark.type === 'heatmap'" data-part="series" [attr.x]="mark.x" [attr.y]="mark.y" [attr.width]="mark.width" [attr.height]="mark.height" [attr.fill]="mark.color"></rect>
           <circle *ngIf="mark.type === 'scatter' || mark.type === 'bubble'" data-part="series" [attr.cx]="mark.x" [attr.cy]="mark.y" [attr.r]="mark.radius" [attr.fill]="mark.color"></circle>
         </ng-container>
@@ -185,6 +185,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   private pinchStart: { distance: number } | null = null;
   private zoomDrag = false;
   private selectedPolarSlice: number | null = null;
+  private hoveredPolarSlice: number | null = null;
   tooltipVisible = this.tooltipTrigger !== 'click';
   tooltipIntersected = true;
   tooltipX = 0;
@@ -511,6 +512,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     this.sliceSelect.emit({ datum: arc.datum, index: arc.index, value: arc.value });
     this.changeDetector?.markForCheck();
   }
+  onPolarSliceHover(id: string) { if (this.kind === 'pie' || this.kind === 'donut') { this.hoveredPolarSlice = Number(id); this.changeDetector?.markForCheck(); } }
   ngOnDestroy(): void { this.unsubscribeStream?.(); this.unsubscribeSync?.(); }
   private polarModel() {
     const value = this.y ?? this.series?.[0]?.y;
@@ -525,7 +527,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       if (visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18))) return visible;
       return [...visible, { ...point, text: labelConfig?.formatter?.(arc.value, arc.index, 'slices') ?? String(arc.index + 1) }];
     }, []);
-    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path, opacity: this.selectedPolarSlice != null && this.selectedPolarSlice !== arc.index ? 0.35 : 1 })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: labels, polarTotal: arcs.reduce((total, arc) => total + arc.value, 0), summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path, opacity: this.selectedPolarSlice != null && this.selectedPolarSlice !== arc.index ? 0.35 : this.hoveredPolarSlice != null && this.hoveredPolarSlice !== arc.index ? 0.65 : 1 })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: labels, polarTotal: arcs.reduce((total, arc) => total + arc.value, 0), summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
   }
 }
 
