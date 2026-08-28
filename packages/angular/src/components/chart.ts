@@ -31,7 +31,7 @@ import {
   type ChartSeriesType,
   type ChartDomain,
 } from '@simurgh-ui/core/charts';
-import { clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
+import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
 
@@ -231,6 +231,18 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   }
 
   onKeydown(event: KeyboardEvent) {
+    if (this.interaction && (['+', '=', '-', 'Escape'].includes(event.key) || event.shiftKey && ['ArrowLeft', 'ArrowRight'].includes(event.key))) {
+      const model = this.model;
+      const x = 'xDomain' in model ? model.xDomain : [0, 1] as ChartDomain;
+      const y = 'yDomain' in model ? model.yDomain : [0, 1] as ChartDomain;
+      const result = chartInteractionKey(event, { x: this.effectiveViewport.x ?? x, y: this.effectiveViewport.y ?? y });
+      if (result.clearSelection) { this.resetViewport(); event.preventDefault(); return; }
+      const next: { x?: ChartDomain; y?: ChartDomain } = {};
+      if (result.viewport.x) next.x = clampDomain(result.viewport.x, x);
+      if (result.viewport.y) next.y = clampDomain(result.viewport.y, y);
+      if (next.x || next.y) { if (this.viewport === undefined) this.uncontrolledViewport = next; this.sync?.set({ viewport: next }); this.viewportChange.emit(next); this.changeDetector?.markForCheck(); event.preventDefault(); }
+      return;
+    }
     const size = this.model.marks.length;
     if (event.key === 'Home') this.focused = 0;
     else if (event.key === 'End') this.focused = Math.max(0, size - 1);
