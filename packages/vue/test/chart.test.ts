@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { LineChart, PieChart } from '../src/components/chart.js';
 
 const data = [{ x: 1, y: 4 }, { x: 2, y: 7 }, { x: 3, y: 5 }];
@@ -20,5 +20,20 @@ describe('Vue charts', () => {
   it('renders polar geometry', () => {
     const result = render(PieChart, { props: { data, y: 'y', accessibility } });
     expect(result.container.querySelectorAll('path[data-part="series"]')).toHaveLength(3);
+  });
+  it('supports viewport zoom, brush gestures, and point callbacks', async () => {
+    const viewportChange = vi.fn();
+    const selectionChange = vi.fn();
+    const pointClick = vi.fn();
+    const result = render(LineChart, { props: { data, x: 'x', y: 'y', accessibility, interaction: { zoom: 'x', brush: 'x' }, onPointClick: pointClick, 'onUpdate:viewport': viewportChange, 'onUpdate:selection': selectionChange } });
+    const viewport = result.container.querySelector('[data-part="viewport"]') as HTMLElement;
+    vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 640, height: 360, right: 640, bottom: 360, x: 0, y: 0, toJSON: () => ({}) });
+    await fireEvent.wheel(viewport, { clientX: 320, clientY: 180, deltaY: -100 });
+    await fireEvent.pointerDown(viewport, { clientX: 100, clientY: 120, pointerId: 1 });
+    await fireEvent.pointerUp(viewport, { clientX: 400, clientY: 220, pointerId: 1 });
+    await fireEvent.click(viewport, { clientX: 100, clientY: 120 });
+    expect(viewportChange).toHaveBeenCalled();
+    expect(selectionChange).toHaveBeenCalledWith(expect.objectContaining({ start: [100, 120] }));
+    expect(pointClick).toHaveBeenCalledWith(expect.objectContaining({ seriesId: 'value' }));
   });
 });
