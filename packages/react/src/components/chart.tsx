@@ -24,6 +24,7 @@ import {
   chartVisualStyle,
   chartMissingValue,
   prepareChartData,
+  interpolateChartValues,
   chartCurvePath,
   type ChartLegendConfig,
   type ChartVisualMap,
@@ -213,13 +214,16 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const layout = chartLayout(width, height);
   const definitions = useMemo<ChartSeries<T>[]>(() => series?.length ? [...series] : y ? [{ id: 'value', y, x, type: kind === 'combo' ? 'line' : kind }] : [], [series, y, x, kind]);
   const active = definitions.filter((item) => !hiddenSeries.includes(item.id));
-  const unstacked = active.flatMap((definition) => data.map((datum, index) => {
+  const unstacked = active.flatMap((definition) => {
+    const values = interpolateChartValues(data.map((datum, index) => chartMissingValue(numericValue(chartValue(datum, definition.y, index)), dataOptions?.missing)), dataOptions?.interpolate);
+    return data.map((datum, index) => {
     const xValue = chartValue(datum, definition.x ?? x, index);
-    const yValue = chartMissingValue(numericValue(chartValue(datum, definition.y, index)), dataOptions?.missing);
+    const yValue = values[index] ?? null;
     const numericX = numericValue(xValue);
     return yValue == null || xValue == null || (xScale !== 'band' && numericX == null) || (yScale === 'log' && yValue <= 0)
       ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4, definition };
-  }).filter((item): item is NonNullable<typeof item> => item != null));
+  }).filter((item): item is NonNullable<typeof item> => item != null);
+  });
   const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })), dataOptions?.stackOffset);
   const categories = raw.map((item) => item.xValue);
   const fullX = xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];

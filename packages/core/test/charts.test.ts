@@ -15,6 +15,7 @@ import {
   chartCurvePath,
   chartMissingValue,
   prepareChartData,
+  interpolateChartValues,
 } from '../src/charts.js';
 import { SpatialGrid, clampDomain, createChartSync, domainFromSelection, nextChartIndex, panDomain, pinchZoomDomain, resizeChartSelection, selectionFromPoints, zoomDomain } from '../src/chart-interactions.js';
 import { createChartStream } from '../src/chart-stream.js';
@@ -41,6 +42,10 @@ describe('chart scales and geometry', () => {
   });
   it('aggregates grouped numeric values into a configured field', () => {
     expect(prepareChartData([{ group: 'a', value: 2 }, { group: 'a', value: 6 }, { group: 'b', value: 4 }], { aggregateBy: 'group', aggregateValue: 'value', aggregateKey: 'value', aggregate: 'mean' })).toEqual([{ group: 'a', value: 4 }, { group: 'b', value: 4 }]);
+  });
+  it('interpolates internal missing values linearly or by step', () => {
+    expect(interpolateChartValues([0, null, 10], 'linear')).toEqual([0, 5, 10]);
+    expect(interpolateChartValues([0, null, 10], 'step')).toEqual([0, 0, 10]);
   });
   it('pads constant domains and omits invalid logarithmic values', () => {
     expect(chartDomain([5, 5])).toEqual([4.75, 5.25]);

@@ -46,6 +46,18 @@ export type ChartDataOptions<T = unknown> = {
 export function chartMissingValue(value: number | null, policy: ChartDataOptions['missing'] = 'skip'): number | null {
   return value == null || !Number.isFinite(value) ? policy === 'zero' ? 0 : null : value;
 }
+export function interpolateChartValues(values: readonly (number | null)[], mode: ChartDataOptions['interpolate'] = 'none'): (number | null)[] {
+  if (mode === 'none') return [...values];
+  const output = [...values];
+  for (let index = 0; index < output.length; index += 1) {
+    if (output[index] != null) continue;
+    let left = index - 1; while (left >= 0 && output[left] == null) left -= 1;
+    let right = index + 1; while (right < output.length && output[right] == null) right += 1;
+    if (left < 0 || right >= output.length) continue;
+    output[index] = mode === 'step' ? output[left]! : (output[left]! + (output[right]! - output[left]!) * ((index - left) / (right - left)));
+  }
+  return output;
+}
 export function prepareChartData<T>(data: readonly T[], options: ChartDataOptions<T> | undefined): readonly T[] {
   if (!options) return data;
   let rows = options.filter ? data.filter(options.filter) : [...data];

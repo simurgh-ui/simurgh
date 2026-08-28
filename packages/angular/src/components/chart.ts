@@ -37,6 +37,7 @@ import {
   chartVisualStyle,
   chartMissingValue,
   prepareChartData,
+  interpolateChartValues,
   chartCurvePath,
   type ChartVisualMap,
   type ChartDataOptions,
@@ -247,13 +248,16 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       ? this.series
       : this.y ? [{ id: 'value', y: this.y, x: xAccessor, type: this.kind === 'combo' ? 'line' : this.kind }] : [];
     const active = this.activeSeries;
-    const unstacked = active.flatMap((definition) => this.rows.map((datum, index) => {
+    const unstacked = active.flatMap((definition) => {
+      const values = interpolateChartValues(this.rows.map((datum, index) => chartMissingValue(numericValue(chartValue(datum, definition.y, index)), this.dataOptions?.missing)), this.dataOptions?.interpolate);
+      return this.rows.map((datum, index) => {
       const xValue = chartValue(datum, definition.x ?? xAccessor, index);
-          const yValue = chartMissingValue(numericValue(chartValue(datum, definition.y, index)), this.dataOptions?.missing);
+      const yValue = values[index] ?? null;
       const numericX = numericValue(xValue);
       return xValue == null || yValue == null || (this.xScale !== 'band' && numericX == null) || (this.yScale === 'log' && yValue <= 0)
         ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
-    }).filter((item): item is NonNullable<typeof item> => item != null));
+      }).filter((item): item is NonNullable<typeof item> => item != null);
+    });
     const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })), this.dataOptions?.stackOffset);
     const fullX = this.xDomain ?? chartDomain(raw.map((item) => item.numericX)) ?? [0, 1];
     const fullY = this.yDomain ?? chartDomain(raw.flatMap((item) => [item.start, item.end]), { includeZero: active.some((item) => item.type === 'bar' || this.kind === 'bar') }) ?? [0, 1];

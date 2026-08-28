@@ -23,6 +23,7 @@ import {
   chartVisualStyle,
   chartMissingValue,
   prepareChartData,
+  interpolateChartValues,
   chartCurvePath,
   type ChartVisualMap,
   type ChartDataOptions,
@@ -173,13 +174,16 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           : props.y ? [{ id: 'value', y: props.y, x: xAccessor, type: kind === 'combo' ? 'line' : kind }] : [];
         const hiddenSeries = props.hiddenSeries ?? uncontrolledHiddenSeries.value;
         const active = definitions.filter((item) => !hiddenSeries.includes(item.id));
-        const unstacked = active.flatMap((definition) => rows.map((datum, index) => {
+        const unstacked = active.flatMap((definition) => {
+          const values = interpolateChartValues(rows.map((datum, index) => chartMissingValue(numericValue(chartValue(datum, definition.y, index)), props.dataOptions?.missing)), props.dataOptions?.interpolate);
+          return rows.map((datum, index) => {
           const xValue = chartValue(datum, definition.x ?? xAccessor, index);
-          const yValue = chartMissingValue(numericValue(chartValue(datum, definition.y, index)), props.dataOptions?.missing);
+          const yValue = values[index] ?? null;
           const numericX = numericValue(xValue);
           return xValue == null || yValue == null || (props.xScale !== 'band' && numericX == null) || (props.yScale === 'log' && yValue <= 0)
             ? null : { datum, index, xValue, numericX: numericX ?? index, yValue, definition, radius: numericValue(definition.radius ? chartValue(datum, definition.radius, index) : 4) ?? 4 };
-        }).filter((item): item is NonNullable<typeof item> => item != null));
+          }).filter((item): item is NonNullable<typeof item> => item != null);
+        });
         const raw = stackChartValues(unstacked.map((item) => ({ ...item, stack: item.definition.stack, x: item.xValue, value: item.yValue })), props.dataOptions?.stackOffset);
         if (!raw.length) return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': 'empty' }, [
           h('div', { 'data-part': 'empty' }, props.emptyContent),
