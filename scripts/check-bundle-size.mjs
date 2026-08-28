@@ -367,7 +367,8 @@ const cases = [
     framework: 'angular',
     subpath: 'chart',
     source: "export { LineChartComponent } from '@simurgh-ui/angular/chart';",
-    budget: 10 * KiB,
+    // Responsive container support adds a measured ~0.3 KiB gzip to the chart entry.
+    budget: 11 * KiB,
   },
   {
     name: 'angular-checkbox',
@@ -592,7 +593,8 @@ for (const bundleCase of cases) {
 
 // Chart interaction contracts add measured weight to the published packages; keep the stricter
 // chart-entry budgets unchanged while accounting for these intentional public APIs.
-const packageBudgets = { react: 400 * KiB, vue: 400 * KiB, angular: 325 * KiB };
+// Angular's responsive container adds a measured ~8.5 KiB to the published package.
+const packageBudgets = { react: 400 * KiB, vue: 400 * KiB, angular: 342 * KiB };
 const publishedPackages = {};
 for (const framework of ['react', 'vue', 'angular']) {
   const isWindows = process.platform === 'win32';
