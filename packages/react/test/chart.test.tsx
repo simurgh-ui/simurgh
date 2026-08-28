@@ -4,7 +4,7 @@ import axe from 'axe-core';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { BarChart, DonutChart, LineChart, PieChart, RadarChart } from '../src/components/chart.js';
+import { BarChart, DonutChart, LineChart, PieChart, RadarChart, ScatterChart } from '../src/components/chart.js';
 
 const data = [
   { month: 'Jan', revenue: 12, cost: 8 },
@@ -45,6 +45,11 @@ describe('React charts', () => {
     expect(change).toHaveBeenCalledWith(['cost']);
     fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
     expect(change).toHaveBeenCalledWith([]);
+  });
+  it('applies piecewise visual mapping to points', () => {
+    const { container } = render(<ScatterChart data={[{ x: 1, y: 8 }]} x="x" y="y" visualMap={{ pieces: [{ gte: 5, color: 'red', size: 9 }] }} accessibility={accessibility} />);
+    expect(container.querySelector('circle')?.getAttribute('fill')).toBe('red');
+    expect(container.querySelector('circle')?.getAttribute('r')).toBe('9');
   });
   it('supports pointer exploration', () => {
     const { container } = render(<LineChart data={data} x="month" xScale="band" y="revenue" accessibility={accessibility} />);

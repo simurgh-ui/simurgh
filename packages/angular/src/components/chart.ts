@@ -33,6 +33,8 @@ import {
   type ChartAxisConfig,
   type ChartDataLabelConfig,
   type ChartLegendConfig,
+  chartVisualStyle,
+  type ChartVisualMap,
   type ChartSeries,
   type ChartSeriesType,
   type ChartTooltipMode,
@@ -131,6 +133,7 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() annotations: readonly ChartAnnotation[] = [];
   @Input() dataLabels: boolean | ChartDataLabelConfig = false;
   @Input() legend?: ChartLegendConfig;
+  @Input() visualMap?: ChartVisualMap;
   @Input() legendContent?: (series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => string;
   @Input() viewport?: { x?: ChartDomain; y?: ChartDomain };
   @Input() defaultViewport: { x?: ChartDomain; y?: ChartDomain } = {};
@@ -258,7 +261,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
           canvasMarks.push({ type: 'rect', x: item.x - width / 2, y, width, height, color });
         } else {
           const radius = type === 'bubble' ? item.radius : 3;
-          marks.push({ id: definition.id, type, color, x: item.x, y: item.y, radius });
+          const style = chartVisualStyle(item.yValue, this.visualMap);
+          marks.push({ id: definition.id, type, color: style.color ?? color, x: item.x, y: item.y, radius: style.size ?? radius });
           canvasMarks.push({ type: 'point', x: item.x, y: item.y, radius, color });
         }
       }

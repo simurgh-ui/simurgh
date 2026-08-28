@@ -1,6 +1,6 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
-import { BarChartComponent, LineChartComponent, PieChartComponent, RadarChartComponent } from '../src/components/chart.js';
+import { BarChartComponent, LineChartComponent, PieChartComponent, RadarChartComponent, ScatterChartComponent } from '../src/components/chart.js';
 
 const accessibility = { title: 'Revenue', description: 'Monthly revenue.' } as const;
 
@@ -42,6 +42,14 @@ describe('Angular charts', () => {
     expect(emitted).toHaveBeenCalledWith([]);
     chart.isolateSeries('revenue');
     expect(emitted).toHaveBeenCalledWith(['cost']);
+  });
+  it('applies piecewise visual mapping to points', () => {
+    const chart = new ScatterChartComponent();
+    chart.data = [{ x: 1, y: 8 }];
+    chart.x = 'x'; chart.y = 'y'; chart.visualMap = { pieces: [{ gte: 5, color: 'red', size: 9 }] };
+    chart.accessibility = accessibility;
+    expect(chart.model.marks[0]?.color).toBe('red');
+    expect(chart.model.marks[0]?.radius).toBe(9);
   });
   it('supports viewport zoom, brush gestures, and point events', () => {
     const chart = new LineChartComponent();

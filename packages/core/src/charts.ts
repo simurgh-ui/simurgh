@@ -28,6 +28,22 @@ export type ChartReference = { id?: string; axis: 'x' | 'y'; value: number; endV
 export type ChartAnnotation = { id?: string; x: number; y: number; label?: string; color?: string; description?: string };
 export type ChartDataLabelConfig = { enabled?: boolean; placement?: 'top' | 'inside' | 'bottom'; minDistance?: number; formatter?: (value: number, index: number, seriesId: string) => string };
 export type ChartLegendConfig = { placement?: 'top' | 'right' | 'bottom' | 'left'; orientation?: 'horizontal' | 'vertical'; maxHeight?: number; selectAll?: boolean; isolate?: boolean };
+export type ChartVisualMapPiece = { gte?: number; lte?: number; color?: string; opacity?: number; size?: number };
+export type ChartVisualMap = { min?: number; max?: number; color?: readonly [string, string]; opacity?: readonly [number, number]; size?: readonly [number, number]; pieces?: readonly ChartVisualMapPiece[] };
+export type ChartVisualStyle = { color?: string; opacity?: number; size?: number };
+export function chartVisualStyle(value: number, map: ChartVisualMap | undefined): ChartVisualStyle {
+  if (!map) return {};
+  const piece = map.pieces?.find((item) => (item.gte == null || value >= item.gte) && (item.lte == null || value <= item.lte));
+  if (piece) return { ...(piece.color == null ? {} : { color: piece.color }), ...(piece.opacity == null ? {} : { opacity: piece.opacity }), ...(piece.size == null ? {} : { size: piece.size }) };
+  const min = map.min ?? 0;
+  const max = map.max ?? 1;
+  const ratio = max === min ? 0 : Math.max(0, Math.min(1, (value - min) / (max - min)));
+  return {
+    ...(map.color ? { color: `color-mix(in srgb, ${map.color[0]} ${(1 - ratio) * 100}%, ${map.color[1]})` } : {}),
+    ...(map.opacity ? { opacity: map.opacity[0] + (map.opacity[1] - map.opacity[0]) * ratio } : {}),
+    ...(map.size ? { size: map.size[0] + (map.size[1] - map.size[0]) * ratio } : {}),
+  };
+}
 
 export function chartTicks(domain: ChartDomain, count = 5): number[] {
   const size = Math.max(2, Math.floor(count));

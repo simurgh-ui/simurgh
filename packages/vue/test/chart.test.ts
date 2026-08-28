@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { DonutChart, LineChart, PieChart } from '../src/components/chart.js';
+import { DonutChart, LineChart, PieChart, ScatterChart } from '../src/components/chart.js';
 
 const data = [{ x: 1, y: 4 }, { x: 2, y: 7 }, { x: 3, y: 5 }];
 const accessibility = { title: 'Trend', description: 'Three observations.', table: true } as const;
@@ -65,5 +65,10 @@ describe('Vue charts', () => {
     expect(change).toHaveBeenCalledWith(['b']);
     await fireEvent.click(result.getByRole('button', { name: 'Select all' }));
     expect(change).toHaveBeenCalledWith([]);
+  });
+  it('applies piecewise visual mapping to points', () => {
+    const result = render(ScatterChart, { props: { data: [{ x: 1, y: 8 }], x: 'x', y: 'y', visualMap: { pieces: [{ gte: 5, color: 'red', size: 9 }] }, accessibility } });
+    expect(result.container.querySelector('circle')?.getAttribute('fill')).toBe('red');
+    expect(result.container.querySelector('circle')?.getAttribute('r')).toBe('9');
   });
 });
