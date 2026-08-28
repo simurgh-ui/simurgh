@@ -205,6 +205,7 @@ away
 axe
 axe-core
 axes
+axis
 back
 background
 backgrounds
@@ -461,6 +462,7 @@ colors
 column
 columns
 combination
+combinations
 combine
 combined
 combines
@@ -530,6 +532,7 @@ computed
 concept
 concepts
 concern
+concerns
 concise
 conditional
 conditionally
@@ -645,6 +648,7 @@ cross-framework
 crosshair
 css
 css-pixel
+csv
 culturally
 culture
 current
@@ -666,6 +670,7 @@ dark-theme
 data
 data-heavy
 dataset
+datasets
 date
 dates
 day
@@ -881,9 +886,11 @@ entire
 entrances
 entries
 entry
+entrypoint
 environment
 equal
 equal-length
+equirectangular
 equivalent
 equivalents
 error
@@ -994,6 +1001,7 @@ filtered-no-results
 filtering
 filters
 final
+financial
 find
 find-in-page
 findability
@@ -1058,6 +1066,7 @@ forwarding
 forwards
 found
 four
+four-column
 fragments
 framework
 framework-compatible
@@ -1097,6 +1106,7 @@ generated-source
 generic
 generous
 genuinely
+geographic
 geometric
 geometry
 gesture
@@ -1409,6 +1419,7 @@ light
 lightweight
 limits
 line
+line-only
 lines
 link
 linked
@@ -1858,6 +1869,7 @@ policies
 policy
 polite
 politely
+polygon
 pomegranate
 popover
 popup
@@ -2269,6 +2281,7 @@ selecting
 selection
 selection-aware
 selectioncomponentpreview
+selections
 selectively
 selector
 selectors
@@ -2392,6 +2405,7 @@ spacious
 span
 spatial
 special
+specialty
 specific
 specifically
 specifications
@@ -2431,6 +2445,7 @@ state-consuming
 stated
 states
 static
+statistical
 status
 stay
 stays
@@ -2646,6 +2661,7 @@ treated
 treatment
 treatments
 tree
+tree-shakeable
 tree's
 trend
 trends
@@ -2657,6 +2673,7 @@ truly
 trusted
 trusted-publisher
 truth
+tuple
 turnkey
 turns
 turquoise
@@ -2793,6 +2810,7 @@ wcag
 wcag's
 weaken
 web
+webgl
 webkit
 website
 webview

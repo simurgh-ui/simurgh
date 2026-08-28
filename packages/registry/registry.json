@@ -204,7 +204,8 @@
         "BubbleChart",
         "RadarChart",
         "HeatmapChart",
-        "ComboChart"
+        "ComboChart",
+        "ChartPointInteraction"
       ],
       "toggle": ["Toggle"],
       "visually-hidden": ["VisuallyHidden"],
@@ -408,7 +409,8 @@
         "BubbleChart",
         "RadarChart",
         "HeatmapChart",
-        "ComboChart"
+        "ComboChart",
+        "ChartPointInteraction"
       ],
       "toggle": ["Toggle"],
       "visually-hidden": ["VisuallyHidden"],
@@ -576,7 +578,8 @@
         "BubbleChartComponent",
         "RadarChartComponent",
         "HeatmapChartComponent",
-        "ComboChartComponent"
+        "ComboChartComponent",
+        "ChartPointInteraction"
       ],
       "toggle": ["ToggleComponent"],
       "visually-hidden": ["VisuallyHiddenComponent"],

@@ -43,6 +43,7 @@ import {
   RadarChart,
   HeatmapChart,
   ComboChart,
+  ChartPointInteraction,
 } from '@simurgh-ui/react/chart';
 import '@simurgh-ui/styles/chart.css';
 ```
@@ -70,6 +71,7 @@ import {
   RadarChart,
   HeatmapChart,
   ComboChart,
+  ChartPointInteraction,
 } from '@simurgh-ui/vue/chart';
 import '@simurgh-ui/styles/chart.css';
 ```
@@ -98,6 +100,7 @@ import {
   RadarChartComponent,
   HeatmapChartComponent,
   ComboChartComponent,
+  ChartPointInteraction,
 } from '@simurgh-ui/angular/chart';
 import '@simurgh-ui/styles/chart.css';
 ```
@@ -136,8 +139,8 @@ the same state at once.
 | Framework | Exact state contract and reset behavior |
 | --- | --- |
 | React | No public controlled/uncontrolled state pair is exposed. |
-| Vue | Controlled: `v-model:hiddenSeries` (`hiddenSeries` + `update:hiddenSeries`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
-| Angular | Controlled two-way binding: `[(hiddenSeries)]` (`hiddenSeries` + `hiddenSeriesChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
+| Vue | Controlled: `v-model:hiddenSeries` (`hiddenSeries` + `update:hiddenSeries`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`.<br />Controlled: `v-model:viewport` (`viewport` + `update:viewport`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`.<br />Controlled: `v-model:selection` (`selection` + `update:selection`). No uncontrolled prop is exposed. Reset the model ref to its initial value; reset uncontrolled state with a changed Vue `:key`. |
+| Angular | Controlled two-way binding: `[(hiddenSeries)]` (`hiddenSeries` + `hiddenSeriesChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.<br />Controlled two-way binding: `[(viewport)]` (`viewport` + `viewportChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.<br />Controlled two-way binding: `[(xDomain)]` (`xDomain` + `xDomainChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly.<br />Controlled two-way binding: `[(yDomain)]` (`yDomain` + `yDomainChange`). Angular exposes no separate default input; initialize and reset the bound class field explicitly. |
 
 **Vue**
 
@@ -209,9 +212,9 @@ technology.
 
 ## API surface
 
-- React exports: `ChartProps`, `ChartRoot`, `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `ChartDataTable`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`
-- Vue exports: `ChartRoot`, `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`
-- Angular exports: `ChartBaseComponent`, `ChartRootComponent`, `ChartPlotComponent`, `ChartGridDirective`, `ChartXAxisDirective`, `ChartYAxisDirective`, `ChartLegendDirective`, `ChartTooltipDirective`, `ChartCrosshairDirective`, `ChartBrushDirective`, `LineChartComponent`, `AreaChartComponent`, `BarChartComponent`, `PieChartComponent`, `DonutChartComponent`, `ScatterChartComponent`, `BubbleChartComponent`, `RadarChartComponent`, `HeatmapChartComponent`, `ComboChartComponent`
+- React exports: `ChartProps`, `ChartPointInteraction`, `ChartRoot`, `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `ChartDataTable`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`
+- Vue exports: `ChartPointInteraction`, `ChartRoot`, `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`
+- Angular exports: `ChartPointInteraction`, `ChartBaseComponent`, `ChartRootComponent`, `ChartPlotComponent`, `ChartGridDirective`, `ChartXAxisDirective`, `ChartYAxisDirective`, `ChartLegendDirective`, `ChartTooltipDirective`, `ChartCrosshairDirective`, `ChartBrushDirective`, `LineChartComponent`, `AreaChartComponent`, `BarChartComponent`, `PieChartComponent`, `DonutChartComponent`, `ScatterChartComponent`, `BubbleChartComponent`, `RadarChartComponent`, `HeatmapChartComponent`, `ComboChartComponent`
 
 Import these public symbols from the component subpath shown in Installation. Framework-specific
 props, events, slots, directives, methods, defaults, and native-attribute behavior belong in the API
@@ -229,7 +232,7 @@ rendered element unless the component behavior described on this page overrides 
 
 ### `ChartProps`
 
-Exported type: `Omit<HTMLAttributes<HTMLElement>, "title"> & { data?: readonly T[]; stream?: ChartStream<string>; x?: ChartAccessor<T>; y?: ChartAccessor<T, number>; series?: readonly ChartSeries<T>[]; accessibility: ChartAccessibility; width?: number; height?: number; xScale?: ChartScaleType; yScale?: Exclude<ChartScaleType, "band">; xDomain?: ChartDomain; yDomain?: ChartDomain; renderMode?: ChartRenderMode; canvasThreshold?: number; hiddenSeries?: readonly string[]; defaultHiddenSeries?: readonly string[]; onHiddenSeriesChange?: (series: string[]) => void; emptyContent?: ReactNode; orientation?: "vertical" \| "horizontal"; innerRadius?: number; }`.
+Exported type: `Omit<HTMLAttributes<HTMLElement>, "title"> & { data?: readonly T[]; stream?: ChartStream<string>; x?: ChartAccessor<T>; y?: ChartAccessor<T, number>; series?: readonly ChartSeries<T>[]; accessibility: ChartAccessibility; width?: number; height?: number; xScale?: ChartScaleType; yScale?: Exclude<ChartScaleType, "band">; xDomain?: ChartDomain; yDomain?: ChartDomain; xAxis?: ChartAxisConfig; yAxis?: ChartAxisConfig; references?: readonly ChartReference[]; annotations?: readonly ChartAnnotation[]; dataLabels?: boolean \| ChartDataLabelConfig; legend?: ChartLegendConfig; legendContent?: (series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode; visualMap?: ChartVisualMap; dataOptions?: ChartDataOptions<T>; streamControls?: boolean; streamAutoScroll?: boolean; streamAnnouncement?: boolean; centerLabel?: string; showTotal?: boolean; onSliceSelect?: (slice: { datum: T; index: number; value: number; }) => void; drilldownDepth?: number; onDrilldown?: (event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void; onDrilldownBack?: () => void; viewport?: { x?: ChartDomain; y?: ChartDomain; }; defaultViewport?: { x?: ChartDomain; y?: ChartDomain; }; interaction?: { zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }; sync?: ChartSync; onViewportChange?: (viewport: { x?: ChartDomain; y?: ChartDomain; }) => void; onXDomainChange?: (domain: ChartDomain) => void; onYDomainChange?: (domain: ChartDomain) => void; onSelectionChange?: (selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void; onSelectedDataChange?: (data: readonly T[]) => void; onPointHover?: (point: ChartPointInteraction<T> \| null) => void; onPointClick?: (point: ChartPointInteraction<T>) => void; onPointDoubleClick?: (point: ChartPointInteraction<T>) => void; onPointContextMenu?: (point: ChartPointInteraction<T>) => void; tooltipMode?: ChartTooltipMode; tooltipTrigger?: ChartTooltipTrigger; tooltipPosition?: ChartTooltipPosition; tooltipFormatter?: (point: ChartPointInteraction<T>) => ReactNode; tooltipContent?: (points: readonly ChartPointInteraction<T>[]) => ReactNode; renderMode?: ChartRenderMode; canvasThreshold?: number; workerProcessing?: boolean; viewportCulling?: boolean; progressiveChunkSize?: number; motion?: boolean; locale?: Partial<ChartLocale>; hiddenSeries?: readonly string[]; defaultHiddenSeries?: readonly string[]; onHiddenSeriesChange?: (series: string[]) => void; emptyContent?: ReactNode; orientation?: "vertical" \| "horizontal"; innerRadius?: number; }`.
 
 ### `ChartRoot`
 
@@ -307,12 +310,13 @@ Inherited attributes: `SVGAttributes<SVGRectElement>`.
 
 ### `ChartDataTable`
 
-Complete props type: `{ data: readonly T[]; columns: readonly { label: string; value: ChartAccessor<T>; }[]; pageSize?: number; }`.
+Complete props type: `{ data: readonly T[]; columns: readonly { label: string; value: ChartAccessor<T>; }[]; pageSize?: number; locale?: Partial<ChartLocale>; }`.
 
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `columns` | `readonly { label: string; value: ChartAccessor<T>; }[]` | Required |
 | `data` | `readonly T[]` | Required |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
 | `pageSize` | `number` | `undefined` |
 
 ### `LineChart`
@@ -322,24 +326,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -350,24 +395,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -378,24 +464,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -406,24 +533,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -434,24 +602,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -462,24 +671,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -490,24 +740,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -518,24 +809,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -546,24 +878,65 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
 
@@ -574,26 +947,71 @@ Complete props type: `ChartProps<T>`.
 | Prop | Type | Default / requirement |
 | --- | --- | --- |
 | `accessibility` | `ChartAccessibility` | Required |
+| `annotations` | `readonly ChartAnnotation[]` | `undefined` |
 | `canvasThreshold` | `number` | `undefined` |
+| `centerLabel` | `string` | `undefined` |
 | `children` | `ReactNode` | `undefined` |
 | `data` | `readonly T[]` | `undefined` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `undefined` |
+| `dataOptions` | `ChartDataOptions<T>` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `drilldownDepth` | `number` | `undefined` |
 | `emptyContent` | `ReactNode` | `undefined` |
 | `height` | `number` | `undefined` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `innerRadius` | `number` | `undefined` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `legendContent` | `(series: readonly ChartSeries<T>[], hiddenSeries: readonly string[]) => ReactNode` | `undefined` |
+| `locale` | `Partial<ChartLocale>` | `undefined` |
+| `motion` | `boolean` | `undefined` |
+| `onDrilldown` | `(event: ChartPointInteraction<T> \| { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onDrilldownBack` | `() => void` | `undefined` |
 | `onHiddenSeriesChange` | `(series: string[]) => void` | `undefined` |
+| `onPointClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointContextMenu` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointDoubleClick` | `(point: ChartPointInteraction<T>) => void` | `undefined` |
+| `onPointHover` | `(point: ChartPointInteraction<T> \| null) => void` | `undefined` |
+| `onSelectedDataChange` | `(data: readonly T[]) => void` | `undefined` |
+| `onSelectionChange` | `(selection: { start: readonly [number, number]; end: readonly [number, number]; } \| null) => void` | `undefined` |
+| `onSliceSelect` | `(slice: { datum: T; index: number; value: number; }) => void` | `undefined` |
+| `onViewportChange` | `(viewport: { x?: ChartDomain; y?: ChartDomain; }) => void` | `undefined` |
+| `onXDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
+| `onYDomainChange` | `(domain: ChartDomain) => void` | `undefined` |
 | `orientation` | `"horizontal" \| "vertical"` | `undefined` |
+| `progressiveChunkSize` | `number` | `undefined` |
+| `references` | `readonly ChartReference[]` | `undefined` |
 | `renderMode` | `ChartRenderMode` | `undefined` |
 | `series` | `readonly ChartSeries<T>[]` | `undefined` |
+| `showTotal` | `boolean` | `undefined` |
 | `stream` | `ChartStream<string>` | `undefined` |
+| `streamAnnouncement` | `boolean` | `undefined` |
+| `streamAutoScroll` | `boolean` | `undefined` |
+| `streamControls` | `boolean` | `undefined` |
+| `sync` | `ChartSync` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction<T>[]) => ReactNode` | `undefined` |
+| `tooltipFormatter` | `(point: ChartPointInteraction<T>) => ReactNode` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `undefined` |
+| `tooltipPosition` | `ChartTooltipPosition` | `undefined` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `viewportCulling` | `boolean` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
 | `width` | `number` | `undefined` |
+| `workerProcessing` | `boolean` | `undefined` |
 | `x` | `ChartAccessor<T>` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
 | `xDomain` | `ChartDomain` | `undefined` |
 | `xScale` | `ChartScaleType` | `undefined` |
 | `y` | `ChartAccessor<T, number>` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
 | `yDomain` | `ChartDomain` | `undefined` |
 | `yScale` | `"linear" \| "time" \| "log"` | `undefined` |
+
+### `ChartPointInteraction`
+
+Exported type: `Pick<PreparedPoint<T>, "datum" \| "index" \| "x" \| "y" \| "xValue" \| "yValue" \| "radius"> & { seriesId: string; }`.
 
 </details>
 {/* react-api:end */}
@@ -723,7 +1141,9 @@ No declared props.
 
 | Event | Payload |
 | --- | --- |
-| `update:hiddenSeries` | `string[]` |
+| `update:hiddenSeries` | `never[] \| string[]` |
+| `update:viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` |
+| `update:selection` | `{ start: readonly [number, number]; end: readonly [number, number]; } \| null` |
 
 Slots: none.
 
@@ -737,7 +1157,9 @@ No declared props.
 
 | Event | Payload |
 | --- | --- |
-| `update:hiddenSeries` | `string[]` |
+| `update:hiddenSeries` | `never[] \| string[]` |
+| `update:viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` |
+| `update:selection` | `{ start: readonly [number, number]; end: readonly [number, number]; } \| null` |
 
 Slots: none.
 
@@ -751,7 +1173,9 @@ No declared props.
 
 | Event | Payload |
 | --- | --- |
-| `update:hiddenSeries` | `string[]` |
+| `update:hiddenSeries` | `never[] \| string[]` |
+| `update:viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` |
+| `update:selection` | `{ start: readonly [number, number]; end: readonly [number, number]; } \| null` |
 
 Slots: none.
 
@@ -789,7 +1213,9 @@ No declared props.
 
 | Event | Payload |
 | --- | --- |
-| `update:hiddenSeries` | `string[]` |
+| `update:hiddenSeries` | `never[] \| string[]` |
+| `update:viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` |
+| `update:selection` | `{ start: readonly [number, number]; end: readonly [number, number]; } \| null` |
 
 Slots: none.
 
@@ -803,7 +1229,9 @@ No declared props.
 
 | Event | Payload |
 | --- | --- |
-| `update:hiddenSeries` | `string[]` |
+| `update:hiddenSeries` | `never[] \| string[]` |
+| `update:viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` |
+| `update:selection` | `{ start: readonly [number, number]; end: readonly [number, number]; } \| null` |
 
 Slots: none.
 
@@ -829,7 +1257,9 @@ No declared props.
 
 | Event | Payload |
 | --- | --- |
-| `update:hiddenSeries` | `string[]` |
+| `update:hiddenSeries` | `never[] \| string[]` |
+| `update:viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` |
+| `update:selection` | `{ start: readonly [number, number]; end: readonly [number, number]; } \| null` |
 
 Slots: none.
 
@@ -843,11 +1273,17 @@ No declared props.
 
 | Event | Payload |
 | --- | --- |
-| `update:hiddenSeries` | `string[]` |
+| `update:hiddenSeries` | `never[] \| string[]` |
+| `update:viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` |
+| `update:selection` | `{ start: readonly [number, number]; end: readonly [number, number]; } \| null` |
 
 Slots: none.
 
 Exposed methods: none.
+
+### `ChartPointInteraction`
+
+Exported type: `{ datum: T; index: number; x: number; y: number; xValue: string \| number \| Date; yValue: number; radius: number; seriesId: string; }`.
 
 </details>
 {/* vue-api:end */}
@@ -878,8 +1314,39 @@ Attribute directive selector: `none`; behavior applies to its host element.
 | `height` | `number` | `360` |
 | `xScale` | `"linear" \| "time" \| "band" \| "log"` | `'linear'` |
 | `yScale` | `"linear" \| "time" \| "log"` | `'linear'` |
-| `renderMode` | `"auto" \| "svg" \| "canvas"` | `'auto'` |
+| `xDomain` | `ChartDomain` | `undefined` |
+| `yDomain` | `ChartDomain` | `undefined` |
+| `xAxis` | `ChartAxisConfig` | `undefined` |
+| `yAxis` | `ChartAxisConfig` | `undefined` |
+| `references` | `readonly ChartReference[]` | `[]` |
+| `annotations` | `readonly ChartAnnotation[]` | `[]` |
+| `dataLabels` | `boolean \| ChartDataLabelConfig` | `false` |
+| `legend` | `ChartLegendConfig` | `undefined` |
+| `visualMap` | `ChartVisualMap` | `undefined` |
+| `dataOptions` | `ChartDataOptions<Datum>` | `undefined` |
+| `streamControls` | `boolean` | `false` |
+| `streamAutoScroll` | `boolean` | `false` |
+| `streamAnnouncement` | `boolean` | `false` |
+| `centerLabel` | `string` | `undefined` |
+| `showTotal` | `boolean` | `false` |
+| `drilldownDepth` | `number` | `0` |
+| `legendContent` | `(series: readonly ChartSeries<Datum>[], hiddenSeries: readonly string[]) => string` | `undefined` |
+| `viewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `undefined` |
+| `defaultViewport` | `{ x?: ChartDomain; y?: ChartDomain; }` | `{}` |
+| `interaction` | `{ zoom?: boolean \| "x" \| "y" \| "xy"; pan?: boolean \| "x" \| "y" \| "xy"; brush?: boolean \| "x" \| "y" \| "xy"; }` | `undefined` |
+| `tooltipMode` | `ChartTooltipMode` | `'nearest'` |
+| `tooltipTrigger` | `ChartTooltipTrigger` | `'always'` |
+| `tooltipPosition` | `ChartTooltipPosition` | `'static'` |
+| `tooltipFormatter` | `(point: ChartPointInteraction) => string` | `undefined` |
+| `tooltipContent` | `(points: readonly ChartPointInteraction[]) => string` | `undefined` |
+| `sync` | `ChartSync \| undefined` | `undefined` |
+| `renderMode` | `"auto" \| "svg" \| "canvas" \| "webgl"` | `'auto'` |
 | `canvasThreshold` | `number` | `2000` |
+| `workerProcessing` | `boolean` | `false` |
+| `viewportCulling` | `boolean` | `false` |
+| `progressiveChunkSize` | `number` | `0` |
+| `motion` | `boolean` | `false` |
+| `locale` | `Partial<ChartLocale>` | `defaultChartLocale` |
 | `hiddenSeries` | `readonly string[]` | `undefined` |
 | `defaultHiddenSeries` | `readonly string[]` | `[]` |
 | `innerRadius` | `number` | `undefined` |
@@ -888,14 +1355,45 @@ Attribute directive selector: `none`; behavior applies to its host element.
 | Output | Payload |
 | --- | --- |
 | `hiddenSeriesChange` | `string[]` |
+| `viewportChange` | `{ x?: ChartDomain; y?: ChartDomain; }` |
+| `xDomainChange` | `ChartDomain` |
+| `yDomainChange` | `ChartDomain` |
+| `selectionChange` | `{ start: readonly [number, number]; end: readonly [number, number]; } \| null` |
+| `selectedDataChange` | `readonly Datum[]` |
+| `pointHover` | `ChartPointInteraction<Datum> \| null` |
+| `pointClick` | `ChartPointInteraction<Datum>` |
+| `pointDoubleClick` | `ChartPointInteraction<Datum>` |
+| `pointContextMenu` | `ChartPointInteraction<Datum>` |
+| `sliceSelect` | `{ datum: Datum; index: number; value: number; }` |
+| `drilldown` | `ChartPointInteraction<Datum> \| { datum: Datum; index: number; value: number; }` |
+| `drilldownBack` | `void` |
 
 Content projection: none.
 
 | Public method |
 | --- |
 | `tableValue(datum: Datum, value: ChartAccessor<Datum>, row: number): string` |
+| `formatAxisTick(value: number, axis: ChartAxisConfig \| undefined): string` |
+| `min(a: number, b: number): number` |
+| `abs(value: number): number` |
 | `onKeydown(event: KeyboardEvent): void` |
+| `onWheel(event: WheelEvent): void` |
+| `onPointerDown(event: PointerEvent): void` |
+| `onPointerMove(event: PointerEvent): void` |
+| `onPointerUp(event: PointerEvent): void` |
+| `onPointerCancel(): void` |
+| `onMouseMove(event: MouseEvent): void` |
+| `onMouseLeave(): void` |
+| `onPointClick(event: MouseEvent): void` |
+| `onPointDoubleClick(event: MouseEvent): void` |
+| `onPointContextMenu(event: MouseEvent): void` |
+| `resetViewport(): void` |
 | `toggleSeries(id: string): void` |
+| `selectAllSeries(): void` |
+| `isolateSeries(id: string): void` |
+| `onPolarSliceClick(id: string): void` |
+| `onPolarSliceHover(id: string): void` |
+| `toggleStream(): void` |
 
 ### `ChartRootComponent`
 
@@ -1132,6 +1630,10 @@ Content projection: none.
 
 No public methods.
 
+### `ChartPointInteraction`
+
+Exported type: `{ datum: T; index: number; x: number; y: number; xValue: string \| number \| Date; yValue: number; radius: number; seriesId: string; }`.
+
 </details>
 {/* angular-api:end */}
 
@@ -1173,7 +1675,7 @@ undocumented descendants are implementation details and should not be targeted.
 | --- | --- |
 | Recipe classes | `.simurgh-chart` |
 | Stable DOM parts | `[data-slot="chart"]` |
-| Stable data attributes | `[data-part]`, `[data-renderer]`, `[data-series]`, `[data-slot]`, `[data-state]`, `[data-table]` |
+| Stable data attributes | `[data-action]`, `[data-label]`, `[data-labels]`, `[data-motion]`, `[data-orientation]`, `[data-part]`, `[data-placement]`, `[data-renderer]`, `[data-series]`, `[data-slot]`, `[data-state]`, `[data-table]` |
 | ARIA/state selectors used by the recipe | `[aria-pressed]` |
 | CSS custom properties consumed | `--simurgh-border`, `--simurgh-chart-axis`, `--simurgh-chart-grid`, `--simurgh-chart-tooltip`, `--simurgh-font-sans`, `--simurgh-foreground`, `--simurgh-hover`, `--simurgh-muted-foreground`, `--simurgh-radius`, `--simurgh-ring`, `--simurgh-shadow-sm`, `--simurgh-space-1`, `--simurgh-space-2`, `--simurgh-space-3`, `--simurgh-text-lg`, `--simurgh-text-sm` |
 
@@ -1194,9 +1696,9 @@ is used. Do not render a state-consuming part by itself.
 
 | Framework | Required parent/child relationship | Conditional parts | Supporting types |
 | --- | --- | --- | --- |
-| React | Render `ChartRoot` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `ChartDataTable`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | `ChartProps`. |
-| Vue | Render `ChartRoot` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
-| Angular | Create `ChartBaseComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `ChartRootComponent`, `ChartPlotComponent`, `ChartGridDirective`, `ChartXAxisDirective`, `ChartYAxisDirective`, `ChartLegendDirective`, `ChartTooltipDirective`, `ChartCrosshairDirective`, `ChartBrushDirective`, `LineChartComponent`, `AreaChartComponent`, `BarChartComponent`, `PieChartComponent`, `DonutChartComponent`, `ScatterChartComponent`, `BubbleChartComponent`, `RadarChartComponent`, `HeatmapChartComponent`, `ComboChartComponent` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| React | Render `ChartRoot` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `ChartDataTable`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`, `ChartPointInteraction` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | `ChartProps`. |
+| Vue | Render `ChartRoot` as the ancestor. Nest the listed parts inside that root so they can read its shared state/context. | `ChartPlot`, `ChartGrid`, `ChartXAxis`, `ChartYAxis`, `ChartLegend`, `ChartTooltip`, `ChartCrosshair`, `ChartBrush`, `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `ScatterChart`, `BubbleChart`, `RadarChart`, `HeatmapChart`, `ComboChart`, `ChartPointInteraction` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
+| Angular | Create `ChartBaseComponent` first. Attach listed directives to elements inside its projected content; nested component parts must remain inside it. | `ChartRootComponent`, `ChartPlotComponent`, `ChartGridDirective`, `ChartXAxisDirective`, `ChartYAxisDirective`, `ChartLegendDirective`, `ChartTooltipDirective`, `ChartCrosshairDirective`, `ChartBrushDirective`, `LineChartComponent`, `AreaChartComponent`, `BarChartComponent`, `PieChartComponent`, `DonutChartComponent`, `ScatterChartComponent`, `BubbleChartComponent`, `RadarChartComponent`, `HeatmapChartComponent`, `ComboChartComponent`, `ChartPointInteraction` are conditional parts: include only those needed by the documented anatomy. A trigger/control and its matching content/item are required when that interaction is used. | None. |
 
 Accessible names, descriptions, and form labels remain required whenever the component's purpose
 cannot otherwise be determined, even when the corresponding visual part is optional.
@@ -1210,8 +1712,8 @@ follow each framework's conventions and are not expected to be symbol-for-symbol
 
 | Concern | Contract |
 | --- | --- |
-| Public composition | React exports 21 parts, Vue 19, and Angular 20. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
-| State and change events | React uses controlled/default props and callbacks; Vue uses `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`, `v-model:hiddenSeries`; Angular uses `[(hiddenSeries)]`. |
+| Public composition | React exports 22 parts, Vue 20, and Angular 21. These are intentional composition differences; use each framework's example rather than translating symbol-for-symbol. |
+| State and change events | React uses controlled/default props and callbacks; Vue uses `v-model:hiddenSeries`, `v-model:viewport`, `v-model:selection`, `v-model:hiddenSeries`, `v-model:viewport`, `v-model:selection`, `v-model:hiddenSeries`, `v-model:viewport`, `v-model:selection`, `v-model:hiddenSeries`, `v-model:viewport`, `v-model:selection`, `v-model:hiddenSeries`, `v-model:viewport`, `v-model:selection`, `v-model:hiddenSeries`, `v-model:viewport`, `v-model:selection`, `v-model:hiddenSeries`, `v-model:viewport`, `v-model:selection`; Angular uses `[(hiddenSeries)]`, `[(viewport)]`, `[(xDomain)]`, `[(yDomain)]`, `[(selection)]`, `[(selectedData)]`. |
 | Children and content | React uses `children`; Vue uses the slots listed above; Angular uses the documented content projection selectors. |
 | Native attributes | React forwards the named native interface; Vue follows the stated fallthrough rule; Angular attributes apply to the component host unless an input, directive, or documented native root consumes them. |
 | Imperative access | No framework exposes an imperative handle for this component. |
