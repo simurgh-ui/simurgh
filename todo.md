@@ -536,7 +536,7 @@ budgets remain fixed.
 - [x] Add data labels with placement and collision handling for bars, points, and pie/donut slices.
 - [x] Expand legend controls with placement, orientation, scrolling, select-all, isolate-series, and custom content.
 - [x] Add continuous and piecewise visual mapping for color, opacity, size, and threshold-based styling.
-- [ ] Add configurable curves and marks: smooth/spline, step, monotone, tension, line width/dash, point symbols, gradients, patterns, and per-point styles.
+- [x] Add configurable curves and marks: smooth/spline, step, monotone, tension, line width/dash, point symbols, gradients, patterns, and per-point styles.
 - [ ] Add drilldown interactions for bars, points, and pie/donut slices, including accessible announcements and back navigation.
 - [x] Add pie/donut center labels, totals, slice hover/selection, labels, and richer polar interactions.
 
