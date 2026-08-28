@@ -54,6 +54,8 @@ const commonProps = {
   onPointDoubleClick: Function as PropType<(point: ChartPointInteraction) => void>,
   onPointContextMenu: Function as PropType<(point: ChartPointInteraction) => void>,
   onSelectedDataChange: Function as PropType<(data: readonly Datum[]) => void>,
+  onXDomainChange: Function as PropType<(domain: ChartDomain) => void>,
+  onYDomainChange: Function as PropType<(domain: ChartDomain) => void>,
   tooltipMode: { type: String as PropType<ChartTooltipMode>, default: 'nearest' },
   tooltipTrigger: { type: String as PropType<ChartTooltipTrigger>, default: 'always' },
   tooltipPosition: { type: String as PropType<ChartTooltipPosition>, default: 'static' },
@@ -188,6 +190,8 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           if (props.viewport === undefined) uncontrolledViewport.value = next;
           props.sync?.set({ viewport: next });
           emit('update:viewport', next);
+          if (next.x) props.onXDomainChange?.(next.x);
+          if (next.y) props.onYDomainChange?.(next.y);
         };
         const brushHandleFromPoint = (point: readonly [number, number]): ChartBrushHandle | null => {
           if (!selection.value || !props.interaction) return null;

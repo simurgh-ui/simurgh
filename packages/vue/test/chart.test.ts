@@ -32,7 +32,8 @@ describe('Vue charts', () => {
     const viewportChange = vi.fn();
     const selectionChange = vi.fn();
     const pointClick = vi.fn();
-    const result = render(LineChart, { props: { data, x: 'x', y: 'y', accessibility, interaction: { zoom: 'x', brush: 'x' }, onPointClick: pointClick, 'onUpdate:viewport': viewportChange, 'onUpdate:selection': selectionChange } });
+    const xDomainChange = vi.fn();
+    const result = render(LineChart, { props: { data, x: 'x', y: 'y', accessibility, interaction: { zoom: 'x', brush: 'x' }, onPointClick: pointClick, onXDomainChange: xDomainChange, 'onUpdate:viewport': viewportChange, 'onUpdate:selection': selectionChange } });
     const viewport = result.container.querySelector('[data-part="viewport"]') as HTMLElement;
     vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 640, height: 360, right: 640, bottom: 360, x: 0, y: 0, toJSON: () => ({}) });
     await fireEvent.wheel(viewport, { clientX: 320, clientY: 180, deltaY: -100 });
@@ -40,6 +41,7 @@ describe('Vue charts', () => {
     await fireEvent.pointerUp(viewport, { clientX: 400, clientY: 220, pointerId: 1 });
     await fireEvent.click(viewport, { clientX: 100, clientY: 120 });
     expect(viewportChange).toHaveBeenCalled();
+    expect(xDomainChange).toHaveBeenCalled();
     expect(selectionChange).toHaveBeenCalledWith(expect.objectContaining({ start: [100, 120] }));
     expect(pointClick).toHaveBeenCalledWith(expect.objectContaining({ seriesId: 'value' }));
   });

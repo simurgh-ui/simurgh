@@ -65,6 +65,8 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
   sync?: ChartSync;
   onViewportChange?: (viewport: { x?: ChartDomain; y?: ChartDomain }) => void;
+  onXDomainChange?: (domain: ChartDomain) => void;
+  onYDomainChange?: (domain: ChartDomain) => void;
   onSelectionChange?: (selection: { start: readonly [number, number]; end: readonly [number, number] } | null) => void;
   onSelectedDataChange?: (data: readonly T[]) => void;
   onPointHover?: (point: ChartPointInteraction<T> | null) => void;
@@ -161,7 +163,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, viewport: controlledViewport, defaultViewport, interaction, sync,
-    onViewportChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
+    onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
@@ -268,6 +270,8 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     if (controlledViewport === undefined) setUncontrolledViewport(next);
     sync?.set({ viewport: next });
     onViewportChange?.(next);
+    if (next.x) onXDomainChange?.(next.x);
+    if (next.y) onYDomainChange?.(next.y);
   };
   const applyPinch = () => {
     const points = [...pointers.current.values()];

@@ -70,13 +70,15 @@ describe('React charts', () => {
   });
   it('supports wheel zoom with a controlled viewport callback', () => {
     const change = vi.fn();
-    const { container } = render(<LineChart data={[{ x: 0, y: 0 }, { x: 10, y: 10 }]} x="x" y="y" interaction={{ zoom: 'x' }} accessibility={accessibility} onViewportChange={change} />);
+    const xDomainChange = vi.fn();
+    const { container } = render(<LineChart data={[{ x: 0, y: 0 }, { x: 10, y: 10 }]} x="x" y="y" interaction={{ zoom: 'x' }} accessibility={accessibility} onViewportChange={change} onXDomainChange={xDomainChange} />);
     const viewport = container.querySelector('[data-part="viewport"]')!;
     vi.spyOn(viewport, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 640, height: 360, right: 640, bottom: 360, x: 0, y: 0, toJSON: () => ({}) });
     fireEvent.wheel(viewport, { clientX: 320, clientY: 180, deltaY: -100 });
     expect(change).toHaveBeenCalledOnce();
     const next = change.mock.calls[0]![0];
     expect(next.x[1] - next.x[0]).toBeLessThan(10);
+    expect(xDomainChange).toHaveBeenCalledWith(next.x);
     fireEvent.click(screen.getByRole('button', { name: 'Reset view' }));
     expect(change).toHaveBeenLastCalledWith({});
   });

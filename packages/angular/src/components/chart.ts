@@ -138,6 +138,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   @Input() emptyContent = 'No chart data';
   @Output() readonly hiddenSeriesChange = new EventEmitter<string[]>();
   @Output() readonly viewportChange = new EventEmitter<{ x?: ChartDomain; y?: ChartDomain }>();
+  @Output() readonly xDomainChange = new EventEmitter<ChartDomain>();
+  @Output() readonly yDomainChange = new EventEmitter<ChartDomain>();
   @Output() readonly selectionChange = new EventEmitter<{ start: readonly [number, number]; end: readonly [number, number] } | null>();
   @Output() readonly selectedDataChange = new EventEmitter<readonly Datum[]>();
   @Output() readonly pointHover = new EventEmitter<ChartPointInteraction | null>();
@@ -273,6 +275,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       if (result.viewport.x) next.x = clampDomain(result.viewport.x, x);
       if (result.viewport.y) next.y = clampDomain(result.viewport.y, y);
       if (next.x || next.y) { if (this.viewport === undefined) this.uncontrolledViewport = next; this.sync?.set({ viewport: next }); this.viewportChange.emit(next); this.changeDetector?.markForCheck(); event.preventDefault(); }
+      if (next.x) this.xDomainChange.emit(next.x);
+      if (next.y) this.yDomainChange.emit(next.y);
       return;
     }
     const size = this.model.marks.length;
@@ -300,6 +304,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (this.viewport === undefined) this.uncontrolledViewport = next;
     this.sync?.set({ viewport: next });
     this.viewportChange.emit(next);
+    if (next.x) this.xDomainChange.emit(next.x);
+    if (next.y) this.yDomainChange.emit(next.y);
     this.changeDetector?.markForCheck();
   }
   private pointFromPointer(event: PointerEvent): readonly [number, number] {
@@ -340,6 +346,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       if (this.viewport === undefined) this.uncontrolledViewport = next;
       this.sync?.set({ viewport: next });
       this.viewportChange.emit(next);
+      if (next.x) this.xDomainChange.emit(next.x);
+      if (next.y) this.yDomainChange.emit(next.y);
       return;
     }
     if (this.zoomDrag) return;
@@ -360,6 +368,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (this.viewport === undefined) this.uncontrolledViewport = next;
     this.sync?.set({ viewport: next });
     this.viewportChange.emit(next);
+    if (next.x) this.xDomainChange.emit(next.x);
+    if (next.y) this.yDomainChange.emit(next.y);
     this.changeDetector?.markForCheck();
   }
   onPointerUp(event: PointerEvent) {
@@ -387,6 +397,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
         if (this.viewport === undefined) this.uncontrolledViewport = next;
         this.sync?.set({ viewport: next });
         this.viewportChange.emit(next);
+        if (next.x) this.xDomainChange.emit(next.x);
+        if (next.y) this.yDomainChange.emit(next.y);
       }
       return;
     }
@@ -416,6 +428,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     if (this.viewport === undefined) this.uncontrolledViewport = next;
     this.sync?.set({ viewport: next });
     this.viewportChange.emit(next);
+    if (next.x) this.xDomainChange.emit(next.x);
+    if (next.y) this.yDomainChange.emit(next.y);
     this.changeDetector?.markForCheck();
   }
   private brushHandleFromPoint(point: readonly [number, number]): ChartBrushHandle | null {

@@ -43,9 +43,12 @@ describe('Angular charts', () => {
     const viewport = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 640, height: 360 }), setPointerCapture: vi.fn() } as unknown as HTMLElement;
     const wheel = { currentTarget: viewport, clientX: 320, clientY: 180, deltaY: -100, preventDefault: vi.fn() } as unknown as WheelEvent;
     const viewportChange = vi.fn();
+    const xDomainChange = vi.fn();
     chart.viewportChange.subscribe(viewportChange);
+    chart.xDomainChange.subscribe(xDomainChange);
     chart.onWheel(wheel);
     expect(viewportChange).toHaveBeenCalled();
+    expect(xDomainChange).toHaveBeenCalled();
     const selectionChange = vi.fn();
     chart.selectionChange.subscribe(selectionChange);
     const start = { currentTarget: viewport, clientX: 100, clientY: 120, pointerId: 1 } as unknown as PointerEvent;
