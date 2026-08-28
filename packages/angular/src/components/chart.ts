@@ -484,7 +484,16 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const value = this.y ?? this.series?.[0]?.y;
     const radius = Math.min(this.width, this.height) / 2 - 16;
     const arcs = value ? pieArcs(this.rows, value, radius, this.kind === 'donut' ? this.innerRadius ?? radius * 0.55 : this.innerRadius ?? 0) : [];
-    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: [], summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
+    const labelConfig: ChartDataLabelConfig | undefined = this.dataLabels === true ? {} : this.dataLabels || undefined;
+    const labels = labelConfig?.enabled === false ? [] : arcs.reduce<{ x: number; y: number; text: string }[]>((visible, arc) => {
+      const angle = (arc.startAngle + arc.endAngle) / 2;
+      const inner = this.kind === 'donut' ? this.innerRadius ?? radius * 0.55 : 0;
+      const distance = labelConfig?.placement === 'top' ? radius + 14 : labelConfig?.placement === 'bottom' ? Math.max(inner, radius / 2) : (inner + radius) / 2;
+      const point = { x: Math.cos(angle) * distance, y: Math.sin(angle) * distance };
+      if (visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18))) return visible;
+      return [...visible, { ...point, text: labelConfig?.formatter?.(arc.value, arc.index, 'slices') ?? String(arc.index + 1) }];
+    }, []);
+    return { marks: arcs.map((arc, index): Mark => ({ id: String(arc.index), type: 'area', color: colors[index % colors.length]!, path: arc.path })), canvasMarks: [], useCanvas: false, points: [], xDomain: [0, 1] as ChartDomain, yDomain: [0, 1] as ChartDomain, xTicks: [], yTicks: [], references: [], annotations: [], dataLabels: labels, summary: chartSummary(arcs.map((arc) => arc.value), 'Slices'), tooltip: '', legend: [] };
   }
 }
 

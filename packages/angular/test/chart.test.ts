@@ -1,6 +1,6 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
-import { BarChartComponent, LineChartComponent, RadarChartComponent } from '../src/components/chart.js';
+import { BarChartComponent, LineChartComponent, PieChartComponent, RadarChartComponent } from '../src/components/chart.js';
 
 const accessibility = { title: 'Revenue', description: 'Monthly revenue.' } as const;
 
@@ -103,5 +103,12 @@ describe('Angular charts', () => {
     chart.accessibility = accessibility;
     chart.dataLabels = { formatter: (value) => `v${value}` };
     expect(chart.model.dataLabels.map((label) => label.text)).toContain('v2');
+  });
+  it('prepares formatted pie slice labels', () => {
+    const chart = new PieChartComponent();
+    chart.data = [{ name: 'A', value: 2 }, { name: 'B', value: 8 }];
+    chart.y = 'value';
+    chart.dataLabels = { formatter: (value) => `slice-${value}` };
+    expect(chart.model.dataLabels.map((label) => label.text)).toContain('slice-2');
   });
 });

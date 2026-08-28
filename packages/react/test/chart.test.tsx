@@ -142,4 +142,8 @@ describe('React charts', () => {
     const { container } = render(<LineChart data={[{ x: 0, y: 2 }, { x: 10, y: 8 }]} x="x" y="y" dataLabels={{ formatter: (value) => `v${value}` }} accessibility={accessibility} />);
     expect(container.querySelector('[data-part="data-labels"]')?.textContent).toContain('v2');
   });
+  it('renders formatted pie slice labels', () => {
+    const { container } = render(<PieChart data={[{ name: 'A', value: 2 }, { name: 'B', value: 8 }]} x="name" y="value" dataLabels={{ formatter: (value) => `slice-${value}` }} accessibility={accessibility} />);
+    expect(container.querySelector('[data-part="data-labels"]')?.textContent).toContain('slice-2');
+  });
 });

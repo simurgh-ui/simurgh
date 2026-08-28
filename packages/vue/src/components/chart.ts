@@ -365,7 +365,15 @@ function polar(donut: boolean) {
       const radius = Math.min(props.width, props.height) / 2 - 16;
       const arcs = value ? pieArcs(rows, value, radius, donut ? props.innerRadius ?? radius * 0.55 : props.innerRadius ?? 0) : [];
       const decorative = 'decorative' in props.accessibility && props.accessibility.decorative;
-      return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': arcs.length ? undefined : 'empty', 'aria-hidden': decorative || undefined }, arcs.length ? [!decorative && h('figcaption', props.accessibility.title), h('svg', { viewBox: `${-props.width / 2} ${-props.height / 2} ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, arcs.map((arc, index) => h('path', { 'data-part': 'series', d: arc.path, fill: colors[index % colors.length] }))), !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(arcs.map((arc) => arc.value), 'Slices')}`)] : props.emptyContent);
+      const labelConfig: ChartDataLabelConfig | undefined = props.dataLabels === true ? {} : props.dataLabels || undefined;
+      const labels = labelConfig?.enabled === false ? [] : arcs.reduce<{ x: number; y: number; text: string }[]>((visible, arc) => {
+        const angle = (arc.startAngle + arc.endAngle) / 2;
+        const distance = labelConfig?.placement === 'top' ? radius + 14 : labelConfig?.placement === 'bottom' ? Math.max(donut ? props.innerRadius ?? radius * 0.55 : 0, radius / 2) : ((donut ? props.innerRadius ?? radius * 0.55 : 0) + radius) / 2;
+        const point = { x: Math.cos(angle) * distance, y: Math.sin(angle) * distance };
+        if (visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18))) return visible;
+        return [...visible, { ...point, text: labelConfig?.formatter?.(arc.value, arc.index, 'slices') ?? String(chartValue(arc.datum, props.x ?? ((_, index) => index), arc.index) ?? arc.index + 1) }];
+      }, []);
+      return h('figure', { ...attrs, class: ['simurgh-chart', attrs.class], 'data-slot': 'chart', 'data-state': arcs.length ? undefined : 'empty', 'aria-hidden': decorative || undefined }, arcs.length ? [!decorative && h('figcaption', props.accessibility.title), h('svg', { viewBox: `${-props.width / 2} ${-props.height / 2} ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [arcs.map((arc, index) => h('path', { 'data-part': 'series', d: arc.path, fill: colors[index % colors.length] })), labels.length > 0 && h('g', { 'data-part': 'data-labels' }, labels.map((item) => h('text', { 'data-part': 'data-label', x: item.x, y: item.y, 'text-anchor': 'middle' }, item.text)))]), !decorative && h('p', { 'data-part': 'description' }, `${props.accessibility.description} ${chartSummary(arcs.map((arc) => arc.value), 'Slices')}`)] : props.emptyContent);
     }; },
   });
 }

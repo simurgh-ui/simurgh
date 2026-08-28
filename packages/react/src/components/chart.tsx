@@ -480,7 +480,7 @@ function SeriesMarks<T>({ item, index, baseline, bandwidth, orientation }: { ite
 }
 
 function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: boolean }) {
-  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, emptyContent = 'No chart data', ...native } = props;
+  const { data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 360, height = 360, innerRadius, dataLabels = false, emptyContent = 'No chart data', ...native } = props;
   const data = useChartRows(inputData, stream, width);
   const value = y ?? series?.[0]?.y;
   if (!value) throw new TypeError('Pie and donut charts require a y accessor or series.');
@@ -492,6 +492,14 @@ function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: bo
   const decorative = 'decorative' in accessibility && accessibility.decorative;
   if (!arcs.length) return <figure className="simurgh-chart" data-state="empty" {...native}>{emptyContent}</figure>;
   const focused = arcs[Math.min(focus, arcs.length - 1)]!;
+  const labelConfig: ChartDataLabelConfig | undefined = dataLabels === true ? {} : dataLabels || undefined;
+  const labels = labelConfig?.enabled === false ? [] : arcs.reduce<{ x: number; y: number; text: string }[]>((visible, arc) => {
+    const angle = (arc.startAngle + arc.endAngle) / 2;
+    const distance = labelConfig?.placement === 'top' ? radius + 14 : labelConfig?.placement === 'bottom' ? Math.max(resolvedInnerRadius, radius / 2) : (resolvedInnerRadius + radius) / 2;
+    const point = { x: Math.cos(angle) * distance, y: Math.sin(angle) * distance };
+    if (visible.some((item) => Math.hypot(item.x - point.x, item.y - point.y) < (labelConfig?.minDistance ?? 18))) return visible;
+    return [...visible, { ...point, text: labelConfig?.formatter?.(arc.value, arc.index, 'slices') ?? String(chartValue(arc.datum, x, arc.index) ?? arc.index + 1) }];
+  }, []);
   const focusFromMouse = (event: React.MouseEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     if (!bounds.width || !bounds.height) return;
@@ -507,7 +515,7 @@ function PolarChart<T>({ donut = false, ...props }: ChartProps<T> & { donut?: bo
   return <figure className="simurgh-chart" data-slot="chart" aria-labelledby={decorative ? undefined : titleId} aria-hidden={decorative || undefined} {...native}>
     {!decorative && <figcaption id={titleId}>{accessibility.title}</figcaption>}
     <div data-part="viewport" style={{ aspectRatio: `${width} / ${height}` }} onMouseMove={focusFromMouse}>
-      <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} style={{ opacity: index === focus ? 1 : 0.7 }} />)}</svg>
+      <svg viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`} data-part="plot" aria-hidden="true">{arcs.map((arc, index) => <path key={arc.index} data-part="series" d={arc.path} fill={colors[index % colors.length]} style={{ opacity: index === focus ? 1 : 0.7 }} />)}{labels.length > 0 && <g data-part="data-labels">{labels.map((item, index) => <text key={index} data-part="data-label" x={item.x} y={item.y} textAnchor="middle">{item.text}</text>)}</g>}</svg>
       <button type="button" data-part="keyboard-target" aria-label="Explore chart data" onKeyDown={(event) => {
         if (event.key === 'Home') setFocus(0); else if (event.key === 'End') setFocus(arcs.length - 1); else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) setFocus((current) => Math.max(0, current - 1)); else if (['ArrowRight', 'ArrowDown'].includes(event.key)) setFocus((current) => Math.min(arcs.length - 1, current + 1)); else return;
         event.preventDefault();

@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/vue';
 import axe from 'axe-core';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { LineChart, PieChart } from '../src/components/chart.js';
+import { DonutChart, LineChart, PieChart } from '../src/components/chart.js';
 
 const data = [{ x: 1, y: 4 }, { x: 2, y: 7 }, { x: 3, y: 5 }];
 const accessibility = { title: 'Trend', description: 'Three observations.', table: true } as const;
@@ -36,6 +36,10 @@ describe('Vue charts', () => {
   it('renders collision-aware data labels', () => {
     const result = render(LineChart, { props: { data, x: 'x', y: 'y', dataLabels: { formatter: (value: number) => `v${value}` }, accessibility } });
     expect(result.container.querySelector('[data-part="data-labels"]')?.textContent).toContain('v4');
+  });
+  it('renders formatted donut slice labels', () => {
+    const result = render(DonutChart, { props: { data: [{ name: 'A', value: 2 }, { name: 'B', value: 8 }], x: 'name', y: 'value', dataLabels: { formatter: (value: number) => `slice-${value}` }, accessibility } });
+    expect(result.container.querySelector('[data-part="data-labels"]')?.textContent).toContain('slice-2');
   });
   it('supports viewport zoom, brush gestures, and point callbacks', async () => {
     const viewportChange = vi.fn();
