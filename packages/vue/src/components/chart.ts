@@ -15,10 +15,12 @@ import {
   stackChartValues,
   stackedAreaPath,
   type ChartAccessibility,
+  type ChartAnnotation,
   type ChartAxisConfig,
   type ChartAccessor,
   type ChartSeries,
   type ChartSeriesType,
+  type ChartReference,
   type ChartDomain,
   type ChartTooltipMode,
   type ChartTooltipTrigger,
@@ -45,6 +47,8 @@ const commonProps = {
   yDomain: Object as PropType<ChartDomain>,
   xAxis: Object as PropType<ChartAxisConfig>,
   yAxis: Object as PropType<ChartAxisConfig>,
+  references: Array as PropType<readonly ChartReference[]>,
+  annotations: Array as PropType<readonly ChartAnnotation[]>,
   viewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   defaultViewport: Object as PropType<{ x?: ChartDomain; y?: ChartDomain }>,
   interaction: Object as PropType<{ zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' }>,
@@ -288,7 +292,9 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           if (next.x || next.y) { setViewport(next); event.preventDefault(); }
         };
         const baseline = yMap(0);
-        const seriesNodes = [...axisNodes, ...prepared.map((item, seriesIndex) => {
+        const referenceNodes = (props.references ?? []).map((reference) => reference.axis === 'x' ? h('g', { 'data-part': 'reference' }, [h('line', { x1: numericXMap(reference.value), x2: numericXMap(reference.value), y1: layout.top, y2: layout.top + layout.plotHeight, stroke: reference.color }), h('text', { x: numericXMap(reference.value) + 4, y: layout.top + 14 }, reference.label)]) : h('g', { 'data-part': 'reference' }, [h('line', { x1: layout.left, x2: layout.left + layout.plotWidth, y1: yMap(reference.value), y2: yMap(reference.value), stroke: reference.color }), h('text', { x: layout.left + 4, y: yMap(reference.value) - 4 }, reference.label)]));
+        const annotationNodes = (props.annotations ?? []).map((annotation) => h('g', { 'data-part': 'annotation', 'aria-label': annotation.description }, [h('circle', { cx: numericXMap(annotation.x), cy: yMap(annotation.y), r: 4, fill: annotation.color }), h('text', { x: numericXMap(annotation.x) + 6, y: yMap(annotation.y) - 6 }, annotation.label)]));
+        const seriesNodes = [...axisNodes, ...referenceNodes, ...annotationNodes, ...prepared.map((item, seriesIndex) => {
           const color = item.color ?? colors[seriesIndex % colors.length];
           const points = item.points.map((point) => [point.x, point.y] as const);
           if (item.type === 'line') return h('path', { 'data-part': 'series', 'data-series': item.id, d: linePath(points), fill: 'none', stroke: color });

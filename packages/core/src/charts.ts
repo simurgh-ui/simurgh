@@ -24,6 +24,8 @@ export type ChartAxisConfig = {
   position?: 'start' | 'end';
   locale?: string;
 };
+export type ChartReference = { id?: string; axis: 'x' | 'y'; value: number; endValue?: number; label?: string; color?: string };
+export type ChartAnnotation = { id?: string; x: number; y: number; label?: string; color?: string; description?: string };
 
 export function chartTicks(domain: ChartDomain, count = 5): number[] {
   const size = Math.max(2, Math.floor(count));

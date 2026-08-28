@@ -17,6 +17,7 @@ import {
   stackedAreaPath,
   type ChartAccessibility,
   type ChartAxisConfig,
+  type ChartAnnotation,
   type ChartAccessor,
   type ChartDomain,
   type ChartRenderMode,
@@ -27,6 +28,7 @@ import {
   type ChartTooltipPosition,
   type ChartTooltipTrigger,
   type ChartValue,
+  type ChartReference,
   formatChartValue,
 } from '@simurgh-ui/core/charts';
 import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, pinchZoomDomain, resizeChartSelection, selectionFromPoints, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
@@ -60,6 +62,8 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   yDomain?: ChartDomain;
   xAxis?: ChartAxisConfig;
   yAxis?: ChartAxisConfig;
+  references?: readonly ChartReference[];
+  annotations?: readonly ChartAnnotation[];
   viewport?: { x?: ChartDomain; y?: ChartDomain };
   defaultViewport?: { x?: ChartDomain; y?: ChartDomain };
   interaction?: { zoom?: boolean | 'x' | 'y' | 'xy'; pan?: boolean | 'x' | 'y' | 'xy'; brush?: boolean | 'x' | 'y' | 'xy' };
@@ -162,7 +166,7 @@ export function ChartDataTable<T>({ data, columns, pageSize = 50 }: {
 function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeriesType | 'combo' }) {
   const {
     data: inputData, stream, x = ((_, index) => index), y, series, accessibility, width = 640, height = 360,
-    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, viewport: controlledViewport, defaultViewport, interaction, sync,
+    xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
     renderMode = 'auto', canvasThreshold = 2000,
@@ -436,6 +440,8 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
           {yAxis?.grid !== false && <g data-part="grid">{ticks.map((tick) => <line key={tick} x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(tick)} y2={yMap(tick)} />)}</g>}
           <g data-part="y-axis" transform={yAxis?.position === 'end' ? `translate(${layout.plotWidth + layout.left * 2} 0)` : undefined}>{axisTicks.map((tick) => <text key={tick} x={yAxis?.position === 'end' ? 8 : layout.left - 8} y={axisYMap(tick)} textAnchor={yAxis?.position === 'end' ? 'start' : 'end'}>{formatTick(tick, yAxis)}</text>)}{yAxis?.title && <text x={yAxis?.position === 'end' ? 32 : 16} y={layout.top + layout.plotHeight / 2} transform={`rotate(-90 ${yAxis?.position === 'end' ? 32 : 16} ${layout.top + layout.plotHeight / 2})`}>{yAxis.title}</text>}</g>
           <g data-part="x-axis">{xTicks.map((tick) => <text key={tick} x={xMap(tick)} y={layout.top + layout.plotHeight + 20} textAnchor="middle" transform={xAxis?.tickRotation ? `rotate(${xAxis.tickRotation} ${xMap(tick)} ${layout.top + layout.plotHeight + 20})` : undefined}>{formatTick(tick, xAxis)}</text>)}{xAxis?.title && <text x={layout.left + layout.plotWidth / 2} y={height - 4} textAnchor="middle">{xAxis.title}</text>}</g>
+          {references.map((reference) => reference.axis === 'x' ? <g key={reference.id ?? `x-${reference.value}`} data-part="reference"><line x1={xMap(reference.value)} x2={xMap(reference.value)} y1={layout.top} y2={layout.top + layout.plotHeight} stroke={reference.color} /><text x={xMap(reference.value) + 4} y={layout.top + 14}>{reference.label}</text></g> : <g key={reference.id ?? `y-${reference.value}`} data-part="reference"><line x1={layout.left} x2={layout.left + layout.plotWidth} y1={yMap(reference.value)} y2={yMap(reference.value)} stroke={reference.color} /><text x={layout.left + 4} y={yMap(reference.value) - 4}>{reference.label}</text></g>)}
+          {annotations.map((annotation) => <g key={annotation.id ?? `${annotation.x}-${annotation.y}`} data-part="annotation" aria-label={annotation.description}><circle cx={xMap(annotation.x)} cy={yMap(annotation.y)} r="4" fill={annotation.color} /><text x={xMap(annotation.x) + 6} y={yMap(annotation.y) - 6}>{annotation.label}</text></g>)}
           {!useCanvas && prepared.map((item, seriesIndex) => <SeriesMarks key={item.id} item={item} index={seriesIndex} baseline={horizontalBars ? horizontalValueMap(0) : yMap(0)} bandwidth={xBand?.bandwidth ?? 8} orientation={orientation} />)}
           {focused && <g data-part="crosshair"><line x1={focused.x} x2={focused.x} y1={layout.top} y2={layout.top + layout.plotHeight} /><line x1={layout.left} x2={layout.left + layout.plotWidth} y1={focused.y} y2={focused.y} /><text x={focused.x + 6} y={layout.top + 14}>{String(focused.xValue)}</text><text x={layout.left + 6} y={focused.y - 6}>{String(focused.yValue)}</text><circle cx={focused.x} cy={focused.y} r="4" /></g>}
           {selection && <g data-part="brush"><rect x={selection.start[0]} y={selection.start[1]} width={selection.end[0] - selection.start[0]} height={selection.end[1] - selection.start[1]} /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.start[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.start[0] - 4} y={selection.end[1] - 4} width="8" height="8" /><rect data-part="brush-handle" x={selection.end[0] - 4} y={selection.end[1] - 4} width="8" height="8" /></g>}
