@@ -2,6 +2,7 @@ import type { ChartDomain } from './charts.js';
 
 export type ChartViewport = { x?: ChartDomain; y?: ChartDomain };
 export type ChartSelection = { start: readonly [number, number]; end: readonly [number, number] } | null;
+export type ChartBrushHandle = 'start' | 'end' | 'start-y' | 'end-y';
 
 export type ChartInteractionConfig = {
   zoom?: boolean | 'x' | 'y' | 'xy';
@@ -47,6 +48,18 @@ export function selectionFromPoints(
     start: [Math.min(start[0], end[0]), Math.min(start[1], end[1])],
     end: [Math.max(start[0], end[0]), Math.max(start[1], end[1])],
   };
+}
+
+export function resizeChartSelection(
+  selection: Exclude<ChartSelection, null>,
+  handle: ChartBrushHandle,
+  point: readonly [number, number],
+): Exclude<ChartSelection, null> {
+  const start: [number, number] = [...selection.start];
+  const end: [number, number] = [...selection.end];
+  if (handle === 'start' || handle === 'start-y') start[handle === 'start' ? 0 : 1] = point[handle === 'start' ? 0 : 1];
+  if (handle === 'end' || handle === 'end-y') end[handle === 'end' ? 0 : 1] = point[handle === 'end' ? 0 : 1];
+  return selectionFromPoints(start, end)!;
 }
 
 export function nextChartIndex(current: number, size: number, key: string, direction: 'ltr' | 'rtl' = 'ltr'): number {
