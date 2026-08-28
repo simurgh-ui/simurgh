@@ -21,7 +21,7 @@ import {
   type ChartTooltipMode,
   type ChartTooltipTrigger,
 } from '@simurgh-ui/core/charts';
-import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
+import { chartInteractionKey, clampDomain, domainFromSelection, panDomain, pinchZoomDomain, resizeChartSelection, zoomDomain, type ChartBrushHandle, type ChartSync } from '@simurgh-ui/core/chart-interactions';
 import { defineComponent, h, nextTick, onBeforeUnmount, ref, watch, type PropType } from 'vue';
 import type { CanvasMark } from '@simurgh-ui/core/chart-canvas';
 import type { ChartStream } from '@simurgh-ui/core/chart-stream';
@@ -102,6 +102,8 @@ function cartesian(kind: ChartSeriesType | 'combo') {
       const pointerStart = ref<readonly [number, number] | null>(null);
       const pointerLast = ref<readonly [number, number] | null>(null);
       const brushHandle = ref<ChartBrushHandle | null>(null);
+      const pointers = new Map<number, readonly [number, number]>();
+      const pinchStart = ref<number | null>(null);
       const canvas = ref<HTMLCanvasElement>();
       let drawn = '';
       let unsubscribeSync: (() => void) | undefined;
@@ -197,9 +199,20 @@ function cartesian(kind: ChartSeriesType | 'combo') {
           if (point) props.sync?.set({ focused: { seriesId: point.seriesId, index: point.index } });
         };
         const onPointerMove = (event: PointerEvent) => {
+          const point = pointFromEvent(event);
+          if (pointers.has(event.pointerId)) pointers.set(event.pointerId, point);
+          if (pinchStart.value && pointers.size >= 2 && props.interaction) {
+            const values = [...pointers.values()];
+            const distance = Math.hypot(values[1]![0] - values[0]![0], values[1]![1] - values[0]![1]);
+            const midpoint: readonly [number, number] = [(values[0]![0] + values[1]![0]) / 2, (values[0]![1] + values[1]![1]) / 2];
+            const next = { ...viewport };
+            if (axisEnabled(props.interaction.zoom, 'x')) next.x = clampDomain(pinchZoomDomain(viewport.x ?? fullX, pinchStart.value, distance, domainFromSelection(viewport.x ?? fullX, [midpoint[0], midpoint[0]], [layout.left, layout.left + layout.plotWidth])[0]), fullX);
+            if (axisEnabled(props.interaction.zoom, 'y')) next.y = clampDomain(pinchZoomDomain(viewport.y ?? fullY, pinchStart.value, distance, domainFromSelection(viewport.y ?? fullY, [midpoint[1], midpoint[1]], [layout.top + layout.plotHeight, layout.top])[0]), fullY);
+            setViewport(next);
+            return;
+          }
           const previous = pointerLast.value;
           if (!previous || !props.interaction) return;
-          const point = pointFromEvent(event);
           if (brushHandle.value && selection.value) { applySelection(resizeChartSelection(selection.value, brushHandle.value, point)); return; }
           const next = { ...viewport };
           if (axisEnabled(props.interaction.pan, 'x')) next.x = clampDomain(panDomain(xDomain, -(point[0] - previous[0]) / (layout.plotWidth || 1)), fullX);
@@ -274,8 +287,8 @@ function cartesian(kind: ChartSeriesType | 'combo') {
             onClick: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) { tooltipVisible.value = true; props.onPointClick?.(point); } },
             onDblclick: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) props.onPointDoubleClick?.(point); },
             onContextmenu: (event: MouseEvent) => { const point = interactionPoint(pointIndexFromEvent(event)); if (point) { event.preventDefault(); props.onPointContextMenu?.(point); } },
-            onPointerdown: (event: PointerEvent) => { if (props.interaction && (axisEnabled(props.interaction.pan, 'x') || axisEnabled(props.interaction.pan, 'y') || axisEnabled(props.interaction.brush, 'x') || axisEnabled(props.interaction.brush, 'y'))) { const point = pointFromEvent(event); brushHandle.value = brushHandleFromPoint(point); pointerStart.value = brushHandle.value ? null : point; pointerLast.value = point; (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId); } },
-            onPointermove: onPointerMove, onPointerup: (event: PointerEvent) => { if (brushHandle.value) { onPointerMove(event); brushHandle.value = null; pointerLast.value = null; } else onPointerUp(event); }, onPointercancel: () => { pointerStart.value = null; pointerLast.value = null; brushHandle.value = null; },
+            onPointerdown: (event: PointerEvent) => { const point = pointFromEvent(event); pointers.set(event.pointerId, point); if (pointers.size === 2 && props.interaction && (axisEnabled(props.interaction.zoom, 'x') || axisEnabled(props.interaction.zoom, 'y'))) { const values = [...pointers.values()]; pinchStart.value = Math.hypot(values[1]![0] - values[0]![0], values[1]![1] - values[0]![1]); pointerStart.value = null; pointerLast.value = null; } else if (props.interaction && (axisEnabled(props.interaction.pan, 'x') || axisEnabled(props.interaction.pan, 'y') || axisEnabled(props.interaction.brush, 'x') || axisEnabled(props.interaction.brush, 'y'))) { brushHandle.value = brushHandleFromPoint(point); pointerStart.value = brushHandle.value ? null : point; pointerLast.value = point; } (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId); },
+            onPointermove: onPointerMove, onPointerup: (event: PointerEvent) => { pointers.delete(event.pointerId); if (pointers.size < 2) pinchStart.value = null; if (brushHandle.value) { onPointerMove(event); brushHandle.value = null; pointerLast.value = null; } else onPointerUp(event); }, onPointercancel: () => { pointers.clear(); pinchStart.value = null; pointerStart.value = null; pointerLast.value = null; brushHandle.value = null; },
           }, [
             useCanvas && h('canvas', { ref: canvas, width: props.width, height: props.height, 'aria-hidden': 'true' }),
             h('svg', { viewBox: `0 0 ${props.width} ${props.height}`, 'data-part': 'plot', 'aria-hidden': 'true' }, [...(useCanvas ? [] : seriesNodes), h('g', { 'data-part': 'crosshair' }, [h('line', { x1: current.x, x2: current.x, y1: layout.top, y2: layout.top + layout.plotHeight }), h('line', { x1: layout.left, x2: layout.left + layout.plotWidth, y1: current.y, y2: current.y }), h('text', { x: current.x + 6, y: layout.top + 14 }, String(current.xValue)), h('text', { x: layout.left + 6, y: current.y - 6 }, String(current.yValue)), h('circle', { cx: current.x, cy: current.y, r: 4 })]), selection.value && h('g', { 'data-part': 'brush' }, [h('rect', { x: selection.value.start[0], y: selection.value.start[1], width: selection.value.end[0] - selection.value.start[0], height: selection.value.end[1] - selection.value.start[1] }), h('rect', { 'data-part': 'brush-handle', x: selection.value.start[0] - 4, y: selection.value.start[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.end[0] - 4, y: selection.value.start[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.start[0] - 4, y: selection.value.end[1] - 4, width: 8, height: 8 }), h('rect', { 'data-part': 'brush-handle', x: selection.value.end[0] - 4, y: selection.value.end[1] - 4, width: 8, height: 8 })])]),
