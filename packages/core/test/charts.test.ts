@@ -7,6 +7,7 @@ import {
   linePath,
   linearScale,
   minMaxDecimate,
+  cullChartPoints,
   pieArcs,
   radarPoints,
   stackChartValues,
@@ -81,6 +82,9 @@ describe('chart scales and geometry', () => {
     const result = minMaxDecimate(points, 20);
     expect(result.length).toBeLessThanOrEqual(42);
     expect(result.some((point) => point.y === 1000)).toBe(true);
+  });
+  it('culls points outside the visible bounds', () => {
+    expect(cullChartPoints([{ x: 1, y: 1 }, { x: 2, y: 2 }, { x: 3, y: 3 }], { x: [2, 3] }).map((point) => point.x)).toEqual([2, 3]);
   });
 });
 

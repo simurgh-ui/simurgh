@@ -39,6 +39,7 @@ import {
   prepareChartData,
   interpolateChartValues,
   chartCurvePath,
+  cullChartPoints,
   type ChartVisualMap,
   type ChartDataOptions,
   type ChartSeries,
@@ -172,6 +173,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
   get sync() { return this.syncValue; }
   @Input() renderMode: 'auto' | 'svg' | 'canvas' = 'auto';
   @Input() canvasThreshold = 2000;
+  @Input() workerProcessing = false;
+  @Input() viewportCulling = false;
   @Input() hiddenSeries?: readonly string[];
   @Input() defaultHiddenSeries: readonly string[] = [];
   @Input() innerRadius?: number;
@@ -283,7 +286,8 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
       if (type === 'line' || type === 'area') {
         const path = type === 'line' ? chartCurvePath(values.map((item) => [item.x, item.y]), definition.curve, definition.tension) : definition.stack ? stackedAreaPath(values.map((item) => ({ x: item.x, y0: item.y0, y1: item.y }))) : areaPath(values.map((item) => [item.x, item.y]), yMap(0));
         marks.push({ id: definition.id, type, color: fill, path, ...(definition.lineWidth == null ? {} : { lineWidth: definition.lineWidth }), ...(definition.lineDash == null ? {} : { lineDash: definition.lineDash }) });
-        const decimated = minMaxDecimate(values, this.plotWidth);
+        const visible = this.viewportCulling ? cullChartPoints(values, { x: [layout.left, layout.left + layout.plotWidth], y: [layout.top, layout.top + layout.plotHeight] }) : values;
+        const decimated = minMaxDecimate(visible, this.plotWidth);
         canvasMarks.push(type === 'line' ? { type: 'line', points: decimated.map((item) => [item.x, item.y]), color } : { type: 'area', points: decimated.map((item) => [item.x, item.y]), baseline: yMap(0), color, opacity: 0.3 });
       } else for (const item of values) {
         if (type === 'bar' || type === 'heatmap') {
@@ -318,9 +322,17 @@ export abstract class ChartBaseComponent implements AfterViewChecked, OnDestroy 
     const signature = `${this.rows.length}:${model.marks.length}:${this.width}:${this.height}`;
     if (!model.useCanvas || !this.canvas || signature === this.drawn) return;
     this.drawn = signature;
-    void import('@simurgh-ui/core/chart-canvas').then(({ drawChartCanvas }) => {
+    void import('@simurgh-ui/core/chart-canvas').then(async ({ drawChartCanvas, createChartWorker, runChartWorker }) => {
       const context = this.canvas?.nativeElement.getContext('2d');
-      if (context) drawChartCanvas(context, model.canvasMarks, this.width, this.height, globalThis.devicePixelRatio || 1);
+      if (!context) return;
+      if (this.workerProcessing && model.canvasMarks.some((mark) => mark.type === 'line' || mark.type === 'area')) {
+        const worker = createChartWorker();
+        if (worker) try {
+          const processed = await Promise.all(model.canvasMarks.map(async (mark) => mark.type === 'line' || mark.type === 'area' ? { ...mark, points: (await runChartWorker<{ x: number; y: number }[]>(worker, { operation: 'decimate', points: mark.points.map(([x, y]) => ({ x, y })), width: this.plotWidth })).map(({ x, y }) => [x, y] as const) } : mark));
+          drawChartCanvas(context, processed, this.width, this.height, globalThis.devicePixelRatio || 1);
+        } finally { worker.terminate(); }
+        else drawChartCanvas(context, model.canvasMarks, this.width, this.height, globalThis.devicePixelRatio || 1);
+      } else drawChartCanvas(context, model.canvasMarks, this.width, this.height, globalThis.devicePixelRatio || 1);
     });
   }
 

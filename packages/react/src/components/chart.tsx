@@ -26,6 +26,7 @@ import {
   prepareChartData,
   interpolateChartValues,
   chartCurvePath,
+  cullChartPoints,
   type ChartLegendConfig,
   type ChartVisualMap,
   type ChartDataOptions,
@@ -107,6 +108,8 @@ export type ChartProps<T> = Omit<HTMLAttributes<HTMLElement>, 'title'> & {
   tooltipContent?: (points: readonly ChartPointInteraction<T>[]) => ReactNode;
   renderMode?: ChartRenderMode;
   canvasThreshold?: number;
+  workerProcessing?: boolean;
+  viewportCulling?: boolean;
   hiddenSeries?: readonly string[];
   defaultHiddenSeries?: readonly string[];
   onHiddenSeriesChange?: (series: string[]) => void;
@@ -192,7 +195,7 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
     xScale = 'linear', yScale = 'linear', xDomain, yDomain, xAxis, yAxis, references = [], annotations = [], dataLabels = false, legend = {}, legendContent, visualMap, dataOptions, streamControls = false, streamAutoScroll = false, streamAnnouncement = false, viewport: controlledViewport, defaultViewport, interaction, sync,
     onViewportChange, onXDomainChange, onYDomainChange, onSelectionChange, onSelectedDataChange, onPointHover, onPointClick, onPointDoubleClick, onPointContextMenu, drilldownDepth, onDrilldown, onDrilldownBack,
     tooltipMode = 'nearest', tooltipTrigger = 'always', tooltipPosition = 'static', tooltipFormatter, tooltipContent,
-    renderMode = 'auto', canvasThreshold = 2000,
+    renderMode = 'auto', canvasThreshold = 2000, workerProcessing = false, viewportCulling = false,
     hiddenSeries: controlledHiddenSeries, defaultHiddenSeries = [], onHiddenSeriesChange, emptyContent = 'No chart data', orientation = 'vertical', ...native
   } = props;
   const [uncontrolledHiddenSeries, setUncontrolledHiddenSeries] = useState<readonly string[]>(defaultHiddenSeries);
@@ -272,7 +275,8 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
       if (!context) return;
       const marks: CanvasMark[] = prepared.flatMap<CanvasMark>((item, seriesIndex) => {
         const color = item.color ?? colors[seriesIndex % colors.length]!;
-        const points = (item.type === 'line' || item.type === 'area') ? minMaxDecimate(item.points, layout.plotWidth) : item.points;
+        const visible = viewportCulling ? cullChartPoints(item.points, { x: [layout.left, layout.left + layout.plotWidth], y: [layout.top, layout.top + layout.plotHeight] }) : item.points;
+        const points = (item.type === 'line' || item.type === 'area') ? minMaxDecimate(visible, layout.plotWidth) : visible;
         if (item.type === 'line') return [{ type: 'line' as const, points: points.map((point) => [point.x, point.y] as const), color }];
         if (item.type === 'area') return [{ type: 'area' as const, points: points.map((point) => [point.x, point.y] as const), baseline: item.stack && points[0] ? points[0].y0 : yMap(0), color, opacity: 0.3 }];
         if (item.type === 'bar') return points.map((point) => {
@@ -283,10 +287,21 @@ function CartesianChart<T>({ kind, ...props }: ChartProps<T> & { kind: ChartSeri
         });
         return points.map((point) => ({ type: 'point' as const, x: point.x, y: point.y, radius: item.type === 'bubble' ? point.radius : 3, color }));
       });
-      drawChartCanvas(context, marks, width, height, window.devicePixelRatio || 1);
+      if (workerProcessing && marks.some((mark) => mark.type === 'line' || mark.type === 'area')) {
+        void import('@simurgh-ui/core/chart-canvas').then(async ({ createChartWorker, runChartWorker }) => {
+          const worker = createChartWorker();
+          if (!worker) return drawChartCanvas(context, marks, width, height, window.devicePixelRatio || 1);
+          try {
+            const processed = await Promise.all(marks.map(async (mark) => mark.type === 'line' || mark.type === 'area'
+              ? { ...mark, points: (await runChartWorker<{ x: number; y: number }[]>(worker, { operation: 'decimate', points: mark.points.map(([x, y]) => ({ x, y })), width: layout.plotWidth })).map(({ x, y }) => [x, y] as const) }
+              : mark));
+            if (current) drawChartCanvas(context, processed, width, height, window.devicePixelRatio || 1);
+          } finally { worker.terminate(); }
+        });
+      } else drawChartCanvas(context, marks, width, height, window.devicePixelRatio || 1);
     });
     return () => { current = false; };
-  }, [useCanvas, prepared, layout.plotWidth, width, height]);
+  }, [useCanvas, prepared, layout.plotWidth, layout.left, layout.top, layout.plotHeight, width, height, workerProcessing, viewportCulling]);
   const summary = chartSummary(flat.map((item) => item.yValue));
   const decorative = 'decorative' in accessibility && accessibility.decorative;
   const table = !decorative && accessibility.table;

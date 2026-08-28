@@ -63,7 +63,11 @@ export function createChartWorker(): Worker | null {
   });
 }
 
-export function runChartWorker<T>(worker: Worker, request: Omit<ChartWorkerRequest, 'id'>): Promise<T> {
+export type ChartWorkerInput =
+  | { operation: 'decimate'; points: { x: number; y: number }[]; width: number }
+  | { operation: 'heatmap'; points: { x: number; y: number; value?: number }[]; columns: number; rows: number };
+
+export function runChartWorker<T>(worker: Worker, request: ChartWorkerInput): Promise<T> {
   const id = workerRequestId++;
   return new Promise<T>((resolve, reject) => {
     const listener = (event: MessageEvent<ChartWorkerResponse>) => {

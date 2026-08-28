@@ -442,6 +442,23 @@ export function minMaxDecimate<T extends { x: number; y: number }>(
   return result.sort((a, b) => a.x - b.x);
 }
 
+/** Keep points that can contribute pixels inside the visible plot viewport. */
+export function cullChartPoints<T extends { x: number; y: number }>(
+  points: readonly T[],
+  bounds: { x?: readonly [number, number]; y?: readonly [number, number] },
+): T[] {
+  const x = bounds.x;
+  const y = bounds.y;
+  if (!x && !y) return [...points];
+  const result: T[] = [];
+  for (const point of points) {
+    if (x && (point.x < Math.min(x[0], x[1]) || point.x > Math.max(x[0], x[1]))) continue;
+    if (y && (point.y < Math.min(y[0], y[1]) || point.y > Math.max(y[0], y[1]))) continue;
+    result.push(point);
+  }
+  return result;
+}
+
 export type HeatmapBin = { x: number; y: number; value: number; count: number };
 export function heatmapBins(
   points: readonly { x: number; y: number; value?: number }[],

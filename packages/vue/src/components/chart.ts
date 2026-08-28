@@ -25,6 +25,7 @@ import {
   prepareChartData,
   interpolateChartValues,
   chartCurvePath,
+  cullChartPoints,
   type ChartVisualMap,
   type ChartDataOptions,
   type ChartAccessor,
@@ -97,6 +98,8 @@ const commonProps = {
   yScale: { type: String as PropType<'linear' | 'time' | 'log'>, default: 'linear' },
   renderMode: { type: String as PropType<'auto' | 'svg' | 'canvas'>, default: 'auto' },
   canvasThreshold: { type: Number, default: 2000 },
+  workerProcessing: Boolean,
+  viewportCulling: Boolean,
   hiddenSeries: Array as PropType<readonly string[]>,
   defaultHiddenSeries: { type: Array as PropType<readonly string[]>, default: () => [] },
   innerRadius: Number,
@@ -354,13 +357,22 @@ function cartesian(kind: ChartSeriesType | 'combo') {
               if (!context) return;
               const marks: CanvasMark[] = prepared.flatMap<CanvasMark>((item, seriesIndex) => {
                 const color = item.color ?? colors[seriesIndex % colors.length]!;
-                const points = (item.type === 'line' || item.type === 'area') ? minMaxDecimate(item.points, layout.plotWidth) : item.points;
+                const visible = props.viewportCulling ? cullChartPoints(item.points, { x: [layout.left, layout.left + layout.plotWidth], y: [layout.top, layout.top + layout.plotHeight] }) : item.points;
+                const points = (item.type === 'line' || item.type === 'area') ? minMaxDecimate(visible, layout.plotWidth) : visible;
                 if (item.type === 'line') return [{ type: 'line', points: points.map((point) => [point.x, point.y]), color }];
                 if (item.type === 'area') return [{ type: 'area', points: points.map((point) => [point.x, point.y]), baseline: points[0]?.y0 ?? baseline, color, opacity: 0.3 }];
                 if (item.type === 'bar') return item.points.map((point) => { const origin = item.stack ? point.y0 : baseline; return { type: 'rect' as const, x: point.x - (bands?.bandwidth ?? 8) / 2, y: Math.min(point.y, origin), width: bands?.bandwidth ?? 8, height: Math.abs(point.y - origin), color }; });
                 return item.points.map((point) => ({ type: 'point' as const, x: point.x, y: point.y, radius: item.type === 'bubble' ? point.radius : 3, color }));
               });
-              drawChartCanvas(context, marks, props.width, props.height, globalThis.devicePixelRatio || 1);
+              if (props.workerProcessing && marks.some((mark) => mark.type === 'line' || mark.type === 'area')) {
+                const { createChartWorker, runChartWorker } = await import('@simurgh-ui/core/chart-canvas');
+                const worker = createChartWorker();
+                if (!worker) drawChartCanvas(context, marks, props.width, props.height, globalThis.devicePixelRatio || 1);
+                else try {
+                  const processed = await Promise.all(marks.map(async (mark) => mark.type === 'line' || mark.type === 'area' ? { ...mark, points: (await runChartWorker<{ x: number; y: number }[]>(worker, { operation: 'decimate', points: mark.points.map(([x, y]) => ({ x, y })), width: layout.plotWidth })).map(({ x, y }) => [x, y] as const) } : mark));
+                  drawChartCanvas(context, processed, props.width, props.height, globalThis.devicePixelRatio || 1);
+                } finally { worker.terminate(); }
+              } else drawChartCanvas(context, marks, props.width, props.height, globalThis.devicePixelRatio || 1);
             });
           }
         }
