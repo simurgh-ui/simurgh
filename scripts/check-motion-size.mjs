@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
 const budget = 5 * 1024;
-const entries = ['index', 'react', 'vue', 'angular'];
+const entries = ['index', 'react', 'vue', 'angular', 'scroll', 'layout'];
 const external = [
   'react',
   'react/*',

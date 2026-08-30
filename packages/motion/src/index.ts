@@ -1,10 +1,16 @@
 export type ReducedMotionMode = 'user' | 'always' | 'never';
 export type MotionValue = string | number | Array<string | number>;
-export type MotionKeyframes = Keyframe & {
+export type MotionKeyframes = Omit<Keyframe, 'transform'> & {
+  transform?: MotionValue;
   x?: MotionValue;
   y?: MotionValue;
   scale?: MotionValue;
+  scaleX?: MotionValue;
+  scaleY?: MotionValue;
   rotate?: MotionValue;
+  skewX?: MotionValue;
+  skewY?: MotionValue;
+  transformOrigin?: string | Array<string>;
 };
 export type MotionTarget = MotionKeyframes | MotionKeyframes[];
 
@@ -19,6 +25,8 @@ export type MotionTransition = {
   repeat?: number;
   direction?: PlaybackDirection;
   fill?: FillMode;
+  stagger?: number | ((index: number, total: number) => number);
+  velocity?: number;
 };
 
 export type MotionVariant = MotionTarget & { transition?: MotionTransition };
@@ -51,11 +59,20 @@ export type MotionBinding = (() => void) & {
   readonly controls: MotionControls;
 };
 
-const transforms = new Set(['x', 'y', 'scale', 'rotate']);
+const transforms = new Set([
+  'x',
+  'y',
+  'scale',
+  'scaleX',
+  'scaleY',
+  'rotate',
+  'skewX',
+  'skewY',
+]);
 const unit = (name: string, value: string | number) =>
   typeof value === 'number' && (name === 'x' || name === 'y')
     ? `${value}px`
-    : typeof value === 'number' && name === 'rotate'
+    : typeof value === 'number' && (name === 'rotate' || name.startsWith('skew'))
       ? `${value}deg`
       : String(value);
 
@@ -132,6 +149,7 @@ function springFrames(
     transition.duration ??
     Math.min(1, Math.max(0.25, 6 / (omega * Math.max(ratio, 0.1))));
   const samples = Math.max(12, Math.ceil(duration * 60));
+  const velocity = transition.velocity ?? 0;
   const interpolate = (from: unknown, to: unknown, progress: number) => {
     if (typeof from === 'number' && typeof to === 'number')
       return from + (to - from) * progress;
@@ -155,7 +173,7 @@ function springFrames(
         ? 1 -
           Math.exp(-ratio * omega * t) *
             (Math.cos(omega * Math.sqrt(1 - ratio ** 2) * t) +
-              (ratio / Math.sqrt(1 - ratio ** 2)) *
+              ((ratio - velocity / omega) / Math.sqrt(1 - ratio ** 2)) *
                 Math.sin(omega * Math.sqrt(1 - ratio ** 2) * t))
         : 1 - Math.exp(-omega * t) * (1 + omega * t);
     const frame: Record<string, unknown> = { offset: index / samples };
@@ -233,10 +251,61 @@ export function animate(
     pause: () => animation.pause(),
     cancel() {
       cancelled = true;
+      animation.commitStyles?.();
       animation.cancel();
     },
     finish: () => animation.finish(),
   };
+}
+
+export type MotionTargets = Element | Iterable<Element>;
+export type MotionBatchTransition = MotionTransition & {
+  stagger?: number | ((index: number, total: number) => number);
+};
+
+function targetList(targets: MotionTargets): Element[] {
+  return (typeof Element !== 'undefined' && targets instanceof Element) ||
+    typeof (targets as Element).animate === 'function'
+    ? [targets as Element]
+    : Array.from(targets as Iterable<Element>);
+}
+
+function groupControls(controls: MotionControls[]): MotionControls {
+  if (!controls.length) return inertControls();
+  return {
+    finished: Promise.all(controls.map((control) => control.finished)).then(
+      () => undefined,
+    ),
+    get playState() {
+      return controls.some((control) => control.playState === 'running')
+        ? 'running'
+        : controls[0]?.playState ?? 'idle';
+    },
+    play: () => controls.forEach((control) => control.play()),
+    pause: () => controls.forEach((control) => control.pause()),
+    cancel: () => controls.forEach((control) => control.cancel()),
+    finish: () => controls.forEach((control) => control.finish()),
+  };
+}
+
+export function animateAll(
+  targets: MotionTargets,
+  keyframes: MotionTarget,
+  transition: MotionBatchTransition = {},
+): MotionControls {
+  const elements = targetList(targets);
+  const { stagger = 0, ...options } = transition;
+  const controls = elements.map((element, index) =>
+    animate(element, keyframes, {
+      ...options,
+      delay:
+        (options.delay ?? 0) +
+        (typeof stagger === 'function'
+          ? stagger(index, elements.length)
+          : stagger * index),
+    }),
+  );
+  return groupControls(controls);
 }
 
 export function resolveTarget(
@@ -327,6 +396,50 @@ export function sequence(
     },
     finish: () => current?.finish(),
   };
+}
+
+export type MotionTimelineStep = {
+  target: MotionTargets;
+  keyframes: MotionTarget;
+  transition?: MotionTransition;
+  at?: number | string;
+};
+
+export type MotionTimelineOptions = {
+  labels?: Record<string, number>;
+};
+
+function transitionLength(transition: MotionTransition = {}): number {
+  return (
+    (transition.delay ?? 0) +
+    (transition.duration ?? (transition.type === 'spring' ? 0.5 : 0.16)) *
+      ((transition.repeat ?? 0) + 1)
+  );
+}
+
+export function timeline(
+  steps: MotionTimelineStep[],
+  options: MotionTimelineOptions = {},
+): MotionControls {
+  let cursor = 0;
+  const controls: MotionControls[] = [];
+  for (const step of steps) {
+    const transition = step.transition ?? {};
+    const start =
+      step.at == null
+        ? cursor
+        : typeof step.at === 'number'
+          ? step.at
+          : options.labels?.[step.at] ?? cursor;
+    const duration = transitionLength(transition);
+    const targetControls = animateAll(step.target, step.keyframes, {
+      ...transition,
+      delay: (transition.delay ?? 0) + start,
+    });
+    controls.push(targetControls);
+    cursor = Math.max(cursor, start + duration);
+  }
+  return groupControls(controls);
 }
 
 export function bindMotion(

@@ -33,6 +33,14 @@
     "./angular": {
       "types": "./dist/angular.d.ts",
       "default": "./dist/angular.js"
+    },
+    "./scroll": {
+      "types": "./dist/scroll.d.ts",
+      "import": "./dist/scroll.js"
+    },
+    "./layout": {
+      "types": "./dist/layout.d.ts",
+      "import": "./dist/layout.js"
     }
   },
   "files": [

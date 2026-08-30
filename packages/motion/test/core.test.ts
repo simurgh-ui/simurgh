@@ -1,10 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   animate,
+  animateAll,
   prefersReducedMotion,
   sequence,
+  timeline,
   toKeyframes,
 } from '../src/index.js';
+import { layout } from '../src/layout.js';
 
 function mockElement() {
   const animation = {
@@ -14,6 +17,7 @@ function mockElement() {
     pause: vi.fn(),
     cancel: vi.fn(),
     finish: vi.fn(),
+    commitStyles: vi.fn(),
   };
   const element = {
     animate: vi.fn(() => animation as unknown as Animation),
@@ -104,5 +108,82 @@ describe('motion engine', () => {
     expect(prefersReducedMotion()).toBe(true);
     expect(prefersReducedMotion('never')).toBe(false);
     vi.unstubAllGlobals();
+  });
+
+  it('animates batches with numeric and functional stagger', () => {
+    const first = mockElement();
+    const second = mockElement();
+    const third = mockElement();
+    animateAll(
+      [first.element, second.element, third.element],
+      { opacity: [0, 1] },
+      { duration: 0.2, stagger: (index) => index * 0.05 },
+    );
+    expect(first.element.animate).toHaveBeenCalledWith(
+      expect.any(Array),
+      expect.objectContaining({ delay: 0 }),
+    );
+    expect(second.element.animate).toHaveBeenCalledWith(
+      expect.any(Array),
+      expect.objectContaining({ delay: 50 }),
+    );
+    expect(third.element.animate).toHaveBeenCalledWith(
+      expect.any(Array),
+      expect.objectContaining({ delay: 100 }),
+    );
+  });
+
+  it('supports timeline offsets and labels', () => {
+    const first = mockElement();
+    const second = mockElement();
+    timeline(
+      [
+        { target: first.element, keyframes: { opacity: [0, 1] }, transition: { duration: 0.2 } },
+        { target: second.element, keyframes: { x: [0, 10] }, at: 'detail' },
+      ],
+      { labels: { detail: 0.4 } },
+    );
+    expect(second.element.animate).toHaveBeenCalledWith(
+      expect.any(Array),
+      expect.objectContaining({ delay: 400 }),
+    );
+  });
+
+  it('expands scale axes and skew transforms', () => {
+    expect(toKeyframes({ scaleX: [1, 2], skewY: [0, 15] })).toEqual([
+      { transform: 'scaleX(1) skewY(0deg)' },
+      { transform: 'scaleX(2) skewY(15deg)' },
+    ]);
+  });
+
+  it('preserves the current animation style when interrupted', () => {
+    const { element, animation } = mockElement();
+    animate(element, { opacity: [0, 1] }).cancel();
+    expect(animation.commitStyles).toHaveBeenCalledOnce();
+    expect(animation.cancel).toHaveBeenCalledOnce();
+  });
+
+  it('creates per-element FLIP keyframes for layout changes', () => {
+    let first = true;
+    const animateMock = vi.fn(() => ({
+      finished: Promise.resolve(),
+      playState: 'running' as AnimationPlayState,
+      play: vi.fn(),
+      pause: vi.fn(),
+      cancel: vi.fn(),
+      finish: vi.fn(),
+    } as unknown as Animation));
+    const element = {
+      getBoundingClientRect: vi.fn(() =>
+        first
+          ? { left: 0, top: 0, width: 100, height: 100 }
+          : { left: 20, top: 10, width: 200, height: 150 },
+      ),
+      animate: animateMock,
+    } as unknown as Element;
+    layout(element, () => { first = false; });
+    const frames = animateMock.mock.calls[0]?.[0] as Keyframe[];
+    expect(frames[0]?.transform).toContain('translate(-20px, -10px)');
+    expect(frames[0]?.transform).toContain('scale(0.5, 0.6666666666666666)');
   });
 });

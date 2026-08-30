@@ -6,5 +6,7 @@ describe('SSR', () => {
     await expect(import('../src/react.js')).resolves.toBeTruthy();
     await expect(import('../src/vue.js')).resolves.toBeTruthy();
     await expect(import('../src/angular.js')).resolves.toBeTruthy();
+    await expect(import('../src/scroll.js')).resolves.toBeTruthy();
+    await expect(import('../src/layout.js')).resolves.toBeTruthy();
   }, 20_000);
 });

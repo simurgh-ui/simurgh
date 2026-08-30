@@ -7,6 +7,7 @@ import ComponentPreview from '../../../components/ComponentPreview.astro';
 import MotionExamples from '../../../components/MotionExamples';
 import MotionPatternExamples from '../../../components/MotionPatternExamples';
 import MotionChoreographyExamples from '../../../components/MotionChoreographyExamples';
+import MotionCapabilityExamples from '../../../components/MotionCapabilityExamples';
 
 `@simurgh-ui/motion` adds purposeful animation without changing the default behavior of Simurgh
 components. Durations and delays use seconds. The engine uses the Web Animations API and imports
@@ -73,6 +74,101 @@ plugin or browser-global setup is required.
 <ComponentPreview title="Choreographed motion" kind="live">
   <MotionChoreographyExamples client:load />
 </ComponentPreview>
+
+## New motion capabilities
+
+The six capability additions are available as small, composable primitives. The live examples
+below show the intended usage and preserve the same reduced-motion and cancellation contracts as
+the base API.
+
+<ComponentPreview title="Motion capabilities" kind="live">
+  <MotionCapabilityExamples client:load />
+</ComponentPreview>
+
+### Timeline choreography
+
+Use `timeline` for sequential and overlapping scenes. Unpositioned steps begin after the previous
+step; `at` accepts seconds or a label from the second argument.
+
+```ts
+import { timeline } from '@simurgh-ui/motion';
+
+const controls = timeline([
+  { target: heading, keyframes: { opacity: [0, 1] }, transition: { duration: 0.2 } },
+  { target: content, keyframes: { y: [12, 0], opacity: [0, 1] }, at: 'content' },
+], { labels: { content: 0.16 } });
+```
+
+### Multi-target staggering
+
+`animateAll` accepts an `Element`, `NodeList`, or any iterable of elements. A stagger callback
+returns the delay for each element in seconds.
+
+```ts
+import { animateAll } from '@simurgh-ui/motion';
+
+animateAll(document.querySelectorAll('[data-motion-item]'), { opacity: [0, 1], y: [8, 0] }, {
+  duration: 0.28,
+  stagger: (index) => index * 0.05,
+});
+```
+
+### Velocity-aware springs and interruption
+
+Cancelling an animation commits its current visual state before replacing it. Pass `velocity` to
+the next spring when a gesture or interaction provides directional momentum.
+
+```ts
+import { animate } from '@simurgh-ui/motion';
+
+const controls = animate(button, { x: [0, 48] }, {
+  type: 'spring',
+  stiffness: 240,
+  damping: 22,
+  velocity: 0.8,
+});
+controls.cancel();
+```
+
+### Scroll-linked animation
+
+Import the scroll helper separately. Its normalized range uses the element's top edge in viewport
+coordinates; the default range is viewport bottom to viewport top.
+
+```ts
+import { scroll } from '@simurgh-ui/motion/scroll';
+
+const controls = scroll(panel, { opacity: [0, 1], y: [24, 0] }, {
+  range: [window.innerHeight, 0],
+  once: false,
+});
+```
+
+### FLIP layout animation
+
+Import `layout` separately for a synchronous DOM update. The helper captures the first box, runs
+the update, captures the last box, and animates the inverse transform away.
+
+```ts
+import { layout } from '@simurgh-ui/motion/layout';
+
+layout(card, () => card.classList.toggle('expanded'), {
+  transition: { type: 'spring', stiffness: 240, damping: 24 },
+});
+```
+
+### Keeping the bundle boundary explicit
+
+The base import contains the shared WAAPI engine, timeline, batching, and spring support. Scroll
+and layout are opt-in subpaths, so applications that do not use those capabilities do not include
+their measurement or scroll orchestration code.
+
+```ts
+import { animate, animateAll, timeline } from '@simurgh-ui/motion';
+// Only add these imports when the feature is needed:
+import { scroll } from '@simurgh-ui/motion/scroll';
+import { layout } from '@simurgh-ui/motion/layout';
+```
 
 An `x` array and a `y` array with matching lengths approximate a path through a series of points.
 This is useful for small decorative routes; use a dedicated path engine when an object must follow
