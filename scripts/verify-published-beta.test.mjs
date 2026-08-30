@@ -9,6 +9,7 @@ const packageDirectories = [
   'cli',
   'core',
   'icons',
+  'mcp',
   'motion',
   'react',
   'registry',
@@ -70,7 +71,7 @@ test('verifies all staged beta versions and strips registry metadata', async () 
   const evidence = await verifyPublishedBeta({
     fetchRegistry: registryFetch(),
   });
-  assert.equal(evidence.packageCount, 9);
+  assert.equal(evidence.packageCount, 10);
   assert.equal(
     evidence.packages.every((entry) => entry.betaTag === entry.version),
     true,
@@ -81,6 +82,7 @@ test('rejects packages without provenance', async () => {
   await assert.rejects(
     verifyPublishedBeta({
       fetchRegistry: registryFetch({ missingProvenance: true }),
+      maxAttempts: 1,
     }),
     /provenance attestation is missing/,
   );
@@ -98,4 +100,27 @@ test('records direct publication without claiming provenance', async () => {
     evidence.packages.every((entry) => entry.provenanceAttestation == null),
     true,
   );
+});
+
+test('retries while a published version propagates through the registry', async () => {
+  let requests = 0;
+  const fetchRegistry = registryFetch();
+  const evidence = await verifyPublishedBeta({
+    fetchRegistry: async (url) => {
+      requests += 1;
+      if (requests === 1)
+        return {
+          ok: true,
+          async json() {
+            return { 'dist-tags': {}, versions: {} };
+          },
+        };
+      return fetchRegistry(url);
+    },
+    maxAttempts: 2,
+    retryDelayMs: 0,
+    wait: async () => {},
+  });
+  assert.equal(evidence.packageCount, 10);
+  assert.equal(requests, 11);
 });

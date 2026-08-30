@@ -2,6 +2,12 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      verify_only:
+        description: Verify an already-published release without publishing again
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: simurgh-release
@@ -39,8 +45,10 @@ jobs:
       - run: pnpm test:quick-starts
       - run: pnpm test:tarballs
       - run: pnpm bundle:size
-      - run: node scripts/check-registry-versions.mjs --publish
-      - run: pnpm release
+      - if: ${{ !inputs.verify_only }}
+        run: node scripts/check-registry-versions.mjs --publish
+      - if: ${{ !inputs.verify_only }}
+        run: pnpm release
         env:
           NPM_CONFIG_PROVENANCE: 'true'
       - run: node scripts/verify-published-beta.mjs
