@@ -1,0 +1,51 @@
+{
+  "name": "@simurgh-ui/lit",
+  "version": "0.3.2-beta.3",
+  "description": "Accessible Simurgh UI web components built with Lit.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simurgh-ui/simurgh.git",
+    "directory": "packages/lit"
+  },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": {
+    "url": "https://github.com/simurgh-ui/simurgh/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "sideEffects": true,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test"
+  },
+  "dependencies": {
+    "@simurgh-ui/core": "workspace:*",
+    "lit": "^3.3.1"
+  },
+  "peerDependencies": {
+    "lit": ">=3"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7",
+    "typescript": "^5.9.3"
+  }
+}

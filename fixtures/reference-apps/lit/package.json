@@ -1,0 +1,18 @@
+{
+  "name": "simurgh-lit-starter",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@simurgh-ui/lit": "^0.3.2-beta.3",
+    "@simurgh-ui/styles": "^0.2.2-beta.1",
+    "lit": "^3.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vite": "^6.4.0"
+  }
+}
