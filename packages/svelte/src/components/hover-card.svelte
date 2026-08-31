@@ -1,0 +1,2 @@
+<script lang="ts">let { trigger, children, ...rest }: { trigger?: import('svelte').Snippet; children?: import('svelte').Snippet; [key: string]: unknown } = $props(); let open = $state(false);</script>
+<span {...rest} data-slot="hover-card" onmouseenter={() => open = true} onmouseleave={() => open = false} onfocusin={() => open = true} onfocusout={() => open = false}><span data-slot="hover-card-trigger">{@render trigger?.()}</span><span data-slot="hover-card-content" data-state={open ? 'open' : 'closed'} hidden={!open}>{@render children?.()}</span></span>

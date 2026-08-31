@@ -1,0 +1,2 @@
+<script lang="ts">type Item = { href: string; label: string; current?: boolean }; let { items = [], label = 'Main navigation', ...rest }: { items?: Item[]; label?: string; [key: string]: unknown } = $props();</script>
+<nav {...rest} aria-label={label} data-slot="navigation-menu"><ul>{#each items as item}<li><a href={item.href} aria-current={item.current ? 'page' : undefined} data-slot="navigation-menu-link">{item.label}</a></li>{/each}</ul></nav>

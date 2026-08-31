@@ -1,0 +1,2 @@
+<script lang="ts">type Item = { term: string; details: string }; let { items = [], children, ...rest }: { items?: Item[]; children?: import('svelte').Snippet; [key: string]: unknown } = $props();</script>
+<dl {...rest} data-slot="description-list">{#each items as item}<div data-slot="description-list-group"><dt data-slot="description-list-term">{item.term}</dt><dd data-slot="description-list-details">{item.details}</dd></div>{/each}{@render children?.()}</dl>
