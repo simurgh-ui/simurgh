@@ -15,10 +15,13 @@ describe('registry manifest', () => {
 
   it('defines non-empty symbols for every component and framework', () => {
     for (const framework of frameworks) {
-      expect(Object.keys(manifest.symbols[framework]).sort()).toEqual(
-        [...manifest.components].sort(),
+      const supported = manifest.frameworks[framework].components ?? manifest.components;
+      const symbolFramework = manifest.frameworks[framework].symbolsFrom ?? framework;
+      const symbols = manifest.symbols[symbolFramework] ?? manifest.newFrameworkSymbols?.[framework] ?? {};
+      expect(Object.keys(symbols).sort()).toEqual(
+        [...supported].sort(),
       );
-      for (const component of manifest.components) {
+      for (const component of supported) {
         const entry = registryEntry(component, framework);
         expect(
           entry.symbols.length,

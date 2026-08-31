@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import {
   cp,
   mkdir,
@@ -13,15 +14,40 @@ import { basename, extname, resolve } from 'node:path';
 import { build } from 'esbuild';
 
 const root = resolve(import.meta.dirname, '..');
+const { compile } = createRequire(
+  resolve(root, 'packages/svelte/package.json'),
+)('svelte/compiler');
+const sveltePlugin = {
+  name: 'svelte-client',
+  setup(buildContext) {
+    buildContext.onLoad({ filter: /\.svelte$/ }, async ({ path }) => {
+      const source = await readFile(path, 'utf8');
+      const result = compile(source, {
+        filename: path,
+        generate: 'client',
+        css: 'injected',
+        dev: false,
+      });
+      return {
+        contents: result.js.code,
+        loader: 'js',
+        resolveDir: resolve(path, '..'),
+      };
+    });
+  },
+};
 const directories = [
   'angular',
   'cli',
   'core',
   'icons',
+  'lit',
   'motion',
+  'preact',
   'react',
   'registry',
   'styles',
+  'svelte',
   'vue',
 ];
 const temporaryRoot = await mkdtemp(resolve(tmpdir(), 'simurgh-packed-'));
@@ -88,6 +114,10 @@ try {
   Object.assign(dependencies, {
     react: `file:${resolve(root, 'packages/react/node_modules/react').replaceAll('\\', '/')}`,
     'react-dom': `file:${resolve(root, 'packages/react/node_modules/react-dom').replaceAll('\\', '/')}`,
+    preact: `file:${resolve(root, 'packages/preact/node_modules/preact').replaceAll('\\', '/')}`,
+    'preact-render-to-string': `file:${resolve(root, 'packages/preact/node_modules/preact-render-to-string').replaceAll('\\', '/')}`,
+    lit: `file:${resolve(root, 'packages/lit/node_modules/lit').replaceAll('\\', '/')}`,
+    svelte: `file:${resolve(root, 'packages/svelte/node_modules/svelte').replaceAll('\\', '/')}`,
     vue: `file:${resolve(root, 'packages/vue/node_modules/vue').replaceAll('\\', '/')}`,
     '@vue/server-renderer': `file:${resolve(root, 'packages/vue/node_modules/@vue/server-renderer').replaceAll('\\', '/')}`,
     '@angular/common': `file:${resolve(root, 'packages/angular/node_modules/@angular/common').replaceAll('\\', '/')}`,
@@ -179,24 +209,48 @@ try {
 
   const starterRoot = resolve(consumerRoot, 'starters');
   await mkdir(starterRoot, { recursive: true });
-  await cp(resolve(root, 'fixtures/reference-apps/theme.css'), resolve(starterRoot, 'theme.css'));
-  for (const framework of ['react', 'vue', 'angular']) {
-    const extension = framework === 'react' ? 'tsx' : 'ts';
+  await cp(
+    resolve(root, 'fixtures/reference-apps/theme.css'),
+    resolve(starterRoot, 'theme.css'),
+  );
+  const starterFrameworks = [
+    'react',
+    'preact',
+    'vue',
+    'angular',
+    'svelte',
+    'lit',
+  ];
+  for (const framework of starterFrameworks) {
+    const extension =
+      framework === 'react' || framework === 'preact' ? 'tsx' : 'ts';
     const sourceRoot = resolve(root, 'fixtures/reference-apps', framework);
     const targetRoot = resolve(starterRoot, framework);
     await cp(sourceRoot, targetRoot, { recursive: true });
-    const manifest = JSON.parse(await readFile(resolve(targetRoot, 'package.json'), 'utf8'));
-    const viteConfig = await readFile(resolve(targetRoot, 'vite.config.ts'), 'utf8');
+    const manifest = JSON.parse(
+      await readFile(resolve(targetRoot, 'package.json'), 'utf8'),
+    );
+    const viteConfig = await readFile(
+      resolve(targetRoot, 'vite.config.ts'),
+      'utf8',
+    );
     if (
       manifest.scripts?.build !== 'vite build' ||
       !manifest.devDependencies?.vite ||
       !viteConfig.includes("target: 'es2022'") ||
       !viteConfig.includes('sourcemap: false')
     )
-      throw new Error(`${framework} starter lacks its maintained production build configuration.`);
-    for (const packageName of [`@simurgh-ui/${framework}`, '@simurgh-ui/styles']) {
+      throw new Error(
+        `${framework} starter lacks its maintained production build configuration.`,
+      );
+    for (const packageName of [
+      `@simurgh-ui/${framework}`,
+      '@simurgh-ui/styles',
+    ]) {
       if (manifest.dependencies?.[packageName] !== `^${versions[packageName]}`)
-        throw new Error(`${framework} starter must track packed ${packageName}@${versions[packageName]}.`);
+        throw new Error(
+          `${framework} starter must track packed ${packageName}@${versions[packageName]}.`,
+        );
     }
     const entry = resolve(targetRoot, `main.${extension}`);
     const result = await build({
@@ -208,14 +262,21 @@ try {
         'react/*',
         'react-dom',
         'react-dom/*',
+        'preact',
+        'preact/*',
         'vue',
         'vue/*',
         '@angular/*',
+        'svelte',
+        'svelte/*',
+        'lit',
+        'lit/*',
         'rxjs',
         'tslib',
       ],
       format: 'esm',
       logLevel: 'silent',
+      plugins: framework === 'svelte' ? [sveltePlugin] : [],
       nodePaths: [resolve(consumerRoot, 'node_modules')],
       outdir: 'out',
       platform: 'browser',
@@ -228,7 +289,7 @@ try {
       throw new Error(`${framework} packed-package starter lacks CSS.`);
   }
   process.stdout.write(
-    `Packed, installed, type-resolved, and bundled ${directories.length} packages through 3 maintained starters.\n`,
+    `Packed, installed, type-resolved, and bundled ${directories.length} packages through ${starterFrameworks.length} maintained starters.\n`,
   );
 } finally {
   await rm(temporaryRoot, { recursive: true, force: true });

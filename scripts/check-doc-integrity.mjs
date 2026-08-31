@@ -7,8 +7,11 @@ const docsRoot = resolve(root, 'apps/docs/src/content/docs');
 const publicRoot = resolve(root, 'apps/docs/public');
 const packageRoots = new Map([
   ['react', resolve(root, 'packages/react')],
+  ['preact', resolve(root, 'packages/preact')],
   ['vue', resolve(root, 'packages/vue')],
   ['angular', resolve(root, 'packages/angular')],
+  ['svelte', resolve(root, 'packages/svelte')],
+  ['lit', resolve(root, 'packages/lit')],
   ['motion', resolve(root, 'packages/motion')],
   ['icons', resolve(root, 'packages/icons')],
   ['styles', resolve(root, 'packages/styles')],

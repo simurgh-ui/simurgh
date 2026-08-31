@@ -1,13 +1,20 @@
 import { build } from 'esbuild';
+import { createRequire } from 'node:module';
 import { access, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import process from 'node:process';
 
 const root = resolve(import.meta.dirname, '..');
-const frameworks = ['react', 'vue', 'angular'];
+const { compile } = createRequire(
+  resolve(root, 'packages/svelte/package.json'),
+)('svelte/compiler');
+const frameworks = ['react', 'preact', 'vue', 'angular', 'svelte', 'lit'];
 const external = [
   'react',
   'react-dom',
+  'preact',
+  'preact/compat',
+  'preact/jsx-runtime',
   'vue',
   '@angular/common',
   '@angular/core',
@@ -15,7 +22,29 @@ const external = [
   'rxjs',
   'tslib',
   'zone.js',
+  'svelte/*',
+  'lit',
+  'lit/*',
 ];
+const sveltePlugin = {
+  name: 'svelte-client',
+  setup(buildContext) {
+    buildContext.onLoad({ filter: /\.svelte$/ }, async ({ path }) => {
+      const source = await readFile(path, 'utf8');
+      const result = compile(source, {
+        filename: path,
+        generate: 'client',
+        css: 'injected',
+        dev: false,
+      });
+      return {
+        contents: result.js.code,
+        loader: 'js',
+        resolveDir: resolve(path, '..'),
+      };
+    });
+  },
+};
 
 for (const framework of frameworks) {
   const packageRoot = resolve(root, 'packages', framework);
@@ -42,7 +71,7 @@ for (const framework of frameworks) {
     absWorkingDir: root,
     bundle: true,
     entryPoints: [
-      `fixtures/quick-starts/${framework}.${framework === 'react' ? 'tsx' : 'ts'}`,
+      `fixtures/quick-starts/${framework}.${framework === 'react' || framework === 'preact' ? 'tsx' : framework === 'svelte' ? 'svelte' : 'ts'}`,
     ],
     external,
     format: 'esm',
@@ -51,6 +80,7 @@ for (const framework of frameworks) {
       '@simurgh-ui/styles/button.css': styleTarget,
     },
     logLevel: 'silent',
+    plugins: framework === 'svelte' ? [sveltePlugin] : [],
     outdir: 'out',
     platform: 'browser',
     tsconfig: resolve(root, 'tsconfig.base.json'),

@@ -1,8 +1,8 @@
 # Production reference and starter applications
 
 These deliberately small applications import public package subpaths exactly as a consumer does.
-Each React, Vue, and Angular client includes a theme override, a native form, and a portalled overlay.
-Each framework also has a server entry; the verifier executes React and Vue SSR and production-bundles
+Each React, Preact, Vue, Angular, Svelte, and Lit client includes a theme override, a native form, and an overlay.
+Each framework also has a server entry; the verifier executes every non-Angular server output and production-bundles
 the Angular server entry alongside its existing runtime hydration contract.
 
 Each framework directory is also a standalone Vite starter with an `index.html`, package manifest,
@@ -11,7 +11,7 @@ the shared `theme.css`, install its dependencies, then run `pnpm build`. Publish
 are pinned to compatible minor lines so an update remains an intentional application change.
 
 Run `pnpm build` followed by `pnpm test:references`. The verifier requires JavaScript and CSS output
-for every client, compiles every server, renders the React and Vue server output without browser
+for every client, compiles every server, renders the React, Preact, Vue, Svelte, and Lit server output without browser
 globals, and fails if any required component or theme import is removed. `pnpm test:tarballs` copies
 these same maintained sources into an isolated consumer and bundles them against freshly packed
 Simurgh artifacts, preventing workspace source resolution from hiding package defects.

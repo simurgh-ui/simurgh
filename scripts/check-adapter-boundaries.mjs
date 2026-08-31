@@ -16,13 +16,18 @@ for (const [framework, frameworkConfig] of Object.entries(
     await readFile(resolve(packageRoot, 'package.json'), 'utf8'),
   );
   const wildcard = manifest.exports?.['./*'];
-  if (!wildcard?.types?.includes('dist/components/*.d.ts')) {
+  const outputExtension = framework === 'svelte' ? 'svelte' : 'js';
+  const declarationPattern =
+    framework === 'svelte'
+      ? 'dist/components/*.svelte.d.ts'
+      : 'dist/components/*.d.ts';
+  if (!wildcard?.types?.includes(declarationPattern)) {
     failures.push(
       `${framework}: wildcard types do not resolve component modules`,
     );
   }
   const runtimeTarget = wildcard?.import ?? wildcard?.default;
-  if (!runtimeTarget?.includes('dist/components/*.js')) {
+  if (!runtimeTarget?.includes(`dist/components/*.${outputExtension}`)) {
     failures.push(
       `${framework}: wildcard runtime does not resolve component modules`,
     );
@@ -38,7 +43,10 @@ for (const [framework, frameworkConfig] of Object.entries(
       failures.push(`${framework}/${component}: depends on the root barrel`);
     }
 
-    const outputPath = resolve(packageRoot, `dist/components/${component}.js`);
+    const outputPath = resolve(
+      packageRoot,
+      `dist/components/${component}.${outputExtension}`,
+    );
     const output = await readFile(outputPath, 'utf8').catch(() => null);
     if (output === null) {
       failures.push(`${framework}/${component}: missing built subpath output`);
@@ -55,6 +63,6 @@ if (failures.length > 0) {
   process.exitCode = 1;
 } else {
   process.stdout.write(
-    `Validated ${registry.components.length} barrel-independent component subpaths across React, Vue, and Angular.\n`,
+    `Validated ${registry.components.length} barrel-independent component subpaths across ${Object.keys(registry.frameworks).join(', ')}.\n`,
   );
 }

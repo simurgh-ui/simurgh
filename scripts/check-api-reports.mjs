@@ -8,7 +8,9 @@ const codePackages = [
   'angular',
   'core',
   'icons',
+  'lit',
   'motion',
+  'preact',
   'react',
   'registry',
   'vue',
@@ -22,8 +24,15 @@ function resolvedSymbol(checker, symbol) {
 }
 
 function typeTarget(value) {
-  if (typeof value === 'string') return value.endsWith('.d.ts') ? value : null;
-  return value && typeof value === 'object' ? value.types ?? null : null;
+  const target =
+    typeof value === 'string'
+      ? value.endsWith('.d.ts')
+        ? value
+        : null
+      : value && typeof value === 'object'
+        ? (value.types ?? null)
+        : null;
+  return target?.startsWith('./dist/') ? target : null;
 }
 
 async function sourceEntries(packageRoot, exports) {
@@ -136,7 +145,7 @@ for (const directory of codePackages) {
   );
 }
 
-for (const directory of ['cli', 'styles']) {
+for (const directory of ['cli', 'styles', 'svelte']) {
   const manifest = JSON.parse(
     await readFile(
       resolve(root, 'packages', directory, 'package.json'),
@@ -161,11 +170,11 @@ const registry = JSON.parse(
 const parity = [
   '# Framework public API parity',
   '',
-  '| Component | React | Vue | Angular |',
-  '| --- | --- | --- | --- |',
+  '| Component | React | Preact | Vue | Angular | Svelte | Lit |',
+  '| --- | --- | --- | --- | --- | --- | --- |',
   ...registry.components.map(
     (component) =>
-      `| ${component} | ${(registry.symbols.react[component] ?? []).join(', ')} | ${(registry.symbols.vue[component] ?? []).join(', ')} | ${(registry.symbols.angular[component] ?? []).join(', ')} |`,
+      `| ${component} | ${(registry.symbols.react[component] ?? []).join(', ')} | ${(registry.symbols.react[component] ?? []).join(', ')} | ${(registry.symbols.vue[component] ?? []).join(', ')} | ${(registry.symbols.angular[component] ?? []).join(', ')} | ${(registry.newFrameworkSymbols.svelte[component] ?? []).join(', ')} | ${(registry.newFrameworkSymbols.lit[component] ?? []).join(', ')} |`,
   ),
   '',
 ].join('\n');
@@ -177,5 +186,5 @@ if (failures.length) {
   );
 }
 process.stdout.write(
-  `${process.argv.includes('--update') ? 'Updated' : 'Validated'} ${codePackages.length + 3} public API reports.\n`,
+  `${process.argv.includes('--update') ? 'Updated' : 'Validated'} ${codePackages.length + 4} public API reports.\n`,
 );

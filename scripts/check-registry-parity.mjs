@@ -28,11 +28,13 @@ for (const component of registry.components) {
     `apps/docs/src/content/docs/components/${component}.mdx`,
   ];
   for (const framework of frameworks) {
+    if (!(registry.frameworks[framework].components ?? registry.components).includes(component)) continue;
     const extension = registry.frameworks[framework].extension;
     requiredFiles.push(
       `packages/${framework}/src/components/${component}.${extension}`,
     );
-    const symbols = registry.symbols?.[framework]?.[component];
+    const symbolFramework = registry.frameworks[framework].symbolsFrom ?? framework;
+    const symbols = registry.symbols?.[symbolFramework]?.[component] ?? registry.newFrameworkSymbols?.[framework]?.[component];
     if (!Array.isArray(symbols) || symbols.length === 0) {
       failures.push(`${framework}/${component}: missing public symbols`);
     } else if (new Set(symbols).size !== symbols.length) {
@@ -50,8 +52,9 @@ for (const component of registry.components) {
 }
 
 for (const framework of frameworks) {
-  const registered = Object.keys(registry.symbols?.[framework] ?? {}).sort();
-  const expected = [...registry.components].sort();
+  const symbolFramework = registry.frameworks[framework].symbolsFrom ?? framework;
+  const registered = Object.keys(registry.symbols?.[symbolFramework] ?? registry.newFrameworkSymbols?.[framework] ?? {}).sort();
+  const expected = [...(registry.frameworks[framework].components ?? registry.components)].sort();
   if (JSON.stringify(registered) !== JSON.stringify(expected)) {
     failures.push(
       `${framework}: symbol catalog does not match registry.components`,

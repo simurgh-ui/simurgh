@@ -3,8 +3,8 @@ import { mkdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const framework = process.argv[2];
-if (!['react', 'vue'].includes(framework)) {
-  throw new Error('Usage: node scripts/build-adapter.mjs react|vue');
+if (!['react', 'vue', 'preact', 'lit'].includes(framework)) {
+  throw new Error('Usage: node scripts/build-adapter.mjs react|vue|preact|lit');
 }
 const root = resolve(import.meta.dirname, '..');
 const packageRoot = resolve(root, `packages/${framework}`);
@@ -18,15 +18,15 @@ const external = [
   ...Object.keys(manifest.dependencies ?? {}),
   ...Object.keys(manifest.peerDependencies ?? {}),
 ].flatMap((dependency) => [dependency, `${dependency}/*`]);
-const extension = framework === 'react' ? 'tsx' : 'ts';
+const extension = framework === 'react' || framework === 'preact' ? 'tsx' : 'ts';
 const entryPoints = Object.fromEntries(
   registry.components.map((component) => [
     `components/${component}`,
     resolve(packageRoot, `src/components/${component}.${extension}`),
   ]),
 );
-if (framework === 'vue') {
-  entryPoints.index = resolve(packageRoot, 'src/index.ts');
+if (framework === 'vue' || framework === 'preact' || framework === 'lit') {
+  entryPoints.index = resolve(packageRoot, `src/index.${framework === 'preact' ? 'tsx' : 'ts'}`);
 }
 const outputDirectory = resolve(packageRoot, 'dist');
 await mkdir(outputDirectory, { recursive: true });

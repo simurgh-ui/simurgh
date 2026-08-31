@@ -7,10 +7,13 @@ const packages = [
   'cli',
   'core',
   'icons',
+  'lit',
   'motion',
+  'preact',
   'react',
   'registry',
   'styles',
+  'svelte',
   'vue',
 ];
 
