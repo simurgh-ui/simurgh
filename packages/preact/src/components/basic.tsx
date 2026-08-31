@@ -1,0 +1,55 @@
+// @ts-nocheck -- generated compatibility implementation; public declarations use Preact types.
+// Generated from @simurgh-ui/react for Preact compatibility. Do not edit directly.
+export {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from './accordion.js';
+export { Checkbox } from './checkbox.js';
+export { NumberInput } from './number-input.js';
+export { RadioGroup, RadioGroupItem } from './radio-group.js';
+export { Switch } from './switch.js';
+export { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs.js';
+export { TagsInput } from './tags-input.js';
+export { Alert } from './alert.js';
+export { AspectRatio } from './aspect-ratio.js';
+export { Badge, type BadgeTone } from './badge.js';
+export { Button } from './button.js';
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './card.js';
+export { Field, FieldDescription, FieldError, FieldLegend } from './field.js';
+export { Form, FormErrorSummary } from './form.js';
+export { Input } from './input.js';
+export { Label } from './label.js';
+export { Link } from './link.js';
+export { NativeSelect } from './native-select.js';
+export {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from './pagination.js';
+export { Progress } from './progress.js';
+export { Rating, type RatingProps } from './rating.js';
+export { Separator } from './separator.js';
+export { Skeleton } from './skeleton.js';
+export { Spinner } from './spinner.js';
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './table.js';
+export { Textarea } from './textarea.js';
+export { VisuallyHidden } from './visually-hidden.js';

@@ -1,0 +1,34 @@
+{
+  "name": "@simurgh-ui/preact",
+  "version": "0.3.2-beta.3",
+  "description": "Accessible Simurgh UI components for Preact.",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/simurgh-ui/simurgh.git", "directory": "packages/preact" },
+  "homepage": "https://github.com/simurgh-ui/simurgh#readme",
+  "bugs": { "url": "https://github.com/simurgh-ui/simurgh/issues" },
+  "publishConfig": { "access": "public" },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./chart-interactions": { "types": "./dist/chart-interactions.d.ts", "import": "./dist/chart-interactions.js" },
+    "./chart-stream": { "types": "./dist/chart-stream.d.ts", "import": "./dist/chart-stream.js" },
+    "./chart-canvas": { "types": "./dist/chart-canvas.d.ts", "import": "./dist/chart-canvas.js" },
+    "./chart-export": { "types": "./dist/chart-export.d.ts", "import": "./dist/chart-export.js" },
+    "./chart-responsive": { "types": "./dist/chart-responsive.d.ts", "import": "./dist/chart-responsive.js" },
+    "./chart-motion": { "types": "./dist/chart-motion.d.ts", "import": "./dist/chart-motion.js" },
+    "./*": { "types": "./dist/components/*.d.ts", "import": "./dist/components/*.js" }
+  },
+  "files": ["dist", "!dist/**/*.map"],
+  "scripts": {
+    "generate": "node ../../scripts/generate-preact-adapter.mjs",
+    "build": "pnpm generate && node ../../scripts/clean-dist.mjs preact && tsc -p tsconfig.json && node ../../scripts/build-adapter.mjs preact",
+    "test": "pnpm generate && vitest run",
+    "typecheck": "pnpm generate && tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test"
+  },
+  "dependencies": { "@simurgh-ui/core": "workspace:*" },
+  "peerDependencies": { "@simurgh-ui/motion": "workspace:*", "preact": ">=10.19" },
+  "peerDependenciesMeta": { "@simurgh-ui/motion": { "optional": true } },
+  "devDependencies": { "@simurgh-ui/motion": "workspace:*", "@testing-library/preact": "^3.2.4", "@types/react": "^19.2.18", "axe-core": "^4.13.0", "preact": "^10.27.2", "preact-render-to-string": "^6.6.1", "vitest": "^3.2.7" }
+}
