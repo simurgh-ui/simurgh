@@ -193,6 +193,9 @@ describe('CLI application fixture', () => {
       'src/app/components/ui/button.ts',
       'export class ButtonComponent',
     ],
+    ['preact', 'preact', 'src/components/ui/button.tsx', 'export const Button'],
+    ['svelte', 'svelte', 'src/components/ui/button.svelte', '<button'],
+    ['lit', 'lit', 'src/components/ui/button.ts', 'export class Button'],
   ] as const)(
     'initializes a fresh %s source-copy quick start',
     (framework, dependency, componentPath, expectedExport) => {

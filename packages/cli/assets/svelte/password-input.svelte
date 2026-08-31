@@ -1,0 +1,2 @@
+<script lang="ts">let { value = $bindable(''), visible = $bindable(false), disabled = false, label = 'Password', ...rest }: { value?: string; visible?: boolean; disabled?: boolean; label?: string; [key: string]: unknown } = $props();</script>
+<div {...rest} data-slot="password-input"><input type={visible ? 'text' : 'password'} bind:value {disabled} aria-label={label} /><button type="button" aria-label={visible ? 'Hide password' : 'Show password'} aria-pressed={visible} {disabled} onclick={() => visible = !visible}>{visible ? 'Hide' : 'Show'}</button></div>

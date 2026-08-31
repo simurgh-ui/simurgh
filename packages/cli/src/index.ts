@@ -40,8 +40,11 @@ function detectFramework(): Framework {
   const deps = { ...pkg.dependencies, ...pkg.devDependencies };
   if (deps['@angular/core']) return 'angular';
   if (deps.vue) return 'vue';
-  if (deps.react) return 'react';
-  throw new Error('Could not detect Angular, React, or Vue. Pass --framework.');
+  if (deps.react) return deps.preact ? 'preact' : 'react';
+  if (deps.preact) return 'preact';
+  if (deps.svelte) return 'svelte';
+  if (deps.lit) return 'lit';
+  throw new Error('Could not detect Angular, React, Vue, Preact, Svelte, or Lit. Pass --framework.');
 }
 function loadConfig(options: OutputOptions = {}): Config {
   if (!existsSync(configPath()))
@@ -383,18 +386,23 @@ function expectedSource(config: Config, component: string): string {
   const sourcePath = existsSync(componentSource)
     ? componentSource
     : join(assetRoot(), `${config.framework}.${entry.extension}`);
-  const source = extractComponentSource(
-    readFileSync(sourcePath, 'utf8'),
-    entry.symbols,
-    sourcePath,
-  );
   const metadata = JSON.stringify({
     schemaVersion: GENERATED_SOURCE_SCHEMA_VERSION,
     registryVersion: manifest.version,
     framework: config.framework,
     component,
   });
+  if (entry.extension === 'svelte')
+    return `// @simurgh-ui/generated ${metadata}\n${readFileSync(sourcePath, 'utf8')}`;
+  const source = extractComponentSource(
+    readFileSync(sourcePath, 'utf8'),
+    entry.symbols,
+    sourcePath,
+  );
   return `// @simurgh-ui/generated ${metadata}\n${source}`;
+}
+function supportedComponents(framework: Framework): readonly string[] {
+  return (manifest.frameworks[framework] as { components?: readonly string[] }).components ?? manifest.components;
 }
 
 function printDiffGuidance(config: Config, components: readonly string[]) {
@@ -426,7 +434,7 @@ function printDiffGuidance(config: Config, components: readonly string[]) {
 const cli = cac('simurgh');
 cli
   .command('init', 'Initialize Simurgh in the current application')
-  .option('--framework <framework>', 'react, vue, or angular')
+  .option('--framework <framework>', 'react, vue, angular, preact, svelte, or lit')
   .option('--skip-install', 'Do not install runtime dependencies')
   .option('--dry-run', 'Show planned changes without writing or installing')
   .option('--json', 'Print one machine-readable JSON result')
@@ -508,7 +516,8 @@ cli
   .option('--json', 'Print one machine-readable JSON result')
   .action((components: string[], options: { overwrite?: boolean } & OutputOptions) => {
     const config = loadConfig(options);
-    const selected = components.length ? components : manifest.components;
+    const availableComponents = supportedComponents(config.framework);
+    const selected = components.length ? components : availableComponents;
     const results = [];
     for (const name of selected) {
       registryEntry(name, config.framework);

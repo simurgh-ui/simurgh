@@ -1,0 +1,2 @@
+<script lang="ts">let { open = $bindable(false), trigger, children, label = 'Toggle popover', ...rest }: { open?: boolean; trigger?: import('svelte').Snippet; children?: import('svelte').Snippet; label?: string; [key: string]: unknown } = $props();</script>
+<div {...rest} data-slot="popover"><button type="button" aria-label={label} aria-expanded={open} data-slot="popover-trigger" onclick={() => open = !open}>{@render trigger?.()}</button><div data-slot="popover-content" data-state={open ? 'open' : 'closed'} hidden={!open}>{@render children?.()}</div></div>

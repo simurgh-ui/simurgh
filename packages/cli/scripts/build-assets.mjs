@@ -42,11 +42,16 @@ function copyDirectoryIfChanged(source, target) {
   }
 }
 
-for (const framework of ['react', 'vue', 'angular']) {
+const registry = JSON.parse(
+  readFileSync(resolve(workspaceRoot, 'packages/registry/registry.json'), 'utf8'),
+);
+
+for (const framework of Object.keys(registry.frameworks)) {
   const frameworkAssets = resolve(assetsRoot, framework);
   mkdirSync(frameworkAssets, { recursive: true });
 
-  const extension = framework === 'react' ? 'tsx' : 'ts';
+  const extension = registry.frameworks[framework].extension;
+  const indexExtension = framework === 'svelte' ? 'ts' : extension;
   const sourceRoot = resolve(workspaceRoot, `packages/${framework}/src`);
   const componentRoot = resolve(sourceRoot, 'components');
   const internalRoot = resolve(sourceRoot, 'internal');
@@ -54,7 +59,7 @@ for (const framework of ['react', 'vue', 'angular']) {
     .filter((file) => file.endsWith(`.${extension}`))
     .sort();
   const sources = [
-    resolve(sourceRoot, `index.${extension}`),
+    resolve(sourceRoot, `index.${indexExtension}`),
     ...componentFiles.map((file) => resolve(componentRoot, file)),
   ];
   const registrySource = sources
@@ -70,8 +75,9 @@ for (const framework of ['react', 'vue', 'angular']) {
   for (const file of componentFiles) {
     copyIfChanged(resolve(componentRoot, file), resolve(frameworkAssets, file));
   }
-  copyDirectoryIfChanged(internalRoot, resolve(frameworkAssets, 'internal'));
-  const floatingSource = resolve(sourceRoot, `floating.${extension}`);
+  if (existsSync(internalRoot))
+    copyDirectoryIfChanged(internalRoot, resolve(frameworkAssets, 'internal'));
+  const floatingSource = resolve(sourceRoot, `floating.${indexExtension}`);
   if (existsSync(floatingSource)) {
     copyIfChanged(
       floatingSource,

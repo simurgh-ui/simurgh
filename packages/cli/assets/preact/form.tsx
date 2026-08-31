@@ -1,0 +1,44 @@
+// @ts-nocheck -- generated compatibility implementation; public declarations use Preact types.
+// Generated from @simurgh-ui/react for Preact compatibility. Do not edit directly.
+import {
+  forwardRef,
+  useRef,
+  type FormHTMLAttributes,
+  type HTMLAttributes,
+} from 'preact/compat';
+import { queueInvalidFocus } from '../internal/forms.js';
+
+export const Form = /* @__PURE__ */ forwardRef<
+  HTMLFormElement,
+  FormHTMLAttributes<HTMLFormElement> & { focusInvalid?: boolean }
+>(function Form({ focusInvalid = true, onInvalid, ...props }, ref) {
+  const focusQueued = useRef(false);
+  return (
+    <form
+      {...props}
+      ref={ref}
+      data-slot="form"
+      onInvalidCapture={(event) => {
+        onInvalid?.(event);
+        if (focusQueued.current || !focusInvalid || event.defaultPrevented)
+          return;
+        queueInvalidFocus(event.target, focusQueued);
+      }}
+    />
+  );
+});
+export const FormErrorSummary = /* @__PURE__ */ forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(function FormErrorSummary(props, ref) {
+  return (
+    <div
+      {...props}
+      ref={ref}
+      role="alert"
+      aria-live="assertive"
+      tabIndex={-1}
+      data-slot="form-error-summary"
+    />
+  );
+});

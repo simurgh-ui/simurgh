@@ -1,0 +1,2 @@
+<script lang="ts">let { value = $bindable(0), max = 5, label = 'Rating', disabled = false, ...rest }: { value?: number; max?: number; label?: string; disabled?: boolean; [key: string]: unknown } = $props();</script>
+<div {...rest} role="radiogroup" aria-label={label} data-slot="rating">{#each Array(max) as _, index}<button type="button" role="radio" aria-checked={value === index + 1} aria-label={`${index + 1} of ${max}`} {disabled} data-state={value >= index + 1 ? 'on' : 'off'} onclick={() => value = index + 1}>★</button>{/each}</div>

@@ -1,0 +1,2 @@
+<script lang="ts">let { prefix, suffix, children, ...rest }: { prefix?: import('svelte').Snippet; suffix?: import('svelte').Snippet; children?: import('svelte').Snippet; [key: string]: unknown } = $props();</script>
+<div {...rest} data-slot="input-group">{#if prefix}<span data-slot="input-group-addon" data-align="start">{@render prefix()}</span>{/if}{@render children?.()}{#if suffix}<span data-slot="input-group-addon" data-align="end">{@render suffix()}</span>{/if}</div>
