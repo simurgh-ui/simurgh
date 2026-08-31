@@ -1,6 +1,6 @@
 # Simurgh UI
 
-Accessible, source-owned UI primitives for Angular, React, and Vue. Simurgh keeps framework-neutral interaction logic separate from idiomatic framework components, optional CSS recipes, icons, and motion utilities.
+Accessible, source-owned UI primitives for Angular, React, Vue, Preact, Svelte, and Lit. Simurgh keeps framework-neutral interaction logic separate from idiomatic framework components, optional CSS recipes, icons, and motion utilities.
 
 > [!WARNING]
 > Simurgh UI is pre-release. APIs may change, and the `@simurgh-ui` package scope is provisional pending name and trademark checks.
@@ -9,13 +9,13 @@ Accessible, source-owned UI primitives for Angular, React, and Vue. Simurgh keep
 
 - **Accessible by default** — components are tested for keyboard behavior, supported states, and accessibility contracts.
 - **Source-owned** — the CLI copies component source into your application so you can inspect, edit, and keep it.
-- **Framework-native** — React, Vue, and Angular adapters expose conventions appropriate to each framework.
+- **Framework-native** — adapters expose conventions appropriate to React, Vue, Angular, Preact, Svelte, and Lit.
 - **Style-flexible** — use the supplied tokens and CSS recipes, import individual component styles, or replace the visual layer.
 - **Tree-shakeable** — component entry points, icons, and motion adapters are designed for granular imports.
 
 ## Quick start
 
-Simurgh's CLI detects React, Vue, or Angular from your application's `package.json`, installs the required runtime dependencies, creates `simurgh.json`, and copies the base style files.
+Simurgh's CLI detects React, Vue, Angular, Preact, Svelte, or Lit from your application's `package.json`, installs the required runtime dependencies, creates `simurgh.json`, and copies the base style files.
 
 ```sh
 pnpm dlx @simurgh-ui/cli init
@@ -25,8 +25,8 @@ pnpm dlx @simurgh-ui/cli add button dialog
 Import the generated styles from the location configured in `simurgh.json`:
 
 ```css
-@import "./styles/simurgh/tokens.css";
-@import "./styles/simurgh/recipes.css";
+@import './styles/simurgh/tokens.css';
+@import './styles/simurgh/recipes.css';
 ```
 
 For React and Vue, the CLI follows the existing project layout: it writes to `src/components/ui` when a `src` directory exists, or `components/ui` otherwise. Angular components live in `src/app/components/ui`. The generated source belongs to your application and can be customized directly.
@@ -37,17 +37,20 @@ To select a framework explicitly or avoid installing dependencies during initial
 pnpm dlx @simurgh-ui/cli init --framework react
 pnpm dlx @simurgh-ui/cli init --framework vue --skip-install
 pnpm dlx @simurgh-ui/cli init --framework angular
+pnpm dlx @simurgh-ui/cli init --framework preact
+pnpm dlx @simurgh-ui/cli init --framework svelte
+pnpm dlx @simurgh-ui/cli init --framework lit
 ```
 
 ## CLI commands
 
-| Command | Purpose |
-| --- | --- |
-| `simurgh init` | Detect or select a framework and initialize Simurgh. |
-| `simurgh list` | List all components in the registry. |
-| `simurgh add [components...]` | Copy selected components, or the complete catalog when no names are supplied. |
-| `simurgh add dialog --overwrite` | Replace an existing generated component with the registry version. |
-| `simurgh diff [component]` | Compare local component source with the current registry without overwriting customizations. |
+| Command                          | Purpose                                                                                      |
+| -------------------------------- | -------------------------------------------------------------------------------------------- |
+| `simurgh init`                   | Detect or select a framework and initialize Simurgh.                                         |
+| `simurgh list`                   | List all components in the registry.                                                         |
+| `simurgh add [components...]`    | Copy selected components, or the complete catalog when no names are supplied.                |
+| `simurgh add dialog --overwrite` | Replace an existing generated component with the registry version.                           |
+| `simurgh diff [component]`       | Compare local component source with the current registry without overwriting customizations. |
 
 ## MCP server
 
@@ -65,17 +68,20 @@ tool/resource list.
 
 ## Packages
 
-| Package | Description |
-| --- | --- |
-| `@simurgh-ui/core` | Framework-neutral state and interaction logic. |
-| `@simurgh-ui/react` | React 18+ components. |
-| `@simurgh-ui/vue` | Vue 3.4+ components. |
-| `@simurgh-ui/angular` | Angular 18+ components. |
-| `@simurgh-ui/styles` | Design tokens, shared recipes, and per-component CSS. |
-| `@simurgh-ui/icons` | SVG and tree-shakeable React, Vue, and Angular icon entry points. |
-| `@simurgh-ui/motion` | Framework-neutral motion primitives and framework adapters. |
-| `@simurgh-ui/registry` | Component registry metadata consumed by the CLI. |
-| `@simurgh-ui/cli` | Source installation and local-registry comparison commands. |
+| Package                | Description                                                                            |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| `@simurgh-ui/core`     | Framework-neutral state and interaction logic.                                         |
+| `@simurgh-ui/react`    | React 18+ components.                                                                  |
+| `@simurgh-ui/vue`      | Vue 3.4+ components.                                                                   |
+| `@simurgh-ui/angular`  | Angular 18+ components.                                                                |
+| `@simurgh-ui/preact`   | Preact 10+ components.                                                                 |
+| `@simurgh-ui/svelte`   | Svelte 5+ components.                                                                  |
+| `@simurgh-ui/lit`      | Lit 3+ web components.                                                                 |
+| `@simurgh-ui/styles`   | Design tokens, shared recipes, and per-component CSS.                                  |
+| `@simurgh-ui/icons`    | SVG and tree-shakeable React, Preact, Vue, Angular, Svelte, and Lit icon entry points. |
+| `@simurgh-ui/motion`   | Framework-neutral motion primitives and framework adapters.                            |
+| `@simurgh-ui/registry` | Component registry metadata consumed by the CLI.                                       |
+| `@simurgh-ui/cli`      | Source installation and local-registry comparison commands.                            |
 
 Framework packages support both their main entry point and per-component imports. The styles package exposes `tokens.css`, `recipes.css`, `all.css`, and individual component styles.
 

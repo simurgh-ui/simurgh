@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Install Simurgh as editable source or framework packages in Angular, React, and Vue.
+description: Install Simurgh as editable source or framework packages in React, Preact, Vue, Angular, Svelte, and Lit.
 ---
 
 Simurgh supports two installation models. Choose one model for a component and keep its import path
@@ -16,27 +16,31 @@ overwriting copied source.
 
 ## Copy editable source with the CLI
 
-Run the initializer from the root of an existing Angular, React, or Vue application:
+Run the initializer from the root of an existing React, Preact, Vue, Angular, Svelte, or Lit application:
 
 ```sh
 pnpm dlx @simurgh-ui/cli init
 pnpm dlx @simurgh-ui/cli add dialog tabs checkbox
 ```
 
-`init` detects the framework from `package.json`, writes `simurgh.json`, copies the token stylesheet
+`init` detects React, Vue, Angular, Preact, Svelte, or Lit from `package.json`, writes `simurgh.json`, copies the token stylesheet
 and recipe index, and installs that adapter's runtime dependencies. Each `add` command copies the
 matching component recipes and adds them to the index. Pass `--framework react`,
-`--framework vue`, or `--framework angular` only when detection cannot choose correctly. Use
+`--framework preact`, `--framework vue`, `--framework angular`, `--framework svelte`, or
+`--framework lit` only when detection cannot choose correctly. Use
 `--skip-install` when your package manager or workspace policy requires installing dependencies
 separately.
 
 Generated files default to these locations:
 
-| Framework | Component source                       | Styles                  |
-| --------- | -------------------------------------- | ----------------------- |
-| React     | `[src/]components/ui/<component>.tsx`  | `[src/]styles/simurgh/` |
-| Vue       | `[src/]components/ui/<component>.ts`   | `[src/]styles/simurgh/` |
-| Angular   | `src/app/components/ui/<component>.ts` | `src/styles/simurgh/`   |
+| Framework | Component source                         | Styles                  |
+| --------- | ---------------------------------------- | ----------------------- |
+| React     | `[src/]components/ui/<component>.tsx`    | `[src/]styles/simurgh/` |
+| Vue       | `[src/]components/ui/<component>.ts`     | `[src/]styles/simurgh/` |
+| Angular   | `src/app/components/ui/<component>.ts`   | `src/styles/simurgh/`   |
+| Preact    | `[src/]components/ui/<component>.tsx`    | `[src/]styles/simurgh/` |
+| Svelte    | `[src/]components/ui/<component>.svelte` | `[src/]styles/simurgh/` |
+| Lit       | `[src/]components/ui/<component>.ts`     | `[src/]styles/simurgh/` |
 
 For React and Vue, the `src/` prefix is used when the application already has a `src` directory.
 Projects using a root layout, including Next.js applications created without the `src` option, stay
@@ -59,8 +63,8 @@ pnpm dlx @simurgh-ui/cli diff dialog
 customizations. Review the difference before running `add dialog --overwrite`; overwrite replaces
 the local component and is not a merge operation. Commit or otherwise back up local changes first.
 
-Import copied components from their local path, not from `@simurgh-ui/react`,
-`@simurgh-ui/vue`, or `@simurgh-ui/angular`. Add the copied `tokens.css` and `recipes.css` to the
+Import copied components from their local path, not from an `@simurgh-ui/{framework}` adapter.
+Add the copied `tokens.css` and `recipes.css` to the
 application's global stylesheet entry according to the framework build tool. Component styles live
 under `styles/simurgh/components/` and can be customized independently.
 
@@ -77,10 +81,19 @@ pnpm add @simurgh-ui/vue @simurgh-ui/styles
 
 # Angular
 pnpm add @simurgh-ui/angular @simurgh-ui/styles
+
+# Preact
+pnpm add @simurgh-ui/preact @simurgh-ui/styles
+
+# Svelte
+pnpm add @simurgh-ui/svelte @simurgh-ui/styles
+
+# Lit
+pnpm add @simurgh-ui/lit @simurgh-ui/styles
 ```
 
 The package manager installs Core and positioning dependencies declared by the chosen adapter.
-React 18 or newer, Vue 3.4 or newer, or Angular 18 or newer is required. Import recipe CSS in a
+React 18+, Preact 10.19+, Vue 3.4+, Angular 18+, Svelte 5+, or Lit 3+ is required. Import recipe CSS in a
 global stylesheet or framework-level entry so it is available before the component renders.
 
 ## React quick start
@@ -137,6 +150,39 @@ Add the recipe to the application's global styles entry:
 
 Angular exports standalone components. Import the documented component class into the consuming
 standalone component or NgModule.
+
+## Preact quick start
+
+```tsx
+import { Button } from '@simurgh-ui/preact/button';
+import '@simurgh-ui/styles/button.css';
+
+export function SaveButton() {
+  return <Button type="button">Save changes</Button>;
+}
+```
+
+## Svelte quick start
+
+```svelte
+<script lang="ts">
+import Button from '@simurgh-ui/svelte/button';
+import '@simurgh-ui/styles/button.css';
+</script>
+
+<Button type="button">Save changes</Button>
+```
+
+## Lit quick start
+
+```ts
+import '@simurgh-ui/lit/button';
+import '@simurgh-ui/styles/button.css';
+```
+
+```html
+<simurgh-button type="button">Save changes</simurgh-button>
+```
 
 ## Styles: recipes or headless behavior
 

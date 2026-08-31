@@ -664,6 +664,7 @@ current-page
 currently
 curve
 custom
+custom-element
 custom-listbox
 custom-styled
 customization
@@ -1445,6 +1446,7 @@ listener
 listeners
 listitem
 lists
+lit
 live
 live-region
 load
@@ -1903,6 +1905,7 @@ positioning-plus-interaction
 positive
 possible
 pre-release
+preact
 precise
 precisely
 predefined
@@ -2388,6 +2391,7 @@ singular
 site
 situation
 six
+six-framework
 six-week
 size
 sizes
@@ -2540,6 +2544,7 @@ suppressing
 surface
 surfaces
 surrounding
+svelte
 svg
 swatches
 switch
@@ -2704,6 +2709,7 @@ two-pixel
 two-way
 type
 typeahead
+typecheck
 typed
 types
 typescript
@@ -2719,6 +2725,7 @@ unchecked
 uncontrolled
 undeclared
 under
+underlying
 understand
 understood
 undesirable

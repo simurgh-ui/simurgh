@@ -10,17 +10,24 @@ both supported edges.
 
 ## Framework compatibility
 
-| Adapter               | Declared peer requirement         | Repository development version | CI verification                                     |
-| --------------------- | --------------------------------- | ------------------------------ | --------------------------------------------------- |
-| `@simurgh-ui/react`   | React `>=18` and React DOM `>=18` | React `19.2.8`                 | React 18 and 19 on Chromium, Firefox, and WebKit.   |
-| `@simurgh-ui/vue`     | Vue `>=3.4`                       | Vue `3.5.41`                   | Vue 3.4 and 3.5 on Chromium, Firefox, and WebKit.   |
-| `@simurgh-ui/angular` | Angular Core and Common `>=18`    | Angular `20.3.27`              | Angular 18 and 20 on Chromium, Firefox, and WebKit. |
+| Adapter               | Declared peer requirement         | Repository development version | CI verification                                                        |
+| --------------------- | --------------------------------- | ------------------------------ | ---------------------------------------------------------------------- |
+| `@simurgh-ui/react`   | React `>=18` and React DOM `>=18` | React `19.2.8`                 | React 18 and 19 on Chromium, Firefox, and WebKit.                      |
+| `@simurgh-ui/vue`     | Vue `>=3.4`                       | Vue `3.5.41`                   | Vue 3.4 and 3.5 on Chromium, Firefox, and WebKit.                      |
+| `@simurgh-ui/angular` | Angular Core and Common `>=18`    | Angular `20.3.27`              | Angular 18 and 20 on Chromium, Firefox, and WebKit.                    |
+| `@simurgh-ui/preact`  | Preact `>=10.19`                  | Preact `10.27`                 | Full adapter contracts, SSR/hydration, and production reference build. |
+| `@simurgh-ui/svelte`  | Svelte `>=5`                      | Svelte `5`                     | Full catalog typecheck, SSR, CLI, and production reference build.      |
+| `@simurgh-ui/lit`     | Lit `>=3`                         | Lit `3`                        | Full catalog typecheck, SSR, CLI, and production reference build.      |
 
 The matrix verifies the lower and upper supported edges rather than every minor release. Failures at
 either edge block a merge.
 
 Install only one framework adapter in a consuming application. Framework peer dependencies remain
-the application's responsibility; Simurgh does not bundle React, Vue, or Angular into the adapter.
+the application's responsibility; Simurgh does not bundle a framework runtime into the adapter.
+
+All six adapters expose the complete registry catalog. Framework-native APIs differ where the
+underlying component models differ: Svelte uses bindings and snippets, while Lit uses custom-element
+properties, named slots, events, and shadow parts.
 
 ## Runtime and tooling
 
@@ -60,8 +67,8 @@ The compatibility gate currently includes:
 
 1. Frozen dependency installation on Ubuntu and Node.js 22.
 2. Lint, type checking, framework compilation, unit and accessibility contract tests.
-3. React, Vue, and Angular package-import quick starts.
-4. React, Vue, and Angular CLI source-copy quick starts.
+3. React, Preact, Vue, Angular, Svelte, and Lit package-import quick starts.
+4. Six-framework CLI source-copy quick starts.
 5. Production documentation build and package-export validation.
 6. Bundle-size and Angular production compilation fixtures.
 7. Playwright scenarios in Chromium, Firefox, and WebKit.
