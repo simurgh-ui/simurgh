@@ -1,6 +1,8 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { createElement as createPreactElement } from 'preact/compat';
+import renderPreactToString from 'preact-render-to-string';
 import { createSSRApp, h } from 'vue';
 import { renderToString } from 'vue/server-renderer';
 import { describe, expect, it } from 'vitest';
@@ -14,6 +16,7 @@ import {
 import { iconCategoryGroups, iconMetadata } from '../src/metadata.js';
 import { SimurghIcon } from '../src/react-dynamic.js';
 import { ArrowRight as VueArrowRight } from '../src/vue-icons/arrow-right.js';
+import { ArrowLeft as PreactArrowLeft } from '../src/preact-icons/arrow-left.js';
 import {
   Admin,
   AlarmOff,
@@ -92,12 +95,12 @@ describe('navigation icon catalog', () => {
   it('generates one definition and framework module for every SVG', async () => {
     const sourceRoot = new URL('../src/', import.meta.url);
     const counts = await Promise.all(
-      ['definitions', 'react-icons', 'vue-icons', 'angular-icons'].map(
+      ['definitions', 'react-icons', 'preact-icons', 'lit-icons', 'vue-icons', 'angular-icons'].map(
         async (directory) =>
           (await readdir(new URL(`${directory}/`, sourceRoot))).length,
       ),
     );
-    expect(counts).toEqual([474, 474, 474, 474]);
+    expect(counts).toEqual([474, 474, 474, 474, 474, 474]);
   });
 
   it('resolves icons and renders accessible SVG', () => {
@@ -142,6 +145,7 @@ describe('navigation icon catalog', () => {
 
   it('emits the shared automatic-direction contract in every framework', async () => {
     const reactMarkup = renderToStaticMarkup(createElement(ArrowLeft));
+    const preactMarkup = renderPreactToString(createPreactElement(PreactArrowLeft, {}));
     const vueMarkup = await renderToString(
       createSSRApp({ render: () => h(VueArrowRight) }),
     );
@@ -149,8 +153,12 @@ describe('navigation icon catalog', () => {
       new URL('../src/angular-icons/arrow-right.ts', import.meta.url),
       'utf8',
     );
+    const litSource = await readFile(
+      new URL('../src/lit-icons/arrow-right.ts', import.meta.url),
+      'utf8',
+    );
 
-    for (const markup of [reactMarkup, vueMarkup]) {
+    for (const markup of [reactMarkup, preactMarkup, vueMarkup]) {
       expect(markup).toContain('data-simurgh-direction="auto"');
       expect(markup).toContain(':dir(rtl)');
       expect(markup).toContain('simurgh-icon-directional');
@@ -162,6 +170,7 @@ describe('navigation icon catalog', () => {
     expect(angularSource).toContain(
       'explicitMirrorTransform(this.directionMode())',
     );
+    expect(litSource).toContain("createIconComponent(definition, 'simurgh-arrow-right-icon')");
   });
 
   it('keeps semantic direction separate from physical and conventional direction', () => {

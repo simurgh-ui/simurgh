@@ -1,7 +1,7 @@
 {
   "name": "@simurgh-ui/icons",
   "version": "0.1.2-beta.1",
-  "description": "Tree-shakeable Simurgh icons for React, Vue, Angular, and raw SVG use.",
+  "description": "Tree-shakeable Simurgh icons for React, Preact, Vue, Angular, Svelte, Lit, and raw SVG use.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,7 +16,10 @@
     "access": "public"
   },
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/lit.js",
+    "./dist/lit-icons/*.js"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -37,6 +40,36 @@
     "./react/*": {
       "types": "./dist/react-icons/*.d.ts",
       "import": "./dist/react-icons/*.js"
+    },
+    "./preact": {
+      "types": "./dist/preact.d.ts",
+      "import": "./dist/preact.js"
+    },
+    "./preact/dynamic": {
+      "types": "./dist/preact-dynamic.d.ts",
+      "import": "./dist/preact-dynamic.js"
+    },
+    "./preact/*": {
+      "types": "./dist/preact-icons/*.d.ts",
+      "import": "./dist/preact-icons/*.js"
+    },
+    "./lit": {
+      "types": "./dist/lit.d.ts",
+      "import": "./dist/lit.js"
+    },
+    "./lit/*": {
+      "types": "./dist/lit-icons/*.d.ts",
+      "import": "./dist/lit-icons/*.js"
+    },
+    "./svelte": {
+      "types": "./svelte-dynamic-icon.svelte.d.ts",
+      "svelte": "./svelte-dynamic-icon.svelte",
+      "import": "./svelte-dynamic-icon.svelte"
+    },
+    "./svelte/*": {
+      "types": "./svelte-icons/*.svelte.d.ts",
+      "svelte": "./svelte-icons/*.svelte",
+      "import": "./svelte-icons/*.svelte"
     },
     "./vue": {
       "types": "./dist/vue.d.ts",
@@ -66,6 +99,11 @@
   },
   "files": [
     "dist",
+    "svelte-icon.svelte",
+    "svelte-icon.svelte.d.ts",
+    "svelte-dynamic-icon.svelte",
+    "svelte-dynamic-icon.svelte.d.ts",
+    "svelte-icons",
     "!dist/**/*.map",
     "svg",
     "README.md"
@@ -81,6 +119,9 @@
   "peerDependencies": {
     "@angular/core": ">=18",
     "react": ">=18",
+    "preact": ">=10.19",
+    "lit": ">=3",
+    "svelte": ">=5",
     "vue": ">=3.4"
   },
   "peerDependenciesMeta": {
@@ -88,6 +129,15 @@
       "optional": true
     },
     "react": {
+      "optional": true
+    },
+    "preact": {
+      "optional": true
+    },
+    "lit": {
+      "optional": true
+    },
+    "svelte": {
       "optional": true
     },
     "vue": {
@@ -103,6 +153,10 @@
     "@types/react": "^19.2.18",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "preact": "^10.27.2",
+    "preact-render-to-string": "^6.6.1",
+    "lit": "^3.3.1",
+    "svelte": "^5.43.8",
     "vitest": "^3.2.7",
     "vue": "^3.5.41",
     "zone.js": "^0.15.1"

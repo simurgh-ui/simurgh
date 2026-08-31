@@ -9,6 +9,8 @@ const reactOutput = resolve(
   root,
   'packages/icons/src/react-icons.generated.ts',
 );
+const preactOutput = resolve(root, 'packages/icons/src/preact-icons.generated.ts');
+const litOutput = resolve(root, 'packages/icons/src/lit-icons.generated.ts');
 const vueOutput = resolve(root, 'packages/icons/src/vue-icons.generated.ts');
 const angularOutput = resolve(
   root,
@@ -16,8 +18,11 @@ const angularOutput = resolve(
 );
 const definitionsRoot = resolve(root, 'packages/icons/src/definitions');
 const reactRoot = resolve(root, 'packages/icons/src/react-icons');
+const preactRoot = resolve(root, 'packages/icons/src/preact-icons');
+const litRoot = resolve(root, 'packages/icons/src/lit-icons');
 const vueRoot = resolve(root, 'packages/icons/src/vue-icons');
 const angularRoot = resolve(root, 'packages/icons/src/angular-icons');
+const svelteRoot = resolve(root, 'packages/icons/svelte-icons');
 
 const groups = {
   landmarks: ['home', 'dashboard', 'route', 'compass'],
@@ -571,7 +576,7 @@ const pascal = (name) =>
 const definitionLiteral = (icon) =>
   JSON.stringify({ ...icon, viewBox: '0 0 144 144' });
 
-for (const directory of [definitionsRoot, reactRoot, vueRoot, angularRoot]) {
+for (const directory of [definitionsRoot, reactRoot, preactRoot, litRoot, vueRoot, angularRoot, svelteRoot]) {
   await rm(directory, { recursive: true, force: true });
   await mkdir(directory, { recursive: true });
 }
@@ -593,6 +598,46 @@ await Promise.all(
         "import { createIconComponent } from '../react-base.js';",
         `import { definition } from '../definitions/${icon.name}.js';`,
         `export const ${className} = /* @__PURE__ */ createIconComponent(definition, '${className}');`,
+        '',
+      ].join('\n'),
+    );
+    await writeFile(
+      resolve(preactRoot, `${icon.name}.tsx`),
+      [
+        "import { createIconComponent } from '../preact-base.js';",
+        `import { definition } from '../definitions/${icon.name}.js';`,
+        `export const ${className} = /* @__PURE__ */ createIconComponent(definition, '${className}');`,
+        '',
+      ].join('\n'),
+    );
+    await writeFile(
+      resolve(litRoot, `${icon.name}.ts`),
+      [
+        "import { createIconComponent } from '../lit-base.js';",
+        `import { definition } from '../definitions/${icon.name}.js';`,
+        `export const ${className} = /* @__PURE__ */ createIconComponent(definition, 'simurgh-${icon.name}-icon');`,
+        '',
+      ].join('\n'),
+    );
+    await writeFile(
+      resolve(svelteRoot, `${icon.name}.svelte`),
+      [
+        '<script lang="ts">',
+        "  import Icon from '../svelte-icon.svelte';",
+        `  import { definition } from '../dist/definitions/${icon.name}.js';`,
+        "  let { ...props }: Record<string, unknown> = $props();",
+        '</script>',
+        '<Icon {definition} {...props} />',
+        '',
+      ].join('\n'),
+    );
+    await writeFile(
+      resolve(svelteRoot, `${icon.name}.svelte.d.ts`),
+      [
+        "import type { Component } from 'svelte';",
+        "import type { SvelteIconProps } from '../svelte-icon.svelte';",
+        `declare const ${className}: Component<SvelteIconProps>;`,
+        `export default ${className};`,
         '',
       ].join('\n'),
     );
@@ -681,6 +726,27 @@ await writeFile(
     ...definitions.map(
       (icon) =>
         `export { ${pascal(icon.name)} } from './react-icons/${icon.name}.js';`,
+    ),
+    '',
+  ].join('\n'),
+);
+
+await writeFile(
+  preactOutput,
+  [
+    ...definitions.map(
+      (icon) =>
+        `export { ${pascal(icon.name)} } from './preact-icons/${icon.name}.js';`,
+    ),
+    '',
+  ].join('\n'),
+);
+
+await writeFile(
+  litOutput,
+  [
+    ...definitions.map(
+      (icon) => `export { ${pascal(icon.name)} } from './lit-icons/${icon.name}.js';`,
     ),
     '',
   ].join('\n'),

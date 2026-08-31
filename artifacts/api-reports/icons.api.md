@@ -26,6 +26,36 @@ Version snapshot: 0.1.2-beta.1
     "types": "./dist/react-icons/*.d.ts",
     "import": "./dist/react-icons/*.js"
   },
+  "./preact": {
+    "types": "./dist/preact.d.ts",
+    "import": "./dist/preact.js"
+  },
+  "./preact/dynamic": {
+    "types": "./dist/preact-dynamic.d.ts",
+    "import": "./dist/preact-dynamic.js"
+  },
+  "./preact/*": {
+    "types": "./dist/preact-icons/*.d.ts",
+    "import": "./dist/preact-icons/*.js"
+  },
+  "./lit": {
+    "types": "./dist/lit.d.ts",
+    "import": "./dist/lit.js"
+  },
+  "./lit/*": {
+    "types": "./dist/lit-icons/*.d.ts",
+    "import": "./dist/lit-icons/*.js"
+  },
+  "./svelte": {
+    "types": "./svelte-dynamic-icon.svelte.d.ts",
+    "svelte": "./svelte-dynamic-icon.svelte",
+    "import": "./svelte-dynamic-icon.svelte"
+  },
+  "./svelte/*": {
+    "types": "./svelte-icons/*.svelte.d.ts",
+    "svelte": "./svelte-icons/*.svelte",
+    "import": "./svelte-icons/*.svelte"
+  },
   "./vue": {
     "types": "./dist/vue.d.ts",
     "import": "./dist/vue.js"
@@ -2458,6 +2488,4760 @@ Version snapshot: 0.1.2-beta.1
 ## ./react/zoom-out
 
 - `ZoomOut`: `React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>`
+
+## ./preact
+
+- `Accessibility`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AccessKey`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Account`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AccountCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ActivityChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Admin`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Airplane`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Alarm`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AlarmOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AlignBottom`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AlignCenter`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AlignLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AlignMiddle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AlignRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AlignTop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Analytics`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Announcement`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Antivirus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Api`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Appointment`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Archive`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AreaChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ArrowDown`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ArrowLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ArrowRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ArrowUp`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `AtSign`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Attachment`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Authentication`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Available`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `BadgeCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Banknote`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `BarChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `BarChartHorizontal`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `BarChartStacked`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Barcode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Basket`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Battery`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `BatteryCharging`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `BatteryLow`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Bike`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Binary`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Bluetooth`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Braces`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Brackets`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Breakpoint`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Broadcast`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `BubbleChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Bug`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `BugShield`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Build`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Building`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Buildings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Bus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Calendar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarClock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarDays`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarEdit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarEvent`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarMonth`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarRange`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarSearch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarSettings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarStar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarWeek`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CalendarX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Camera`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CameraOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Captions`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Car`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CardCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CartCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CartMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CartPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CartX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Cash`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CashRegister`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Cast`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CastDevice`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Certificate`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChartAxis`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChartGrid`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChartLabel`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChartLegend`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChartPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChartSettings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChartTooltip`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Check`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Checkout`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChevronDown`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChevronLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChevronRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChevronsDown`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChevronsLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChevronsRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChevronsUp`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ChevronUp`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Child`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Clapperboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Clipboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ClipboardText`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Clock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ClockCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ClockPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Close`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CloudCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CloudFile`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Code`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CodeAlt`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Coins`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Collapse`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ColumnChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Columns2`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Columns3`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CommandLine`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Community`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ComparisonChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Compass`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CompassMap`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Contact`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Contacts`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Container`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Copy`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CornerDownLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CornerDownRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CornerUpLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CornerUpRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Coupon`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Cpu`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `createIconComponent`: `(definition: IconDefinition, displayName: string) => FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CreditCard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CrosshairLocation`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `CurrentLocation`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Customer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Cut`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Dashboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `DashboardChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Database`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `DataTable`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Date`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `DateToday`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Day`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Debug`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `DeliveryTruck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Deploy`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Deselect`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Desktop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `DeviceDesktop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `DeviceMobile`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Devices`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Directions`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Disc`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `DonutChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Download`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Duplicate`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Earth`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Edit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Eject`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Employee`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Enter`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Equalizer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Error`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ErrorCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Exit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Expand`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ExternalLink`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FaceId`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FastForward`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Favorite`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FavoriteFilled`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `File`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileAudio`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileDownload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileError`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileImage`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FilePdf`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FilePlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Files`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileSearch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileText`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileUpload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileVideo`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FileZip`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Film`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Filter`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Fingerprint`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Firewall`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Flag`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FocusMode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Folder`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderDownload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderError`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderOpen`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Folders`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderSearch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `FolderUpload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Forward`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Fullscreen`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Gallery`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Gamepad`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Gauge`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Gift`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `GitBranch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `GitCommit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `GitFork`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `GitMerge`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `GitPullRequest`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Globe`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `GlobeAlt`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Gps`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Grid2x2`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Grid3x3`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Guest`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `HardDrive`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Headphones`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Headset`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Help`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `HelpCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Hidden`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Histogram`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `HistoryClock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Home`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `IdCard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Image`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Images`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Inbox`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Incognito`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Info`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `InfoCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Insecure`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `IntegrationTest`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Invoice`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Key`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Keyboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `KeyRound`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Landmark`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Laptop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Layout`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutColumns`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutDashboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutFooter`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutGrid`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutHeader`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutList`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutNavbar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutRows`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutSidebarLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutSidebarRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LayoutToolbar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LineChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Link`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Loading`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Location`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LocationCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LocationPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LocationX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Lock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `LockKeyhole`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Mail`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MailNotification`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MailOpen`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Map`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MapPin`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MapPinFilled`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MapPinned`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Maximize`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Megaphone`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Memory`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Menu`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Message`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MessageDots`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Messages`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MessageSquare`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Microphone`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MicrophoneOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Minimize`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Minus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Moderator`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Monitor`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Month`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MoreHorizontal`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MoreVertical`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Mouse`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Music`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `MusicNote`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `NavigationArrow`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Notification`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `NotificationActive`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `NotificationOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Offline`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Online`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Outbox`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Package`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PackageCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PackageCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PackageOpen`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PackageX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PanelBottom`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PanelLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PanelRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PanelTop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Passkey`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Password`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Paste`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Pause`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Pencil`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Pending`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Percent`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PercentChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Phone`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PhoneIncoming`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PhoneMissed`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PhoneOutgoing`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PictureInPicture`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PieChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PinCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Play`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Playlist`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Plug`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Plus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Podcast`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Power`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `PreactIconProps`: `interface PreactIconProps extends SVGAttributes<SVGSVGElement> { size?: number | string; title?: string; direction?: 'ltr' | 'rtl'; mirrorInRtl?: boolean; colorMode?: 'duotone' | 'currentColor'; }`
+- `PresentationChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Print`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Printer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Privacy`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Profile`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ProfileCard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Progress`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ProgressChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `RadarChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Radio`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Receipt`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Redo`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Refresh`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Refund`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Regex`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Reminder`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Repeat`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Reply`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ReportChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Repository`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Rewind`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Road`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Rocket`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `RotateClockwise`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Route`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `RouteMap`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Router`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Rows2`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Rows3`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Rss`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Satellite`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Save`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ScanFace`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Scanner`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ScatterChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Schedule`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ScreenOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ScreenShare`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Secure`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SecureCloud`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SecureServer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SecurityScan`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SecurityWarning`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SelectAll`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Send`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Server`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ServerCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Settings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SettingsCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Share`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Shield`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ShieldAlert`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ShieldCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ShieldLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ShieldX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Ship`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Shipping`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ShoppingBag`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ShoppingCart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Shuffle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Signpost`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SkipNext`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SkipPrevious`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Smartphone`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SortAscending`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SortDescending`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SplitHorizontal`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SplitVertical`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Star`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `StarFilled`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Stop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Stopwatch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Store`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Subtitles`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Success`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SuccessCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Swap`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Sync`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `SyncError`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Tablet`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Tag`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Tags`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `TargetChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Terminal`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Timer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Tools`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Train`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Trash`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `TrendDown`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `TrendUp`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `TwoFactor`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Unavailable`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Undo`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UnitTest`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Unlink`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Unlock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Unverified`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Upload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Usb`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `User`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserBlocked`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserCard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserEdit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserHeart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Users`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserSearch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserSettings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UsersGroup`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserShield`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserStar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `UserX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Verified`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `VerifiedUser`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `VersionControl`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Video`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `VideoOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Visibility`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `VisibilityOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Volume`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `VolumeHigh`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `VolumeLow`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `VolumeOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Walking`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Wallet`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Warehouse`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Warning`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `WarningCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Watch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Waveform`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Webcam`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Webhook`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Week`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `Wifi`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `WifiOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ZoomIn`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+- `ZoomOut`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/dynamic
+
+- `PreactDynamicIcon`: `({ name, ...props }: PreactIconProps & { name: IconName; }) => VNode<PreactIconProps>`
+
+## ./preact/access-key
+
+- `AccessKey`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/accessibility
+
+- `Accessibility`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/account-circle
+
+- `AccountCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/account
+
+- `Account`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/activity-chart
+
+- `ActivityChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/admin
+
+- `Admin`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/airplane
+
+- `Airplane`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/alarm-off
+
+- `AlarmOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/alarm
+
+- `Alarm`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/align-bottom
+
+- `AlignBottom`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/align-center
+
+- `AlignCenter`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/align-left
+
+- `AlignLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/align-middle
+
+- `AlignMiddle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/align-right
+
+- `AlignRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/align-top
+
+- `AlignTop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/analytics
+
+- `Analytics`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/announcement
+
+- `Announcement`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/antivirus
+
+- `Antivirus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/api
+
+- `Api`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/appointment
+
+- `Appointment`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/archive
+
+- `Archive`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/area-chart
+
+- `AreaChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/arrow-down
+
+- `ArrowDown`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/arrow-left
+
+- `ArrowLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/arrow-right
+
+- `ArrowRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/arrow-up
+
+- `ArrowUp`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/at-sign
+
+- `AtSign`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/attachment
+
+- `Attachment`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/authentication
+
+- `Authentication`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/available
+
+- `Available`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/badge-check
+
+- `BadgeCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/banknote
+
+- `Banknote`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bar-chart-horizontal
+
+- `BarChartHorizontal`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bar-chart-stacked
+
+- `BarChartStacked`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bar-chart
+
+- `BarChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/barcode
+
+- `Barcode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/basket
+
+- `Basket`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/battery-charging
+
+- `BatteryCharging`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/battery-low
+
+- `BatteryLow`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/battery
+
+- `Battery`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bike
+
+- `Bike`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/binary
+
+- `Binary`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bluetooth
+
+- `Bluetooth`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/braces
+
+- `Braces`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/brackets
+
+- `Brackets`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/breakpoint
+
+- `Breakpoint`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/broadcast
+
+- `Broadcast`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bubble-chart
+
+- `BubbleChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bug-shield
+
+- `BugShield`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bug
+
+- `Bug`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/build
+
+- `Build`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/building
+
+- `Building`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/buildings
+
+- `Buildings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/bus
+
+- `Bus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-check
+
+- `CalendarCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-clock
+
+- `CalendarClock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-days
+
+- `CalendarDays`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-edit
+
+- `CalendarEdit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-event
+
+- `CalendarEvent`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-lock
+
+- `CalendarLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-minus
+
+- `CalendarMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-month
+
+- `CalendarMonth`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-plus
+
+- `CalendarPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-range
+
+- `CalendarRange`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-search
+
+- `CalendarSearch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-settings
+
+- `CalendarSettings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-star
+
+- `CalendarStar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-week
+
+- `CalendarWeek`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar-x
+
+- `CalendarX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/calendar
+
+- `Calendar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/camera-off
+
+- `CameraOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/camera
+
+- `Camera`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/captions
+
+- `Captions`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/car
+
+- `Car`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/card-check
+
+- `CardCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cart-check
+
+- `CartCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cart-minus
+
+- `CartMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cart-plus
+
+- `CartPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cart-x
+
+- `CartX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cash-register
+
+- `CashRegister`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cash
+
+- `Cash`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cast-device
+
+- `CastDevice`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cast
+
+- `Cast`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/certificate
+
+- `Certificate`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chart-axis
+
+- `ChartAxis`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chart-grid
+
+- `ChartGrid`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chart-label
+
+- `ChartLabel`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chart-legend
+
+- `ChartLegend`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chart-plus
+
+- `ChartPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chart-settings
+
+- `ChartSettings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chart-tooltip
+
+- `ChartTooltip`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/check
+
+- `Check`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/checkout
+
+- `Checkout`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chevron-down
+
+- `ChevronDown`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chevron-left
+
+- `ChevronLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chevron-right
+
+- `ChevronRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chevron-up
+
+- `ChevronUp`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chevrons-down
+
+- `ChevronsDown`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chevrons-left
+
+- `ChevronsLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chevrons-right
+
+- `ChevronsRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/chevrons-up
+
+- `ChevronsUp`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/child
+
+- `Child`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/clapperboard
+
+- `Clapperboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/clipboard-text
+
+- `ClipboardText`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/clipboard
+
+- `Clipboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/clock-check
+
+- `ClockCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/clock-plus
+
+- `ClockPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/clock
+
+- `Clock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/close
+
+- `Close`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cloud-code
+
+- `CloudCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cloud-file
+
+- `CloudFile`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/code-alt
+
+- `CodeAlt`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/code
+
+- `Code`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/coins
+
+- `Coins`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/collapse
+
+- `Collapse`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/column-chart
+
+- `ColumnChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/columns-2
+
+- `Columns2`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/columns-3
+
+- `Columns3`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/command-line
+
+- `CommandLine`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/community
+
+- `Community`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/comparison-chart
+
+- `ComparisonChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/compass-map
+
+- `CompassMap`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/compass
+
+- `Compass`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/contact
+
+- `Contact`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/contacts
+
+- `Contacts`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/container
+
+- `Container`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/copy
+
+- `Copy`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/corner-down-left
+
+- `CornerDownLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/corner-down-right
+
+- `CornerDownRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/corner-up-left
+
+- `CornerUpLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/corner-up-right
+
+- `CornerUpRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/coupon
+
+- `Coupon`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cpu
+
+- `Cpu`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/credit-card
+
+- `CreditCard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/crosshair-location
+
+- `CrosshairLocation`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/current-location
+
+- `CurrentLocation`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/customer
+
+- `Customer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/cut
+
+- `Cut`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/dashboard-chart
+
+- `DashboardChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/dashboard
+
+- `Dashboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/data-table
+
+- `DataTable`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/database
+
+- `Database`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/date-today
+
+- `DateToday`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/date
+
+- `Date`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/day
+
+- `Day`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/debug
+
+- `Debug`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/delivery-truck
+
+- `DeliveryTruck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/deploy
+
+- `Deploy`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/deselect
+
+- `Deselect`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/desktop
+
+- `Desktop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/device-desktop
+
+- `DeviceDesktop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/device-mobile
+
+- `DeviceMobile`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/devices
+
+- `Devices`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/directions
+
+- `Directions`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/disc
+
+- `Disc`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/donut-chart
+
+- `DonutChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/download
+
+- `Download`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/duplicate
+
+- `Duplicate`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/earth
+
+- `Earth`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/edit
+
+- `Edit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/eject
+
+- `Eject`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/employee
+
+- `Employee`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/enter
+
+- `Enter`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/equalizer
+
+- `Equalizer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/error-circle
+
+- `ErrorCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/error
+
+- `Error`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/exit
+
+- `Exit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/expand
+
+- `Expand`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/external-link
+
+- `ExternalLink`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/face-id
+
+- `FaceId`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/fast-forward
+
+- `FastForward`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/favorite-filled
+
+- `FavoriteFilled`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/favorite
+
+- `Favorite`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-audio
+
+- `FileAudio`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-check
+
+- `FileCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-code
+
+- `FileCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-download
+
+- `FileDownload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-error
+
+- `FileError`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-image
+
+- `FileImage`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-lock
+
+- `FileLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-minus
+
+- `FileMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-pdf
+
+- `FilePdf`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-plus
+
+- `FilePlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-search
+
+- `FileSearch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-text
+
+- `FileText`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-upload
+
+- `FileUpload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-video
+
+- `FileVideo`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file-zip
+
+- `FileZip`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/file
+
+- `File`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/files
+
+- `Files`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/film
+
+- `Film`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/filter
+
+- `Filter`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/fingerprint
+
+- `Fingerprint`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/firewall
+
+- `Firewall`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/flag
+
+- `Flag`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/focus-mode
+
+- `FocusMode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-check
+
+- `FolderCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-download
+
+- `FolderDownload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-error
+
+- `FolderError`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-lock
+
+- `FolderLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-minus
+
+- `FolderMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-open
+
+- `FolderOpen`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-plus
+
+- `FolderPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-search
+
+- `FolderSearch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder-upload
+
+- `FolderUpload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folder
+
+- `Folder`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/folders
+
+- `Folders`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/forward
+
+- `Forward`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/fullscreen
+
+- `Fullscreen`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/gallery
+
+- `Gallery`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/gamepad
+
+- `Gamepad`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/gauge
+
+- `Gauge`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/gift
+
+- `Gift`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/git-branch
+
+- `GitBranch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/git-commit
+
+- `GitCommit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/git-fork
+
+- `GitFork`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/git-merge
+
+- `GitMerge`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/git-pull-request
+
+- `GitPullRequest`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/globe-alt
+
+- `GlobeAlt`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/globe
+
+- `Globe`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/gps
+
+- `Gps`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/grid-2x2
+
+- `Grid2x2`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/grid-3x3
+
+- `Grid3x3`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/guest
+
+- `Guest`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/hard-drive
+
+- `HardDrive`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/headphones
+
+- `Headphones`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/headset
+
+- `Headset`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/help-circle
+
+- `HelpCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/help
+
+- `Help`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/hidden
+
+- `Hidden`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/histogram
+
+- `Histogram`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/history-clock
+
+- `HistoryClock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/home
+
+- `Home`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/id-card
+
+- `IdCard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/image
+
+- `Image`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/images
+
+- `Images`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/inbox
+
+- `Inbox`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/incognito
+
+- `Incognito`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/info-circle
+
+- `InfoCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/info
+
+- `Info`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/insecure
+
+- `Insecure`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/integration-test
+
+- `IntegrationTest`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/invoice
+
+- `Invoice`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/key-round
+
+- `KeyRound`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/key
+
+- `Key`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/keyboard
+
+- `Keyboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/landmark
+
+- `Landmark`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/laptop
+
+- `Laptop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-columns
+
+- `LayoutColumns`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-dashboard
+
+- `LayoutDashboard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-footer
+
+- `LayoutFooter`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-grid
+
+- `LayoutGrid`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-header
+
+- `LayoutHeader`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-list
+
+- `LayoutList`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-navbar
+
+- `LayoutNavbar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-rows
+
+- `LayoutRows`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-sidebar-left
+
+- `LayoutSidebarLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-sidebar-right
+
+- `LayoutSidebarRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout-toolbar
+
+- `LayoutToolbar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/layout
+
+- `Layout`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/line-chart
+
+- `LineChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/link
+
+- `Link`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/loading
+
+- `Loading`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/location-check
+
+- `LocationCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/location-plus
+
+- `LocationPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/location-x
+
+- `LocationX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/location
+
+- `Location`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/lock-keyhole
+
+- `LockKeyhole`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/lock
+
+- `Lock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/mail-notification
+
+- `MailNotification`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/mail-open
+
+- `MailOpen`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/mail
+
+- `Mail`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/map-pin-filled
+
+- `MapPinFilled`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/map-pin
+
+- `MapPin`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/map-pinned
+
+- `MapPinned`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/map
+
+- `Map`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/maximize
+
+- `Maximize`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/megaphone
+
+- `Megaphone`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/memory
+
+- `Memory`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/menu
+
+- `Menu`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/message-dots
+
+- `MessageDots`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/message-square
+
+- `MessageSquare`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/message
+
+- `Message`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/messages
+
+- `Messages`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/microphone-off
+
+- `MicrophoneOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/microphone
+
+- `Microphone`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/minimize
+
+- `Minimize`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/minus
+
+- `Minus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/moderator
+
+- `Moderator`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/monitor
+
+- `Monitor`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/month
+
+- `Month`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/more-horizontal
+
+- `MoreHorizontal`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/more-vertical
+
+- `MoreVertical`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/mouse
+
+- `Mouse`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/music-note
+
+- `MusicNote`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/music
+
+- `Music`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/navigation-arrow
+
+- `NavigationArrow`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/notification-active
+
+- `NotificationActive`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/notification-off
+
+- `NotificationOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/notification
+
+- `Notification`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/offline
+
+- `Offline`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/online
+
+- `Online`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/outbox
+
+- `Outbox`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/package-check
+
+- `PackageCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/package-code
+
+- `PackageCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/package-open
+
+- `PackageOpen`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/package-x
+
+- `PackageX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/package
+
+- `Package`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/panel-bottom
+
+- `PanelBottom`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/panel-left
+
+- `PanelLeft`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/panel-right
+
+- `PanelRight`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/panel-top
+
+- `PanelTop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/passkey
+
+- `Passkey`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/password
+
+- `Password`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/paste
+
+- `Paste`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/pause
+
+- `Pause`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/pencil
+
+- `Pencil`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/pending
+
+- `Pending`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/percent-chart
+
+- `PercentChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/percent
+
+- `Percent`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/phone-incoming
+
+- `PhoneIncoming`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/phone-missed
+
+- `PhoneMissed`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/phone-outgoing
+
+- `PhoneOutgoing`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/phone
+
+- `Phone`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/picture-in-picture
+
+- `PictureInPicture`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/pie-chart
+
+- `PieChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/pin-code
+
+- `PinCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/play
+
+- `Play`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/playlist
+
+- `Playlist`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/plug
+
+- `Plug`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/plus
+
+- `Plus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/podcast
+
+- `Podcast`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/power
+
+- `Power`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/presentation-chart
+
+- `PresentationChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/print
+
+- `Print`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/printer
+
+- `Printer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/privacy
+
+- `Privacy`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/profile-card
+
+- `ProfileCard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/profile
+
+- `Profile`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/progress-chart
+
+- `ProgressChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/progress
+
+- `Progress`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/radar-chart
+
+- `RadarChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/radio
+
+- `Radio`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/receipt
+
+- `Receipt`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/redo
+
+- `Redo`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/refresh
+
+- `Refresh`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/refund
+
+- `Refund`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/regex
+
+- `Regex`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/reminder
+
+- `Reminder`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/repeat
+
+- `Repeat`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/reply
+
+- `Reply`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/report-chart
+
+- `ReportChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/repository
+
+- `Repository`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/rewind
+
+- `Rewind`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/road
+
+- `Road`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/rocket
+
+- `Rocket`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/rotate-clockwise
+
+- `RotateClockwise`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/route-map
+
+- `RouteMap`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/route
+
+- `Route`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/router
+
+- `Router`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/rows-2
+
+- `Rows2`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/rows-3
+
+- `Rows3`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/rss
+
+- `Rss`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/satellite
+
+- `Satellite`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/save
+
+- `Save`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/scan-face
+
+- `ScanFace`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/scanner
+
+- `Scanner`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/scatter-chart
+
+- `ScatterChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/schedule
+
+- `Schedule`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/screen-off
+
+- `ScreenOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/screen-share
+
+- `ScreenShare`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/secure-cloud
+
+- `SecureCloud`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/secure-server
+
+- `SecureServer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/secure
+
+- `Secure`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/security-scan
+
+- `SecurityScan`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/security-warning
+
+- `SecurityWarning`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/select-all
+
+- `SelectAll`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/send
+
+- `Send`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/server-code
+
+- `ServerCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/server
+
+- `Server`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/settings-code
+
+- `SettingsCode`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/settings
+
+- `Settings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/share
+
+- `Share`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shield-alert
+
+- `ShieldAlert`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shield-check
+
+- `ShieldCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shield-lock
+
+- `ShieldLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shield-x
+
+- `ShieldX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shield
+
+- `Shield`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/ship
+
+- `Ship`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shipping
+
+- `Shipping`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shopping-bag
+
+- `ShoppingBag`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shopping-cart
+
+- `ShoppingCart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/shuffle
+
+- `Shuffle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/signpost
+
+- `Signpost`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/skip-next
+
+- `SkipNext`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/skip-previous
+
+- `SkipPrevious`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/smartphone
+
+- `Smartphone`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/sort-ascending
+
+- `SortAscending`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/sort-descending
+
+- `SortDescending`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/split-horizontal
+
+- `SplitHorizontal`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/split-vertical
+
+- `SplitVertical`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/star-filled
+
+- `StarFilled`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/star
+
+- `Star`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/stop
+
+- `Stop`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/stopwatch
+
+- `Stopwatch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/store
+
+- `Store`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/subtitles
+
+- `Subtitles`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/success-circle
+
+- `SuccessCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/success
+
+- `Success`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/swap
+
+- `Swap`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/sync-error
+
+- `SyncError`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/sync
+
+- `Sync`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/tablet
+
+- `Tablet`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/tag
+
+- `Tag`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/tags
+
+- `Tags`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/target-chart
+
+- `TargetChart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/terminal
+
+- `Terminal`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/timer
+
+- `Timer`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/tools
+
+- `Tools`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/train
+
+- `Train`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/trash
+
+- `Trash`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/trend-down
+
+- `TrendDown`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/trend-up
+
+- `TrendUp`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/two-factor
+
+- `TwoFactor`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/unavailable
+
+- `Unavailable`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/undo
+
+- `Undo`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/unit-test
+
+- `UnitTest`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/unlink
+
+- `Unlink`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/unlock
+
+- `Unlock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/unverified
+
+- `Unverified`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/upload
+
+- `Upload`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/usb
+
+- `Usb`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-blocked
+
+- `UserBlocked`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-card
+
+- `UserCard`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-check
+
+- `UserCheck`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-circle
+
+- `UserCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-edit
+
+- `UserEdit`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-heart
+
+- `UserHeart`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-lock
+
+- `UserLock`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-minus
+
+- `UserMinus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-plus
+
+- `UserPlus`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-search
+
+- `UserSearch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-settings
+
+- `UserSettings`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-shield
+
+- `UserShield`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-star
+
+- `UserStar`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user-x
+
+- `UserX`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/user
+
+- `User`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/users-group
+
+- `UsersGroup`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/users
+
+- `Users`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/verified-user
+
+- `VerifiedUser`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/verified
+
+- `Verified`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/version-control
+
+- `VersionControl`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/video-off
+
+- `VideoOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/video
+
+- `Video`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/visibility-off
+
+- `VisibilityOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/visibility
+
+- `Visibility`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/volume-high
+
+- `VolumeHigh`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/volume-low
+
+- `VolumeLow`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/volume-off
+
+- `VolumeOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/volume
+
+- `Volume`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/walking
+
+- `Walking`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/wallet
+
+- `Wallet`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/warehouse
+
+- `Warehouse`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/warning-circle
+
+- `WarningCircle`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/warning
+
+- `Warning`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/watch
+
+- `Watch`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/waveform
+
+- `Waveform`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/webcam
+
+- `Webcam`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/webhook
+
+- `Webhook`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/week
+
+- `Week`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/wifi-off
+
+- `WifiOff`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/wifi
+
+- `Wifi`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/zoom-in
+
+- `ZoomIn`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./preact/zoom-out
+
+- `ZoomOut`: `FunctionalComponent<React.PropsWithoutRef<PreactIconProps> & { ref?: Ref<SVGSVGElement>; }>`
+
+## ./lit
+
+- `Accessibility`: `typeof SimurghLitIcon`
+- `AccessKey`: `typeof SimurghLitIcon`
+- `Account`: `typeof SimurghLitIcon`
+- `AccountCircle`: `typeof SimurghLitIcon`
+- `ActivityChart`: `typeof SimurghLitIcon`
+- `Admin`: `typeof SimurghLitIcon`
+- `Airplane`: `typeof SimurghLitIcon`
+- `Alarm`: `typeof SimurghLitIcon`
+- `AlarmOff`: `typeof SimurghLitIcon`
+- `AlignBottom`: `typeof SimurghLitIcon`
+- `AlignCenter`: `typeof SimurghLitIcon`
+- `AlignLeft`: `typeof SimurghLitIcon`
+- `AlignMiddle`: `typeof SimurghLitIcon`
+- `AlignRight`: `typeof SimurghLitIcon`
+- `AlignTop`: `typeof SimurghLitIcon`
+- `Analytics`: `typeof SimurghLitIcon`
+- `Announcement`: `typeof SimurghLitIcon`
+- `Antivirus`: `typeof SimurghLitIcon`
+- `Api`: `typeof SimurghLitIcon`
+- `Appointment`: `typeof SimurghLitIcon`
+- `Archive`: `typeof SimurghLitIcon`
+- `AreaChart`: `typeof SimurghLitIcon`
+- `ArrowDown`: `typeof SimurghLitIcon`
+- `ArrowLeft`: `typeof SimurghLitIcon`
+- `ArrowRight`: `typeof SimurghLitIcon`
+- `ArrowUp`: `typeof SimurghLitIcon`
+- `AtSign`: `typeof SimurghLitIcon`
+- `Attachment`: `typeof SimurghLitIcon`
+- `Authentication`: `typeof SimurghLitIcon`
+- `Available`: `typeof SimurghLitIcon`
+- `BadgeCheck`: `typeof SimurghLitIcon`
+- `Banknote`: `typeof SimurghLitIcon`
+- `BarChart`: `typeof SimurghLitIcon`
+- `BarChartHorizontal`: `typeof SimurghLitIcon`
+- `BarChartStacked`: `typeof SimurghLitIcon`
+- `Barcode`: `typeof SimurghLitIcon`
+- `Basket`: `typeof SimurghLitIcon`
+- `Battery`: `typeof SimurghLitIcon`
+- `BatteryCharging`: `typeof SimurghLitIcon`
+- `BatteryLow`: `typeof SimurghLitIcon`
+- `Bike`: `typeof SimurghLitIcon`
+- `Binary`: `typeof SimurghLitIcon`
+- `Bluetooth`: `typeof SimurghLitIcon`
+- `Braces`: `typeof SimurghLitIcon`
+- `Brackets`: `typeof SimurghLitIcon`
+- `Breakpoint`: `typeof SimurghLitIcon`
+- `Broadcast`: `typeof SimurghLitIcon`
+- `BubbleChart`: `typeof SimurghLitIcon`
+- `Bug`: `typeof SimurghLitIcon`
+- `BugShield`: `typeof SimurghLitIcon`
+- `Build`: `typeof SimurghLitIcon`
+- `Building`: `typeof SimurghLitIcon`
+- `Buildings`: `typeof SimurghLitIcon`
+- `Bus`: `typeof SimurghLitIcon`
+- `Calendar`: `typeof SimurghLitIcon`
+- `CalendarCheck`: `typeof SimurghLitIcon`
+- `CalendarClock`: `typeof SimurghLitIcon`
+- `CalendarDays`: `typeof SimurghLitIcon`
+- `CalendarEdit`: `typeof SimurghLitIcon`
+- `CalendarEvent`: `typeof SimurghLitIcon`
+- `CalendarLock`: `typeof SimurghLitIcon`
+- `CalendarMinus`: `typeof SimurghLitIcon`
+- `CalendarMonth`: `typeof SimurghLitIcon`
+- `CalendarPlus`: `typeof SimurghLitIcon`
+- `CalendarRange`: `typeof SimurghLitIcon`
+- `CalendarSearch`: `typeof SimurghLitIcon`
+- `CalendarSettings`: `typeof SimurghLitIcon`
+- `CalendarStar`: `typeof SimurghLitIcon`
+- `CalendarWeek`: `typeof SimurghLitIcon`
+- `CalendarX`: `typeof SimurghLitIcon`
+- `Camera`: `typeof SimurghLitIcon`
+- `CameraOff`: `typeof SimurghLitIcon`
+- `Captions`: `typeof SimurghLitIcon`
+- `Car`: `typeof SimurghLitIcon`
+- `CardCheck`: `typeof SimurghLitIcon`
+- `CartCheck`: `typeof SimurghLitIcon`
+- `CartMinus`: `typeof SimurghLitIcon`
+- `CartPlus`: `typeof SimurghLitIcon`
+- `CartX`: `typeof SimurghLitIcon`
+- `Cash`: `typeof SimurghLitIcon`
+- `CashRegister`: `typeof SimurghLitIcon`
+- `Cast`: `typeof SimurghLitIcon`
+- `CastDevice`: `typeof SimurghLitIcon`
+- `Certificate`: `typeof SimurghLitIcon`
+- `ChartAxis`: `typeof SimurghLitIcon`
+- `ChartGrid`: `typeof SimurghLitIcon`
+- `ChartLabel`: `typeof SimurghLitIcon`
+- `ChartLegend`: `typeof SimurghLitIcon`
+- `ChartPlus`: `typeof SimurghLitIcon`
+- `ChartSettings`: `typeof SimurghLitIcon`
+- `ChartTooltip`: `typeof SimurghLitIcon`
+- `Check`: `typeof SimurghLitIcon`
+- `Checkout`: `typeof SimurghLitIcon`
+- `ChevronDown`: `typeof SimurghLitIcon`
+- `ChevronLeft`: `typeof SimurghLitIcon`
+- `ChevronRight`: `typeof SimurghLitIcon`
+- `ChevronsDown`: `typeof SimurghLitIcon`
+- `ChevronsLeft`: `typeof SimurghLitIcon`
+- `ChevronsRight`: `typeof SimurghLitIcon`
+- `ChevronsUp`: `typeof SimurghLitIcon`
+- `ChevronUp`: `typeof SimurghLitIcon`
+- `Child`: `typeof SimurghLitIcon`
+- `Clapperboard`: `typeof SimurghLitIcon`
+- `Clipboard`: `typeof SimurghLitIcon`
+- `ClipboardText`: `typeof SimurghLitIcon`
+- `Clock`: `typeof SimurghLitIcon`
+- `ClockCheck`: `typeof SimurghLitIcon`
+- `ClockPlus`: `typeof SimurghLitIcon`
+- `Close`: `typeof SimurghLitIcon`
+- `CloudCode`: `typeof SimurghLitIcon`
+- `CloudFile`: `typeof SimurghLitIcon`
+- `Code`: `typeof SimurghLitIcon`
+- `CodeAlt`: `typeof SimurghLitIcon`
+- `Coins`: `typeof SimurghLitIcon`
+- `Collapse`: `typeof SimurghLitIcon`
+- `ColumnChart`: `typeof SimurghLitIcon`
+- `Columns2`: `typeof SimurghLitIcon`
+- `Columns3`: `typeof SimurghLitIcon`
+- `CommandLine`: `typeof SimurghLitIcon`
+- `Community`: `typeof SimurghLitIcon`
+- `ComparisonChart`: `typeof SimurghLitIcon`
+- `Compass`: `typeof SimurghLitIcon`
+- `CompassMap`: `typeof SimurghLitIcon`
+- `Contact`: `typeof SimurghLitIcon`
+- `Contacts`: `typeof SimurghLitIcon`
+- `Container`: `typeof SimurghLitIcon`
+- `Copy`: `typeof SimurghLitIcon`
+- `CornerDownLeft`: `typeof SimurghLitIcon`
+- `CornerDownRight`: `typeof SimurghLitIcon`
+- `CornerUpLeft`: `typeof SimurghLitIcon`
+- `CornerUpRight`: `typeof SimurghLitIcon`
+- `Coupon`: `typeof SimurghLitIcon`
+- `Cpu`: `typeof SimurghLitIcon`
+- `createIconComponent`: `(definition: IconDefinition, tagName: string) => typeof SimurghLitIcon`
+- `CreditCard`: `typeof SimurghLitIcon`
+- `CrosshairLocation`: `typeof SimurghLitIcon`
+- `CurrentLocation`: `typeof SimurghLitIcon`
+- `Customer`: `typeof SimurghLitIcon`
+- `Cut`: `typeof SimurghLitIcon`
+- `Dashboard`: `typeof SimurghLitIcon`
+- `DashboardChart`: `typeof SimurghLitIcon`
+- `Database`: `typeof SimurghLitIcon`
+- `DataTable`: `typeof SimurghLitIcon`
+- `Date`: `typeof SimurghLitIcon`
+- `DateToday`: `typeof SimurghLitIcon`
+- `Day`: `typeof SimurghLitIcon`
+- `Debug`: `typeof SimurghLitIcon`
+- `DeliveryTruck`: `typeof SimurghLitIcon`
+- `Deploy`: `typeof SimurghLitIcon`
+- `Deselect`: `typeof SimurghLitIcon`
+- `Desktop`: `typeof SimurghLitIcon`
+- `DeviceDesktop`: `typeof SimurghLitIcon`
+- `DeviceMobile`: `typeof SimurghLitIcon`
+- `Devices`: `typeof SimurghLitIcon`
+- `Directions`: `typeof SimurghLitIcon`
+- `Disc`: `typeof SimurghLitIcon`
+- `DonutChart`: `typeof SimurghLitIcon`
+- `Download`: `typeof SimurghLitIcon`
+- `Duplicate`: `typeof SimurghLitIcon`
+- `Earth`: `typeof SimurghLitIcon`
+- `Edit`: `typeof SimurghLitIcon`
+- `Eject`: `typeof SimurghLitIcon`
+- `Employee`: `typeof SimurghLitIcon`
+- `Enter`: `typeof SimurghLitIcon`
+- `Equalizer`: `typeof SimurghLitIcon`
+- `Error`: `typeof SimurghLitIcon`
+- `ErrorCircle`: `typeof SimurghLitIcon`
+- `Exit`: `typeof SimurghLitIcon`
+- `Expand`: `typeof SimurghLitIcon`
+- `ExternalLink`: `typeof SimurghLitIcon`
+- `FaceId`: `typeof SimurghLitIcon`
+- `FastForward`: `typeof SimurghLitIcon`
+- `Favorite`: `typeof SimurghLitIcon`
+- `FavoriteFilled`: `typeof SimurghLitIcon`
+- `File`: `typeof SimurghLitIcon`
+- `FileAudio`: `typeof SimurghLitIcon`
+- `FileCheck`: `typeof SimurghLitIcon`
+- `FileCode`: `typeof SimurghLitIcon`
+- `FileDownload`: `typeof SimurghLitIcon`
+- `FileError`: `typeof SimurghLitIcon`
+- `FileImage`: `typeof SimurghLitIcon`
+- `FileLock`: `typeof SimurghLitIcon`
+- `FileMinus`: `typeof SimurghLitIcon`
+- `FilePdf`: `typeof SimurghLitIcon`
+- `FilePlus`: `typeof SimurghLitIcon`
+- `Files`: `typeof SimurghLitIcon`
+- `FileSearch`: `typeof SimurghLitIcon`
+- `FileText`: `typeof SimurghLitIcon`
+- `FileUpload`: `typeof SimurghLitIcon`
+- `FileVideo`: `typeof SimurghLitIcon`
+- `FileZip`: `typeof SimurghLitIcon`
+- `Film`: `typeof SimurghLitIcon`
+- `Filter`: `typeof SimurghLitIcon`
+- `Fingerprint`: `typeof SimurghLitIcon`
+- `Firewall`: `typeof SimurghLitIcon`
+- `Flag`: `typeof SimurghLitIcon`
+- `FocusMode`: `typeof SimurghLitIcon`
+- `Folder`: `typeof SimurghLitIcon`
+- `FolderCheck`: `typeof SimurghLitIcon`
+- `FolderDownload`: `typeof SimurghLitIcon`
+- `FolderError`: `typeof SimurghLitIcon`
+- `FolderLock`: `typeof SimurghLitIcon`
+- `FolderMinus`: `typeof SimurghLitIcon`
+- `FolderOpen`: `typeof SimurghLitIcon`
+- `FolderPlus`: `typeof SimurghLitIcon`
+- `Folders`: `typeof SimurghLitIcon`
+- `FolderSearch`: `typeof SimurghLitIcon`
+- `FolderUpload`: `typeof SimurghLitIcon`
+- `Forward`: `typeof SimurghLitIcon`
+- `Fullscreen`: `typeof SimurghLitIcon`
+- `Gallery`: `typeof SimurghLitIcon`
+- `Gamepad`: `typeof SimurghLitIcon`
+- `Gauge`: `typeof SimurghLitIcon`
+- `Gift`: `typeof SimurghLitIcon`
+- `GitBranch`: `typeof SimurghLitIcon`
+- `GitCommit`: `typeof SimurghLitIcon`
+- `GitFork`: `typeof SimurghLitIcon`
+- `GitMerge`: `typeof SimurghLitIcon`
+- `GitPullRequest`: `typeof SimurghLitIcon`
+- `Globe`: `typeof SimurghLitIcon`
+- `GlobeAlt`: `typeof SimurghLitIcon`
+- `Gps`: `typeof SimurghLitIcon`
+- `Grid2x2`: `typeof SimurghLitIcon`
+- `Grid3x3`: `typeof SimurghLitIcon`
+- `Guest`: `typeof SimurghLitIcon`
+- `HardDrive`: `typeof SimurghLitIcon`
+- `Headphones`: `typeof SimurghLitIcon`
+- `Headset`: `typeof SimurghLitIcon`
+- `Help`: `typeof SimurghLitIcon`
+- `HelpCircle`: `typeof SimurghLitIcon`
+- `Hidden`: `typeof SimurghLitIcon`
+- `Histogram`: `typeof SimurghLitIcon`
+- `HistoryClock`: `typeof SimurghLitIcon`
+- `Home`: `typeof SimurghLitIcon`
+- `IdCard`: `typeof SimurghLitIcon`
+- `Image`: `typeof SimurghLitIcon`
+- `Images`: `typeof SimurghLitIcon`
+- `Inbox`: `typeof SimurghLitIcon`
+- `Incognito`: `typeof SimurghLitIcon`
+- `Info`: `typeof SimurghLitIcon`
+- `InfoCircle`: `typeof SimurghLitIcon`
+- `Insecure`: `typeof SimurghLitIcon`
+- `IntegrationTest`: `typeof SimurghLitIcon`
+- `Invoice`: `typeof SimurghLitIcon`
+- `Key`: `typeof SimurghLitIcon`
+- `Keyboard`: `typeof SimurghLitIcon`
+- `KeyRound`: `typeof SimurghLitIcon`
+- `Landmark`: `typeof SimurghLitIcon`
+- `Laptop`: `typeof SimurghLitIcon`
+- `Layout`: `typeof SimurghLitIcon`
+- `LayoutColumns`: `typeof SimurghLitIcon`
+- `LayoutDashboard`: `typeof SimurghLitIcon`
+- `LayoutFooter`: `typeof SimurghLitIcon`
+- `LayoutGrid`: `typeof SimurghLitIcon`
+- `LayoutHeader`: `typeof SimurghLitIcon`
+- `LayoutList`: `typeof SimurghLitIcon`
+- `LayoutNavbar`: `typeof SimurghLitIcon`
+- `LayoutRows`: `typeof SimurghLitIcon`
+- `LayoutSidebarLeft`: `typeof SimurghLitIcon`
+- `LayoutSidebarRight`: `typeof SimurghLitIcon`
+- `LayoutToolbar`: `typeof SimurghLitIcon`
+- `LineChart`: `typeof SimurghLitIcon`
+- `Link`: `typeof SimurghLitIcon`
+- `Loading`: `typeof SimurghLitIcon`
+- `Location`: `typeof SimurghLitIcon`
+- `LocationCheck`: `typeof SimurghLitIcon`
+- `LocationPlus`: `typeof SimurghLitIcon`
+- `LocationX`: `typeof SimurghLitIcon`
+- `Lock`: `typeof SimurghLitIcon`
+- `LockKeyhole`: `typeof SimurghLitIcon`
+- `Mail`: `typeof SimurghLitIcon`
+- `MailNotification`: `typeof SimurghLitIcon`
+- `MailOpen`: `typeof SimurghLitIcon`
+- `Map`: `typeof SimurghLitIcon`
+- `MapPin`: `typeof SimurghLitIcon`
+- `MapPinFilled`: `typeof SimurghLitIcon`
+- `MapPinned`: `typeof SimurghLitIcon`
+- `Maximize`: `typeof SimurghLitIcon`
+- `Megaphone`: `typeof SimurghLitIcon`
+- `Memory`: `typeof SimurghLitIcon`
+- `Menu`: `typeof SimurghLitIcon`
+- `Message`: `typeof SimurghLitIcon`
+- `MessageDots`: `typeof SimurghLitIcon`
+- `Messages`: `typeof SimurghLitIcon`
+- `MessageSquare`: `typeof SimurghLitIcon`
+- `Microphone`: `typeof SimurghLitIcon`
+- `MicrophoneOff`: `typeof SimurghLitIcon`
+- `Minimize`: `typeof SimurghLitIcon`
+- `Minus`: `typeof SimurghLitIcon`
+- `Moderator`: `typeof SimurghLitIcon`
+- `Monitor`: `typeof SimurghLitIcon`
+- `Month`: `typeof SimurghLitIcon`
+- `MoreHorizontal`: `typeof SimurghLitIcon`
+- `MoreVertical`: `typeof SimurghLitIcon`
+- `Mouse`: `typeof SimurghLitIcon`
+- `Music`: `typeof SimurghLitIcon`
+- `MusicNote`: `typeof SimurghLitIcon`
+- `NavigationArrow`: `typeof SimurghLitIcon`
+- `Notification`: `typeof SimurghLitIcon`
+- `NotificationActive`: `typeof SimurghLitIcon`
+- `NotificationOff`: `typeof SimurghLitIcon`
+- `Offline`: `typeof SimurghLitIcon`
+- `Online`: `typeof SimurghLitIcon`
+- `Outbox`: `typeof SimurghLitIcon`
+- `Package`: `typeof SimurghLitIcon`
+- `PackageCheck`: `typeof SimurghLitIcon`
+- `PackageCode`: `typeof SimurghLitIcon`
+- `PackageOpen`: `typeof SimurghLitIcon`
+- `PackageX`: `typeof SimurghLitIcon`
+- `PanelBottom`: `typeof SimurghLitIcon`
+- `PanelLeft`: `typeof SimurghLitIcon`
+- `PanelRight`: `typeof SimurghLitIcon`
+- `PanelTop`: `typeof SimurghLitIcon`
+- `Passkey`: `typeof SimurghLitIcon`
+- `Password`: `typeof SimurghLitIcon`
+- `Paste`: `typeof SimurghLitIcon`
+- `Pause`: `typeof SimurghLitIcon`
+- `Pencil`: `typeof SimurghLitIcon`
+- `Pending`: `typeof SimurghLitIcon`
+- `Percent`: `typeof SimurghLitIcon`
+- `PercentChart`: `typeof SimurghLitIcon`
+- `Phone`: `typeof SimurghLitIcon`
+- `PhoneIncoming`: `typeof SimurghLitIcon`
+- `PhoneMissed`: `typeof SimurghLitIcon`
+- `PhoneOutgoing`: `typeof SimurghLitIcon`
+- `PictureInPicture`: `typeof SimurghLitIcon`
+- `PieChart`: `typeof SimurghLitIcon`
+- `PinCode`: `typeof SimurghLitIcon`
+- `Play`: `typeof SimurghLitIcon`
+- `Playlist`: `typeof SimurghLitIcon`
+- `Plug`: `typeof SimurghLitIcon`
+- `Plus`: `typeof SimurghLitIcon`
+- `Podcast`: `typeof SimurghLitIcon`
+- `Power`: `typeof SimurghLitIcon`
+- `PresentationChart`: `typeof SimurghLitIcon`
+- `Print`: `typeof SimurghLitIcon`
+- `Printer`: `typeof SimurghLitIcon`
+- `Privacy`: `typeof SimurghLitIcon`
+- `Profile`: `typeof SimurghLitIcon`
+- `ProfileCard`: `typeof SimurghLitIcon`
+- `Progress`: `typeof SimurghLitIcon`
+- `ProgressChart`: `typeof SimurghLitIcon`
+- `RadarChart`: `typeof SimurghLitIcon`
+- `Radio`: `typeof SimurghLitIcon`
+- `Receipt`: `typeof SimurghLitIcon`
+- `Redo`: `typeof SimurghLitIcon`
+- `Refresh`: `typeof SimurghLitIcon`
+- `Refund`: `typeof SimurghLitIcon`
+- `Regex`: `typeof SimurghLitIcon`
+- `Reminder`: `typeof SimurghLitIcon`
+- `Repeat`: `typeof SimurghLitIcon`
+- `Reply`: `typeof SimurghLitIcon`
+- `ReportChart`: `typeof SimurghLitIcon`
+- `Repository`: `typeof SimurghLitIcon`
+- `Rewind`: `typeof SimurghLitIcon`
+- `Road`: `typeof SimurghLitIcon`
+- `Rocket`: `typeof SimurghLitIcon`
+- `RotateClockwise`: `typeof SimurghLitIcon`
+- `Route`: `typeof SimurghLitIcon`
+- `RouteMap`: `typeof SimurghLitIcon`
+- `Router`: `typeof SimurghLitIcon`
+- `Rows2`: `typeof SimurghLitIcon`
+- `Rows3`: `typeof SimurghLitIcon`
+- `Rss`: `typeof SimurghLitIcon`
+- `Satellite`: `typeof SimurghLitIcon`
+- `Save`: `typeof SimurghLitIcon`
+- `ScanFace`: `typeof SimurghLitIcon`
+- `Scanner`: `typeof SimurghLitIcon`
+- `ScatterChart`: `typeof SimurghLitIcon`
+- `Schedule`: `typeof SimurghLitIcon`
+- `ScreenOff`: `typeof SimurghLitIcon`
+- `ScreenShare`: `typeof SimurghLitIcon`
+- `Secure`: `typeof SimurghLitIcon`
+- `SecureCloud`: `typeof SimurghLitIcon`
+- `SecureServer`: `typeof SimurghLitIcon`
+- `SecurityScan`: `typeof SimurghLitIcon`
+- `SecurityWarning`: `typeof SimurghLitIcon`
+- `SelectAll`: `typeof SimurghLitIcon`
+- `Send`: `typeof SimurghLitIcon`
+- `Server`: `typeof SimurghLitIcon`
+- `ServerCode`: `typeof SimurghLitIcon`
+- `Settings`: `typeof SimurghLitIcon`
+- `SettingsCode`: `typeof SimurghLitIcon`
+- `Share`: `typeof SimurghLitIcon`
+- `Shield`: `typeof SimurghLitIcon`
+- `ShieldAlert`: `typeof SimurghLitIcon`
+- `ShieldCheck`: `typeof SimurghLitIcon`
+- `ShieldLock`: `typeof SimurghLitIcon`
+- `ShieldX`: `typeof SimurghLitIcon`
+- `Ship`: `typeof SimurghLitIcon`
+- `Shipping`: `typeof SimurghLitIcon`
+- `ShoppingBag`: `typeof SimurghLitIcon`
+- `ShoppingCart`: `typeof SimurghLitIcon`
+- `Shuffle`: `typeof SimurghLitIcon`
+- `Signpost`: `typeof SimurghLitIcon`
+- `SimurghLitIcon`: `typeof SimurghLitIcon`
+- `SkipNext`: `typeof SimurghLitIcon`
+- `SkipPrevious`: `typeof SimurghLitIcon`
+- `Smartphone`: `typeof SimurghLitIcon`
+- `SortAscending`: `typeof SimurghLitIcon`
+- `SortDescending`: `typeof SimurghLitIcon`
+- `SplitHorizontal`: `typeof SimurghLitIcon`
+- `SplitVertical`: `typeof SimurghLitIcon`
+- `Star`: `typeof SimurghLitIcon`
+- `StarFilled`: `typeof SimurghLitIcon`
+- `Stop`: `typeof SimurghLitIcon`
+- `Stopwatch`: `typeof SimurghLitIcon`
+- `Store`: `typeof SimurghLitIcon`
+- `Subtitles`: `typeof SimurghLitIcon`
+- `Success`: `typeof SimurghLitIcon`
+- `SuccessCircle`: `typeof SimurghLitIcon`
+- `Swap`: `typeof SimurghLitIcon`
+- `Sync`: `typeof SimurghLitIcon`
+- `SyncError`: `typeof SimurghLitIcon`
+- `Tablet`: `typeof SimurghLitIcon`
+- `Tag`: `typeof SimurghLitIcon`
+- `Tags`: `typeof SimurghLitIcon`
+- `TargetChart`: `typeof SimurghLitIcon`
+- `Terminal`: `typeof SimurghLitIcon`
+- `Timer`: `typeof SimurghLitIcon`
+- `Tools`: `typeof SimurghLitIcon`
+- `Train`: `typeof SimurghLitIcon`
+- `Trash`: `typeof SimurghLitIcon`
+- `TrendDown`: `typeof SimurghLitIcon`
+- `TrendUp`: `typeof SimurghLitIcon`
+- `TwoFactor`: `typeof SimurghLitIcon`
+- `Unavailable`: `typeof SimurghLitIcon`
+- `Undo`: `typeof SimurghLitIcon`
+- `UnitTest`: `typeof SimurghLitIcon`
+- `Unlink`: `typeof SimurghLitIcon`
+- `Unlock`: `typeof SimurghLitIcon`
+- `Unverified`: `typeof SimurghLitIcon`
+- `Upload`: `typeof SimurghLitIcon`
+- `Usb`: `typeof SimurghLitIcon`
+- `User`: `typeof SimurghLitIcon`
+- `UserBlocked`: `typeof SimurghLitIcon`
+- `UserCard`: `typeof SimurghLitIcon`
+- `UserCheck`: `typeof SimurghLitIcon`
+- `UserCircle`: `typeof SimurghLitIcon`
+- `UserEdit`: `typeof SimurghLitIcon`
+- `UserHeart`: `typeof SimurghLitIcon`
+- `UserLock`: `typeof SimurghLitIcon`
+- `UserMinus`: `typeof SimurghLitIcon`
+- `UserPlus`: `typeof SimurghLitIcon`
+- `Users`: `typeof SimurghLitIcon`
+- `UserSearch`: `typeof SimurghLitIcon`
+- `UserSettings`: `typeof SimurghLitIcon`
+- `UsersGroup`: `typeof SimurghLitIcon`
+- `UserShield`: `typeof SimurghLitIcon`
+- `UserStar`: `typeof SimurghLitIcon`
+- `UserX`: `typeof SimurghLitIcon`
+- `Verified`: `typeof SimurghLitIcon`
+- `VerifiedUser`: `typeof SimurghLitIcon`
+- `VersionControl`: `typeof SimurghLitIcon`
+- `Video`: `typeof SimurghLitIcon`
+- `VideoOff`: `typeof SimurghLitIcon`
+- `Visibility`: `typeof SimurghLitIcon`
+- `VisibilityOff`: `typeof SimurghLitIcon`
+- `Volume`: `typeof SimurghLitIcon`
+- `VolumeHigh`: `typeof SimurghLitIcon`
+- `VolumeLow`: `typeof SimurghLitIcon`
+- `VolumeOff`: `typeof SimurghLitIcon`
+- `Walking`: `typeof SimurghLitIcon`
+- `Wallet`: `typeof SimurghLitIcon`
+- `Warehouse`: `typeof SimurghLitIcon`
+- `Warning`: `typeof SimurghLitIcon`
+- `WarningCircle`: `typeof SimurghLitIcon`
+- `Watch`: `typeof SimurghLitIcon`
+- `Waveform`: `typeof SimurghLitIcon`
+- `Webcam`: `typeof SimurghLitIcon`
+- `Webhook`: `typeof SimurghLitIcon`
+- `Week`: `typeof SimurghLitIcon`
+- `Wifi`: `typeof SimurghLitIcon`
+- `WifiOff`: `typeof SimurghLitIcon`
+- `ZoomIn`: `typeof SimurghLitIcon`
+- `ZoomOut`: `typeof SimurghLitIcon`
+
+## ./lit/access-key
+
+- `AccessKey`: `typeof SimurghLitIcon`
+
+## ./lit/accessibility
+
+- `Accessibility`: `typeof SimurghLitIcon`
+
+## ./lit/account-circle
+
+- `AccountCircle`: `typeof SimurghLitIcon`
+
+## ./lit/account
+
+- `Account`: `typeof SimurghLitIcon`
+
+## ./lit/activity-chart
+
+- `ActivityChart`: `typeof SimurghLitIcon`
+
+## ./lit/admin
+
+- `Admin`: `typeof SimurghLitIcon`
+
+## ./lit/airplane
+
+- `Airplane`: `typeof SimurghLitIcon`
+
+## ./lit/alarm-off
+
+- `AlarmOff`: `typeof SimurghLitIcon`
+
+## ./lit/alarm
+
+- `Alarm`: `typeof SimurghLitIcon`
+
+## ./lit/align-bottom
+
+- `AlignBottom`: `typeof SimurghLitIcon`
+
+## ./lit/align-center
+
+- `AlignCenter`: `typeof SimurghLitIcon`
+
+## ./lit/align-left
+
+- `AlignLeft`: `typeof SimurghLitIcon`
+
+## ./lit/align-middle
+
+- `AlignMiddle`: `typeof SimurghLitIcon`
+
+## ./lit/align-right
+
+- `AlignRight`: `typeof SimurghLitIcon`
+
+## ./lit/align-top
+
+- `AlignTop`: `typeof SimurghLitIcon`
+
+## ./lit/analytics
+
+- `Analytics`: `typeof SimurghLitIcon`
+
+## ./lit/announcement
+
+- `Announcement`: `typeof SimurghLitIcon`
+
+## ./lit/antivirus
+
+- `Antivirus`: `typeof SimurghLitIcon`
+
+## ./lit/api
+
+- `Api`: `typeof SimurghLitIcon`
+
+## ./lit/appointment
+
+- `Appointment`: `typeof SimurghLitIcon`
+
+## ./lit/archive
+
+- `Archive`: `typeof SimurghLitIcon`
+
+## ./lit/area-chart
+
+- `AreaChart`: `typeof SimurghLitIcon`
+
+## ./lit/arrow-down
+
+- `ArrowDown`: `typeof SimurghLitIcon`
+
+## ./lit/arrow-left
+
+- `ArrowLeft`: `typeof SimurghLitIcon`
+
+## ./lit/arrow-right
+
+- `ArrowRight`: `typeof SimurghLitIcon`
+
+## ./lit/arrow-up
+
+- `ArrowUp`: `typeof SimurghLitIcon`
+
+## ./lit/at-sign
+
+- `AtSign`: `typeof SimurghLitIcon`
+
+## ./lit/attachment
+
+- `Attachment`: `typeof SimurghLitIcon`
+
+## ./lit/authentication
+
+- `Authentication`: `typeof SimurghLitIcon`
+
+## ./lit/available
+
+- `Available`: `typeof SimurghLitIcon`
+
+## ./lit/badge-check
+
+- `BadgeCheck`: `typeof SimurghLitIcon`
+
+## ./lit/banknote
+
+- `Banknote`: `typeof SimurghLitIcon`
+
+## ./lit/bar-chart-horizontal
+
+- `BarChartHorizontal`: `typeof SimurghLitIcon`
+
+## ./lit/bar-chart-stacked
+
+- `BarChartStacked`: `typeof SimurghLitIcon`
+
+## ./lit/bar-chart
+
+- `BarChart`: `typeof SimurghLitIcon`
+
+## ./lit/barcode
+
+- `Barcode`: `typeof SimurghLitIcon`
+
+## ./lit/basket
+
+- `Basket`: `typeof SimurghLitIcon`
+
+## ./lit/battery-charging
+
+- `BatteryCharging`: `typeof SimurghLitIcon`
+
+## ./lit/battery-low
+
+- `BatteryLow`: `typeof SimurghLitIcon`
+
+## ./lit/battery
+
+- `Battery`: `typeof SimurghLitIcon`
+
+## ./lit/bike
+
+- `Bike`: `typeof SimurghLitIcon`
+
+## ./lit/binary
+
+- `Binary`: `typeof SimurghLitIcon`
+
+## ./lit/bluetooth
+
+- `Bluetooth`: `typeof SimurghLitIcon`
+
+## ./lit/braces
+
+- `Braces`: `typeof SimurghLitIcon`
+
+## ./lit/brackets
+
+- `Brackets`: `typeof SimurghLitIcon`
+
+## ./lit/breakpoint
+
+- `Breakpoint`: `typeof SimurghLitIcon`
+
+## ./lit/broadcast
+
+- `Broadcast`: `typeof SimurghLitIcon`
+
+## ./lit/bubble-chart
+
+- `BubbleChart`: `typeof SimurghLitIcon`
+
+## ./lit/bug-shield
+
+- `BugShield`: `typeof SimurghLitIcon`
+
+## ./lit/bug
+
+- `Bug`: `typeof SimurghLitIcon`
+
+## ./lit/build
+
+- `Build`: `typeof SimurghLitIcon`
+
+## ./lit/building
+
+- `Building`: `typeof SimurghLitIcon`
+
+## ./lit/buildings
+
+- `Buildings`: `typeof SimurghLitIcon`
+
+## ./lit/bus
+
+- `Bus`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-check
+
+- `CalendarCheck`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-clock
+
+- `CalendarClock`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-days
+
+- `CalendarDays`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-edit
+
+- `CalendarEdit`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-event
+
+- `CalendarEvent`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-lock
+
+- `CalendarLock`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-minus
+
+- `CalendarMinus`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-month
+
+- `CalendarMonth`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-plus
+
+- `CalendarPlus`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-range
+
+- `CalendarRange`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-search
+
+- `CalendarSearch`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-settings
+
+- `CalendarSettings`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-star
+
+- `CalendarStar`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-week
+
+- `CalendarWeek`: `typeof SimurghLitIcon`
+
+## ./lit/calendar-x
+
+- `CalendarX`: `typeof SimurghLitIcon`
+
+## ./lit/calendar
+
+- `Calendar`: `typeof SimurghLitIcon`
+
+## ./lit/camera-off
+
+- `CameraOff`: `typeof SimurghLitIcon`
+
+## ./lit/camera
+
+- `Camera`: `typeof SimurghLitIcon`
+
+## ./lit/captions
+
+- `Captions`: `typeof SimurghLitIcon`
+
+## ./lit/car
+
+- `Car`: `typeof SimurghLitIcon`
+
+## ./lit/card-check
+
+- `CardCheck`: `typeof SimurghLitIcon`
+
+## ./lit/cart-check
+
+- `CartCheck`: `typeof SimurghLitIcon`
+
+## ./lit/cart-minus
+
+- `CartMinus`: `typeof SimurghLitIcon`
+
+## ./lit/cart-plus
+
+- `CartPlus`: `typeof SimurghLitIcon`
+
+## ./lit/cart-x
+
+- `CartX`: `typeof SimurghLitIcon`
+
+## ./lit/cash-register
+
+- `CashRegister`: `typeof SimurghLitIcon`
+
+## ./lit/cash
+
+- `Cash`: `typeof SimurghLitIcon`
+
+## ./lit/cast-device
+
+- `CastDevice`: `typeof SimurghLitIcon`
+
+## ./lit/cast
+
+- `Cast`: `typeof SimurghLitIcon`
+
+## ./lit/certificate
+
+- `Certificate`: `typeof SimurghLitIcon`
+
+## ./lit/chart-axis
+
+- `ChartAxis`: `typeof SimurghLitIcon`
+
+## ./lit/chart-grid
+
+- `ChartGrid`: `typeof SimurghLitIcon`
+
+## ./lit/chart-label
+
+- `ChartLabel`: `typeof SimurghLitIcon`
+
+## ./lit/chart-legend
+
+- `ChartLegend`: `typeof SimurghLitIcon`
+
+## ./lit/chart-plus
+
+- `ChartPlus`: `typeof SimurghLitIcon`
+
+## ./lit/chart-settings
+
+- `ChartSettings`: `typeof SimurghLitIcon`
+
+## ./lit/chart-tooltip
+
+- `ChartTooltip`: `typeof SimurghLitIcon`
+
+## ./lit/check
+
+- `Check`: `typeof SimurghLitIcon`
+
+## ./lit/checkout
+
+- `Checkout`: `typeof SimurghLitIcon`
+
+## ./lit/chevron-down
+
+- `ChevronDown`: `typeof SimurghLitIcon`
+
+## ./lit/chevron-left
+
+- `ChevronLeft`: `typeof SimurghLitIcon`
+
+## ./lit/chevron-right
+
+- `ChevronRight`: `typeof SimurghLitIcon`
+
+## ./lit/chevron-up
+
+- `ChevronUp`: `typeof SimurghLitIcon`
+
+## ./lit/chevrons-down
+
+- `ChevronsDown`: `typeof SimurghLitIcon`
+
+## ./lit/chevrons-left
+
+- `ChevronsLeft`: `typeof SimurghLitIcon`
+
+## ./lit/chevrons-right
+
+- `ChevronsRight`: `typeof SimurghLitIcon`
+
+## ./lit/chevrons-up
+
+- `ChevronsUp`: `typeof SimurghLitIcon`
+
+## ./lit/child
+
+- `Child`: `typeof SimurghLitIcon`
+
+## ./lit/clapperboard
+
+- `Clapperboard`: `typeof SimurghLitIcon`
+
+## ./lit/clipboard-text
+
+- `ClipboardText`: `typeof SimurghLitIcon`
+
+## ./lit/clipboard
+
+- `Clipboard`: `typeof SimurghLitIcon`
+
+## ./lit/clock-check
+
+- `ClockCheck`: `typeof SimurghLitIcon`
+
+## ./lit/clock-plus
+
+- `ClockPlus`: `typeof SimurghLitIcon`
+
+## ./lit/clock
+
+- `Clock`: `typeof SimurghLitIcon`
+
+## ./lit/close
+
+- `Close`: `typeof SimurghLitIcon`
+
+## ./lit/cloud-code
+
+- `CloudCode`: `typeof SimurghLitIcon`
+
+## ./lit/cloud-file
+
+- `CloudFile`: `typeof SimurghLitIcon`
+
+## ./lit/code-alt
+
+- `CodeAlt`: `typeof SimurghLitIcon`
+
+## ./lit/code
+
+- `Code`: `typeof SimurghLitIcon`
+
+## ./lit/coins
+
+- `Coins`: `typeof SimurghLitIcon`
+
+## ./lit/collapse
+
+- `Collapse`: `typeof SimurghLitIcon`
+
+## ./lit/column-chart
+
+- `ColumnChart`: `typeof SimurghLitIcon`
+
+## ./lit/columns-2
+
+- `Columns2`: `typeof SimurghLitIcon`
+
+## ./lit/columns-3
+
+- `Columns3`: `typeof SimurghLitIcon`
+
+## ./lit/command-line
+
+- `CommandLine`: `typeof SimurghLitIcon`
+
+## ./lit/community
+
+- `Community`: `typeof SimurghLitIcon`
+
+## ./lit/comparison-chart
+
+- `ComparisonChart`: `typeof SimurghLitIcon`
+
+## ./lit/compass-map
+
+- `CompassMap`: `typeof SimurghLitIcon`
+
+## ./lit/compass
+
+- `Compass`: `typeof SimurghLitIcon`
+
+## ./lit/contact
+
+- `Contact`: `typeof SimurghLitIcon`
+
+## ./lit/contacts
+
+- `Contacts`: `typeof SimurghLitIcon`
+
+## ./lit/container
+
+- `Container`: `typeof SimurghLitIcon`
+
+## ./lit/copy
+
+- `Copy`: `typeof SimurghLitIcon`
+
+## ./lit/corner-down-left
+
+- `CornerDownLeft`: `typeof SimurghLitIcon`
+
+## ./lit/corner-down-right
+
+- `CornerDownRight`: `typeof SimurghLitIcon`
+
+## ./lit/corner-up-left
+
+- `CornerUpLeft`: `typeof SimurghLitIcon`
+
+## ./lit/corner-up-right
+
+- `CornerUpRight`: `typeof SimurghLitIcon`
+
+## ./lit/coupon
+
+- `Coupon`: `typeof SimurghLitIcon`
+
+## ./lit/cpu
+
+- `Cpu`: `typeof SimurghLitIcon`
+
+## ./lit/credit-card
+
+- `CreditCard`: `typeof SimurghLitIcon`
+
+## ./lit/crosshair-location
+
+- `CrosshairLocation`: `typeof SimurghLitIcon`
+
+## ./lit/current-location
+
+- `CurrentLocation`: `typeof SimurghLitIcon`
+
+## ./lit/customer
+
+- `Customer`: `typeof SimurghLitIcon`
+
+## ./lit/cut
+
+- `Cut`: `typeof SimurghLitIcon`
+
+## ./lit/dashboard-chart
+
+- `DashboardChart`: `typeof SimurghLitIcon`
+
+## ./lit/dashboard
+
+- `Dashboard`: `typeof SimurghLitIcon`
+
+## ./lit/data-table
+
+- `DataTable`: `typeof SimurghLitIcon`
+
+## ./lit/database
+
+- `Database`: `typeof SimurghLitIcon`
+
+## ./lit/date-today
+
+- `DateToday`: `typeof SimurghLitIcon`
+
+## ./lit/date
+
+- `Date`: `typeof SimurghLitIcon`
+
+## ./lit/day
+
+- `Day`: `typeof SimurghLitIcon`
+
+## ./lit/debug
+
+- `Debug`: `typeof SimurghLitIcon`
+
+## ./lit/delivery-truck
+
+- `DeliveryTruck`: `typeof SimurghLitIcon`
+
+## ./lit/deploy
+
+- `Deploy`: `typeof SimurghLitIcon`
+
+## ./lit/deselect
+
+- `Deselect`: `typeof SimurghLitIcon`
+
+## ./lit/desktop
+
+- `Desktop`: `typeof SimurghLitIcon`
+
+## ./lit/device-desktop
+
+- `DeviceDesktop`: `typeof SimurghLitIcon`
+
+## ./lit/device-mobile
+
+- `DeviceMobile`: `typeof SimurghLitIcon`
+
+## ./lit/devices
+
+- `Devices`: `typeof SimurghLitIcon`
+
+## ./lit/directions
+
+- `Directions`: `typeof SimurghLitIcon`
+
+## ./lit/disc
+
+- `Disc`: `typeof SimurghLitIcon`
+
+## ./lit/donut-chart
+
+- `DonutChart`: `typeof SimurghLitIcon`
+
+## ./lit/download
+
+- `Download`: `typeof SimurghLitIcon`
+
+## ./lit/duplicate
+
+- `Duplicate`: `typeof SimurghLitIcon`
+
+## ./lit/earth
+
+- `Earth`: `typeof SimurghLitIcon`
+
+## ./lit/edit
+
+- `Edit`: `typeof SimurghLitIcon`
+
+## ./lit/eject
+
+- `Eject`: `typeof SimurghLitIcon`
+
+## ./lit/employee
+
+- `Employee`: `typeof SimurghLitIcon`
+
+## ./lit/enter
+
+- `Enter`: `typeof SimurghLitIcon`
+
+## ./lit/equalizer
+
+- `Equalizer`: `typeof SimurghLitIcon`
+
+## ./lit/error-circle
+
+- `ErrorCircle`: `typeof SimurghLitIcon`
+
+## ./lit/error
+
+- `Error`: `typeof SimurghLitIcon`
+
+## ./lit/exit
+
+- `Exit`: `typeof SimurghLitIcon`
+
+## ./lit/expand
+
+- `Expand`: `typeof SimurghLitIcon`
+
+## ./lit/external-link
+
+- `ExternalLink`: `typeof SimurghLitIcon`
+
+## ./lit/face-id
+
+- `FaceId`: `typeof SimurghLitIcon`
+
+## ./lit/fast-forward
+
+- `FastForward`: `typeof SimurghLitIcon`
+
+## ./lit/favorite-filled
+
+- `FavoriteFilled`: `typeof SimurghLitIcon`
+
+## ./lit/favorite
+
+- `Favorite`: `typeof SimurghLitIcon`
+
+## ./lit/file-audio
+
+- `FileAudio`: `typeof SimurghLitIcon`
+
+## ./lit/file-check
+
+- `FileCheck`: `typeof SimurghLitIcon`
+
+## ./lit/file-code
+
+- `FileCode`: `typeof SimurghLitIcon`
+
+## ./lit/file-download
+
+- `FileDownload`: `typeof SimurghLitIcon`
+
+## ./lit/file-error
+
+- `FileError`: `typeof SimurghLitIcon`
+
+## ./lit/file-image
+
+- `FileImage`: `typeof SimurghLitIcon`
+
+## ./lit/file-lock
+
+- `FileLock`: `typeof SimurghLitIcon`
+
+## ./lit/file-minus
+
+- `FileMinus`: `typeof SimurghLitIcon`
+
+## ./lit/file-pdf
+
+- `FilePdf`: `typeof SimurghLitIcon`
+
+## ./lit/file-plus
+
+- `FilePlus`: `typeof SimurghLitIcon`
+
+## ./lit/file-search
+
+- `FileSearch`: `typeof SimurghLitIcon`
+
+## ./lit/file-text
+
+- `FileText`: `typeof SimurghLitIcon`
+
+## ./lit/file-upload
+
+- `FileUpload`: `typeof SimurghLitIcon`
+
+## ./lit/file-video
+
+- `FileVideo`: `typeof SimurghLitIcon`
+
+## ./lit/file-zip
+
+- `FileZip`: `typeof SimurghLitIcon`
+
+## ./lit/file
+
+- `File`: `typeof SimurghLitIcon`
+
+## ./lit/files
+
+- `Files`: `typeof SimurghLitIcon`
+
+## ./lit/film
+
+- `Film`: `typeof SimurghLitIcon`
+
+## ./lit/filter
+
+- `Filter`: `typeof SimurghLitIcon`
+
+## ./lit/fingerprint
+
+- `Fingerprint`: `typeof SimurghLitIcon`
+
+## ./lit/firewall
+
+- `Firewall`: `typeof SimurghLitIcon`
+
+## ./lit/flag
+
+- `Flag`: `typeof SimurghLitIcon`
+
+## ./lit/focus-mode
+
+- `FocusMode`: `typeof SimurghLitIcon`
+
+## ./lit/folder-check
+
+- `FolderCheck`: `typeof SimurghLitIcon`
+
+## ./lit/folder-download
+
+- `FolderDownload`: `typeof SimurghLitIcon`
+
+## ./lit/folder-error
+
+- `FolderError`: `typeof SimurghLitIcon`
+
+## ./lit/folder-lock
+
+- `FolderLock`: `typeof SimurghLitIcon`
+
+## ./lit/folder-minus
+
+- `FolderMinus`: `typeof SimurghLitIcon`
+
+## ./lit/folder-open
+
+- `FolderOpen`: `typeof SimurghLitIcon`
+
+## ./lit/folder-plus
+
+- `FolderPlus`: `typeof SimurghLitIcon`
+
+## ./lit/folder-search
+
+- `FolderSearch`: `typeof SimurghLitIcon`
+
+## ./lit/folder-upload
+
+- `FolderUpload`: `typeof SimurghLitIcon`
+
+## ./lit/folder
+
+- `Folder`: `typeof SimurghLitIcon`
+
+## ./lit/folders
+
+- `Folders`: `typeof SimurghLitIcon`
+
+## ./lit/forward
+
+- `Forward`: `typeof SimurghLitIcon`
+
+## ./lit/fullscreen
+
+- `Fullscreen`: `typeof SimurghLitIcon`
+
+## ./lit/gallery
+
+- `Gallery`: `typeof SimurghLitIcon`
+
+## ./lit/gamepad
+
+- `Gamepad`: `typeof SimurghLitIcon`
+
+## ./lit/gauge
+
+- `Gauge`: `typeof SimurghLitIcon`
+
+## ./lit/gift
+
+- `Gift`: `typeof SimurghLitIcon`
+
+## ./lit/git-branch
+
+- `GitBranch`: `typeof SimurghLitIcon`
+
+## ./lit/git-commit
+
+- `GitCommit`: `typeof SimurghLitIcon`
+
+## ./lit/git-fork
+
+- `GitFork`: `typeof SimurghLitIcon`
+
+## ./lit/git-merge
+
+- `GitMerge`: `typeof SimurghLitIcon`
+
+## ./lit/git-pull-request
+
+- `GitPullRequest`: `typeof SimurghLitIcon`
+
+## ./lit/globe-alt
+
+- `GlobeAlt`: `typeof SimurghLitIcon`
+
+## ./lit/globe
+
+- `Globe`: `typeof SimurghLitIcon`
+
+## ./lit/gps
+
+- `Gps`: `typeof SimurghLitIcon`
+
+## ./lit/grid-2x2
+
+- `Grid2x2`: `typeof SimurghLitIcon`
+
+## ./lit/grid-3x3
+
+- `Grid3x3`: `typeof SimurghLitIcon`
+
+## ./lit/guest
+
+- `Guest`: `typeof SimurghLitIcon`
+
+## ./lit/hard-drive
+
+- `HardDrive`: `typeof SimurghLitIcon`
+
+## ./lit/headphones
+
+- `Headphones`: `typeof SimurghLitIcon`
+
+## ./lit/headset
+
+- `Headset`: `typeof SimurghLitIcon`
+
+## ./lit/help-circle
+
+- `HelpCircle`: `typeof SimurghLitIcon`
+
+## ./lit/help
+
+- `Help`: `typeof SimurghLitIcon`
+
+## ./lit/hidden
+
+- `Hidden`: `typeof SimurghLitIcon`
+
+## ./lit/histogram
+
+- `Histogram`: `typeof SimurghLitIcon`
+
+## ./lit/history-clock
+
+- `HistoryClock`: `typeof SimurghLitIcon`
+
+## ./lit/home
+
+- `Home`: `typeof SimurghLitIcon`
+
+## ./lit/id-card
+
+- `IdCard`: `typeof SimurghLitIcon`
+
+## ./lit/image
+
+- `Image`: `typeof SimurghLitIcon`
+
+## ./lit/images
+
+- `Images`: `typeof SimurghLitIcon`
+
+## ./lit/inbox
+
+- `Inbox`: `typeof SimurghLitIcon`
+
+## ./lit/incognito
+
+- `Incognito`: `typeof SimurghLitIcon`
+
+## ./lit/info-circle
+
+- `InfoCircle`: `typeof SimurghLitIcon`
+
+## ./lit/info
+
+- `Info`: `typeof SimurghLitIcon`
+
+## ./lit/insecure
+
+- `Insecure`: `typeof SimurghLitIcon`
+
+## ./lit/integration-test
+
+- `IntegrationTest`: `typeof SimurghLitIcon`
+
+## ./lit/invoice
+
+- `Invoice`: `typeof SimurghLitIcon`
+
+## ./lit/key-round
+
+- `KeyRound`: `typeof SimurghLitIcon`
+
+## ./lit/key
+
+- `Key`: `typeof SimurghLitIcon`
+
+## ./lit/keyboard
+
+- `Keyboard`: `typeof SimurghLitIcon`
+
+## ./lit/landmark
+
+- `Landmark`: `typeof SimurghLitIcon`
+
+## ./lit/laptop
+
+- `Laptop`: `typeof SimurghLitIcon`
+
+## ./lit/layout-columns
+
+- `LayoutColumns`: `typeof SimurghLitIcon`
+
+## ./lit/layout-dashboard
+
+- `LayoutDashboard`: `typeof SimurghLitIcon`
+
+## ./lit/layout-footer
+
+- `LayoutFooter`: `typeof SimurghLitIcon`
+
+## ./lit/layout-grid
+
+- `LayoutGrid`: `typeof SimurghLitIcon`
+
+## ./lit/layout-header
+
+- `LayoutHeader`: `typeof SimurghLitIcon`
+
+## ./lit/layout-list
+
+- `LayoutList`: `typeof SimurghLitIcon`
+
+## ./lit/layout-navbar
+
+- `LayoutNavbar`: `typeof SimurghLitIcon`
+
+## ./lit/layout-rows
+
+- `LayoutRows`: `typeof SimurghLitIcon`
+
+## ./lit/layout-sidebar-left
+
+- `LayoutSidebarLeft`: `typeof SimurghLitIcon`
+
+## ./lit/layout-sidebar-right
+
+- `LayoutSidebarRight`: `typeof SimurghLitIcon`
+
+## ./lit/layout-toolbar
+
+- `LayoutToolbar`: `typeof SimurghLitIcon`
+
+## ./lit/layout
+
+- `Layout`: `typeof SimurghLitIcon`
+
+## ./lit/line-chart
+
+- `LineChart`: `typeof SimurghLitIcon`
+
+## ./lit/link
+
+- `Link`: `typeof SimurghLitIcon`
+
+## ./lit/loading
+
+- `Loading`: `typeof SimurghLitIcon`
+
+## ./lit/location-check
+
+- `LocationCheck`: `typeof SimurghLitIcon`
+
+## ./lit/location-plus
+
+- `LocationPlus`: `typeof SimurghLitIcon`
+
+## ./lit/location-x
+
+- `LocationX`: `typeof SimurghLitIcon`
+
+## ./lit/location
+
+- `Location`: `typeof SimurghLitIcon`
+
+## ./lit/lock-keyhole
+
+- `LockKeyhole`: `typeof SimurghLitIcon`
+
+## ./lit/lock
+
+- `Lock`: `typeof SimurghLitIcon`
+
+## ./lit/mail-notification
+
+- `MailNotification`: `typeof SimurghLitIcon`
+
+## ./lit/mail-open
+
+- `MailOpen`: `typeof SimurghLitIcon`
+
+## ./lit/mail
+
+- `Mail`: `typeof SimurghLitIcon`
+
+## ./lit/map-pin-filled
+
+- `MapPinFilled`: `typeof SimurghLitIcon`
+
+## ./lit/map-pin
+
+- `MapPin`: `typeof SimurghLitIcon`
+
+## ./lit/map-pinned
+
+- `MapPinned`: `typeof SimurghLitIcon`
+
+## ./lit/map
+
+- `Map`: `typeof SimurghLitIcon`
+
+## ./lit/maximize
+
+- `Maximize`: `typeof SimurghLitIcon`
+
+## ./lit/megaphone
+
+- `Megaphone`: `typeof SimurghLitIcon`
+
+## ./lit/memory
+
+- `Memory`: `typeof SimurghLitIcon`
+
+## ./lit/menu
+
+- `Menu`: `typeof SimurghLitIcon`
+
+## ./lit/message-dots
+
+- `MessageDots`: `typeof SimurghLitIcon`
+
+## ./lit/message-square
+
+- `MessageSquare`: `typeof SimurghLitIcon`
+
+## ./lit/message
+
+- `Message`: `typeof SimurghLitIcon`
+
+## ./lit/messages
+
+- `Messages`: `typeof SimurghLitIcon`
+
+## ./lit/microphone-off
+
+- `MicrophoneOff`: `typeof SimurghLitIcon`
+
+## ./lit/microphone
+
+- `Microphone`: `typeof SimurghLitIcon`
+
+## ./lit/minimize
+
+- `Minimize`: `typeof SimurghLitIcon`
+
+## ./lit/minus
+
+- `Minus`: `typeof SimurghLitIcon`
+
+## ./lit/moderator
+
+- `Moderator`: `typeof SimurghLitIcon`
+
+## ./lit/monitor
+
+- `Monitor`: `typeof SimurghLitIcon`
+
+## ./lit/month
+
+- `Month`: `typeof SimurghLitIcon`
+
+## ./lit/more-horizontal
+
+- `MoreHorizontal`: `typeof SimurghLitIcon`
+
+## ./lit/more-vertical
+
+- `MoreVertical`: `typeof SimurghLitIcon`
+
+## ./lit/mouse
+
+- `Mouse`: `typeof SimurghLitIcon`
+
+## ./lit/music-note
+
+- `MusicNote`: `typeof SimurghLitIcon`
+
+## ./lit/music
+
+- `Music`: `typeof SimurghLitIcon`
+
+## ./lit/navigation-arrow
+
+- `NavigationArrow`: `typeof SimurghLitIcon`
+
+## ./lit/notification-active
+
+- `NotificationActive`: `typeof SimurghLitIcon`
+
+## ./lit/notification-off
+
+- `NotificationOff`: `typeof SimurghLitIcon`
+
+## ./lit/notification
+
+- `Notification`: `typeof SimurghLitIcon`
+
+## ./lit/offline
+
+- `Offline`: `typeof SimurghLitIcon`
+
+## ./lit/online
+
+- `Online`: `typeof SimurghLitIcon`
+
+## ./lit/outbox
+
+- `Outbox`: `typeof SimurghLitIcon`
+
+## ./lit/package-check
+
+- `PackageCheck`: `typeof SimurghLitIcon`
+
+## ./lit/package-code
+
+- `PackageCode`: `typeof SimurghLitIcon`
+
+## ./lit/package-open
+
+- `PackageOpen`: `typeof SimurghLitIcon`
+
+## ./lit/package-x
+
+- `PackageX`: `typeof SimurghLitIcon`
+
+## ./lit/package
+
+- `Package`: `typeof SimurghLitIcon`
+
+## ./lit/panel-bottom
+
+- `PanelBottom`: `typeof SimurghLitIcon`
+
+## ./lit/panel-left
+
+- `PanelLeft`: `typeof SimurghLitIcon`
+
+## ./lit/panel-right
+
+- `PanelRight`: `typeof SimurghLitIcon`
+
+## ./lit/panel-top
+
+- `PanelTop`: `typeof SimurghLitIcon`
+
+## ./lit/passkey
+
+- `Passkey`: `typeof SimurghLitIcon`
+
+## ./lit/password
+
+- `Password`: `typeof SimurghLitIcon`
+
+## ./lit/paste
+
+- `Paste`: `typeof SimurghLitIcon`
+
+## ./lit/pause
+
+- `Pause`: `typeof SimurghLitIcon`
+
+## ./lit/pencil
+
+- `Pencil`: `typeof SimurghLitIcon`
+
+## ./lit/pending
+
+- `Pending`: `typeof SimurghLitIcon`
+
+## ./lit/percent-chart
+
+- `PercentChart`: `typeof SimurghLitIcon`
+
+## ./lit/percent
+
+- `Percent`: `typeof SimurghLitIcon`
+
+## ./lit/phone-incoming
+
+- `PhoneIncoming`: `typeof SimurghLitIcon`
+
+## ./lit/phone-missed
+
+- `PhoneMissed`: `typeof SimurghLitIcon`
+
+## ./lit/phone-outgoing
+
+- `PhoneOutgoing`: `typeof SimurghLitIcon`
+
+## ./lit/phone
+
+- `Phone`: `typeof SimurghLitIcon`
+
+## ./lit/picture-in-picture
+
+- `PictureInPicture`: `typeof SimurghLitIcon`
+
+## ./lit/pie-chart
+
+- `PieChart`: `typeof SimurghLitIcon`
+
+## ./lit/pin-code
+
+- `PinCode`: `typeof SimurghLitIcon`
+
+## ./lit/play
+
+- `Play`: `typeof SimurghLitIcon`
+
+## ./lit/playlist
+
+- `Playlist`: `typeof SimurghLitIcon`
+
+## ./lit/plug
+
+- `Plug`: `typeof SimurghLitIcon`
+
+## ./lit/plus
+
+- `Plus`: `typeof SimurghLitIcon`
+
+## ./lit/podcast
+
+- `Podcast`: `typeof SimurghLitIcon`
+
+## ./lit/power
+
+- `Power`: `typeof SimurghLitIcon`
+
+## ./lit/presentation-chart
+
+- `PresentationChart`: `typeof SimurghLitIcon`
+
+## ./lit/print
+
+- `Print`: `typeof SimurghLitIcon`
+
+## ./lit/printer
+
+- `Printer`: `typeof SimurghLitIcon`
+
+## ./lit/privacy
+
+- `Privacy`: `typeof SimurghLitIcon`
+
+## ./lit/profile-card
+
+- `ProfileCard`: `typeof SimurghLitIcon`
+
+## ./lit/profile
+
+- `Profile`: `typeof SimurghLitIcon`
+
+## ./lit/progress-chart
+
+- `ProgressChart`: `typeof SimurghLitIcon`
+
+## ./lit/progress
+
+- `Progress`: `typeof SimurghLitIcon`
+
+## ./lit/radar-chart
+
+- `RadarChart`: `typeof SimurghLitIcon`
+
+## ./lit/radio
+
+- `Radio`: `typeof SimurghLitIcon`
+
+## ./lit/receipt
+
+- `Receipt`: `typeof SimurghLitIcon`
+
+## ./lit/redo
+
+- `Redo`: `typeof SimurghLitIcon`
+
+## ./lit/refresh
+
+- `Refresh`: `typeof SimurghLitIcon`
+
+## ./lit/refund
+
+- `Refund`: `typeof SimurghLitIcon`
+
+## ./lit/regex
+
+- `Regex`: `typeof SimurghLitIcon`
+
+## ./lit/reminder
+
+- `Reminder`: `typeof SimurghLitIcon`
+
+## ./lit/repeat
+
+- `Repeat`: `typeof SimurghLitIcon`
+
+## ./lit/reply
+
+- `Reply`: `typeof SimurghLitIcon`
+
+## ./lit/report-chart
+
+- `ReportChart`: `typeof SimurghLitIcon`
+
+## ./lit/repository
+
+- `Repository`: `typeof SimurghLitIcon`
+
+## ./lit/rewind
+
+- `Rewind`: `typeof SimurghLitIcon`
+
+## ./lit/road
+
+- `Road`: `typeof SimurghLitIcon`
+
+## ./lit/rocket
+
+- `Rocket`: `typeof SimurghLitIcon`
+
+## ./lit/rotate-clockwise
+
+- `RotateClockwise`: `typeof SimurghLitIcon`
+
+## ./lit/route-map
+
+- `RouteMap`: `typeof SimurghLitIcon`
+
+## ./lit/route
+
+- `Route`: `typeof SimurghLitIcon`
+
+## ./lit/router
+
+- `Router`: `typeof SimurghLitIcon`
+
+## ./lit/rows-2
+
+- `Rows2`: `typeof SimurghLitIcon`
+
+## ./lit/rows-3
+
+- `Rows3`: `typeof SimurghLitIcon`
+
+## ./lit/rss
+
+- `Rss`: `typeof SimurghLitIcon`
+
+## ./lit/satellite
+
+- `Satellite`: `typeof SimurghLitIcon`
+
+## ./lit/save
+
+- `Save`: `typeof SimurghLitIcon`
+
+## ./lit/scan-face
+
+- `ScanFace`: `typeof SimurghLitIcon`
+
+## ./lit/scanner
+
+- `Scanner`: `typeof SimurghLitIcon`
+
+## ./lit/scatter-chart
+
+- `ScatterChart`: `typeof SimurghLitIcon`
+
+## ./lit/schedule
+
+- `Schedule`: `typeof SimurghLitIcon`
+
+## ./lit/screen-off
+
+- `ScreenOff`: `typeof SimurghLitIcon`
+
+## ./lit/screen-share
+
+- `ScreenShare`: `typeof SimurghLitIcon`
+
+## ./lit/secure-cloud
+
+- `SecureCloud`: `typeof SimurghLitIcon`
+
+## ./lit/secure-server
+
+- `SecureServer`: `typeof SimurghLitIcon`
+
+## ./lit/secure
+
+- `Secure`: `typeof SimurghLitIcon`
+
+## ./lit/security-scan
+
+- `SecurityScan`: `typeof SimurghLitIcon`
+
+## ./lit/security-warning
+
+- `SecurityWarning`: `typeof SimurghLitIcon`
+
+## ./lit/select-all
+
+- `SelectAll`: `typeof SimurghLitIcon`
+
+## ./lit/send
+
+- `Send`: `typeof SimurghLitIcon`
+
+## ./lit/server-code
+
+- `ServerCode`: `typeof SimurghLitIcon`
+
+## ./lit/server
+
+- `Server`: `typeof SimurghLitIcon`
+
+## ./lit/settings-code
+
+- `SettingsCode`: `typeof SimurghLitIcon`
+
+## ./lit/settings
+
+- `Settings`: `typeof SimurghLitIcon`
+
+## ./lit/share
+
+- `Share`: `typeof SimurghLitIcon`
+
+## ./lit/shield-alert
+
+- `ShieldAlert`: `typeof SimurghLitIcon`
+
+## ./lit/shield-check
+
+- `ShieldCheck`: `typeof SimurghLitIcon`
+
+## ./lit/shield-lock
+
+- `ShieldLock`: `typeof SimurghLitIcon`
+
+## ./lit/shield-x
+
+- `ShieldX`: `typeof SimurghLitIcon`
+
+## ./lit/shield
+
+- `Shield`: `typeof SimurghLitIcon`
+
+## ./lit/ship
+
+- `Ship`: `typeof SimurghLitIcon`
+
+## ./lit/shipping
+
+- `Shipping`: `typeof SimurghLitIcon`
+
+## ./lit/shopping-bag
+
+- `ShoppingBag`: `typeof SimurghLitIcon`
+
+## ./lit/shopping-cart
+
+- `ShoppingCart`: `typeof SimurghLitIcon`
+
+## ./lit/shuffle
+
+- `Shuffle`: `typeof SimurghLitIcon`
+
+## ./lit/signpost
+
+- `Signpost`: `typeof SimurghLitIcon`
+
+## ./lit/skip-next
+
+- `SkipNext`: `typeof SimurghLitIcon`
+
+## ./lit/skip-previous
+
+- `SkipPrevious`: `typeof SimurghLitIcon`
+
+## ./lit/smartphone
+
+- `Smartphone`: `typeof SimurghLitIcon`
+
+## ./lit/sort-ascending
+
+- `SortAscending`: `typeof SimurghLitIcon`
+
+## ./lit/sort-descending
+
+- `SortDescending`: `typeof SimurghLitIcon`
+
+## ./lit/split-horizontal
+
+- `SplitHorizontal`: `typeof SimurghLitIcon`
+
+## ./lit/split-vertical
+
+- `SplitVertical`: `typeof SimurghLitIcon`
+
+## ./lit/star-filled
+
+- `StarFilled`: `typeof SimurghLitIcon`
+
+## ./lit/star
+
+- `Star`: `typeof SimurghLitIcon`
+
+## ./lit/stop
+
+- `Stop`: `typeof SimurghLitIcon`
+
+## ./lit/stopwatch
+
+- `Stopwatch`: `typeof SimurghLitIcon`
+
+## ./lit/store
+
+- `Store`: `typeof SimurghLitIcon`
+
+## ./lit/subtitles
+
+- `Subtitles`: `typeof SimurghLitIcon`
+
+## ./lit/success-circle
+
+- `SuccessCircle`: `typeof SimurghLitIcon`
+
+## ./lit/success
+
+- `Success`: `typeof SimurghLitIcon`
+
+## ./lit/swap
+
+- `Swap`: `typeof SimurghLitIcon`
+
+## ./lit/sync-error
+
+- `SyncError`: `typeof SimurghLitIcon`
+
+## ./lit/sync
+
+- `Sync`: `typeof SimurghLitIcon`
+
+## ./lit/tablet
+
+- `Tablet`: `typeof SimurghLitIcon`
+
+## ./lit/tag
+
+- `Tag`: `typeof SimurghLitIcon`
+
+## ./lit/tags
+
+- `Tags`: `typeof SimurghLitIcon`
+
+## ./lit/target-chart
+
+- `TargetChart`: `typeof SimurghLitIcon`
+
+## ./lit/terminal
+
+- `Terminal`: `typeof SimurghLitIcon`
+
+## ./lit/timer
+
+- `Timer`: `typeof SimurghLitIcon`
+
+## ./lit/tools
+
+- `Tools`: `typeof SimurghLitIcon`
+
+## ./lit/train
+
+- `Train`: `typeof SimurghLitIcon`
+
+## ./lit/trash
+
+- `Trash`: `typeof SimurghLitIcon`
+
+## ./lit/trend-down
+
+- `TrendDown`: `typeof SimurghLitIcon`
+
+## ./lit/trend-up
+
+- `TrendUp`: `typeof SimurghLitIcon`
+
+## ./lit/two-factor
+
+- `TwoFactor`: `typeof SimurghLitIcon`
+
+## ./lit/unavailable
+
+- `Unavailable`: `typeof SimurghLitIcon`
+
+## ./lit/undo
+
+- `Undo`: `typeof SimurghLitIcon`
+
+## ./lit/unit-test
+
+- `UnitTest`: `typeof SimurghLitIcon`
+
+## ./lit/unlink
+
+- `Unlink`: `typeof SimurghLitIcon`
+
+## ./lit/unlock
+
+- `Unlock`: `typeof SimurghLitIcon`
+
+## ./lit/unverified
+
+- `Unverified`: `typeof SimurghLitIcon`
+
+## ./lit/upload
+
+- `Upload`: `typeof SimurghLitIcon`
+
+## ./lit/usb
+
+- `Usb`: `typeof SimurghLitIcon`
+
+## ./lit/user-blocked
+
+- `UserBlocked`: `typeof SimurghLitIcon`
+
+## ./lit/user-card
+
+- `UserCard`: `typeof SimurghLitIcon`
+
+## ./lit/user-check
+
+- `UserCheck`: `typeof SimurghLitIcon`
+
+## ./lit/user-circle
+
+- `UserCircle`: `typeof SimurghLitIcon`
+
+## ./lit/user-edit
+
+- `UserEdit`: `typeof SimurghLitIcon`
+
+## ./lit/user-heart
+
+- `UserHeart`: `typeof SimurghLitIcon`
+
+## ./lit/user-lock
+
+- `UserLock`: `typeof SimurghLitIcon`
+
+## ./lit/user-minus
+
+- `UserMinus`: `typeof SimurghLitIcon`
+
+## ./lit/user-plus
+
+- `UserPlus`: `typeof SimurghLitIcon`
+
+## ./lit/user-search
+
+- `UserSearch`: `typeof SimurghLitIcon`
+
+## ./lit/user-settings
+
+- `UserSettings`: `typeof SimurghLitIcon`
+
+## ./lit/user-shield
+
+- `UserShield`: `typeof SimurghLitIcon`
+
+## ./lit/user-star
+
+- `UserStar`: `typeof SimurghLitIcon`
+
+## ./lit/user-x
+
+- `UserX`: `typeof SimurghLitIcon`
+
+## ./lit/user
+
+- `User`: `typeof SimurghLitIcon`
+
+## ./lit/users-group
+
+- `UsersGroup`: `typeof SimurghLitIcon`
+
+## ./lit/users
+
+- `Users`: `typeof SimurghLitIcon`
+
+## ./lit/verified-user
+
+- `VerifiedUser`: `typeof SimurghLitIcon`
+
+## ./lit/verified
+
+- `Verified`: `typeof SimurghLitIcon`
+
+## ./lit/version-control
+
+- `VersionControl`: `typeof SimurghLitIcon`
+
+## ./lit/video-off
+
+- `VideoOff`: `typeof SimurghLitIcon`
+
+## ./lit/video
+
+- `Video`: `typeof SimurghLitIcon`
+
+## ./lit/visibility-off
+
+- `VisibilityOff`: `typeof SimurghLitIcon`
+
+## ./lit/visibility
+
+- `Visibility`: `typeof SimurghLitIcon`
+
+## ./lit/volume-high
+
+- `VolumeHigh`: `typeof SimurghLitIcon`
+
+## ./lit/volume-low
+
+- `VolumeLow`: `typeof SimurghLitIcon`
+
+## ./lit/volume-off
+
+- `VolumeOff`: `typeof SimurghLitIcon`
+
+## ./lit/volume
+
+- `Volume`: `typeof SimurghLitIcon`
+
+## ./lit/walking
+
+- `Walking`: `typeof SimurghLitIcon`
+
+## ./lit/wallet
+
+- `Wallet`: `typeof SimurghLitIcon`
+
+## ./lit/warehouse
+
+- `Warehouse`: `typeof SimurghLitIcon`
+
+## ./lit/warning-circle
+
+- `WarningCircle`: `typeof SimurghLitIcon`
+
+## ./lit/warning
+
+- `Warning`: `typeof SimurghLitIcon`
+
+## ./lit/watch
+
+- `Watch`: `typeof SimurghLitIcon`
+
+## ./lit/waveform
+
+- `Waveform`: `typeof SimurghLitIcon`
+
+## ./lit/webcam
+
+- `Webcam`: `typeof SimurghLitIcon`
+
+## ./lit/webhook
+
+- `Webhook`: `typeof SimurghLitIcon`
+
+## ./lit/week
+
+- `Week`: `typeof SimurghLitIcon`
+
+## ./lit/wifi-off
+
+- `WifiOff`: `typeof SimurghLitIcon`
+
+## ./lit/wifi
+
+- `Wifi`: `typeof SimurghLitIcon`
+
+## ./lit/zoom-in
+
+- `ZoomIn`: `typeof SimurghLitIcon`
+
+## ./lit/zoom-out
+
+- `ZoomOut`: `typeof SimurghLitIcon`
 
 ## ./vue
 

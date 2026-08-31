@@ -1,6 +1,6 @@
 # @simurgh-ui/icons
 
-Accessible SVG icons for React, Vue, and Angular, plus framework-neutral definitions and raw SVG
+Accessible SVG icons for React, Preact, Vue, Angular, Svelte, and Lit, plus framework-neutral definitions and raw SVG
 assets. Static per-icon imports allow bundlers to exclude the rest of the catalog.
 
 > Simurgh UI is pre-release. Pin the package version and review release notes before upgrading.
@@ -11,7 +11,7 @@ assets. Static per-icon imports allow bundlers to exclude the rest of the catalo
 pnpm add @simurgh-ui/icons
 ```
 
-Install React 18+, Vue 3.4+, or Angular 18+ for the corresponding framework adapter.
+Install the matching framework peer for the adapter you import.
 
 ## Static icons
 
@@ -26,7 +26,12 @@ import { ArrowLeft } from '@simurgh-ui/icons/react/arrow-left';
 ```ts
 import { Home } from '@simurgh-ui/icons/vue/home';
 import { Home } from '@simurgh-ui/icons/angular/home';
+import { Home } from '@simurgh-ui/icons/preact/home';
+import { Home } from '@simurgh-ui/icons/lit/home';
 ```
+
+Svelte icons are default component exports, for example
+`import Home from '@simurgh-ui/icons/svelte/home'`.
 
 Framework barrels such as `@simurgh-ui/icons/react` are also available and tree-shakeable in
 modern bundlers.
@@ -41,7 +46,7 @@ import { SimurghIcon } from '@simurgh-ui/icons/react/dynamic';
 <SimurghIcon name="arrow-right" title="Next page" />;
 ```
 
-The `/react/dynamic`, `/vue/dynamic`, and `/angular/dynamic` entry points intentionally retain the
+The framework dynamic entry points intentionally retain the
 complete catalog and are much larger than static imports.
 
 React and Vue forward ordinary SVG attributes to the root SVG. Angular mirrors host `class`,

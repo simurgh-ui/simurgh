@@ -74,10 +74,10 @@
     "brotli": 220253
   },
   "package": {
-    "files": 4306,
-    "unpacked": 5449771,
-    "gzip": 666237,
-    "brotli": 322455,
+    "files": 7168,
+    "unpacked": 6163700,
+    "gzip": 709547,
+    "brotli": 342522,
     "budget": 6291456
   }
 }

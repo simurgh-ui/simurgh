@@ -26,6 +26,10 @@
       "types": "./dist/react.d.ts",
       "import": "./dist/react.js"
     },
+    "./preact": {
+      "types": "./dist/preact.d.ts",
+      "import": "./dist/preact.js"
+    },
     "./vue": {
       "types": "./dist/vue.d.ts",
       "import": "./dist/vue.js"
@@ -33,6 +37,14 @@
     "./angular": {
       "types": "./dist/angular.d.ts",
       "default": "./dist/angular.js"
+    },
+    "./svelte": {
+      "types": "./dist/svelte.d.ts",
+      "import": "./dist/svelte.js"
+    },
+    "./lit": {
+      "types": "./dist/lit.d.ts",
+      "import": "./dist/lit.js"
     },
     "./scroll": {
       "types": "./dist/scroll.d.ts",
@@ -57,6 +69,8 @@
   },
   "peerDependencies": {
     "@angular/core": ">=18",
+    "lit": ">=3",
+    "preact": ">=10.19",
     "react": ">=18",
     "vue": ">=3.4"
   },
@@ -64,6 +78,8 @@
     "@angular/core": {
       "optional": true
     },
+    "lit": { "optional": true },
+    "preact": { "optional": true },
     "react": {
       "optional": true
     },
@@ -75,7 +91,9 @@
     "@angular/core": "^20.3.27",
     "@types/react": "^19.2.18",
     "react": "^19.2.8",
+    "preact": "^10.27.2",
     "vitest": "^3.2.7",
-    "vue": "^3.5.41"
+    "vue": "^3.5.41",
+    "lit": "^3.3.1"
   }
 }

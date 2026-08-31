@@ -1,0 +1,3 @@
+import { createIconComponent } from '../lit-base.js';
+import { definition } from '../definitions/save.js';
+export const Save = /* @__PURE__ */ createIconComponent(definition, 'simurgh-save-icon');

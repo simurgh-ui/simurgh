@@ -1,0 +1,3 @@
+import { createIconComponent } from '../lit-base.js';
+import { definition } from '../definitions/checkout.js';
+export const Checkout = /* @__PURE__ */ createIconComponent(definition, 'simurgh-checkout-icon');
