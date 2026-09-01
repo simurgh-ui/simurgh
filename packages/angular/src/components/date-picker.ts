@@ -8,6 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import type { OnInit } from '@angular/core';
 import { PopoverComponent } from './popover.js';
 import { calendarToday } from '@simurgh-ui/core';
 import { FormResetBase } from '../internal/form-reset.js';
@@ -53,9 +54,18 @@ import { FormResetBase } from '../internal/form-reset.js';
     />
   </div>`,
 })
-export class DatePickerComponent extends FormResetBase {
+export class DatePickerComponent extends FormResetBase implements OnInit {
   @Input() value = '';
-  @Input() month = calendarToday().slice(0, 7);
+  private monthValue = calendarToday().slice(0, 7);
+  private monthProvided = false;
+  @Input()
+  set month(value: string) {
+    this.monthValue = value;
+    this.monthProvided = true;
+  }
+  get month() {
+    return this.monthValue;
+  }
   @Input() locale = 'en';
   @Input() direction: Direction = 'ltr';
   @Input() firstDayOfWeek = 0;
@@ -70,6 +80,11 @@ export class DatePickerComponent extends FormResetBase {
   @Output() valueChange = new EventEmitter<string>();
   @Output() monthChange = new EventEmitter<string>();
   @ViewChild(PopoverComponent) popover?: PopoverComponent;
+
+  ngOnInit() {
+    if (!this.monthProvided && this.value)
+      this.monthValue = this.value.slice(0, 7);
+  }
 
   protected createFormReset() {
     const initial = this.value;

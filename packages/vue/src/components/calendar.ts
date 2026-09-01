@@ -65,7 +65,8 @@ export const Calendar = /* @__PURE__ */ defineComponent({
     const today = todayValue();
     const localValue = ref(props.defaultValue);
     const localMonth = ref(
-      props.defaultMonth ?? (props.defaultValue || today).slice(0, 7),
+      props.defaultMonth ??
+        (props.modelValue || props.defaultValue || today).slice(0, 7),
     );
     const root = ref<HTMLElement | null>(null);
     const control = ref<HTMLInputElement | null>(null);

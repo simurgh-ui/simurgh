@@ -8,6 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import type { OnInit } from '@angular/core';
 import {
   addCalendarMonths,
   calendarMonthDays,
@@ -74,9 +75,18 @@ import { FormResetBase } from '../internal/form-reset.js';
     <input *ngIf="name" type="hidden" [name]="name" [value]="value" />
   </div>`,
 })
-export class CalendarComponent extends FormResetBase {
+export class CalendarComponent extends FormResetBase implements OnInit {
   @Input() value = '';
-  @Input() month = calendarToday().slice(0, 7);
+  private monthValue = calendarToday().slice(0, 7);
+  private monthProvided = false;
+  @Input()
+  set month(value: string) {
+    this.monthValue = value;
+    this.monthProvided = true;
+  }
+  get month() {
+    return this.monthValue;
+  }
   @Input() locale = 'en';
   @Input() direction: Direction = 'ltr';
   @Input() firstDayOfWeek = 0;
@@ -92,6 +102,11 @@ export class CalendarComponent extends FormResetBase {
   readonly titleId = createId('calendar-title');
   readonly weeks = [0, 1, 2, 3, 4, 5];
   readonly weekdayIndexes = [0, 1, 2, 3, 4, 5, 6];
+
+  ngOnInit() {
+    if (!this.monthProvided && this.value)
+      this.monthValue = this.value.slice(0, 7);
+  }
 
   protected createFormReset() {
     const initial = this.value;
