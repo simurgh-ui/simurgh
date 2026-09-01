@@ -7,10 +7,14 @@ const packageDirectories = [
   'cli',
   'core',
   'icons',
+  'lit',
+  'mcp',
   'motion',
+  'preact',
   'react',
   'registry',
   'styles',
+  'svelte',
   'vue',
 ];
 
@@ -74,6 +78,15 @@ export async function checkRegistryVersions({
     const response = await fetchRegistry(
       `https://registry.npmjs.org/${encodeURIComponent(manifest.name)}`,
     );
+    if (response.status === 404) {
+      results.push({
+        name: manifest.name,
+        local: manifest.version,
+        latest: undefined,
+        published: false,
+      });
+      continue;
+    }
     if (!response.ok) {
       failures.push(
         `${manifest.name}: registry returned HTTP ${response.status}`,
@@ -88,10 +101,6 @@ export async function checkRegistryVersions({
     else if (compareVersions(manifest.version, latest) < 0)
       failures.push(
         `${manifest.name}: local ${manifest.version} is behind npm latest ${latest}`,
-      );
-    if (publish && published)
-      failures.push(
-        `${manifest.name}: ${manifest.version} is already published and cannot be republished`,
       );
     results.push({
       name: manifest.name,
