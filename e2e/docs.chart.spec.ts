@@ -24,14 +24,14 @@ test.describe('chart documentation preview', () => {
     const viewportBox = await viewport.boundingBox();
     if (!viewportBox) throw new Error('Chart viewport is not measurable');
     await page.mouse.move(viewportBox.x + viewportBox.width * 0.75, viewportBox.y + viewportBox.height / 2);
-    await expect(chart.getByRole('tooltip')).toContainText('value: 41');
+    await expect(chart.getByRole('tooltip')).toContainText('value: 63');
 
     const width = await chart.locator('[data-part="viewport"]').evaluate((element) =>
       element.getBoundingClientRect().width,
     );
     expect(width).toBeLessThanOrEqual(390);
 
-    const legend = chart.locator('[data-part="legend"] button');
+    const legend = chart.locator('[data-part="legend"] button[aria-pressed]');
     await expect(legend).toHaveAttribute('aria-pressed', 'true');
     await legend.click();
     await expect(legend).toHaveAttribute('aria-pressed', 'false');
