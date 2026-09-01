@@ -8,7 +8,6 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import type { OnInit } from '@angular/core';
 import {
   addCalendarMonths,
   calendarMonthDays,
@@ -75,18 +74,9 @@ import { FormResetBase } from '../internal/form-reset.js';
     <input *ngIf="name" type="hidden" [name]="name" [value]="value" />
   </div>`,
 })
-export class CalendarComponent extends FormResetBase implements OnInit {
+export class CalendarComponent extends FormResetBase {
   @Input() value = '';
-  private monthValue = calendarToday().slice(0, 7);
-  private monthProvided = false;
-  @Input()
-  set month(value: string) {
-    this.monthValue = value;
-    this.monthProvided = true;
-  }
-  get month() {
-    return this.monthValue;
-  }
+  @Input() month = '';
   @Input() locale = 'en';
   @Input() direction: Direction = 'ltr';
   @Input() firstDayOfWeek = 0;
@@ -103,11 +93,6 @@ export class CalendarComponent extends FormResetBase implements OnInit {
   readonly weeks = [0, 1, 2, 3, 4, 5];
   readonly weekdayIndexes = [0, 1, 2, 3, 4, 5, 6];
 
-  ngOnInit() {
-    if (!this.monthProvided && this.value)
-      this.monthValue = this.value.slice(0, 7);
-  }
-
   protected createFormReset() {
     const initial = this.value;
     return () => {
@@ -118,14 +103,14 @@ export class CalendarComponent extends FormResetBase implements OnInit {
   }
 
   get days() {
-    return calendarMonthDays(this.month, this.firstDayOfWeek);
+    return calendarMonthDays(this.displayedMonth, this.firstDayOfWeek);
   }
   get monthLabel() {
     return new Intl.DateTimeFormat(this.locale, {
       month: 'long',
       year: 'numeric',
       timeZone: 'UTC',
-    }).format(new Date(`${this.month}-01T00:00:00Z`));
+    }).format(new Date(`${this.displayedMonth}-01T00:00:00Z`));
   }
   weekDays(week: number) {
     return this.days.slice(week * 7, week * 7 + 7);
@@ -152,7 +137,9 @@ export class CalendarComponent extends FormResetBase implements OnInit {
   }
   tabIndex(value: string) {
     const anchor =
-      this.value.slice(0, 7) === this.month ? this.value : `${this.month}-01`;
+      this.value.slice(0, 7) === this.displayedMonth
+        ? this.value
+        : `${this.displayedMonth}-01`;
     return value === anchor ? 0 : -1;
   }
   setMonth(month: string) {
@@ -160,12 +147,15 @@ export class CalendarComponent extends FormResetBase implements OnInit {
     this.monthChange.emit(month);
   }
   moveMonth(amount: number) {
-    this.setMonth(addCalendarMonths(`${this.month}-01`, amount).slice(0, 7));
+    this.setMonth(
+      addCalendarMonths(`${this.displayedMonth}-01`, amount).slice(0, 7),
+    );
   }
   choose(value: string) {
     if (this.isDisabled(value)) return;
     this.value = value;
-    if (value.slice(0, 7) !== this.month) this.setMonth(value.slice(0, 7));
+    if (value.slice(0, 7) !== this.displayedMonth)
+      this.setMonth(value.slice(0, 7));
     this.valueChange.emit(value);
   }
   onDayKeydown(event: KeyboardEvent, value: string) {
@@ -187,11 +177,16 @@ export class CalendarComponent extends FormResetBase implements OnInit {
       direction: this.direction,
       firstDayOfWeek: this.firstDayOfWeek,
     });
-    if (next.slice(0, 7) !== this.month) this.setMonth(next.slice(0, 7));
+    if (next.slice(0, 7) !== this.displayedMonth)
+      this.setMonth(next.slice(0, 7));
     requestAnimationFrame(() =>
       this.root?.nativeElement
         .querySelector<HTMLElement>(`[data-date="${next}"]`)
         ?.focus(),
     );
+  }
+
+  private get displayedMonth() {
+    return this.month || this.value.slice(0, 7) || this.today.slice(0, 7);
   }
 }
