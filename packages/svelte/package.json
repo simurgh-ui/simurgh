@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/svelte",
-  "version": "0.3.2-beta.3",
+  "version": "0.4.0-beta.4",
   "description": "Accessible Simurgh UI components for Svelte.",
   "license": "MIT",
   "repository": {

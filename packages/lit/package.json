@@ -1,6 +1,6 @@
 {
   "name": "@simurgh-ui/lit",
-  "version": "0.3.2-beta.3",
+  "version": "0.4.0-beta.4",
   "description": "Accessible Simurgh UI web components built with Lit.",
   "license": "MIT",
   "repository": {

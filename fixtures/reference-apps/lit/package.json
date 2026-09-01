@@ -7,7 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@simurgh-ui/lit": "^0.3.2-beta.3",
+    "@simurgh-ui/lit": "^0.4.0-beta.4",
     "@simurgh-ui/styles": "^0.2.2-beta.1",
     "lit": "^3.3.1"
   },

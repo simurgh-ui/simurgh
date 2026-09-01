@@ -11,7 +11,10 @@
     "@simurgh-ui/registry": "0.3.1",
     "@simurgh-ui/styles": "0.2.1",
     "@simurgh-ui/vue": "0.3.1",
-    "@simurgh-ui/mcp": "0.1.0"
+    "@simurgh-ui/mcp": "0.1.0",
+    "@simurgh-ui/lit": "0.3.2-beta.3",
+    "@simurgh-ui/preact": "0.3.2-beta.3",
+    "@simurgh-ui/svelte": "0.3.2-beta.3"
   },
   "changesets": [
     "bright-charts-expand",
@@ -22,9 +25,11 @@
     "kind-toast-regions",
     "lean-tarballs",
     "mcp-server",
+    "quiet-frameworks-support",
     "quiet-modals-isolate",
     "smart-composites-navigate",
     "smart-forms-reset",
+    "smooth-motion-tools",
     "tidy-mcp-publish"
   ]
 }

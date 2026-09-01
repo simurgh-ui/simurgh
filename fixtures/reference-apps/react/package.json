@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@simurgh-ui/react": "^0.3.2-beta.3",
+    "@simurgh-ui/react": "^1.0.0-beta.4",
     "@simurgh-ui/styles": "^0.2.2-beta.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

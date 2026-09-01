@@ -1,5 +1,13 @@
 # @simurgh-ui/angular
 
+## 1.0.0-beta.3
+
+### Patch Changes
+
+- Updated dependencies [36a646f]
+- Updated dependencies [bf7181c]
+  - @simurgh-ui/motion@0.2.0-beta.2
+
 ## 0.3.2-beta.2
 
 ### Patch Changes

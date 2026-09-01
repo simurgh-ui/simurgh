@@ -1,5 +1,16 @@
 # @simurgh-ui/cli
 
+## 0.5.0-beta.4
+
+### Minor Changes
+
+- 36a646f: Add full Preact, Svelte, and Lit component catalogs with icons, motion, CLI source-copy, SSR/reference apps, package quick starts, and framework detection.
+
+### Patch Changes
+
+- Updated dependencies [36a646f]
+  - @simurgh-ui/registry@0.4.0-beta.2
+
 ## 0.4.1-beta.3
 
 ### Patch Changes
