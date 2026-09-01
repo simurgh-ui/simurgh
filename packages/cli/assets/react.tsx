@@ -725,7 +725,7 @@ export function Calendar({
   const [localValue, setLocalValue] = useState(defaultValue);
   const selected = value ?? localValue;
   const [localMonth, setLocalMonth] = useState(
-    defaultMonth ?? (defaultValue || today).slice(0, 7),
+    defaultMonth ?? (value || defaultValue || today).slice(0, 7),
   );
   const displayedMonth = month ?? localMonth;
   const days = calendarMonthDays(displayedMonth, firstDayOfWeek);
@@ -734,7 +734,7 @@ export function Calendar({
   const resetRef = useFormReset<HTMLInputElement>(() => {
     if (value === undefined) setLocalValue(defaultValue);
     if (month === undefined)
-      setLocalMonth(defaultMonth ?? (defaultValue || today).slice(0, 7));
+      setLocalMonth(defaultMonth ?? (value || defaultValue || today).slice(0, 7));
   });
   const disabled = new Set(disabledDates);
   const isDisabled = (date: string) =>
