@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -121,8 +122,9 @@ jobs:
             apps/docs/dist
 
   contracts:
-    name: Repository and documentation contracts
-    needs: build
+    name: Package contracts
+    needs: [changes, build]
+    if: needs.changes.outputs.package == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -149,11 +151,25 @@ jobs:
       - run: pnpm test:release-notes
         env:
           CHANGESET_BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'origin/main' }}
-      - run: pnpm --filter @simurgh-ui/docs feedback
-      - run: pnpm --filter @simurgh-ui/docs readiness
       - run: pnpm test:api-reports
       - run: pnpm test:references
       - run: pnpm test:quick-starts
+
+  docs:
+    name: Documentation contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.16.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @simurgh-ui/docs feedback
+      - run: pnpm --filter @simurgh-ui/docs readiness
 
   e2e:
     name: E2E smoke tests
@@ -168,6 +184,13 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Restore Turbo cache
         uses: actions/cache@v4
         with:
