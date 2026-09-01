@@ -9,11 +9,14 @@ const packageDirectories = [
   'cli',
   'core',
   'icons',
+  'lit',
   'mcp',
   'motion',
+  'preact',
   'react',
   'registry',
   'styles',
+  'svelte',
   'vue',
 ];
 const versions = Object.fromEntries(
@@ -71,7 +74,7 @@ test('verifies all staged beta versions and strips registry metadata', async () 
   const evidence = await verifyPublishedBeta({
     fetchRegistry: registryFetch(),
   });
-  assert.equal(evidence.packageCount, 10);
+  assert.equal(evidence.packageCount, 13);
   assert.equal(
     evidence.packages.every((entry) => entry.betaTag === entry.version),
     true,
@@ -121,6 +124,6 @@ test('retries while a published version propagates through the registry', async 
     retryDelayMs: 0,
     wait: async () => {},
   });
-  assert.equal(evidence.packageCount, 10);
-  assert.equal(requests, 11);
+  assert.equal(evidence.packageCount, 13);
+  assert.equal(requests, 14);
 });

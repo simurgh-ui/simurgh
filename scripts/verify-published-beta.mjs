@@ -7,11 +7,14 @@ const packageDirectories = [
   'cli',
   'core',
   'icons',
+  'lit',
   'mcp',
   'motion',
+  'preact',
   'react',
   'registry',
   'styles',
+  'svelte',
   'vue',
 ];
 

@@ -2,70 +2,108 @@
   "schemaVersion": 1,
   "publicationChannel": "direct",
   "provenanceRequired": false,
-  "packageCount": 9,
+  "packageCount": 13,
   "packages": [
     {
       "name": "@simurgh-ui/angular",
-      "version": "0.3.2-beta.1",
-      "betaTag": "0.3.2-beta.1",
-      "integrity": "sha512-lXgmkRTZfww17Z1s6OJ84EXQ1WhxPWeKjOqRPSRSZw1aWOhXz4aU47bcPvX5EnchCqUCXIXHQ8/HYd3Q/meCBQ==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/angular/-/angular-0.3.2-beta.1.tgz"
+      "version": "1.0.0-beta.3",
+      "betaTag": "1.0.0-beta.3",
+      "integrity": "sha512-Mz+QAvd0HbyHes4UcDVGh0ACE+rM1VwChldrNTCdoDeWAWjJNj689A+yPMYRuogRchilTBpP7Bioh35PyvStgg==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/angular/-/angular-1.0.0-beta.3.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2fangular@1.0.0-beta.3"
     },
     {
       "name": "@simurgh-ui/cli",
-      "version": "0.4.1-beta.1",
-      "betaTag": "0.4.1-beta.1",
-      "integrity": "sha512-TuCy6H46G+PvDNNY83PsIzYmfKrTp+qA69RPYqRgADr8/u7cvfPbV25HDbOsh9CbzleoiMILeooHTYoe0Pohig==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/cli/-/cli-0.4.1-beta.1.tgz"
+      "version": "0.5.0-beta.4",
+      "betaTag": "0.5.0-beta.4",
+      "integrity": "sha512-LvCujHBiFafAYx8BXgXK5yjZ0c6tuVv1ZWU9uDz//ZDgiOymrJZZSrkhHMjpQ03y6GtyTaR2nqUXmEAXIGgg9w==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/cli/-/cli-0.5.0-beta.4.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2fcli@0.5.0-beta.4"
     },
     {
       "name": "@simurgh-ui/core",
-      "version": "0.3.2-beta.0",
-      "betaTag": "0.3.2-beta.0",
-      "integrity": "sha512-fZgefp/MECzSqMRRXwpTqTJRZUL7dbtiwez2O3jCPuxeYG/1+/zWbLO5Yf0XTWbPSWZcOk7LyXCj6yrOsnwuXg==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/core/-/core-0.3.2-beta.0.tgz"
+      "version": "0.3.2-beta.1",
+      "betaTag": "0.3.2-beta.1",
+      "integrity": "sha512-kJyGqMnjhpRjCtVsmfoNGCDSIxrv0MK0t75NtdPhYlwblM7XRGTDDOkziTMh7b/ruvzFE3COC7U4LlcT/EsWxw==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/core/-/core-0.3.2-beta.1.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2fcore@0.3.2-beta.1"
     },
     {
       "name": "@simurgh-ui/icons",
-      "version": "0.1.2-beta.0",
-      "betaTag": "0.1.2-beta.0",
-      "integrity": "sha512-LauLtkrG47Lk0BTs3L32llk/5EoZ0skb8Ia7j81q3DoYQLM1egMQT0OeYE8bS5q7TPMmKvOfQkR6bK3OpFABKQ==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/icons/-/icons-0.1.2-beta.0.tgz"
+      "version": "0.2.0-beta.2",
+      "betaTag": "0.2.0-beta.2",
+      "integrity": "sha512-4X8LQh6a67KJsp7JBI5RQB5tUYjm9YdWDV6I+MfQWe3/QPu2mlhQTv/Wk9sJ/oOJvvOVIfgTezHa6JKADYFl0g==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/icons/-/icons-0.2.0-beta.2.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2ficons@0.2.0-beta.2"
+    },
+    {
+      "name": "@simurgh-ui/lit",
+      "version": "0.4.0-beta.4",
+      "betaTag": "0.4.0-beta.4",
+      "integrity": "sha512-a7EKZihOpHm6+sKvcurNyvIW0/REwRavyvvgZSY1OFp68ZgXWN/HFgA9L9MjTukuX5QDcKrudLA2Ozk42qIXTQ==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/lit/-/lit-0.4.0-beta.4.tgz"
+    },
+    {
+      "name": "@simurgh-ui/mcp",
+      "version": "0.2.0-beta.2",
+      "betaTag": "0.2.0-beta.2",
+      "integrity": "sha512-BE5CU1waG/gFHl5IVUp2jNBjUVIi3R1gxga3/N2XjV8OWwWbHvqS0Zcen8gw/euzhw/5n4QKCwALu+sFLqNhMg==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/mcp/-/mcp-0.2.0-beta.2.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2fmcp@0.2.0-beta.2"
     },
     {
       "name": "@simurgh-ui/motion",
-      "version": "0.1.3-beta.0",
-      "betaTag": "0.1.3-beta.0",
-      "integrity": "sha512-qV8uWgqldh0lu6DmsBXwVnQB5foSwX0KLeT3+AC9+GV7FJCcHZkAilCsACZMoKGSIQRxjHoVQv5j4/mdHnkBtQ==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/motion/-/motion-0.1.3-beta.0.tgz"
+      "version": "0.2.0-beta.2",
+      "betaTag": "0.2.0-beta.2",
+      "integrity": "sha512-Cc8GIwdnRBfwk7aLQCcnIEOBYr8mKW3XLcNuG7yXk3RePXfUtr0bdvtfkCwt5FlYqX5iPFQc+yY+d6UhNhDt6A==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/motion/-/motion-0.2.0-beta.2.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2fmotion@0.2.0-beta.2"
+    },
+    {
+      "name": "@simurgh-ui/preact",
+      "version": "1.0.0-beta.4",
+      "betaTag": "1.0.0-beta.4",
+      "integrity": "sha512-CWTD33AG/QbdTJ7nkkr2Om6O36Yt52y6Grd02jJHQXsb7rO18DhbhYgcPXnQuZjkmKXPRNJA1wmA1hXfNVh/rQ==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/preact/-/preact-1.0.0-beta.4.tgz"
     },
     {
       "name": "@simurgh-ui/react",
-      "version": "0.3.2-beta.1",
-      "betaTag": "0.3.2-beta.1",
-      "integrity": "sha512-p+h81N40AwZLnze7g9PJm4NeyvORpedoScMO2Y9VdiqRmhuWnYTPFRvrGug/MEBoe/LLxWmXTd1ngyKYI9F39g==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/react/-/react-0.3.2-beta.1.tgz"
+      "version": "1.0.0-beta.4",
+      "betaTag": "1.0.0-beta.4",
+      "integrity": "sha512-XN3F56HRkBJBKpxw68LM9VVrDfsaghIewiQwh2fWgFOz5F+Pz9bh/3Z0Dzpvl1TCcwE2FwrvlBlIm7uXDOhyNQ==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/react/-/react-1.0.0-beta.4.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2freact@1.0.0-beta.4"
     },
     {
       "name": "@simurgh-ui/registry",
-      "version": "0.3.2-beta.0",
-      "betaTag": "0.3.2-beta.0",
-      "integrity": "sha512-Rs01jGgHJB1asHAVzeMa+Avh8RrJ9MruxbZjMqDrAj7UwP4VgQRzcdd+1W9RxjCT9WGKDKPch0+U37ohAgflPg==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/registry/-/registry-0.3.2-beta.0.tgz"
+      "version": "0.4.0-beta.2",
+      "betaTag": "0.4.0-beta.2",
+      "integrity": "sha512-M6iSlasK0DGQaXkQO1vyHcwuWUOfBVYP+JKXF+zceePwNgHm1LDD8BHaXs1dsy63IuqLmklHUrEIQaEPyldqDA==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/registry/-/registry-0.4.0-beta.2.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2fregistry@0.4.0-beta.2"
     },
     {
       "name": "@simurgh-ui/styles",
-      "version": "0.2.2-beta.0",
-      "betaTag": "0.2.2-beta.0",
-      "integrity": "sha512-dcWQEbyurGgn95R0PNzENtWi63+fWdsPObO/XSA44PKEwshHxO5br1GKuMyrYBD+yPOlDdUVOlHJbQHzNvc1ew==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/styles/-/styles-0.2.2-beta.0.tgz"
+      "version": "0.2.2-beta.1",
+      "betaTag": "0.2.2-beta.1",
+      "integrity": "sha512-lZ8f06+pd+By6XKhupGGjviC/vb0G8vwDkprlUDrMbNIGdibvK11omEqd2UB3NKben+wihJbT2MwwiE06zWSwg==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/styles/-/styles-0.2.2-beta.1.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2fstyles@0.2.2-beta.1"
+    },
+    {
+      "name": "@simurgh-ui/svelte",
+      "version": "0.4.0-beta.4",
+      "betaTag": "0.4.0-beta.4",
+      "integrity": "sha512-OLXJBE7662VCVJgtysY9L+tYuD5mfieCUjUsAYfDlmzAGkBcQkUSkzLeeg4qfahba8Vy0K+IbByCcuChi3NsGg==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/svelte/-/svelte-0.4.0-beta.4.tgz"
     },
     {
       "name": "@simurgh-ui/vue",
-      "version": "0.3.2-beta.1",
-      "betaTag": "0.3.2-beta.1",
-      "integrity": "sha512-FtIiQ3+KFOIaNHVzh2kc52+lLq6dWeNzTpphQIGLOUUJ0dfPCpkreLSnhUfFF4lwcdZx8SbJv1DdMDjtuBBlMg==",
-      "tarball": "https://registry.npmjs.org/@simurgh-ui/vue/-/vue-0.3.2-beta.1.tgz"
+      "version": "1.0.0-beta.4",
+      "betaTag": "1.0.0-beta.4",
+      "integrity": "sha512-3jDNyzcdj0ac+Tl+B5IcGCd3b8jY2rC5BF4jaMkZvJJd4hc/iM9JyZ/sj3TMjtk1jeUpKUQMw8J3i1G86sw5tA==",
+      "tarball": "https://registry.npmjs.org/@simurgh-ui/vue/-/vue-1.0.0-beta.4.tgz",
+      "provenanceAttestation": "https://registry.npmjs.org/-/npm/v1/attestations/@simurgh-ui%2fvue@1.0.0-beta.4"
     }
   ]
 }
