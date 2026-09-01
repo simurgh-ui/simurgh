@@ -4,7 +4,9 @@ import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const write = process.argv.includes('--write');
 const versions = {};
-for (const packageName of ['angular', 'react', 'styles', 'vue']) {
+const frameworks = ['react', 'preact', 'vue', 'angular', 'svelte', 'lit'];
+
+for (const packageName of [...frameworks, 'styles']) {
   const manifest = JSON.parse(
     await readFile(
       resolve(root, 'packages', packageName, 'package.json'),
@@ -15,7 +17,7 @@ for (const packageName of ['angular', 'react', 'styles', 'vue']) {
 }
 
 const stale = [];
-for (const framework of ['react', 'vue', 'angular']) {
+for (const framework of frameworks) {
   const path = resolve(
     root,
     'fixtures/reference-apps',
@@ -39,5 +41,5 @@ for (const framework of ['react', 'vue', 'angular']) {
 if (stale.length && !write)
   throw new Error(`Reference app versions are stale:\n${stale.join('\n')}`);
 process.stdout.write(
-  `${write ? 'Synchronized' : 'Validated'} React, Vue, and Angular reference app package versions.\n`,
+  `${write ? 'Synchronized' : 'Validated'} reference app package versions for ${frameworks.join(', ')}.\n`,
 );
