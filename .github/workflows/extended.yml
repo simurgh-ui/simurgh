@@ -1,0 +1,43 @@
+name: Extended quality checks
+
+on:
+  schedule:
+    - cron: '37 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: simurgh-extended-quality
+  cancel-in-progress: true
+
+jobs:
+  extended:
+    name: Coverage and bundle budgets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.16.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: ${{ runner.os }}-turbo-extended-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-extended-${{ hashFiles('pnpm-lock.yaml') }}-
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm coverage
+      - run: pnpm build
+      - run: pnpm bundle:size
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extended-coverage
+          path: packages/*/coverage
+          if-no-files-found: error

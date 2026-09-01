@@ -13,8 +13,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Detect changed areas
+    runs-on: ubuntu-latest
+    outputs:
+      package: ${{ steps.filter.outputs.package }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            package:
+              - 'packages/**'
+              - 'scripts/**'
+              - 'schemas/**'
+              - 'fixtures/**'
+              - 'e2e/**'
+              - '.changeset/**'
+              - '.github/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'turbo.json'
+              - 'playwright.config.ts'
+              - 'tsconfig.base.json'
+              - 'vitest*.ts'
+
   static:
     name: Lint and typecheck
+    needs: changes
+    if: needs.changes.outputs.package == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +66,8 @@ jobs:
 
   tests:
     name: Unit tests
+    needs: changes
+    if: needs.changes.outputs.package == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -58,8 +88,41 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
 
+  build:
+    name: Build packages once
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.16.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: ${{ runner.os }}-turbo-build-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-build-${{ hashFiles('pnpm-lock.yaml') }}-
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ci-build-output
+          if-no-files-found: error
+          path: |
+            packages/*/dist
+            packages/*/assets
+            packages/styles/all.css
+            packages/styles/components
+            apps/docs/dist
+
   contracts:
     name: Repository and documentation contracts
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -80,18 +143,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-contracts-${{ hashFiles('pnpm-lock.yaml') }}-
       - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: ci-build-output
       - run: pnpm test:release-notes
         env:
           CHANGESET_BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || 'origin/main' }}
       - run: pnpm --filter @simurgh-ui/docs feedback
       - run: pnpm --filter @simurgh-ui/docs readiness
-      - run: pnpm build
       - run: pnpm test:api-reports
       - run: pnpm test:references
       - run: pnpm test:quick-starts
 
   e2e:
     name: E2E smoke tests
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -110,6 +176,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-e2e-${{ hashFiles('pnpm-lock.yaml') }}-
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - uses: actions/download-artifact@v4
+        with:
+          name: ci-build-output
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e --project=chromium --project=mobile-android
