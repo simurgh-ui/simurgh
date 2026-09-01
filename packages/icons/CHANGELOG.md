@@ -1,5 +1,11 @@
 # @simurgh-ui/icons
 
+## 0.2.0-beta.2
+
+### Minor Changes
+
+- 36a646f: Add full Preact, Svelte, and Lit component catalogs with icons, motion, CLI source-copy, SSR/reference apps, package quick starts, and framework detection.
+
 ## 0.1.2-beta.1
 
 ### Patch Changes

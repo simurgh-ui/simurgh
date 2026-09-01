@@ -1,5 +1,12 @@
 # @simurgh-ui/mcp
 
+## 0.2.0-beta.2
+
+### Patch Changes
+
+- Updated dependencies [36a646f]
+  - @simurgh-ui/registry@0.4.0-beta.2
+
 ## 0.2.0-beta.1
 
 ### Patch Changes

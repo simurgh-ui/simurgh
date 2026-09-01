@@ -1,6 +1,6 @@
 # @simurgh-ui/lit public API
 
-Version snapshot: 0.3.2-beta.3
+Version snapshot: 0.4.0-beta.4
 
 ## Export map
 

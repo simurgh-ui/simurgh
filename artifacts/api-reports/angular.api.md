@@ -1,6 +1,6 @@
 # @simurgh-ui/angular public API
 
-Version snapshot: 0.3.2-beta.2
+Version snapshot: 1.0.0-beta.3
 
 ## Export map
 

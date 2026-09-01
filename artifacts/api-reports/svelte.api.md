@@ -3,7 +3,7 @@
 ```json
 {
   "name": "@simurgh-ui/svelte",
-  "version": "0.3.2-beta.3",
+  "version": "0.4.0-beta.4",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

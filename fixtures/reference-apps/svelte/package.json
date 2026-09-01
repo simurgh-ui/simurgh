@@ -7,7 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@simurgh-ui/svelte": "^0.3.2-beta.3",
+    "@simurgh-ui/svelte": "^0.4.0-beta.4",
     "@simurgh-ui/styles": "^0.2.2-beta.1",
     "svelte": "^5.43.8"
   },

@@ -1,5 +1,17 @@
 # @simurgh-ui/motion
 
+## 0.2.0-beta.2
+
+### Minor Changes
+
+- 36a646f: Add full Preact, Svelte, and Lit component catalogs with icons, motion, CLI source-copy, SSR/reference apps, package quick starts, and framework detection.
+
+### Patch Changes
+
+- bf7181c: Extend the motion package with timelines, multi-target staggering, velocity-aware spring
+  interruption, opt-in scroll-linked animation, and opt-in FLIP layout animation while keeping
+  the core and framework adapters within their 5 KiB gzip entry budgets.
+
 ## 0.1.3-beta.1
 
 ### Patch Changes
